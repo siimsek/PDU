@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="570" viewBox="0 0 1200 570">
+<rect width="1200" height="570" fill="#f7fafc"/><text x="600" y="42" text-anchor="middle" font-family="Arial" font-size="25" font-weight="bold" fill="#102a43">IDA PDU — Güç Mimarisi (Referans)</text>
+<g font-family="Arial" fill="#102a43" stroke="#334e68" stroke-width="2">
+<rect x="35" y="205" width="165" height="100" rx="12" fill="#d9eafd"/><text x="117" y="242" text-anchor="middle" font-size="20" stroke="none">6S Batarya</text><text x="117" y="271" text-anchor="middle" font-size="16" stroke="none">20–26 V tasarım</text>
+<rect x="250" y="205" width="160" height="100" rx="12" fill="#fff0c2"/><text x="330" y="242" text-anchor="middle" font-size="18" stroke="none">Sigorta + TVS</text><text x="330" y="270" text-anchor="middle" font-size="15" stroke="none">ters kutup açık</text>
+<rect x="460" y="175" width="235" height="160" rx="14" fill="#d3f9d8"/><text x="577" y="220" text-anchor="middle" font-size="20" stroke="none">Tek senkron Buck</text><text x="577" y="252" text-anchor="middle" font-size="18" stroke="none">LM70880-Q1</text><text x="577" y="282" text-anchor="middle" font-size="16" stroke="none">11.0 V • 400 kHz</text><text x="577" y="310" text-anchor="middle" font-size="15" stroke="none">7.5 A hedef, doğrulanacak</text>
+<rect x="750" y="115" width="180" height="110" rx="12" fill="#e9ddff"/><text x="840" y="152" text-anchor="middle" font-size="18" stroke="none">eFuse port 1</text><text x="840" y="181" text-anchor="middle" font-size="16" stroke="none">≈6 A aday</text>
+<rect x="750" y="295" width="180" height="110" rx="12" fill="#e9ddff"/><text x="840" y="332" text-anchor="middle" font-size="18" stroke="none">eFuse port 2</text><text x="840" y="361" text-anchor="middle" font-size="16" stroke="none">≈2.5 A aday</text>
+<rect x="990" y="115" width="180" height="110" rx="12" fill="#d9eafd"/><text x="1080" y="153" text-anchor="middle" font-size="18" stroke="none">T3 Gemstone O1</text><text x="1080" y="181" text-anchor="middle" font-size="15" stroke="none">5–12 V source rating*</text>
+<rect x="990" y="295" width="180" height="110" rx="12" fill="#d9eafd"/><text x="1080" y="333" text-anchor="middle" font-size="18" stroke="none">RPLIDAR S2E</text><text x="1080" y="361" text-anchor="middle" font-size="15" stroke="none">9–28 V • Ethernet</text>
+<path d="M200 255 H250 M410 255 H460 M695 220 H720 V170 H750 M720 170 H750 M695 290 H720 V350 H750 M930 170 H990 M930 350 H990" fill="none" stroke="#486581" stroke-width="4"/>
+<path d="M710 220 V290" fill="none" stroke="#486581" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="600" y="472" text-anchor="middle" font-size="17" stroke="none">Ortak GND • iki bağımsız koruma kolu • tek 11 V barası</text>
+<text x="600" y="515" text-anchor="middle" font-size="14" stroke="none">* O1 5 A ile 3 A kaynakları çelişiyor; tüketim, jak ve kablo doğrulanmalı.</text></g></svg>

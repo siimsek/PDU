@@ -1,0 +1,382 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "e739b668-dbda-41f7-9fd8-9b3700fbc5e5")
+	(paper "A4")
+	(title_block
+		(title "IDA PDU - Functional Architecture")
+		(date "2026-10-14")
+		(rev "")
+		(company "Bitirme Projesi")
+		(comment 1 "FUNCTIONAL BLOCK DIAGRAM ONLY - NOT ELECTRICALLY VERIFIED - NOT FOR PRODUCTION")
+	)
+	(lib_symbols)
+	(rectangle
+		(start 20 58)
+		(end 52 100)
+		(stroke
+			(width 0.3)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "10000000-0000-4000-8000-000000000004")
+	)
+	(rectangle
+		(start 73 58)
+		(end 116 100)
+		(stroke
+			(width 0.3)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "10000000-0000-4000-8000-000000000007")
+	)
+	(rectangle
+		(start 137 47)
+		(end 190 89)
+		(stroke
+			(width 0.3)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000a")
+	)
+	(rectangle
+		(start 220 47)
+		(end 277 89)
+		(stroke
+			(width 0.3)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000d")
+	)
+	(rectangle
+		(start 137 112)
+		(end 190 154)
+		(stroke
+			(width 0.3)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "10000000-0000-4000-8000-000000000010")
+	)
+	(rectangle
+		(start 220 112)
+		(end 277 154)
+		(stroke
+			(width 0.3)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "10000000-0000-4000-8000-000000000013")
+	)
+	(polyline
+		(pts
+			(xy 116 79) (xy 124 79) (xy 124 68) (xy 137 68)
+		)
+		(stroke
+			(width 0.45)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "10000000-0000-4000-8000-000000000017")
+	)
+	(polyline
+		(pts
+			(xy 190 68) (xy 200 68) (xy 200 133) (xy 190 133)
+		)
+		(stroke
+			(width 0.45)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "10000000-0000-4000-8000-000000000018")
+	)
+	(text "IDA PDU — Functional Architecture"
+		(exclude_from_sim no)
+		(at 22 18 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000001")
+	)
+	(text "Design targets: 6S battery 20–26 V DC | one 11 V Buck | T3 Gemstone O1 + RPLIDAR S2E | 82.5 W / 7.5 A provisional"
+		(exclude_from_sim no)
+		(at 22 26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000002")
+	)
+	(text "DRAFT — functional blocks only. Controller pin wiring, protection thresholds, exact passives, footprints, thermal design and PCB routing require datasheet-level design review."
+		(exclude_from_sim no)
+		(at 22 34 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000003")
+	)
+	(text "J1 — BATTERY INPUT"
+		(exclude_from_sim no)
+		(at 22 63 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000005")
+	)
+	(text "6S LiPo\n20–26 V DC\nBAT+ / GND"
+		(exclude_from_sim no)
+		(at 22 72 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000006")
+	)
+	(text "INPUT PROTECTION"
+		(exclude_from_sim no)
+		(at 75 63 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000008")
+	)
+	(text "10 A fuse candidate + TVS\nSMCJ33A candidate\nReverse stage: TBD\nSurge coordinate and measure"
+		(exclude_from_sim no)
+		(at 75 72 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000009")
+	)
+	(text "SINGLE BUCK STAGE"
+		(exclude_from_sim no)
+		(at 139 52 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000b")
+	)
+	(text "LM70880-Q1 candidate\n20–26 V → 11.0 V\n400 kHz; 7.5 A target\nloop and thermal: verify"
+		(exclude_from_sim no)
+		(at 139 61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000c")
+	)
+	(text "J2 — T3 GEMSTONE O1"
+		(exclude_from_sim no)
+		(at 222 52 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000e")
+	)
+	(text "11 V protected port\nO1 rating listed 5–12 V\nTPS25982 eFuse: 6 A\njack/cable: verify"
+		(exclude_from_sim no)
+		(at 222 61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000f")
+	)
+	(text "11 V OUTPUT DISTRIBUTION"
+		(exclude_from_sim no)
+		(at 139 117 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000011")
+	)
+	(text "COUT + shared 11 V bus\nTwo separate eFuse channels\nILIM targets: 6 A / 2.5 A\ncurrent and thermal: verify"
+		(exclude_from_sim no)
+		(at 139 126 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000012")
+	)
+	(text "J3 — RPLIDAR S2E"
+		(exclude_from_sim no)
+		(at 222 117 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000014")
+	)
+	(text "11 V protected port\nS2E rating 9–28 V\nTPS25982 eFuse: 2.5 A\n11 V start: measure"
+		(exclude_from_sim no)
+		(at 222 126 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-000000000015")
+	)
+	(text "One 11 V Buck feeds two independent protected non-isolated output ports; both loads share common GND. Graphic page only; no electrical netlist."
+		(exclude_from_sim no)
+		(at 14.986 151.384 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-00000000001b")
+	)
+	(text "PCB gate: choose exact ports and input protection; finish component-level schematic and footprint map; calculate Ceff/compensation; close surge, thermal, current-limit and connector checks before layout."
+		(exclude_from_sim no)
+		(at 14.986 160.384 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10000000-0000-4000-8000-00000000001c")
+	)
+	(polyline
+		(pts
+			(xy 52 79) (xy 73 79)
+		)
+		(stroke
+			(width 0.45)
+			(type default)
+		)
+		(uuid "10000000-0000-4000-8000-000000000016")
+	)
+	(polyline
+		(pts
+			(xy 190 133) (xy 202 133) (xy 202 68) (xy 220 68)
+		)
+		(stroke
+			(width 0.45)
+			(type default)
+		)
+		(uuid "10000000-0000-4000-8000-000000000019")
+	)
+	(polyline
+		(pts
+			(xy 190 133) (xy 220 133)
+		)
+		(stroke
+			(width 0.45)
+			(type default)
+		)
+		(uuid "10000000-0000-4000-8000-00000000001a")
+	)
+	(sheet
+		(at 20.32 166.37)
+		(size 88.9 22.86)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "d25ce74b-08fb-4fe3-b3ca-f3474b9900d8")
+		(property "Sheetname" "Guc Katlari"
+			(at 20.32 165.6584 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Guc_Katlari.kicad_sch"
+			(at 20.32 189.8146 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "IDA_PDU"
+				(path "/e739b668-dbda-41f7-9fd8-9b3700fbc5e5"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

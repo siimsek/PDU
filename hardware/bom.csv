@@ -1,0 +1,15 @@
+﻿Ref,Qty,Candidate MPN,Description / minimum rating,Status,Price snapshot 2026-10-14,Source
+U1,1,LM70880QRRXRQ1,"80 V / 8 A synchronous buck, 29-VQFN",Preliminary main converter,"$8.17 at 1 pc; DigiKey US, taxes/shipping/import excluded",https://www.digikey.com/en/products/detail/texas-instruments/LM70880QRRXRQ1/24420927
+L1,1,XGL1010-682MEC,6.8 uH; verify Isat/Irms and hot derating,TI application BOM candidate,Quote required,https://www.coilcraft.com/en-us/products/power/shielded-inductors/molded-inductors/xgl/xgl1010/
+"U2,U3",2,TPS259824ONRGET,"2.7–24 V, 15 A, 2.7 mΩ smart eFuse; 16.9 V OVP, circuit-breaker option; separate ILIM setup per port",Preliminary branch protector; verify SOA/thermal/timer,Mouser USA price view: $4.67 each at 1 pc; duties and shipping excluded,https://www.mouser.com/en/ProductDetail/Texas-Instruments/TPS259824ONRGET
+D1,1,SMCJ33A,"TVS, 33 V standoff; 53.3 V max clamp at specified 28.2 A test",Surge coordination open,Mouser TR page showed EUR 0.662 at 1 pc; duties/shipping excluded,https://www.mouser.com.tr/ProductDetail/Littelfuse/SMCJ33A
+F1,1,TBD,10 A-class DC fuse; choose time-current curve and breaking capacity,Open; coordinate battery/wire fault,Quote required,https://www.littelfuse.com/products/fuses
+Q1,1,TBD,"High-side reverse-polarity MOSFET/controller, voltage above coordinated clamp",Open; surge waveform required,Quote required,https://www.ti.com/power-management/power-switches/ideal-diode-controllers/overview.html
+CIN,4+,GCM32DC72A475KE02L / equivalent,"4.7 uF, 100 V, X7S; check DC-bias and pulse current",TI application BOM starting point; add bulk after source impedance test,Quote required,https://www.ti.com/lit/ds/symlink/lm70840-q1.pdf
+COUT,4–6,GCM32EC71E226KE36 / equivalent,"22 uF, 25 V, X7R; check effective C at 11 V",Count chosen with effective C and loop,Quote required,https://www.ti.com/lit/ds/symlink/lm70840-q1.pdf
+RFB1,1,"130 kOhm, 0.1%",Feedback upper divider resistor,Calculated initial value,Quote required,
+RFB2,1,"10.2 kOhm, 0.1%",Feedback lower divider resistor,Calculated initial value,Quote required,
+RS,1,"5 mOhm, 1 W, Kelvin, low-inductance",Current sense; verify pulse and thermal rating,TI design starting point; finalize exact MPN,Quote required,https://www.ti.com/lit/ds/symlink/lm70840-q1.pdf
+J1,1,TBD after O1 inspection,O1-compatible DC connector/cable; exact polarity/size required,Interface not confirmed,Quote required,
+J2,1,TBD after S2E cable inspection,"S2E power connector, pin 1 VCC / pin 2 GND",Manufacturer cable connector exact MPN open,Quote required,https://wiki.slamtec.com/download/attachments/83066883/SLAMTEC_rplidar_datasheet_S2E_v1.8_en.pdf?api=v2
+PCB,1,TBD,4-layer; outer 2 oz target; thermal/DRC review,No IDA PDU layout yet,Quote required,

@@ -1,0 +1,12 @@
+# LTspice generated waveforms and caches
+*.raw
+*.db
+*.log.raw
+*.op.raw
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# KiCad local settings
+*.kicad_prl
