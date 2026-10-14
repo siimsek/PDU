@@ -18,6 +18,7 @@
 | V-12 | KiCad ERC/DRC | Kritik çözülmemiş hata 0 | KiCad 10.0.5 ile işlevsel blok sayfası SVG olarak açıldı; elektriksel şema/PCB yok | ERC/DRC ÇALIŞTIRILMADI |
 | V-13 | LTspice | Tekrarlanabilir kaynak/log; kapsam açıklanmış | LTspice 26.1.1 batch; 4 giriş koşulunda 12–15 ms ortalaması 11.000 V civarı; IC makromodeli değil | ORTALAMA MODEL KOŞTU; SİLİKON/EMI/TERMAL DOĞRULAMA DEĞİL |
 | V-14 | BOM/bütçe | Yerel toplam ve onaylı bütçe | Birkaç distributor fiyatı; PCB/assembly/kablo açık | AÇIK |
+| V-15 | Kaynak deposu | Private GitHub `main`, yerel başlangıç sürümüyle eşleşiyor | `siimsek/PDU` private; `origin/main` = `c24ead8`; yerel çalışma ağacı temiz | DEPO GÖNDERİMİ DOĞRULANDI; DONANIM DOĞRULAMASI DEĞİL |
 
 ## Ölçüm formu
 

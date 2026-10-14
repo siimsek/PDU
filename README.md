@@ -2,6 +2,8 @@
 
 6S LiPo bataryadan tek bir 11 V Buck barası üretip T3 Gemstone O1 ve SLAMTEC RPLIDAR S2E'yi ayrı korumalı çıkışlardan besleyecek bitirme projesi. Repo, tasarım kararlarını, hesapları, simülasyonu ve doğrulama kanıtlarını tek sade yerde tutar.
 
+**GitHub kaynak deposu:** [IDA_PDU — siimsek/PDU](https://github.com/siimsek/PDU) (Private, `main`).
+
 ## Projede yapılacaklar
 
 - Kartların giriş sınırlarını ve gerçek akım profillerini kaynak ve ölçümle netleştirmek.
