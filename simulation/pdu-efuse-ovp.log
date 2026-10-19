@@ -1,6 +1,6 @@
 LTspice 26.1.1 for Windows
 Circuit: C:\Users\SK\Desktop\PDU\simulation\pdu-efuse-ovp.cir
-Start Time: Mon Oct 19 13:02:45 2026
+Start Time: Mon Oct 19 13:44:05 2026
 Options:reltol=0.0001 abstol=1n method=gear plotwinsize=0
 solver = Normal
 Maximum thread count: 12
@@ -10,7 +10,7 @@ method = Gear
 abstol = 1e-09
 reltol = 0.0001
 Per .tran options, skipping operating point for transient analysis.
-Total elapsed time: 0.326 seconds.
+Total elapsed time: 0.350 seconds.
 Total iterations: 82307
 
 Files loaded:

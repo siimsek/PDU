@@ -1,16 +1,25 @@
 {
   "scope": "Reproducible datasheet corner screens from Konnect's exported netlist.\n\nNo KiCad sources are read. These bounded static calculations do not replace\nswitching-loop, SOA, surge, measurement or component-aging qualification.\n",
   "export_sha256": "1f2f6085d3b162f287364cf570f3acdea2b81d6a4f8aa699f6c12a64431f7e9b",
+  "bom_sha256": "8387860581e488e8e6faf786c8d3d3bb14976fb09be785fbf3199d5720cbdaf5",
+  "component_count": 73,
+  "pin_count": 257,
   "feedback": {
     "25C": {
       "min_V": 10.88364859644767,
       "max_V": 11.108874433310763,
-      "resistor_error": 0.001
+      "resistor_errors": [
+        0.001,
+        0.001
+      ]
     },
     "minus40_to125C": {
       "min_V": 10.833301778897633,
       "max_V": 11.160493549161034,
-      "resistor_error": 0.0035
+      "resistor_errors": [
+        0.0034999999999999996,
+        0.0034999999999999996
+      ]
     }
   },
   "imon": {
@@ -36,7 +45,11 @@
     }
   },
   "buck_uvlo": {
-    "resistor_tolerance_assumption": 0.01,
+    "resistor_tolerances": [
+      0.01,
+      0.01
+    ],
+    "missing_tolerance_assumption": 0.01,
     "min_start_V": 17.71138613861386,
     "max_start_V": 20.331818181818182,
     "worst_case_20V_restart_pass": false,
@@ -57,5 +70,13 @@
     "https://industrial.panasonic.com/ww/products/pt/high-precision-chip-resistors/models/ERA3AEB134V",
     "https://industrial.panasonic.com/ww/products/pt/high-precision-chip-resistors/models/ERA3AEB1022V",
     "https://industrial.panasonic.com/ww/products/pt/high-precision-chip-resistors/models/ERA3AEB8060V"
-  ]
+  ],
+  "gates": {
+    "feedback_static2pct": true,
+    "imon_headroom": true,
+    "uvlo20V_restart": false,
+    "selected_COUT_rating": true
+  },
+  "all_static_screens_pass": false,
+  "physical_electrical_acceptance": false
 }

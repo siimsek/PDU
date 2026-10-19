@@ -26,12 +26,12 @@ imon1_avg           =  5.94850e-01 from=  3.50000e-02 to=  4.00000e-02
 imon2_avg           =  2.97436e-01 from=  3.50000e-02 to=  4.00000e-02
 
 
-Total analysis time (seconds) = 3.9373
+Total analysis time (seconds) = 2.68861
 
-Total elapsed time (seconds) = 3.967 
+Total elapsed time (seconds) = 2.716 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 2313.121 MB.
-Maximum ngspice program size =   15.109 MB.
-Current ngspice program size =   15.109 MB.
+DRAM currently available = 5421.691 MB.
+Maximum ngspice program size =   15.129 MB.
+Current ngspice program size =   15.129 MB.
 

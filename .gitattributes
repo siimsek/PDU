@@ -18,3 +18,6 @@ sym-lib-table -text
 /simulation/pdu-behavioral.lib -text
 /simulation/pdu-inductor-lt.lib -text
 /simulation/pdu-inductor-ng.lib -text
+/hardware/pdu-current-bom.csv -text
+/hardware/pdu-current-bom.raw.csv -text
+/hardware/validation/c5750/vendor-ac-summary.json -text

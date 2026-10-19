@@ -19,12 +19,12 @@ ibat_max            =  1.00001e-06 at=  3.99987e-02
 vin_avg             =  2.60000e+01 from=  3.50000e-02 to=  4.00000e-02
 
 
-Total analysis time (seconds) = 3.97819
+Total analysis time (seconds) = 2.51842
 
-Total elapsed time (seconds) = 3.990 
+Total elapsed time (seconds) = 2.525 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 2253.738 MB.
-Maximum ngspice program size =   12.637 MB.
-Current ngspice program size =   12.637 MB.
+DRAM currently available = 5462.191 MB.
+Maximum ngspice program size =   12.684 MB.
+Current ngspice program size =   12.684 MB.
 

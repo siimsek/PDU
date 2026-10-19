@@ -1,6 +1,6 @@
 # PDU — LTspice / ngspice güncel doğrulama
 
-Tarih: 2026-10-18. Kaynak: Konnect dışa aktarımı `pdu-current.net`.
+Başlangıç kaydı:2026-10-18; güncel checkpoint:2026-10-19. Kaynak: Konnect dışa aktarımı `pdu-current.net`.
 **Karar: TAMAMLANMADI — O1 aşırı gerilim koruması başarısız; PCB onayı yok.**
 
 ## Yapılan düzeltmeler
@@ -13,7 +13,7 @@ Tarih: 2026-10-18. Kaynak: Konnect dışa aktarımı `pdu-current.net`.
 ## Kaynak ve model eşleşmesi
 
 73 fiziksel parça,257 pin,46 dışa aktarılan ağ (5 NC,2 yeni bootstrap ara ağı dahil). Dört PWR_FLAG ile şemada77 sembol var. İki faz aynı VOUT barasına, aynı COMP düğümüne ve doğru SYNC uçlarına bağlı. Önceki251 pinin yalnızca CBOOT1.1/CBOOT2.1 uçları yeni seri dirençler nedeniyle ara ağa taşındı; diğer bağlantılar korundu.
-Konnect son kayıtlı şema denetimi: kısa devre0, ERC0hata/0uyarı, açık pin0, orphan0, floating tel ucu0, sembol/etiket örtüşmesi0.218yatay/dikey tel,86etiket; parça merkezleri, etiketler ve tel uçları1.27mmızgarada. Kanıt: `schematic-final-checks.json`; görüntü: `../docs/archive/renders/PDU_electrical_fixes_final.png`.
+Konnect son kayıtlı şema denetimi: kısa devre0, ERC0hata/0uyarı, açık pin0, orphan0, floating tel ucu0, sembol/etiket örtüşmesi0.218yatay/dikey tel,86etiket; parça merkezleri, etiketler ve tel uçları1.27mmızgarada. İlk düzeltme kanıtı `schematic-final-checks.json`; son denetim `../hardware/no-measurement-final-audit.md`; güncel görüntü `../PDU_schematic_finished.png`.
 Aynı ortak devre/test uyaranları kullanılır. Tek sözdizimi farkı ideal bobin adaptörüdür; LTspice gizli1mΩ Rser kapatılır. İki motorda DCR açıkça23.3mΩ. `parity-manifest.json`, `test-cases.json`, `model-aliases.json` ve `verification-results.json` izlenebilir kanıttır.
 
 ## Çalıştırılan kontroller

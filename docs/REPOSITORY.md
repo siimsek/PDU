@@ -51,13 +51,14 @@ Ortak devre/test üreticileri Python standart kütüphanesini kullanır. Ayrı �
 
 ```powershell
 python simulation/canonical_bom.py
+python calculate.py --output hardware/calculation-summary.json
 python simulation/check_static_corners.py
 python simulation/run_all.py
 ```
 
 Canonicalizer yalnız benzersiz ref/değer/footprint eşliğinde yedi `?` aktarım farkını düzeltir; ham CSV'yi korur. Statik denetim UVLO20 V kalkış kabulü açık olduğu için şu an çıkış1 döndürür. Ortak koşu motorları bitirse de iki O1 kabulü başarısız olduğundan çıkış1 döndürür. Bunlar gizlenecek yürütme hataları değil, açık elektriksel kabul sonuçlarıdır.
 
-`run_all.py` model ve24 senaryoyu yeniden üretir, LTspice ve ngspice çalıştırır, kabul/eşlik raporunu yazar. Üretici silikon modeli değildir. `sync_documentation.py` eski seçimleri geri yazabildiğinden tarihsel yardımcı olarak devre dışı bırakıldı.
+`run_all.py` model ve24 senaryoyu yeniden üretir, LTspice ve ngspice çalıştırır, kabul/eşlik raporunu yazar. Her denemenin ilerleme/tamamlanma/yürütme hatası `simulation/latest-run.json` içinde tutulur. Çıkış1 tamamlanan elektriksel kabulün başarısızlığı, çıkış2 yürütmenin tamamlanmaması anlamına gelir; eski sonuç yeni koşu gibi kullanılmaz. Üretici silikon modeli değildir. `sync_documentation.py` eski seçimleri geri yazabildiğinden tarihsel yardımcı olarak devre dışı bırakıldı.
 
 ## Yönlendirme profilini yeniden uygulama
 

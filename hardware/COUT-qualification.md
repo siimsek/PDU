@@ -2,7 +2,9 @@
 
 ## Result
 
-TDK **C5750X7S2A226M280KB** is a real22 µF/100 Vcandidate that resolves the present25 Vraw capacitor rating conflict with a26 Vbuck-short fault, within the project's assumed53.3 Vclamp envelope. It is2220, not1210. Manufacturer data and an isolated manufacturer-model AC run are now available locally. **This is a part/model/land-pattern qualification note, not converter stability or production approval.** No KiCad source was read or mutated by this reviewer.
+**Application status:** COUT1–8are now assigned to this100 Vpart in the main schematic/PCB. Physical acceptance and final7.85×6.20 mmcourtyard are recorded in `hardware/validation/c5750/physical-acceptance.md`. The previous25 Vcandidate was superseded; converter stability/surge/thermal acceptance remains open.
+
+TDK **C5750X7S2A226M280KB**,22 µF/100 V2220, is the selected raw-output capacitor. It supersedes the earlier25 Vcandidate and covers the26 Vbuck-short voltage and assumed53.3 Vclamp envelope at the rating-selection level. Manufacturer data and an isolated manufacturer-model AC run are available locally. **This is a part/model/land-pattern qualification note, not converter stability, transient-energy or production approval.** The independent reviewer did not read or mutate KiCad sources; later application is recorded separately.
 
 ## Manufacturer files obtained
 
@@ -44,9 +46,9 @@ The manufacturer drawing was rendered and inspected in `hardware/validation/c575
 - **PB/B = each pad length along the capacitor length axis**, allowed1.2–1.4 mm.
 - **PC/C = pad width perpendicular to that axis**, allowed4.0–5.0 mm.
 
-A central choice isA4.45 mm,B1.30 mm,C4.50 mm. Therefore each rectangular pad is1.30×4.50 mm, centered atx=±(A+B)/2=**±2.875 mm**,y=0. Outer copper span isA+2B=7.05 mm. PAis **not** center pitch. Part nominal body5.7×5.0 mm, maximum6.1×5.4 mm,height3.1 mm maximum. Body and solder lands both need courtyard allowance. A resulting7.55×5.90 mmcourtyard with0.25 mmclearance around the maximum body/copper envelope is a reasonable provisional choice; it is an engineering courtyard, not a TDKdrawing claim.
+A4.45 mm,B1.30 mm,C4.50 mmwere selected. Each rectangular pad is1.30×4.50 mm, centered atx=**±2.875 mm**,y=0. Outer copper span7.05 mm; PAis the inner gap, not center pitch. Nominal body5.7×5.0 mm, maximum6.1×5.4 mm,height3.1 mm maximum. Final implemented courtyard7.85×6.20 mmincludes0.4 mmclearance around the maximum body/copper envelope; the earlier7.55×5.90 mmproposal was not used. This courtyard is an engineering choice, not a TDKdrawing claim.
 
-Nonpolar capacitor: either logical end may be pad1provided the schematic/PCBpair is consistent. Before replacing COUT1–8, perform the required disposable footprint placement/render/readback, assign the verified2220footprint and exact part metadata through Konnect, then update placement/DRC and re-export connectivity. Do not assume an arbitrary stock2220land conforms to this drawing.
+Nonpolar capacitor: either logical end may be pad1provided the schematic/PCBpair is consistent. Disposable footprint placement/render/readback and main2220assignment were completed through Konnect; placement/DRC and pin-net parity evidence are in the physical acceptance and final audit records. The arbitrary stock2220land was not substituted.
 
 ## Why this does not prove compensation stability
 

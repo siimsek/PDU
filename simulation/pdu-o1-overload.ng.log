@@ -19,12 +19,12 @@ fault_off           =  9.16122e-12 at=  4.00000e-02
 healthy             =  1.09959e+01 from=  3.50000e-02 to=  4.00000e-02
 
 
-Total analysis time (seconds) = 1.0269
+Total analysis time (seconds) = 0.648488
 
-Total elapsed time (seconds) = 1.036 
+Total elapsed time (seconds) = 0.654 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 2228.613 MB.
-Maximum ngspice program size =   12.379 MB.
-Current ngspice program size =   12.379 MB.
+DRAM currently available = 5460.992 MB.
+Maximum ngspice program size =   12.449 MB.
+Current ngspice program size =   12.449 MB.
 

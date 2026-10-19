@@ -20,12 +20,12 @@ bus_max             =  0.00000e+00 at=  4.00000e-02
 ibat_max            =  1.00005e-06 at=  3.99993e-02
 
 
-Total analysis time (seconds) = 2.26796
+Total analysis time (seconds) = 1.32424
 
-Total elapsed time (seconds) = 2.280 
+Total elapsed time (seconds) = 1.331 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 2245.617 MB.
-Maximum ngspice program size =   12.328 MB.
-Current ngspice program size =   12.328 MB.
+DRAM currently available = 5493.371 MB.
+Maximum ngspice program size =   12.363 MB.
+Current ngspice program size =   12.363 MB.
 

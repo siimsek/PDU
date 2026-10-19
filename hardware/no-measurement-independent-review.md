@@ -1,3 +1,5 @@
+> This is a historical pre-application review. FB/IMON/COUT choices were subsequently applied; currentstatus: docs/PROJECT-STATE.md and hardware/no-measurement-final-audit.md.
+
 # Independent choices that can be resolved without measurements
 
 2026-10-19. Read-only reviewer: no schematic, PCB or rule mutation. Component specifications below were checked against exact manufacturer pages, rather than inferred from distributor search titles. They are choices for the design owner to apply through Konnect.

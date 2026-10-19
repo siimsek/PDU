@@ -1,6 +1,6 @@
 LTspice 26.1.1 for Windows
 Circuit: C:\Users\SK\Desktop\PDU\simulation\pdu-interleaved-26v-refined.cir
-Start Time: Mon Oct 19 13:03:24 2026
+Start Time: Mon Oct 19 13:44:21 2026
 Options:method=gear reltol=0.0001 plotwinsize=0
 solver = Normal
 Maximum thread count: 12
@@ -9,7 +9,7 @@ temp = 27
 method = Gear
 reltol = 0.0001
 Per .tran options, skipping operating point for transient analysis.
-Total elapsed time: 44.862 seconds.
+Total elapsed time: 8.195 seconds.
 Total iterations: 4602528
 
 Files loaded:

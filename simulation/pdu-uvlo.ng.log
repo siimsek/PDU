@@ -19,12 +19,12 @@ bus_before          =  0.00000e+00 at=  8.99959e-03
 bus_after           =  1.09960e+01 from=  3.50000e-02 to=  4.00000e-02
 
 
-Total analysis time (seconds) = 3.46428
+Total analysis time (seconds) = 2.22583
 
-Total elapsed time (seconds) = 3.475 
+Total elapsed time (seconds) = 2.233 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 2248.508 MB.
-Maximum ngspice program size =   12.348 MB.
-Current ngspice program size =   12.348 MB.
+DRAM currently available = 5486.992 MB.
+Maximum ngspice program size =   12.434 MB.
+Current ngspice program size =   12.434 MB.
 

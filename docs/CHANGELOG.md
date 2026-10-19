@@ -1,5 +1,13 @@
 # Değişiklik kaydı
 
+## 19 Ekim2026 — hesap ve rapor eşliği düzeltmesi
+
+- `calculate.py` eski2,61k/4,99k IMON ve25 V COUT bilgileri yerine güncel Konnect export/BOM verisine bağlandı.88 µF önceki kompanzasyon dayanağı,164,98 µF tipik üretici verisi ve257,664 µF üst hassasiyet ayrı etiketlendi; yeni direnç önerileri uygulanmış sayılmıyor.
+- Ortak giriş doğrulayıcısı ref/değer/footprint farkında duruyor. Tolerans/TCR alanları okunuyor;1% gibi eksik alan varsayımları açık yazılıyor. Statik çıkış kodu tüm statik ekranları kapsıyor.
+- Koşu durumu/hatayı kaydeden `latest-run.json` eklendi. Eksik/eski log, tamamlanmamış motor veya eksik yürütme kapsamı önceki raporla başarı gibi gösterilmiyor.
+- Güncel tasarım, doğrulama ve PCB belgeleri yeniden yazıldı; önceki ayrıntılı kayıtlar arşivlendi. Sonuçlar ve başarısız O1 kabulü korunuyor.
+- CAD kaynaklarına bu düzeltmede dokunulmadı. Tamamlanmamış O1/kararlılık/F1/BOM/PCB ve fiziksel kabul işleri açık.
+
 ## 19 Ekim2026 — prototip checkpoint ve repo düzeni
 
 - Bootstrap/giriş/PG düzeltmeleri ve ortak LTspice/ngspice modeli kayda alındı.

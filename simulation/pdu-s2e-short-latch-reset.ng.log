@@ -20,12 +20,12 @@ healthy             =  1.09879e+01 from=  1.90000e-02 to=  2.40002e-02
 reset_out           =  1.09920e+01 from=  3.50000e-02 to=  4.00000e-02
 
 
-Total analysis time (seconds) = 2.85896
+Total analysis time (seconds) = 2.5201
 
-Total elapsed time (seconds) = 2.866 
+Total elapsed time (seconds) = 2.527 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 2239.789 MB.
-Maximum ngspice program size =   12.707 MB.
-Current ngspice program size =   12.707 MB.
+DRAM currently available = 5496.570 MB.
+Maximum ngspice program size =   12.699 MB.
+Current ngspice program size =   12.699 MB.
 

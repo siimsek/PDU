@@ -2,6 +2,8 @@
 
 19 Ekim2026 checkpoint'i. Bu belge güncel durum özetidir; önceki raporların sonuçları tarihsel bağlamıyla korunur. **Üretim veya cihaz bağlama onayı verilmedi.**
 
+Son repo düzeltmesi: `calculate.py` eski sabitlerden arındırılıp güncel export/BOM'a bağlandı; statik kontroller tolerans/TCR'yi BOM'dan okuyor. Çalıştırıcı her denemeyi `latest-run.json` ile izliyor. Güncel teknik/PCB/doğrulama belgelerindeki çelişkili eski seçimler arşive ayrıldı. Tasarım bağlantısı/değeri bu repo düzeltmesinde değiştirilmedi.
+
 ## Amacımız ve mimari
 
 - 6S LiPo için tasarımda20–26 V kabul edilen kaynaktan11 V/7 A/77 W ortak bara üretmek; güç katında7,5 A kapasite hedeflemek.

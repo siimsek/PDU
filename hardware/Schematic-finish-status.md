@@ -1,5 +1,7 @@
 # Şematik okunurluk ve doğrulama — 2026-10-19
 
+> Tarihsel kozmetik düzenleme kaydı: bu işlemden sonra RIMON806 Ω ve COUT100 V atamaları yapıldı. Güncel değer/footprint durumu `docs/PROJECT-STATE.md` ve `hardware/no-measurement-final-audit.md` içindedir; aşağıdaki “değerler aynı” ifadesi yalnız bu kozmetik geçişi karşılaştırır.
+
 Ana dosya: `PDU.kicad_sch`. Bütün KiCad kaynak değişiklikleri Konnect MCP üzerinden yapıldı. Ana şematik kilidi başlangıçta ve yazma partilerinden önce yoktu; kilit silinmedi. PCB veya proje ayarı bu çalışmanın şematik alt görevi tarafından değiştirilmedi.
 
 ## Uygulanan değişiklikler

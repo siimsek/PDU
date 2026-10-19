@@ -24,12 +24,12 @@ i2_pp               =  2.14064e+00 from=  1.83880e-03 to=  2.29850e-03
 phase_delay         =  1.14925e-06 targ=  3.45775e-06 trig=  2.30850e-06
 
 
-Total analysis time (seconds) = 4.28915
+Total analysis time (seconds) = 3.71129
 
-Total elapsed time (seconds) = 4.325 
+Total elapsed time (seconds) = 3.732 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 2161.812 MB.
-Maximum ngspice program size =   72.148 MB.
-Current ngspice program size =   64.340 MB.
+DRAM currently available = 5406.199 MB.
+Maximum ngspice program size =   72.203 MB.
+Current ngspice program size =   64.375 MB.
 

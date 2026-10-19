@@ -1,105 +1,119 @@
 #!/usr/bin/env python3
-"""IDA PDU first-order calculations.
+"""First-order screens using the current Konnect-exported netlist and BOM.
 
-Datasheet equations are labeled. Ceff = 88 uF is an assumption (50% of
-8 x 22 uF). The candidate GCM32EC71E226KE36 is 22 uF, 25 V, X7S; its
-public datasheet has no numeric DC-bias point, and no SimSurfing value
-at 11 V was obtained on 2026-10-18, so RCOMP/CCOMP/CHF stay at the
-88 uF result. Dual-phase RCOMP uses RS/2 because both phases share one
-COMP pin. Nothing here is a bench measurement or an LM70880 loop-gain result.
+No KiCad source access. Controller constants/operating envelopes below remain
+explicit engineering inputs. Arithmetic is not silicon, loop, SOA or bench proof.
 """
-from math import pi, sqrt
+from itertools import product
+from math import pi
+from pathlib import Path
+import argparse
+import hashlib
+import json
+import sys
 
-VOUT = 11.0
-VREF = 0.8
-LOAD_A = 7.5
-PHASES = 2
-L_H = 6.8e-6
-L_TOL = 0.20
-FS_MIN = 400e3
-FS_TYP = 440e3
-RS = 7.5e-3
-RS_TOL = 0.01
-VCS_MIN = 50e-3
-VCS_MAX = 62e-3
-TDELAY = 75e-9
-GCS = 10.0
-GM = 1200e-6
-CBW = 38e-12
-FC = 40e3
-CEFF = 88e-6
-RCOMP = 9.53e3
-CCOMP = 4.7e-9
-CHF = 47e-12
-VINS = (20.0, 22.2, 25.2, 26.0)
+ROOT = Path(__file__).resolve().parent
+sys.path.insert(0,str(ROOT/'simulation'))
+from project_inputs import load_inputs, number, tolerance
 
 
-def rrt_khz(r_kohm):
-    return 1e6 / (r_kohm * 45.0 + 53.0)
+def calculate():
+    components, bom, provenance = load_inputs()
+    val = lambda ref: number(components[ref]['value'])
+    for a,b in [('L1','L2'),('RS1','RS2'),('RT1','RT2')]:
+        if val(a)!=val(b):
+            raise ValueError(f'Equal-phase assumption does not hold: {a}/{b}')
+    target, reference, capacity, phases = 11.0,.8,7.5,2
+    setpoint = reference*(1+val('RFB1')/val('RFB2'))
+    l_nom, rs, rcomp = val('L1'),val('RS1'),val('RCOMP')
+    ceff_legacy = 88e-6  # Retained calculation basis, not current measured Ceff.
+    vendor_path = ROOT/'hardware/validation/c5750/vendor-ac-summary.json'
+    vendor = json.loads(vendor_path.read_text(encoding='utf-8'))
+    if not all(bom[f'COUT{i}']['MPN']=='C5750X7S2A226M280KB' and
+               bom[f'COUT{i}']['Voltage']=='100V' and
+               val(f'COUT{i}')==22e-6 for i in range(1,9)):
+        raise ValueError('Saved TDK characterization does not match current COUT selection')
+    ceff_vendor = vendor['C_11V_bank8_typ_uF']*1e-6
+    ceff_high = sum(val(f'COUT{i}') for i in range(1,9))*1.2*1.22
+    corners = []
+    for vin in (20.0,22.2,25.2,26.0):
+        duty = target/vin
+        ripple = target*(1-duty)/(l_nom*400e3)
+        corners.append(dict(input_V=vin,duty=duty,
+            assumed_input_A={str(e):target*capacity/(vin*e) for e in (.8,.9,.95)},
+            phase_average_A=capacity/phases,ripple_400kHz_pp_A=ripple,
+            steady_peak_A=capacity/phases+ripple/2,
+            steady_peak_minus20pct_L_A=capacity/phases+ripple/(2*.8)))
+    comp = []
+    for name,ceff in [('retained_88uF_basis',ceff_legacy),('vendor_typical_11V',ceff_vendor),
+                       ('nominal_tolerance_temperature_upper',ceff_high)]:
+        comp.append(dict(case=name,ceff_uF=ceff*1e6,
+            equation_RCOMP_for_assumed40kHz_ohm=2*pi*40e3*(target/reference)*(rs/phases*10/1200e-6)*ceff,
+            load_pole_at7p5A_Hz=1/(2*pi*(target/capacity)*ceff)))
+    rt,rb = val('RUV1'),val('RUV2')
+    et,eb = tolerance(bom['RUV1'],.01),tolerance(bom['RUV2'],.01)
+    uv = [th*(1+rt*(1+a)/(rb*(1+b)))
+          for th,a,b in product((.95,1.05),(-et,et),(-eb,eb))]
+    ports = {}
+    for i,name in [(1,'O1'),(2,'S2E')]:
+        monitor,rlim = val(f'RIMON{i}'),val(f'RILIM{i}')
+        ilim = 1460/rlim+.11
+        ports[name] = dict(rlim_ohm=rlim,nominal_trip_A=ilim,
+            rimon_ohm=monitor,nominal_monitor_V_per_A=246e-6*monitor,
+            nominal_monitor_at_trip_V=246e-6*ilim*monitor,
+            monitor_gain_max_screen_at_nominal_trip_V=253.4e-6*ilim*monitor,
+            gain_spec_lower_current_bound_met=ilim>=3,
+            cdvdt_nF=val(f'CDVDT{i}')*1e9,
+            typical_slew_V_per_ms=4.6e-6/val(f'CDVDT{i}')/1000,
+            limitations='Trip is nominal, not load or hard ceiling; monitor gain accuracy only3A..min(15A,ILIM),-40..75C; not guaranteed below3A or above75C')
+    return dict(scope=__doc__,inputs=provenance,
+        design=dict(target_V=target,setpoint_nominal_V=setpoint,requirement_A=7,
+                    requirement_W=77,capacity_envelope_A=capacity,capacity_envelope_W=82.5,
+                    measured_O1_S2E_loads=False),
+        assumptions=dict(inductance_tolerance=.2,minimum_frequency_Hz=400e3,
+            frequency_table_anchor_Hz=[400e3,440e3,480e3],shunt_tolerance=tolerance(bom['RS1'],.01),
+            efficiency_values=[.8,.9,.95],current_sense_thresholds_mV=[50,62],
+            limits='Unspecified tolerances, frequency/load/current-sharing/thermal/fault assumptions require qualification'),
+        switching_frequency_equation_Hz=1e9/(val('RT1')/1000*45+53),
+        steady_state=corners,
+        current_sense_thresholds_A=dict(
+            minimum=50e-3/(rs*(1+tolerance(bom['RS1'],.01))),
+            maximum=62e-3/(rs*(1-tolerance(bom['RS1'],.01))),
+            limitation='Sense thresholds only; not cycle peak, delay, saturation or fault-current bounds'),
+        output_bank=dict(mpn=bom['COUT1']['MPN'],rated_V=100,nominal_uF=176,
+            vendor_typical_11V_25C_uF=ceff_vendor*1e6,
+            vendor_summary_sha256=hashlib.sha256(vendor_path.read_bytes()).hexdigest(),
+            capacitance_screens=comp,
+            limitation='Typical vendor characterization and broad sensitivity assumptions; no guaranteed jointCeff or converter stability'),
+        compensation=dict(installed_RCOMP_ohm=rcomp,installed_CCOMP_nF=val('CCOMP')*1e9,
+            installed_CHF_pF=val('CHF')*1e12,
+            zero_Hz=1/(2*pi*rcomp*val('CCOMP')),hf_pole_Hz=1/(2*pi*rcomp*val('CHF')),
+            accepted_physical_phase_margin=False,
+            limitation='40kHz crossover and gm/GCS are earlier equation inputs; computed alternativeRCOMP values are NOT applied or qualified'),
+        buck_uvlo=dict(typical_on_V=1+rt/rb,typical_off_V=.9*(1+rt/rb),
+            threshold_and_resistor_corner_start_V=[min(uv),max(uv)],
+            resistor_tolerances=[et,eb],resistor_threshold20V_screen_pass=max(uv)<=20,
+            guaranteed20V_restart=False,
+            limitation='Includes assumed1% resistors; excludes unspecified EN leakage and TCR. Falling threshold is typical only'),
+        efuse_enable=dict(typical_rail_on_V=1.2*(1+val('REN1')/val('REN2')),
+            nominal_pin_at11V_V=target/(1+val('REN1')/val('REN2'))),
+        pg_nominal_at11V_V=target*val('RPG1B')/(val('RPG1')+val('RPG1B')),
+        bootstrap_series_ohm=[val('RBOOT1'),val('RBOOT2')],
+        lm74700_input_bypass_nF=val('CIN_U5')*1e9,ports=ports,
+        loss_screens=dict(q1_assumed16mohm_at20V90pct_W=(target*capacity/(20*.9))**2*.016,
+            inductor_assumed23p3mohm_per_phase_W=(capacity/phases)**2*.0233,
+            limitation='Illustrative resistive loss; no switching loss, hot resistance, thermal or SOA proof'),
+        electrical_acceptance=False,
+        open_items=['O1OVP12V','actual loop stability','UVLO policy','F1coordination',
+                    'remainingMPNs','PCB routing','physical qualification'])
 
 
-print("feedback_V", round(VREF * (1 + 130 / 10.2), 4))
-print("rt_49k9_equation_kHz", round(rrt_khz(49.9), 2))
-print("rt_table_min_typ_max_kHz", "400/440/480")
-
-print("vin_V,duty,iin90_A,iin95_A,dil_400k_A,peak_400k_A,peak_Ltol_A,dil_440k_A")
-for vin in VINS:
-    duty = VOUT / vin
-    pout = VOUT * LOAD_A
-    i_phase = LOAD_A / PHASES
-    dil400 = VOUT * (1 - duty) / (L_H * FS_MIN)
-    dil440 = VOUT * (1 - duty) / (L_H * FS_TYP)
-    peak = i_phase + dil400 / 2
-    peak_tol = i_phase + (dil400 / (1 - L_TOL)) / 2
-    print(
-        f"{vin:.1f},{duty:.4f},{pout/(vin*0.90):.3f},{pout/(vin*0.95):.3f},"
-        f"{dil400:.3f},{peak:.3f},{peak_tol:.3f},{dil440:.3f}"
-    )
-
-ocp_min = VCS_MIN / (RS * (1 + RS_TOL))
-di_delay = VOUT * TDELAY / (L_H * (1 - L_TOL))
-print("ocp_min_threshold_A", round(ocp_min, 3))
-print("delay_add_at_11V_Ltol_A", round(di_delay, 3))
-print("ocp_plus_delay_A", round(ocp_min + di_delay, 3))
-
-rs_eff = RS / PHASES
-rcomp_exact = 2 * pi * FC * (VOUT / VREF) * (rs_eff * GCS / GM) * CEFF
-ccomp_exact = 10 / (2 * pi * FC * RCOMP)
-fz = 1 / (2 * pi * RCOMP * CCOMP)
-fp_load = 1 / (2 * pi * (VOUT / LOAD_A) * CEFF)
-f_hf = 1 / (2 * pi * RCOMP * CHF)
-print("rcomp_exact_ohm", round(rcomp_exact, 1))
-print("ccomp_for_fc_over_10_nF", round(ccomp_exact * 1e9, 3))
-print("zero_with_4n7_Hz", round(fz, 1))
-print("load_pole_7p5A_Hz", round(fp_load, 1))
-print("chf_pole_Hz", round(f_hf, 1))
-
-ratio_uv = (180e3 + 10e3) / 10e3
-print("buck_uvlo_typ_on_V", round(1.00 * ratio_uv, 3))
-print("buck_uvlo_max_threshold_on_V", round(1.05 * ratio_uv, 3))
-print("buck_uvlo_min_threshold_on_V", round(0.95 * ratio_uv, 3))
-print("buck_uvlo_typ_off_V", round(0.90 * ratio_uv, 3))
-
-efuse_div = (64.9e3 + 10e3) / 10e3
-print("efuse_en_typ_on_V", round(1.20 * efuse_div, 3))
-print("efuse_en_max_threshold_on_V", round(1.23 * efuse_div, 3))
-print("efuse_en_at_11V_V", round(11 * 10 / 74.9, 3))
-print("pg_high_at_11V_V", round(11 * 18 / 118, 3))
-print("pg_high_at_26V_V", round(26 * 18 / 118, 3))
-print("pg_high_at_30V_1pct_worst_V", round(30 * 18.18 / (99 + 18.18), 3))
-print("bootstrap_series_ohm_per_phase", 1.0)
-print("lm74700_input_bypass_nF", 22.0)
-
-for name, rlim, rimon in (("O1", 301, 2610), ("S2E", 604, 4990)):
-    ilim = 1460 / rlim + 0.11
-    vmon = 246e-6 * ilim * rimon
-    vmon_maxg = 253.4e-6 * ilim * rimon
-    print(name, "ilim_A", round(ilim, 3), "vimon_typ_V", round(vmon, 3), "vimon_maxgain_V", round(vmon_maxg, 3))
-
-print("dvdt_1nF_V_per_ms", round(4600 / 1000, 3))
-print("dvdt_rise_11V_ms", round(11 / 4.6, 3))
-print("inrush_mA_per_uF", 4.6)
-i_in = (VOUT * LOAD_A) / (20 * 0.90)
-print("q1_loss_at_20V_90pct_W", round(i_in ** 2 * 16e-3, 3))
-print("inductor_dcr_loss_per_phase_W", round((LOAD_A / PHASES) ** 2 * 23.3e-3, 3))
-print("planning_envelope_A", round((12 * 5 + 12 * 1.5) / VOUT, 3))
+if __name__=='__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output',type=Path,help='Optional ordinary JSON report path')
+    args = parser.parse_args()
+    result = calculate()
+    text = json.dumps(result,indent=2,ensure_ascii=False)+'\n'
+    if args.output:
+        args.output.write_text(text,encoding='utf-8',newline='\n')
+    print(text,end='')

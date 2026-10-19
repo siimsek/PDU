@@ -1,3 +1,5 @@
+> Historical audit before the806ohm IMON and100V COUT updates. Findings describe that snapshot; currentstatus and remainingfindings: docs/PROJECT-STATE.md and hardware/no-measurement-final-audit.md.
+
 # Independent electrical audit — 2026-10-19
 
 Post-audit update: RFB1/2 now carry a hidden required-selection specification0.1%,≤25ppm/K; exact MPN is still unselected. `docs/SON-TESLIM.md` includes the resulting static error budget and preserves the unresolved UVLO/IMON/fault/protection findings below. This audit otherwise records its read-only snapshot.

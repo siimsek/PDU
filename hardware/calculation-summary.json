@@ -1,0 +1,201 @@
+{
+  "scope": "First-order screens using the current Konnect-exported netlist and BOM.\n\nNo KiCad source access. Controller constants/operating envelopes below remain\nexplicit engineering inputs. Arithmetic is not silicon, loop, SOA or bench proof.\n",
+  "inputs": {
+    "export_sha256": "1f2f6085d3b162f287364cf570f3acdea2b81d6a4f8aa699f6c12a64431f7e9b",
+    "bom_sha256": "8387860581e488e8e6faf786c8d3d3bb14976fb09be785fbf3199d5720cbdaf5",
+    "component_count": 73,
+    "pin_count": 257
+  },
+  "design": {
+    "target_V": 11.0,
+    "setpoint_nominal_V": 10.996078431372549,
+    "requirement_A": 7,
+    "requirement_W": 77,
+    "capacity_envelope_A": 7.5,
+    "capacity_envelope_W": 82.5,
+    "measured_O1_S2E_loads": false
+  },
+  "assumptions": {
+    "inductance_tolerance": 0.2,
+    "minimum_frequency_Hz": 400000.0,
+    "frequency_table_anchor_Hz": [
+      400000.0,
+      440000.0,
+      480000.0
+    ],
+    "shunt_tolerance": 0.01,
+    "efficiency_values": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "current_sense_thresholds_mV": [
+      50,
+      62
+    ],
+    "limits": "Unspecified tolerances, frequency/load/current-sharing/thermal/fault assumptions require qualification"
+  },
+  "switching_frequency_equation_Hz": 435066.34761801176,
+  "steady_state": [
+    {
+      "input_V": 20.0,
+      "duty": 0.55,
+      "assumed_input_A": {
+        "0.8": 5.15625,
+        "0.9": 4.583333333333333,
+        "0.95": 4.342105263157895
+      },
+      "phase_average_A": 3.75,
+      "ripple_400kHz_pp_A": 1.8198529411764706,
+      "steady_peak_A": 4.6599264705882355,
+      "steady_peak_minus20pct_L_A": 4.8874080882352935
+    },
+    {
+      "input_V": 22.2,
+      "duty": 0.4954954954954955,
+      "assumed_input_A": {
+        "0.8": 4.64527027027027,
+        "0.9": 4.129129129129129,
+        "0.95": 3.9118065433854907
+      },
+      "phase_average_A": 3.75,
+      "ripple_400kHz_pp_A": 2.0402755696873345,
+      "steady_peak_A": 4.7701377848436675,
+      "steady_peak_minus20pct_L_A": 5.025172231054584
+    },
+    {
+      "input_V": 25.2,
+      "duty": 0.4365079365079365,
+      "assumed_input_A": {
+        "0.8": 4.092261904761905,
+        "0.9": 3.6375661375661377,
+        "0.95": 3.4461152882205517
+      },
+      "phase_average_A": 3.75,
+      "ripple_400kHz_pp_A": 2.2788281979458453,
+      "steady_peak_A": 4.889414098972923,
+      "steady_peak_minus20pct_L_A": 5.174267623716153
+    },
+    {
+      "input_V": 26.0,
+      "duty": 0.4230769230769231,
+      "assumed_input_A": {
+        "0.8": 3.9663461538461537,
+        "0.9": 3.525641025641025,
+        "0.95": 3.340080971659919
+      },
+      "phase_average_A": 3.75,
+      "ripple_400kHz_pp_A": 2.3331447963800906,
+      "steady_peak_A": 4.916572398190045,
+      "steady_peak_minus20pct_L_A": 5.208215497737557
+    }
+  ],
+  "current_sense_thresholds_A": {
+    "minimum": 6.600660066006601,
+    "maximum": 8.350168350168351,
+    "limitation": "Sense thresholds only; not cycle peak, delay, saturation or fault-current bounds"
+  },
+  "output_bank": {
+    "mpn": "C5750X7S2A226M280KB",
+    "rated_V": 100,
+    "nominal_uF": 176,
+    "vendor_typical_11V_25C_uF": 164.9775183889605,
+    "vendor_summary_sha256": "fe89090eb8c72fa474f97e491c14cf2269e4b4550129c954f7b847e788ac5fb9",
+    "capacitance_screens": [
+      {
+        "case": "retained_88uF_basis",
+        "ceff_uF": 88.0,
+        "equation_RCOMP_for_assumed40kHz_ohm": 9503.317777109123,
+        "load_pole_at7p5A_Hz": 1233.1219764351397
+      },
+      {
+        "case": "vendor_typical_11V",
+        "ceff_uF": 164.9775183889605,
+        "equation_RCOMP_for_assumed40kHz_ohm": 17816.29299237677,
+        "load_pole_at7p5A_Hz": 657.754674612402
+      },
+      {
+        "case": "nominal_tolerance_temperature_upper",
+        "ceff_uF": 257.66399999999993,
+        "equation_RCOMP_for_assumed40kHz_ohm": 27825.714451375512,
+        "load_pole_at7p5A_Hz": 421.14821599560787
+      }
+    ],
+    "limitation": "Typical vendor characterization and broad sensitivity assumptions; no guaranteed jointCeff or converter stability"
+  },
+  "compensation": {
+    "installed_RCOMP_ohm": 9530.0,
+    "installed_CCOMP_nF": 4.700000000000001,
+    "installed_CHF_pF": 47.0,
+    "zero_Hz": 3553.279522491021,
+    "hf_pole_Hz": 355327.9522491022,
+    "accepted_physical_phase_margin": false,
+    "limitation": "40kHz crossover and gm/GCS are earlier equation inputs; computed alternativeRCOMP values are NOT applied or qualified"
+  },
+  "buck_uvlo": {
+    "typical_on_V": 19.0,
+    "typical_off_V": 17.1,
+    "threshold_and_resistor_corner_start_V": [
+      17.71138613861386,
+      20.331818181818182
+    ],
+    "resistor_tolerances": [
+      0.01,
+      0.01
+    ],
+    "resistor_threshold20V_screen_pass": false,
+    "guaranteed20V_restart": false,
+    "limitation": "Includes assumed1% resistors; excludes unspecified EN leakage and TCR. Falling threshold is typical only"
+  },
+  "efuse_enable": {
+    "typical_rail_on_V": 8.988000000000001,
+    "nominal_pin_at11V_V": 1.4686248331108143
+  },
+  "pg_nominal_at11V_V": 1.6779661016949152,
+  "bootstrap_series_ohm": [
+    1.0,
+    1.0
+  ],
+  "lm74700_input_bypass_nF": 22.000000000000004,
+  "ports": {
+    "O1": {
+      "rlim_ohm": 301.0,
+      "nominal_trip_A": 4.9604983388704325,
+      "rimon_ohm": 806.0,
+      "nominal_monitor_V_per_A": 0.198276,
+      "nominal_monitor_at_trip_V": 0.9835477686378739,
+      "monitor_gain_max_screen_at_nominal_trip_V": 1.0131341649302326,
+      "gain_spec_lower_current_bound_met": true,
+      "cdvdt_nF": 1.0,
+      "typical_slew_V_per_ms": 4.6,
+      "limitations": "Trip is nominal, not load or hard ceiling; monitor gain accuracy only3A..min(15A,ILIM),-40..75C; not guaranteed below3A or above75C"
+    },
+    "S2E": {
+      "rlim_ohm": 604.0,
+      "nominal_trip_A": 2.5272185430463576,
+      "rimon_ohm": 806.0,
+      "nominal_monitor_V_per_A": 0.198276,
+      "nominal_monitor_at_trip_V": 0.5010867838410596,
+      "monitor_gain_max_screen_at_nominal_trip_V": 0.5161601261192053,
+      "gain_spec_lower_current_bound_met": false,
+      "cdvdt_nF": 1.0,
+      "typical_slew_V_per_ms": 4.6,
+      "limitations": "Trip is nominal, not load or hard ceiling; monitor gain accuracy only3A..min(15A,ILIM),-40..75C; not guaranteed below3A or above75C"
+    }
+  },
+  "loss_screens": {
+    "q1_assumed16mohm_at20V90pct_W": 0.3361111111111111,
+    "inductor_assumed23p3mohm_per_phase_W": 0.32765625000000004,
+    "limitation": "Illustrative resistive loss; no switching loss, hot resistance, thermal or SOA proof"
+  },
+  "electrical_acceptance": false,
+  "open_items": [
+    "O1OVP12V",
+    "actual loop stability",
+    "UVLO policy",
+    "F1coordination",
+    "remainingMPNs",
+    "PCB routing",
+    "physical qualification"
+  ]
+}

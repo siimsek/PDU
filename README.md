@@ -16,6 +16,7 @@
 - [KiCad10 projesi](PDU.kicad_pro), [ana elektrik şeması](PDU.kicad_sch), [ilk PCB yerleşimi](PDU.kicad_pcb)
 - Şema [PNG](PDU_schematic_finished.png) / [PDF](PDU_schematic_finished.pdf); PCB [PNG](hardware/PDU_blocks_placed.png)
 - [Netlistle doğrulanmış parça dökümü](hardware/pdu-current-bom.csv); [mühendislik seçim notları](hardware/bom.csv)
+- [Güncel netlist/BOM'a bağlı hesap özeti](hardware/calculation-summary.json); hesap betiği `calculate.py`
 - [Projeye özel semboller ve ayak izleri](hardware/lib)
 
 ## Son kaydedilmiş doğrulama
