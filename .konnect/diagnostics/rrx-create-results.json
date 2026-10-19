@@ -1,0 +1,5724 @@
+{
+  "results": [
+    {
+      "request": {
+        "name": "create_footprint",
+        "arguments": {
+          "name": "LM70880_RRX0029B_RectLands",
+          "output": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\lib\\PDU.pretty\\LM70880_RRX0029B_RectLands.kicad_mod",
+          "body_width": 6,
+          "body_height": 6,
+          "courtyard_clearance": 0.25,
+          "package_type": "smd",
+          "description": "TI LM70880QRRXRQ1 RRX0029B 4228757/D 04/2024. Prototype compatible rectangular land decomposition <7um boundary deviation. VIN29/SW22 repeated pads are intentional common copper. Production stencil/thermal-via qualification pending.",
+          "pads": [
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -3.197,
+              "width": 0.194,
+              "height": 0.006,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -3.197,
+              "width": 0.194,
+              "height": 0.006,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -3.197,
+              "width": 0.194,
+              "height": 0.006,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -3.1925,
+              "width": 0.21,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -3.1925,
+              "width": 0.21,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -3.1925,
+              "width": 0.21,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -3.1875,
+              "width": 0.222,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -3.1875,
+              "width": 0.222,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -3.1875,
+              "width": 0.222,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -3.1825,
+              "width": 0.23,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -3.1825,
+              "width": 0.23,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -3.1825,
+              "width": 0.23,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -3.1775,
+              "width": 0.238,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -3.1775,
+              "width": 0.238,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -3.1775,
+              "width": 0.238,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -3.1725,
+              "width": 0.242,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -3.1725,
+              "width": 0.242,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -3.1725,
+              "width": 0.242,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -3.1675,
+              "width": 0.246,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -3.1675,
+              "width": 0.246,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -3.1675,
+              "width": 0.246,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -3.1625,
+              "width": 0.248,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4995,
+              "y": -3.1625,
+              "width": 0.249,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.9995,
+              "y": -3.1625,
+              "width": 0.249,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -3.1575,
+              "width": 0.25,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -3.1575,
+              "width": 0.25,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -3.1575,
+              "width": 0.25,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -0.9995,
+              "y": -3.0025,
+              "width": 0.251,
+              "height": 0.307,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4995,
+              "y": -3.0025,
+              "width": 0.251,
+              "height": 0.307,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.9995,
+              "y": -3.0025,
+              "width": 0.251,
+              "height": 0.307,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -2.8475,
+              "width": 0.252,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -2.8475,
+              "width": 0.252,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -2.8475,
+              "width": 0.252,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -0.9995,
+              "y": -2.8425,
+              "width": 0.253,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4995,
+              "y": -2.8425,
+              "width": 0.253,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.9995,
+              "y": -2.8425,
+              "width": 0.253,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -2.8375,
+              "width": 0.256,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -2.8375,
+              "width": 0.256,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -2.8375,
+              "width": 0.256,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -2.8325,
+              "width": 0.26,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -2.8325,
+              "width": 0.26,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -2.8325,
+              "width": 0.26,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -2.8275,
+              "width": 0.264,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -2.8275,
+              "width": 0.264,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -2.8275,
+              "width": 0.264,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -2.8225,
+              "width": 0.272,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -2.8225,
+              "width": 0.272,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -2.8225,
+              "width": 0.272,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -2.8175,
+              "width": 0.28,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -2.8175,
+              "width": 0.28,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -2.8175,
+              "width": 0.28,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -2.8125,
+              "width": 0.292,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -2.8125,
+              "width": 0.292,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -2.8125,
+              "width": 0.292,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -2.8075,
+              "width": 0.308,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -2.8075,
+              "width": 0.308,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -2.8075,
+              "width": 0.308,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.0,
+              "y": -2.8025,
+              "width": 0.35,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5,
+              "y": -2.8025,
+              "width": 0.35,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -2.0,
+              "y": -2.8025,
+              "width": 0.35,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.605,
+              "y": -2.7975,
+              "width": 1.904,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.604,
+              "y": -2.7925,
+              "width": 1.918,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.604,
+              "y": -2.7875,
+              "width": 1.93,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.605,
+              "y": -2.7825,
+              "width": 1.94,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6065,
+              "y": -2.7775,
+              "width": 1.951,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6085,
+              "y": -2.7725,
+              "width": 1.959,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6105,
+              "y": -2.7675,
+              "width": 1.967,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.613,
+              "y": -2.7625,
+              "width": 1.974,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.616,
+              "y": -2.7575,
+              "width": 1.982,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6185,
+              "y": -2.7525,
+              "width": 1.989,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6215,
+              "y": -2.7475,
+              "width": 1.995,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6245,
+              "y": -2.7425,
+              "width": 2.001,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.628,
+              "y": -2.7375,
+              "width": 2.008,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.631,
+              "y": -2.7325,
+              "width": 2.014,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.634,
+              "y": -2.7275,
+              "width": 2.02,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.637,
+              "y": -2.7225,
+              "width": 2.026,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6405,
+              "y": -2.7175,
+              "width": 2.033,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6435,
+              "y": -2.7125,
+              "width": 2.039,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6465,
+              "y": -2.7075,
+              "width": 2.045,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6495,
+              "y": -2.7025,
+              "width": 2.051,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.653,
+              "y": -2.6975,
+              "width": 2.058,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.656,
+              "y": -2.6925,
+              "width": 2.064,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.659,
+              "y": -2.6875,
+              "width": 2.07,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.662,
+              "y": -2.6825,
+              "width": 2.076,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6655,
+              "y": -2.6775,
+              "width": 2.083,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6685,
+              "y": -2.6725,
+              "width": 2.089,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6715,
+              "y": -2.6675,
+              "width": 2.095,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6745,
+              "y": -2.6625,
+              "width": 2.101,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.678,
+              "y": -2.6575,
+              "width": 2.108,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.681,
+              "y": -2.6525,
+              "width": 2.114,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.684,
+              "y": -2.6475,
+              "width": 2.12,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.687,
+              "y": -2.6425,
+              "width": 2.126,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6905,
+              "y": -2.6375,
+              "width": 2.133,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6935,
+              "y": -2.6325,
+              "width": 2.139,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6965,
+              "y": -2.6275,
+              "width": 2.145,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.6995,
+              "y": -2.6225,
+              "width": 2.151,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.703,
+              "y": -2.6175,
+              "width": 2.158,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.706,
+              "y": -2.6125,
+              "width": 2.164,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.709,
+              "y": -2.6075,
+              "width": 2.17,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.712,
+              "y": -2.515,
+              "width": 2.176,
+              "height": 0.182,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7125,
+              "y": -2.42,
+              "width": 2.177,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7135,
+              "y": -2.4125,
+              "width": 2.179,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7145,
+              "y": -2.4075,
+              "width": 2.181,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7155,
+              "y": -2.4025,
+              "width": 2.183,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7175,
+              "y": -2.3975,
+              "width": 2.187,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7195,
+              "y": -2.3925,
+              "width": 2.191,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7225,
+              "y": -2.3875,
+              "width": 2.197,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7265,
+              "y": -2.3825,
+              "width": 2.205,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.737,
+              "y": -2.3775,
+              "width": 2.226,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.898,
+              "y": -2.3725,
+              "width": 2.548,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.902,
+              "y": -2.3675,
+              "width": 2.556,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.905,
+              "y": -2.3625,
+              "width": 2.562,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.907,
+              "y": -2.3575,
+              "width": 2.566,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.909,
+              "y": -2.3525,
+              "width": 2.57,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.91,
+              "y": -2.3475,
+              "width": 2.572,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.911,
+              "y": -2.3425,
+              "width": 2.574,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.9115,
+              "y": -2.3375,
+              "width": 2.575,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.912,
+              "y": -2.33,
+              "width": 2.576,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.9125,
+              "y": -2.2475,
+              "width": 2.577,
+              "height": 0.157,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.912,
+              "y": -2.165,
+              "width": 2.576,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.911,
+              "y": -2.1575,
+              "width": 2.574,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.91,
+              "y": -2.1525,
+              "width": 2.572,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.909,
+              "y": -2.1475,
+              "width": 2.57,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.907,
+              "y": -2.1425,
+              "width": 2.566,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.905,
+              "y": -2.1375,
+              "width": 2.562,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.902,
+              "y": -2.1325,
+              "width": 2.556,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.898,
+              "y": -2.1275,
+              "width": 2.548,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.8875,
+              "y": -2.1225,
+              "width": 2.527,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7265,
+              "y": -2.1175,
+              "width": 2.205,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7225,
+              "y": -2.1125,
+              "width": 2.197,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7195,
+              "y": -2.1075,
+              "width": 2.191,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7175,
+              "y": -2.1025,
+              "width": 2.187,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7155,
+              "y": -2.0975,
+              "width": 2.183,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7145,
+              "y": -2.0925,
+              "width": 2.181,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7135,
+              "y": -2.0875,
+              "width": 2.179,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7125,
+              "y": -2.08,
+              "width": 2.177,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.712,
+              "y": -2.0,
+              "width": 2.176,
+              "height": 0.152,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7125,
+              "y": -1.92,
+              "width": 2.177,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7135,
+              "y": -1.9125,
+              "width": 2.179,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7145,
+              "y": -1.9075,
+              "width": 2.181,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7155,
+              "y": -1.9025,
+              "width": 2.183,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7175,
+              "y": -1.8975,
+              "width": 2.187,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7195,
+              "y": -1.8925,
+              "width": 2.191,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7225,
+              "y": -1.8875,
+              "width": 2.197,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.7265,
+              "y": -1.8825,
+              "width": 2.205,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.737,
+              "y": -1.8775,
+              "width": 2.226,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.898,
+              "y": -1.8725,
+              "width": 2.548,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.902,
+              "y": -1.8675,
+              "width": 2.556,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.905,
+              "y": -1.8625,
+              "width": 2.562,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.907,
+              "y": -1.8575,
+              "width": 2.566,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.909,
+              "y": -1.8525,
+              "width": 2.57,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.91,
+              "y": -1.8475,
+              "width": 2.572,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.911,
+              "y": -1.8425,
+              "width": 2.574,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.9115,
+              "y": -1.8375,
+              "width": 2.575,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.912,
+              "y": -1.83,
+              "width": 2.576,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.9125,
+              "y": -1.7475,
+              "width": 2.577,
+              "height": 0.157,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.912,
+              "y": -1.665,
+              "width": 2.576,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.911,
+              "y": -1.6575,
+              "width": 2.574,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.91,
+              "y": -1.6525,
+              "width": 2.572,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.909,
+              "y": -1.6475,
+              "width": 2.57,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.907,
+              "y": -1.6425,
+              "width": 2.566,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.905,
+              "y": -1.6375,
+              "width": 2.562,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.902,
+              "y": -1.6325,
+              "width": 2.556,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.898,
+              "y": -1.6275,
+              "width": 2.548,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.8875,
+              "y": -1.6225,
+              "width": 2.527,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.53,
+              "y": -1.6175,
+              "width": 1.812,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5235,
+              "y": -1.6125,
+              "width": 1.799,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.518,
+              "y": -1.6075,
+              "width": 1.788,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.514,
+              "y": -1.6025,
+              "width": 1.78,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5105,
+              "y": -1.5975,
+              "width": 1.773,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5075,
+              "y": -1.5925,
+              "width": 1.767,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.505,
+              "y": -1.5875,
+              "width": 1.762,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5025,
+              "y": -1.5825,
+              "width": 1.757,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.5005,
+              "y": -1.5775,
+              "width": 1.753,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4985,
+              "y": -1.5725,
+              "width": 1.749,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.497,
+              "y": -1.5675,
+              "width": 1.746,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4955,
+              "y": -1.5625,
+              "width": 1.743,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.494,
+              "y": -1.5575,
+              "width": 1.74,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.493,
+              "y": -1.5525,
+              "width": 1.738,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4915,
+              "y": -1.5475,
+              "width": 1.735,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4905,
+              "y": -1.5425,
+              "width": 1.733,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.49,
+              "y": -1.5375,
+              "width": 1.732,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.489,
+              "y": -1.5325,
+              "width": 1.73,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4885,
+              "y": -1.5275,
+              "width": 1.729,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.488,
+              "y": -1.52,
+              "width": 1.728,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4875,
+              "y": -1.51,
+              "width": 1.727,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.487,
+              "y": -1.1525,
+              "width": 1.726,
+              "height": 0.707,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4865,
+              "y": -0.7975,
+              "width": 1.725,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.486,
+              "y": -0.7925,
+              "width": 1.724,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.485,
+              "y": -0.7875,
+              "width": 1.722,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4835,
+              "y": -0.7825,
+              "width": 1.719,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.482,
+              "y": -0.7775,
+              "width": 1.716,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4795,
+              "y": -0.7725,
+              "width": 1.711,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4765,
+              "y": -0.7675,
+              "width": 1.705,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4725,
+              "y": -0.7625,
+              "width": 1.697,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.4075,
+              "y": -0.7575,
+              "width": 1.567,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.396,
+              "y": -0.7525,
+              "width": 1.544,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3895,
+              "y": -0.7475,
+              "width": 1.531,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3845,
+              "y": -0.7425,
+              "width": 1.521,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3805,
+              "y": -0.7375,
+              "width": 1.513,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.377,
+              "y": -0.7325,
+              "width": 1.506,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.374,
+              "y": -0.7275,
+              "width": 1.5,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3715,
+              "y": -0.7225,
+              "width": 1.495,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3695,
+              "y": -0.7175,
+              "width": 1.491,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.367,
+              "y": -0.7125,
+              "width": 1.486,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3655,
+              "y": -0.7075,
+              "width": 1.483,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3635,
+              "y": -0.7025,
+              "width": 1.479,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.362,
+              "y": -0.6975,
+              "width": 1.476,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.361,
+              "y": -0.6925,
+              "width": 1.474,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3595,
+              "y": -0.6875,
+              "width": 1.471,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3585,
+              "y": -0.6825,
+              "width": 1.469,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3575,
+              "y": -0.6775,
+              "width": 1.467,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.357,
+              "y": -0.6725,
+              "width": 1.466,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.356,
+              "y": -0.6675,
+              "width": 1.464,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3555,
+              "y": -0.6625,
+              "width": 1.463,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.355,
+              "y": -0.6575,
+              "width": 1.462,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.5925,
+              "width": 1.461,
+              "height": 0.127,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.525,
+              "width": 1.459,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.5175,
+              "width": 1.455,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.5125,
+              "width": 1.453,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.5075,
+              "width": 1.447,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.5025,
+              "width": 1.441,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.4975,
+              "width": 1.433,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.4925,
+              "width": 1.423,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.4875,
+              "width": 1.407,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "rect",
+              "x": -1.3545,
+              "y": -0.484994,
+              "width": 1.381,
+              "height": 0.002013,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -2.096992,
+              "width": 2.869,
+              "height": 0.006,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -2.092492,
+              "width": 2.885,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -2.087492,
+              "width": 2.897,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -2.082492,
+              "width": 2.905,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -2.077492,
+              "width": 2.913,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -2.072492,
+              "width": 2.917,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -2.067492,
+              "width": 2.921,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -2.062492,
+              "width": 2.923,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -2.057492,
+              "width": 2.925,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.337,
+              "y": -1.989992,
+              "width": 2.926,
+              "height": 0.132,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -1.922492,
+              "width": 2.927,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.338,
+              "y": -1.917492,
+              "width": 2.928,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3385,
+              "y": -1.912492,
+              "width": 2.929,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3395,
+              "y": -1.907492,
+              "width": 2.931,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3405,
+              "y": -1.902492,
+              "width": 2.933,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3425,
+              "y": -1.897492,
+              "width": 2.937,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3445,
+              "y": -1.892492,
+              "width": 2.941,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3475,
+              "y": -1.887492,
+              "width": 2.947,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3515,
+              "y": -1.882492,
+              "width": 2.955,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.362,
+              "y": -1.877492,
+              "width": 2.976,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.523,
+              "y": -1.872492,
+              "width": 3.298,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.527,
+              "y": -1.867492,
+              "width": 3.306,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.53,
+              "y": -1.862492,
+              "width": 3.312,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.532,
+              "y": -1.857492,
+              "width": 3.316,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.534,
+              "y": -1.852492,
+              "width": 3.32,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.535,
+              "y": -1.847492,
+              "width": 3.322,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.536,
+              "y": -1.842492,
+              "width": 3.324,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.5365,
+              "y": -1.837492,
+              "width": 3.325,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.537,
+              "y": -1.832492,
+              "width": 3.326,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.5375,
+              "y": -1.749992,
+              "width": 3.327,
+              "height": 0.162,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.537,
+              "y": -1.667492,
+              "width": 3.326,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.5365,
+              "y": -1.662492,
+              "width": 3.325,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.536,
+              "y": -1.657492,
+              "width": 3.324,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.535,
+              "y": -1.652492,
+              "width": 3.322,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.534,
+              "y": -1.647492,
+              "width": 3.32,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.532,
+              "y": -1.642492,
+              "width": 3.316,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.53,
+              "y": -1.637492,
+              "width": 3.312,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.527,
+              "y": -1.632492,
+              "width": 3.306,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.523,
+              "y": -1.627492,
+              "width": 3.298,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.5125,
+              "y": -1.622492,
+              "width": 3.277,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3515,
+              "y": -1.617492,
+              "width": 2.955,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3475,
+              "y": -1.612492,
+              "width": 2.947,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3445,
+              "y": -1.607492,
+              "width": 2.941,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3425,
+              "y": -1.602492,
+              "width": 2.937,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3405,
+              "y": -1.597492,
+              "width": 2.933,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3395,
+              "y": -1.592492,
+              "width": 2.931,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3385,
+              "y": -1.587492,
+              "width": 2.929,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.338,
+              "y": -1.582492,
+              "width": 2.928,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -1.577492,
+              "width": 2.927,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.337,
+              "y": -1.499992,
+              "width": 2.926,
+              "height": 0.152,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -1.422492,
+              "width": 2.927,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.338,
+              "y": -1.417492,
+              "width": 2.928,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3385,
+              "y": -1.412492,
+              "width": 2.929,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3395,
+              "y": -1.407492,
+              "width": 2.931,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3405,
+              "y": -1.402492,
+              "width": 2.933,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3425,
+              "y": -1.397492,
+              "width": 2.937,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3445,
+              "y": -1.392492,
+              "width": 2.941,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3475,
+              "y": -1.387492,
+              "width": 2.947,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3515,
+              "y": -1.382492,
+              "width": 2.955,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.362,
+              "y": -1.377492,
+              "width": 2.976,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.523,
+              "y": -1.372492,
+              "width": 3.298,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.527,
+              "y": -1.367492,
+              "width": 3.306,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.53,
+              "y": -1.362492,
+              "width": 3.312,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.532,
+              "y": -1.357492,
+              "width": 3.316,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.534,
+              "y": -1.352492,
+              "width": 3.32,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.535,
+              "y": -1.347492,
+              "width": 3.322,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.536,
+              "y": -1.342492,
+              "width": 3.324,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.537,
+              "y": -1.334992,
+              "width": 3.326,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.5375,
+              "y": -1.249992,
+              "width": 3.327,
+              "height": 0.162,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.537,
+              "y": -1.164992,
+              "width": 3.326,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.536,
+              "y": -1.157492,
+              "width": 3.324,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.535,
+              "y": -1.152492,
+              "width": 3.322,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.534,
+              "y": -1.147492,
+              "width": 3.32,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.532,
+              "y": -1.142492,
+              "width": 3.316,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.53,
+              "y": -1.137492,
+              "width": 3.312,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.527,
+              "y": -1.132492,
+              "width": 3.306,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.523,
+              "y": -1.127492,
+              "width": 3.298,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.5125,
+              "y": -1.122492,
+              "width": 3.277,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3515,
+              "y": -1.117492,
+              "width": 2.955,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3475,
+              "y": -1.112492,
+              "width": 2.947,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3445,
+              "y": -1.107492,
+              "width": 2.941,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3425,
+              "y": -1.102492,
+              "width": 2.937,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3405,
+              "y": -1.097492,
+              "width": 2.933,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3395,
+              "y": -1.092492,
+              "width": 2.931,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3385,
+              "y": -1.087492,
+              "width": 2.929,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.338,
+              "y": -1.082492,
+              "width": 2.928,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -1.077492,
+              "width": 2.927,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.337,
+              "y": -0.999992,
+              "width": 2.926,
+              "height": 0.152,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.922492,
+              "width": 2.927,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.338,
+              "y": -0.917492,
+              "width": 2.928,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3385,
+              "y": -0.912492,
+              "width": 2.929,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3395,
+              "y": -0.907492,
+              "width": 2.931,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3405,
+              "y": -0.902492,
+              "width": 2.933,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3425,
+              "y": -0.897492,
+              "width": 2.937,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3445,
+              "y": -0.892492,
+              "width": 2.941,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3475,
+              "y": -0.887492,
+              "width": 2.947,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3515,
+              "y": -0.882492,
+              "width": 2.955,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.362,
+              "y": -0.877492,
+              "width": 2.976,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.523,
+              "y": -0.872492,
+              "width": 3.298,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.527,
+              "y": -0.867492,
+              "width": 3.306,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.53,
+              "y": -0.862492,
+              "width": 3.312,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.532,
+              "y": -0.857492,
+              "width": 3.316,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.534,
+              "y": -0.852492,
+              "width": 3.32,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.535,
+              "y": -0.847492,
+              "width": 3.322,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.536,
+              "y": -0.842492,
+              "width": 3.324,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.537,
+              "y": -0.832492,
+              "width": 3.326,
+              "height": 0.017,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.5375,
+              "y": -0.747492,
+              "width": 3.327,
+              "height": 0.157,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.537,
+              "y": -0.664992,
+              "width": 3.326,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.536,
+              "y": -0.657492,
+              "width": 3.324,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.535,
+              "y": -0.652492,
+              "width": 3.322,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.534,
+              "y": -0.647492,
+              "width": 3.32,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.532,
+              "y": -0.642492,
+              "width": 3.316,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.53,
+              "y": -0.637492,
+              "width": 3.312,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.527,
+              "y": -0.632492,
+              "width": 3.306,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.523,
+              "y": -0.627492,
+              "width": 3.298,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.5125,
+              "y": -0.622492,
+              "width": 3.277,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3515,
+              "y": -0.617492,
+              "width": 2.955,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3475,
+              "y": -0.612492,
+              "width": 2.947,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3445,
+              "y": -0.607492,
+              "width": 2.941,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3425,
+              "y": -0.602492,
+              "width": 2.937,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3405,
+              "y": -0.597492,
+              "width": 2.933,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3395,
+              "y": -0.592492,
+              "width": 2.931,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3385,
+              "y": -0.587492,
+              "width": 2.929,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.338,
+              "y": -0.582492,
+              "width": 2.928,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.577492,
+              "width": 2.927,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.337,
+              "y": -0.382492,
+              "width": 2.926,
+              "height": 0.387,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.184992,
+              "width": 2.925,
+              "height": 0.012,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.177492,
+              "width": 2.923,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.172492,
+              "width": 2.921,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.167492,
+              "width": 2.917,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.162492,
+              "width": 2.913,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.157492,
+              "width": 2.905,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.152492,
+              "width": 2.897,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.147492,
+              "width": 2.885,
+              "height": 0.007,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "rect",
+              "x": 1.3375,
+              "y": -0.142999,
+              "width": 2.869,
+              "height": 0.005986,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0
+            },
+            {
+              "number": "1",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2.9,
+              "y": -2.25,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "2",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2.9,
+              "y": -1.75,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "3",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2.9,
+              "y": -1.25,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "4",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2.9,
+              "y": -0.25,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "5",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2.9,
+              "y": 0.25,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "6",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2.9,
+              "y": 1.25,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "7",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2.9,
+              "y": 1.75,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "8",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2.9,
+              "y": 2.25,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "9",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2,
+              "y": 2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "10",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -1.5,
+              "y": 2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "11",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -1,
+              "y": 2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "12",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 0,
+              "y": 2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "13",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 0.5,
+              "y": 2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "14",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 1,
+              "y": 2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "15",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 1.5,
+              "y": 2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "16",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 2,
+              "y": 2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "17",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 2.9,
+              "y": 1.75,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "18",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 2.9,
+              "y": 1.25,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "19",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 2.9,
+              "y": 0.75,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "20",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 2.9,
+              "y": -0.75,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "21",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 2.9,
+              "y": -1.25,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "22",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 2.9,
+              "y": -1.75,
+              "width": 0.6,
+              "height": 0.25,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "23",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 2,
+              "y": -2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "24",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 1.5,
+              "y": -2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "25",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 1,
+              "y": -2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "26",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 0.5,
+              "y": -2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask",
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "27",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -1,
+              "y": -2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "28",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -1.5,
+              "y": -2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "29",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2,
+              "y": -2.9,
+              "width": 0.25,
+              "height": 0.6,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "30",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 0.037,
+              "y": 1.308,
+              "width": 3.125,
+              "height": 1.584,
+              "layers": [
+                "F.Cu",
+                "F.Mask"
+              ],
+              "roundrect_rratio": 0.03156565656565657
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -3.066,
+              "y": -2.25,
+              "width": 0.267,
+              "height": 0.25,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -3.066,
+              "y": -1.75,
+              "width": 0.267,
+              "height": 0.25,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -1,
+              "y": -3.071,
+              "width": 0.25,
+              "height": 0.258,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -1.5,
+              "y": -3.071,
+              "width": 0.25,
+              "height": 0.258,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2,
+              "y": -3.071,
+              "width": 0.25,
+              "height": 0.258,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 3.054,
+              "y": -0.75,
+              "width": 0.293,
+              "height": 0.25,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 3.054,
+              "y": -1.25,
+              "width": 0.293,
+              "height": 0.25,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 3.054,
+              "y": -1.75,
+              "width": 0.293,
+              "height": 0.25,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.2
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -2.573,
+              "y": -2.192,
+              "width": 0.32,
+              "height": 0.9,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.15625
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -1.463,
+              "y": -2.242,
+              "width": 1.5,
+              "height": 1,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.05
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -1.313,
+              "y": -1.042,
+              "width": 1.2,
+              "height": 1,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.05
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 0.602,
+              "y": -1.095,
+              "width": 1.27,
+              "height": 1.75,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.03937007874015748
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 2.072,
+              "y": -1.095,
+              "width": 1.27,
+              "height": 1.75,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.03937007874015748
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": -0.738,
+              "y": 1.308,
+              "width": 1.42,
+              "height": 1.42,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.035211267605633804
+            },
+            {
+              "number": "",
+              "type": "smd",
+              "shape": "roundrect",
+              "x": 0.812,
+              "y": 1.308,
+              "width": 1.42,
+              "height": 1.42,
+              "layers": [
+                "F.Paste"
+              ],
+              "roundrect_rratio": 0.035211267605633804
+            }
+          ]
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "{\"courtyard\":true,\"footprint\":\"LM70880_RRX0029B_RectLands\",\"model\":\"\",\"output\":\"C:\\\\Users\\\\SK\\\\Desktop\\\\PDU\\\\hardware\\\\lib\\\\PDU.pretty\\\\LM70880_RRX0029B_RectLands.kicad_mod\",\"pad_count\":406,\"pin1_marked\":true,\"success\":true}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ],
+  "stderr": []
+}

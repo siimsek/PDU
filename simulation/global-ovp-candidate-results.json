@@ -1,0 +1,229 @@
+{
+  "scope": "Isolated candidate only; approximate MOSFETs and assumed capacitance/ESR; not main schematic or SOA approval",
+  "cases": {
+    "ramp-nominal": {
+      "execution_pass": true,
+      "gates": {
+        "execution": true,
+        "pre_fault_rail": true,
+        "protected_peak_12V": true,
+        "reset_rail": true,
+        "existing_raw_25V_cap_rating": true,
+        "FET_gate_20V_abs_screen": true
+      },
+      "measures": {
+        "options": 0.0001,
+        "normal": 10.9753383533,
+        "peak": 11.5370187759,
+        "rawpeak": 18.0,
+        "vdspeak": 17.9999998137,
+        "vgs_min": 7.38746207811,
+        "vgs_max": 7.63259315491,
+        "reset": 10.9752036985,
+        "inrush": 1.15959990025,
+        "mos1_i": 2.73378491402,
+        "mos1_p": 15.6359957382,
+        "mos1_e": 0.0964684246326
+      },
+      "screening_pass": true,
+      "errors": [],
+      "deck": "candidate-global-ramp-nominal-r3.cir"
+    },
+    "ramp-high-threshold": {
+      "execution_pass": true,
+      "gates": {
+        "execution": true,
+        "pre_fault_rail": true,
+        "protected_peak_12V": true,
+        "reset_rail": true,
+        "existing_raw_25V_cap_rating": true,
+        "FET_gate_20V_abs_screen": true
+      },
+      "measures": {
+        "options": 0.0001,
+        "normal": 10.9752352199,
+        "peak": 11.7828655243,
+        "rawpeak": 18.0,
+        "vdspeak": 17.9999994834,
+        "vgs_min": 7.05435576439,
+        "vgs_max": 7.49845314026,
+        "reset": 10.9749884765,
+        "inrush": 0.777309715748,
+        "mos1_i": 2.56579232216,
+        "mos1_p": 14.8237676594,
+        "mos1_e": 0.0894902126979
+      },
+      "screening_pass": true,
+      "errors": [],
+      "deck": "candidate-global-ramp-high-threshold-r3.cir"
+    },
+    "buck-cold-4m": {
+      "execution_pass": true,
+      "gates": {
+        "execution": true,
+        "pre_fault_rail": true,
+        "protected_peak_12V": true,
+        "reset_rail": true,
+        "existing_raw_25V_cap_rating": false,
+        "FET_gate_20V_abs_screen": true
+      },
+      "measures": {
+        "options": 0.0001,
+        "normal": 11.201235703,
+        "peak": 11.9699382782,
+        "rawpeak": 44.1323013306,
+        "vdspeak": 32.3086929321,
+        "vgs_min": 7.0098657608,
+        "vgs_max": 7.57053375244,
+        "reset": 11.2008018037,
+        "inrush": 0.838947117329,
+        "mos1_i": 4.06849479675,
+        "mos1_p": 24.6256413718,
+        "mos1_e": 0.147501987212
+      },
+      "screening_pass": false,
+      "errors": [],
+      "deck": "candidate-global-buck-cold-4m-r3.cir"
+    },
+    "buck-cold-100m": {
+      "execution_pass": true,
+      "gates": {
+        "execution": true,
+        "pre_fault_rail": true,
+        "protected_peak_12V": false,
+        "reset_rail": true,
+        "existing_raw_25V_cap_rating": false,
+        "FET_gate_20V_abs_screen": true
+      },
+      "measures": {
+        "options": 0.0001,
+        "normal": 11.201235698,
+        "peak": 12.4052944183,
+        "rawpeak": 40.5342636108,
+        "vdspeak": 29.2100801468,
+        "vgs_min": 7.00986619519,
+        "vgs_max": 7.57053947449,
+        "reset": 11.2007003427,
+        "inrush": 0.740277767181,
+        "mos1_i": 4.06726503372,
+        "mos1_p": 24.6382077972,
+        "mos1_e": 0.147422191255
+      },
+      "screening_pass": false,
+      "errors": [],
+      "deck": "candidate-global-buck-cold-100m-r3.cir"
+    },
+    "buck-hot-20m": {
+      "execution_pass": true,
+      "gates": {
+        "execution": true,
+        "pre_fault_rail": true,
+        "protected_peak_12V": true,
+        "reset_rail": true,
+        "existing_raw_25V_cap_rating": false,
+        "FET_gate_20V_abs_screen": true
+      },
+      "measures": {
+        "options": 0.0001,
+        "normal": 11.1336810795,
+        "peak": 11.8728618622,
+        "rawpeak": 41.4689865112,
+        "vdspeak": 30.0915193558,
+        "vgs_min": 6.97632312774,
+        "vgs_max": 7.53398132324,
+        "reset": 11.1332093091,
+        "inrush": 0.759829282761,
+        "mos1_i": 4.06509017944,
+        "mos1_p": 24.6022733064,
+        "mos1_e": 0.151797982194
+      },
+      "screening_pass": false,
+      "errors": [],
+      "deck": "candidate-global-buck-hot-20m-r3.cir"
+    },
+    "normal-high-rail": {
+      "execution_pass": true,
+      "gates": {
+        "execution": true,
+        "pre_fault_rail": true,
+        "protected_peak_12V": true,
+        "reset_rail": true,
+        "existing_raw_25V_cap_rating": true,
+        "FET_gate_20V_abs_screen": true
+      },
+      "measures": {
+        "options": 0.0001,
+        "normal": 11.2199993134,
+        "peak": 11.2199993134,
+        "rawpeak": 11.220000267,
+        "vdspeak": 9.53674316406e-07,
+        "vgs_min": 7.51906541259,
+        "vgs_max": 12.6877572536,
+        "reset": 11.2199993133,
+        "inrush": 1.20637047291,
+        "mos1_i": 0.62329262495,
+        "mos1_p": 6.8808800304,
+        "mos1_e": 0.0214429521483
+      },
+      "screening_pass": true,
+      "errors": [],
+      "deck": "candidate-global-normal-high-rail-r3.cir"
+    },
+    "startup-one-hot": {
+      "execution_pass": true,
+      "gates": {
+        "execution": true,
+        "pre_fault_rail": true,
+        "protected_peak_12V": true,
+        "reset_rail": true,
+        "existing_raw_25V_cap_rating": true,
+        "FET_gate_20V_abs_screen": true
+      },
+      "measures": {
+        "options": 0.0001,
+        "normal": 11.116851923,
+        "peak": 11.116853714,
+        "rawpeak": 11.220000267,
+        "vdspeak": 0.103147506714,
+        "vgs_min": 7.77879714966,
+        "vgs_max": 13.1301336288,
+        "reset": 11.1168469509,
+        "inrush": 2.17130851746,
+        "mos1_i": 6.50430488586,
+        "mos1_p": 39.0418702368,
+        "mos1_e": 0.141225496692
+      },
+      "screening_pass": true,
+      "errors": [],
+      "deck": "candidate-global-startup-one-hot-r3.cir"
+    },
+    "hotplug-26v": {
+      "execution_pass": true,
+      "gates": {
+        "execution": true,
+        "protected_peak_12V": true,
+        "reset_rail": true,
+        "existing_raw_25V_cap_rating": false,
+        "FET_gate_20V_abs_screen": true
+      },
+      "measures": {
+        "options": 0.0001,
+        "normal": 1.02631419558e-06,
+        "peak": 1.74060169361e-06,
+        "rawpeak": 26.0,
+        "vdspeak": 25.9999988771,
+        "vgs_min": 0.000451610747244,
+        "vgs_max": 7.47941875458,
+        "reset": 10.9999990464,
+        "inrush": 0.0105626052245,
+        "mos1_i": 5.09317032993e-11,
+        "mos1_p": 1.32422973842e-09,
+        "mos1_e": 3.17805021291e-11
+      },
+      "screening_pass": false,
+      "errors": [],
+      "deck": "candidate-global-hotplug-26v-r3.cir"
+    }
+  },
+  "all_screening_pass": false
+}

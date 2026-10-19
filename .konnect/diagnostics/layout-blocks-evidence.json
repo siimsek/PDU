@@ -1,0 +1,1132 @@
+{
+  "date": "2026-10-19",
+  "inventory": {
+    "components": [
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RPG2B",
+        "rotation": 0,
+        "value": "18k",
+        "x": 134.62,
+        "y": 118.11
+      },
+      {
+        "footprint": "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal",
+        "layer": "F.Cu",
+        "reference": "J2",
+        "rotation": -90,
+        "value": "O1",
+        "x": 142.24,
+        "y": 63.5
+      },
+      {
+        "footprint": "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal",
+        "layer": "F.Cu",
+        "reference": "J3",
+        "rotation": -90,
+        "value": "S2E",
+        "x": 142.24,
+        "y": 121.92
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CCOMP",
+        "rotation": 0,
+        "value": "4.7n",
+        "x": 105.41,
+        "y": 83.82
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CHF",
+        "rotation": 0,
+        "value": "47p",
+        "x": 101.6,
+        "y": 86.36
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RCOMP",
+        "rotation": 0,
+        "value": "9.53k",
+        "x": 101.6,
+        "y": 83.82
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "REN1",
+        "rotation": 0,
+        "value": "64.9k",
+        "x": 130.81,
+        "y": 88.9
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "REN2",
+        "rotation": 0,
+        "value": "10.0k",
+        "x": 130.81,
+        "y": 92.71
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RFB1",
+        "rotation": 0,
+        "value": "130k",
+        "x": 102.87,
+        "y": 80.01
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RFB2",
+        "rotation": 0,
+        "value": "10.2k",
+        "x": 106.68,
+        "y": 80.01
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RSYNC",
+        "rotation": 0,
+        "value": "100k",
+        "x": 99.06,
+        "y": 88.9
+      },
+      {
+        "footprint": "Diode_SMD:D_SMA",
+        "layer": "F.Cu",
+        "reference": "D3",
+        "rotation": 90,
+        "value": "SS34",
+        "x": 146.05,
+        "y": 102.87
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CDVDT2",
+        "rotation": 0,
+        "value": "1.0n",
+        "x": 142.24,
+        "y": 111.76
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CEFIN2",
+        "rotation": 90,
+        "value": "100n",
+        "x": 133.35,
+        "y": 104.14
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0805_2012Metric",
+        "layer": "F.Cu",
+        "reference": "CEFOUT2",
+        "rotation": 0,
+        "value": "10u",
+        "x": 137.16,
+        "y": 100.33
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RILIM2",
+        "rotation": -90,
+        "value": "604",
+        "x": 135.89,
+        "y": 110.49
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RIMON2",
+        "rotation": -90,
+        "value": "4.99k",
+        "x": 138.43,
+        "y": 110.49
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RPG2",
+        "rotation": 0,
+        "value": "100k",
+        "x": 137.16,
+        "y": 115.57
+      },
+      {
+        "footprint": "PDU:TPS25982_RGE0024M",
+        "layer": "F.Cu",
+        "reference": "U4",
+        "rotation": 0,
+        "value": "TPS259824ONRGET",
+        "x": 137.16,
+        "y": 105.41
+      },
+      {
+        "footprint": "Diode_SMD:D_SMA",
+        "layer": "F.Cu",
+        "reference": "D2",
+        "rotation": 90,
+        "value": "SS34",
+        "x": 146.05,
+        "y": 76.2
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CDVDT1",
+        "rotation": 0,
+        "value": "1.0n",
+        "x": 142.24,
+        "y": 80.01
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CEFIN1",
+        "rotation": 90,
+        "value": "100n",
+        "x": 133.35,
+        "y": 72.39
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0805_2012Metric",
+        "layer": "F.Cu",
+        "reference": "CEFOUT1",
+        "rotation": 0,
+        "value": "10u",
+        "x": 137.16,
+        "y": 68.58
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RILIM1",
+        "rotation": -90,
+        "value": "301",
+        "x": 135.89,
+        "y": 78.74
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RIMON1",
+        "rotation": -90,
+        "value": "2.61k",
+        "x": 138.43,
+        "y": 78.74
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RPG1",
+        "rotation": 0,
+        "value": "100k",
+        "x": 137.16,
+        "y": 83.82
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RPG1B",
+        "rotation": 0,
+        "value": "18k",
+        "x": 137.16,
+        "y": 86.36
+      },
+      {
+        "footprint": "PDU:TPS25982_RGE0024M",
+        "layer": "F.Cu",
+        "reference": "U3",
+        "rotation": 0,
+        "value": "TPS259824ONRGET",
+        "x": 137.16,
+        "y": 73.66
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "COUT1",
+        "rotation": 0,
+        "value": "22u",
+        "x": 125.73,
+        "y": 63.5
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "COUT2",
+        "rotation": 0,
+        "value": "22u",
+        "x": 125.73,
+        "y": 68.58
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "COUT3",
+        "rotation": 0,
+        "value": "22u",
+        "x": 125.73,
+        "y": 78.74
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "COUT4",
+        "rotation": 0,
+        "value": "22u",
+        "x": 125.73,
+        "y": 83.82
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "COUT5",
+        "rotation": 0,
+        "value": "22u",
+        "x": 125.73,
+        "y": 95.25
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "COUT6",
+        "rotation": 0,
+        "value": "22u",
+        "x": 125.73,
+        "y": 100.33
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "COUT7",
+        "rotation": 0,
+        "value": "22u",
+        "x": 125.73,
+        "y": 110.49
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "COUT8",
+        "rotation": 0,
+        "value": "22u",
+        "x": 125.73,
+        "y": 115.57
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CBIN2",
+        "rotation": 0,
+        "value": "10n",
+        "x": 92.71,
+        "y": 97.79
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CBOOT2",
+        "rotation": 0,
+        "value": "47n",
+        "x": 91.44,
+        "y": 105.41
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "CIN5",
+        "rotation": 0,
+        "value": "4.7u",
+        "x": 97.79,
+        "y": 99.06
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "CIN6",
+        "rotation": 0,
+        "value": "4.7u",
+        "x": 97.79,
+        "y": 93.98
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "CIN7",
+        "rotation": 0,
+        "value": "4.7u",
+        "x": 86.36,
+        "y": 110.49
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "CIN8",
+        "rotation": 0,
+        "value": "4.7u",
+        "x": 86.36,
+        "y": 115.57
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0805_2012Metric",
+        "layer": "F.Cu",
+        "reference": "CVCC2",
+        "rotation": 90,
+        "value": "4.7u",
+        "x": 102.87,
+        "y": 105.41
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CVDDA2",
+        "rotation": -90,
+        "value": "100n",
+        "x": 102.87,
+        "y": 109.22
+      },
+      {
+        "footprint": "Inductor_SMD:L_Vishay_IHLP-4040",
+        "layer": "F.Cu",
+        "reference": "L2",
+        "rotation": 0,
+        "value": "6.8uH",
+        "x": 111.76,
+        "y": 105.41
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RBOOT2",
+        "rotation": 0,
+        "value": "1",
+        "x": 91.44,
+        "y": 102.87
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RCFG2",
+        "rotation": -90,
+        "value": "90.9k",
+        "x": 95.25,
+        "y": 111.76
+      },
+      {
+        "footprint": "Resistor_SMD:R_2512_6332Metric",
+        "layer": "F.Cu",
+        "reference": "RS2",
+        "rotation": 0,
+        "value": "7.5m",
+        "x": 123.19,
+        "y": 105.41
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RT2",
+        "rotation": -90,
+        "value": "49.9k",
+        "x": 97.79,
+        "y": 111.76
+      },
+      {
+        "footprint": "PDU:LM70880_RRX0029B_RectLands",
+        "layer": "F.Cu",
+        "reference": "U2",
+        "rotation": 0,
+        "value": "LM70880QRRXRQ1",
+        "x": 97.79,
+        "y": 105.41
+      },
+      {
+        "footprint": "Resistor_SMD:R_2512_6332Metric",
+        "layer": "F.Cu",
+        "reference": "RS1",
+        "rotation": 0,
+        "value": "7.5m",
+        "x": 123.19,
+        "y": 73.66
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RBOOT1",
+        "rotation": 0,
+        "value": "1",
+        "x": 91.44,
+        "y": 71.12
+      },
+      {
+        "footprint": "Inductor_SMD:L_Vishay_IHLP-4040",
+        "layer": "F.Cu",
+        "reference": "L1",
+        "rotation": 0,
+        "value": "6.8uH",
+        "x": 111.76,
+        "y": 73.66
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CVDDA1",
+        "rotation": -90,
+        "value": "100n",
+        "x": 102.87,
+        "y": 77.47
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "CIN2",
+        "rotation": 0,
+        "value": "4.7u",
+        "x": 97.79,
+        "y": 62.23
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "CIN1",
+        "rotation": 0,
+        "value": "4.7u",
+        "x": 97.79,
+        "y": 67.31
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CBOOT1",
+        "rotation": 0,
+        "value": "47n",
+        "x": 91.44,
+        "y": 73.66
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CBIN1",
+        "rotation": 0,
+        "value": "10n",
+        "x": 92.71,
+        "y": 66.04
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "CIN3",
+        "rotation": 0,
+        "value": "4.7u",
+        "x": 86.36,
+        "y": 68.58
+      },
+      {
+        "footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "layer": "F.Cu",
+        "reference": "CIN4",
+        "rotation": 0,
+        "value": "4.7u",
+        "x": 86.36,
+        "y": 63.5
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0805_2012Metric",
+        "layer": "F.Cu",
+        "reference": "CVCC1",
+        "rotation": 90,
+        "value": "4.7u",
+        "x": 102.87,
+        "y": 73.66
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RCFG1",
+        "rotation": -90,
+        "value": "54.9k",
+        "x": 95.25,
+        "y": 80.01
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RT1",
+        "rotation": -90,
+        "value": "49.9k",
+        "x": 97.79,
+        "y": 80.01
+      },
+      {
+        "footprint": "PDU:LM70880_RRX0029B_RectLands",
+        "layer": "F.Cu",
+        "reference": "U1",
+        "rotation": 0,
+        "value": "LM70880QRRXRQ1",
+        "x": 97.79,
+        "y": 73.66
+      },
+      {
+        "footprint": "Diode_SMD:D_SMC",
+        "layer": "F.Cu",
+        "reference": "D1",
+        "rotation": 0,
+        "value": "SMCJ33A",
+        "x": 81.28,
+        "y": 97.79
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CIN_U5",
+        "rotation": 0,
+        "value": "22n",
+        "x": 67.31,
+        "y": 82.55
+      },
+      {
+        "footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "CVCAP",
+        "rotation": 0,
+        "value": "100n",
+        "x": 72.39,
+        "y": 74.93
+      },
+      {
+        "footprint": "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal",
+        "layer": "F.Cu",
+        "reference": "J1",
+        "rotation": 90,
+        "value": "VBAT",
+        "x": 60.96,
+        "y": 88.9
+      },
+      {
+        "footprint": "PDU:TDSON-8-1_Konnect",
+        "layer": "F.Cu",
+        "reference": "Q1",
+        "rotation": 0,
+        "value": "BSC160N10NS3G",
+        "x": 73.66,
+        "y": 88.9
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RUV1",
+        "rotation": 0,
+        "value": "180k",
+        "x": 88.9,
+        "y": 80.01
+      },
+      {
+        "footprint": "Resistor_SMD:R_0603_1608Metric",
+        "layer": "F.Cu",
+        "reference": "RUV2",
+        "rotation": 0,
+        "value": "10.0k",
+        "x": 88.9,
+        "y": 83.82
+      },
+      {
+        "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+        "layer": "F.Cu",
+        "reference": "U5",
+        "rotation": 0,
+        "value": "LM74700",
+        "x": 72.39,
+        "y": 80.01
+      }
+    ],
+    "count": 72
+  },
+  "placement_score": {
+    "connector_edges": [
+      {
+        "edge_distance_mm": 7.575,
+        "reference": "J1"
+      },
+      {
+        "edge_distance_mm": 7.575,
+        "reference": "J2"
+      },
+      {
+        "edge_distance_mm": 5.08,
+        "reference": "J3"
+      }
+    ],
+    "decoupling_associations": [],
+    "deductions": [],
+    "footprints_scored": 72,
+    "footprints_skipped": 0,
+    "hard_failures": [],
+    "interface_filter_caps": [],
+    "outline_missing": false,
+    "outline_shape": "rectangular",
+    "outline_unproven": false,
+    "score": 100,
+    "source": "ipc",
+    "uncoupled_caps": [],
+    "unproven_decoupling_caps": [],
+    "verdict": "pass"
+  },
+  "drc_summary": {
+    "categories_not_reported": [],
+    "design_rule_violations": 226,
+    "errors": 197,
+    "filtered_count": 496,
+    "live_board_synced": true,
+    "schematic_parity": 73,
+    "schematic_parity_diagnostic": null,
+    "severity_filter": "warning",
+    "shown": 1,
+    "source": "saved_file",
+    "total_violations": 496,
+    "truncated": true,
+    "unconnected_items": 197,
+    "violations": [
+      {
+        "description": "Silkscreen clipped by board edge",
+        "items": [
+          {
+            "description": "Bölüm Edge.Cuts üzerinde",
+            "item_kind": "gr_line",
+            "layer": "Edge.Cuts",
+            "owner": {
+              "kind": "board"
+            },
+            "ownership_status": "resolved",
+            "pos": {
+              "x": 50.8,
+              "y": 127
+            },
+            "uuid": "0af43ea9-b681-4574-81d9-f75a974068cd"
+          },
+          {
+            "description": "J1 referans alanı",
+            "item_kind": "property",
+            "layer": "F.SilkS",
+            "owner": {
+              "kind": "footprint",
+              "reference": "J1",
+              "uuid": "0505d820-241b-4fdb-aacf-9ac5f558b84c"
+            },
+            "ownership_status": "resolved",
+            "pos": {
+              "x": 50.84,
+              "y": 88.9
+            },
+            "uuid": "6e16425f-23be-4c43-8b59-c46e5d391f9f"
+          }
+        ],
+        "pos": {
+          "x": 50.8,
+          "y": 127
+        },
+        "rule": "silk_edge_clearance",
+        "severity": "warning"
+      }
+    ],
+    "warnings": 299,
+    "zone_refill_source": null,
+    "zones_refilled": false
+  },
+  "sync": {
+    "changes": [],
+    "coverage": {
+      "atomicity": "single_kicad_undo_commit",
+      "board_only_preserved": {
+        "applied": 0,
+        "planned": 0
+      },
+      "conflicts": {
+        "applied": 0,
+        "planned": 0
+      },
+      "footprints_added": {
+        "applied": 0,
+        "planned": 0
+      },
+      "footprints_updated": {
+        "applied": 0,
+        "planned": 0
+      },
+      "hierarchy_files": 1,
+      "pads_reassigned": {
+        "applied": 0,
+        "planned": 0
+      },
+      "skipped_by_flag": {
+        "applied": 0,
+        "planned": 0
+      },
+      "source": "saved_schematic_hierarchy",
+      "transport": "live_kicad_ipc",
+      "unassigned_footprint": {
+        "applied": 0,
+        "planned": 1
+      }
+    },
+    "diagnostics": [],
+    "plan_revision": "83699e9375f6be21d7188bcd5056b8b5a31e6a3eb5e9166321fe3a7611ebc6c4",
+    "status": "noop",
+    "unassigned_footprints": [
+      {
+        "board_state": "absent",
+        "lib_id": "Device:Fuse",
+        "reference": "F1",
+        "symbol_path": "/f3566f14-9e66-4cca-af55-fcc684494d98",
+        "value": "10A"
+      }
+    ],
+    "undo": null
+  },
+  "ic_sync_applied": {
+    "changes": [
+      {
+        "dnp": false,
+        "footprint_id": "PDU:LM70880_RRX0029B_RectLands",
+        "kind": "add",
+        "pad_nets": {
+          "1": "/VIN",
+          "2": "/VIN",
+          "3": "/VIN",
+          "4": "/CBOOT1",
+          "5": "/SW4_PH1",
+          "6": "/VOUT",
+          "7": "/SYNC",
+          "8": "/GND",
+          "9": "/EN_BUCK",
+          "10": "unconnected-(U1-NC-Pad10)",
+          "11": "/ISNS1",
+          "12": "/VOUT",
+          "13": "/CFG_PRI",
+          "14": "/RT_PH1",
+          "15": "/COMP",
+          "16": "/FB",
+          "17": "/GND",
+          "18": "/VDDA1",
+          "19": "/VCC1",
+          "20": "/SW_PH1",
+          "21": "/SW_PH1",
+          "22": "/SW_PH1",
+          "23": "/GND",
+          "24": "/GND",
+          "25": "/GND",
+          "26": "/GND",
+          "27": "/VIN",
+          "28": "/VIN",
+          "29": "/VIN",
+          "30": "/GND"
+        },
+        "position": {
+          "x": 8.65,
+          "y": 3.65
+        },
+        "reference": "U1",
+        "symbol_path": "/1a457d03-3f41-4328-a962-7ac81fa98011",
+        "value": "LM70880QRRXRQ1"
+      },
+      {
+        "dnp": false,
+        "footprint_id": "PDU:LM70880_RRX0029B_RectLands",
+        "kind": "add",
+        "pad_nets": {
+          "1": "/VIN",
+          "2": "/VIN",
+          "3": "/VIN",
+          "4": "/CBOOT2",
+          "5": "/SW4_PH2",
+          "6": "/VOUT",
+          "7": "unconnected-(U2-PG{slash}SYNCOUT-Pad7)",
+          "8": "/SYNC",
+          "9": "/EN_BUCK",
+          "10": "unconnected-(U2-NC-Pad10)",
+          "11": "/ISNS2",
+          "12": "/VOUT",
+          "13": "/CFG_SEC",
+          "14": "/RT_PH2",
+          "15": "/COMP",
+          "16": "/GND",
+          "17": "/GND",
+          "18": "/VDDA2",
+          "19": "/VCC2",
+          "20": "/SW_PH2",
+          "21": "/SW_PH2",
+          "22": "/SW_PH2",
+          "23": "/GND",
+          "24": "/GND",
+          "25": "/GND",
+          "26": "/GND",
+          "27": "/VIN",
+          "28": "/VIN",
+          "29": "/VIN",
+          "30": "/GND"
+        },
+        "position": {
+          "x": 8.65,
+          "y": 15.950000000000001
+        },
+        "reference": "U2",
+        "symbol_path": "/ca813d47-bfeb-4bd5-ad3f-b858edd7f615",
+        "value": "LM70880QRRXRQ1"
+      },
+      {
+        "dnp": false,
+        "footprint_id": "PDU:TPS25982_RGE0024M",
+        "kind": "add",
+        "pad_nets": {
+          "1": "/VOUT",
+          "2": "/VOUT",
+          "3": "/VOUT",
+          "4": "/GND",
+          "5": "/GND",
+          "6": "/EN_EFUSE",
+          "7": "unconnected-(U3-ITIMER-Pad7)",
+          "8": "/ILIM_O1",
+          "9": "/IMON_O1",
+          "10": "/GND",
+          "11": "/GND",
+          "12": "/GND",
+          "13": "/PG_O1",
+          "14": "/GND",
+          "15": "/DVDT_O1",
+          "16": "/VOUT",
+          "17": "/O1_11V",
+          "18": "/O1_11V",
+          "19": "/O1_11V",
+          "20": "/O1_11V",
+          "21": "/O1_11V",
+          "22": "/O1_11V",
+          "23": "/O1_11V",
+          "24": "/O1_11V",
+          "25": "/VOUT",
+          "26": "/GND"
+        },
+        "position": {
+          "x": 7.55,
+          "y": 27.150000000000002
+        },
+        "reference": "U3",
+        "symbol_path": "/08681ecb-5905-456c-99b2-23c856224027",
+        "value": "TPS259824ONRGET"
+      },
+      {
+        "dnp": false,
+        "footprint_id": "PDU:TPS25982_RGE0024M",
+        "kind": "add",
+        "pad_nets": {
+          "1": "/VOUT",
+          "2": "/VOUT",
+          "3": "/VOUT",
+          "4": "/GND",
+          "5": "/GND",
+          "6": "/EN_EFUSE",
+          "7": "unconnected-(U4-ITIMER-Pad7)",
+          "8": "/ILIM_S2E",
+          "9": "/IMON_S2E",
+          "10": "/GND",
+          "11": "/GND",
+          "12": "/GND",
+          "13": "/PG_S2E",
+          "14": "/GND",
+          "15": "/DVDT_S2E",
+          "16": "/VOUT",
+          "17": "/S2E_11V",
+          "18": "/S2E_11V",
+          "19": "/S2E_11V",
+          "20": "/S2E_11V",
+          "21": "/S2E_11V",
+          "22": "/S2E_11V",
+          "23": "/S2E_11V",
+          "24": "/S2E_11V",
+          "25": "/VOUT",
+          "26": "/GND"
+        },
+        "position": {
+          "x": 7.55,
+          "y": 37.25
+        },
+        "reference": "U4",
+        "symbol_path": "/1633fe73-6bf3-442a-b9e2-aed7d55f5ec8",
+        "value": "TPS259824ONRGET"
+      }
+    ],
+    "coverage": {
+      "atomicity": "single_kicad_undo_commit",
+      "board_only_preserved": {
+        "applied": 0,
+        "planned": 0
+      },
+      "conflicts": {
+        "applied": 0,
+        "planned": 0
+      },
+      "footprints_added": {
+        "applied": 4,
+        "planned": 4
+      },
+      "footprints_updated": {
+        "applied": 0,
+        "planned": 0
+      },
+      "hierarchy_files": 1,
+      "pads_reassigned": {
+        "applied": 0,
+        "planned": 0
+      },
+      "skipped_by_flag": {
+        "applied": 0,
+        "planned": 0
+      },
+      "source": "saved_schematic_hierarchy",
+      "transport": "live_kicad_ipc",
+      "unassigned_footprint": {
+        "applied": 1,
+        "planned": 1
+      }
+    },
+    "diagnostics": [],
+    "plan_revision": "a98bb99c42af3a9b4e1f87efe3f560ecb37ad205e2a458b0ee4507ba5dfe231d",
+    "status": "applied",
+    "unassigned_footprints": [
+      {
+        "board_state": "absent",
+        "lib_id": "Device:Fuse",
+        "reference": "F1",
+        "symbol_path": "/f3566f14-9e66-4cca-af55-fcc684494d98",
+        "value": "10A"
+      }
+    ],
+    "undo": "Ctrl-Z reverses the whole schematic-to-PCB update."
+  },
+  "stackup": {
+    "board": "C:\\Users\\SK\\Desktop\\PDU\\PDU.kicad_pcb",
+    "board_thickness_mm": 1.6,
+    "copper_layer_count": 2,
+    "count": 9,
+    "edge_connector": "none",
+    "finding_count": 0,
+    "findings": [],
+    "finish": "None",
+    "has_edge_plating": false,
+    "hint": "Konnect cannot change a stackup: KiCad 10 declares UpdateBoardStackup but does not implement it (#716). Change it in KiCad's Board Setup, under Board Stackup, then read it again.",
+    "impedance_controlled": false,
+    "layers": [
+      {
+        "enabled": true,
+        "material": "Not specified",
+        "name": "F.SilkS",
+        "type": "silkscreen",
+        "user_name": "F.Silkscreen"
+      },
+      {
+        "enabled": true,
+        "name": "F.Paste",
+        "type": "solderpaste",
+        "user_name": "F.Paste"
+      },
+      {
+        "enabled": true,
+        "epsilon_r": 3.3,
+        "loss_tangent": 0,
+        "material": "Not specified",
+        "name": "F.Mask",
+        "thickness_mm": 0.01,
+        "type": "soldermask",
+        "user_name": "F.Mask"
+      },
+      {
+        "enabled": true,
+        "material": "copper",
+        "name": "F.Cu",
+        "thickness_mm": 0.035,
+        "type": "copper",
+        "user_name": "F.Cu"
+      },
+      {
+        "dielectric_type": "core",
+        "enabled": true,
+        "name": "dielectric 1",
+        "sublayers": [
+          {
+            "epsilon_r": 4.5,
+            "loss_tangent": 0.02,
+            "material": "FR4",
+            "thickness_locked": false,
+            "thickness_mm": 1.51
+          }
+        ],
+        "thickness_mm": 1.51,
+        "type": "dielectric",
+        "user_name": null
+      },
+      {
+        "enabled": true,
+        "material": "copper",
+        "name": "B.Cu",
+        "thickness_mm": 0.035,
+        "type": "copper",
+        "user_name": "B.Cu"
+      },
+      {
+        "enabled": true,
+        "epsilon_r": 3.3,
+        "loss_tangent": 0,
+        "material": "Not specified",
+        "name": "B.Mask",
+        "thickness_mm": 0.01,
+        "type": "soldermask",
+        "user_name": "B.Mask"
+      },
+      {
+        "enabled": true,
+        "name": "B.Paste",
+        "type": "solderpaste",
+        "user_name": "B.Paste"
+      },
+      {
+        "enabled": true,
+        "material": "Not specified",
+        "name": "B.SilkS",
+        "type": "silkscreen",
+        "user_name": "B.Silkscreen"
+      }
+    ],
+    "note": "KiCad serves its default stackup for a board that defines none, and its answer does not say which this is. Its default finish, \"None\", is also a finish a board can name, so it is not reported as missing: give expected.finish to check it.",
+    "source_evidence": {
+      "board_state": "ipc",
+      "detail": "KiCad answered for the exact requested board over its IPC API.",
+      "excludes_unsaved_editor_state": false,
+      "reason": null
+    },
+    "sources": {
+      "board_thickness_mm": "derived",
+      "copper_layer_count": "derived",
+      "findings": "derived",
+      "stackup": "ipc"
+    }
+  },
+  "notes": [
+    "All protected-source mutations via Konnect MCP.",
+    "F1 remains unassigned; no invented MPN.",
+    "Electrical parity: 73 values and257 pin-net assignments unchanged.",
+    "72 footprints;977 numbered copper pad objects;255 logical pad numbers. No pad-net audit failure.",
+    "No routing, copper zones, commits or pushes.",
+    "Preliminary dimensions101.6x76.2mm at50.8,50.8; enclosure dimensions unconfirmed.",
+    "Footprint-field editing unavailable in installed tool schemas; silk and Description warnings unresolved."
+  ]
+}

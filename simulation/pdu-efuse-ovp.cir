@@ -1,0 +1,19 @@
+* PDU full-connectivity BEHAVIORAL bench: efuse-ovp; NOT vendor silicon.
+.include pdu-protection.inc
+.include pdu-inductor-lt.lib
+.param CBIAS=0.5 LFACTOR=1
+Vbattery VOUT 0 PWL(0 0 100u 11 15m 11 15.1m 18 25m 18 25.1m 11)
+Bload1 O1_11V 0 I=(3)*min(max(V(O1_11V)/5,0),1)
+Bload2 S2E_11V 0 I=(1.5)*min(max(V(S2E_11V)/5,0),1)
+Rbleed VOUT 0 100k
+
+.tran 100n 40m 0 1u uic
+.options reltol=0.0001 abstol=1n method=gear
+.meas tran O1_OFF MAX V(O1_11V) FROM=19m TO=24m
+.meas tran S2E_OFF MAX V(S2E_11V) FROM=19m TO=24m
+.meas tran O1_RESET AVG V(O1_11V) FROM=35m TO=40m
+.meas tran S2E_RESET AVG V(S2E_11V) FROM=35m TO=40m
+.meas tran O1_PEAK MAX V(O1_11V) FROM=14m TO=19m
+.options plotwinsize=0
+.save V(O1_11V) V(S2E_11V)
+.end

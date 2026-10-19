@@ -1,0 +1,29 @@
+LTspice 26.1.1 for Windows
+Circuit: C:\Users\SK\Desktop\PDU\simulation\candidate-global-buck-cold-4m-r2.cir
+Start Time: Sun Oct 18 23:59:34 2026
+Options:reltol=.0001 plotwinsize=0
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = -40
+method = trap
+reltol = 0.0001
+Per .tran options, skipping operating point for transient analysis.
+Total elapsed time: 4.573 seconds.
+Total iterations: 667415
+
+Files loaded:
+C:\Users\SK\Desktop\PDU\simulation\candidate-global-buck-cold-4m-r2.cir
+C:\Users\SK\AppData\Local\LTspice\lib\sub\LTC4365-1.sub
+
+normal: AVG(V(OUT))=11.201235703 FROM 0.024 TO 0.029
+peak: MAX(V(OUT))=11.9699382782 FROM 0.029 TO 0.045
+rawpeak: MAX(V(RAW))=44.1323013306 FROM 0.029 TO 0.045
+vdspeak: MAX(V(RAW,OUT))=32.3086929321 FROM 0.029 TO 0.045
+vgs_min: MIN(V(GM1,OUT))=7.0098657608 FROM 0.024 TO 0.029
+vgs_max: MAX(V(GM1,OUT))=7.57053375244 FROM 0 TO 0.08
+reset: AVG(V(OUT))=11.2008018035 FROM 0.075 TO 0.08
+inrush: MAX(I(Cbulk))=0.838947117329 FROM 0 TO 0.024
+mos1_i: MAX(I(Vsense1))=4.06849479675 FROM 0 TO 0.024
+mos1_p: MAX(V(D1,OUT)*I(Vsense1))=24.6256413718 FROM 0 TO 0.024
+mos1_e: INTEG(V(D1,OUT)*I(Vsense1))=0.147501987214 FROM 0 TO 0.024

@@ -1,0 +1,21 @@
+{
+  "repository_consistent": true,
+  "errors": [],
+  "local_document_links_checked": 51,
+  "bom_rows": 73,
+  "missing_MPN": 57,
+  "saved_engine_runs": 48,
+  "saved_acceptance_passed": 512,
+  "saved_acceptance_failed": 2,
+  "electrical_acceptance_passed": false,
+  "scope": "Saved-artifact/repository review only; no new simulation, ERC, DRC or hardware test",
+  "date": "2026-10-19",
+  "saved_project_netclasses": 9,
+  "saved_net_assignments": 46,
+  "orphan_patterns": 0,
+  "unmatched_patterns": 0,
+  "credential_pattern_scan_findings": 0,
+  "large_files_over10MB": 0,
+  "CAD_changes_in_repository_organization": "none; source bytes preserved via Git attributes",
+  "design_acceptance": "NOT_READY; O1OVP failures and unrouted PCB remain"
+}

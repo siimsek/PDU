@@ -1,0 +1,71 @@
+{
+  "source": "Saved PDU.kicad_sch via Konnect; 2026-10-18",
+  "short_count": 0,
+  "shorts": [],
+  "erc": {
+    "coordinates": {
+      "kicad_version": "10.0.7",
+      "reason": "KiCad 10.0.7 carries the fix for the ERC JSON coordinate scaling defect (kicad#25582, fixed in 10.0.7), so its coordinates are passed through unchanged.",
+      "status": "verbatim"
+    },
+    "errors": 0,
+    "total": 0,
+    "violations": [],
+    "warnings": 0
+  },
+  "overlaps": {
+    "bounds_resolved": 77,
+    "bounds_unresolved": [],
+    "overlap_count": 0,
+    "overlaps": []
+  },
+  "orphan": {
+    "orphan_count": 0,
+    "orphans": [],
+    "tolerance": 0.05
+  },
+  "pin_connections": {
+    "unconnected_count": 0,
+    "unconnected_pins": [],
+    "valid": true
+  },
+  "wire_connections": {
+    "floating_count": 0,
+    "floating_endpoints": [],
+    "valid": true
+  },
+  "wire_count": 218,
+  "label_count": 86,
+  "symbol_count": 77,
+  "diagonal_wires": [],
+  "off_grid_wire_endpoints": [],
+  "off_grid_component_origins": [],
+  "off_grid_labels": [],
+  "constraints": [
+    {
+      "reference": "F1",
+      "footprint": "",
+      "MPN": ""
+    },
+    {
+      "reference": "U1",
+      "footprint": "",
+      "MPN": "LM70880QRRXRQ1"
+    },
+    {
+      "reference": "U2",
+      "footprint": "",
+      "MPN": "LM70880QRRXRQ1"
+    },
+    {
+      "reference": "U3",
+      "footprint": "",
+      "MPN": "TPS259824ONRGET"
+    },
+    {
+      "reference": "U4",
+      "footprint": "",
+      "MPN": "TPS259824ONRGET"
+    }
+  ]
+}

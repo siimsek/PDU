@@ -1,0 +1,58 @@
+{
+  "same_pins": true,
+  "same_references": true,
+  "value_changes": [
+    [
+      "RIMON1",
+      "2.61k",
+      "806"
+    ],
+    [
+      "RIMON2",
+      "4.99k",
+      "806"
+    ]
+  ],
+  "footprint_changes": [
+    [
+      "COUT1",
+      "Capacitor_SMD:C_1210_3225Metric",
+      "PDU:TDK_C5750_2220_Recommended"
+    ],
+    [
+      "COUT2",
+      "Capacitor_SMD:C_1210_3225Metric",
+      "PDU:TDK_C5750_2220_Recommended"
+    ],
+    [
+      "COUT3",
+      "Capacitor_SMD:C_1210_3225Metric",
+      "PDU:TDK_C5750_2220_Recommended"
+    ],
+    [
+      "COUT4",
+      "Capacitor_SMD:C_1210_3225Metric",
+      "PDU:TDK_C5750_2220_Recommended"
+    ],
+    [
+      "COUT5",
+      "Capacitor_SMD:C_1210_3225Metric",
+      "PDU:TDK_C5750_2220_Recommended"
+    ],
+    [
+      "COUT6",
+      "Capacitor_SMD:C_1210_3225Metric",
+      "PDU:TDK_C5750_2220_Recommended"
+    ],
+    [
+      "COUT7",
+      "Capacitor_SMD:C_1210_3225Metric",
+      "PDU:TDK_C5750_2220_Recommended"
+    ],
+    [
+      "COUT8",
+      "Capacitor_SMD:C_1210_3225Metric",
+      "PDU:TDK_C5750_2220_Recommended"
+    ]
+  ]
+}

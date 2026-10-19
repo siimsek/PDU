@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "request": {
+        "name": "save_project",
+        "arguments": {}
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "Board saved successfully.",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ],
+  "stderr": []
+}

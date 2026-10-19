@@ -1,0 +1,6 @@
+* ngspice syntax adapter: ideal L has no implicit series resistance.
+* Physical model is identical to pdu-inductor-lt.lib: L + 23.3mOhm DCR.
+.subckt PDU_L A B LVAL=6.8u
+Lcore A D {LVAL*LFACTOR}
+Rdcr D B 23.3m
+.ends PDU_L

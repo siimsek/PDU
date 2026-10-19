@@ -1,0 +1,21 @@
+* PDU full-connectivity BEHAVIORAL bench: s2e-short-latch-reset; NOT vendor silicon.
+.include pdu-circuit.inc
+.include pdu-inductor-lt.lib
+.param CBIAS=0.5 LFACTOR=1
+Vbattery VBAT 0 PWL(0 0 100u 22.2 25m 22.2 25.01m 0 26m 0 26.1m 22.2)
+Bload1 O1_11V 0 I=(3)*min(max(V(O1_11V)/5,0),1)
+Bload2 S2E_11V 0 I=(1.5)*min(max(V(S2E_11V)/5,0),1)
+Rbleed VOUT 0 100k
+Vfault ctl 0 PWL(0 0 15m 0 15.001m 1 18m 1 18.001m 0)
+Sfault S2E_11V 0 ctl 0 FAULTSW
+.model FAULTSW SW(Ron=0.1 Roff=1T Vt=.5 Vh=.01)
+.tran 100n 40m 0 1u uic
+.options reltol=0.0001 abstol=1n method=gear
+Bmeasure1 M_ISNS1 0 V=V(ISNS1,VOUT)/0.0075
+Bmeasure2 M_ISNS2 0 V=V(ISNS2,VOUT)/0.0075
+.meas tran FAULT_OFF AVG V(S2E_11V) FROM=19m TO=24m
+.meas tran HEALTHY AVG V(O1_11V) FROM=19m TO=24m
+.meas tran RESET_OUT AVG V(S2E_11V) FROM=35m TO=40m
+.options plotwinsize=0
+.save V(O1_11V) V(S2E_11V)
+.end

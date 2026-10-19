@@ -1,0 +1,33 @@
+* Candidate only: native ADI LTC4365-1 model. NOT yet in main schematic.
+* Pin order verified from installed SpecialFunctions/LTC4365-1.asy.
+.lib "C:\Users\SK\AppData\Local\LTspice\lib\sub\LTC4365-1.sub"
+.param CG=4e-09
+.temp 85
+Vsource VIN 0 PWL(0 0 100u 11 15m 11 15.1m 18 25m 18 25.1m 11 30m 11 30.1m 0 32m 0 32.1m 11)
+Rovt VIN OV_RAW 219219
+Rovb OV_RAW 0 9990
+Voffset OV_RAW OV 0.0075
+Ruv VIN UV 100k
+Rsh VIN SHDN 100k
+Xcontroller 0 OV UV VIN GATE OUT FAULT SHDN LTC4365-1
+Rfault VIN FAULT 100k
+Mleft VIN GATE COMMON COMMON QN W=1 L=1
+Mright OUT GATE COMMON COMMON QN W=1 L=1
+Cgs1 GATE COMMON {CG}
+Cgs2 GATE COMMON {CG}
+Cgd1 GATE VIN 250p
+Cgd2 GATE OUT 250p
+.model QN NMOS(Level=1 VTO=2.5 KP=100 RD=0.008 RS=0.008)
+Cin VIN 0 100n
+Cout OUT 0 10u
+Bload OUT 0 I=3*min(max(V(OUT)/5,0),1)
+Rbleed OUT 0 100k
+.tran 100n 40m 0 100n uic
+.options reltol=0.0001 plotwinsize=0
+.meas tran NORMAL AVG V(OUT) FROM=10m TO=14m
+.meas tran PEAK MAX V(OUT) FROM=14m TO=20m
+.meas tran OFF MAX V(OUT) FROM=20m TO=24m
+.meas tran AFTER_FAULT MAX V(OUT) FROM=27m TO=29m
+.meas tran RESET AVG V(OUT) FROM=38m TO=40m
+.save V(VIN) V(OUT) V(GATE) V(COMMON) V(OV) V(FAULT)
+.end

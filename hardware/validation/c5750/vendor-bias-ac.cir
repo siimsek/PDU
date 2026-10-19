@@ -1,0 +1,12 @@
+* Isolated manufacturer capacitor model; not converter stability proof
+.include "C5750X7S2A226M280KB_b_LTspice.mod"
+Vtest cap 0 DC {VB} AC 1
+Xcap cap 0 C5750X7S2A226M280KB_b
+.step param VB list 0 11
+.temp 25
+.ac list 1k 400k 440k 1Meg
+.meas AC imag_1k FIND im(I(Vtest)) AT=1k
+.meas AC esr_400k FIND re(-1/I(Vtest)) AT=400k
+.meas AC esr_440k FIND re(-1/I(Vtest)) AT=440k
+.meas AC esr_1meg FIND re(-1/I(Vtest)) AT=1Meg
+.end

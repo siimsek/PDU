@@ -1,0 +1,102 @@
+{
+  "results": [
+    {
+      "request": {
+        "name": "update_footprints_from_library",
+        "arguments": {
+          "board": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\validation\\ltc4365\\Pinmap.kicad_pcb",
+          "references": [
+            "C_HV_ACCEPT"
+          ],
+          "dry_run": false,
+          "expected_plan_revision": "3d29455483bc9c2cf1b8a635bcce4ebb4da617fc21aa2d873f3939adbe441316"
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "{\"changes\":[{\"changed_domains\":[\"pads\",\"graphics\",\"attributes\",\"metadata\"],\"library_id\":\"PDU:TDK_C5750_2220_Recommended\",\"preserved\":{\"instance_overrides\":true,\"kiid\":true,\"layer\":true,\"locked\":true,\"pad_nets\":true,\"position\":true,\"rotation\":true,\"symbol_path\":true},\"reference\":\"C_HV_ACCEPT\"}],\"coverage\":{\"atomicity\":\"single_kicad_undo_commit\",\"changed\":{\"applied\":1,\"planned\":1},\"conflicts\":{\"applied\":0,\"planned\":0},\"selected\":{\"applied\":1,\"planned\":1},\"skipped_unlinked\":{\"applied\":0,\"planned\":0},\"transport\":\"live_kicad_ipc\",\"unchanged\":{\"applied\":0,\"planned\":0}},\"diagnostics\":[],\"plan_revision\":\"3d29455483bc9c2cf1b8a635bcce4ebb4da617fc21aa2d873f3939adbe441316\",\"status\":\"applied\",\"undo\":\"Ctrl-Z reverses the whole footprint library update.\"}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "get_component_pads",
+        "arguments": {
+          "board": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\validation\\ltc4365\\Pinmap.kicad_pcb",
+          "reference": "C_HV_ACCEPT"
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": {
+          "content": [
+            {
+              "text": "{\"pad_count\":2,\"pads\":[{\"copper_layers\":[{\"chamfer_ratio\":null,\"corner_rounding_ratio\":null,\"layer\":\"F.Cu\",\"offset\":{\"x\":0.0,\"y\":0.0},\"shape\":\"rect\",\"size\":{\"x\":1.3,\"y\":4.5}}],\"drill\":{\"end_layer\":\"Unknown\",\"shape\":null,\"size\":{\"x\":0.0,\"y\":0.0},\"start_layer\":\"Unknown\"},\"layers\":[\"F.Cu\",\"F.Mask\",\"F.Paste\"],\"net\":\"\",\"number\":\"1\",\"pad_type\":\"smd\",\"rotation_deg\":0.0,\"shape\":\"rect\",\"size\":{\"x\":1.3,\"y\":4.5},\"uuid\":\"e92ea2f7-566a-43f6-b66b-3eafb5fb6071\",\"x\":97.125,\"y\":110.0},{\"copper_layers\":[{\"chamfer_ratio\":null,\"corner_rounding_ratio\":null,\"layer\":\"F.Cu\",\"offset\":{\"x\":0.0,\"y\":0.0},\"shape\":\"rect\",\"size\":{\"x\":1.3,\"y\":4.5}}],\"drill\":{\"end_layer\":\"Unknown\",\"shape\":null,\"size\":{\"x\":0.0,\"y\":0.0},\"start_layer\":\"Unknown\"},\"layers\":[\"F.Cu\",\"F.Mask\",\"F.Paste\"],\"net\":\"\",\"number\":\"2\",\"pad_type\":\"smd\",\"rotation_deg\":0.0,\"shape\":\"rect\",\"size\":{\"x\":1.3,\"y\":4.5},\"uuid\":\"d65f4faf-dba1-4ca1-8f2a-f58a972b76fd\",\"x\":102.875,\"y\":110.0}],\"reference\":\"C_HV_ACCEPT\",\"source\":\"ipc\"}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "save_project",
+        "arguments": {}
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "content": [
+            {
+              "text": "Board saved successfully.",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "export_svg",
+        "arguments": {
+          "board": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\validation\\ltc4365\\Pinmap.kicad_pcb",
+          "output": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\validation\\ltc4365\\cout-hv-accepted.svg",
+          "layers": [
+            "F.Cu",
+            "F.Mask",
+            "F.Paste",
+            "F.SilkS",
+            "F.Fab",
+            "F.CrtYd"
+          ]
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 6,
+        "result": {
+          "content": [
+            {
+              "text": "{\"black_and_white\":false,\"output\":\"C:\\\\Users\\\\SK\\\\Desktop\\\\PDU\\\\hardware\\\\validation\\\\ltc4365\\\\cout-hv-accepted.svg\",\"success\":true}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ],
+  "stderr": []
+}

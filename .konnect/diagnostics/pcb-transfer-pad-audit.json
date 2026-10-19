@@ -1,0 +1,614 @@
+[
+  {
+    "reference": "CBIN1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CBIN2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CBOOT1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CBOOT2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CCOMP",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CDVDT1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CDVDT2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CEFIN1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CEFIN2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CEFOUT1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CEFOUT2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CHF",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CIN1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CIN2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CIN3",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CIN4",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CIN5",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CIN6",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CIN7",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CIN8",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CIN_U5",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "COUT1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "COUT2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "COUT3",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "COUT4",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "COUT5",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "COUT6",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "COUT7",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "COUT8",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CVCAP",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CVCC1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CVCC2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CVDDA1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "CVDDA2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "D1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "D2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "D3",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "J1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 1,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "J2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 1,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "J3",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 1,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "L1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "L2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "Q1",
+    "source": "ipc",
+    "electrical_pads": 5,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RBOOT1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RBOOT2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RCFG1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RCFG2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RCOMP",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "REN1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "REN2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RFB1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RFB2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RILIM1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RILIM2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RIMON1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RIMON2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RPG1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RPG1B",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RPG2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RPG2B",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RS1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RS2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RSYNC",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RT1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RT2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RUV1",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "RUV2",
+    "source": "ipc",
+    "electrical_pads": 2,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  },
+  {
+    "reference": "U5",
+    "source": "ipc",
+    "electrical_pads": 6,
+    "mechanical_pads": 0,
+    "mismatches": [],
+    "missing": [],
+    "mechanical_net_errors": []
+  }
+]

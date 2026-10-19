@@ -1,0 +1,18 @@
+* PDU full-connectivity BEHAVIORAL bench: backfeed; NOT vendor silicon.
+.include pdu-circuit.inc
+.include pdu-inductor-ng.lib
+.param CBIAS=0.5 LFACTOR=1
+Vbattery VBAT 0 PWL(0 0 100u 20)
+Bload1 O1_11V 0 I=(0)*min(max(V(O1_11V)/5,0),1)
+Bload2 S2E_11V 0 I=(0)*min(max(V(S2E_11V)/5,0),1)
+Rbleed VOUT 0 100k
+Vback VIN 0 PWL(0 0 100u 26)
+.tran 100n 40m 0 1u uic
+.options reltol=0.0001 abstol=1n method=gear
+Bmeasure1 M_ISNS1 0 V=V(ISNS1,VOUT)/0.0075
+Bmeasure2 M_ISNS2 0 V=V(ISNS2,VOUT)/0.0075
+.meas tran IBAT_MAX MAX I(Vbattery) FROM=10m TO=40m
+.meas tran VIN_AVG AVG V(VIN) FROM=35m TO=40m
+.options plotwinsize=0
+.save I(Vbattery) V(VIN)
+.end

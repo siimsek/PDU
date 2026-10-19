@@ -1,0 +1,25 @@
+* PDU full-connectivity BEHAVIORAL bench: cout-candidate-typical-startup; NOT vendor silicon.
+.include pdu-circuit.inc
+.include pdu-inductor-lt.lib
+.param CBIAS=0.9373721590909091 LFACTOR=1
+Vbattery VBAT 0 PWL(0 0 100u 26)
+Bload1 O1_11V 0 I=(3)*min(max(V(O1_11V)/5,0),1)
+Bload2 S2E_11V 0 I=(1.5)*min(max(V(S2E_11V)/5,0),1)
+Rbleed VOUT 0 100k
+
+.tran 100n 40m 0 1u uic
+.options reltol=0.0001 abstol=1n method=gear
+Bmeasure1 M_ISNS1 0 V=V(ISNS1,VOUT)/0.0075
+Bmeasure2 M_ISNS2 0 V=V(ISNS2,VOUT)/0.0075
+.meas tran BUS_AVG AVG V(VOUT) FROM=35m TO=40m
+.meas tran O1_AVG AVG V(O1_11V) FROM=35m TO=40m
+.meas tran S2E_AVG AVG V(S2E_11V) FROM=35m TO=40m
+.meas tran IPHASE1_AVG AVG V(M_ISNS1) FROM=35m TO=40m
+.meas tran IPHASE2_AVG AVG V(M_ISNS2) FROM=35m TO=40m
+.meas tran PG1_MAX MAX V(PG_O1) FROM=0 TO=40m
+.meas tran PG2_MAX MAX V(PG_S2E) FROM=0 TO=40m
+.meas tran IMON1_AVG AVG V(IMON_O1) FROM=35m TO=40m
+.meas tran IMON2_AVG AVG V(IMON_S2E) FROM=35m TO=40m
+.options plotwinsize=0
+.save V(IMON_O1) V(IMON_S2E) V(M_ISNS1) V(M_ISNS2) V(O1_11V) V(PG_O1) V(PG_S2E) V(S2E_11V) V(VOUT)
+.end

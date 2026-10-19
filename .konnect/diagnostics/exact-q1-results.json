@@ -1,0 +1,73 @@
+{
+  "results": [
+    {
+      "request": {
+        "name": "load_toolset",
+        "arguments": {
+          "name": [
+            "sch_components",
+            "library"
+          ]
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "{\"errors\":[],\"loaded\":[\"sch_components\",\"library\"],\"tools\":[{\"description\":\"Add a symbol from a KiCAD library to the schematic. The symbol is snapped to the 1.27mm schematic grid. Preserves every saved hierarchy instance, reports committed-file readback, copies the library Value and Footprint unless explicitly overridden, and refuses stale instance metadata before writing. Specify position in schematic mm coordinates.\",\"name\":\"add_schematic_component\"},{\"description\":\"Remove a component by reference designator, including every placed unit of a multi-unit symbol.\",\"name\":\"delete_schematic_component\"},{\"description\":\"Update fields (Reference, Value, Footprint, custom properties) consistently across every placed unit of a component, and move or hide the text of any of them.\",\"name\":\"edit_schematic_component\"},{\"description\":\"Get a component's shared properties and every placed unit's position. Use get_schematic_pin_locations for pins.\",\"name\":\"get_schematic_component\"},{\"description\":\"List all symbol instances in a schematic with their positions, values, footprints, and properties.\",\"name\":\"list_schematic_components\"},{\"description\":\"Move a component's lowest-numbered unit to a new position and translate every other placed unit by the same delta. Does NOT adjust connected wires. Junction dots are re-judged where the pins moved: a dot the pins leave unjustified is removed and a pin landing mid-span on a wire gains one, reported as junctions_pruned_count and junctions_added_count. A no-connect flag travels with the pin it protects, reported as no_connects_moved; the move is refused before writing when that pin cannot be followed one-to-one.\",\"name\":\"move_schematic_component\"},{\"description\":\"Set the lowest-numbered unit's absolute rotation and rotate every other placed unit by the same delta. Does NOT adjust connected wires. Each unit's Reference and Value text turns with its body, keeping any offset the caller gave it; use reset_schematic_field_positions to put fields back on their library anchors instead. Junction dots are re-judged where the pins turned, reported as junctions_pruned_count and junctions_added_count. A no-connect flag travels with the pin it protects, reported as no_connects_moved; the turn is refused before writing when that pin cannot be followed one-to-one.\",\"name\":\"rotate_schematic_component\"},{\"description\":\"REFUSED until implemented: moving a symbol while stretching its connected              wires is not built yet. Calling this returns an error naming              move_schematic_component as the working alternative \u2014 it moves the symbol              only, leaving wires where they are.\",\"name\":\"move_connected\"},{\"description\":\"Move all symbol units whose origins are within a bounding box by a given offset. Does NOT adjust connected wires. Junction dots are re-judged once for the whole region where its pins moved, reported as junctions_pruned_count and junctions_added_count. No-connect flags travel with the pins they protect, reported as no_connects_moved; the move is refused before writing when a pin cannot be followed one-to-one.\",\"name\":\"move_region\"},{\"description\":\"Assign reference designators in the saved schematic the way eeschema's Tools \u2192 Annotate does with its defaults: every '?' designator gets the first free number for its prefix in the project, in ascending X per sheet instance, numbers used on any sheet instance in the file are reserved, and numbered designators are kept. The units of one multi-unit part (same embedded definition and value, distinct units) share one designator; when which units belong together is not proven they are reported in 'unresolved', never guessed. Two separate parts sharing a designator are reported in 'unresolved' with a 'partial' outcome; they are renumbered only when resolve_duplicates is true (the first in ascending X keeps the number). Annotates one project's instance records \u2014 the schematic's owner by default, or 'project' \u2014 and never touches another project's. Writes both the Reference property and the instances block, then reads the file back; every count in the response comes from that readback. Numbers used on the project's other sheets are reserved through its sheet tree ('other_sheets_consulted'); duplicates already spread across sheets are not detected here. Konnect's own implementation \u2014 kicad-cli has no annotate command. dry_run returns the plan without writing.\",\"name\":\"annotate_schematic\"},{\"description\":\"Get the exact schematic-space (X,Y) coordinates of every pin on every placed unit of a component, accounting for rotation and mirroring. Uses the canonical pin transform. Each pin also reports 'orientation_degrees', the direction leading away from the symbol body (0 = east) \u2014 a net label at the pin must read that way or its text runs back over the symbol's pin names \u2014 and 'length_mm'.\",\"name\":\"get_schematic_pin_locations\"},{\"description\":\"Get pin locations for multiple components in a single file read. Reports the same per-pin fields as get_schematic_pin_locations, including 'orientation_degrees' and 'length_mm'.\",\"name\":\"batch_get_schematic_pin_locations\"},{\"description\":\"Add or update a custom property consistently across every placed unit of a component.\",\"name\":\"add_component_annotation\"},{\"description\":\"Add or update a group property on every placed unit of multiple components.\",\"name\":\"group_components\"},{\"description\":\"Replace every placed unit of a component with a new library symbol while preserving unit numbers. A unit override is accepted only for a single placement. Junction dots are re-judged once for the whole replacement, reported as junctions_pruned_count and junctions_added_count. A no-connect flag follows the same symbol UUID, unit, and pin number when that mapping is one-to-one; removed, renumbered, or duplicated protected pins refuse before writing.\",\"name\":\"replace_component\"},{\"description\":\"Re-embed placed symbols' definitions from their libraries, like KiCad's 'Update Symbols from Library'. A schematic carries its own copy of every symbol, so editing one in its library leaves the sheet drawing the old shape \u2014 this refreshes it. A symbol whose pins moved or disappeared in the library is refused (reported in pins_moved) unless allow_pin_moves is set, because wires and labels attach at pin coordinates.\",\"name\":\"update_symbols_from_library\"},{\"description\":\"Move each placed symbol's Reference and Value text back to the position its library definition anchors them at, carried through the symbol's own rotation \u2014 KiCad's 'Reset field text positions'. Use it on a sheet whose fields sit at a uniform offset instead of where the library puts them (labels inside a connector body, a rail's name below an up-pointing arrow). Fields a symbol's definition gives no anchor for are left alone.\",\"name\":\"reset_schematic_field_positions\"},{\"description\":\"Render a schematic sheet with kicad-cli and return the path to the SVG it wrote.              There is no PNG: KiCad ships no schematic rasteriser \u2014 `sch export` offers no bitmap              format and there is no `sch render` \u2014 so this is a vector file, not an image that can              be shown inline. It lands in a temporary directory and is overwritten by the next view              of the same sheet; use export_schematic_svg (toolset sch_export) to choose where it              goes. The SVG doubles as a geometry source: kicad-cli writes every string a second              time as an invisible <text opacity=\\\"0\\\"> element carrying x, y, textLength, font-size              and text-anchor, so text content, position and width can be checked without rendering              a pixel.\",\"name\":\"get_schematic_view\"},{\"description\":\"Create a new footprint (.kicad_mod) file from a pad layout description.\",\"name\":\"create_footprint\"},{\"description\":\"Atomically append, replace, or delete graphical primitives on one layer of an existing .kicad_mod footprint. Replacement and deletion refuse graphics referenced by a group.\",\"name\":\"set_footprint_graphics\"},{\"description\":\"Atomically replace a footprint's description, tags, or supported attributes while preserving pads, graphics, properties, groups, and models.\",\"name\":\"set_footprint_metadata\"},{\"description\":\"Atomically append, replace, or delete top-level 3D model blocks in an existing .kicad_mod footprint while preserving every non-model child.\",\"name\":\"set_footprint_models\"},{\"description\":\"Edit the size, shape, position, drill, or zone connection of a pad in an existing .kicad_mod footprint file.\",\"name\":\"edit_footprint_pad\"},{\"description\":\"Register a local footprint library directory in the KiCAD global or project library table.\",\"name\":\"register_footprint_library\"},{\"description\":\"List all registered footprint libraries (global and optionally project-level).\",\"name\":\"list_footprint_libraries\"},{\"description\":\"Create a new KiCAD schematic symbol and append it to a .kicad_sym library file. Supports single-unit symbols (via `pins`) and multi-unit parts like dual/quad op-amps or gate banks (via `units` + optional `power_pins`). By default each unit gets a rectangular body sized to its pins; set `glyph` (symbol-level and/or per unit) to draw a conventional op-amp triangle or logic-gate body instead. With a glyph, pins auto-place by their `type` (inputs left in the order listed top-to- bottom, output right, power top/bottom) and their x/y are ignored.\",\"name\":\"create_symbol\"},{\"description\":\"Delete a symbol definition from a .kicad_sym library file.\",\"name\":\"delete_symbol\"},{\"description\":\"List all symbol names defined in a .kicad_sym library file.\",\"name\":\"list_symbols_in_library\"},{\"description\":\"Register a .kicad_sym library file in the KiCAD global or project symbol table. Reports whether the entry was inserted, left unchanged, or updated \u2014 an existing nickname is kept as-is unless replace_existing is set.\",\"name\":\"register_symbol_library\"},{\"description\":\"List all registered symbol libraries (global and optionally project-level).\",\"name\":\"list_symbol_libraries\"},{\"description\":\"Search for symbols across all registered libraries by name or keyword.\",\"name\":\"search_symbols\"},{\"description\":\"List all footprints in a specific registered footprint library (.pretty directory).\",\"name\":\"list_library_footprints\"},{\"description\":\"Return detailed information about a footprint: pad layout, courtyard, description, and optionally its supported graphical primitives.\",\"name\":\"get_footprint_info\"},{\"description\":\"Search for footprints across all registered libraries by name or keyword.\",\"name\":\"search_footprints\"},{\"description\":\"Return detailed information about a schematic symbol: pins, properties, description.\",\"name\":\"get_symbol_info\"}],\"tools_added\":35}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "get_schematic_component",
+        "arguments": {
+          "reference": "Q1",
+          "schematic": "C:\\Users\\SK\\Desktop\\PDU\\PDU.kicad_sch"
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": {
+          "content": [
+            {
+              "text": "{\"footprint\":\"Package_TO_SOT_SMD:TDSON-8-1\",\"lib_id\":\"Transistor_FET:BSC160N10NS3G\",\"mirror_x\":false,\"mirror_y\":false,\"properties\":{\"Datasheet\":\"http://www.infineon.com/dgdl/Infineon-BSC160N10NS3-DS-v02_04-en.pdf?fileId=db3a30432239cccd01226040189a7f47\",\"Description\":\"42A Id, 100V Vds, OptiMOS N-Channel Power MOSFET, 16.0mOhm Ron, Qg (typ) 19.0nC, PG-TDSON-8\",\"Footprint\":\"Package_TO_SOT_SMD:TDSON-8-1\",\"Reference\":\"Q1\",\"Value\":\"BSC160N10NS3G\"},\"reference\":\"Q1\",\"rotation\":270.0,\"unit_count\":1,\"units\":[{\"mirror_x\":false,\"mirror_y\":false,\"rotation\":270.0,\"unit\":1,\"uuid\":\"0f0c970f-ff43-4dbd-80b0-fea6aabc4100\",\"x\":431.8,\"y\":368.3}],\"uuid\":\"0f0c970f-ff43-4dbd-80b0-fea6aabc4100\",\"value\":\"BSC160N10NS3G\",\"x\":431.8,\"y\":368.3}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "get_schematic_component",
+        "arguments": {
+          "reference": "Q_TEST",
+          "schematic": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\validation\\ltc4365\\Pinmap.kicad_sch"
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "content": [
+            {
+              "text": "{\"footprint\":\"Package_TO_SOT_SMD:TDSON-8-1\",\"lib_id\":\"Transistor_FET:BSC160N10NS3G\",\"mirror_x\":false,\"mirror_y\":false,\"properties\":{\"Datasheet\":\"http://www.infineon.com/dgdl/Infineon-BSC160N10NS3-DS-v02_04-en.pdf?fileId=db3a30432239cccd01226040189a7f47\",\"Description\":\"42A Id, 100V Vds, OptiMOS N-Channel Power MOSFET, 16.0mOhm Ron, Qg (typ) 19.0nC, PG-TDSON-8\",\"Footprint\":\"Package_TO_SOT_SMD:TDSON-8-1\",\"Reference\":\"Q_TEST\",\"Value\":\"BSC160N10NS3G\"},\"reference\":\"Q_TEST\",\"rotation\":0.0,\"unit_count\":1,\"units\":[{\"mirror_x\":false,\"mirror_y\":false,\"rotation\":0.0,\"unit\":1,\"uuid\":\"1c73ecb2-0be4-4e11-a696-220cf304efbd\",\"x\":127.0,\"y\":76.2}],\"uuid\":\"1c73ecb2-0be4-4e11-a696-220cf304efbd\",\"value\":\"BSC160N10NS3G\",\"x\":127.0,\"y\":76.2}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ],
+  "stderr": []
+}

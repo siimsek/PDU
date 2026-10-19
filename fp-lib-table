@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+
+  (lib (name "PDU") (type "KiCad") (uri "${KIPRJMOD}/hardware/lib/PDU.pretty") (options "") (descr "")))

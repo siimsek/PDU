@@ -1,0 +1,326 @@
+{
+  "startup-20v": {
+    "type": "board-average",
+    "measures": [
+      "bus_avg",
+      "o1_avg",
+      "s2e_avg",
+      "iphase1_avg",
+      "iphase2_avg",
+      "pg1_max",
+      "pg2_max",
+      "imon1_avg",
+      "imon2_avg"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-startup-20v.cir",
+    "ng_file": "pdu-startup-20v.ng.cir"
+  },
+  "startup-22.2v": {
+    "type": "board-average",
+    "measures": [
+      "bus_avg",
+      "o1_avg",
+      "s2e_avg",
+      "iphase1_avg",
+      "iphase2_avg",
+      "pg1_max",
+      "pg2_max",
+      "imon1_avg",
+      "imon2_avg"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-startup-22.2v.cir",
+    "ng_file": "pdu-startup-22.2v.ng.cir"
+  },
+  "startup-26v": {
+    "type": "board-average",
+    "measures": [
+      "bus_avg",
+      "o1_avg",
+      "s2e_avg",
+      "iphase1_avg",
+      "iphase2_avg",
+      "pg1_max",
+      "pg2_max",
+      "imon1_avg",
+      "imon2_avg"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-startup-26v.cir",
+    "ng_file": "pdu-startup-26v.ng.cir"
+  },
+  "no-load": {
+    "type": "board-average",
+    "measures": [
+      "bus_avg",
+      "o1_avg",
+      "s2e_avg",
+      "iphase1_avg",
+      "iphase2_avg",
+      "pg1_max",
+      "pg2_max",
+      "imon1_avg",
+      "imon2_avg"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-no-load.cir",
+    "ng_file": "pdu-no-load.ng.cir"
+  },
+  "load-step": {
+    "type": "board-average",
+    "measures": [
+      "bus_min",
+      "bus_max",
+      "o1_final",
+      "s2e_final"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-load-step.cir",
+    "ng_file": "pdu-load-step.ng.cir"
+  },
+  "bus-7p5a": {
+    "type": "board-average",
+    "measures": [
+      "bus_avg",
+      "o1_avg",
+      "s2e_avg",
+      "iphase1_avg",
+      "iphase2_avg",
+      "pg1_max",
+      "pg2_max",
+      "imon1_avg",
+      "imon2_avg"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-bus-7p5a.cir",
+    "ng_file": "pdu-bus-7p5a.ng.cir"
+  },
+  "low-ceff": {
+    "type": "board-average",
+    "measures": [
+      "bus_avg",
+      "o1_avg",
+      "s2e_avg",
+      "iphase1_avg",
+      "iphase2_avg",
+      "pg1_max",
+      "pg2_max",
+      "imon1_avg",
+      "imon2_avg"
+    ],
+    "cbias": 0.25,
+    "file": "pdu-low-ceff.cir",
+    "ng_file": "pdu-low-ceff.ng.cir"
+  },
+  "cout-candidate-typical-startup": {
+    "type": "board-average",
+    "measures": [
+      "bus_avg",
+      "o1_avg",
+      "s2e_avg",
+      "iphase1_avg",
+      "iphase2_avg",
+      "pg1_max",
+      "pg2_max",
+      "imon1_avg",
+      "imon2_avg"
+    ],
+    "cbias": 0.9373721590909091,
+    "file": "pdu-cout-candidate-typical-startup.cir",
+    "ng_file": "pdu-cout-candidate-typical-startup.ng.cir"
+  },
+  "cout-candidate-typical-load-step": {
+    "type": "board-average",
+    "measures": [
+      "bus_min",
+      "bus_max",
+      "o1_final",
+      "s2e_final"
+    ],
+    "cbias": 0.9373721590909091,
+    "file": "pdu-cout-candidate-typical-load-step.cir",
+    "ng_file": "pdu-cout-candidate-typical-load-step.ng.cir"
+  },
+  "cout-candidate-upper-startup": {
+    "type": "board-average",
+    "measures": [
+      "bus_avg",
+      "o1_avg",
+      "s2e_avg",
+      "iphase1_avg",
+      "iphase2_avg",
+      "pg1_max",
+      "pg2_max",
+      "imon1_avg",
+      "imon2_avg"
+    ],
+    "cbias": 1.464,
+    "file": "pdu-cout-candidate-upper-startup.cir",
+    "ng_file": "pdu-cout-candidate-upper-startup.ng.cir"
+  },
+  "cout-candidate-upper-load-step": {
+    "type": "board-average",
+    "measures": [
+      "bus_min",
+      "bus_max",
+      "o1_final",
+      "s2e_final"
+    ],
+    "cbias": 1.464,
+    "file": "pdu-cout-candidate-upper-load-step.cir",
+    "ng_file": "pdu-cout-candidate-upper-load-step.ng.cir"
+  },
+  "reverse": {
+    "type": "board-average",
+    "measures": [
+      "vin_max",
+      "bus_max",
+      "ibat_max"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-reverse.cir",
+    "ng_file": "pdu-reverse.ng.cir"
+  },
+  "uvlo": {
+    "type": "board-average",
+    "measures": [
+      "bus_before",
+      "bus_after"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-uvlo.cir",
+    "ng_file": "pdu-uvlo.ng.cir"
+  },
+  "uvlo-falling": {
+    "type": "board-average",
+    "measures": [
+      "bus_hold",
+      "bus_off"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-uvlo-falling.cir",
+    "ng_file": "pdu-uvlo-falling.ng.cir"
+  },
+  "backfeed": {
+    "type": "board-average",
+    "measures": [
+      "ibat_max",
+      "vin_avg"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-backfeed.cir",
+    "ng_file": "pdu-backfeed.ng.cir"
+  },
+  "efuse-ovp": {
+    "type": "output-block",
+    "measures": [
+      "o1_off",
+      "s2e_off",
+      "o1_reset",
+      "s2e_reset",
+      "o1_peak"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-efuse-ovp.cir",
+    "ng_file": "pdu-efuse-ovp.ng.cir"
+  },
+  "efuse-uvlo": {
+    "type": "output-block",
+    "measures": [
+      "o1_hold",
+      "o1_off",
+      "o1_reset"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-efuse-uvlo.cir",
+    "ng_file": "pdu-efuse-uvlo.ng.cir"
+  },
+  "o1-overload": {
+    "type": "output-block",
+    "measures": [
+      "fault_off",
+      "healthy"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-o1-overload.cir",
+    "ng_file": "pdu-o1-overload.ng.cir"
+  },
+  "s2e-overload": {
+    "type": "output-block",
+    "measures": [
+      "fault_off",
+      "healthy"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-s2e-overload.cir",
+    "ng_file": "pdu-s2e-overload.ng.cir"
+  },
+  "o1-short-latch-reset": {
+    "type": "board-average",
+    "measures": [
+      "fault_off",
+      "healthy",
+      "reset_out"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-o1-short-latch-reset.cir",
+    "ng_file": "pdu-o1-short-latch-reset.ng.cir"
+  },
+  "s2e-short-latch-reset": {
+    "type": "board-average",
+    "measures": [
+      "fault_off",
+      "healthy",
+      "reset_out"
+    ],
+    "cbias": 0.5,
+    "file": "pdu-s2e-short-latch-reset.cir",
+    "ng_file": "pdu-s2e-short-latch-reset.ng.cir"
+  },
+  "interleaved-20v": {
+    "type": "ideal-interleaved",
+    "frequency": 435066.34761801176,
+    "measures": [
+      "bus_avg",
+      "bus_pp",
+      "i1_avg",
+      "i2_avg",
+      "i1_pp",
+      "i2_pp",
+      "phase_delay"
+    ],
+    "file": "pdu-interleaved-20v.cir",
+    "ng_file": "pdu-interleaved-20v.ng.cir"
+  },
+  "interleaved-26v": {
+    "type": "ideal-interleaved",
+    "frequency": 435066.34761801176,
+    "measures": [
+      "bus_avg",
+      "bus_pp",
+      "i1_avg",
+      "i2_avg",
+      "i1_pp",
+      "i2_pp",
+      "phase_delay"
+    ],
+    "file": "pdu-interleaved-26v.cir",
+    "ng_file": "pdu-interleaved-26v.ng.cir"
+  },
+  "interleaved-26v-refined": {
+    "type": "ideal-interleaved",
+    "frequency": 435066.34761801176,
+    "measures": [
+      "bus_avg",
+      "bus_pp",
+      "i1_avg",
+      "i2_avg",
+      "i1_pp",
+      "i2_pp",
+      "phase_delay"
+    ],
+    "file": "pdu-interleaved-26v-refined.cir",
+    "ng_file": "pdu-interleaved-26v-refined.ng.cir"
+  }
+}

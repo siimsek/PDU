@@ -1,0 +1,30 @@
+{
+  "results": [
+    {
+      "request": {
+        "arguments": {
+          "board": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\validation\\ltc4365\\Pinmap.kicad_pcb",
+          "y": 83.82,
+          "x": 106.68,
+          "footprint": "PDU:TDSON-8-1_Konnect",
+          "reference": "Q_BSC_ACCEPT"
+        },
+        "name": "place_component"
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "{\"footprint\":\"PDU:TDSON-8-1_Konnect\",\"layer\":\"F.Cu\",\"placed\":\"Q_BSC_ACCEPT\",\"rotation\":0.0,\"source\":\"ipc\",\"x\":106.68,\"y\":83.82}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ],
+  "stderr": []
+}

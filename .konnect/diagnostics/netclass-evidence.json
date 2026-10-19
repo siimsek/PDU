@@ -1,0 +1,497 @@
+{
+  "date": "2026-10-19",
+  "before": {
+    "count": 1,
+    "file": "C:\\Users\\SK\\Desktop\\PDU\\PDU.kicad_pro",
+    "netclasses": [
+      {
+        "clearance": 0.2,
+        "inherits": [],
+        "is_default": true,
+        "matched_nets": [],
+        "missing_fields": [],
+        "name": "Default",
+        "patterns": [],
+        "priority": 2147483647,
+        "trace_width": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3
+      }
+    ],
+    "nets_on_board": 46,
+    "nets_source": "live board in KiCad, read over its IPC API; unsaved edits are included",
+    "note": "A net can match several classes; KiCad then takes each property from the highest-priority class that sets it and falls back to Default. Lower priority numbers rank higher.",
+    "orphan_patterns": [],
+    "source_evidence": {
+      "board_state": "ipc",
+      "detail": "KiCad answered for the exact requested board over its IPC API.",
+      "excludes_unsaved_editor_state": false,
+      "reason": null
+    },
+    "sources": {
+      "board_nets": "ipc",
+      "definitions": "project_file",
+      "matched_nets": "derived",
+      "patterns": "project_file",
+      "unmatched_patterns": "derived"
+    },
+    "unmatched_patterns": []
+  },
+  "after": {
+    "count": 9,
+    "file": "C:\\Users\\SK\\Desktop\\PDU\\PDU.kicad_pro",
+    "netclasses": [
+      {
+        "clearance": 0.2,
+        "inherits": [],
+        "is_default": true,
+        "matched_nets": [],
+        "missing_fields": [],
+        "name": "Default",
+        "patterns": [],
+        "priority": 2147483647,
+        "trace_width": 0.25,
+        "via_diameter": 0.8,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.3,
+        "inherits": [],
+        "is_default": false,
+        "matched_nets": [
+          "/ANODE",
+          "/VBAT",
+          "/VIN"
+        ],
+        "name": "INPUT_POWER",
+        "patterns": [
+          "/VBAT",
+          "/ANODE",
+          "/VIN"
+        ],
+        "priority": -1,
+        "trace_width": 4.5,
+        "via_diameter": 1.2,
+        "via_drill": 0.6
+      },
+      {
+        "clearance": 0.2,
+        "inherits": [],
+        "is_default": false,
+        "matched_nets": [
+          "/GND",
+          "/VOUT"
+        ],
+        "name": "BUS_POWER",
+        "patterns": [
+          "/VOUT",
+          "/GND"
+        ],
+        "priority": -1,
+        "trace_width": 6,
+        "via_diameter": 1.2,
+        "via_drill": 0.6
+      },
+      {
+        "clearance": 0.2,
+        "inherits": [],
+        "is_default": false,
+        "matched_nets": [
+          "/ISNS1",
+          "/ISNS2",
+          "/SW_PH1",
+          "/SW_PH2"
+        ],
+        "name": "PHASE_POWER",
+        "patterns": [
+          "/SW_PH1",
+          "/SW_PH2",
+          "/ISNS1",
+          "/ISNS2"
+        ],
+        "priority": -1,
+        "trace_width": 3.5,
+        "via_diameter": 1.2,
+        "via_drill": 0.6
+      },
+      {
+        "clearance": 0.2,
+        "inherits": [],
+        "is_default": false,
+        "matched_nets": [
+          "/O1_11V"
+        ],
+        "name": "O1_POWER",
+        "patterns": [
+          "/O1_11V"
+        ],
+        "priority": -1,
+        "trace_width": 4.5,
+        "via_diameter": 1.2,
+        "via_drill": 0.6
+      },
+      {
+        "clearance": 0.2,
+        "inherits": [],
+        "is_default": false,
+        "matched_nets": [
+          "/S2E_11V"
+        ],
+        "name": "S2E_POWER",
+        "patterns": [
+          "/S2E_11V"
+        ],
+        "priority": -1,
+        "trace_width": 2.5,
+        "via_diameter": 1.2,
+        "via_drill": 0.6
+      },
+      {
+        "clearance": 0.2,
+        "inherits": [],
+        "is_default": false,
+        "matched_nets": [
+          "/CBOOT1",
+          "/CBOOT2",
+          "/GATE",
+          "/SW4_PH1",
+          "/SW4_PH2",
+          "/VCAP",
+          "/VCC1",
+          "/VCC2",
+          "/VDDA1",
+          "/VDDA2",
+          "Net-(CBOOT1-Pad1)",
+          "Net-(CBOOT2-Pad1)"
+        ],
+        "name": "AUX_LOCAL",
+        "patterns": [
+          "/CBOOT1",
+          "/CBOOT2",
+          "Net-(CBOOT1-Pad1)",
+          "Net-(CBOOT2-Pad1)",
+          "/SW4_PH1",
+          "/SW4_PH2",
+          "/VCAP",
+          "/GATE",
+          "/VCC1",
+          "/VCC2",
+          "/VDDA1",
+          "/VDDA2"
+        ],
+        "priority": -1,
+        "trace_width": 0.5,
+        "via_diameter": 0.8,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "inherits": [],
+        "is_default": false,
+        "matched_nets": [
+          "/CFG_PRI",
+          "/CFG_SEC",
+          "/COMP",
+          "/COMP_MID",
+          "/DVDT_O1",
+          "/DVDT_S2E",
+          "/EN_BUCK",
+          "/EN_EFUSE",
+          "/FB",
+          "/ILIM_O1",
+          "/ILIM_S2E",
+          "/IMON_O1",
+          "/IMON_S2E",
+          "/PG_O1",
+          "/PG_S2E",
+          "/RT_PH1",
+          "/RT_PH2",
+          "/SYNC"
+        ],
+        "name": "CONTROL_SENSE",
+        "patterns": [
+          "/CFG_PRI",
+          "/CFG_SEC",
+          "/COMP",
+          "/COMP_MID",
+          "/DVDT_O1",
+          "/DVDT_S2E",
+          "/EN_BUCK",
+          "/EN_EFUSE",
+          "/FB",
+          "/ILIM_O1",
+          "/ILIM_S2E",
+          "/IMON_O1",
+          "/IMON_S2E",
+          "/PG_O1",
+          "/PG_S2E",
+          "/RT_PH1",
+          "/RT_PH2",
+          "/SYNC"
+        ],
+        "priority": -1,
+        "trace_width": 0.25,
+        "via_diameter": 0.8,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "inherits": [],
+        "is_default": false,
+        "matched_nets": [
+          "unconnected-(U1-NC-Pad10)",
+          "unconnected-(U2-NC-Pad10)",
+          "unconnected-(U2-PG{slash}SYNCOUT-Pad7)",
+          "unconnected-(U3-ITIMER-Pad7)",
+          "unconnected-(U4-ITIMER-Pad7)"
+        ],
+        "name": "NC_DO_NOT_ROUTE",
+        "patterns": [
+          "unconnected-(U1-NC-Pad10)",
+          "unconnected-(U2-NC-Pad10)",
+          "unconnected-(U2-PG{slash}SYNCOUT-Pad7)",
+          "unconnected-(U3-ITIMER-Pad7)",
+          "unconnected-(U4-ITIMER-Pad7)"
+        ],
+        "priority": -1,
+        "trace_width": 0.2,
+        "via_diameter": 0.8,
+        "via_drill": 0.4
+      }
+    ],
+    "nets_on_board": 46,
+    "nets_source": "live board in KiCad, read over its IPC API; unsaved edits are included",
+    "note": "A net can match several classes; KiCad then takes each property from the highest-priority class that sets it and falls back to Default. Lower priority numbers rank higher.",
+    "orphan_patterns": [],
+    "source_evidence": {
+      "board_state": "ipc",
+      "detail": "KiCad answered for the exact requested board over its IPC API.",
+      "excludes_unsaved_editor_state": false,
+      "reason": null
+    },
+    "sources": {
+      "board_nets": "ipc",
+      "definitions": "project_file",
+      "matched_nets": "derived",
+      "patterns": "project_file",
+      "unmatched_patterns": "derived"
+    },
+    "unmatched_patterns": []
+  },
+  "round_trip_failures": [],
+  "rule_readback": {
+    "effective_config": {
+      "default_passives": {
+        "bulk_cap": "10uF X5R 0805",
+        "decoupling_cap": "100nF X7R 0402",
+        "pull_up": "10k 0402"
+      },
+      "design_rules": [
+        "Routing widths are saved netclass defaults, not enforced current limits. Base calculations use external35um nominal copper with31.5um calculation thickness,20C trace rise budget,70C copper resistivity, and<=50mm power trunk lengths with<=50mV drop per trunk. Recalculate for longer/hotter/thinner paths;70um copper is not configured or assumed.",
+        "Use netclass values for full-current trunks: INPUT_POWER4.5mm at6A envelope;BUS_POWER6mm at8A;PHASE_POWER3.5mm at5A;O1_POWER4.5mm at6A routing envelope only;S2E_POWER2.5mm at3.2A. These are sizing envelopes, not measured loads, guaranteed ILIM, fuse fault clearing or O1 5A load settings.",
+        "Keep B.Cu as a continuous GND reference where practical. Keep SW copper compact and FB/COMP/RT/ILIM/IMON away from SW. Route ISNS/VOUT sense branches as Kelvin connections to respective shunt pads; their0.25mm low-current branches are intentional manual-width exceptions to power-net defaults. Large trunk widths must not be started blindly at fine-pitch pads; fanout/neckdowns require a short-path/current review.",
+        "U1.10,U2.10,U2.7,U3.7,U4.7 are intentional NC. NC_DO_NOT_ROUTE is a name/guidance, not a KiCad routing ban. Do not route any copper, labels, testpoints or ground ties to these pads.",
+        "O1 port is NOT qualified:5-12V device rating versusTPS259824O16.9V typical OVP. Do not connect O1 or claim production readiness before a validated protection revision. F1 MPN/footprint/interrupt rating/I2t remain unresolved. Do not infer a fault-current limit from nominal RILIM or simulation pass.",
+        "Netclass via geometry is only a starting geometry:signals0.8/0.4mm pad/drill;power1.2/0.6mm. A single power via is not approved for full trunk current. Minimum plating, via count/distribution, thermal-via stencil treatment and fault I2t require calculation and fabrication confirmation.",
+        "Prototype LM70880_RRX0029B_RectLands is an approximate copper decomposition with production stencil/thermal acceptance open. Preserve logical pad-to-net mapping including repeated29(VIN) and22(SW) pieces. No manufacture exports or DRC waivers may bypass this open acceptance."
+      ],
+      "fab_constraints": {
+        "fab_house": "JLCPCB",
+        "layer_count": 2,
+        "min_clearance_mm": 0.2,
+        "min_trace_width_mm": 0.2,
+        "min_via_drill_mm": 0.3
+      },
+      "naming_conventions": {
+        "net_prefix_ground": "GND",
+        "net_prefix_power": "VCC_"
+      },
+      "preferred_distributors": [
+        "JLCPCB",
+        "LCSC"
+      ],
+      "preferred_manufacturers": [],
+      "sourcing": {
+        "avl": [],
+        "derating": {
+          "capacitor": {
+            "voltage": 0.8
+          },
+          "connector": {
+            "current": 0.8
+          },
+          "diode": {
+            "if": 0.8,
+            "vr": 0.8
+          },
+          "inductor": {
+            "current": 0.8
+          },
+          "led": {
+            "if": 0.8
+          },
+          "mosfet": {
+            "id": 0.8,
+            "vds": 0.8
+          },
+          "regulator": {
+            "current": 0.8,
+            "power": 0.7
+          },
+          "resistor": {
+            "power": 0.6
+          }
+        }
+      }
+    },
+    "note": "Merged user defaults + project overrides. Use these values for all design decisions.",
+    "sources": {
+      "project": "file",
+      "user": "file"
+    }
+  },
+  "drc": {
+    "categories_not_reported": [],
+    "design_rule_violations": 226,
+    "errors": 197,
+    "filtered_count": 496,
+    "live_board_synced": false,
+    "schematic_parity": 73,
+    "schematic_parity_diagnostic": null,
+    "severity_filter": "warning",
+    "shown": 3,
+    "source": "saved_file",
+    "total_violations": 496,
+    "truncated": true,
+    "unconnected_items": 197,
+    "violations": [
+      {
+        "description": "Silkscreen clipped by board edge",
+        "items": [
+          {
+            "description": "Bölüm Edge.Cuts üzerinde",
+            "item_kind": "gr_line",
+            "layer": "Edge.Cuts",
+            "owner": {
+              "kind": "board"
+            },
+            "ownership_status": "resolved",
+            "pos": {
+              "x": 50.8,
+              "y": 127
+            },
+            "uuid": "0af43ea9-b681-4574-81d9-f75a974068cd"
+          },
+          {
+            "description": "J1 referans alanı",
+            "item_kind": "property",
+            "layer": "F.SilkS",
+            "owner": {
+              "kind": "footprint",
+              "reference": "J1",
+              "uuid": "0505d820-241b-4fdb-aacf-9ac5f558b84c"
+            },
+            "ownership_status": "resolved",
+            "pos": {
+              "x": 50.84,
+              "y": 88.9
+            },
+            "uuid": "6e16425f-23be-4c43-8b59-c46e5d391f9f"
+          }
+        ],
+        "pos": {
+          "x": 50.8,
+          "y": 127
+        },
+        "rule": "silk_edge_clearance",
+        "severity": "warning"
+      },
+      {
+        "description": "Silkscreen clipped by board edge",
+        "items": [
+          {
+            "description": "Bölüm Edge.Cuts üzerinde",
+            "item_kind": "gr_line",
+            "layer": "Edge.Cuts",
+            "owner": {
+              "kind": "board"
+            },
+            "ownership_status": "resolved",
+            "pos": {
+              "x": 152.399999,
+              "y": 50.8
+            },
+            "uuid": "f22dcbc7-c13e-466b-bf60-d2316ccc0ca4"
+          },
+          {
+            "description": "J2 referans alanı",
+            "item_kind": "property",
+            "layer": "F.SilkS",
+            "owner": {
+              "kind": "footprint",
+              "reference": "J2",
+              "uuid": "20ecfe9b-6037-4cc9-82bf-7aeb5d73d07e"
+            },
+            "ownership_status": "resolved",
+            "pos": {
+              "x": 152.36,
+              "y": 63.5
+            },
+            "uuid": "b3886c68-6a05-4a1b-9b5d-c98f43b14ba1"
+          }
+        ],
+        "pos": {
+          "x": 152.399999,
+          "y": 50.8
+        },
+        "rule": "silk_edge_clearance",
+        "severity": "warning"
+      },
+      {
+        "description": "Silkscreen clipped by board edge",
+        "items": [
+          {
+            "description": "Bölüm Edge.Cuts üzerinde",
+            "item_kind": "gr_line",
+            "layer": "Edge.Cuts",
+            "owner": {
+              "kind": "board"
+            },
+            "ownership_status": "resolved",
+            "pos": {
+              "x": 152.399999,
+              "y": 50.8
+            },
+            "uuid": "f22dcbc7-c13e-466b-bf60-d2316ccc0ca4"
+          },
+          {
+            "description": "J3 referans alanı",
+            "item_kind": "property",
+            "layer": "F.SilkS",
+            "owner": {
+              "kind": "footprint",
+              "reference": "J3",
+              "uuid": "bb802c9a-aea3-4e57-9a90-29872c27fa94"
+            },
+            "ownership_status": "resolved",
+            "pos": {
+              "x": 152.36,
+              "y": 121.92
+            },
+            "uuid": "1caa08fb-3531-4dd5-8d73-5d1afdcb941e"
+          }
+        ],
+        "pos": {
+          "x": 152.399999,
+          "y": 50.8
+        },
+        "rule": "silk_edge_clearance",
+        "severity": "warning"
+      }
+    ],
+    "warnings": 299,
+    "zone_refill_source": null,
+    "zones_refilled": false
+  },
+  "palette_status": "REFUSED before mutation: live board held open; no fallback. User must reopen project for new netclasses. Optional palette can be entered manually or retried through Konnect after clean board close."
+}

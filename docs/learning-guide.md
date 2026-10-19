@@ -1,19 +1,21 @@
 # Uygulayarak öğrenme rehberi
 
+> Aktif devam noktası [PROJECT-STATE](PROJECT-STATE.md), özel parça incelemesi [REVIEW-CHECKLIST](REVIEW-CHECKLIST.md). Aşağıdaki ilk görevler öğrenme sırasıdır; yapılan PCB prototip yerleşimini veya kapanmamış O1 kabulünü yeniden yorumlamaz.
+
 Bu rehber, IDA_PDU üzerinde gerçek mühendislik işi yaparken öğrenmeyi düzenler. Her oturum şu sırayı izler: **problem → gereken bilgi → seçenekler → öğrencinin hesabı/kararı → teknik kontrol → uygulama → doğrulama → sonraki adım**. Önce küçük bir görev verilir; cevap anahtarı baştan dökülmez. Varsayım, üretici verisi, hesap, simülasyon ve ölçüm birbirinden ayrı tutulur.
 
 ## Proje tabanı
 
 - 6S LiPo; ön tasarım hesabı 20–26 V, nominal 22.2 V.
 - O1 ve RPLIDAR S2E için tek 11.0 V senkron Buck barası ve iki ayrı korumalı port.
-- TI LM70880-Q1 ve TPS259824 eFuse parçaları adaydır; kesinleşmiş parça listesi değildir.
-- İlk talep 7 A / 77 W idi. Ön çalışma 78 W katalog değerlerine dayalı planlama zarfı nedeniyle geçici 7.5 A / 82.5 W hedef kullanıyor. Gerçek yük ölçümü olmadan ikisi de kesinleşmez.
+- İki adet TI LM70880-Q1 ve iki TPS259824 eFuse adaydır; 2026-10-18 şemasında bağlantıları ve hesaplanan pasifleri vardır. Kesinleşmiş üretim listesi değildir.
+- Çıkış gereksinimi 7 A / 77 W; iki fazlı güç katı ve port koruması toplam 7.5 A / 82.5 W tasarım kapasitesine göre adaydır. Her fazın 8 A katalog değerine karşı 7.5 A toplamda ortalama 3.75 A taşıması, %80 derating sınırı olan 6.4 A/fazın altındadır; bu termal kanıt değildir. Mevcut 301 Ω/604 Ω yaklaşık 4.96 A/2.53 A kesme eşiği verir; bunlar ölçülmüş cihaz akımları değildir. O1'in resmî DC ratingi 5–12 V / 5 A olarak doğrulandı; gerçek tüketim ve açılış akımı ölçülmelidir.
 - Motor/ESC beslemesi ve diğer yükler kapsam dışıdır. ESC kaynaklı giriş transienti ve EMI tasarım girdisidir.
 
 ## İlk 20–30 dakikalık görev
 
 1. O1'in tam kart kimliğini bul; üretici etiketi/kılavuzuyla giriş gerilimi ve soket/polarite bilgisini kaydet. Bulunmayan alanı açık soru olarak bırak.
-2. T3 donanım deposundaki 5–12 V / 5 A bilgisini ve ArduPilot sayfasındaki 5–12 V / 3 A bilgisini yan yana yaz. 5 A kapasitenin gerçek tüketim olmadığını belirt.
+2. T3 güncel güç bağlantısı belgesi ile t3gemstone/hardware deposunun aynı 5–12 V / 5 A DC ratingini verdiğini kaydet. Bu kapasiteyi gerçek tüketim olarak kullanma. O1 için 12 V üstünü kesen koruma testi kapanmadan PCB'ye geçme.
 3. S2E veri sayfasından 9–28 V aralığını, 12 V'taki 1.2 A tipik / 1.5 A üst kalkış değerini ve 0.2 A tipik / 0.22 A üst çalışma değerini aktar. 11 V açılış akımını bilinmiyor olarak işaretle.
 4. Varsayımsal güç zarfı için P=VI, ardından I=P/11 V hesabını yap. Hangi girişlerin katalog sınırı, hangilerinin varsayım olduğunu yaz.
 5. En az üç açık soru ve bunları kapatacak ölçüm/kaynak adımını listele.

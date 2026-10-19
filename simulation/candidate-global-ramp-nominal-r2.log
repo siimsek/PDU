@@ -1,0 +1,29 @@
+LTspice 26.1.1 for Windows
+Circuit: C:\Users\SK\Desktop\PDU\simulation\candidate-global-ramp-nominal-r2.cir
+Start Time: Sun Oct 18 23:59:22 2026
+Options:reltol=.0001 plotwinsize=0
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = 25
+method = trap
+reltol = 0.0001
+Per .tran options, skipping operating point for transient analysis.
+Total elapsed time: 4.392 seconds.
+Total iterations: 645694
+
+Files loaded:
+C:\Users\SK\Desktop\PDU\simulation\candidate-global-ramp-nominal-r2.cir
+C:\Users\SK\AppData\Local\LTspice\lib\sub\LTC4365-1.sub
+
+normal: AVG(V(OUT))=10.9753383534 FROM 0.024 TO 0.029
+peak: MAX(V(OUT))=11.5370187759 FROM 0.029 TO 0.045
+rawpeak: MAX(V(RAW))=18 FROM 0.029 TO 0.045
+vdspeak: MAX(V(RAW,OUT))=17.9999998137 FROM 0.029 TO 0.045
+vgs_min: MIN(V(GM1,OUT))=7.38746233708 FROM 0.024 TO 0.029
+vgs_max: MAX(V(GM1,OUT))=7.63259315491 FROM 0 TO 0.08
+reset: AVG(V(OUT))=10.9752036985 FROM 0.075 TO 0.08
+inrush: MAX(I(Cbulk))=1.15959990025 FROM 0 TO 0.024
+mos1_i: MAX(I(Vsense1))=2.73378491402 FROM 0 TO 0.024
+mos1_p: MAX(V(D1,OUT)*I(Vsense1))=15.6359961599 FROM 0 TO 0.024
+mos1_e: INTEG(V(D1,OUT)*I(Vsense1))=0.0964684248417 FROM 0 TO 0.024

@@ -1,0 +1,47 @@
+{
+  "results": [
+    {
+      "request": {
+        "name": "open_project",
+        "arguments": {
+          "path": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\validation\\ltc4365\\Pinmap.kicad_pcb"
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "{\"ipc_address\":\"ipc://C:\\\\Users\\\\SK\\\\AppData\\\\Local\\\\Temp\\\\konnect-pinmap-api\\\\kicad\\\\api.sock\",\"ipc_available\":true,\"ipc_failure\":null,\"kicad_ui_running\":true,\"message\":\"The requested board is open in KiCad.\",\"open_board_count\":1,\"open_boards\":[\"C:\\\\Users\\\\SK\\\\Desktop\\\\PDU\\\\hardware\\\\validation\\\\ltc4365\\\\Pinmap.kicad_pcb\"],\"open_boards_error\":null,\"requested_board\":\"C:\\\\Users\\\\SK\\\\Desktop\\\\PDU\\\\hardware\\\\validation\\\\ltc4365\\\\Pinmap.kicad_pcb\",\"requested_check_error\":null,\"requested_open\":true,\"requested_path\":\"C:\\\\Users\\\\SK\\\\Desktop\\\\PDU\\\\hardware\\\\validation\\\\ltc4365\\\\Pinmap.kicad_pcb\"}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "get_component_list",
+        "arguments": {
+          "board": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\validation\\ltc4365\\Pinmap.kicad_pcb"
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": {
+          "content": [
+            {
+              "text": "{\"components\":[{\"footprint\":\"Capacitor_SMD:CP_Elec_10x12.6\",\"layer\":\"F.Cu\",\"reference\":\"C_TEST\",\"rotation\":0.0,\"value\":\"CP_Elec_10x12.6\",\"x\":86.36,\"y\":50.8},{\"footprint\":\"PDU:CSD18534Q5A_Q5A\",\"layer\":\"F.Cu\",\"reference\":\"Q_FINAL\",\"rotation\":0.0,\"value\":\"CSD18534Q5A_Q5A\",\"x\":66.04,\"y\":66.04},{\"footprint\":\"PDU:CSD18534Q5A_Q5A\",\"layer\":\"F.Cu\",\"reference\":\"Q_ACCEPT\",\"rotation\":0.0,\"value\":\"CSD18534Q5A_Q5A\",\"x\":66.04,\"y\":83.82},{\"footprint\":\"PDU:CSD18534Q5A_Q5A\",\"layer\":\"F.Cu\",\"reference\":\"Q_VALID\",\"rotation\":0.0,\"value\":\"CSD18534Q5A_Q5A\",\"x\":86.36,\"y\":83.82},{\"footprint\":\"Package_TO_SOT_SMD:TSOT-23-8\",\"layer\":\"F.Cu\",\"reference\":\"U_TEST\",\"rotation\":0.0,\"value\":\"TSOT-23-8\",\"x\":50.8,\"y\":50.8},{\"footprint\":\"PDU:CSD18534Q5A_Q5A\",\"layer\":\"F.Cu\",\"reference\":\"Q_OV_TEST\",\"rotation\":0.0,\"value\":\"CSD18534Q5A_Q5A\",\"x\":66.04,\"y\":50.8}],\"count\":6}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ],
+  "stderr": []
+}

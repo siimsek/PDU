@@ -1,0 +1,14 @@
+* IDA PDU single-phase ripple check at 20 V. Not an LM70880 model.
+* Fixed 440 kHz, 55 percent duty, Gear, settled initial current.
+Vsw sws 0 PULSE(0 20 0 20n 20n 1.25u 2.272727u)
+Rsw sws sw 50m
+L1 sw out 6.8u Rser=23.3m IC=3.75
+Cout out 0 88u IC=10.91
+Rload out 0 2.93333
+.tran 0 300u 0 10n uic
+.meas tran VOUT_AVG AVG V(out) FROM=250u TO=300u
+.meas tran VOUT_PP PP V(out) FROM=250u TO=300u
+.meas tran IL_PP PP I(L1) FROM=250u TO=300u
+.meas tran IL_AVG AVG I(L1) FROM=250u TO=300u
+.options plotwinsize=0 measdgt=6 method=gear
+.end

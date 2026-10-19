@@ -1,0 +1,12 @@
+Note: gnd in a subcircuit is not set to 0 automatically
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * explicit zero inductor series resistance portability probe
+
+Error on line 3 or its substitute:
+  l1 a b 6.8u rser=0
+  unknown parameter (rser) 
+    Simulation interrupted due to error!
+

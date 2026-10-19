@@ -1,0 +1,30 @@
+{
+  "results": [
+    {
+      "request": {
+        "arguments": {
+          "board": "C:\\Users\\SK\\Desktop\\PDU\\hardware\\validation\\ltc4365\\Pinmap.kicad_pcb",
+          "y": 83.82,
+          "footprint": "PDU:LM70880_RRX0029B_RectLands",
+          "x": 147.32,
+          "reference": "U_BUCK_ACCEPT"
+        },
+        "name": "place_component"
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "{\"footprint\":\"PDU:LM70880_RRX0029B_RectLands\",\"layer\":\"F.Cu\",\"placed\":\"U_BUCK_ACCEPT\",\"rotation\":0.0,\"source\":\"ipc\",\"x\":147.32,\"y\":83.82}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ],
+  "stderr": []
+}

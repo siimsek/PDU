@@ -1,0 +1,24 @@
+LTspice 26.1.1 for Windows
+Circuit: C:\Users\SK\Desktop\PDU\simulation\pdu-o1-short-latch-reset.cir
+Start Time: Mon Oct 19 13:02:48 2026
+Options:reltol=0.0001 abstol=1n method=gear plotwinsize=0
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = 27
+method = Gear
+abstol = 1e-09
+reltol = 0.0001
+Per .tran options, skipping operating point for transient analysis.
+Total elapsed time: 0.784 seconds.
+Total iterations: 86531
+
+Files loaded:
+C:\Users\SK\Desktop\PDU\simulation\pdu-o1-short-latch-reset.cir
+C:\Users\SK\Desktop\PDU\simulation\pdu-circuit.inc
+C:\Users\SK\Desktop\PDU\simulation\pdu-behavioral.lib
+C:\Users\SK\Desktop\PDU\simulation\pdu-inductor-lt.lib
+
+fault_off: AVG(V(O1_11V))=1.83050137548e-11 FROM 0.019 TO 0.024
+healthy: AVG(V(S2E_11V))=10.9920082092 FROM 0.019 TO 0.024
+reset_out: AVG(V(O1_11V))=10.9879169464 FROM 0.035 TO 0.04

@@ -1,0 +1,70 @@
+{
+  "results": [
+    {
+      "request": {
+        "name": "open_project",
+        "arguments": {
+          "path": "C:\\Users\\SK\\Desktop\\PDU\\PDU.kicad_pcb"
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "{\"ipc_address\":\"ipc://C:\\\\Users\\\\SK\\\\AppData\\\\Local\\\\Temp\\\\konnect-pdu-api\\\\kicad\\\\api.sock\",\"ipc_available\":false,\"ipc_failure\":{\"kind\":\"request_failed\",\"message\":\"KiCad IPC error: KiCad is not ready to reply (AS_NOT_READY)\"},\"kicad_ui_running\":false,\"message\":\"The KiCad IPC request did not complete and may have reached the endpoint; a KiCad status in ipc_failure proves receipt, and KiCad may still be starting.\",\"open_board_count\":0,\"open_boards\":[],\"open_boards_error\":null,\"requested_board\":\"C:\\\\Users\\\\SK\\\\Desktop\\\\PDU\\\\PDU.kicad_pcb\",\"requested_check_error\":null,\"requested_open\":null,\"requested_path\":\"C:\\\\Users\\\\SK\\\\Desktop\\\\PDU\\\\PDU.kicad_pcb\"}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "get_component_list",
+        "arguments": {
+          "board": "C:\\Users\\SK\\Desktop\\PDU\\PDU.kicad_pcb"
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": {
+          "content": [
+            {
+              "text": "KiCad IPC error: KiCad is not ready to reply (AS_NOT_READY)",
+              "type": "text"
+            }
+          ],
+          "isError": true
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "find_shorted_nets",
+        "arguments": {
+          "schematic": "C:\\Users\\SK\\Desktop\\PDU\\PDU.kicad_sch"
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "content": [
+            {
+              "text": "{\"short_count\":0,\"shorts\":[]}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ],
+  "stderr": [
+    "2026-10-19T08:33:02.786047Z  WARN konnect_ipc::client: [BETA] Ping to ipc://C:\\Users\\SK\\AppData\\Local\\Temp\\konnect-pdu-api\\kicad\\api.sock failed: KiCad IPC error: KiCad is not ready to reply (AS_NOT_READY)\n"
+  ]
+}

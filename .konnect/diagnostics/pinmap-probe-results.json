@@ -1,0 +1,90 @@
+{
+  "results": [
+    {
+      "request": {
+        "name": "load_toolset",
+        "arguments": {
+          "name": [
+            "editor_navigation",
+            "verification"
+          ]
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "{\"errors\":[],\"loaded\":[\"editor_navigation\",\"verification\"],\"tools\":[{\"description\":\"Observe the configured KiCad IPC endpoint: running KiCad version, addressable schematic and PCB editors, exact open document identities, and semantic navigation capabilities. Active editor/document/sheet fields are null when KiCad has no stable typed query; open-document order is never treated as active state.\",\"name\":\"get_editor_state\"},{\"description\":\"Read the current selection from one exact KiCad editor, project, document, and schematic sheet instance. Returns stable KIID/UUID identities and refuses stale, ambiguous, cross-project, cross-document, or unsupported selected state instead of retargeting.\",\"name\":\"get_editor_selection\"},{\"description\":\"Deterministically resolve one exact saved KiCad object in an explicitly open project, document, editor, and schematic hierarchy instance. Stable KIID/UUID identity is primary; a human reference is accepted only when it resolves uniquely and ambiguity is returned with candidates.\",\"name\":\"resolve_navigation_target\"},{\"description\":\"Clear, add to, or remove from one exact KiCad editor selection. Every non-clear KIID is first resolved in the explicit saved project/document/sheet, and success is derived only from a fresh exact GetSelection readback.\",\"name\":\"mutate_editor_selection\"},{\"description\":\"Resolve an exact schematic-symbol/PCB-footprint relationship in either direction from stable saved KiCad symbol-path linkage, while proving both explicit live document contexts. This resolve-only operation does not activate or select; pin/pad/net expansion remains unsupported unless a unique stable destination can be modeled.\",\"name\":\"resolve_cross_probe_target\"},{\"description\":\"Run the Design Rule Check on the PCB and return structured violation results, with separate error and warning counts in the summary. Prefer this over `get_drc_violations` (pcb_export toolset) \u2014 they run the same underlying kicad-cli check, but `run_drc` returns a cleaner breakdown. KiCad runs the complete configured DRC ruleset; kicad-cli has no per-test selector.\",\"name\":\"run_drc\"},{\"description\":\"Set board-level design rules (clearance, trace width, via size) in the sibling KiCAD project file.\",\"name\":\"set_design_rules\"},{\"description\":\"Return the current design rule constraints defined in the sibling KiCAD project file.\",\"name\":\"get_design_rules\"},{\"description\":\"Write the PCB editor Pre-defined Sizes list (track widths and via pad/drill pairs) into the sibling .kicad_pro. These populate the Track/Via dropdowns and W/Shift+W while routing; they are not DRC limits and do not change netclasses. A leading 0 mm track and 0/0 via is always kept as the 'use netclass' sentinel. Pass only the lists you want to replace. KiCad reads the change on next project open. The board file is not modified.\",\"name\":\"set_predefined_sizes\"},{\"description\":\"Return the PCB editor Pre-defined Sizes list from the sibling .kicad_pro: track_widths (mm) and via_dimensions (diameter/drill mm), including the 0 / 0,0 netclass sentinel KiCad keeps at the front of each list.\",\"name\":\"get_predefined_sizes\"},{\"description\":\"Check whether the KiCad GUI application is running and whether IPC responds within a bounded timeout. When IPC does not answer, ipc_failure.kind says why: not_configured, no_listener, access_denied (the operating system refused this account; likely a different account or a restrictive ACL, as with a sandboxed client), handshake_failed (the listener did not complete NNG's handshake, so it is probably not KiCad; this takes NNG's 10 s limit, so pass timeout_seconds above 10 to see it), transport_error, or request_failed (the request did not complete and may have reached the endpoint; an explicit KiCad status such as AS_NOT_READY proves receipt, a timeout or malformed reply does not). ipc_failure is null when no kind was established: the Ping succeeded with AS_OK, or this check's own timeout expired first (timed_out: true).\",\"name\":\"check_kicad_ui\"},{\"description\":\"Launch the KiCAD GUI application and optionally open a project file.\",\"name\":\"launch_kicad_ui\"},{\"description\":\"Copy a routing pattern (traces and vias) from one region of the board to another.\",\"name\":\"copy_routing_pattern\"},{\"description\":\"Set per-layer design constraints (e.g. min trace width, clearance) in the sibling .kicad_dru custom rules file.\",\"name\":\"set_layer_constraints\"},{\"description\":\"Measure spacing between two footprints on the requested board. `mode: anchor` (the compatibility default) returns straight-line placement-anchor distance. `mode: courtyard` returns edge-to-edge distance between transformed, authored courtyard bounding boxes for same-side footprints. It refuses missing or malformed courtyard geometry and does not substitute pads or anchors. Neither mode measures pad, trace or copper clearance; use `run_drc` for electrical clearance and `get_component_pads` for pad geometry. Reads the live KiCad board when open, otherwise the saved file, and reports the source.\",\"name\":\"check_clearance\"}],\"tools_added\":15}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "get_installation_info",
+        "arguments": {}
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": {
+          "content": [
+            {
+              "text": "{\"build\":{\"commit\":\"6bbe3e4f890ba1d37c0e5d5f38ccd03d90958c9e\",\"commit_source\":\"build_environment\",\"profile\":\"release\",\"target_arch\":\"x86_64\",\"target_os\":\"windows\",\"version\":\"0.13.0\",\"working_tree_state\":\"not_recorded\"},\"configuration\":{\"search_policy\":\"first_existing_no_merge\",\"selected_path\":\"\\\\\\\\?\\\\C:\\\\Users\\\\SK\\\\Desktop\\\\PDU\\\\.konnect\\\\diagnostics\\\\pinmap-config.json\",\"skipped_existing_paths\":[],\"source\":\"explicit_path\"},\"guidance\":{\"bundle_version\":\"0.13.0\",\"claude\":{\"checked\":\"earlier\",\"marker\":null,\"state\":\"not_installed\"},\"codex\":{\"checked\":\"earlier\",\"marker\":{\"legacy\":false,\"path\":\"C:\\\\Users\\\\SK\\\\.konnect\\\\.installed-codex\",\"version\":\"0.13.0\"},\"state\":\"current\"},\"probe_status\":\"ok\"},\"installation\":{\"binary_on_disk\":{\"newer_than_running\":false,\"probe_status\":\"ok\",\"version\":\"0.13.0\"},\"evidence\":\"A sibling KiCad executable-plugin manifest has Konnect's exact public identifier.\",\"manifest_path\":\"C:\\\\Users\\\\SK\\\\Documents\\\\KiCad\\\\10.0\\\\3rdparty\\\\plugins\\\\com_github_mixelpixx_konnect\\\\plugin.json\",\"source\":\"kicad_pcm\"},\"ipc\":{\"configured\":true,\"endpoint\":\"ipc://C:\\\\Users\\\\SK\\\\AppData\\\\Local\\\\Temp\\\\kicad\\\\api-20736.sock\",\"source\":\"resolved_server_config\"},\"kicad\":{\"cli_path\":\"C:\\\\Program Files\\\\KiCad\\\\10.0\\\\bin\\\\kicad-cli.exe\",\"probe_status\":\"ok\",\"version\":\"10.0.7\"},\"restart_guidance\":[\"Windows: exit every MCP client or KiCad session that launched Konnect, then reopen the owning application; running executables may remain locked during an update.\",\"KiCad PCM install detected: complete the Plugin and Content Manager update, then restart KiCad and any separately configured MCP client.\",\"Call get_installation_info again after restart and verify the serving version, commit, and executable path.\"],\"runtime\":{\"executable_path\":\"C:\\\\Users\\\\SK\\\\Documents\\\\KiCad\\\\10.0\\\\3rdparty\\\\plugins\\\\com_github_mixelpixx_konnect\\\\bin\\\\konnect.exe\"}}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "get_editor_state",
+        "arguments": {}
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "content": [
+            {
+              "text": "{\"error\":{\"editor\":\"configured_endpoint\",\"kind\":\"editor_unavailable\",\"reason\":\"the configured KiCad IPC endpoint is unreachable\"},\"message\":\"KiCad editor state is unavailable: the configured KiCad IPC endpoint is unreachable.\"}",
+              "type": "text"
+            }
+          ],
+          "isError": true
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "check_kicad_ui",
+        "arguments": {
+          "timeout_seconds": 3
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 6,
+        "result": {
+          "content": [
+            {
+              "text": "{\"elapsed_ms\":348,\"ipc_failure\":{\"kind\":\"no_listener\",\"message\":\"Cannot connect to KiCad IPC at ipc://C:\\\\Users\\\\SK\\\\AppData\\\\Local\\\\Temp\\\\kicad\\\\api-20736.sock: Connection refused. Nothing is listening there: KiCad may be closed, its API disabled (Edit > Preferences > Plugins > 'Enable KiCad API'), or this address left behind by a closed session. Guide: https://github.com/mixelpixx/Konnect/blob/main/docs/TROUBLESHOOTING.md\"},\"ipc_responsive\":false,\"process_detected\":true,\"running\":true,\"timed_out\":false,\"timeout_seconds\":3}",
+              "type": "text"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ],
+  "stderr": [
+    "2026-10-19T08:23:12.750557Z  WARN konnect_ipc::client: [BETA] Ping to ipc://C:\\Users\\SK\\AppData\\Local\\Temp\\kicad\\api-20736.sock failed: Cannot connect to KiCad IPC at ipc://C:\\Users\\SK\\AppData\\Local\\Temp\\kicad\\api-20736.sock: Connection refused. Nothing is listening there: KiCad may be closed, its API disabled (Edit > Preferences > Plugins > 'Enable KiCad API'), or this address left behind by a closed session. Guide: https://github.com/mixelpixx/Konnect/blob/main/docs/TROUBLESHOOTING.md\n"
+  ]
+}

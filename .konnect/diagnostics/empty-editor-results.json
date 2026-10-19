@@ -1,0 +1,49 @@
+{
+  "results": [
+    {
+      "request": {
+        "name": "get_component_list",
+        "arguments": {
+          "board": ""
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "text": "{\"error\":{\"kind\":\"ambiguous_open_board\",\"path\":\"\"},\"message\":\"KiCad's open documents cannot be compared safely with requested board '' (a PCB document with an empty board filename). Konnect did not read or modify another board.\"}",
+              "type": "text"
+            }
+          ],
+          "isError": true
+        }
+      }
+    },
+    {
+      "request": {
+        "name": "get_board_info",
+        "arguments": {
+          "board": ""
+        }
+      },
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": {
+          "content": [
+            {
+              "text": "{\"error\":{\"kind\":\"handler_error\",\"reason\":\"could not read or parse \"},\"message\":\"Tool error: could not read or parse \"}",
+              "type": "text"
+            }
+          ],
+          "isError": true
+        }
+      }
+    }
+  ],
+  "stderr": [
+    "2026-10-19T08:27:51.535050Z  WARN konnect_core::mcp::handler: tool handler returned anyhow::Error tool=get_board_info error=could not read or parse \n"
+  ]
+}
