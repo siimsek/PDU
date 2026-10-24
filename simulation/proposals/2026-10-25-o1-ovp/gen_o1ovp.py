@@ -15,7 +15,7 @@ HDR = '* WP1 2026-10-25-o1-ovp proposal bench (BEHAVIORAL/IDEAL models; NOT vend
 
 # ---------------------------------------------------------------- parameter corners
 BASE = dict(TDON='1.68u', TDOV='5.55u', IBST='345u', IPU='1.69', IPD='2', VTH_P='1.5', CGS_P='5n',
-            NPAR='2', RON_P='1.8m', CRAW='92.65u', ESR='1m', VBSTR='9', VCPOFF='11.6')
+            NPAR='2', RON_P='1.8m', CRAW='185.3u', ESR='1m', VBSTR='9', VCPOFF='11.6')
 # Comparator corner constants (pin-referred, see window_budget.py):
 #   VIO +-5 mV (SNOSDB1E, guaranteed only at VCM=VEE+0.3 V), ASSUMPTION A1 VCM allowance +-4.1 mV,
 #   VHYST 1.5..5 mV, +50 mV = overdrive at which tPD 4.5 ns max is specified (conservative delay model).
@@ -31,6 +31,13 @@ CORNERS = {
 }
 # RON per FET; NPAR=2 parallel pairs is the design (BASE). 5.28 mOhm = 3.3 mOhm max @4.5 V x1.6 hot.
 RON = {'ron1m8': dict(RON_P='1.8m'), 'ron3m3': dict(RON_P='3.3m'), 'ron5m28': dict(RON_P='5.28m')}
+# WP1 rev2 RAW bank: 16 x TDK C5750X7S2A226M280KB. Per part 20.622 uF @11 V (vendor model, typical) ->
+#   low  = x0.8 (tol) x0.78 (X7S temp) x0.9 (ASSUMED aging) = 11.581 uF -> 16 parts 185.3 uF (acceptance minimum)
+#   high = x1.2 x1.22 = 30.191 uF -> 16 parts 483.05 uF (high-C corner; buck loop stability = WP3)
+RAW_ADD = list(range(21, 29))
+C_RAW_MIN, C_RAW_MAX = '185.3u', '483u'
+CBIAS_LO = '0.46875'  # 22 uF x 0.46875 x 16 = 165 uF (review honest-minimum corner)
+CBIAS_HI = '1.372'   # 22 uF x 1.372 = 30.18 uF per part (board decks, high-C corner)
 RON_INFO = {'par1-ron5m28': dict(RON_P='5.28m', NPAR='1')}  # single pair: shows why 2 pairs are used
 
 def params(corner, **over):
@@ -63,8 +70,15 @@ def circuit_split():
     names = sorted(c[0] for c in changes if c[0] != 'drop')
     expect = sorted([f'COUT{i}' for i in range(1, 9)] + ['RS1', 'RS2', 'RFB1', 'XU1', 'XU2'])
     assert names == expect, names
+    # WP1 rev2: 8 ADDITIONAL RAW capacitors, same MPN/footprint as COUT1-8 (TDK C5750X7S2A226M280KB,
+    # 22 uF/100 V X7S 2220), modelled exactly like the baseline COUT lines (22 uF x CBIAS each).
+    add = [f'COUT{i} RAW 0 {{2.2e-05*CBIAS}}' for i in RAW_ADD]
+    pos = max(i for i, l in enumerate(out) if l.startswith('COUT')) + 1
+    out[pos:pos] = add
+    changes += [('add', '', l) for l in add]
     body = ('* DERIVED by gen_o1ovp.py from ../../pdu-circuit.inc (baseline a1dbeeb). RAW split:\n'
             '* COUT1-8, RS1/RS2 low side, XU1/XU2 pins 6+12 (VOUT sense) and RFB1 top -> RAW.\n'
+            '* rev2: COUT21-COUT28 ADDED on RAW (same MPN as COUT1-8) -> 16 x 22 uF RAW bank.\n'
             '* CEFIN1/2, REN1/2, XU3/XU4 (efuses) stay on VOUT. .include of the shared lib removed;\n'
             '* each deck (in decks/) includes ../../../pdu-behavioral.lib exactly once.\n' + '\n'.join(out) + '\n')
     return body, changes
@@ -92,13 +106,14 @@ XQ10 RAW G_OVP SRC_OVP O1OVP_NFET RON={RON_P/NPAR} VTH={VTH_P} CGS={CGS_P*NPAR}
 XQ11 VOUT G_OVP SRC_OVP O1OVP_NFET RON={RON_P/NPAR} VTH={VTH_P} CGS={CGS_P*NPAR}
 RSRC10 SRC_OVP 0 10Meg
 * U11 TPS7A1650 5 V for comparator and reference; bleed absorbs input-clamp injection.
+* rev2 P1-4: COUT11 10 uF (SBVS171F: >=2.2 uF EFFECTIVE required; 2.2 uF X7R 0805 nominal falls below it under DC bias)
 XU11 VIN V5_OVP 0 O1OVP_LDO VLDO=5
 CIN11 VIN 0 1u
-COUT11 V5_OVP 0 2.2u
+COUT11 V5_OVP 0 10u
 RBLD11 V5_OVP 0 499
-* U12 REF35409 4.096 V
+* U12 REF35409 4.096 V; rev2 P1-4: CREF12 1 uF (SNAS809C stable CL range 0.1-10 uF; 0.1 uF nominal -10 % tol fell below the min)
 XU12 V5_OVP VREF_OVP 0 O1OVP_REF35 VREF={VREF_P}
-CREF12 VREF_OVP 0 0.1u
+CREF12 VREF_OVP 0 1u
 * RAW sense divider (ERA-3ARB 0.1 %), filter, series input resistor
 RSNS10 RAW SNS_OVP {RT_P}
 RSNS11 SNS_OVP 0 {RB_P}
@@ -155,7 +170,7 @@ def deck_ramp(engine, corner, slope, title=None, **over):
             '.meas tran INP_FAULT_MAX MAX V(INP_OVP) FROM=17m TO=25m\n'
             '.options plotwinsize=0\n.save V(O1_11V) V(S2E_11V) V(VOUT) V(RAW)' + SAVE_OVP + '\n.end\n')
 
-def deck_short(engine, corner, cap, esr, stop='80m', **over):
+def deck_short(engine, corner, cap, esr, stop='80m', esl=None, **over):
     drive = 11.1605  # unloaded RAW = static max bus (see README: 11.22+I*DCR would park RAW above the lowest guaranteed trip)
     rser = ' Rser=0' if engine == 'lt' else ''
     X = lambda x: f'if(time<30m,{x},if(time<50m,0,{x}))'
@@ -170,7 +185,8 @@ def deck_short(engine, corner, cap, esr, stop='80m', **over):
             f'Vsource DRIVE 0 PWL(0 0 5m {drive:.6g} 30m {drive:.6g} 30.00001m 26 45m 26 46m {drive:.6g} 50m {drive:.6g} 50.1m 0 55m 0 60m {drive:.6g})\n'
             f'Lfault DRIVE LF 2.72u{rser}\n'
             'RfaultDCR LF RAW 0.0154\n'
-            'Craw RAW_C 0 {CRAW}\nResr RAW RAW_C {ESR}\n'
+            + ('Craw RAW_C 0 {CRAW}\nResr RAW RAW_C {ESR}\n' if esl is None else
+               f'Craw RAW_C 0 {{CRAW}}\nResr RAW RAW_E {{ESR}}\nLesl RAW_E RAW_C {esl}\n') +
             f'Bload1 O1_11V 0 I=({X(3)})*min(max(V(O1_11V)/5,0),1)\n'
             f'Bload2 S2E_11V 0 I=({X(1.5)})*min(max(V(S2E_11V)/5,0),1)\n'
             f'Bextra VOUT 0 I=({X(3)})*min(max((time-16m)/2m,0),1)*min(max(V(VOUT)/5,0),1)\n'
@@ -225,7 +241,7 @@ STEP_MEAS = ('.meas tran BUS_MIN MIN V(VOUT) FROM=20m TO=22m\n.meas tran BUS_MAX
 def deck_nofalse(engine, corner='wclo', title='', **over):
     return (HDR + f'* no-false-trip bench {title}: RAW = 11.1605 V static max + 10 mV/870 kHz ripple until 20 ms, then\n'
             '* 11.21 V DC + 10 mV ripple (peak 11.22 V = upper bus limit); 7.5 A load; lowest-trip corner.\n'
-            '* Ripple amplitude: 2-phase interleaved buck, 2.14 A pp/phase into >=92.65 uF ceramic -> a few mV; 10 mV is\n'
+            '* Ripple amplitude: 2-phase interleaved buck, 2.14 A pp/phase into >=185.3 uF ceramic (rev2) -> a few mV; 10 mV is\n'
             '* used as margin. (The 2026-10-24 59.5 mV/800 kHz deck forced 10 uF*dV/dt = 3 A into CEFOUT and tripped the\n'
             '* PDU_EFUSE breaker - a bench artifact, not an OVP false trip.) Pass = comparator/FETs never turn off.\n'
             + libs(engine) + '.include ../pdu-efuse-block-o1ovp.inc\n.include ../pdu-o1ovp-block.inc\n'
@@ -294,13 +310,34 @@ def cases():
         add(f'sweep-slope{str(S).replace(".", "p")}-wchi', 'sweep', lambda e, S=S: deck_ramp(e, 'wchi', S, f'sweep slope {S} V/us'),
             'ramp', 'slope above the 0.23 V/us requirement range: information only', False, dict(slope=S))
     # F3 buck high-side short
-    for cap, esr, tag in (('92.65u', '1m', 'c92'), ('165u', '1m', 'c165'), ('92.65u', '12.5m', 'c92-esr12m5'), ('92.65u', '100m', 'c92-esr100m')):
+    # P1-1: every short corner states C, ESR and ESL explicitly (ESL None = not modelled, 0 H).
+    #   185.3u = product min bound (16 x 20.622 uF typ @11 V x0.8 tol x0.78 X7S x0.9 assumed aging)
+    #   176u   = 16 x 22 uF x CBIAS 0.5 (value used by the board/startup/load decks)
+    #   165u   = independent-review 'honest minimum' (~11 % below 185.3u for DC-bias x temperature interaction)
+    #   483u   = product max bound (x1.2 x1.22), 92.65u = rev1 8-cap min bound (superseded, info)
+    SHORTS = ((C_RAW_MIN, '1m', 'c185', True, 'rev2 16-cap bank, minimum effective C', None),
+              (C_RAW_MIN, '12.5m', 'c185-esr12m5', True, 'rev2 16-cap bank, minimum C, pessimistic 12.5 mOhm bank ESR', None),
+              (C_RAW_MAX, '1m', 'c483', True, 'rev2 16-cap bank, maximum C (+20 % tol, +22 % temp)', None),
+              (C_RAW_MAX, '12.5m', 'c483-esr12m5', True, 'rev2 16-cap bank, maximum C, 12.5 mOhm', None),
+              ('176u', '1m', 'c176', True, '16 x 22 uF x CBIAS 0.5 (board-deck value)', None),
+              ('176u', '12.5m', 'c176-esr12m5', True, '16 x 22 uF x CBIAS 0.5, 12.5 mOhm', None),
+              ('165u', '1m', 'c165', True, 'review honest-minimum effective C 165 uF', None),
+              ('165u', '12.5m', 'c165-esr12m5', True, 'review honest-minimum effective C 165 uF, 12.5 mOhm (review P0-1 MUST case)', None),
+              (C_RAW_MIN, '12.5m', 'c185-esr12m5-esl2n', True, 'min C, 12.5 mOhm, ASSUMED pessimistic 2 nH bank ESL', '2n'),
+              ('165u', '12.5m', 'c165-esr12m5-esl2n', True, '165 uF, 12.5 mOhm, ASSUMED pessimistic 2 nH bank ESL', '2n'),
+              (C_RAW_MIN, '100m', 'c185-esr100m', True, '', None),
+              ('92.65u', '1m', 'rev1-c92', False, 'rev1 8-cap bank (superseded): information only, shows the P0 FAIL being fixed', None),
+              ('92.65u', '12.5m', 'rev1-c92-esr12m5', False, 'rev1 8-cap bank (superseded): information only, shows the P0 FAIL being fixed', None),
+              ('120u', '12.5m', 'c120-esr12m5', False, '120 uF: below every bound, information only (review analytic comparison)', None),
+              ('130u', '12.5m', 'c130-esr12m5', False, '130 uF: below every bound, information only (review analytic comparison)', None))
+    for cap, esr, tag, acc, note, esl in SHORTS:
         for c in ('wchi', 'typ'):
             st = '45m' if esr == '100m' else '80m'
-            add(f'buck-short-{tag}-{c}', 'short', lambda e, cap=cap, esr=esr, c=c, st=st: deck_short(e, c, cap, esr, st), 'short45' if st == '45m' else 'short',
+            add(f'buck-short-{tag}-{c}', 'short', lambda e, cap=cap, esr=esr, c=c, st=st, esl=esl: deck_short(e, c, cap, esr, st, esl=esl), 'short45' if st == '45m' else 'short',
                 ('-40C / 100 mOhm ESR stress corner (ESR on the RAW ceramic bank; pessimistic). TRUNCATED at 45 ms: the 80 ms deck '
                  'stops with "timestep too small" at ~45.98 ms in the UNCHANGED baseline eFuse model (xu3.ena) after short removal; '
-                 'tested reltol/tmax/trap/rshunt variants did not converge -> recovery/reset not evaluated for this corner') if esr == '100m' else '')
+                 'tested reltol/tmax/trap/rshunt variants did not converge -> recovery/reset not evaluated for this corner') if esr == '100m' else note,
+                acc, dict(CRAW=cap, ESR=esr, ESL=esl or '0 (not modelled)'))
     tr = '.tran 100n 40m 0 1u uic\n'
     # F4 startup
     for vin in ('20', '22.2', '26'):
@@ -309,10 +346,22 @@ def cases():
     add('startup-20v-ibstmin', 'board-average', lambda e: board(e, 'wclo', 'startup-20v I(BST) min 100uA', '20', L_STATIC, '.tran 100n 80m 0 1u uic\n',
         avg_meas('75m', '80m', '60m'), CBIAS='0.5', LFACTOR='1', IBST='100u', VBSTR='10.81', VCPOFF='13.86'), 'board-average',
         'charge pump 100 uA min, BST UVLO rising 10.81 V max (CP stop 13.86 V max for consistency) -> TDRV_EN up to 50.8 ms (SLUSEZ1B eq.1); 80 ms run')
+    add('startup-26v-c165', 'board-average', lambda e: board(e, 'wclo', 'startup-26v bank 165 uF (CBIAS 0.46875)', '26', L_STATIC, tr, AVG_MEAS, CBIAS=CBIAS_LO, LFACTOR='1'), 'board-average',
+        'bank 16 x 22 uF x 0.46875 = 165 uF (review honest minimum)', True, dict(CBIAS=CBIAS_LO))
+    add('startup-20v-chi', 'board-average', lambda e: board(e, 'wclo', 'startup-20v high-C 483 uF', '20', L_STATIC, tr, AVG_MEAS, CBIAS=CBIAS_HI, LFACTOR='1'), 'board-average',
+        'rev2 high-C corner (16 x 30.18 uF); behavioural buck model - real loop stability is WP3')
+    add('startup-26v-chi', 'board-average', lambda e: board(e, 'wclo', 'startup-26v high-C 483 uF', '26', L_STATIC, tr, AVG_MEAS, CBIAS=CBIAS_HI, LFACTOR='1'), 'board-average',
+        'rev2 high-C corner (16 x 30.18 uF); behavioural buck model - real loop stability is WP3')
     # F5 load steps / static bus at 7.5 A
     step = ('Bload1 O1_11V 0 I=(if(time<20m,0.3,3))*min(max(V(O1_11V)/5,0),1)\n'
             'Bload2 S2E_11V 0 I=(if(time<20m,0.15,1.5))*min(max(V(S2E_11V)/5,0),1)\n')
     step75 = step + 'Bextra VOUT 0 I=(if(time<20m,0.3,3))*min(max(V(VOUT)/5,0),1)\n'
+    add('load-step-ron3m3-c165', 'step', lambda e: board(e, 'wclo', 'load-step 0.45->4.5A ron3m3 bank 165 uF', '20', step, tr, STEP_MEAS, CBIAS=CBIAS_LO, LFACTOR='1', RON_P='3.3m'), 'step',
+        'review honest-minimum bank 165 uF (CBIAS 0.46875); behavioural buck model - real loop stability is WP3', True, dict(CBIAS=CBIAS_LO))
+    add('load-step-ron3m3-chi', 'step', lambda e: board(e, 'wclo', 'load-step 0.45->4.5A ron3m3 high-C 483 uF', '20', step, tr, STEP_MEAS, CBIAS=CBIAS_HI, LFACTOR='1', RON_P='3.3m'), 'step',
+        'rev2 high-C corner; behavioural buck model - real loop stability is WP3')
+    add('load-step-7p5a-ron3m3-chi', 'step75', lambda e: board(e, 'wclo', 'load-step 0.75->7.5A ron3m3 high-C 483 uF', '20', step75, tr, STEP_MEAS, CBIAS=CBIAS_HI, LFACTOR='1', RON_P='3.3m'), 'step75',
+        'rev2 high-C corner; WP3 tracking as for the other 7.5 A steps; only no-trip / O1 checks are acceptance')
     for rk, ro in list(RON.items()) + list(RON_INFO.items()):
         info = rk in RON_INFO
         add(f'load-step-{rk}', 'step', lambda e, ro=ro, rk=rk: board(e, 'wclo', f'load-step 0.45->4.5A {rk}', '20', step, tr, STEP_MEAS, CBIAS='0.5', LFACTOR='1', **ro), 'step',
@@ -331,7 +380,7 @@ def cases():
         add(f'mc-ramp-s023-{i:02d}', 'mc-ramp', lambda e, pr=pr, i=i: deck_ramp(e, 'typ', 's023', f'MC#{i} seed {MC_SEED}', **pr), 'ramp', '', True, pr)
     for i in range(MC_N['short']):
         pr = mc_sample(rng, 50e-3)
-        add(f'mc-short-c92-{i:02d}', 'mc-short', lambda e, pr=pr: deck_short(e, 'typ', '92.65u', '1m', '45m', **pr), 'short45',
+        add(f'mc-short-c185-{i:02d}', 'mc-short', lambda e, pr=pr: deck_short(e, 'typ', C_RAW_MIN, '1m', '45m', **pr), 'short45',
             'fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks', True, pr)
     for i in range(MC_N['nofalse']):
         pr = mc_sample(rng, 0.0)

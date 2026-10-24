@@ -14,13 +14,14 @@ XQ10 RAW G_OVP SRC_OVP O1OVP_NFET RON={RON_P/NPAR} VTH={VTH_P} CGS={CGS_P*NPAR}
 XQ11 VOUT G_OVP SRC_OVP O1OVP_NFET RON={RON_P/NPAR} VTH={VTH_P} CGS={CGS_P*NPAR}
 RSRC10 SRC_OVP 0 10Meg
 * U11 TPS7A1650 5 V for comparator and reference; bleed absorbs input-clamp injection.
+* rev2 P1-4: COUT11 10 uF (SBVS171F: >=2.2 uF EFFECTIVE required; 2.2 uF X7R 0805 nominal falls below it under DC bias)
 XU11 VIN V5_OVP 0 O1OVP_LDO VLDO=5
 CIN11 VIN 0 1u
-COUT11 V5_OVP 0 2.2u
+COUT11 V5_OVP 0 10u
 RBLD11 V5_OVP 0 499
-* U12 REF35409 4.096 V
+* U12 REF35409 4.096 V; rev2 P1-4: CREF12 1 uF (SNAS809C stable CL range 0.1-10 uF; 0.1 uF nominal -10 % tol fell below the min)
 XU12 V5_OVP VREF_OVP 0 O1OVP_REF35 VREF={VREF_P}
-CREF12 VREF_OVP 0 0.1u
+CREF12 VREF_OVP 0 1u
 * RAW sense divider (ERA-3ARB 0.1 %), filter, series input resistor
 RSNS10 RAW SNS_OVP {RT_P}
 RSNS11 SNS_OVP 0 {RB_P}

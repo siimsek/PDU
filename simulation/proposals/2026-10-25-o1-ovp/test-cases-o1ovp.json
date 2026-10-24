@@ -185,77 +185,395 @@
       "slope": 1.0
     }
   },
-  "buck-short-c92-wchi": {
+  "buck-short-c185-wchi": {
     "kind": "short",
-    "file": "o1ovp-buck-short-c92-wchi.cir",
-    "ng_file": "o1ovp-buck-short-c92-wchi.ng.cir",
+    "file": "o1ovp-buck-short-c185-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c185-wchi.ng.cir",
     "checks": "short",
-    "note": "",
+    "note": "rev2 16-cap bank, minimum effective C",
     "acceptance": true,
-    "params": {}
+    "params": {
+      "CRAW": "185.3u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
   },
-  "buck-short-c92-typ": {
+  "buck-short-c185-typ": {
     "kind": "short",
-    "file": "o1ovp-buck-short-c92-typ.cir",
-    "ng_file": "o1ovp-buck-short-c92-typ.ng.cir",
+    "file": "o1ovp-buck-short-c185-typ.cir",
+    "ng_file": "o1ovp-buck-short-c185-typ.ng.cir",
     "checks": "short",
-    "note": "",
+    "note": "rev2 16-cap bank, minimum effective C",
     "acceptance": true,
-    "params": {}
+    "params": {
+      "CRAW": "185.3u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c185-esr12m5-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c185-esr12m5-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c185-esr12m5-wchi.ng.cir",
+    "checks": "short",
+    "note": "rev2 16-cap bank, minimum C, pessimistic 12.5 mOhm bank ESR",
+    "acceptance": true,
+    "params": {
+      "CRAW": "185.3u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c185-esr12m5-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c185-esr12m5-typ.cir",
+    "ng_file": "o1ovp-buck-short-c185-esr12m5-typ.ng.cir",
+    "checks": "short",
+    "note": "rev2 16-cap bank, minimum C, pessimistic 12.5 mOhm bank ESR",
+    "acceptance": true,
+    "params": {
+      "CRAW": "185.3u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c483-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c483-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c483-wchi.ng.cir",
+    "checks": "short",
+    "note": "rev2 16-cap bank, maximum C (+20 % tol, +22 % temp)",
+    "acceptance": true,
+    "params": {
+      "CRAW": "483u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c483-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c483-typ.cir",
+    "ng_file": "o1ovp-buck-short-c483-typ.ng.cir",
+    "checks": "short",
+    "note": "rev2 16-cap bank, maximum C (+20 % tol, +22 % temp)",
+    "acceptance": true,
+    "params": {
+      "CRAW": "483u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c483-esr12m5-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c483-esr12m5-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c483-esr12m5-wchi.ng.cir",
+    "checks": "short",
+    "note": "rev2 16-cap bank, maximum C, 12.5 mOhm",
+    "acceptance": true,
+    "params": {
+      "CRAW": "483u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c483-esr12m5-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c483-esr12m5-typ.cir",
+    "ng_file": "o1ovp-buck-short-c483-esr12m5-typ.ng.cir",
+    "checks": "short",
+    "note": "rev2 16-cap bank, maximum C, 12.5 mOhm",
+    "acceptance": true,
+    "params": {
+      "CRAW": "483u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c176-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c176-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c176-wchi.ng.cir",
+    "checks": "short",
+    "note": "16 x 22 uF x CBIAS 0.5 (board-deck value)",
+    "acceptance": true,
+    "params": {
+      "CRAW": "176u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c176-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c176-typ.cir",
+    "ng_file": "o1ovp-buck-short-c176-typ.ng.cir",
+    "checks": "short",
+    "note": "16 x 22 uF x CBIAS 0.5 (board-deck value)",
+    "acceptance": true,
+    "params": {
+      "CRAW": "176u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c176-esr12m5-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c176-esr12m5-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c176-esr12m5-wchi.ng.cir",
+    "checks": "short",
+    "note": "16 x 22 uF x CBIAS 0.5, 12.5 mOhm",
+    "acceptance": true,
+    "params": {
+      "CRAW": "176u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c176-esr12m5-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c176-esr12m5-typ.cir",
+    "ng_file": "o1ovp-buck-short-c176-esr12m5-typ.ng.cir",
+    "checks": "short",
+    "note": "16 x 22 uF x CBIAS 0.5, 12.5 mOhm",
+    "acceptance": true,
+    "params": {
+      "CRAW": "176u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
   },
   "buck-short-c165-wchi": {
     "kind": "short",
     "file": "o1ovp-buck-short-c165-wchi.cir",
     "ng_file": "o1ovp-buck-short-c165-wchi.ng.cir",
     "checks": "short",
-    "note": "",
+    "note": "review honest-minimum effective C 165 uF",
     "acceptance": true,
-    "params": {}
+    "params": {
+      "CRAW": "165u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
   },
   "buck-short-c165-typ": {
     "kind": "short",
     "file": "o1ovp-buck-short-c165-typ.cir",
     "ng_file": "o1ovp-buck-short-c165-typ.ng.cir",
     "checks": "short",
-    "note": "",
+    "note": "review honest-minimum effective C 165 uF",
     "acceptance": true,
-    "params": {}
+    "params": {
+      "CRAW": "165u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
   },
-  "buck-short-c92-esr12m5-wchi": {
+  "buck-short-c165-esr12m5-wchi": {
     "kind": "short",
-    "file": "o1ovp-buck-short-c92-esr12m5-wchi.cir",
-    "ng_file": "o1ovp-buck-short-c92-esr12m5-wchi.ng.cir",
+    "file": "o1ovp-buck-short-c165-esr12m5-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c165-esr12m5-wchi.ng.cir",
     "checks": "short",
-    "note": "",
+    "note": "review honest-minimum effective C 165 uF, 12.5 mOhm (review P0-1 MUST case)",
     "acceptance": true,
-    "params": {}
+    "params": {
+      "CRAW": "165u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
   },
-  "buck-short-c92-esr12m5-typ": {
+  "buck-short-c165-esr12m5-typ": {
     "kind": "short",
-    "file": "o1ovp-buck-short-c92-esr12m5-typ.cir",
-    "ng_file": "o1ovp-buck-short-c92-esr12m5-typ.ng.cir",
+    "file": "o1ovp-buck-short-c165-esr12m5-typ.cir",
+    "ng_file": "o1ovp-buck-short-c165-esr12m5-typ.ng.cir",
     "checks": "short",
-    "note": "",
+    "note": "review honest-minimum effective C 165 uF, 12.5 mOhm (review P0-1 MUST case)",
     "acceptance": true,
-    "params": {}
+    "params": {
+      "CRAW": "165u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
   },
-  "buck-short-c92-esr100m-wchi": {
+  "buck-short-c185-esr12m5-esl2n-wchi": {
     "kind": "short",
-    "file": "o1ovp-buck-short-c92-esr100m-wchi.cir",
-    "ng_file": "o1ovp-buck-short-c92-esr100m-wchi.ng.cir",
+    "file": "o1ovp-buck-short-c185-esr12m5-esl2n-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c185-esr12m5-esl2n-wchi.ng.cir",
+    "checks": "short",
+    "note": "min C, 12.5 mOhm, ASSUMED pessimistic 2 nH bank ESL",
+    "acceptance": true,
+    "params": {
+      "CRAW": "185.3u",
+      "ESR": "12.5m",
+      "ESL": "2n"
+    }
+  },
+  "buck-short-c185-esr12m5-esl2n-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c185-esr12m5-esl2n-typ.cir",
+    "ng_file": "o1ovp-buck-short-c185-esr12m5-esl2n-typ.ng.cir",
+    "checks": "short",
+    "note": "min C, 12.5 mOhm, ASSUMED pessimistic 2 nH bank ESL",
+    "acceptance": true,
+    "params": {
+      "CRAW": "185.3u",
+      "ESR": "12.5m",
+      "ESL": "2n"
+    }
+  },
+  "buck-short-c165-esr12m5-esl2n-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c165-esr12m5-esl2n-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c165-esr12m5-esl2n-wchi.ng.cir",
+    "checks": "short",
+    "note": "165 uF, 12.5 mOhm, ASSUMED pessimistic 2 nH bank ESL",
+    "acceptance": true,
+    "params": {
+      "CRAW": "165u",
+      "ESR": "12.5m",
+      "ESL": "2n"
+    }
+  },
+  "buck-short-c165-esr12m5-esl2n-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c165-esr12m5-esl2n-typ.cir",
+    "ng_file": "o1ovp-buck-short-c165-esr12m5-esl2n-typ.ng.cir",
+    "checks": "short",
+    "note": "165 uF, 12.5 mOhm, ASSUMED pessimistic 2 nH bank ESL",
+    "acceptance": true,
+    "params": {
+      "CRAW": "165u",
+      "ESR": "12.5m",
+      "ESL": "2n"
+    }
+  },
+  "buck-short-c185-esr100m-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c185-esr100m-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c185-esr100m-wchi.ng.cir",
     "checks": "short45",
     "note": "-40C / 100 mOhm ESR stress corner (ESR on the RAW ceramic bank; pessimistic). TRUNCATED at 45 ms: the 80 ms deck stops with \"timestep too small\" at ~45.98 ms in the UNCHANGED baseline eFuse model (xu3.ena) after short removal; tested reltol/tmax/trap/rshunt variants did not converge -> recovery/reset not evaluated for this corner",
     "acceptance": true,
-    "params": {}
+    "params": {
+      "CRAW": "185.3u",
+      "ESR": "100m",
+      "ESL": "0 (not modelled)"
+    }
   },
-  "buck-short-c92-esr100m-typ": {
+  "buck-short-c185-esr100m-typ": {
     "kind": "short",
-    "file": "o1ovp-buck-short-c92-esr100m-typ.cir",
-    "ng_file": "o1ovp-buck-short-c92-esr100m-typ.ng.cir",
+    "file": "o1ovp-buck-short-c185-esr100m-typ.cir",
+    "ng_file": "o1ovp-buck-short-c185-esr100m-typ.ng.cir",
     "checks": "short45",
     "note": "-40C / 100 mOhm ESR stress corner (ESR on the RAW ceramic bank; pessimistic). TRUNCATED at 45 ms: the 80 ms deck stops with \"timestep too small\" at ~45.98 ms in the UNCHANGED baseline eFuse model (xu3.ena) after short removal; tested reltol/tmax/trap/rshunt variants did not converge -> recovery/reset not evaluated for this corner",
     "acceptance": true,
-    "params": {}
+    "params": {
+      "CRAW": "185.3u",
+      "ESR": "100m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-rev1-c92-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-rev1-c92-wchi.cir",
+    "ng_file": "o1ovp-buck-short-rev1-c92-wchi.ng.cir",
+    "checks": "short",
+    "note": "rev1 8-cap bank (superseded): information only, shows the P0 FAIL being fixed",
+    "acceptance": false,
+    "params": {
+      "CRAW": "92.65u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-rev1-c92-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-rev1-c92-typ.cir",
+    "ng_file": "o1ovp-buck-short-rev1-c92-typ.ng.cir",
+    "checks": "short",
+    "note": "rev1 8-cap bank (superseded): information only, shows the P0 FAIL being fixed",
+    "acceptance": false,
+    "params": {
+      "CRAW": "92.65u",
+      "ESR": "1m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-rev1-c92-esr12m5-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-rev1-c92-esr12m5-wchi.cir",
+    "ng_file": "o1ovp-buck-short-rev1-c92-esr12m5-wchi.ng.cir",
+    "checks": "short",
+    "note": "rev1 8-cap bank (superseded): information only, shows the P0 FAIL being fixed",
+    "acceptance": false,
+    "params": {
+      "CRAW": "92.65u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-rev1-c92-esr12m5-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-rev1-c92-esr12m5-typ.cir",
+    "ng_file": "o1ovp-buck-short-rev1-c92-esr12m5-typ.ng.cir",
+    "checks": "short",
+    "note": "rev1 8-cap bank (superseded): information only, shows the P0 FAIL being fixed",
+    "acceptance": false,
+    "params": {
+      "CRAW": "92.65u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c120-esr12m5-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c120-esr12m5-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c120-esr12m5-wchi.ng.cir",
+    "checks": "short",
+    "note": "120 uF: below every bound, information only (review analytic comparison)",
+    "acceptance": false,
+    "params": {
+      "CRAW": "120u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c120-esr12m5-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c120-esr12m5-typ.cir",
+    "ng_file": "o1ovp-buck-short-c120-esr12m5-typ.ng.cir",
+    "checks": "short",
+    "note": "120 uF: below every bound, information only (review analytic comparison)",
+    "acceptance": false,
+    "params": {
+      "CRAW": "120u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c130-esr12m5-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c130-esr12m5-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c130-esr12m5-wchi.ng.cir",
+    "checks": "short",
+    "note": "130 uF: below every bound, information only (review analytic comparison)",
+    "acceptance": false,
+    "params": {
+      "CRAW": "130u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
+  },
+  "buck-short-c130-esr12m5-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c130-esr12m5-typ.cir",
+    "ng_file": "o1ovp-buck-short-c130-esr12m5-typ.ng.cir",
+    "checks": "short",
+    "note": "130 uF: below every bound, information only (review analytic comparison)",
+    "acceptance": false,
+    "params": {
+      "CRAW": "130u",
+      "ESR": "12.5m",
+      "ESL": "0 (not modelled)"
+    }
   },
   "startup-20v": {
     "kind": "board-average",
@@ -299,6 +617,64 @@
     "ng_file": "o1ovp-startup-20v-ibstmin.ng.cir",
     "checks": "board-average",
     "note": "charge pump 100 uA min, BST UVLO rising 10.81 V max (CP stop 13.86 V max for consistency) -> TDRV_EN up to 50.8 ms (SLUSEZ1B eq.1); 80 ms run",
+    "acceptance": true,
+    "params": {}
+  },
+  "startup-26v-c165": {
+    "kind": "board-average",
+    "file": "o1ovp-startup-26v-c165.cir",
+    "ng_file": "o1ovp-startup-26v-c165.ng.cir",
+    "checks": "board-average",
+    "note": "bank 16 x 22 uF x 0.46875 = 165 uF (review honest minimum)",
+    "acceptance": true,
+    "params": {
+      "CBIAS": "0.46875"
+    }
+  },
+  "startup-20v-chi": {
+    "kind": "board-average",
+    "file": "o1ovp-startup-20v-chi.cir",
+    "ng_file": "o1ovp-startup-20v-chi.ng.cir",
+    "checks": "board-average",
+    "note": "rev2 high-C corner (16 x 30.18 uF); behavioural buck model - real loop stability is WP3",
+    "acceptance": true,
+    "params": {}
+  },
+  "startup-26v-chi": {
+    "kind": "board-average",
+    "file": "o1ovp-startup-26v-chi.cir",
+    "ng_file": "o1ovp-startup-26v-chi.ng.cir",
+    "checks": "board-average",
+    "note": "rev2 high-C corner (16 x 30.18 uF); behavioural buck model - real loop stability is WP3",
+    "acceptance": true,
+    "params": {}
+  },
+  "load-step-ron3m3-c165": {
+    "kind": "step",
+    "file": "o1ovp-load-step-ron3m3-c165.cir",
+    "ng_file": "o1ovp-load-step-ron3m3-c165.ng.cir",
+    "checks": "step",
+    "note": "review honest-minimum bank 165 uF (CBIAS 0.46875); behavioural buck model - real loop stability is WP3",
+    "acceptance": true,
+    "params": {
+      "CBIAS": "0.46875"
+    }
+  },
+  "load-step-ron3m3-chi": {
+    "kind": "step",
+    "file": "o1ovp-load-step-ron3m3-chi.cir",
+    "ng_file": "o1ovp-load-step-ron3m3-chi.ng.cir",
+    "checks": "step",
+    "note": "rev2 high-C corner; behavioural buck model - real loop stability is WP3",
+    "acceptance": true,
+    "params": {}
+  },
+  "load-step-7p5a-ron3m3-chi": {
+    "kind": "step75",
+    "file": "o1ovp-load-step-7p5a-ron3m3-chi.cir",
+    "ng_file": "o1ovp-load-step-7p5a-ron3m3-chi.ng.cir",
+    "checks": "step75",
+    "note": "rev2 high-C corner; WP3 tracking as for the other 7.5 A steps; only no-trip / O1 checks are acceptance",
     "acceptance": true,
     "params": {}
   },
@@ -1108,10 +1484,10 @@
       "TDOFF": "6.3197e-07"
     }
   },
-  "mc-short-c92-00": {
+  "mc-short-c185-00": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-00.cir",
-    "ng_file": "o1ovp-mc-short-c92-00.ng.cir",
+    "file": "o1ovp-mc-short-c185-00.cir",
+    "ng_file": "o1ovp-mc-short-c185-00.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1125,10 +1501,10 @@
       "TDOFF": "1.0408e-06"
     }
   },
-  "mc-short-c92-01": {
+  "mc-short-c185-01": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-01.cir",
-    "ng_file": "o1ovp-mc-short-c92-01.ng.cir",
+    "file": "o1ovp-mc-short-c185-01.cir",
+    "ng_file": "o1ovp-mc-short-c185-01.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1142,10 +1518,10 @@
       "TDOFF": "9.3985e-07"
     }
   },
-  "mc-short-c92-02": {
+  "mc-short-c185-02": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-02.cir",
-    "ng_file": "o1ovp-mc-short-c92-02.ng.cir",
+    "file": "o1ovp-mc-short-c185-02.cir",
+    "ng_file": "o1ovp-mc-short-c185-02.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1159,10 +1535,10 @@
       "TDOFF": "6.5744e-07"
     }
   },
-  "mc-short-c92-03": {
+  "mc-short-c185-03": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-03.cir",
-    "ng_file": "o1ovp-mc-short-c92-03.ng.cir",
+    "file": "o1ovp-mc-short-c185-03.cir",
+    "ng_file": "o1ovp-mc-short-c185-03.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1176,10 +1552,10 @@
       "TDOFF": "1.0321e-06"
     }
   },
-  "mc-short-c92-04": {
+  "mc-short-c185-04": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-04.cir",
-    "ng_file": "o1ovp-mc-short-c92-04.ng.cir",
+    "file": "o1ovp-mc-short-c185-04.cir",
+    "ng_file": "o1ovp-mc-short-c185-04.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1193,10 +1569,10 @@
       "TDOFF": "6.6499e-07"
     }
   },
-  "mc-short-c92-05": {
+  "mc-short-c185-05": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-05.cir",
-    "ng_file": "o1ovp-mc-short-c92-05.ng.cir",
+    "file": "o1ovp-mc-short-c185-05.cir",
+    "ng_file": "o1ovp-mc-short-c185-05.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1210,10 +1586,10 @@
       "TDOFF": "4.9424e-07"
     }
   },
-  "mc-short-c92-06": {
+  "mc-short-c185-06": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-06.cir",
-    "ng_file": "o1ovp-mc-short-c92-06.ng.cir",
+    "file": "o1ovp-mc-short-c185-06.cir",
+    "ng_file": "o1ovp-mc-short-c185-06.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1227,10 +1603,10 @@
       "TDOFF": "9.6237e-07"
     }
   },
-  "mc-short-c92-07": {
+  "mc-short-c185-07": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-07.cir",
-    "ng_file": "o1ovp-mc-short-c92-07.ng.cir",
+    "file": "o1ovp-mc-short-c185-07.cir",
+    "ng_file": "o1ovp-mc-short-c185-07.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1244,10 +1620,10 @@
       "TDOFF": "9.2572e-07"
     }
   },
-  "mc-short-c92-08": {
+  "mc-short-c185-08": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-08.cir",
-    "ng_file": "o1ovp-mc-short-c92-08.ng.cir",
+    "file": "o1ovp-mc-short-c185-08.cir",
+    "ng_file": "o1ovp-mc-short-c185-08.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1261,10 +1637,10 @@
       "TDOFF": "5.7119e-07"
     }
   },
-  "mc-short-c92-09": {
+  "mc-short-c185-09": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-09.cir",
-    "ng_file": "o1ovp-mc-short-c92-09.ng.cir",
+    "file": "o1ovp-mc-short-c185-09.cir",
+    "ng_file": "o1ovp-mc-short-c185-09.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1278,10 +1654,10 @@
       "TDOFF": "5.5431e-07"
     }
   },
-  "mc-short-c92-10": {
+  "mc-short-c185-10": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-10.cir",
-    "ng_file": "o1ovp-mc-short-c92-10.ng.cir",
+    "file": "o1ovp-mc-short-c185-10.cir",
+    "ng_file": "o1ovp-mc-short-c185-10.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1295,10 +1671,10 @@
       "TDOFF": "6.5545e-07"
     }
   },
-  "mc-short-c92-11": {
+  "mc-short-c185-11": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-11.cir",
-    "ng_file": "o1ovp-mc-short-c92-11.ng.cir",
+    "file": "o1ovp-mc-short-c185-11.cir",
+    "ng_file": "o1ovp-mc-short-c185-11.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1312,10 +1688,10 @@
       "TDOFF": "7.5997e-07"
     }
   },
-  "mc-short-c92-12": {
+  "mc-short-c185-12": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-12.cir",
-    "ng_file": "o1ovp-mc-short-c92-12.ng.cir",
+    "file": "o1ovp-mc-short-c185-12.cir",
+    "ng_file": "o1ovp-mc-short-c185-12.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1329,10 +1705,10 @@
       "TDOFF": "6.4935e-07"
     }
   },
-  "mc-short-c92-13": {
+  "mc-short-c185-13": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-13.cir",
-    "ng_file": "o1ovp-mc-short-c92-13.ng.cir",
+    "file": "o1ovp-mc-short-c185-13.cir",
+    "ng_file": "o1ovp-mc-short-c185-13.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1346,10 +1722,10 @@
       "TDOFF": "4.7255e-07"
     }
   },
-  "mc-short-c92-14": {
+  "mc-short-c185-14": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-14.cir",
-    "ng_file": "o1ovp-mc-short-c92-14.ng.cir",
+    "file": "o1ovp-mc-short-c185-14.cir",
+    "ng_file": "o1ovp-mc-short-c185-14.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1363,10 +1739,10 @@
       "TDOFF": "5.7089e-07"
     }
   },
-  "mc-short-c92-15": {
+  "mc-short-c185-15": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-15.cir",
-    "ng_file": "o1ovp-mc-short-c92-15.ng.cir",
+    "file": "o1ovp-mc-short-c185-15.cir",
+    "ng_file": "o1ovp-mc-short-c185-15.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1380,10 +1756,10 @@
       "TDOFF": "6.7972e-07"
     }
   },
-  "mc-short-c92-16": {
+  "mc-short-c185-16": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-16.cir",
-    "ng_file": "o1ovp-mc-short-c92-16.ng.cir",
+    "file": "o1ovp-mc-short-c185-16.cir",
+    "ng_file": "o1ovp-mc-short-c185-16.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1397,10 +1773,10 @@
       "TDOFF": "6.4247e-07"
     }
   },
-  "mc-short-c92-17": {
+  "mc-short-c185-17": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-17.cir",
-    "ng_file": "o1ovp-mc-short-c92-17.ng.cir",
+    "file": "o1ovp-mc-short-c185-17.cir",
+    "ng_file": "o1ovp-mc-short-c185-17.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1414,10 +1790,10 @@
       "TDOFF": "7.613e-07"
     }
   },
-  "mc-short-c92-18": {
+  "mc-short-c185-18": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-18.cir",
-    "ng_file": "o1ovp-mc-short-c92-18.ng.cir",
+    "file": "o1ovp-mc-short-c185-18.cir",
+    "ng_file": "o1ovp-mc-short-c185-18.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1431,10 +1807,10 @@
       "TDOFF": "9.6424e-07"
     }
   },
-  "mc-short-c92-19": {
+  "mc-short-c185-19": {
     "kind": "mc-short",
-    "file": "o1ovp-mc-short-c92-19.cir",
-    "ng_file": "o1ovp-mc-short-c92-19.ng.cir",
+    "file": "o1ovp-mc-short-c185-19.cir",
+    "ng_file": "o1ovp-mc-short-c185-19.ng.cir",
     "checks": "short45",
     "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
     "acceptance": true,
@@ -1843,7 +2219,7 @@
       "CGS_P": "5n",
       "NPAR": "2",
       "RON_P": "1.8m",
-      "CRAW": "92.65u",
+      "CRAW": "185.3u",
       "ESR": "1m",
       "VBSTR": "9",
       "VCPOFF": "11.6"

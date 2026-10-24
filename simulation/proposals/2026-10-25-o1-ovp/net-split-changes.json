@@ -67,5 +67,45 @@
     "XU2",
     "XU2 VIN VIN VIN CBOOT2 SW4_PH2 VOUT unconnected__U2_PG_slash_SYNCOUT_Pad7_ SYNC EN_BUCK unconnected__U2_NC_Pad10_ ISNS2 VOUT CFG_SEC RT_PH2 COMP 0 0 VDDA2 VCC2 SW_PH2 SW_PH2 SW_PH2 0 0 0 0 VIN VIN VIN 0 PDU_BUCK MAIN=0 RSVAL=0.0075",
     "XU2 VIN VIN VIN CBOOT2 SW4_PH2 RAW unconnected__U2_PG_slash_SYNCOUT_Pad7_ SYNC EN_BUCK unconnected__U2_NC_Pad10_ ISNS2 RAW CFG_SEC RT_PH2 COMP 0 0 VDDA2 VCC2 SW_PH2 SW_PH2 SW_PH2 0 0 0 0 VIN VIN VIN 0 PDU_BUCK MAIN=0 RSVAL=0.0075"
+  ],
+  [
+    "add",
+    "",
+    "COUT21 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "add",
+    "",
+    "COUT22 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "add",
+    "",
+    "COUT23 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "add",
+    "",
+    "COUT24 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "add",
+    "",
+    "COUT25 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "add",
+    "",
+    "COUT26 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "add",
+    "",
+    "COUT27 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "add",
+    "",
+    "COUT28 RAW 0 {2.2e-05*CBIAS}"
   ]
 ]

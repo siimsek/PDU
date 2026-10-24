@@ -1,0 +1,36 @@
+{
+ "F_test_nF": 112.701,
+ "Q_fet_total_max_nC": 288.2,
+ "Q_test_nC": 470.0,
+ "R_wc_ohm": 9.3167,
+ "budget_chain_assumed_us": 1.1045,
+ "conclusion_ok": true,
+ "rows": [
+  {
+   "F_fet_nF": 58.651,
+   "case": "typ-curve x max-scale, plateau 2.65 V",
+   "qgd_factor": 1.0,
+   "ratio_vs_test": 0.5433,
+   "t_off_wc_us": 1.05,
+   "v_plateau": 2.65
+  },
+  {
+   "F_fet_nF": 66.075,
+   "case": "plateau at Vth min 25C 1.5 V",
+   "qgd_factor": 1.0,
+   "ratio_vs_test": 0.6121,
+   "t_off_wc_us": 1.05,
+   "v_plateau": 1.5
+  },
+  {
+   "F_fet_nF": 104.551,
+   "case": "plateau at assumed hot Vth 1.1 V, Qgd x2",
+   "qgd_factor": 2.0,
+   "ratio_vs_test": 0.9685,
+   "t_off_wc_us": 1.05,
+   "v_plateau": 1.1
+  }
+ ],
+ "source": "gate_discharge_wc.py (analytic, inference class C; not a simulation)",
+ "t_off_wc_us": 1.05
+}

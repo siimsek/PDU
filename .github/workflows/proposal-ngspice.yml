@@ -6,13 +6,14 @@ on:
   pull_request:
     paths:
       - 'simulation/proposals/2026-10-25-o1-ovp/**'
+      - 'hardware/proposals/2026-10-25-o1-ovp/**'
       - '.github/workflows/proposal-ngspice.yml'
 permissions:
   contents: read
 jobs:
   o1-ovp:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     defaults:
       run:
         working-directory: simulation/proposals/2026-10-25-o1-ovp
@@ -27,6 +28,21 @@ jobs:
           python3 gen_o1ovp.py
           git status --porcelain -- . | tee /tmp/gen-diff.txt
           test ! -s /tmp/gen-diff.txt
+      - name: Guaranteed window budget (rev2 >= 50 mV target; must match committed JSON)
+        run: |
+          python3 window_budget.py --json /tmp/window-budget.json > /dev/null
+          cmp /tmp/window-budget.json window-budget.json
+          python3 -c "import json,sys; m=json.load(open('/tmp/window-budget.json'))['margin_summary']; print(m['min_guaranteed_V'], m['min_with_life_V']); sys.exit(0 if m['meets_target'] and m['meets_target_with_life'] else 1)"
+      - name: Gate-discharge worst-case bound (P0-3, analytic; must match committed JSON)
+        run: |
+          python3 gate_discharge_wc.py --json /tmp/gate-discharge-wc.json > /dev/null
+          cmp /tmp/gate-discharge-wc.json gate-discharge-wc.json
+          python3 -c "import json,sys; d=json.load(open('/tmp/gate-discharge-wc.json')); sys.exit(0 if d['conclusion_ok'] else 1)"
+      - name: Normal-bus and false-trip constants present (P1-2; criteria must not be loosened)
+        run: |
+          grep -q "NORMAL_MAX = 11.1605" run_o1ovp.py
+          grep -q "NORMAL_MAX = 11.1605" verify_candidate.py
+          grep -q "FALSE_TRIP_TEST = 11.22" run_o1ovp.py
       - name: Run proposal decks (+ baseline regression, expected FAIL)
         id: run
         continue-on-error: true

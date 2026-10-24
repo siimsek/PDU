@@ -30,6 +30,8 @@ VCC_REC_MAX = 5.5     # TLV3601 recommended VCC max, SNOSDB1E 6.3
 INP_L_MAX = 0.8       # TPS48000 V(INP_L) guaranteed low threshold min, SLUSEZ1B 5.5
 U34_VIN_ABS = 30.0    # TPS259824 IN abs max, SLVSEI3D 6.1
 O1_MAX = 12.0         # O1 instantaneous limit (bom.csv L18, verify_results.py L90-91)
+NORMAL_MAX = 11.1605  # normal bus/port upper limit = static max (owner hard criterion, rev2 P1-2)
+FALSE_TRIP_TEST = 11.22  # OVP false-trip TEST level (+2 % band edge) - stimulus level, not a normal-bus limit
 IST = timezone(timedelta(hours=3), 'Europe/Istanbul')
 BASELINE_REG = 'pdu-efuse-ovp.ng.cir'
 
@@ -98,6 +100,10 @@ def evaluate(name, c, m, chk):
         if key in m: chk(key, abs(m[key]) < .1, f'{m[key]:.6g} V; off <0.1 V')
     def o1(key='o1_peak'):
         chk('O1_input_rating', m[key] <= O1_MAX, f"{m[key]:.6g} V peak vs {O1_MAX} V instantaneous")
+    def normal(key, what='normal-operation bus/port level'):
+        # P1-2 (rev2): the NORMAL bus upper limit is 11.1605 V (static max, owner hard criterion); 11.22 V is only the
+        # +2 % band edge and the OVP false-trip TEST level - kept as separate assertions, nothing loosened.
+        if key in m: chk(f'NORMAL_BUS_MAX:{key}', m[key] <= NORMAL_MAX, f'{m[key]:.6g} V vs {NORMAL_MAX} V ({what})')
     def stress(fault_inp=True):
         if 'vdsa_max' in m: chk('QA_VDS_rating', m['vdsa_max'] <= VDS_MAX, f"{m['vdsa_max']:.4g} V vs 60 V abs max")
         if 'vdsb_max' in m: chk('QB_VDS_rating', m['vdsb_max'] <= VDS_MAX, f"{m['vdsb_max']:.4g} V vs 60 V abs max")
@@ -107,13 +113,14 @@ def evaluate(name, c, m, chk):
         if fault_inp and 'inp_fault_max' in m:
             chk('fet_stays_off', m['inp_fault_max'] < INP_L_MAX, f"INP max {m['inp_fault_max']:.3g} V during fault (< V(INP_L) 0.8 V guaranteed)")
     if k in ('ramp', 'sweep', 'mc-ramp'):
-        band('o1_pre'); off('o1_off'); off('s2e_off'); band('o1_reset'); band('s2e_reset'); o1(); stress()
+        normal('o1_pre', 'O1 before the fault'); band('o1_pre'); off('o1_off'); off('s2e_off'); band('o1_reset'); band('s2e_reset'); o1(); stress()
     if k in ('short', 'mc-short'):
-        band('normal'); band('o1_normal'); o1(); stress()
+        normal('normal', 'bus before the short'); normal('o1_normal', 'O1 before the short'); band('normal'); band('o1_normal'); o1(); stress()
         if 'o1_reset' in m: band('o1_reset'); band('s2e_reset')
     if k == 'board-average':
         band('bus_avg'); band('o1_avg'); band('s2e_avg'); o1('o1_max')
-        chk('bus_max_startup', m['bus_max'] <= 11.22, f"bus max {m['bus_max']:.6g} V vs 11.22 V static upper")
+        chk('bus_max_startup', m['bus_max'] <= 11.22, f"bus max {m['bus_max']:.6g} V vs 11.22 V (+2 % band edge)")
+        normal('bus_max', 'startup/static bus max incl. overshoot'); normal('bus_avg', 'static bus average')
         for key in ('pg1_max', 'pg2_max'):
             if key in m: chk(key, 0 <= m[key] < 6, f'{m[key]:.6g} V <6 V')
         for ch, load in ((1, 3), (2, 1.5)):
@@ -130,14 +137,17 @@ def evaluate(name, c, m, chk):
     if k == 'step':
         band('o1_final'); band('s2e_final')
         chk('transient', 10.78 <= m['bus_min'] and m['bus_max'] <= 11.22, f"{m['bus_min']:.6g}..{m['bus_max']:.6g} V, 0.45->4.5 A (verify_results.py L79)")
+        normal('bus_max', 'load-step bus max')
         chk('no_trip', m['inp_min'] > 4.0 and m['vgs_min'] > 4.5, f"INP min {m['inp_min']:.4g} V, VGS min {m['vgs_min']:.4g} V")
     if k == 'step75':
         band('o1_final'); band('s2e_final')
         chk('no_trip', m['inp_min'] > 4.0 and m['vgs_min'] > 4.5, f"INP min {m['inp_min']:.4g} V, VGS min {m['vgs_min']:.4g} V")
+        normal('bus_max', '7.5 A load-step bus max (acceptance, separate from the WP3 tracking window)')
         chk('TRACKING:transient_7p5A_window', 10.78 <= m['bus_min'] and m['bus_max'] <= 11.22,
             f"{m['bus_min']:.6g}..{m['bus_max']:.6g} V (WP3 tracking, not a repo criterion)")
     if k in ('nofalse', 'mc-nofalse'):
         band('o1_avg'); band('s2e_avg')
+        chk('FALSE_TRIP_TEST_LEVEL_reached', m['raw_max'] >= FALSE_TRIP_TEST - 1e-3, f"RAW max {m['raw_max']:.6g} V vs test level {FALSE_TRIP_TEST} V (stimulus validity; NOT a normal-bus limit)")
         chk('no_false_trip', m['inp_min'] > 4.0 and m['vgs_min'] > 4.5, f"RAW max {m['raw_max']:.5g} V; INP min {m['inp_min']:.4g} V; VGS min {m['vgs_min']:.4g} V")
 
 def static_checks(chk):
@@ -151,6 +161,11 @@ def static_checks(chk):
     b = [l.split() for l in (SIM/'pdu-circuit.inc').read_text().splitlines() if l.strip() and not l.startswith('*')]
     n = [l.split() for l in (HERE/'pdu-circuit-o1ovp.inc').read_text().splitlines() if l.strip() and not l.startswith('*')]
     b = [t for t in b if t[0] != '.include']
+    # rev2: exactly 8 ADDED RAW capacitors COUT21-COUT28, identical in form to the baseline COUT lines
+    added = [t for t in n if t[0] in {f'COUT{i}' for i in range(21, 29)}]
+    chk('rev2 RAW bank: only COUT21-COUT28 added, same value as COUT1-8',
+        len(added) == 8 and all(t[1:] == ['RAW', '0', '{2.2e-05*CBIAS}'] for t in added), str(added))
+    n = [t for t in n if t not in added]
     diff = [(x[0], [i for i, (p, q) in enumerate(zip(x, y)) if p != q]) for x, y in zip(b, n) if x != y]
     exp = sorted([(f'COUT{i}', [1]) for i in range(1, 9)] + [('RS1', [2]), ('RS2', [2]), ('RFB1', [1]), ('XU1', [6, 12]), ('XU2', [6, 12])])
     chk('RAW split = only intended node edits', len(b) == len(n) and sorted(diff) == exp and all(y[i] == 'RAW' for x, y in zip(b, n) for i in range(len(x)) if x[i] != y[i]), str(diff))

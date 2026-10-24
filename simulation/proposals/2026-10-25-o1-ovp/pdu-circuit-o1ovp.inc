@@ -1,5 +1,6 @@
 * DERIVED by gen_o1ovp.py from ../../pdu-circuit.inc (baseline a1dbeeb). RAW split:
 * COUT1-8, RS1/RS2 low side, XU1/XU2 pins 6+12 (VOUT sense) and RFB1 top -> RAW.
+* rev2: COUT21-COUT28 ADDED on RAW (same MPN as COUT1-8) -> 16 x 22 uF RAW bank.
 * CEFIN1/2, REN1/2, XU3/XU4 (efuses) stay on VOUT. .include of the shared lib removed;
 * each deck (in decks/) includes ../../../pdu-behavioral.lib exactly once.
 * AUTO-GENERATED from Konnect pdu-current.net; no KiCad source parsing.
@@ -33,6 +34,14 @@ COUT5 RAW 0 {2.2e-05*CBIAS}
 COUT6 RAW 0 {2.2e-05*CBIAS}
 COUT7 RAW 0 {2.2e-05*CBIAS}
 COUT8 RAW 0 {2.2e-05*CBIAS}
+COUT21 RAW 0 {2.2e-05*CBIAS}
+COUT22 RAW 0 {2.2e-05*CBIAS}
+COUT23 RAW 0 {2.2e-05*CBIAS}
+COUT24 RAW 0 {2.2e-05*CBIAS}
+COUT25 RAW 0 {2.2e-05*CBIAS}
+COUT26 RAW 0 {2.2e-05*CBIAS}
+COUT27 RAW 0 {2.2e-05*CBIAS}
+COUT28 RAW 0 {2.2e-05*CBIAS}
 CVCAP VCAP ANODE 1e-07
 CVCC1 VCC1 0 4.7e-06
 CVCC2 VCC2 0 4.7e-06

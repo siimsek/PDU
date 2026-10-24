@@ -10,38 +10,38 @@ Using SPARSE 1.3 as Direct Linear Solver
 Operating point simulation skipped by 'uic',
   now using transient initial conditions.
 
-No. of Data Rows : 540075
+No. of Data Rows : 401334
 
   Measurements for Transient Analysis
 
-o1_pre              =  1.098380e+01 from=  1.300000e-02 to=  1.490002e-02
-o1_off              =  1.238371e-11 at=  1.900006e-02
-s2e_off             =  2.478580e-11 at=  1.900006e-02
+o1_pre              =  1.098380e+01 from=  1.300000e-02 to=  1.490006e-02
+o1_off              =  1.236074e-11 at=  1.900006e-02
+s2e_off             =  2.473984e-11 at=  1.900006e-02
 o1_reset            =  1.098380e+01 from=  3.500000e-02 to=  4.000000e-02
 s2e_reset           =  1.098785e+01 from=  3.500000e-02 to=  4.000000e-02
-o1_peak             =  1.149380e+01 at=  1.500225e-02
-bus_peak            =  1.176129e+01 at=  1.503043e-02
-trip_raw            =  1.151790e+01
-off_raw             =  1.176141e+01
-s2e_peak            =  1.108123e+01 at=  1.500047e-02
-vdsa_max            =  1.425754e+01 at=  2.500000e-02
-inm_max             =  5.638245e+00 at=  1.503063e-02
-iinm_max            =  4.796047e-04 at=  1.503063e-02
-v5_max              =  4.999523e+00 at=  1.503093e-02
-inp_fault_max       =  4.999525e-09 at=  2.085366e-02
+o1_peak             =  1.111236e+01 at=  1.500059e-02
+bus_peak            =  1.173966e+01 at=  1.503043e-02
+trip_raw            =  1.149667e+01
+off_raw             =  1.173975e+01
+s2e_peak            =  1.108242e+01 at=  1.500047e-02
+vdsa_max            =  1.426439e+01 at=  2.500000e-02
+inm_max             =  5.638244e+00 at=  1.503070e-02
+iinm_max            =  4.795935e-04 at=  1.503070e-02
+v5_max              =  4.999523e+00 at=  2.083819e-02
+inp_fault_max       =  4.999525e-09 at=  2.083756e-02
 
 
-Total analysis time (seconds) = 34.8426
+Total analysis time (seconds) = 15.1701
 
-Total elapsed time (seconds) = 34.870 
+Total elapsed time (seconds) = 15.182 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available = 1874.059 MB.
-Maximum ngspice program size =   87.441 MB.
-Current ngspice program size =   71.605 MB.
+DRAM currently available = 1958.047 MB.
+Maximum ngspice program size =   58.945 MB.
+Current ngspice program size =   49.816 MB.
 
-Shared ngspice pages =   10.801 MB.
+Shared ngspice pages =   10.672 MB.
 Text (code) pages =    6.543 MB.
 Stack = 0 bytes.
-Library pages =   67.762 MB.
+Library pages =   39.266 MB.
 

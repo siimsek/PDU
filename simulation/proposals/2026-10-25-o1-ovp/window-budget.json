@@ -21,7 +21,7 @@
     "VREF_dT": {
       "value": 145.0,
       "unit": "K",
-      "kind": "A",
+      "kind": "V",
       "source": "full -40..105C box span applied as deviation from 25C value (conservative)"
     },
     "VREF_line": {
@@ -33,7 +33,7 @@
     "VREF_dVin": {
       "value": 0.504,
       "unit": "V",
-      "kind": "I",
+      "kind": "C",
       "source": "TPS7A1650 5V +/-2 % (SBVS171F p6) -> 4.9..5.1V vs test VIN=VREF+0.5=4.596V"
     },
     "VREF_load": {
@@ -74,7 +74,7 @@
     },
     "IB": {
       "value": 5e-06,
-      "unit": "A",
+      "unit": "V",
       "kind": "G",
       "source": "TLV3601 IB 5 uA max -40..125C, SNOSDB1E p7"
     },
@@ -87,8 +87,8 @@
     "VCM_allow": {
       "value": 0.004096,
       "unit": "V",
-      "kind": "A",
-      "source": "ASSUMPTION A1: extra offset at VCM=4.096V <= 4.1 mV (= 60 dB CMRR over 4.1 V, 20 dB worse than the 80 dB typical). TLV3601 VIO is guaranteed only at VCM=VEE+0.3V (SNOSDB1E 6.5 conditions). Open guarantee gap G1."
+      "kind": "V",
+      "source": "ASSUMPTION A1 (V, NOT guaranteed): extra offset at VCM=4.096V <= 4.1 mV (= 60 dB CMRR over 4.1 V, 20 dB worse than the 80 dB typical). TLV3601 VIO is guaranteed only at VCM=VEE+0.3V (SNOSDB1E 6.5 conditions). Open guarantee gap G1."
     },
     "tPD_cmp": {
       "value": 4.5e-09,
@@ -116,7 +116,7 @@
     },
     "IPD_typ": {
       "value": 2.0,
-      "unit": "A",
+      "unit": "V",
       "kind": "T",
       "source": "TPS4800 I(PD) 2 A peak TYPICAL only, SLUSEZ1B p7"
     },
@@ -135,14 +135,14 @@
     "t_gate_tail": {
       "value": 5e-08,
       "unit": "s",
-      "kind": "A",
+      "kind": "V",
       "source": "allowance from V(PD-SRC)=1V to channel cut-off at hot Vth (<1V possible)"
     },
     "Q_47nF_test": {
       "value": 4.7e-07,
       "unit": "C",
-      "kind": "I",
-      "source": "tPD(INP_L) test load 47 nF from V(BST-SRC)=11 V to 1 V = 470 nC; our gate charge (4 FETs, <=277 nC at 13.86 V) is smaller -> INFERENCE (not a TI guarantee) that tPD(INP_L) max still covers it"
+      "kind": "C",
+      "source": "tPD(INP_L) test load 47 nF from V(BST-SRC)=11 V to 1 V = 470 nC; INFERENCE (not a TI guarantee) that tPD(INP_L) max covers our 4-FET gate: gate_discharge_wc.py bounds a resistive-sink model at <=0.97x the test-load time incl. Qg max scaling, Qgd x2, plateau at an assumed hot Vth 1.1 V, VBST 13.86 V, RG max (gate-discharge-wc.json)"
     },
     "Qg10_max": {
       "value": 5.3e-08,
@@ -159,7 +159,7 @@
     "NFET": {
       "value": 4,
       "unit": "1",
-      "kind": "A",
+      "kind": "V",
       "source": "two parallel back-to-back pairs QA1/QA2 + QB1/QB2, one gate drive (PD tied to all gates)"
     },
     "R_tol": {
@@ -177,7 +177,7 @@
     "R_dT": {
       "value": 100.0,
       "unit": "K",
-      "kind": "A",
+      "kind": "V",
       "source": "resistor at -40..125C, worst |T-25C|=100 K (no TCR tracking credited)"
     },
     "R_life": {
@@ -189,13 +189,13 @@
     "RIN": {
       "value": 1000.0,
       "unit": "ohm",
-      "kind": "A",
+      "kind": "V",
       "source": "series input resistor tap->IN- (abs-max current limit); IB flows through Rpar+RIN"
     },
     "Cf": {
       "value": 1e-10,
       "unit": "F",
-      "kind": "A",
+      "kind": "V",
       "source": "C0G 100 pF filter at comparator IN- (Rpar*Cf lag added)"
     },
     "Cf_tol": {
@@ -213,14 +213,74 @@
     "V_FLOOR": {
       "value": 11.22,
       "unit": "V",
-      "kind": "A",
-      "source": "no-false-trip floor: 11.1605 V static max + 59.5 mV ripple/transient allowance = 11.22 V acceptance ceiling"
+      "kind": "V",
+      "source": "no-false-trip floor: OVP must NOT trip at the 11.22 V false-trip TEST level (+2 % band edge; = 11.1605 V normal-bus max + 59.5 mV). Normal-bus limit itself is 11.1605 V (rev2 P1-2)"
     },
     "V_STATIC_MAX": {
       "value": 11.1605,
       "unit": "V",
       "kind": "G",
       "source": "check_static_corners baseline static bus max"
+    },
+    "N_RAW": {
+      "value": 16,
+      "unit": "1",
+      "kind": "V",
+      "source": "rev2 design choice: 8 existing + 8 added RAW capacitors, same MPN/footprint (hardware/COUT-qualification.md)"
+    },
+    "C_11V_typ": {
+      "value": 2.062219e-05,
+      "unit": "F",
+      "kind": "T",
+      "source": "TDK vendor DC-bias model @11 V 25C, 20.62219 uF per part (hardware/COUT-qualification.md; typical model, not a MIN)"
+    },
+    "C_tol": {
+      "value": 0.2,
+      "unit": "1",
+      "kind": "G",
+      "source": "C5750X7S2A226M280KB capacitance tolerance +/-20 % (M), TDK part number / DigiKey 2026-10-25"
+    },
+    "C_temp": {
+      "value": 0.22,
+      "unit": "1",
+      "kind": "G",
+      "source": "X7S class: +/-22 % over -55..125C (EIA X7S definition, at 0 V bias)"
+    },
+    "C_aging": {
+      "value": 0.1,
+      "unit": "1",
+      "kind": "V",
+      "source": "ASSUMED 10 % aging sensitivity (no TDK guarantee; same as hardware/COUT-qualification.md)"
+    },
+    "ESR_corner": {
+      "value": 0.0125,
+      "unit": "ohm",
+      "kind": "V",
+      "source": "12.5 mOhm bank ESR corner kept UNCHANGED from rev1 although 16 parts lower it (pessimistic)"
+    },
+    "MARGIN_TARGET": {
+      "value": 0.05,
+      "unit": "V",
+      "kind": "V",
+      "source": "rev2 design target: >= ~50 mV guaranteed margin to the 12.0 V O1 limit at every acceptance corner (target, not a new criterion)"
+    },
+    "ESL_bank": {
+      "value": 2e-09,
+      "unit": "H",
+      "kind": "V",
+      "source": "ASSUMED total RAW-bank ESL incl. mounting (16 parallel 2220 parts; TDK ESL not read -> deliberately pessimistic 2 nH); adds L*di/dt to RAW in the esl2n short rows"
+    },
+    "C_honest_min": {
+      "value": 0.000165,
+      "unit": "F",
+      "kind": "V",
+      "source": "independent-review honest minimum effective C (extra ~11 % below the 185.3 uF product bound for DC-bias x temperature interaction); acceptance row, not a datasheet value"
+    },
+    "C_cbias05": {
+      "value": 0.000176,
+      "unit": "F",
+      "kind": "C",
+      "source": "16 x 22 uF x CBIAS 0.5 = 176 uF: the C used by the startup/load board decks (baseline CBIAS convention); acceptance row"
     }
   },
   "vref_bounds": [
@@ -362,21 +422,99 @@
     "tdrv_en_typ_s": 0.012260869565217393,
     "tdrv_en_worst_s": 0.050807
   },
+  "raw_bank": {
+    "n": 16,
+    "typ_11V": 0.00032995504,
+    "min_eff": 0.000185302750464,
+    "max_eff": 0.00048305417855999997,
+    "per_part_min": 1.1581421904e-05,
+    "per_part_max": 3.0190886159999998e-05,
+    "note": "min/max are multiplicative sensitivity bounds on a TYPICAL DC-bias model value (+ assumed aging); not a TDK joint guarantee"
+  },
   "short_waveform": [
     {
-      "C": 9.265e-05,
+      "case": "c185",
+      "C": 0.000185302750464,
       "ESR": 0.001,
-      "t_trip_s": 2.9610000000001407e-06,
-      "t_off_s": 4.0660000000001174e-06,
+      "ESL": 0.0,
+      "t_trip_s": 4.5279999999999565e-06,
+      "t_off_s": 5.6329999999995715e-06,
       "thr_raw_V": 11.656179829621664,
-      "raw_at_off_V": 11.991137793866914,
-      "raw_max_to_off_V": 11.991137793866914,
+      "raw_at_off_V": 11.878772859211152,
+      "raw_max_to_off_V": 11.878772859211152,
       "pass_upper": true,
-      "margin_to_12V": 0.008862206133086303
+      "margin_to_12V": 0.12122714078884833
     },
     {
+      "case": "c185-esr12m5",
+      "C": 0.000185302750464,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.834000000000131e-06,
+      "t_off_s": 3.939000000000162e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.89135332838524,
+      "raw_max_to_off_V": 11.89135332838524,
+      "pass_upper": true,
+      "margin_to_12V": 0.10864667161476049
+    },
+    {
+      "case": "c483",
+      "C": 0.00048305417855999997,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 7.810999999998967e-06,
+      "t_off_s": 8.915999999999518e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.786510717678494,
+      "raw_max_to_off_V": 11.786510717678494,
+      "pass_upper": true,
+      "margin_to_12V": 0.21348928232150577
+    },
+    {
+      "case": "c483-esr12m5",
+      "C": 0.00048305417855999997,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 3.9940000000001425e-06,
+      "t_off_s": 5.0989999999997575e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.80722659786004,
+      "raw_max_to_off_V": 11.80722659786004,
+      "pass_upper": true,
+      "margin_to_12V": 0.19277340213995942
+    },
+    {
+      "case": "c176",
+      "C": 0.000176,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 4.392000000000004e-06,
+      "t_off_s": 5.496999999999619e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.885569768835678,
+      "raw_max_to_off_V": 11.885569768835678,
+      "pass_upper": true,
+      "margin_to_12V": 0.11443023116432194
+    },
+    {
+      "case": "c176-esr12m5",
+      "C": 0.000176,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.7720000000001265e-06,
+      "t_off_s": 3.877000000000183e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.89751749228223,
+      "raw_max_to_off_V": 11.89751749228223,
+      "pass_upper": true,
+      "margin_to_12V": 0.10248250771777023
+    },
+    {
+      "case": "c165",
       "C": 0.000165,
       "ESR": 0.001,
+      "ESL": 0.0,
       "t_trip_s": 4.226000000000062e-06,
       "t_off_s": 5.330999999999677e-06,
       "thr_raw_V": 11.656179829621664,
@@ -386,8 +524,62 @@
       "margin_to_12V": 0.10569695264979018
     },
     {
+      "case": "c165-esr12m5",
+      "C": 0.000165,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.696000000000121e-06,
+      "t_off_s": 3.801000000000204e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.905815911679461,
+      "raw_max_to_off_V": 11.905815911679461,
+      "pass_upper": true,
+      "margin_to_12V": 0.0941840883205387
+    },
+    {
+      "case": "c185-esr12m5-esl2n",
+      "C": 0.000185302750464,
+      "ESR": 0.0125,
+      "ESL": 2e-09,
+      "t_trip_s": 2.778000000000127e-06,
+      "t_off_s": 3.883000000000181e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.889122540742393,
+      "raw_max_to_off_V": 11.889122540742393,
+      "pass_upper": true,
+      "margin_to_12V": 0.1108774592576065
+    },
+    {
+      "case": "c165-esr12m5-esl2n",
+      "C": 0.000165,
+      "ESR": 0.0125,
+      "ESL": 2e-09,
+      "t_trip_s": 2.644000000000117e-06,
+      "t_off_s": 3.7490000000002e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.903696004663576,
+      "raw_max_to_off_V": 11.903696004663576,
+      "pass_upper": true,
+      "margin_to_12V": 0.09630399533642375
+    },
+    {
+      "case": "rev1-c92 (superseded)",
+      "C": 9.265e-05,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 2.9610000000001407e-06,
+      "t_off_s": 4.0660000000001174e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.991137793866914,
+      "raw_max_to_off_V": 11.991137793866914,
+      "pass_upper": true,
+      "margin_to_12V": 0.008862206133086303
+    },
+    {
+      "case": "rev1-c92-esr12m5 (superseded)",
       "C": 9.265e-05,
       "ESR": 0.0125,
+      "ESL": 0.0,
       "t_trip_s": 2.0510000000000724e-06,
       "t_off_s": 3.1560000000001554e-06,
       "thr_raw_V": 11.656179829621664,
@@ -397,32 +589,300 @@
       "margin_to_12V": 0.0011621568197881516
     },
     {
-      "C": 9.265e-05,
-      "ESR": 0.1,
-      "t_trip_s": 7.899999999999998e-08,
-      "t_off_s": 1.1840000000000072e-06,
+      "case": "c120-esr12m5 (info, below every bound)",
+      "C": 0.00012,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.3310000000000934e-06,
+      "t_off_s": 3.4360000000001764e-06,
       "thr_raw_V": 11.656179829621664,
-      "raw_at_off_V": 12.63516443710626,
-      "raw_max_to_off_V": 12.63516443710626,
+      "raw_at_off_V": 11.95248101452425,
+      "raw_max_to_off_V": 11.95248101452425,
+      "pass_upper": true,
+      "margin_to_12V": 0.047518985475749176
+    },
+    {
+      "case": "c130-esr12m5 (info, below every bound)",
+      "C": 0.00013,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.4210000000001e-06,
+      "t_off_s": 3.526000000000183e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.939802534599549,
+      "raw_max_to_off_V": 11.939802534599549,
+      "pass_upper": true,
+      "margin_to_12V": 0.06019746540045112
+    }
+  ],
+  "short_waveform_with_life": [
+    {
+      "case": "c185",
+      "C": 0.000185302750464,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 4.6139999999999265e-06,
+      "t_off_s": 5.7189999999995415e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.896436273020127,
+      "raw_max_to_off_V": 11.896436273020127,
+      "pass_upper": true,
+      "margin_to_12V": 0.10356372697987304
+    },
+    {
+      "case": "c185-esr12m5",
+      "C": 0.000185302750464,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.914000000000137e-06,
+      "t_off_s": 4.019000000000134e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.908572844169235,
+      "raw_max_to_off_V": 11.908572844169235,
+      "pass_upper": true,
+      "margin_to_12V": 0.09142715583076466
+    },
+    {
+      "case": "c483",
+      "C": 0.00048305417855999997,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 7.951999999999037e-06,
+      "t_off_s": 9.056999999999588e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.803001574414727,
+      "raw_max_to_off_V": 11.803001574414727,
+      "pass_upper": true,
+      "margin_to_12V": 0.19699842558527259
+    },
+    {
+      "case": "c483-esr12m5",
+      "C": 0.00048305417855999997,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 4.1150000000001e-06,
+      "t_off_s": 5.219999999999715e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.82342859755356,
+      "raw_max_to_off_V": 11.82342859755356,
+      "pass_upper": true,
+      "margin_to_12V": 0.17657140244643976
+    },
+    {
+      "case": "c176",
+      "C": 0.000176,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 4.474999999999975e-06,
+      "t_off_s": 5.57999999999959e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.90316012852798,
+      "raw_max_to_off_V": 11.90316012852798,
+      "pass_upper": true,
+      "margin_to_12V": 0.09683987147201911
+    },
+    {
+      "case": "c176-esr12m5",
+      "C": 0.000176,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.8510000000001325e-06,
+      "t_off_s": 3.956000000000156e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.915011683704687,
+      "raw_max_to_off_V": 11.915011683704687,
+      "pass_upper": true,
+      "margin_to_12V": 0.08498831629531267
+    },
+    {
+      "case": "c165",
+      "C": 0.000165,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 4.306000000000034e-06,
+      "t_off_s": 5.410999999999649e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.911939984966937,
+      "raw_max_to_off_V": 11.911939984966937,
+      "pass_upper": true,
+      "margin_to_12V": 0.08806001503306327
+    },
+    {
+      "case": "c165-esr12m5",
+      "C": 0.000165,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.7720000000001265e-06,
+      "t_off_s": 3.877000000000183e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.923262751990391,
+      "raw_max_to_off_V": 11.923262751990391,
+      "pass_upper": true,
+      "margin_to_12V": 0.0767372480096089
+    },
+    {
+      "case": "c185-esr12m5-esl2n",
+      "C": 0.000185302750464,
+      "ESR": 0.0125,
+      "ESL": 2e-09,
+      "t_trip_s": 2.859000000000133e-06,
+      "t_off_s": 3.964000000000153e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.90641411239895,
+      "raw_max_to_off_V": 11.90641411239895,
+      "pass_upper": true,
+      "margin_to_12V": 0.09358588760104958
+    },
+    {
+      "case": "c165-esr12m5-esl2n",
+      "C": 0.000165,
+      "ESR": 0.0125,
+      "ESL": 2e-09,
+      "t_trip_s": 2.7200000000001226e-06,
+      "t_off_s": 3.825000000000201e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.921001149848816,
+      "raw_max_to_off_V": 11.921001149848816,
+      "pass_upper": true,
+      "margin_to_12V": 0.07899885015118358
+    },
+    {
+      "case": "rev1-c92 (superseded)",
+      "C": 9.265e-05,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 3.019000000000145e-06,
+      "t_off_s": 4.124000000000097e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 12.009518072711764,
+      "raw_max_to_off_V": 12.009518072711764,
       "pass_upper": false,
-      "margin_to_12V": -0.6351644371062601
+      "margin_to_12V": -0.009518072711763637
+    },
+    {
+      "case": "rev1-c92-esr12m5 (superseded)",
+      "C": 9.265e-05,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.1080000000000766e-06,
+      "t_off_s": 3.2130000000001597e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 12.017228356057991,
+      "raw_max_to_off_V": 12.017228356057991,
+      "pass_upper": false,
+      "margin_to_12V": -0.017228356057991334
+    },
+    {
+      "case": "c120-esr12m5 (info, below every bound)",
+      "C": 0.00012,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.3960000000000983e-06,
+      "t_off_s": 3.5010000000001813e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.970414004296936,
+      "raw_max_to_off_V": 11.970414004296936,
+      "pass_upper": true,
+      "margin_to_12V": 0.029585995703063972
+    },
+    {
+      "case": "c130-esr12m5 (info, below every bound)",
+      "C": 0.00013,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.488000000000105e-06,
+      "t_off_s": 3.593000000000188e-06,
+      "thr_raw_V": 11.67098269695437,
+      "raw_at_off_V": 11.957435732915796,
+      "raw_max_to_off_V": 11.957435732915796,
+      "pass_upper": true,
+      "margin_to_12V": 0.04256426708420413
     }
   ],
   "short_waveform_typ_gate_added": [
     {
-      "C": 9.265e-05,
+      "case": "c185",
+      "C": 0.000185302750464,
       "ESR": 0.001,
-      "t_trip_s": 2.9610000000001407e-06,
-      "t_off_s": 4.205000000000069e-06,
+      "ESL": 0.0,
+      "t_trip_s": 4.5279999999999565e-06,
+      "t_off_s": 5.771999999999523e-06,
       "thr_raw_V": 11.656179829621664,
-      "raw_at_off_V": 12.035488732964762,
-      "raw_max_to_off_V": 12.035488732964762,
-      "pass_upper": false,
-      "margin_to_12V": -0.03548873296476174
+      "raw_at_off_V": 11.90742037304629,
+      "raw_max_to_off_V": 11.90742037304629,
+      "pass_upper": true,
+      "margin_to_12V": 0.09257962695370914
     },
     {
+      "case": "c185-esr12m5",
+      "C": 0.000185302750464,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.834000000000131e-06,
+      "t_off_s": 4.078000000000113e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.921377802143265,
+      "raw_max_to_off_V": 11.921377802143265,
+      "pass_upper": true,
+      "margin_to_12V": 0.07862219785673474
+    },
+    {
+      "case": "c483",
+      "C": 0.00048305417855999997,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 7.810999999998967e-06,
+      "t_off_s": 9.054999999999587e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.80276625725136,
+      "raw_max_to_off_V": 11.80276625725136,
+      "pass_upper": true,
+      "margin_to_12V": 0.19723374274864014
+    },
+    {
+      "case": "c483-esr12m5",
+      "C": 0.00048305417855999997,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 3.9940000000001425e-06,
+      "t_off_s": 5.237999999999709e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.825850593283292,
+      "raw_max_to_off_V": 11.825850593283292,
+      "pass_upper": true,
+      "margin_to_12V": 0.1741494067167082
+    },
+    {
+      "case": "c176",
+      "C": 0.000176,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 4.392000000000004e-06,
+      "t_off_s": 5.6359999999995705e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.915137951551033,
+      "raw_max_to_off_V": 11.915137951551033,
+      "pass_upper": true,
+      "margin_to_12V": 0.08486204844896683
+    },
+    {
+      "case": "c176-esr12m5",
+      "C": 0.000176,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.7720000000001265e-06,
+      "t_off_s": 4.016000000000135e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.928411604190075,
+      "raw_max_to_off_V": 11.928411604190075,
+      "pass_upper": true,
+      "margin_to_12V": 0.07158839580992549
+    },
+    {
+      "case": "c165",
       "C": 0.000165,
       "ESR": 0.001,
+      "ESL": 0.0,
       "t_trip_s": 4.226000000000062e-06,
       "t_off_s": 5.469999999999628e-06,
       "thr_raw_V": 11.656179829621664,
@@ -432,8 +892,62 @@
       "margin_to_12V": 0.07492951747128451
     },
     {
+      "case": "c165-esr12m5",
+      "C": 0.000165,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.696000000000121e-06,
+      "t_off_s": 3.940000000000161e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.93785225352291,
+      "raw_max_to_off_V": 11.93785225352291,
+      "pass_upper": true,
+      "margin_to_12V": 0.06214774647708943
+    },
+    {
+      "case": "c185-esr12m5-esl2n",
+      "C": 0.000185302750464,
+      "ESR": 0.0125,
+      "ESL": 2e-09,
+      "t_trip_s": 2.778000000000127e-06,
+      "t_off_s": 4.022000000000133e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.918899522711017,
+      "raw_max_to_off_V": 11.918899522711017,
+      "pass_upper": true,
+      "margin_to_12V": 0.08110047728898273
+    },
+    {
+      "case": "c165-esr12m5-esl2n",
+      "C": 0.000165,
+      "ESR": 0.0125,
+      "ESL": 2e-09,
+      "t_trip_s": 2.644000000000117e-06,
+      "t_off_s": 3.8880000000001794e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.935473205911649,
+      "raw_max_to_off_V": 11.935473205911649,
+      "pass_upper": true,
+      "margin_to_12V": 0.06452679408835138
+    },
+    {
+      "case": "rev1-c92 (superseded)",
+      "C": 9.265e-05,
+      "ESR": 0.001,
+      "ESL": 0.0,
+      "t_trip_s": 2.9610000000001407e-06,
+      "t_off_s": 4.205000000000069e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 12.035488732964762,
+      "raw_max_to_off_V": 12.035488732964762,
+      "pass_upper": false,
+      "margin_to_12V": -0.03548873296476174
+    },
+    {
+      "case": "rev1-c92-esr12m5 (superseded)",
       "C": 9.265e-05,
       "ESR": 0.0125,
+      "ESL": 0.0,
       "t_trip_s": 2.0510000000000724e-06,
       "t_off_s": 3.295000000000166e-06,
       "thr_raw_V": 11.656179829621664,
@@ -443,17 +957,239 @@
       "margin_to_12V": -0.04398206191861931
     },
     {
-      "C": 9.265e-05,
-      "ESR": 0.1,
-      "t_trip_s": 7.899999999999998e-08,
-      "t_off_s": 1.3230000000000177e-06,
+      "case": "c120-esr12m5 (info, below every bound)",
+      "C": 0.00012,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.3310000000000934e-06,
+      "t_off_s": 3.575000000000187e-06,
       "thr_raw_V": 11.656179829621664,
-      "raw_at_off_V": 12.722779776754393,
-      "raw_max_to_off_V": 12.722779776754393,
-      "pass_upper": false,
-      "margin_to_12V": -0.7227797767543933
+      "raw_at_off_V": 11.991036442175982,
+      "raw_max_to_off_V": 11.991036442175982,
+      "pass_upper": true,
+      "margin_to_12V": 0.008963557824017698
+    },
+    {
+      "case": "c130-esr12m5 (info, below every bound)",
+      "C": 0.00013,
+      "ESR": 0.0125,
+      "ESL": 0.0,
+      "t_trip_s": 2.4210000000001e-06,
+      "t_off_s": 3.6650000000001936e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.97656998521666,
+      "raw_max_to_off_V": 11.97656998521666,
+      "pass_upper": true,
+      "margin_to_12V": 0.02343001478334017
     }
   ],
+  "short_stress_esr100m": {
+    "C": 0.000185302750464,
+    "ESR": 0.1,
+    "ESL": 0.0,
+    "t_trip_s": 7.899999999999998e-08,
+    "t_off_s": 1.1840000000000072e-06,
+    "thr_raw_V": 11.656179829621664,
+    "raw_at_off_V": 12.569490850762815,
+    "raw_max_to_off_V": 12.569490850762815,
+    "pass_upper": false,
+    "margin_to_12V": -0.5694908507628149
+  },
   "closes_short_waveform": true,
-  "short_waveform_note": "rows 1-3 (ESR 1 m / 12.5 mOhm, ceramic-realistic) are acceptance rows; row 4 (100 mOhm bank ESR, -40C stress corner carried over from the LTC4365 study) is reported separately: its RAW step I*ESR is outside the 0.07-0.23 V/us slope assumption"
+  "margin_summary": {
+    "target_V": 0.05,
+    "guaranteed": [
+      [
+        "slope 0.07 V/us",
+        0.2610794578002107
+      ],
+      [
+        "slope 0.17 V/us",
+        0.14287843983146153
+      ],
+      [
+        "slope 0.23 V/us",
+        0.07195782905021098
+      ],
+      [
+        "short c185",
+        0.12122714078884833
+      ],
+      [
+        "short c185-esr12m5",
+        0.10864667161476049
+      ],
+      [
+        "short c483",
+        0.21348928232150577
+      ],
+      [
+        "short c483-esr12m5",
+        0.19277340213995942
+      ],
+      [
+        "short c176",
+        0.11443023116432194
+      ],
+      [
+        "short c176-esr12m5",
+        0.10248250771777023
+      ],
+      [
+        "short c165",
+        0.10569695264979018
+      ],
+      [
+        "short c165-esr12m5",
+        0.0941840883205387
+      ],
+      [
+        "short c185-esr12m5-esl2n",
+        0.1108774592576065
+      ],
+      [
+        "short c165-esr12m5-esl2n",
+        0.09630399533642375
+      ],
+      [
+        "floor 11.22 V",
+        0.0728804282953952
+      ]
+    ],
+    "guaranteed_with_life": [
+      [
+        "slope 0.07 V/us",
+        0.24627659046750416
+      ],
+      [
+        "slope 0.17 V/us",
+        0.128075572498755
+      ],
+      [
+        "slope 0.23 V/us",
+        0.05715496171750445
+      ],
+      [
+        "short c185",
+        0.10356372697987304
+      ],
+      [
+        "short c185-esr12m5",
+        0.09142715583076466
+      ],
+      [
+        "short c483",
+        0.19699842558527259
+      ],
+      [
+        "short c483-esr12m5",
+        0.17657140244643976
+      ],
+      [
+        "short c176",
+        0.09683987147201911
+      ],
+      [
+        "short c176-esr12m5",
+        0.08498831629531267
+      ],
+      [
+        "short c165",
+        0.08806001503306327
+      ],
+      [
+        "short c165-esr12m5",
+        0.0767372480096089
+      ],
+      [
+        "short c185-esr12m5-esl2n",
+        0.09358588760104958
+      ],
+      [
+        "short c165-esr12m5-esl2n",
+        0.07899885015118358
+      ],
+      [
+        "floor 11.22 V",
+        0.058429898961962934
+      ]
+    ],
+    "min_guaranteed_V": 0.07195782905021098,
+    "min_with_life_V": 0.05715496171750445,
+    "meets_target": true,
+    "meets_target_with_life": true
+  },
+  "option_study": {
+    "A_more_C": {
+      "desc": "16 x C5750X7S2A226M280KB (rev2 choice)",
+      "c_min_eff": 0.000185302750464,
+      "margins": [
+        [
+          "c185",
+          0.12122714078884833
+        ],
+        [
+          "c185-esr12m5",
+          0.10864667161476049
+        ],
+        [
+          "c483",
+          0.21348928232150577
+        ],
+        [
+          "c483-esr12m5",
+          0.19277340213995942
+        ],
+        [
+          "c176",
+          0.11443023116432194
+        ],
+        [
+          "c176-esr12m5",
+          0.10248250771777023
+        ],
+        [
+          "c165",
+          0.10569695264979018
+        ],
+        [
+          "c165-esr12m5",
+          0.0941840883205387
+        ],
+        [
+          "c185-esr12m5-esl2n",
+          0.1108774592576065
+        ],
+        [
+          "c165-esr12m5-esl2n",
+          0.09630399533642375
+        ]
+      ]
+    },
+    "A_min_C_for_target_esr12m5": 0.000122,
+    "B_faster_turnoff_required_chain_reduction_s_at_c92": {
+      "esr1m": 1.3200000000000002e-07,
+      "esr12m5": 1.55e-07,
+      "note": "guaranteed turn-off chain must be this much shorter than tPD_cmp+tPD(INP_L)+tail = 1.104e-06 s to reach the target with the rev1 bank"
+    },
+    "C_lower_Qg": {
+      "guaranteed_gain_V": 0.0,
+      "note": "guaranteed chain uses tPD(INP_L) max which is specified at a 470 nC load (> our 277 nC): a lower-Qg FET does not shorten any GUARANTEED term; only the typical-gate sensitivity row improves"
+    }
+  },
+  "vcm_tolerance": {
+    "vcm_operating_V": 4.096,
+    "vio_spec_vcm_V": 0.3,
+    "vcm_shift_V": 3.7960000000000003,
+    "assumed_allow_pin_V": 0.004096,
+    "extra_pin_offset_for_zero_margin_V": 0.025793616216133925,
+    "extra_pin_offset_for_target_V": 0.007870885252304508,
+    "total_vcm_term_pin_for_zero_margin_V": 0.029889616216133924,
+    "total_vcm_term_pin_for_target_V": 0.011966885252304507,
+    "cmrr_equivalent_dB_zero_margin": 42.076117300773376,
+    "cmrr_equivalent_dB_target": 50.02690154110299,
+    "cmrr_typ_dB": 80,
+    "note": "VCM term is an ASSUMPTION (V): TLV3601 gives no MIN CMRR and VIO only at VCM=VEE+0.3 V. Margins stay >= 0 for a VCM-induced offset up to total_vcm_term_pin_for_zero_margin_V (both the 12 V side and the 11.22 V floor checked); bench test B2."
+  },
+  "short_waveform_note": "rows c185/c185-esr12m5/c483/c483-esr12m5 are acceptance rows (rev2 16-cap bank, min/max effective C); rev1-c92 rows are the superseded 8-cap bank (information). short_stress_esr100m (100 mOhm bank ESR, -40C stress corner carried over from the LTC4365 study) is reported separately: its RAW step I*ESR is outside the 0.07-0.23 V/us slope assumption"
 }

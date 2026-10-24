@@ -1,6 +1,6 @@
 Group,Distributor,MPN,URL,Result,Quantity_in_stock,Unit_price,Currency,Price_break,Checked_at_Europe_Istanbul,Note
 TR,direnc.net,CSD18540Q5B,https://www.direnc.net/csd18540q5b-100a-60v-n-kanal-mosfet-tdfn-8,listed / in stock (schema.org InStock; product-stock-status=1),doğrulanamadı (adet gösterilmiyor),91.24 (KDV dahil; 76.04 + KDV),TRY,0-99 pcs,2026-10-25 01:18,need 4 pcs
-TR,direnc.net,TPS48000 / TLV3601 / REF35409 / TPS7A1650 / ERA-3ARB,https://www.direnc.net/arama?q=<MPN>,bulunamadı (site search: "ürün bulunamadı"),,,,,2026-10-25 01:16-01:18,
+TR,direnc.net,TPS48000 / TLV3601 / REF35409 / TPS7A1650 / ERA-3ARB,https://www.direnc.net/arama?q=<MPN>,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 01:16-01:18,
 TR,robotistan,all 6 MPNs,https://www.robotistan.com/arama?q=<MPN>,bulunamadı (site search),,,,,2026-10-25 01:16-01:18,
 TR,motorobit,all 6 MPNs,https://www.motorobit.com/arama?q=<MPN>,bulunamadı (site search),,,,,2026-10-25 01:16-01:18,
 TR,Empa,all 6 MPNs,https://www.empa.com/arama?q=<MPN>,doğrulanamadı (search page returned but no product match parsed),,,,,2026-10-25 01:17-01:18,catalog/quote-based distributor; ask by e-mail
@@ -19,3 +19,23 @@ Foreign,Farnell,TPS48000QDGXRQ1,https://tr.farnell.com/search?st=TPS48000QDGXRQ1
 Foreign,TME,all 6 MPNs,https://www.tme.eu/en/katalog/?search=<MPN>,doğrulanamadı (HTTP 403),,,,,2026-10-25 01:17-01:18,
 Foreign,LCSC,all 6 MPNs,https://wmsc.lcsc.com/ftps/wm/search/global?keyword=<MPN>,doğrulanamadı (HTTP 403),,,,,2026-10-25 01:17-01:18,
 Foreign,Arrow,TPS48000QDGXRQ1,https://www.arrow.com/en/products/search?q=TPS48000QDGXRQ1,doğrulanamadı (connection failed),,,,,2026-10-25 01:22,
+TR,direnc.net,C5750X7S2A226M280KB,https://www.direnc.net/arama?q=C5750X7S2A226M280KB,bulunamadı (site search),,,,,2026-10-25 01:32,need 8 extra pcs (16 total on board)
+TR,robotistan,C5750X7S2A226M280KB,https://www.robotistan.com/arama?q=C5750X7S2A226M280KB,bulunamadı (site search),,,,,2026-10-25 01:32,
+TR,motorobit,C5750X7S2A226M280KB,https://www.motorobit.com/arama?q=C5750X7S2A226M280KB,bulunamadı (site search),,,,,2026-10-25 01:32,
+Foreign,DigiKey,C5750X7S2A226M280KB,https://www.digikey.com/en/products/result?keywords=C5750X7S2A226M280KB,"not in stock; ""500 expected in stock on 28-Oct-2026"" (DigiKey text, unverified)",0,"2.85010 (500, T&R) / 2.70630 (1500, T&R)",USD,500 / 1500,2026-10-25 01:32,"DigiKey PN 445-C5750X7S2A226M280KBTR-ND; standard lead time 24 wk - RISK; Cal-Chip GMC55X7S226M100NT shown as substitute (7000 pcs) - NOT qualified, not used"
+Foreign,Mouser,C5750X7S2A226M280KB,https://www.mouser.com/c/?q=C5750X7S2A226M280KB,doğrulanamadı (Access Denied / captcha),,,,,2026-10-25 01:33,
+Foreign,TME,C5750X7S2A226M280KB,https://www.tme.eu/en/katalog/?search=C5750X7S2A226M280KB,doğrulanamadı (HTTP 403),,,,,2026-10-25 01:33,
+Foreign,LCSC,C5750X7S2A226M280KB,https://www.lcsc.com/search?q=C5750X7S2A226M280KB,doğrulanamadı (result not parsed),,,,,2026-10-25 01:33,
+TR,direnc.net,RC0603FR-071KL,https://www.direnc.net/arama?q=RC0603FR-071KL,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,GRM1885C1H101JA01D,https://www.direnc.net/arama?q=GRM1885C1H101JA01D,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,GRM188R71C105KA12D,https://www.direnc.net/arama?q=GRM188R71C105KA12D,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,GRM21BR71H105KA12L,https://www.direnc.net/arama?q=GRM21BR71H105KA12L,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,GRM31CR71E106KA12L,https://www.direnc.net/arama?q=GRM31CR71E106KA12L,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,RC0603FR-07499RL,https://www.direnc.net/arama?q=RC0603FR-07499RL,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,GRM188R71E474KA12D,https://www.direnc.net/arama?q=GRM188R71E474KA12D,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,RC0603FR-07100KL,https://www.direnc.net/arama?q=RC0603FR-07100KL,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,RC0603FR-0710KL,https://www.direnc.net/arama?q=RC0603FR-0710KL,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,RC0603FR-0790K9L,https://www.direnc.net/arama?q=RC0603FR-0790K9L,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+TR,direnc.net,ERJ-PA3F10R0V,https://www.direnc.net/arama?q=ERJ-PA3F10R0V,"bulunamadı (site search: ""ürün bulunamadı"")",,,,,2026-10-25 02:01,rev2 P1-4 passive
+Foreign,DigiKey,GRM31CR71E106KA12L (and the other rev2 P1-4 passives),https://www.digikey.com/en/products/result?keywords=GRM31CR71E106KA12L,doğrulanamadı (HTTP 403 from the box at this time),,,,,2026-10-25 02:00,not retried via other routes
+Foreign,Newark (via DigiPart aggregator search snippet),ERJ-PA3F10R0V,https://www.digipart.com/part/ERJ-PA3F10R0V,"aggregator snippet shows Newark 83AK4377 stock 10000 (UNVERIFIED third-party text, not the distributor page)",10000 (unverified),0.019 @5000,USD,5000/10000/20000,2026-10-25 02:00,web search snippet only - treat as doğrulanamadı for ordering

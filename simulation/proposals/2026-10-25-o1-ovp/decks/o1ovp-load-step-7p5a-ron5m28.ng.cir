@@ -5,7 +5,7 @@
 .include ../pdu-o1ovp-behavioral.lib
 .include ../pdu-circuit-o1ovp.inc
 .include ../pdu-o1ovp-block.inc
-.param TDON=1.68u TDOV=5.55u IBST=345u IPU=1.69 IPD=2 VTH_P=1.5 CGS_P=5n NPAR=2 RON_P=5.28m CRAW=92.65u ESR=1m VBSTR=9 VCPOFF=11.6 VREF_P=4.086576 RT_P=2045.9 RB_P=1152.3 CMP_VTRIP=-9.1m CMP_VREL=-14.1m CMP_IB=-5u TDOFF=1.0545u CBIAS=0.5 LFACTOR=1
+.param TDON=1.68u TDOV=5.55u IBST=345u IPU=1.69 IPD=2 VTH_P=1.5 CGS_P=5n NPAR=2 RON_P=5.28m CRAW=185.3u ESR=1m VBSTR=9 VCPOFF=11.6 VREF_P=4.086576 RT_P=2045.9 RB_P=1152.3 CMP_VTRIP=-9.1m CMP_VREL=-14.1m CMP_IB=-5u TDOFF=1.0545u CBIAS=0.5 LFACTOR=1
 Vbattery VBAT 0 PWL(0 0 100u 20)
 Bload1 O1_11V 0 I=(if(time<20m,0.3,3))*min(max(V(O1_11V)/5,0),1)
 Bload2 S2E_11V 0 I=(if(time<20m,0.15,1.5))*min(max(V(S2E_11V)/5,0),1)
