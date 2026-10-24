@@ -166,13 +166,13 @@
       "value": 0.001,
       "unit": "1",
       "kind": "G",
-      "source": "ERA-3ARB +/-0.1 %, AOA0000C307 p2"
+      "source": "ERA-8ARB +/-0.1 % (RSNS10A+B series sum: same bound), AOA0000C307 p2"
     },
     "R_TCR": {
       "value": 1e-05,
       "unit": "1/K",
       "kind": "G",
-      "source": "ERA-3ARB +/-10 ppm/K, AOA0000C307 p2"
+      "source": "ERA-8ARB +/-10 ppm/K, AOA0000C307 p2"
     },
     "R_dT": {
       "value": 100.0,
@@ -184,7 +184,7 @@
       "value": 0.001,
       "unit": "1",
       "kind": "G",
-      "source": "ERA-3A endurance/soldering/damp-heat test limit +/-0.1 % each (separate column)"
+      "source": "ERA-xA (ERA-8A used, rev3) endurance/soldering/damp-heat test limit +/-0.1 % each (separate column), AOA0000C307 performance table common to all sizes"
     },
     "RIN": {
       "value": 1000.0,

@@ -13,7 +13,7 @@ Ham veri: `sourcing.csv`. Web sonuçları güvenilmez veridir; stok/fiyat sipari
 | Samm Market | Arama URL'si HTTP 404 → doğrulanamadı | 01:17–01:18 |
 | Özdisan | Arama URL'si HTTP 404 → doğrulanamadı (teklif talebi gerekir; gönderilmedi) | 01:17–01:18 |
 
-**TR özeti:** Yalnız CSD18540Q5B TR'de görünür. TI IC'leri (U10–U13) ve 0,1 % ERA-3ARB dirençleri için TR stok doğrulanamadı.
+**TR özeti:** Yalnız CSD18540Q5B TR'de görünür. TI IC'leri (U10–U13) ve 0,1 % ERA-xARB dirençleri için TR stok doğrulanamadı. **rev3 P0-01:** bölücü 1206 ERA-8ARB102V + ERA-8ARB1051V + ERA-8ARB1151V'ye geçti; bu MPN'ler için stok/fiyat **doğrulanamadı** (DigiKey arama sayfası JS ile yükleniyor, kutudan curl ile içerik alınamadı, 2026-10-25 ~02:50 TSİ).
 
 ## B. Yurt dışı
 | MPN | DigiKey stok | Fiyat USD (1 / 10 / 100) | Tedarik süresi | Saat (TSİ) |
@@ -23,8 +23,8 @@ Ham veri: `sourcing.csv`. Web sonuçları güvenilmez veridir; stok/fiyat sipari
 | REF35409QDBVR | 829 | 2,23 / 1,649 / 1,3443 | 12 hf | 01:20 |
 | TPS7A1650DGNR | 2.345 | 4,55 / 3,442 / 2,862 | 12 hf | 01:20 |
 | CSD18540Q5B | listelenmiş, adet doğrulanamadı | 3,50 (liste) | – | 01:20 |
-| ERA-3ARB1151V | **stok yok** (sipariş üzerine) | 0,19219 @ 5000 MOQ | **55 hf** | 01:21 |
-| ERA-3ARB2051V | **DigiKey'de yok** (yalnız yetkisiz broker listeleri) | – | – | 01:21 |
+| ERA-3ARB1151V (rev2; rev3'te ERA-8ARB1151V ile değişti) | **stok yok** (sipariş üzerine) | 0,19219 @ 5000 MOQ | **55 hf** | 01:21 |
+| ERA-3ARB2051V (rev2; rev3'te 2 × 1206 ile değişti) | **DigiKey'de yok** (yalnız yetkisiz broker listeleri) | – | – | 01:21 |
 
 Mouser (zaman aşımı / ürün yok), Farnell TR (403), TME (403), LCSC (403), Arrow (bağlantı hatası): **doğrulanamadı** (01:17–01:22).
 
@@ -69,6 +69,6 @@ DigiKey'in önerdiği muadil Cal-Chip GMC55X7S226M100NT (7.000 adet görünüyor
 Not: Bu satırlar jenerik 0603/0805/1206 pasiflerdir; TR stoğu direnc.net'te görülmedi, diğer TR kanalları bu turda yeniden sorgulanmadı. Hiçbir stok/fiyat uydurulmamıştır. Murata ürün sayfaları yalnız JavaScript ile yüklendiği için parametreler bu turda Murata sayfasından okunamadı (MPN kodlama kuralı + üçüncü taraf özet; P1-4 PCB blokörü listesine bakınız: `docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW_RESPONSE.md`).
 
 ## Riskler
-- **ERA-3ARB 0,1 % / 10 ppm bölücü dirençleri** tedarik riski (55 hf / bulunamadı). Alternatif (WP2): eşdeğer 0,1 %, ≤ 25 ppm/K 0603 ince film seriler (ör. Susumu RG1608, Vishay TNPW 0,1 %) – **MPN/stok doğrulanmadı**; ppm/K artarsa `window_budget.py` yeniden çalıştırılmalı.
+- **ERA-8ARB (rev3) 0,1 % / 10 ppm 1206 bölücü dirençleri** tedarik riski: stok doğrulanamadı (rev2 ERA-3ARB: 55 hf / bulunamadı). Muadil ararken 1206 (≥ 0,25 W @85 °C) ve ≥ 107 mW @125 °C şartı korunmalı (`rsns_power.py`). Alternatif (WP2): eşdeğer 0,1 %, ≤ 25 ppm/K 1206 ince film seriler (ör. Susumu RG3216, Vishay TNPW1206 0,1 %) – **MPN/stok doğrulanmadı**; ppm/K artarsa `window_budget.py` yeniden çalıştırılmalı.
 - TI IC'leri için TR kanalında stok görülmedi → yurt dışı sipariş (gümrük/kargo süresi plana eklenmeli).
 - **C5750X7S2A226M280KB** (rev2, +8 adet): DigiKey stok 0 / 24 hf; TR'de görülmedi → en yüksek yeni tedarik riski.

@@ -50,11 +50,11 @@ P = {
  'Qg10_max': (53e-9, 'C', 'G', 'CSD18540Q5B Qg(10V) 53 nC max, SLPS488B p3'),
  'Ciss_max': (4.23e-9, 'F', 'G', 'CSD18540Q5B Ciss 4230 pF max, SLPS488B p3'),
  'NFET': (4, '1', 'V', 'two parallel back-to-back pairs QA1/QA2 + QB1/QB2, one gate drive (PD tied to all gates)'),
- # Divider: Panasonic ERA-3ARB (AOA0000C307, 24-Apr-24, p2)
- 'R_tol': (0.001, '1', 'G', 'ERA-3ARB +/-0.1 %, AOA0000C307 p2'),
- 'R_TCR': (10e-6, '1/K', 'G', 'ERA-3ARB +/-10 ppm/K, AOA0000C307 p2'),
+ # Divider: Panasonic ERA-8ARB 1206 (rev3 P0-01; ERA-xARB series values identical to rev2 ERA-3ARB: AOA0000C307, 24-Apr-24, p2); RSNS10 = 2 parts in series, sum tolerance <= part tolerance
+ 'R_tol': (0.001, '1', 'G', 'ERA-8ARB +/-0.1 % (RSNS10A+B series sum: same bound), AOA0000C307 p2'),
+ 'R_TCR': (10e-6, '1/K', 'G', 'ERA-8ARB +/-10 ppm/K, AOA0000C307 p2'),
  'R_dT': (100.0, 'K', 'V', 'resistor at -40..125C, worst |T-25C|=100 K (no TCR tracking credited)'),
- 'R_life': (0.001, '1', 'G', 'ERA-3A endurance/soldering/damp-heat test limit +/-0.1 % each (separate column)'),
+ 'R_life': (0.001, '1', 'G', 'ERA-xA (ERA-8A used, rev3) endurance/soldering/damp-heat test limit +/-0.1 % each (separate column), AOA0000C307 performance table common to all sizes'),
  'RIN': (1000.0, 'ohm', 'V', 'series input resistor tap->IN- (abs-max current limit); IB flows through Rpar+RIN'),
  'Cf': (100e-12, 'F', 'V', 'C0G 100 pF filter at comparator IN- (Rpar*Cf lag added)'),
  'Cf_tol': (0.05, '1', 'G', 'C0G +/-5 % (GRM1885C1H101JA01, to be confirmed)'),

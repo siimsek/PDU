@@ -18,9 +18,9 @@ Bu paket hiçbir `.kicad_sch/.kicad_pcb/.kicad_pro` dosyasını değiştirmez. A
 | Q10, Q11 (paralel) | D = RAW, S = SRC_OVP, G = G_OVP |
 | Q12, Q13 (paralel) | D = VOUT, S = SRC_OVP, G = G_OVP (sırt sırta: ortak kaynak) |
 | U10 TPS48000-Q1 | VS = VIN; EN/UVLO = REN10 (VIN→EN 100k) / REN11 (EN→GND 10k); OV = ROV10 (RAW→OV 90,9k) / ROV11 (10k); INP = U13 çıkışı; BST–SRC arası CBST10 0,47 µF; PU → RPU10 10 Ω → G_OVP; **PD → G_OVP doğrudan** (simde 10 mΩ); SRC = SRC_OVP; kullanılmayan pinler: bkz. §2b (SLUSEZ1B Tablo 4-1) |
-| U11 TPS7A1650 | IN (8) = VIN (CIN11 1 µF / 50 V / 0805); OUT (1) = V5_OVP (**COUT11 10 µF / 25 V / X7R / 1206 – rev2, 2,2 µF'tan büyütüldü**); EN (5) → IN; FB/DNC (2) **bağlanmaz** (sabit 5 V sürüm); PG (3), DELAY (7), NC (6) açık; GND (4) + termal ped → GND; RBLD11 499 Ω V5_OVP→GND |
-| U12 REF35409 | VIN (4) = V5_OVP; EN (3) → VIN; VREF (6) = VREF_OVP (**CREF12 1 µF / 16 V / X7R – rev2, 0,1 µF'tan büyütüldü**); NR (5) açık; GND (1, 2) → sinyal toprağı |
-| RSNS10 / RSNS11 | RAW → SNS_OVP 2,05 k (0,1 %) / SNS_OVP → GND 1,15 k (0,1 %); CSNS10 100 pF C0G SNS_OVP→GND |
+| U11 TPS7A1650 | IN (8) = VIN (CIN11 1 µF / 50 V / 0805); OUT (1) = V5_OVP (**COUT11 10 µF / 25 V / X7R / 1206 – rev2, 2,2 µF'tan büyütüldü**); EN (5) = IN (8) = VIN (aynı ağ, rev3 P1-05 netleştirme); FB/DNC (2) **bağlanmaz** (sabit 5 V sürüm); PG (3), DELAY (7), NC (6) açık; GND (4) + termal ped → GND; RBLD11 499 Ω V5_OVP→GND |
+| U12 REF35409 | VIN (4) = V5_OVP; **EN (3) = VIN (4) = V5_OVP** (aynı ağ; rev3 P1-05: "EN → VIN" ifadesi U10/üst VIN ile karıştırılabiliyordu); VREF (6) = VREF_OVP (**CREF12 1 µF / 16 V / X7R – rev2, 0,1 µF'tan büyütüldü**); NR (5) açık; GND (1, 2) → sinyal toprağı |
+| RSNS10A / RSNS10B / RSNS11 (rev3 P0-01) | RAW → SNS_MID 1,0 k (ERA-8ARB102V) → SNS_OVP 1,05 k (ERA-8ARB1051V) = 2,05 k toplam, oran değişmedi / SNS_OVP → GND 1,15 k (ERA-8ARB1151V); hepsi 0,1 %, 1206 (R_1206_3216Metric); SNS_MID yeni yerel ağ (yalnız iki direnç arası); CSNS10 100 pF C0G SNS_OVP→GND |
 | COUT21–COUT28 (rev2) | RAW ↔ GND, COUT1–8 ile paralel; 8 × C5750X7S2A226M280KB, PDU:TDK_C5750_2220_Recommended |
 | RIN10 | SNS_OVP → U13 IN− (1 k) |
 | U13 TLV3601 | IN+ = VREF_OVP, IN− = RIN10 ucu, VCC = V5_OVP, OUT → U10 INP (OUT yüksek = FET'ler açık; besleme yokken kapalı) |
@@ -99,6 +99,7 @@ Pinler: 1–3 S, 4 G, 5–8 + ped D. KiCad ayak izi TI land pattern'iyle doğrul
 | Q10–Q13 | doğrulandı | davranışsal 3 uç | doğrulanmadı | doğrulanmadı |
 
 ## 3. Yerleşim notları (simülasyonda yok)
+- **rev3 P1-03 – yalnız simülasyon elemanları (KiCad'e parça olarak aktarılmaz):** `RPD10` (PD_OVP→G_OVP, 10 mΩ) fizikselde **doğrudan bağlantıdır** (PD pini kapı ağına iz ile; 10 mΩ izi/via direncini temsil eder ve `gate_discharge_wc.py` en kötü kapı deşarj hesabına dahildir). `RSRC10` (SRC_OVP→0, 10 MΩ) yalnız yakınsama/DC yol elemanıdır; fiziksel kartta **yoktur** (sızıntı ≈ 1,1 µA @ 11 V, sonuçlara etkisi ihmal edilebilir – varsayım; tezgâhta ayrıca doğrulanmaz). BOM'da bu iki eleman yer almaz.
 - Bölücü toprağı (RSNS11, CSNS10, CREF12, U12/U13 GND) için Kelvin/sinyal toprağı; RAW algılama ucu COUT bankının yanından ayrı iz.
 - PD–G_OVP–SRC döngüsünü minimumda tut (tPD(INP_L) 1,05 µs garantisi düşük endüktanslı sürüşe dayanır).
 - 4× CSD18540Q5B termal: RDS(on) max 2,2 mΩ @ VGS = 10 V, 25 °C (SLPS488B p3). Yol: 2 paralel (1,1 mΩ) × 2 seri = 2,2 mΩ → 7,5 A'da ≈ 7,5² × 2,2 mΩ ≈ 0,12 W (25 °C; sıcakta RDS artışı ile ~0,2 W mertebesi – tahmin). VGS gerçek değeri (BST–SRC) 10 V'tan düşükse RDS artar; bakır alanı WP5'te doğrulanmalı.
