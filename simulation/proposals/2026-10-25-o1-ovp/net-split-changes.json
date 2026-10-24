@@ -1,0 +1,71 @@
+[
+  [
+    "drop",
+    ".include pdu-behavioral.lib"
+  ],
+  [
+    "COUT1",
+    "COUT1 VOUT 0 {2.2e-05*CBIAS}",
+    "COUT1 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "COUT2",
+    "COUT2 VOUT 0 {2.2e-05*CBIAS}",
+    "COUT2 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "COUT3",
+    "COUT3 VOUT 0 {2.2e-05*CBIAS}",
+    "COUT3 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "COUT4",
+    "COUT4 VOUT 0 {2.2e-05*CBIAS}",
+    "COUT4 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "COUT5",
+    "COUT5 VOUT 0 {2.2e-05*CBIAS}",
+    "COUT5 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "COUT6",
+    "COUT6 VOUT 0 {2.2e-05*CBIAS}",
+    "COUT6 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "COUT7",
+    "COUT7 VOUT 0 {2.2e-05*CBIAS}",
+    "COUT7 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "COUT8",
+    "COUT8 VOUT 0 {2.2e-05*CBIAS}",
+    "COUT8 RAW 0 {2.2e-05*CBIAS}"
+  ],
+  [
+    "RFB1",
+    "RFB1 VOUT FB 130000",
+    "RFB1 RAW FB 130000"
+  ],
+  [
+    "RS1",
+    "RS1 ISNS1 VOUT 0.0075",
+    "RS1 ISNS1 RAW 0.0075"
+  ],
+  [
+    "RS2",
+    "RS2 ISNS2 VOUT 0.0075",
+    "RS2 ISNS2 RAW 0.0075"
+  ],
+  [
+    "XU1",
+    "XU1 VIN VIN VIN CBOOT1 SW4_PH1 VOUT SYNC 0 EN_BUCK unconnected__U1_NC_Pad10_ ISNS1 VOUT CFG_PRI RT_PH1 COMP FB 0 VDDA1 VCC1 SW_PH1 SW_PH1 SW_PH1 0 0 0 0 VIN VIN VIN 0 PDU_BUCK MAIN=1 RSVAL=0.0075",
+    "XU1 VIN VIN VIN CBOOT1 SW4_PH1 RAW SYNC 0 EN_BUCK unconnected__U1_NC_Pad10_ ISNS1 RAW CFG_PRI RT_PH1 COMP FB 0 VDDA1 VCC1 SW_PH1 SW_PH1 SW_PH1 0 0 0 0 VIN VIN VIN 0 PDU_BUCK MAIN=1 RSVAL=0.0075"
+  ],
+  [
+    "XU2",
+    "XU2 VIN VIN VIN CBOOT2 SW4_PH2 VOUT unconnected__U2_PG_slash_SYNCOUT_Pad7_ SYNC EN_BUCK unconnected__U2_NC_Pad10_ ISNS2 VOUT CFG_SEC RT_PH2 COMP 0 0 VDDA2 VCC2 SW_PH2 SW_PH2 SW_PH2 0 0 0 0 VIN VIN VIN 0 PDU_BUCK MAIN=0 RSVAL=0.0075",
+    "XU2 VIN VIN VIN CBOOT2 SW4_PH2 RAW unconnected__U2_PG_slash_SYNCOUT_Pad7_ SYNC EN_BUCK unconnected__U2_NC_Pad10_ ISNS2 RAW CFG_SEC RT_PH2 COMP 0 0 VDDA2 VCC2 SW_PH2 SW_PH2 SW_PH2 0 0 0 0 VIN VIN VIN 0 PDU_BUCK MAIN=0 RSVAL=0.0075"
+  ]
+]

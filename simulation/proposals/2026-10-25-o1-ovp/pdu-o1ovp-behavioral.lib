@@ -1,0 +1,103 @@
+* WP1 2026-10-25 O1-OVP: BEHAVIORAL approximations. NOT Texas Instruments silicon models.
+* Model class: behavioral/ideal (hand-written from datasheet tables). Same file for LTspice
+* and ngspice (ngspice: -D ngbehavior=ltpsa). Every corner constant is a subckt parameter so
+* each deck states its corner explicitly. Datasheet sources:
+*  TLV3601    SNOSDB1E (Jun 2021, rev. Apr 2023) Sec. 6.5/6.6 (p7-8)
+*  REF35409   SNAS809C (Dec 2021, rev. Sep 2024) Sec. 6.5 (p5)
+*  TPS48000-Q1 SLUSEZ1B (Dec 2023, rev. Mar 2026) Sec. 5.5/5.6 (p6-7), Fig. 6-1 (p11)
+*  CSD18540Q5B SLPS488B (Jun 2014, rev. Apr 2017) Sec. 5.1 (p3)
+*  TPS7A1650  SBVS171F (Dec 2011, rev. Oct 2015) Sec. 6.5
+* Simplifications (stated, not hidden): no supply-current model, no thermal model, comparator
+* tPD lumped into the TPS48000 TDOFF transport delay, FET = gate-controlled resistor (no
+* saturation -> conducts MORE during turn-off = conservative for overshoot), lumped linear Cgs.
+
+* Comparator: OUT low when V(INM)-V(INP) > VTRIP, releases when < VREL.
+* VTRIP = offset + VCM allowance + hysteresis + required overdrive (see gen_o1ovp.py corners).
+* IB is drawn INTO INM (positive value = worst-high trip). ESD diodes to both rails.
+.subckt O1OVP_TLV3601 OUT VEE INP INM VCC VTRIP=10m VREL=5m IB=5u
+Bst VEE st I=(if(V(st,VEE)>0.5, if(V(INM,INP)>{VREL},1,0), if(V(INM,INP)>{VTRIP},1,0))-V(st,VEE))/1k
+Cst st VEE 1p
+Rst st VEE 1T
+Bout OUT VEE V=max(V(VCC,VEE),0)*(1-min(max(V(st,VEE),0),1))
+Iib INM VEE {IB}
+Iibp INP VEE {IB}
+Dhi INM VCC O1OVP_ESD
+Dlo VEE INM O1OVP_ESD
+Dhp INP VCC O1OVP_ESD
+Dlp VEE INP O1OVP_ESD
+.model O1OVP_ESD D(Is=1e-14 N=1 Rs=5)
+.ends O1OVP_TLV3601
+
+* Series reference: ideal VREF once VIN > VREF+0.3 V (dropout assumption), 0.5 ohm out.
+.subckt O1OVP_REF35 IN OUT GND VREF=4.096
+Bref ri GND V=min({VREF},max(V(IN,GND)-0.3,0))
+Rref ri OUT 0.5
+.ends O1OVP_REF35
+
+* LDO: SOURCE-ONLY (cannot sink), so current injected by the comparator input clamp
+* raises the rail unless the bleed resistor absorbs it. 150 mA limit, 0.5 V dropout.
+.subckt O1OVP_LDO IN OUT GND VLDO=5
+Bldo IN OUT I=min(max((min({VLDO},V(IN,GND)-0.5)-V(OUT,GND))/0.05,0),0.15)
+Rleak OUT GND 1Meg
+.ends O1OVP_LDO
+
+* TPS48000-Q1 INP/OV/EN/charge-pump/PU-PD subset. SCP path omitted (disabled in design:
+* CS+/CS-/VS tied, ISCP/TMR to GND per SLUSEZ1B Table 4-1).
+* INP logic threshold modelled at 1.35/1.45 V (datasheet only guarantees <0.8 V = low,
+* >2 V = high; the comparator output slews 0<->5 V in ns so the choice is immaterial).
+* Delays are lossless-line transport delays (portable LTspice/ngspice):
+*  TDON  : INP high -> PU active   (tPU(INP_H) 1.68 us max)
+*  TDOFF : INP low  -> PD active   (tPD(INP_L) 1.05 us max, + comparator tPD 4.5 ns)
+*  TDOV  : OV high  -> PD active   (tPD(OV_OFF) 5.55 us max)
+* IPU/IPD are TYPICAL peak currents (1.69 A / 2 A); no MIN exists in SLUSEZ1B.
+.subckt O1OVP_TPS48000 VS GND ENUV OV INP BST SRC PU PD TDON=1.68u TDOFF=1.0545u TDOV=5.55u
++ IBST=345u IPU=1.69 IPD=2 VCPOFF=11.6 VBSTR=9 VBSTF=8.2 VENR=1.23 VENF=1.14 VOVR=1.23 VOVF=1.14
+Ben GND en I=(if(V(en,GND)>0.5, if(V(ENUV,GND)>{VENF},1,0), if(V(ENUV,GND)>{VENR},1,0))-V(en,GND))/1k
+Cen en GND 1p
+Bov GND ov I=(if(V(ov,GND)>0.5, if(V(OV,GND)>{VOVF},1,0), if(V(OV,GND)>{VOVR},1,0))-V(ov,GND))/1k
+Cov ov GND 1p
+Binp GND inh I=(if(V(inh,GND)>0.5, if(V(INP,GND)>1.35,1,0), if(V(INP,GND)>1.45,1,0))-V(inh,GND))/1k
+Cinh inh GND 1p
+Bdrv GND drv I=(if(V(drv,GND)>0.5, if(V(BST,SRC)>{VBSTF},1,0), if(V(BST,SRC)>{VBSTR},1,0))-V(drv,GND))/1k
+Cdrv drv GND 1p
+Rh1 en GND 1T
+Rh2 ov GND 1T
+Rh3 inh GND 1T
+Rh4 drv GND 1T
+* Charge pump from VS into BST (stops at VCPOFF)
+Bcp VS BST I={IBST}*min(max(V(en,GND),0),1)*min(max(({VCPOFF}-V(BST,SRC))/0.2,0),1)
+* command and transport delays (50 ohm matched lines; output = 0.5*input)
+Bcmd c1 GND V=min(max(V(en,GND),0),1)*min(max(V(drv,GND),0),1)*min(max(V(inh,GND),0),1)
+Rs1 c1 a1 50
+Ton a1 GND b1 GND Z0=50 TD={TDON}
+Rl1 b1 GND 50
+Rs2 c1 a2 50
+Toff a2 GND b2 GND Z0=50 TD={TDOFF}
+Rl2 b2 GND 50
+Bovc c3 GND V=1-min(max(V(ov,GND),0),1)
+Rs3 c3 a3 50
+Tov a3 GND b3 GND Z0=50 TD={TDOV}
+Rl3 b3 GND 50
+Bgon gon GND V=min(max((V(b1,GND)-0.2)/0.1,0),1)*min(max((V(b2,GND)-0.2)/0.1,0),1)*min(max((V(b3,GND)-0.2)/0.1,0),1)
+Bpu BST PU I=V(gon,GND)*{IPU}*min(max(V(BST,PU)/0.3,0),1)
+Bpd PD SRC I=(1-V(gon,GND))*{IPD}*min(max(V(PD,SRC)/0.5,0),1)
+Rpuleak PU SRC 100Meg
+Rpdleak PD SRC 100Meg
+Rbstleak BST SRC 100Meg
+.ends O1OVP_TPS48000
+
+* N-MOSFET (CSD18540Q5B-like) as gate-controlled resistor. RON = RDS(on) at full
+* enhancement (VGS >= 4.5 V; SLPS488B 3.3 mOhm max @4.5 V, 2.2 mOhm max @10 V). Linear in
+* VGS from VTH to 4.5 V. CGS lumps total gate charge: Qg(13.86 V) <= 53 nC + 4.23 nF*3.86 V
+* = 69.3 nC -> 5 nF per FET. Parallel FETs are modelled as one element with RON/NPAR and
+* CGS*NPAR.
+.subckt O1OVP_NFET D G S RON=1.8m VTH=1.5 CGS=5n CDS=1.24n
+Bch D S I=V(D,S)*(1n+min(max((V(G,S)-{VTH})/(4.5-{VTH}),0),1)/{RON})
+Dbody S D O1OVP_BODY
+Cgs G S {CGS}
+* Coss 1.24 nF is TYPICAL-derived (SLPS488B p3, VDS=30 V); lumped linear, also aids convergence
+Cds D S {CDS}
+Rgs G S 1G
+.model O1OVP_BODY D(Is=1u N=1.3 Rs=5m Cjo=100p)
+* avalanche NOT modelled: VDS stress is reported as a measurement against the 60 V rating
+.ends O1OVP_NFET

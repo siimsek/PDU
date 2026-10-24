@@ -1,0 +1,21 @@
+Group,Distributor,MPN,URL,Result,Quantity_in_stock,Unit_price,Currency,Price_break,Checked_at_Europe_Istanbul,Note
+TR,direnc.net,CSD18540Q5B,https://www.direnc.net/csd18540q5b-100a-60v-n-kanal-mosfet-tdfn-8,listed / in stock (schema.org InStock; product-stock-status=1),doğrulanamadı (adet gösterilmiyor),91.24 (KDV dahil; 76.04 + KDV),TRY,0-99 pcs,2026-10-25 01:18,need 4 pcs
+TR,direnc.net,TPS48000 / TLV3601 / REF35409 / TPS7A1650 / ERA-3ARB,https://www.direnc.net/arama?q=<MPN>,bulunamadı (site search: "ürün bulunamadı"),,,,,2026-10-25 01:16-01:18,
+TR,robotistan,all 6 MPNs,https://www.robotistan.com/arama?q=<MPN>,bulunamadı (site search),,,,,2026-10-25 01:16-01:18,
+TR,motorobit,all 6 MPNs,https://www.motorobit.com/arama?q=<MPN>,bulunamadı (site search),,,,,2026-10-25 01:16-01:18,
+TR,Empa,all 6 MPNs,https://www.empa.com/arama?q=<MPN>,doğrulanamadı (search page returned but no product match parsed),,,,,2026-10-25 01:17-01:18,catalog/quote-based distributor; ask by e-mail
+TR,Komponentci,all 6 MPNs,https://www.komponentci.net/arama?q=<MPN>,doğrulanamadı (generic page returned; no result list),,,,,2026-10-25 01:16-01:18,
+TR,Samm Market,all 6 MPNs,https://market.samm.com/arama?q=<MPN>,doğrulanamadı (HTTP 404 on search URL),,,,,2026-10-25 01:17-01:18,
+TR,Özdisan,all 6 MPNs,https://ozdisan.com/arama?q=<MPN>,doğrulanamadı (HTTP 404 on search URL),,,,,2026-10-25 01:17-01:18,quote request needed (not sent)
+Foreign,DigiKey,TPS48000QDGXRQ1,https://www.digikey.com/en/products/result?keywords=TPS48000QDGXRQ1,in stock,4783,4.79 (1) / 3.643 (10),USD,1 / 10,2026-10-25 01:19,lead time 20 wk (mfr std)
+Foreign,DigiKey,TLV3601DCKR,https://www.digikey.com/en/products/result?keywords=TLV3601DCKR,in stock,2911,4.96 (1) / 3.766 (10),USD,1 / 10,2026-10-25 01:20,DigiKey attribute text (hysteresis 60 mV / IB 1 uA) differs from datasheet; datasheet values used
+Foreign,DigiKey,REF35409QDBVR,https://www.digikey.com/en/products/result?keywords=REF35409QDBVR,in stock,829,2.23 (1) / 1.649 (10),USD,1 / 10,2026-10-25 01:20,
+Foreign,DigiKey,TPS7A1650DGNR,https://www.digikey.com/en/products/result?keywords=TPS7A1650DGNR,in stock,2345,4.55 (1) / 3.442 (10),USD,1 / 10,2026-10-25 01:20,
+Foreign,DigiKey,CSD18540Q5B,https://www.digikey.com/en/products/result?keywords=CSD18540Q5B,listed,doğrulanamadı,3.50 (search list price; break not shown),USD,,2026-10-25 01:20,detail page not retrieved
+Foreign,DigiKey,ERA-3ARB1151V,https://www.digikey.com/en/products/result?keywords=ERA-3ARB1151V,not stocked (Available To Order),0,0.19219 (5000 MOQ),USD,5000,2026-10-25 01:21,55 wk lead time - RISK
+Foreign,DigiKey,ERA-3ARB2051V,https://www.digikey.com/en/products/result?keywords=ERA-3ARB2051V,no results at DigiKey,,,,,2026-10-25 01:21,MPN exists per broker listings (not authorized) - RISK; consider other 0.1 %/10 ppm 2.05k
+Foreign,Mouser,TPS48000QDGXRQ1,https://www.mouser.com.tr/c/?q=TPS48000QDGXRQ1,doğrulanamadı (fetch timeout / bot page without product),,,,,2026-10-25 01:22,
+Foreign,Farnell,TPS48000QDGXRQ1,https://tr.farnell.com/search?st=TPS48000QDGXRQ1,doğrulanamadı (HTTP 403),,,,,2026-10-25 01:22,
+Foreign,TME,all 6 MPNs,https://www.tme.eu/en/katalog/?search=<MPN>,doğrulanamadı (HTTP 403),,,,,2026-10-25 01:17-01:18,
+Foreign,LCSC,all 6 MPNs,https://wmsc.lcsc.com/ftps/wm/search/global?keyword=<MPN>,doğrulanamadı (HTTP 403),,,,,2026-10-25 01:17-01:18,
+Foreign,Arrow,TPS48000QDGXRQ1,https://www.arrow.com/en/products/search?q=TPS48000QDGXRQ1,doğrulanamadı (connection failed),,,,,2026-10-25 01:22,

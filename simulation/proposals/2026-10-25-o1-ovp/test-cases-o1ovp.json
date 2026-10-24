@@ -1,0 +1,1852 @@
+{
+  "efuse-ovp-s007-wchi": {
+    "kind": "ramp",
+    "file": "o1ovp-efuse-ovp-s007-wchi.cir",
+    "ng_file": "o1ovp-efuse-ovp-s007-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "efuse-ovp-s007-typ": {
+    "kind": "ramp",
+    "file": "o1ovp-efuse-ovp-s007-typ.cir",
+    "ng_file": "o1ovp-efuse-ovp-s007-typ.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "efuse-ovp-s017-wchi": {
+    "kind": "ramp",
+    "file": "o1ovp-efuse-ovp-s017-wchi.cir",
+    "ng_file": "o1ovp-efuse-ovp-s017-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "efuse-ovp-s017-typ": {
+    "kind": "ramp",
+    "file": "o1ovp-efuse-ovp-s017-typ.cir",
+    "ng_file": "o1ovp-efuse-ovp-s017-typ.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "efuse-ovp-s023-wchi": {
+    "kind": "ramp",
+    "file": "o1ovp-efuse-ovp-s023-wchi.cir",
+    "ng_file": "o1ovp-efuse-ovp-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "efuse-ovp-s023-typ": {
+    "kind": "ramp",
+    "file": "o1ovp-efuse-ovp-s023-typ.cir",
+    "ng_file": "o1ovp-efuse-ovp-s023-typ.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "sweep-tdoff0p3625u-s023-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-tdoff0p3625u-s023-wchi.cir",
+    "ng_file": "o1ovp-sweep-tdoff0p3625u-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "TDOFF": "0.3625u"
+    }
+  },
+  "sweep-tdoff0p7u-s023-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-tdoff0p7u-s023-wchi.cir",
+    "ng_file": "o1ovp-sweep-tdoff0p7u-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "TDOFF": "0.7u"
+    }
+  },
+  "sweep-tdoff1p0545u-s023-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-tdoff1p0545u-s023-wchi.cir",
+    "ng_file": "o1ovp-sweep-tdoff1p0545u-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "TDOFF": "1.0545u"
+    }
+  },
+  "sweep-tdoff1p5u-s023-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-tdoff1p5u-s023-wchi.cir",
+    "ng_file": "o1ovp-sweep-tdoff1p5u-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "BEYOND datasheet max tPD(INP_L)=1.05 us: delay-margin sensitivity only",
+    "acceptance": false,
+    "params": {
+      "TDOFF": "1.5u"
+    }
+  },
+  "sweep-tdoff2p0u-s023-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-tdoff2p0u-s023-wchi.cir",
+    "ng_file": "o1ovp-sweep-tdoff2p0u-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "BEYOND datasheet max tPD(INP_L)=1.05 us: delay-margin sensitivity only",
+    "acceptance": false,
+    "params": {
+      "TDOFF": "2.0u"
+    }
+  },
+  "sweep-od0-s023-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-od0-s023-wchi.cir",
+    "ng_file": "o1ovp-sweep-od0-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "CMP_VTRIP": "14.1m"
+    }
+  },
+  "sweep-od50-s023-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-od50-s023-wchi.cir",
+    "ng_file": "o1ovp-sweep-od50-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "CMP_VTRIP": "64.1m"
+    }
+  },
+  "sweep-od100-s023-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-od100-s023-wchi.cir",
+    "ng_file": "o1ovp-sweep-od100-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "extra overdrive beyond the 50 mV tPD spec point: sensitivity only",
+    "acceptance": false,
+    "params": {
+      "CMP_VTRIP": "114.1m"
+    }
+  },
+  "sweep-od200-s023-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-od200-s023-wchi.cir",
+    "ng_file": "o1ovp-sweep-od200-s023-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "extra overdrive beyond the 50 mV tPD spec point: sensitivity only",
+    "acceptance": false,
+    "params": {
+      "CMP_VTRIP": "214.1m"
+    }
+  },
+  "sweep-slope0p4-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-slope0p4-wchi.cir",
+    "ng_file": "o1ovp-sweep-slope0p4-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "slope above the 0.23 V/us requirement range: information only",
+    "acceptance": false,
+    "params": {
+      "slope": 0.4
+    }
+  },
+  "sweep-slope0p55-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-slope0p55-wchi.cir",
+    "ng_file": "o1ovp-sweep-slope0p55-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "slope above the 0.23 V/us requirement range: information only",
+    "acceptance": false,
+    "params": {
+      "slope": 0.55
+    }
+  },
+  "sweep-slope1p0-wchi": {
+    "kind": "sweep",
+    "file": "o1ovp-sweep-slope1p0-wchi.cir",
+    "ng_file": "o1ovp-sweep-slope1p0-wchi.ng.cir",
+    "checks": "ramp",
+    "note": "slope above the 0.23 V/us requirement range: information only",
+    "acceptance": false,
+    "params": {
+      "slope": 1.0
+    }
+  },
+  "buck-short-c92-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c92-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c92-wchi.ng.cir",
+    "checks": "short",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "buck-short-c92-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c92-typ.cir",
+    "ng_file": "o1ovp-buck-short-c92-typ.ng.cir",
+    "checks": "short",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "buck-short-c165-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c165-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c165-wchi.ng.cir",
+    "checks": "short",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "buck-short-c165-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c165-typ.cir",
+    "ng_file": "o1ovp-buck-short-c165-typ.ng.cir",
+    "checks": "short",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "buck-short-c92-esr12m5-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c92-esr12m5-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c92-esr12m5-wchi.ng.cir",
+    "checks": "short",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "buck-short-c92-esr12m5-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c92-esr12m5-typ.cir",
+    "ng_file": "o1ovp-buck-short-c92-esr12m5-typ.ng.cir",
+    "checks": "short",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "buck-short-c92-esr100m-wchi": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c92-esr100m-wchi.cir",
+    "ng_file": "o1ovp-buck-short-c92-esr100m-wchi.ng.cir",
+    "checks": "short45",
+    "note": "-40C / 100 mOhm ESR stress corner (ESR on the RAW ceramic bank; pessimistic). TRUNCATED at 45 ms: the 80 ms deck stops with \"timestep too small\" at ~45.98 ms in the UNCHANGED baseline eFuse model (xu3.ena) after short removal; tested reltol/tmax/trap/rshunt variants did not converge -> recovery/reset not evaluated for this corner",
+    "acceptance": true,
+    "params": {}
+  },
+  "buck-short-c92-esr100m-typ": {
+    "kind": "short",
+    "file": "o1ovp-buck-short-c92-esr100m-typ.cir",
+    "ng_file": "o1ovp-buck-short-c92-esr100m-typ.ng.cir",
+    "checks": "short45",
+    "note": "-40C / 100 mOhm ESR stress corner (ESR on the RAW ceramic bank; pessimistic). TRUNCATED at 45 ms: the 80 ms deck stops with \"timestep too small\" at ~45.98 ms in the UNCHANGED baseline eFuse model (xu3.ena) after short removal; tested reltol/tmax/trap/rshunt variants did not converge -> recovery/reset not evaluated for this corner",
+    "acceptance": true,
+    "params": {}
+  },
+  "startup-20v": {
+    "kind": "board-average",
+    "file": "o1ovp-startup-20v.cir",
+    "ng_file": "o1ovp-startup-20v.ng.cir",
+    "checks": "board-average",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "startup-22p2v": {
+    "kind": "board-average",
+    "file": "o1ovp-startup-22p2v.cir",
+    "ng_file": "o1ovp-startup-22p2v.ng.cir",
+    "checks": "board-average",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "startup-26v": {
+    "kind": "board-average",
+    "file": "o1ovp-startup-26v.cir",
+    "ng_file": "o1ovp-startup-26v.ng.cir",
+    "checks": "board-average",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "startup-26v-wchi": {
+    "kind": "board-average",
+    "file": "o1ovp-startup-26v-wchi.cir",
+    "ng_file": "o1ovp-startup-26v-wchi.ng.cir",
+    "checks": "board-average",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "startup-20v-ibstmin": {
+    "kind": "board-average",
+    "file": "o1ovp-startup-20v-ibstmin.cir",
+    "ng_file": "o1ovp-startup-20v-ibstmin.ng.cir",
+    "checks": "board-average",
+    "note": "charge pump 100 uA min, BST UVLO rising 10.81 V max (CP stop 13.86 V max for consistency) -> TDRV_EN up to 50.8 ms (SLUSEZ1B eq.1); 80 ms run",
+    "acceptance": true,
+    "params": {}
+  },
+  "load-step-ron1m8": {
+    "kind": "step",
+    "file": "o1ovp-load-step-ron1m8.cir",
+    "ng_file": "o1ovp-load-step-ron1m8.ng.cir",
+    "checks": "step",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "load-step-7p5a-ron1m8": {
+    "kind": "step75",
+    "file": "o1ovp-load-step-7p5a-ron1m8.cir",
+    "ng_file": "o1ovp-load-step-7p5a-ron1m8.ng.cir",
+    "checks": "step75",
+    "note": "WP3 tracking: 10.78-11.22 V window for the 7.5 A step is NOT a repo criterion (baseline alone misses it); only no-trip / O1 checks are acceptance",
+    "acceptance": true,
+    "params": {}
+  },
+  "bus-7p5a-ron1m8": {
+    "kind": "board-average",
+    "file": "o1ovp-bus-7p5a-ron1m8.cir",
+    "ng_file": "o1ovp-bus-7p5a-ron1m8.ng.cir",
+    "checks": "board-average",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "load-step-ron3m3": {
+    "kind": "step",
+    "file": "o1ovp-load-step-ron3m3.cir",
+    "ng_file": "o1ovp-load-step-ron3m3.ng.cir",
+    "checks": "step",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "load-step-7p5a-ron3m3": {
+    "kind": "step75",
+    "file": "o1ovp-load-step-7p5a-ron3m3.cir",
+    "ng_file": "o1ovp-load-step-7p5a-ron3m3.ng.cir",
+    "checks": "step75",
+    "note": "WP3 tracking: 10.78-11.22 V window for the 7.5 A step is NOT a repo criterion (baseline alone misses it); only no-trip / O1 checks are acceptance",
+    "acceptance": true,
+    "params": {}
+  },
+  "bus-7p5a-ron3m3": {
+    "kind": "board-average",
+    "file": "o1ovp-bus-7p5a-ron3m3.cir",
+    "ng_file": "o1ovp-bus-7p5a-ron3m3.ng.cir",
+    "checks": "board-average",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "load-step-ron5m28": {
+    "kind": "step",
+    "file": "o1ovp-load-step-ron5m28.cir",
+    "ng_file": "o1ovp-load-step-ron5m28.ng.cir",
+    "checks": "step",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "load-step-7p5a-ron5m28": {
+    "kind": "step75",
+    "file": "o1ovp-load-step-7p5a-ron5m28.cir",
+    "ng_file": "o1ovp-load-step-7p5a-ron5m28.ng.cir",
+    "checks": "step75",
+    "note": "WP3 tracking: 10.78-11.22 V window for the 7.5 A step is NOT a repo criterion (baseline alone misses it); only no-trip / O1 checks are acceptance",
+    "acceptance": true,
+    "params": {}
+  },
+  "bus-7p5a-ron5m28": {
+    "kind": "board-average",
+    "file": "o1ovp-bus-7p5a-ron5m28.cir",
+    "ng_file": "o1ovp-bus-7p5a-ron5m28.ng.cir",
+    "checks": "board-average",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "load-step-par1-ron5m28": {
+    "kind": "step",
+    "file": "o1ovp-load-step-par1-ron5m28.cir",
+    "ng_file": "o1ovp-load-step-par1-ron5m28.ng.cir",
+    "checks": "step",
+    "note": "single back-to-back pair (rejected design point): information only",
+    "acceptance": false,
+    "params": {}
+  },
+  "load-step-7p5a-par1-ron5m28": {
+    "kind": "step75",
+    "file": "o1ovp-load-step-7p5a-par1-ron5m28.cir",
+    "ng_file": "o1ovp-load-step-7p5a-par1-ron5m28.ng.cir",
+    "checks": "step75",
+    "note": "WP3 tracking: 10.78-11.22 V window for the 7.5 A step is NOT a repo criterion (baseline alone misses it); only no-trip / O1 checks are acceptance",
+    "acceptance": false,
+    "params": {}
+  },
+  "bus-7p5a-par1-ron5m28": {
+    "kind": "board-average",
+    "file": "o1ovp-bus-7p5a-par1-ron5m28.cir",
+    "ng_file": "o1ovp-bus-7p5a-par1-ron5m28.ng.cir",
+    "checks": "board-average",
+    "note": "single pair: information only",
+    "acceptance": false,
+    "params": {}
+  },
+  "no-false-trip": {
+    "kind": "nofalse",
+    "file": "o1ovp-no-false-trip.cir",
+    "ng_file": "o1ovp-no-false-trip.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "no-false-trip-ron5m28": {
+    "kind": "nofalse",
+    "file": "o1ovp-no-false-trip-ron5m28.cir",
+    "ng_file": "o1ovp-no-false-trip-ron5m28.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {}
+  },
+  "mc-ramp-s023-00": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-00.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-00.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.100135",
+      "RT_P": "2053.11",
+      "RB_P": "1148.03",
+      "CMP_VTRIP": "0.0526337",
+      "CMP_VREL": "0.000448237",
+      "CMP_IB": "4.042e-06",
+      "TDOFF": "6.1407e-07"
+    }
+  },
+  "mc-ramp-s023-01": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-01.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-01.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.092966",
+      "RT_P": "2049.09",
+      "RB_P": "1151.19",
+      "CMP_VTRIP": "0.0489831",
+      "CMP_VREL": "-0.0029897",
+      "CMP_IB": "4.085e-06",
+      "TDOFF": "7.657e-07"
+    }
+  },
+  "mc-ramp-s023-02": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-02.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-02.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.104107",
+      "RT_P": "2046.26",
+      "RB_P": "1150.61",
+      "CMP_VTRIP": "0.0520287",
+      "CMP_VREL": "-0.00291431",
+      "CMP_IB": "-4.386e-06",
+      "TDOFF": "3.8433e-07"
+    }
+  },
+  "mc-ramp-s023-03": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-03.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-03.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.08695",
+      "RT_P": "2048.56",
+      "RB_P": "1149.49",
+      "CMP_VTRIP": "0.0545789",
+      "CMP_VREL": "0.00135384",
+      "CMP_IB": "-3.696e-07",
+      "TDOFF": "7.6888e-07"
+    }
+  },
+  "mc-ramp-s023-04": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-04.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-04.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.087533",
+      "RT_P": "2048.29",
+      "RB_P": "1150.56",
+      "CMP_VTRIP": "0.0488812",
+      "CMP_VREL": "-0.00490996",
+      "CMP_IB": "-3.805e-06",
+      "TDOFF": "5.8157e-07"
+    }
+  },
+  "mc-ramp-s023-05": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-05.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-05.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.094108",
+      "RT_P": "2050.47",
+      "RB_P": "1148.98",
+      "CMP_VTRIP": "0.0547604",
+      "CMP_VREL": "0.00146401",
+      "CMP_IB": "5.41e-07",
+      "TDOFF": "4.0269e-07"
+    }
+  },
+  "mc-ramp-s023-06": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-06.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-06.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.093728",
+      "RT_P": "2046.4",
+      "RB_P": "1150.14",
+      "CMP_VTRIP": "0.0565827",
+      "CMP_VREL": "0.00480326",
+      "CMP_IB": "1.448e-07",
+      "TDOFF": "6.3215e-07"
+    }
+  },
+  "mc-ramp-s023-07": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-07.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-07.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.099643",
+      "RT_P": "2047.33",
+      "RB_P": "1147.71",
+      "CMP_VTRIP": "0.0505112",
+      "CMP_VREL": "-0.00340238",
+      "CMP_IB": "1.024e-06",
+      "TDOFF": "8.6355e-07"
+    }
+  },
+  "mc-ramp-s023-08": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-08.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-08.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.092014",
+      "RT_P": "2051.12",
+      "RB_P": "1150.72",
+      "CMP_VTRIP": "0.0500324",
+      "CMP_VREL": "-0.002754",
+      "CMP_IB": "-4.985e-06",
+      "TDOFF": "7.8616e-07"
+    }
+  },
+  "mc-ramp-s023-09": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-09.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-09.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.095155",
+      "RT_P": "2053.5",
+      "RB_P": "1150.74",
+      "CMP_VTRIP": "0.047224",
+      "CMP_VREL": "-0.00701995",
+      "CMP_IB": "-2.554e-06",
+      "TDOFF": "8.5753e-07"
+    }
+  },
+  "mc-ramp-s023-10": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-10.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-10.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.096229",
+      "RT_P": "2051.28",
+      "RB_P": "1148.45",
+      "CMP_VTRIP": "0.0470773",
+      "CMP_VREL": "-0.00786003",
+      "CMP_IB": "-1.947e-07",
+      "TDOFF": "9.8922e-07"
+    }
+  },
+  "mc-ramp-s023-11": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-11.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-11.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.095052",
+      "RT_P": "2049.5",
+      "RB_P": "1148.81",
+      "CMP_VTRIP": "0.0536392",
+      "CMP_VREL": "0.0014146",
+      "CMP_IB": "-6.171e-07",
+      "TDOFF": "5.3545e-07"
+    }
+  },
+  "mc-ramp-s023-12": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-12.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-12.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.103053",
+      "RT_P": "2053.72",
+      "RB_P": "1151.95",
+      "CMP_VTRIP": "0.044711",
+      "CMP_VREL": "-0.00853935",
+      "CMP_IB": "4.118e-07",
+      "TDOFF": "5.2806e-07"
+    }
+  },
+  "mc-ramp-s023-13": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-13.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-13.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.092304",
+      "RT_P": "2048.49",
+      "RB_P": "1151.77",
+      "CMP_VTRIP": "0.0505448",
+      "CMP_VREL": "-0.00394879",
+      "CMP_IB": "1.789e-06",
+      "TDOFF": "7.6572e-07"
+    }
+  },
+  "mc-ramp-s023-14": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-14.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-14.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.098863",
+      "RT_P": "2053.51",
+      "RB_P": "1150.78",
+      "CMP_VTRIP": "0.0514855",
+      "CMP_VREL": "-0.00351084",
+      "CMP_IB": "-7.782e-07",
+      "TDOFF": "5.4822e-07"
+    }
+  },
+  "mc-ramp-s023-15": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-15.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-15.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.102605",
+      "RT_P": "2051.64",
+      "RB_P": "1147.74",
+      "CMP_VTRIP": "0.0491993",
+      "CMP_VREL": "-0.004048",
+      "CMP_IB": "-3.015e-06",
+      "TDOFF": "8.2722e-07"
+    }
+  },
+  "mc-ramp-s023-16": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-16.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-16.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.09985",
+      "RT_P": "2050.79",
+      "RB_P": "1148.15",
+      "CMP_VTRIP": "0.0527268",
+      "CMP_VREL": "-0.00155053",
+      "CMP_IB": "-3.81e-06",
+      "TDOFF": "1.0337e-06"
+    }
+  },
+  "mc-ramp-s023-17": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-17.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-17.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.090785",
+      "RT_P": "2053.93",
+      "RB_P": "1147.99",
+      "CMP_VTRIP": "0.0499756",
+      "CMP_VREL": "-0.00319184",
+      "CMP_IB": "-3.368e-07",
+      "TDOFF": "4.8801e-07"
+    }
+  },
+  "mc-ramp-s023-18": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-18.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-18.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.093515",
+      "RT_P": "2049.66",
+      "RB_P": "1150.15",
+      "CMP_VTRIP": "0.0524844",
+      "CMP_VREL": "-0.00136848",
+      "CMP_IB": "-2.434e-06",
+      "TDOFF": "4.7237e-07"
+    }
+  },
+  "mc-ramp-s023-19": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-19.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-19.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.100731",
+      "RT_P": "2051.02",
+      "RB_P": "1150.8",
+      "CMP_VTRIP": "0.0494661",
+      "CMP_VREL": "-0.00546831",
+      "CMP_IB": "-3.202e-06",
+      "TDOFF": "8.2504e-07"
+    }
+  },
+  "mc-ramp-s023-20": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-20.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-20.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.099478",
+      "RT_P": "2046.07",
+      "RB_P": "1147.94",
+      "CMP_VTRIP": "0.0511405",
+      "CMP_VREL": "-0.0034085",
+      "CMP_IB": "-4.982e-06",
+      "TDOFF": "9.3572e-07"
+    }
+  },
+  "mc-ramp-s023-21": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-21.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-21.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.094603",
+      "RT_P": "2047.17",
+      "RB_P": "1151.36",
+      "CMP_VTRIP": "0.0585062",
+      "CMP_VREL": "0.00646856",
+      "CMP_IB": "1.479e-06",
+      "TDOFF": "6.0685e-07"
+    }
+  },
+  "mc-ramp-s023-22": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-22.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-22.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.095234",
+      "RT_P": "2049.28",
+      "RB_P": "1151.92",
+      "CMP_VTRIP": "0.0565991",
+      "CMP_VREL": "0.00413919",
+      "CMP_IB": "4.652e-06",
+      "TDOFF": "5.6678e-07"
+    }
+  },
+  "mc-ramp-s023-23": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-23.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-23.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.100602",
+      "RT_P": "2049.49",
+      "RB_P": "1151",
+      "CMP_VTRIP": "0.057965",
+      "CMP_VREL": "0.00479977",
+      "CMP_IB": "4.21e-06",
+      "TDOFF": "6.4165e-07"
+    }
+  },
+  "mc-ramp-s023-24": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-24.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-24.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.101305",
+      "RT_P": "2046.36",
+      "RB_P": "1148.3",
+      "CMP_VTRIP": "0.0562585",
+      "CMP_VREL": "0.00130452",
+      "CMP_IB": "3.243e-06",
+      "TDOFF": "1.0352e-06"
+    }
+  },
+  "mc-ramp-s023-25": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-25.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-25.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.104381",
+      "RT_P": "2050.72",
+      "RB_P": "1149.21",
+      "CMP_VTRIP": "0.0497618",
+      "CMP_VREL": "-0.00325332",
+      "CMP_IB": "9.484e-07",
+      "TDOFF": "8.0182e-07"
+    }
+  },
+  "mc-ramp-s023-26": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-26.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-26.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.095609",
+      "RT_P": "2051.29",
+      "RB_P": "1149.09",
+      "CMP_VTRIP": "0.050245",
+      "CMP_VREL": "-0.00210243",
+      "CMP_IB": "1.545e-06",
+      "TDOFF": "8.3436e-07"
+    }
+  },
+  "mc-ramp-s023-27": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-27.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-27.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.103552",
+      "RT_P": "2046.11",
+      "RB_P": "1150.32",
+      "CMP_VTRIP": "0.0546744",
+      "CMP_VREL": "0.00114892",
+      "CMP_IB": "-3.878e-06",
+      "TDOFF": "1.0113e-06"
+    }
+  },
+  "mc-ramp-s023-28": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-28.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-28.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.09305",
+      "RT_P": "2048.2",
+      "RB_P": "1149.56",
+      "CMP_VTRIP": "0.0476293",
+      "CMP_VREL": "-0.00530769",
+      "CMP_IB": "-3.61e-06",
+      "TDOFF": "9.5021e-07"
+    }
+  },
+  "mc-ramp-s023-29": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-29.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-29.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.09498",
+      "RT_P": "2050.87",
+      "RB_P": "1148.55",
+      "CMP_VTRIP": "0.0512733",
+      "CMP_VREL": "-0.000627151",
+      "CMP_IB": "-2.644e-07",
+      "TDOFF": "6.0035e-07"
+    }
+  },
+  "mc-ramp-s023-30": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-30.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-30.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.100308",
+      "RT_P": "2046.35",
+      "RB_P": "1148.81",
+      "CMP_VTRIP": "0.0493485",
+      "CMP_VREL": "-0.00558941",
+      "CMP_IB": "-2.067e-06",
+      "TDOFF": "5.3023e-07"
+    }
+  },
+  "mc-ramp-s023-31": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-31.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-31.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.099001",
+      "RT_P": "2051.47",
+      "RB_P": "1150.35",
+      "CMP_VTRIP": "0.0527974",
+      "CMP_VREL": "-0.000574213",
+      "CMP_IB": "-1.215e-06",
+      "TDOFF": "1.0235e-06"
+    }
+  },
+  "mc-ramp-s023-32": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-32.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-32.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.099917",
+      "RT_P": "2046.76",
+      "RB_P": "1147.73",
+      "CMP_VTRIP": "0.0501149",
+      "CMP_VREL": "-0.00237935",
+      "CMP_IB": "4.176e-06",
+      "TDOFF": "6.3956e-07"
+    }
+  },
+  "mc-ramp-s023-33": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-33.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-33.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.093561",
+      "RT_P": "2049.65",
+      "RB_P": "1151.99",
+      "CMP_VTRIP": "0.0491451",
+      "CMP_VREL": "-0.00491219",
+      "CMP_IB": "-1.427e-06",
+      "TDOFF": "8.0635e-07"
+    }
+  },
+  "mc-ramp-s023-34": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-34.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-34.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.088147",
+      "RT_P": "2046.18",
+      "RB_P": "1151.7",
+      "CMP_VTRIP": "0.0546188",
+      "CMP_VREL": "0.00016983",
+      "CMP_IB": "-3.628e-06",
+      "TDOFF": "7.7185e-07"
+    }
+  },
+  "mc-ramp-s023-35": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-35.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-35.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.104728",
+      "RT_P": "2049.93",
+      "RB_P": "1151.45",
+      "CMP_VTRIP": "0.0549004",
+      "CMP_VREL": "0.000153019",
+      "CMP_IB": "-4.285e-06",
+      "TDOFF": "4.8454e-07"
+    }
+  },
+  "mc-ramp-s023-36": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-36.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-36.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.09354",
+      "RT_P": "2051.74",
+      "RB_P": "1150.06",
+      "CMP_VTRIP": "0.0537275",
+      "CMP_VREL": "0.000723233",
+      "CMP_IB": "1.626e-06",
+      "TDOFF": "7.7452e-07"
+    }
+  },
+  "mc-ramp-s023-37": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-37.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-37.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.093868",
+      "RT_P": "2052.37",
+      "RB_P": "1148.54",
+      "CMP_VTRIP": "0.0474373",
+      "CMP_VREL": "-0.00740195",
+      "CMP_IB": "-1.928e-06",
+      "TDOFF": "7.3073e-07"
+    }
+  },
+  "mc-ramp-s023-38": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-38.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-38.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.087267",
+      "RT_P": "2048.77",
+      "RB_P": "1150.95",
+      "CMP_VTRIP": "0.0557753",
+      "CMP_VREL": "0.00409172",
+      "CMP_IB": "1.476e-06",
+      "TDOFF": "8.9781e-07"
+    }
+  },
+  "mc-ramp-s023-39": {
+    "kind": "mc-ramp",
+    "file": "o1ovp-mc-ramp-s023-39.cir",
+    "ng_file": "o1ovp-mc-ramp-s023-39.ng.cir",
+    "checks": "ramp",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.092476",
+      "RT_P": "2046.26",
+      "RB_P": "1151.85",
+      "CMP_VTRIP": "0.0494027",
+      "CMP_VREL": "-0.00313245",
+      "CMP_IB": "3.937e-06",
+      "TDOFF": "6.3197e-07"
+    }
+  },
+  "mc-short-c92-00": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-00.cir",
+    "ng_file": "o1ovp-mc-short-c92-00.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.096265",
+      "RT_P": "2053.2",
+      "RB_P": "1149.07",
+      "CMP_VTRIP": "0.0570993",
+      "CMP_VREL": "0.00247909",
+      "CMP_IB": "-3.13e-06",
+      "TDOFF": "1.0408e-06"
+    }
+  },
+  "mc-short-c92-01": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-01.cir",
+    "ng_file": "o1ovp-mc-short-c92-01.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.097206",
+      "RT_P": "2052.53",
+      "RB_P": "1150.06",
+      "CMP_VTRIP": "0.0462341",
+      "CMP_VREL": "-0.00567115",
+      "CMP_IB": "1.45e-06",
+      "TDOFF": "9.3985e-07"
+    }
+  },
+  "mc-short-c92-02": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-02.cir",
+    "ng_file": "o1ovp-mc-short-c92-02.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.094831",
+      "RT_P": "2049.82",
+      "RB_P": "1150.26",
+      "CMP_VTRIP": "0.0553293",
+      "CMP_VREL": "0.00228861",
+      "CMP_IB": "-2.032e-08",
+      "TDOFF": "6.5744e-07"
+    }
+  },
+  "mc-short-c92-03": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-03.cir",
+    "ng_file": "o1ovp-mc-short-c92-03.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.098279",
+      "RT_P": "2048.63",
+      "RB_P": "1148.34",
+      "CMP_VTRIP": "0.052424",
+      "CMP_VREL": "0.000499432",
+      "CMP_IB": "2.875e-06",
+      "TDOFF": "1.0321e-06"
+    }
+  },
+  "mc-short-c92-04": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-04.cir",
+    "ng_file": "o1ovp-mc-short-c92-04.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.103308",
+      "RT_P": "2053.2",
+      "RB_P": "1150.79",
+      "CMP_VTRIP": "0.0490755",
+      "CMP_VREL": "-0.00331536",
+      "CMP_IB": "8.593e-07",
+      "TDOFF": "6.6499e-07"
+    }
+  },
+  "mc-short-c92-05": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-05.cir",
+    "ng_file": "o1ovp-mc-short-c92-05.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.090249",
+      "RT_P": "2047.51",
+      "RB_P": "1150.86",
+      "CMP_VTRIP": "0.0519958",
+      "CMP_VREL": "0.00028543",
+      "CMP_IB": "-4.915e-06",
+      "TDOFF": "4.9424e-07"
+    }
+  },
+  "mc-short-c92-06": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-06.cir",
+    "ng_file": "o1ovp-mc-short-c92-06.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.095067",
+      "RT_P": "2051.45",
+      "RB_P": "1148.44",
+      "CMP_VTRIP": "0.0592782",
+      "CMP_VREL": "0.00607424",
+      "CMP_IB": "-3.548e-06",
+      "TDOFF": "9.6237e-07"
+    }
+  },
+  "mc-short-c92-07": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-07.cir",
+    "ng_file": "o1ovp-mc-short-c92-07.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.096665",
+      "RT_P": "2053.2",
+      "RB_P": "1149.44",
+      "CMP_VTRIP": "0.0536053",
+      "CMP_VREL": "-0.000701468",
+      "CMP_IB": "-2.718e-06",
+      "TDOFF": "9.2572e-07"
+    }
+  },
+  "mc-short-c92-08": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-08.cir",
+    "ng_file": "o1ovp-mc-short-c92-08.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.087732",
+      "RT_P": "2051.23",
+      "RB_P": "1149.48",
+      "CMP_VTRIP": "0.0536558",
+      "CMP_VREL": "0.00116706",
+      "CMP_IB": "3.942e-06",
+      "TDOFF": "5.7119e-07"
+    }
+  },
+  "mc-short-c92-09": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-09.cir",
+    "ng_file": "o1ovp-mc-short-c92-09.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.088352",
+      "RT_P": "2050.17",
+      "RB_P": "1150.47",
+      "CMP_VTRIP": "0.0465391",
+      "CMP_VREL": "-0.00573216",
+      "CMP_IB": "-3.486e-06",
+      "TDOFF": "5.5431e-07"
+    }
+  },
+  "mc-short-c92-10": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-10.cir",
+    "ng_file": "o1ovp-mc-short-c92-10.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.101876",
+      "RT_P": "2049.23",
+      "RB_P": "1148.54",
+      "CMP_VTRIP": "0.0494919",
+      "CMP_VREL": "-0.00310692",
+      "CMP_IB": "4.493e-07",
+      "TDOFF": "6.5545e-07"
+    }
+  },
+  "mc-short-c92-11": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-11.cir",
+    "ng_file": "o1ovp-mc-short-c92-11.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.093456",
+      "RT_P": "2048.19",
+      "RB_P": "1149.22",
+      "CMP_VTRIP": "0.0583101",
+      "CMP_VREL": "0.00462311",
+      "CMP_IB": "4.227e-06",
+      "TDOFF": "7.5997e-07"
+    }
+  },
+  "mc-short-c92-12": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-12.cir",
+    "ng_file": "o1ovp-mc-short-c92-12.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.095355",
+      "RT_P": "2049.81",
+      "RB_P": "1151.42",
+      "CMP_VTRIP": "0.049719",
+      "CMP_VREL": "-0.00229373",
+      "CMP_IB": "-4.938e-06",
+      "TDOFF": "6.4935e-07"
+    }
+  },
+  "mc-short-c92-13": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-13.cir",
+    "ng_file": "o1ovp-mc-short-c92-13.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.091524",
+      "RT_P": "2049.16",
+      "RB_P": "1152.18",
+      "CMP_VTRIP": "0.0537774",
+      "CMP_VREL": "-0.000965383",
+      "CMP_IB": "4.505e-06",
+      "TDOFF": "4.7255e-07"
+    }
+  },
+  "mc-short-c92-14": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-14.cir",
+    "ng_file": "o1ovp-mc-short-c92-14.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.087543",
+      "RT_P": "2051.09",
+      "RB_P": "1147.87",
+      "CMP_VTRIP": "0.0566662",
+      "CMP_VREL": "0.00188256",
+      "CMP_IB": "1.028e-06",
+      "TDOFF": "5.7089e-07"
+    }
+  },
+  "mc-short-c92-15": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-15.cir",
+    "ng_file": "o1ovp-mc-short-c92-15.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.101322",
+      "RT_P": "2049.07",
+      "RB_P": "1147.74",
+      "CMP_VTRIP": "0.0573714",
+      "CMP_VREL": "0.00538455",
+      "CMP_IB": "1.597e-06",
+      "TDOFF": "6.7972e-07"
+    }
+  },
+  "mc-short-c92-16": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-16.cir",
+    "ng_file": "o1ovp-mc-short-c92-16.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.09659",
+      "RT_P": "2048.53",
+      "RB_P": "1149.09",
+      "CMP_VTRIP": "0.0539261",
+      "CMP_VREL": "-0.000419792",
+      "CMP_IB": "-2.812e-06",
+      "TDOFF": "6.4247e-07"
+    }
+  },
+  "mc-short-c92-17": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-17.cir",
+    "ng_file": "o1ovp-mc-short-c92-17.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.090893",
+      "RT_P": "2051.67",
+      "RB_P": "1151.31",
+      "CMP_VTRIP": "0.0551245",
+      "CMP_VREL": "0.00250889",
+      "CMP_IB": "-9.004e-07",
+      "TDOFF": "7.613e-07"
+    }
+  },
+  "mc-short-c92-18": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-18.cir",
+    "ng_file": "o1ovp-mc-short-c92-18.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.099857",
+      "RT_P": "2049.14",
+      "RB_P": "1151.41",
+      "CMP_VTRIP": "0.0554114",
+      "CMP_VREL": "0.00359838",
+      "CMP_IB": "-9.65e-07",
+      "TDOFF": "9.6424e-07"
+    }
+  },
+  "mc-short-c92-19": {
+    "kind": "mc-short",
+    "file": "o1ovp-mc-short-c92-19.cir",
+    "ng_file": "o1ovp-mc-short-c92-19.ng.cir",
+    "checks": "short45",
+    "note": "fault window only (stop 45 ms) to bound runtime; recovery covered by the corner decks",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.101436",
+      "RT_P": "2050.81",
+      "RB_P": "1149.55",
+      "CMP_VTRIP": "0.0527797",
+      "CMP_VREL": "-0.000739357",
+      "CMP_IB": "-1.674e-06",
+      "TDOFF": "4.1137e-07"
+    }
+  },
+  "mc-nofalse-00": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-00.cir",
+    "ng_file": "o1ovp-mc-nofalse-00.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.095515",
+      "RT_P": "2053.36",
+      "RB_P": "1150.38",
+      "CMP_VTRIP": "-0.000967328",
+      "CMP_VREL": "-0.00352133",
+      "CMP_IB": "-4.77e-06",
+      "TDOFF": "4.8402e-07"
+    }
+  },
+  "mc-nofalse-01": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-01.cir",
+    "ng_file": "o1ovp-mc-nofalse-01.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.096594",
+      "RT_P": "2047.67",
+      "RB_P": "1150.79",
+      "CMP_VTRIP": "0.00945069",
+      "CMP_VREL": "0.00697177",
+      "CMP_IB": "-4.69e-06",
+      "TDOFF": "1.0088e-06"
+    }
+  },
+  "mc-nofalse-02": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-02.cir",
+    "ng_file": "o1ovp-mc-nofalse-02.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.086804",
+      "RT_P": "2046.1",
+      "RB_P": "1151.92",
+      "CMP_VTRIP": "-0.00695142",
+      "CMP_VREL": "-0.00967736",
+      "CMP_IB": "-3.51e-06",
+      "TDOFF": "9.5277e-07"
+    }
+  },
+  "mc-nofalse-03": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-03.cir",
+    "ng_file": "o1ovp-mc-nofalse-03.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.101552",
+      "RT_P": "2049.3",
+      "RB_P": "1149.43",
+      "CMP_VTRIP": "-0.00314168",
+      "CMP_VREL": "-0.00509049",
+      "CMP_IB": "-3.479e-06",
+      "TDOFF": "5.5491e-07"
+    }
+  },
+  "mc-nofalse-04": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-04.cir",
+    "ng_file": "o1ovp-mc-nofalse-04.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.103236",
+      "RT_P": "2049.96",
+      "RB_P": "1149.34",
+      "CMP_VTRIP": "0.00101464",
+      "CMP_VREL": "-0.000700279",
+      "CMP_IB": "-3.468e-06",
+      "TDOFF": "4.1687e-07"
+    }
+  },
+  "mc-nofalse-05": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-05.cir",
+    "ng_file": "o1ovp-mc-nofalse-05.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.092848",
+      "RT_P": "2049.49",
+      "RB_P": "1150.36",
+      "CMP_VTRIP": "0.00212439",
+      "CMP_VREL": "-0.00124171",
+      "CMP_IB": "3.595e-06",
+      "TDOFF": "4.3013e-07"
+    }
+  },
+  "mc-nofalse-06": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-06.cir",
+    "ng_file": "o1ovp-mc-nofalse-06.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.1032",
+      "RT_P": "2046.41",
+      "RB_P": "1150.32",
+      "CMP_VTRIP": "0.00360231",
+      "CMP_VREL": "0.00156362",
+      "CMP_IB": "-5.339e-07",
+      "TDOFF": "4.7565e-07"
+    }
+  },
+  "mc-nofalse-07": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-07.cir",
+    "ng_file": "o1ovp-mc-nofalse-07.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.088062",
+      "RT_P": "2049.59",
+      "RB_P": "1150.69",
+      "CMP_VTRIP": "0.00523626",
+      "CMP_VREL": "0.00164365",
+      "CMP_IB": "4.966e-06",
+      "TDOFF": "8.8672e-07"
+    }
+  },
+  "mc-nofalse-08": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-08.cir",
+    "ng_file": "o1ovp-mc-nofalse-08.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.094743",
+      "RT_P": "2049.47",
+      "RB_P": "1150.83",
+      "CMP_VTRIP": "0.00707109",
+      "CMP_VREL": "0.00223677",
+      "CMP_IB": "1.901e-06",
+      "TDOFF": "7.1453e-07"
+    }
+  },
+  "mc-nofalse-09": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-09.cir",
+    "ng_file": "o1ovp-mc-nofalse-09.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.100985",
+      "RT_P": "2047.89",
+      "RB_P": "1148.04",
+      "CMP_VTRIP": "0.00575181",
+      "CMP_VREL": "0.000968371",
+      "CMP_IB": "-4.737e-06",
+      "TDOFF": "6.9879e-07"
+    }
+  },
+  "mc-nofalse-10": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-10.cir",
+    "ng_file": "o1ovp-mc-nofalse-10.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.097768",
+      "RT_P": "2050.89",
+      "RB_P": "1150.46",
+      "CMP_VTRIP": "0.00677773",
+      "CMP_VREL": "0.00349785",
+      "CMP_IB": "-1.998e-06",
+      "TDOFF": "8.2783e-07"
+    }
+  },
+  "mc-nofalse-11": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-11.cir",
+    "ng_file": "o1ovp-mc-nofalse-11.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.10384",
+      "RT_P": "2052.99",
+      "RB_P": "1152.19",
+      "CMP_VTRIP": "-0.000171157",
+      "CMP_VREL": "-0.00235744",
+      "CMP_IB": "-4.614e-06",
+      "TDOFF": "5.6775e-07"
+    }
+  },
+  "mc-nofalse-12": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-12.cir",
+    "ng_file": "o1ovp-mc-nofalse-12.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.10484",
+      "RT_P": "2054",
+      "RB_P": "1151.25",
+      "CMP_VTRIP": "0.00211775",
+      "CMP_VREL": "0.000122018",
+      "CMP_IB": "-3.788e-07",
+      "TDOFF": "4.8012e-07"
+    }
+  },
+  "mc-nofalse-13": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-13.cir",
+    "ng_file": "o1ovp-mc-nofalse-13.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.088047",
+      "RT_P": "2050.59",
+      "RB_P": "1152",
+      "CMP_VTRIP": "0.00361306",
+      "CMP_VREL": "0.00069322",
+      "CMP_IB": "2.85e-06",
+      "TDOFF": "6.4857e-07"
+    }
+  },
+  "mc-nofalse-14": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-14.cir",
+    "ng_file": "o1ovp-mc-nofalse-14.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.098407",
+      "RT_P": "2048.85",
+      "RB_P": "1149.04",
+      "CMP_VTRIP": "0.00362142",
+      "CMP_VREL": "-0.000681808",
+      "CMP_IB": "-4.684e-06",
+      "TDOFF": "7.0574e-07"
+    }
+  },
+  "mc-nofalse-15": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-15.cir",
+    "ng_file": "o1ovp-mc-nofalse-15.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.090796",
+      "RT_P": "2048.09",
+      "RB_P": "1150.75",
+      "CMP_VTRIP": "0.00531277",
+      "CMP_VREL": "0.00182324",
+      "CMP_IB": "-3.438e-06",
+      "TDOFF": "4.9595e-07"
+    }
+  },
+  "mc-nofalse-16": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-16.cir",
+    "ng_file": "o1ovp-mc-nofalse-16.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.097702",
+      "RT_P": "2047.53",
+      "RB_P": "1150.66",
+      "CMP_VTRIP": "0.00280133",
+      "CMP_VREL": "-0.00140736",
+      "CMP_IB": "-4.156e-06",
+      "TDOFF": "8.7138e-07"
+    }
+  },
+  "mc-nofalse-17": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-17.cir",
+    "ng_file": "o1ovp-mc-nofalse-17.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.090828",
+      "RT_P": "2048.82",
+      "RB_P": "1151.04",
+      "CMP_VTRIP": "0.00339094",
+      "CMP_VREL": "-0.000300015",
+      "CMP_IB": "1.918e-06",
+      "TDOFF": "7.6676e-07"
+    }
+  },
+  "mc-nofalse-18": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-18.cir",
+    "ng_file": "o1ovp-mc-nofalse-18.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.087779",
+      "RT_P": "2052.86",
+      "RB_P": "1151.75",
+      "CMP_VTRIP": "0.00692826",
+      "CMP_VREL": "0.0030767",
+      "CMP_IB": "-4.991e-06",
+      "TDOFF": "8.1524e-07"
+    }
+  },
+  "mc-nofalse-19": {
+    "kind": "mc-nofalse",
+    "file": "o1ovp-mc-nofalse-19.cir",
+    "ng_file": "o1ovp-mc-nofalse-19.ng.cir",
+    "checks": "nofalse",
+    "note": "",
+    "acceptance": true,
+    "params": {
+      "VREF_P": "4.094476",
+      "RT_P": "2050.34",
+      "RB_P": "1149.29",
+      "CMP_VTRIP": "0.00690219",
+      "CMP_VREL": "0.00455162",
+      "CMP_IB": "-3.113e-06",
+      "TDOFF": "8.3454e-07"
+    }
+  },
+  "ref-baseline-load-step-7p5a": {
+    "kind": "reference",
+    "file": "o1ovp-ref-baseline-load-step-7p5a.cir",
+    "ng_file": "o1ovp-ref-baseline-load-step-7p5a.ng.cir",
+    "checks": "reference",
+    "note": "unmodified baseline circuit; information only, no acceptance",
+    "acceptance": false,
+    "params": {}
+  },
+  "_meta": {
+    "mc_seed": 20261025,
+    "mc_n": {
+      "ramp": 40,
+      "short": 20,
+      "nofalse": 20
+    },
+    "corners": {
+      "typ": {
+        "VREF_P": "4.096",
+        "RT_P": "2050",
+        "RB_P": "1150",
+        "CMP_VTRIP": "1.5m",
+        "CMP_VREL": "-1.5m",
+        "CMP_IB": "1u",
+        "TDOFF": "0.3625u"
+      },
+      "wchi": {
+        "VREF_P": "4.105424",
+        "RT_P": "2054.1",
+        "RB_P": "1147.7",
+        "CMP_VTRIP": "64.1m",
+        "CMP_VREL": "62.6m",
+        "CMP_IB": "5u",
+        "TDOFF": "1.0545u"
+      },
+      "wclo": {
+        "VREF_P": "4.086576",
+        "RT_P": "2045.9",
+        "RB_P": "1152.3",
+        "CMP_VTRIP": "-9.1m",
+        "CMP_VREL": "-14.1m",
+        "CMP_IB": "-5u",
+        "TDOFF": "1.0545u"
+      }
+    },
+    "base": {
+      "TDON": "1.68u",
+      "TDOV": "5.55u",
+      "IBST": "345u",
+      "IPU": "1.69",
+      "IPD": "2",
+      "VTH_P": "1.5",
+      "CGS_P": "5n",
+      "NPAR": "2",
+      "RON_P": "1.8m",
+      "CRAW": "92.65u",
+      "ESR": "1m",
+      "VBSTR": "9",
+      "VCPOFF": "11.6"
+    }
+  }
+}

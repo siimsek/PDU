@@ -1,0 +1,21 @@
+Reference,Value,MPN,Manufacturer,Footprint,Tolerance,TCR,Voltage,Datasheet,Rev
+U10,TPS48000-Q1 back-to-back gate driver,TPS48000QDGXRQ1,Texas Instruments,PDU:TI_DGX0019A_VSSOP-19 (to be created; verify vs TI drawing),,,VS 3.5-95 V; PU/PD/BST-SRC 19 V abs max,https://www.ti.com/lit/ds/symlink/tps4800-q1.pdf,SLUSEZ1B (Dec 2023 / rev. Mar 2026)
+"Q10,Q11",60 V N-FET (forward-blocking pair; RAW side),CSD18540Q5B,Texas Instruments,PDU:TI_VSON-CLIP-8_5x6 (to be created; verify vs TI DQJ/DNK drawing),,,VDS 60 V; VGS +/-20 V,https://www.ti.com/lit/ds/symlink/csd18540q5b.pdf,SLPS488B (Jun 2014 / rev. Apr 2017)
+"Q12,Q13",60 V N-FET (reverse-blocking pair; VOUT side),CSD18540Q5B,Texas Instruments,PDU:TI_VSON-CLIP-8_5x6 (to be created),,,VDS 60 V; VGS +/-20 V,https://www.ti.com/lit/ds/symlink/csd18540q5b.pdf,SLPS488B (Jun 2014 / rev. Apr 2017)
+U11,5 V LDO for comparator/reference,TPS7A1650DGNR,Texas Instruments,Package_SO:HVSSOP-8-1EP_3x3mm_P0.65mm (verify EP size vs TI DGN),+/-2 %,,VIN 60 V max,https://www.ti.com/lit/ds/symlink/tps7a16.pdf,SBVS171F (Dec 2011 / rev. Oct 2015)
+U12,4.096 V reference,REF35409QDBVR,Texas Instruments,Package_TO_SOT_SMD:SOT-23-6,+/-0.05 %,12 ppm/K max,VIN 4.346-6 V,https://www.ti.com/lit/ds/symlink/ref35.pdf,SNAS809C (Dec 2021 / rev. Sep 2024)
+U13,High-speed comparator (push-pull),TLV3601DCKR,Texas Instruments,Package_TO_SOT_SMD:SOT-353_SC-70-5,VIO +/-5 mV (at VCM=VEE+0.3 V only),,VCC 2.4-5.5 V,https://www.ti.com/lit/ds/symlink/tlv3601.pdf,SNOSDB1E (Jun 2021 / rev. Apr 2023)
+RSNS10,2.05k,ERA-3ARB2051V,Panasonic,Resistor_SMD:R_0603_1608Metric,0.1 %,+/-10 ppm/K,75 V,Panasonic ERA-xA AOA0000C307,rev not verified
+RSNS11,1.15k,ERA-3ARB1151V,Panasonic,Resistor_SMD:R_0603_1608Metric,0.1 %,+/-10 ppm/K,75 V,Panasonic ERA-xA AOA0000C307,rev not verified
+RIN10,1k,TBD (1 % 0603 thick film),TBD,Resistor_SMD:R_0603_1608Metric,1 %,<=100 ppm/K,>=50 V,,
+CSNS10,100p C0G,TBD (C0G/NP0 0603 50 V),TBD,Capacitor_SMD:C_0603_1608Metric,5 %,C0G,50 V,,
+CREF12,0.1u,TBD (X7R 0603 16 V),TBD,Capacitor_SMD:C_0603_1608Metric,10 %,X7R,16 V,,
+CIN11,1u,TBD (X7R 0805 50 V),TBD,Capacitor_SMD:C_0805_2012Metric,10 %,X7R,50 V,,
+COUT11,2.2u,TBD (X7R 0805 16 V),TBD,Capacitor_SMD:C_0805_2012Metric,10 %,X7R,16 V,,
+RBLD11,499,TBD (1 % 0603),TBD,Resistor_SMD:R_0603_1608Metric,1 %,<=100 ppm/K,,,
+CBST10,0.47u,TBD (X7R 0603 25 V),TBD,Capacitor_SMD:C_0603_1608Metric,10 %,X7R,25 V,,
+REN10,100k,TBD (1 % 0603),TBD,Resistor_SMD:R_0603_1608Metric,1 %,<=100 ppm/K,,,
+REN11,10k,TBD (1 % 0603),TBD,Resistor_SMD:R_0603_1608Metric,1 %,<=100 ppm/K,,,
+ROV10,90.9k,TBD (1 % 0603),TBD,Resistor_SMD:R_0603_1608Metric,1 %,<=100 ppm/K,,,
+ROV11,10k,TBD (1 % 0603),TBD,Resistor_SMD:R_0603_1608Metric,1 %,<=100 ppm/K,,,
+RPU10,10,TBD (1 % 0603),TBD,Resistor_SMD:R_0603_1608Metric,1 %,,,,

@@ -1,0 +1,459 @@
+{
+  "params": {
+    "VREF_nom": {
+      "value": 4.096,
+      "unit": "V",
+      "kind": "G",
+      "source": "REF35409 nominal, SNAS809C p1/p5"
+    },
+    "VREF_init": {
+      "value": 0.0005,
+      "unit": "1",
+      "kind": "G",
+      "source": "REF35 initial accuracy +/-0.05 % max @25C, SNAS809C p5"
+    },
+    "VREF_TC": {
+      "value": 1.2e-05,
+      "unit": "1/K",
+      "kind": "G",
+      "source": "REF35 TC 12 ppm/K max (box) -40..105C SOT-23, SNAS809C p5"
+    },
+    "VREF_dT": {
+      "value": 145.0,
+      "unit": "K",
+      "kind": "A",
+      "source": "full -40..105C box span applied as deviation from 25C value (conservative)"
+    },
+    "VREF_line": {
+      "value": 0.00012,
+      "unit": "1/V",
+      "kind": "G",
+      "source": "REF35 line regulation 120 ppm/V max (VREF>=2.5V), SNAS809C p5"
+    },
+    "VREF_dVin": {
+      "value": 0.504,
+      "unit": "V",
+      "kind": "I",
+      "source": "TPS7A1650 5V +/-2 % (SBVS171F p6) -> 4.9..5.1V vs test VIN=VREF+0.5=4.596V"
+    },
+    "VREF_load": {
+      "value": 6e-05,
+      "unit": "1/mA",
+      "kind": "G",
+      "source": "REF35 load reg 60 ppm/mA max (sourcing), SNAS809C p5"
+    },
+    "VREF_longterm_typ": {
+      "value": 4e-05,
+      "unit": "1",
+      "kind": "T",
+      "source": "REF35 long-term 40 ppm 1000h TYPICAL, SNAS809C p5"
+    },
+    "VREF_thyst_typ": {
+      "value": 7e-05,
+      "unit": "1",
+      "kind": "T",
+      "source": "REF35 thermal hysteresis 70 ppm TYPICAL, SNAS809C p5"
+    },
+    "VIO": {
+      "value": 0.005,
+      "unit": "V",
+      "kind": "G",
+      "source": "TLV3601 VIO +/-5 mV max -40..125C @VCM=VEE+0.3V, SNOSDB1E p7"
+    },
+    "VHYST_min": {
+      "value": 0.0015,
+      "unit": "V",
+      "kind": "G",
+      "source": "TLV3601 VHYST min 1.5 mV, SNOSDB1E p7"
+    },
+    "VHYST_max": {
+      "value": 0.005,
+      "unit": "V",
+      "kind": "G",
+      "source": "TLV3601 VHYST max 5 mV (ensured by characterization), SNOSDB1E p7"
+    },
+    "IB": {
+      "value": 5e-06,
+      "unit": "A",
+      "kind": "G",
+      "source": "TLV3601 IB 5 uA max -40..125C, SNOSDB1E p7"
+    },
+    "CMRR_typ_dB": {
+      "value": 80,
+      "unit": "dB",
+      "kind": "T",
+      "source": "TLV3601 CMRR 80 dB TYPICAL only; VIO not guaranteed at VCM=4.096V, SNOSDB1E p7"
+    },
+    "VCM_allow": {
+      "value": 0.004096,
+      "unit": "V",
+      "kind": "A",
+      "source": "ASSUMPTION A1: extra offset at VCM=4.096V <= 4.1 mV (= 60 dB CMRR over 4.1 V, 20 dB worse than the 80 dB typical). TLV3601 VIO is guaranteed only at VCM=VEE+0.3V (SNOSDB1E 6.5 conditions). Open guarantee gap G1."
+    },
+    "tPD_cmp": {
+      "value": 4.5e-09,
+      "unit": "s",
+      "kind": "G",
+      "source": "TLV3601 tPD 4.5 ns max -40..125C @50 mV overdrive (char.), SNOSDB1E p7"
+    },
+    "VOD_spec": {
+      "value": 0.05,
+      "unit": "V",
+      "kind": "G",
+      "source": "overdrive at which tPD is specified, SNOSDB1E p7"
+    },
+    "tPD_INP_L": {
+      "value": 1.05e-06,
+      "unit": "s",
+      "kind": "G",
+      "source": "TPS4800 tPD(INP_L) 1.05 us max, INP low -> PD low (1V, Fig. p11), CL=47nF, TJ=-40..150C, test VS=48V, V(BST-SRC)=11V, SLUSEZ1B p7"
+    },
+    "VBST_TEST": {
+      "value": 11.0,
+      "unit": "V",
+      "kind": "G",
+      "source": "switching-table test condition V(BST-SRC)=11 V, SLUSEZ1B p7"
+    },
+    "IPD_typ": {
+      "value": 2.0,
+      "unit": "A",
+      "kind": "T",
+      "source": "TPS4800 I(PD) 2 A peak TYPICAL only, SLUSEZ1B p7"
+    },
+    "VBST_OFF_max": {
+      "value": 13.86,
+      "unit": "V",
+      "kind": "G",
+      "source": "charge pump turn-off 13.86 V max = max VGS, SLUSEZ1B p6"
+    },
+    "VBST_ON_min": {
+      "value": 8.24,
+      "unit": "V",
+      "kind": "G",
+      "source": "charge pump turn-on 8.24 V min = min VGS (steady), SLUSEZ1B p6"
+    },
+    "t_gate_tail": {
+      "value": 5e-08,
+      "unit": "s",
+      "kind": "A",
+      "source": "allowance from V(PD-SRC)=1V to channel cut-off at hot Vth (<1V possible)"
+    },
+    "Q_47nF_test": {
+      "value": 4.7e-07,
+      "unit": "C",
+      "kind": "I",
+      "source": "tPD(INP_L) test load 47 nF from V(BST-SRC)=11 V to 1 V = 470 nC; our gate charge (4 FETs, <=277 nC at 13.86 V) is smaller -> INFERENCE (not a TI guarantee) that tPD(INP_L) max still covers it"
+    },
+    "Qg10_max": {
+      "value": 5.3e-08,
+      "unit": "C",
+      "kind": "G",
+      "source": "CSD18540Q5B Qg(10V) 53 nC max, SLPS488B p3"
+    },
+    "Ciss_max": {
+      "value": 4.23e-09,
+      "unit": "F",
+      "kind": "G",
+      "source": "CSD18540Q5B Ciss 4230 pF max, SLPS488B p3"
+    },
+    "NFET": {
+      "value": 4,
+      "unit": "1",
+      "kind": "A",
+      "source": "two parallel back-to-back pairs QA1/QA2 + QB1/QB2, one gate drive (PD tied to all gates)"
+    },
+    "R_tol": {
+      "value": 0.001,
+      "unit": "1",
+      "kind": "G",
+      "source": "ERA-3ARB +/-0.1 %, AOA0000C307 p2"
+    },
+    "R_TCR": {
+      "value": 1e-05,
+      "unit": "1/K",
+      "kind": "G",
+      "source": "ERA-3ARB +/-10 ppm/K, AOA0000C307 p2"
+    },
+    "R_dT": {
+      "value": 100.0,
+      "unit": "K",
+      "kind": "A",
+      "source": "resistor at -40..125C, worst |T-25C|=100 K (no TCR tracking credited)"
+    },
+    "R_life": {
+      "value": 0.001,
+      "unit": "1",
+      "kind": "G",
+      "source": "ERA-3A endurance/soldering/damp-heat test limit +/-0.1 % each (separate column)"
+    },
+    "RIN": {
+      "value": 1000.0,
+      "unit": "ohm",
+      "kind": "A",
+      "source": "series input resistor tap->IN- (abs-max current limit); IB flows through Rpar+RIN"
+    },
+    "Cf": {
+      "value": 1e-10,
+      "unit": "F",
+      "kind": "A",
+      "source": "C0G 100 pF filter at comparator IN- (Rpar*Cf lag added)"
+    },
+    "Cf_tol": {
+      "value": 0.05,
+      "unit": "1",
+      "kind": "G",
+      "source": "C0G +/-5 % (GRM1885C1H101JA01, to be confirmed)"
+    },
+    "V_O1_MAX": {
+      "value": 12.0,
+      "unit": "V",
+      "kind": "G",
+      "source": "O1 instantaneous absolute limit, requirement (not loosened)"
+    },
+    "V_FLOOR": {
+      "value": 11.22,
+      "unit": "V",
+      "kind": "A",
+      "source": "no-false-trip floor: 11.1605 V static max + 59.5 mV ripple/transient allowance = 11.22 V acceptance ceiling"
+    },
+    "V_STATIC_MAX": {
+      "value": 11.1605,
+      "unit": "V",
+      "kind": "G",
+      "source": "check_static_corners baseline static bus max"
+    }
+  },
+  "vref_bounds": [
+    4.08657600512,
+    4.10542399488
+  ],
+  "vref_rel": 0.0023007799999999997,
+  "qgate_per_fet": 6.932779999999999e-08,
+  "qgate_total": 2.7731119999999995e-07,
+  "qgate_47nF_test_load_11V_to_1V": 4.6999999999999995e-07,
+  "t_gate_typ_2A": 1.3865559999999997e-07,
+  "guaranteed": {
+    "Rt": 2050.0,
+    "Rb": 1150.0,
+    "k_nom": 0.359375,
+    "vtrip_nom": 11.397565217391305,
+    "vtrip_min": 11.292880428295396,
+    "vtrip_max": 11.516692158627501,
+    "floor": 11.22,
+    "margin_floor": 0.0728804282953952,
+    "pass_lower": true,
+    "slopes": [
+      {
+        "slope_V_per_us": 0.07,
+        "overdrive_V": 0.13948767099416223,
+        "tau_s": 7.751017968750001e-08,
+        "t_chain_s": 1.1820101796874998e-06,
+        "dv_dynamic_V": 0.22222838357228722,
+        "peak_worst_V": 11.73892054219979,
+        "margin_to_12V": 0.2610794578002107,
+        "pass_upper": true,
+        "peak_with_typ_gate_time_added_V": 11.748626434199789,
+        "note_typ_gate": "sensitivity only: Qtot/IPD_typ added on top (typical, not guaranteed)"
+      },
+      {
+        "slope_V_per_us": 0.17,
+        "overdrive_V": 0.13948767099416223,
+        "tau_s": 7.751017968750001e-08,
+        "t_chain_s": 1.1820101796874998e-06,
+        "dv_dynamic_V": 0.3404294015410372,
+        "peak_worst_V": 11.857121560168538,
+        "margin_to_12V": 0.14287843983146153,
+        "pass_upper": true,
+        "peak_with_typ_gate_time_added_V": 11.880693012168539,
+        "note_typ_gate": "sensitivity only: Qtot/IPD_typ added on top (typical, not guaranteed)"
+      },
+      {
+        "slope_V_per_us": 0.23,
+        "overdrive_V": 0.13948767099416223,
+        "tau_s": 7.751017968750001e-08,
+        "t_chain_s": 1.1820101796874998e-06,
+        "dv_dynamic_V": 0.4113500123222872,
+        "peak_worst_V": 11.928042170949789,
+        "margin_to_12V": 0.07195782905021098,
+        "pass_upper": true,
+        "peak_with_typ_gate_time_added_V": 11.95993295894979,
+        "note_typ_gate": "sensitivity only: Qtot/IPD_typ added on top (typical, not guaranteed)"
+      }
+    ],
+    "life_drift_included": false
+  },
+  "guaranteed_with_life": {
+    "Rt": 2050.0,
+    "Rb": 1150.0,
+    "k_nom": 0.359375,
+    "vtrip_nom": 11.397565217391305,
+    "vtrip_min": 11.278429898961964,
+    "vtrip_max": 11.531495025960208,
+    "floor": 11.22,
+    "margin_floor": 0.058429898961962934,
+    "pass_lower": true,
+    "slopes": [
+      {
+        "slope_V_per_us": 0.07,
+        "overdrive_V": 0.13948767099416223,
+        "tau_s": 7.751017968750001e-08,
+        "t_chain_s": 1.1820101796874998e-06,
+        "dv_dynamic_V": 0.22222838357228722,
+        "peak_worst_V": 11.753723409532496,
+        "margin_to_12V": 0.24627659046750416,
+        "pass_upper": true,
+        "peak_with_typ_gate_time_added_V": 11.763429301532495,
+        "note_typ_gate": "sensitivity only: Qtot/IPD_typ added on top (typical, not guaranteed)"
+      },
+      {
+        "slope_V_per_us": 0.17,
+        "overdrive_V": 0.13948767099416223,
+        "tau_s": 7.751017968750001e-08,
+        "t_chain_s": 1.1820101796874998e-06,
+        "dv_dynamic_V": 0.3404294015410372,
+        "peak_worst_V": 11.871924427501245,
+        "margin_to_12V": 0.128075572498755,
+        "pass_upper": true,
+        "peak_with_typ_gate_time_added_V": 11.895495879501246,
+        "note_typ_gate": "sensitivity only: Qtot/IPD_typ added on top (typical, not guaranteed)"
+      },
+      {
+        "slope_V_per_us": 0.23,
+        "overdrive_V": 0.13948767099416223,
+        "tau_s": 7.751017968750001e-08,
+        "t_chain_s": 1.1820101796874998e-06,
+        "dv_dynamic_V": 0.4113500123222872,
+        "peak_worst_V": 11.942845038282496,
+        "margin_to_12V": 0.05715496171750445,
+        "pass_upper": true,
+        "peak_with_typ_gate_time_added_V": 11.974735826282496,
+        "note_typ_gate": "sensitivity only: Qtot/IPD_typ added on top (typical, not guaranteed)"
+      }
+    ],
+    "life_drift_included": true
+  },
+  "typical_only_terms": {
+    "cmrr_offset_V_at_pin": 0.00040960000000000004,
+    "cmrr_offset_V_at_raw": 0.0011397565217391304,
+    "vref_longterm_plus_thyst_V_at_raw": 0.0012537321739130435
+  },
+  "closes_guaranteed": true,
+  "closes_with_life": true,
+  "closes_with_typical_terms_added": true,
+  "typical_terms_extra_V": 0.002393488695652174,
+  "clamp": {
+    "raw_where_INm_exceeds_VCCmin_plus_0p2": 14.155011715699036,
+    "inj_current_at_RAW45V_A": 0.006226303915385602,
+    "abs_max_input_current_A": 0.01,
+    "bleed_min_current_A": 0.009809829449108007
+  },
+  "ov_backstop": {
+    "ROV1": 90900.0,
+    "ROV2": 10000.0,
+    "assert_max_V": 13.168889045454545,
+    "assert_min_V": 11.5760655,
+    "release_min_V": 10.684165500000002,
+    "tPD_OV_OFF_max_s": 5.55e-06,
+    "note": "backstop only; slower than INP path; 1% resistors"
+  },
+  "cbst": {
+    "CBST": 4.7e-07,
+    "dip_V": 0.5900238297872339,
+    "tdrv_en_typ_s": 0.012260869565217393,
+    "tdrv_en_worst_s": 0.050807
+  },
+  "short_waveform": [
+    {
+      "C": 9.265e-05,
+      "ESR": 0.001,
+      "t_trip_s": 2.9610000000001407e-06,
+      "t_off_s": 4.0660000000001174e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.991137793866914,
+      "raw_max_to_off_V": 11.991137793866914,
+      "pass_upper": true,
+      "margin_to_12V": 0.008862206133086303
+    },
+    {
+      "C": 0.000165,
+      "ESR": 0.001,
+      "t_trip_s": 4.226000000000062e-06,
+      "t_off_s": 5.330999999999677e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.89430304735021,
+      "raw_max_to_off_V": 11.89430304735021,
+      "pass_upper": true,
+      "margin_to_12V": 0.10569695264979018
+    },
+    {
+      "C": 9.265e-05,
+      "ESR": 0.0125,
+      "t_trip_s": 2.0510000000000724e-06,
+      "t_off_s": 3.1560000000001554e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.998837843180212,
+      "raw_max_to_off_V": 11.998837843180212,
+      "pass_upper": true,
+      "margin_to_12V": 0.0011621568197881516
+    },
+    {
+      "C": 9.265e-05,
+      "ESR": 0.1,
+      "t_trip_s": 7.899999999999998e-08,
+      "t_off_s": 1.1840000000000072e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 12.63516443710626,
+      "raw_max_to_off_V": 12.63516443710626,
+      "pass_upper": false,
+      "margin_to_12V": -0.6351644371062601
+    }
+  ],
+  "short_waveform_typ_gate_added": [
+    {
+      "C": 9.265e-05,
+      "ESR": 0.001,
+      "t_trip_s": 2.9610000000001407e-06,
+      "t_off_s": 4.205000000000069e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 12.035488732964762,
+      "raw_max_to_off_V": 12.035488732964762,
+      "pass_upper": false,
+      "margin_to_12V": -0.03548873296476174
+    },
+    {
+      "C": 0.000165,
+      "ESR": 0.001,
+      "t_trip_s": 4.226000000000062e-06,
+      "t_off_s": 5.469999999999628e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 11.925070482528715,
+      "raw_max_to_off_V": 11.925070482528715,
+      "pass_upper": true,
+      "margin_to_12V": 0.07492951747128451
+    },
+    {
+      "C": 9.265e-05,
+      "ESR": 0.0125,
+      "t_trip_s": 2.0510000000000724e-06,
+      "t_off_s": 3.295000000000166e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 12.04398206191862,
+      "raw_max_to_off_V": 12.04398206191862,
+      "pass_upper": false,
+      "margin_to_12V": -0.04398206191861931
+    },
+    {
+      "C": 9.265e-05,
+      "ESR": 0.1,
+      "t_trip_s": 7.899999999999998e-08,
+      "t_off_s": 1.3230000000000177e-06,
+      "thr_raw_V": 11.656179829621664,
+      "raw_at_off_V": 12.722779776754393,
+      "raw_max_to_off_V": 12.722779776754393,
+      "pass_upper": false,
+      "margin_to_12V": -0.7227797767543933
+    }
+  ],
+  "closes_short_waveform": true,
+  "short_waveform_note": "rows 1-3 (ESR 1 m / 12.5 mOhm, ceramic-realistic) are acceptance rows; row 4 (100 mOhm bank ESR, -40C stress corner carried over from the LTC4365 study) is reported separately: its RAW step I*ESR is outside the 0.07-0.23 V/us slope assumption"
+}

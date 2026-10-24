@@ -1,0 +1,47 @@
+# WP1 2026-10-25-o1-ovp: re-run the proposal ngspice decks and the independent verifier.
+# No secrets are used. Read-only token. Proposal-only: does not touch baseline results.
+name: proposal-ngspice
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'simulation/proposals/2026-10-25-o1-ovp/**'
+      - '.github/workflows/proposal-ngspice.yml'
+permissions:
+  contents: read
+jobs:
+  o1-ovp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: simulation/proposals/2026-10-25-o1-ovp
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install ngspice (apt)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ngspice && ngspice --version || true
+      - name: Regenerate decks and check they match the committed ones
+        run: |
+          python3 gen_o1ovp.py
+          git status --porcelain -- . | tee /tmp/gen-diff.txt
+          test ! -s /tmp/gen-diff.txt
+      - name: Run proposal decks (+ baseline regression, expected FAIL)
+        id: run
+        continue-on-error: true
+        run: PDU_NGSPICE="$(command -v ngspice)" python3 run_o1ovp.py --jobs 4 --label "ci-${GITHUB_RUN_ID}"
+      - name: Independent verification
+        run: |
+          python3 verify_candidate.py
+      - name: Baseline regression must FAIL (exit 1)
+        run: |
+          set +e; python3 verify_candidate.py --baseline-regression; rc=$?; set -e
+          test "$rc" -eq 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: o1ovp-results
+          path: |
+            simulation/proposals/2026-10-25-o1-ovp/o1ovp-results.json
+            simulation/proposals/2026-10-25-o1-ovp/results/
