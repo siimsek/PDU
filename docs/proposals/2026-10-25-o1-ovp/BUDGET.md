@@ -1,8 +1,21 @@
-# WP1 rev2 – Garanti pencere bütçesi (`window_budget.py`)
+# WP1 rev3 – Koşullu pencere bütçesi (`window_budget.py`)
 
 Komut: `python3 simulation/proposals/2026-10-25-o1-ovp/window_budget.py --json window-budget.json`
 Sınıflandırma (rev2, inceleme P0/P1 sonrası): **G** = veri sayfası MIN/MAX garanti · **T** = yalnız tipik (garantiye sayılmaz) · **V** = varsayım · **Ç** = çıkarım (analitik türetme, üretici garantisi değil). Terim tablosu: §8.
 Tüm parametreler, kaynak sayfa/tabloyla birlikte `window-budget.json` → `params` içinde.
+
+### 0. Terminoloji (rev3, ChatGPT tur-2 P0-04)
+Bu belgedeki marjlar **"garanti marjı" değildir**: **varsayımlar ve çıkarımlar altında hesaplanan koşullu marj**dır. Yalnız **G** terimleri üretici MIN/MAX garantisidir; zincirde aşağıdaki 5 V/Ç halkası vardır ve her biri ilgili tezgâh testi geçilene kadar açıktır (WP1 bu testler olmadan tamamlanmış sayılmaz):
+
+| # | Varsayım / çıkarım zinciri | Sınıf | Bütçedeki değer | Bozulursa | Kapatan tezgâh testi |
+|---|---|---|---|---|---|
+| 1 | A1: TLV3601 VIO'nun VCM = 4,096 V'ta ek ofseti ≤ 4,10 mV (TI yalnız VCM = VEE+0,3 V'ta garanti verir) | V | 4,096 mV | > 11,97 mV → hedef 50 mV kaybolur; > 29,89 mV → 12 V koşulu kaybolur (§4b) | **B2** |
+| 2 | tPD(INP_L) 1,05 µs max'ın 47 nF test yükünden 4-FET kapımıza aktarımı (en kötü oran 0,9685 ≤ 1, `gate_discharge_wc.py`) + 50 ns kapı kuyruk payı | Ç + V | 1,05 µs + 50 ns | oran > 1 veya kuyruk > 50 ns → rampa/kısa-devre tepeleri yükselir | **B5** |
+| 3 | RAW bankı dürüst minimum 165 µF (DC-bias × sıcaklık × yaşlanma birleşik garanti yok) | V | 165 µF | < 165 µF → kısa-devre tepesi yükselir | **B11** |
+| 4 | Bank+montaj ESL ≤ 2 nH (TDK ESL okunmadı, yerleşim modellenmedi) | V | 0 / 2 nH | çınlama/ek tepe | **B11 / B13** |
+| 5 | O1 ≤ RAW (O1 portu RAW'dan yüksek olamaz; e-fuse/yol düşümü pozitif) – O1 tepesinin RAW tepesiyle sınırlandığı çıkarımı | Ç | O1 tepe ≤ RAW tepe | port tepesi RAW'ı aşarsa 12 V koşulu doğrudan ölçülmeli | **B13** |
+
+JSON anahtarları (`min_guaranteed_V`, `closes_guaranteed` vb.) CI uyumluluğu için tarihsel adlarıyla bırakıldı; anlamları **koşullu marj**dır.
 
 ## 1. Trip penceresi (G + V: A1)
 | Büyüklük | Değer |
@@ -17,7 +30,7 @@ Tüm parametreler, kaynak sayfa/tabloyla birlikte `window-budget.json` → `para
 ## 2. Eğim rampaları (0,07 / 0,17 / 0,23 V/µs) — RAW tepe
 Zincir: TLV3601 tPD 4,5 ns + RC gecikmesi + TPS48000 tPD(INP_L) **1,05 µs max** + kapı kuyruk payı 50 ns (V). tPD(INP_L) 47 nF test yükü → 277/288 nC aktarımı: Ç (`gate_discharge_wc.py`, en kötü oran 0,9685 ≤ 1).
 
-| Eğim | Tepe (garanti) | 12 V marjı | Tepe (ömür dahil) | Duyarlılık: + tipik Qg/IPD 139 ns |
+| Eğim | Tepe (koşullu) | 12 V koşullu marjı | Tepe (ömür dahil) | Duyarlılık: + tipik Qg/IPD 139 ns |
 |---|---|---|---|---|
 | 0,07 V/µs | 11,7389 V | 0,261 V | 11,7537 V | 11,7486 V |
 | 0,17 V/µs | 11,8571 V | 0,143 V | 11,8719 V | 11,8807 V |
@@ -46,7 +59,7 @@ Not: min/maks, tipik DC-bias model değeri üzerine çarpımsal duyarlılık sı
 ## 4. Buck high-side short dalga formu (26 V, L 2,72 µH + 15,4 mΩ, I0 7,5 A, V0 11,1605 V)
 Trip RAW = vtrip_max + 50 mV/k_min = 11,6562 V; zincir 4,5 ns + 1,05 µs + 50 ns = 1,1045 µs (kapı deşarjı ayrıca eklenmez – Ç, `gate_discharge_wc.py`). ESL köşesinde dI/dt = (VS − R·I − Vc − I·ESR)/(L + ESL), RAW = Vc + I·ESR + ESL·dI/dt (bu modelde ESL seri yola eklendiği için tepe hafif DÜŞER; ESL çınlaması/yerleşim modellenmedi → B13).
 
-| Vaka | C | ESR | ESL | t_trip | t_off | RAW @ t_off (G) | 12 V marjı (G) | Ömür dahil | + tipik Qg/IPD (duyarlılık, garanti değil) |
+| Vaka | C | ESR | ESL | t_trip | t_off | RAW @ t_off (koşullu) | 12 V koşullu marjı | Ömür dahil | + tipik Qg/IPD (duyarlılık, garanti değil) |
 |---|---|---|---|---|---|---|---|---|---|
 | **c185** | 185.30 µF | 1 mΩ | 0 nH | 4.53 µs | 5.63 µs | 11.8788 V | **121,2 mV** | 103,6 mV | 92,6 mV |
 | **c185-esr12m5** | 185.30 µF | 12.5 mΩ | 0 nH | 2.83 µs | 3.94 µs | 11.8914 V | **108,6 mV** | 91,4 mV | 78,6 mV |
@@ -77,17 +90,17 @@ TLV3601 VIO yalnız VCM = VEE + 0,3 V'ta garantilidir; CMRR yalnız tipik (80 dB
 
 Sonuç: garanti değil, **V**; tolerans sayısal olarak verildi; tezgâh B2 zorunlu. Alternatif (WP2): TLV3201 (VIO tüm VCM aralığında) + REF35250 ile VCM düşürme – mimari değişikliği olduğu için bu pakette uygulanmadı.
 
-## 5. Seçenek karşılaştırması (aynı garanti zinciri, yalnız ilgili kaldıraç değişir)
-| Seçenek | Garanti etkisi | Risk | Karar |
+## 5. Seçenek karşılaştırması (aynı koşullu zincir, yalnız ilgili kaldıraç değişir)
+| Seçenek | Koşullu marj etkisi | Risk | Karar |
 |---|---|---|---|
 | **A. RAW C artırımı: +8 × C5750X7S2A226M280KB (16 parça)** | Kısa devre en kötü marj 1,2 → **108,6 mV** (12,5 mΩ). Hedef 50 mV için gereken min. efektif C (12,5 mΩ): **≈122 µF** | Aynı nitelikli MPN/ayak izi; yeni aktif devre yok. Riskler: alan (+8 × 7,85×6,20 mm courtyard), maliyet, tedarik (DigiKey stok 0, 24 hf), **buck döngü kararlılığı (WP3)**, başlangıç şarj akımı | **SEÇİLDİ** |
-| B. Daha hızlı kapatma (güçlü PD / ayrık hızlı deşarj katı / farklı sürücü) | rev1 bankıyla 50 mV için garanti zincirinin **132 ns (1 mΩ) / 155 ns (12,5 mΩ)** kısalması gerekir. TPS48000 I(PD) 2 A yalnız TİPİK (MIN yok); tPD(INP_L) iç gecikmedir, dış sink bunu kısaltmaz. Ayrık katın (komparatör → seviye kaydırıcı → G-SRC deşarj) MIN/MAX zamanlaması için doğrulanmış MPN/veri sayfası bu çalışmada yok | Yeni aktif yol: seviye kaydırma, VGS negatif/±20 V sınırı, PD–SRC abs-max, PU ile çatışma, yanlış tetik/ESD; garanti verisi yok | Reddedildi (WP2 yedek seçenek) |
-| C. Düşük-Qg FET | Garanti kazancı **0 mV**: tPD(INP_L) max zaten 470 nC test yükünde (> 277 nC) belirtilmiş; yalnız tipik duyarlılık satırı iyileşir | RDS(on)/SOA yeniden doğrulama | Reddedildi |
+| B. Daha hızlı kapatma (güçlü PD / ayrık hızlı deşarj katı / farklı sürücü) | rev1 bankıyla 50 mV için koşullu zincirin **132 ns (1 mΩ) / 155 ns (12,5 mΩ)** kısalması gerekir. TPS48000 I(PD) 2 A yalnız TİPİK (MIN yok); tPD(INP_L) iç gecikmedir, dış sink bunu kısaltmaz. Ayrık katın (komparatör → seviye kaydırıcı → G-SRC deşarj) MIN/MAX zamanlaması için doğrulanmış MPN/veri sayfası bu çalışmada yok | Yeni aktif yol: seviye kaydırma, VGS negatif/±20 V sınırı, PD–SRC abs-max, PU ile çatışma, yanlış tetik/ESD; garanti verisi yok | Reddedildi (WP2 yedek seçenek) |
+| C. Düşük-Qg FET | Koşullu marj kazancı **0 mV**: tPD(INP_L) max zaten 470 nC test yükünde (> 277 nC) belirtilmiş; yalnız tipik duyarlılık satırı iyileşir | RDS(on)/SOA yeniden doğrulama | Reddedildi |
 | D. Kombinasyon (A+B) | A tek başına hedefi sağlıyor | B'nin riskleri eklenir | Gerek yok |
 | (Kapsam dışı) Bus setpoint düşürme | – | Gereksinim değişikliği | Kullanıcı kararı |
 
-## 6. Marj özeti – tüm kabul köşeleri (hedef ≥ 50 mV garanti)
-| Köşe | Garanti marjı | Ömür (R_life) dahil |
+## 6. Marj özeti – tüm kabul köşeleri (hedef ≥ 50 mV koşullu marj)
+| Köşe | Koşullu marj (varsayımlar ve çıkarımlar altında) | Ömür (R_life) dahil |
 |---|---|---|
 | slope 0,07 V/us | 261,1 mV | 246,3 mV |
 | slope 0,17 V/us | 142,9 mV | 128,1 mV |
@@ -105,11 +118,11 @@ Sonuç: garanti değil, **V**; tolerans sayısal olarak verildi; tezgâh B2 zoru
 | floor 11,22 V | 72,9 mV | 58,4 mV |
 | **Min.** | **72.0 mV → hedef karşılandı** | **57.2 mV → hedef karşılandı** |
 
-`margin_summary.meets_target = true`, `meets_target_with_life = true`. Rampa köşeleri RAW kapasitesinden bağımsızdır. **Duyarlılık uyarısı:** 0,23 V/µs rampasına tipik Qg/IPD süresi eklenirse marj 40,1 mV'a iner (< 50 mV); bu satır garanti değildir (Ç argümanı), tezgâhta (B5) doğrulanmalıdır. VCM terimi 11,97 mV'u aşarsa hedef, 29,89 mV'u aşarsa 12 V garantisi kaybolur (§4b).
+`margin_summary.meets_target = true`, `meets_target_with_life = true`. Rampa köşeleri RAW kapasitesinden bağımsızdır. **Duyarlılık uyarısı:** 0,23 V/µs rampasına tipik Qg/IPD süresi eklenirse marj 40,1 mV'a iner (< 50 mV); bu satır koşullu marjın da dışındadır (Ç argümanı), tezgâhta (B5) doğrulanmalıdır. VCM terimi 11,97 mV'u aşarsa hedef, 29,89 mV'u aşarsa 12 V koşulu kaybolur (§4b).
 
 ## 7. Sonuç
-- rev2 (16 × 22 µF RAW bankı) ile **garanti bütçe tüm kabul köşelerinde ≥ 72.0 mV (ömür dahil ≥ 57.2 mV)** marjla kapanır; dürüst min. 165 µF / 12,5 mΩ köşesinde 94,2 mV (ömür 76,7 mV). Kriter gevşetilmedi, setpoint değişmedi.
-- "Garanti" ifadesi, **V** ve **Ç** sınıfı terimlerin (A1 VCM, tPD aktarımı, C yaşlanma, dürüst min. C, ESL, kapı kuyruk payı) doğru olması koşuluna bağlıdır. Bu terimler tezgâhta (B2, B5, B11, B13) doğrulanmadan WP1 tamamlanmış sayılmaz.
+- rev2 (16 × 22 µF RAW bankı) ile **koşullu bütçe (varsayımlar ve çıkarımlar altında hesaplanan) tüm kabul köşelerinde ≥ 72.0 mV (ömür dahil ≥ 57.2 mV)** marjla kapanır; dürüst min. 165 µF / 12,5 mΩ köşesinde 94,2 mV (ömür 76,7 mV). Kriter gevşetilmedi, setpoint değişmedi.
+- Bu koşullu marj, **V** ve **Ç** sınıfı terimlerin (A1 VCM, tPD aktarımı, C yaşlanma, dürüst min. C, ESL, kapı kuyruk payı) doğru olması koşuluna bağlıdır. Bu terimler tezgâhta (B2, B5, B11, B13) doğrulanmadan WP1 tamamlanmış sayılmaz.
 - ngspice wchi sonuçları ve marjları: RESULTS.md.
 
 ## 8. Terim sınıflandırması (window_budget.py `params`, otomatik)
@@ -142,10 +155,10 @@ Sonuç: garanti değil, **V**; tolerans sayısal olarak verildi; tezgâh B2 zoru
 | `Qg10_max` | 5.3e-08 C | **G** | CSD18540Q5B Qg(10V) 53 nC max, SLPS488B p3 |
 | `Ciss_max` | 4.23e-09 F | **G** | CSD18540Q5B Ciss 4230 pF max, SLPS488B p3 |
 | `NFET` | 4 1 | **V** | two parallel back-to-back pairs QA1/QA2 + QB1/QB2, one gate drive (PD tied to all gates) |
-| `R_tol` | 0.001 1 | **G** | ERA-3ARB +/-0.1 %, AOA0000C307 p2 |
-| `R_TCR` | 1e-05 1/K | **G** | ERA-3ARB +/-10 ppm/K, AOA0000C307 p2 |
+| `R_tol` | 0.001 1 | **G** | ERA-8ARB +/-0.1 % (RSNS10A+B series sum: same bound), AOA0000C307 p2 |
+| `R_TCR` | 1e-05 1/K | **G** | ERA-8ARB +/-10 ppm/K, AOA0000C307 p2 |
 | `R_dT` | 100.0 K | **V** | resistor at -40..125C, worst /T-25C/=100 K (no TCR tracking credited) |
-| `R_life` | 0.001 1 | **G** | ERA-3A endurance/soldering/damp-heat test limit +/-0.1 % each (separate column) |
+| `R_life` | 0.001 1 | **G** | ERA-xA (ERA-8A used, rev3) endurance/soldering/damp-heat test limit +/-0.1 % each (separate column), AOA0000C307 performance table common to all sizes |
 | `RIN` | 1000.0 ohm | **V** | series input resistor tap->IN- (abs-max current limit); IB flows through Rpar+RIN |
 | `Cf` | 1e-10 F | **V** | C0G 100 pF filter at comparator IN- (Rpar*Cf lag added) |
 | `Cf_tol` | 0.05 1 | **G** | C0G +/-5 % (GRM1885C1H101JA01, to be confirmed) |
