@@ -22,8 +22,11 @@ RBLD11 V5_OVP 0 499
 * U12 REF35409 4.096 V; rev2 P1-4: CREF12 1 uF (SNAS809C stable CL range 0.1-10 uF; 0.1 uF nominal -10 % tol fell below the min)
 XU12 V5_OVP VREF_OVP 0 O1OVP_REF35 VREF={VREF_P}
 CREF12 VREF_OVP 0 1u
-* RAW sense divider (ERA-3ARB 0.1 %), filter, series input resistor
-RSNS10 RAW SNS_OVP {RT_P}
+* RAW sense divider, filter, series input resistor. rev3 P0-01: upper leg split into two series 1206 parts
+* RSNS10A 1.0k (ERA-8ARB102V) + RSNS10B 1.05k (ERA-8ARB1051V) = 2050 ohm (ratio unchanged); RSNS11 ERA-8ARB1151V.
+* Both halves scale with RT_P (correlated tolerance = worst case for the ratio); see rsns_power.py.
+RSNS10A RAW SNS_MID {RT_P*1000/2050}
+RSNS10B SNS_MID SNS_OVP {RT_P*1050/2050}
 RSNS11 SNS_OVP 0 {RB_P}
 CSNS10 SNS_OVP 0 100p
 RIN10 SNS_OVP INM_OVP 1k

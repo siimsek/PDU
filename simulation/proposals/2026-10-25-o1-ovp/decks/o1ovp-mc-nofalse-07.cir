@@ -23,6 +23,7 @@ Rbleed VOUT 0 100k
 .meas tran O1_AVG AVG V(O1_11V) FROM=25m TO=30m
 .meas tran S2E_AVG AVG V(S2E_11V) FROM=25m TO=30m
 .meas tran BUS_MIN MIN V(VOUT) FROM=12m TO=30m
+.meas tran O1_GLOBAL_PEAK MAX V(O1_11V) FROM=0 TO=30m
 .meas tran INP_MIN MIN V(INP_OVP) FROM=12m TO=30m
 .meas tran VGS_MIN MIN V(M_VGS) FROM=12m TO=30m
 .options plotwinsize=0

@@ -47,6 +47,11 @@ def rules(kind, m):
     """yield (name, ok, detail) - independent re-implementation of the acceptance limits."""
     lvl = lambda k: (k, 10.78 <= m[k] <= 11.22, f'{m[k]:.6g} V within 11 V +/-2 %')
     nrm = lambda k, w: (f'normal bus <= 11.1605 ({k})', m[k] <= NORMAL_MAX, f'{m[k]:.6g} V ({w})')
+    # rev3 P0-02: whole-run O1 peak is REQUIRED in every acceptance deck (KeyError -> counted as missing evidence)
+    gpk = lambda: ('O1 global peak <= 12V (0..tran end)', m['o1_global_peak'] <= O1_MAX, f"O1 global {m['o1_global_peak']:.6g} V")
+    def rec(w):
+        yield 'recovery regime normal (INP>2.5, VGS>6)', m['inp_recov_min'] > 2.5 and m['vgs_recov_min'] > 6, f"INP {m['inp_recov_min']:.3g} VGS {m['vgs_recov_min']:.3g} ({w})"
+        yield nrm('bus_recov_max', f'after recovery {w}'); yield nrm('o1_recov_max', f'after recovery {w}')
     if kind in ('ramp', 'sweep', 'mc-ramp', 'short', 'mc-short'):
         yield 'O1<=12V', m['o1_peak'] <= O1_MAX, f"O1 peak {m['o1_peak']:.6g} V"
         if 'inp_fault_max' in m: yield 'FET off in fault', m['inp_fault_max'] < 0.8, f"INP {m['inp_fault_max']:.3g} V"
@@ -60,24 +65,30 @@ def rules(kind, m):
         for k in ('o1_off', 's2e_off'):
             if k in m: yield k, abs(m[k]) < 0.1, f'{m[k]:.4g} V (off < 0.1 V)'
         if 'bus_peak' in m: yield 'U3/U4 IN <= 30 V', m['bus_peak'] <= 30, f"bus {m['bus_peak']:.5g} V"
+        yield gpk()
+        if kind in ('ramp', 'sweep', 'mc-ramp'):
+            yield nrm('bus_pre_max', '0..14.9 ms'); yield nrm('o1_pre_max', '0..14.9 ms'); yield from rec('25.1..40 ms')
+        else:
+            yield nrm('bus_normal_max', '24..29 ms'); yield nrm('o1_normal_max', '24..29 ms')
+            if 'o1_reset' in m: yield from rec('55..80 ms')   # 80 ms decks carry the recovery window; 45 ms decks do not
     elif kind == 'board-average':
         yield 'O1<=12V', m['o1_max'] <= O1_MAX, f"O1 max {m['o1_max']:.6g} V"
         for k in ('bus_avg', 'o1_avg', 's2e_avg'): yield lvl(k)
         yield 'no trip', m['inp_min'] > 4 and m['vgs_min'] > 4.5, f"INP {m['inp_min']:.3g} VGS {m['vgs_min']:.3g}"
         yield 'startup bus <= 11.22', m['bus_max'] <= 11.22, f"{m['bus_max']:.6g} V"
-        yield nrm('bus_max', 'startup/static max'); yield nrm('bus_avg', 'static average')
+        yield nrm('bus_max', 'startup/static max'); yield nrm('bus_avg', 'static average'); yield gpk()
     elif kind == 'step':
         yield 'transient 10.78..11.22', 10.78 <= m['bus_min'] and m['bus_max'] <= 11.22, f"{m['bus_min']:.6g}..{m['bus_max']:.6g} V"
-        yield nrm('bus_max', 'load step')
+        yield nrm('bus_max', 'load step'); yield nrm('bus_all_max', 'whole run 0..40 ms'); yield gpk()
         yield 'no trip', m['inp_min'] > 4 and m['vgs_min'] > 4.5, f"INP {m['inp_min']:.3g} VGS {m['vgs_min']:.3g}"
     elif kind == 'step75':
         yield 'no trip', m['inp_min'] > 4 and m['vgs_min'] > 4.5, f"INP {m['inp_min']:.3g} VGS {m['vgs_min']:.3g}"
         for k in ('o1_final', 's2e_final'): yield lvl(k)
-        yield nrm('bus_max', '7.5 A load step')
+        yield nrm('bus_max', '7.5 A load step'); yield nrm('bus_all_max', 'whole run 0..40 ms'); yield gpk()
     elif kind in ('nofalse', 'mc-nofalse'):
         yield 'false-trip test level reached', m['raw_max'] >= FALSE_TRIP_TEST - 1e-3, f"RAW max {m['raw_max']:.6g} V vs {FALSE_TRIP_TEST} V test level"
         yield 'no false trip', m['inp_min'] > 4 and m['vgs_min'] > 4.5, f"RAW max {m['raw_max']:.5g} INP {m['inp_min']:.3g}"
-        yield lvl('o1_avg')
+        yield lvl('o1_avg'); yield gpk()
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--results', default='o1ovp-results.json')
@@ -122,9 +133,12 @@ def main():
         if miss or bad:
             (missing if c.get('acceptance', True) else []).append(f"{r['case']}: incomplete log {miss} err={bad}"); continue
         if not c.get('acceptance', True) or c['kind'] == 'reference': continue
-        for nm, ok, d in rules(c['kind'], m):
-            n += 1
-            if not ok: fails.append(f"{r['case']}: {nm}: {d}")
+        try:
+            for nm, ok, d in rules(c['kind'], m):
+                n += 1
+                if not ok: fails.append(f"{r['case']}: {nm}: {d}")
+        except KeyError as e:
+            missing.append(f"{r['case']}: required measurement {e} absent from deck/log")
     print(f'verify_candidate: {n} acceptance re-checks, {len(fails)} failed, {len(missing)} evidence problems; '
           f"runner label {res.get('label')!r}, finished {res.get('finished')}")
     for f in fails: print('FAIL', f)

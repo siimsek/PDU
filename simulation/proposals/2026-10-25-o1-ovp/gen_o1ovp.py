@@ -114,8 +114,11 @@ RBLD11 V5_OVP 0 499
 * U12 REF35409 4.096 V; rev2 P1-4: CREF12 1 uF (SNAS809C stable CL range 0.1-10 uF; 0.1 uF nominal -10 % tol fell below the min)
 XU12 V5_OVP VREF_OVP 0 O1OVP_REF35 VREF={VREF_P}
 CREF12 VREF_OVP 0 1u
-* RAW sense divider (ERA-3ARB 0.1 %), filter, series input resistor
-RSNS10 RAW SNS_OVP {RT_P}
+* RAW sense divider, filter, series input resistor. rev3 P0-01: upper leg split into two series 1206 parts
+* RSNS10A 1.0k (ERA-8ARB102V) + RSNS10B 1.05k (ERA-8ARB1051V) = 2050 ohm (ratio unchanged); RSNS11 ERA-8ARB1151V.
+* Both halves scale with RT_P (correlated tolerance = worst case for the ratio); see rsns_power.py.
+RSNS10A RAW SNS_MID {RT_P*1000/2050}
+RSNS10B SNS_MID SNS_OVP {RT_P*1050/2050}
 RSNS11 SNS_OVP 0 {RB_P}
 CSNS10 SNS_OVP 0 100p
 RIN10 SNS_OVP INM_OVP 1k
@@ -132,6 +135,22 @@ def libs(engine):
     return f'.include ../../../pdu-behavioral.lib\n.include ../../../{ind}\n.include ../pdu-o1ovp-behavioral.lib\n'
 
 OPT = '.options reltol=0.0001 abstol=1n method=gear\n'
+
+# rev3 P0-02: whole-run O1 peak (FROM=0 TO=tran end) in EVERY acceptance deck, in addition to the timed fault-window
+# O1_PEAK; and normal-bus (<= 11.1605 V) MAX checks in windows where the circuit is in its normal regime.
+def global_peak(stop):
+    return f'.meas tran O1_GLOBAL_PEAK MAX V(O1_11V) FROM=0 TO={stop}\n'
+
+def recov_meas(a, b):
+    # post-recovery normal window: MAX of bus and O1 (normal-bus limit) + regime validity (comparator output high,
+    # FETs enhanced) over the SAME window, so a latched-off or still-tripped circuit cannot pass as 'normal'.
+    return (f'.meas tran BUS_RECOV_MAX MAX V(VOUT) FROM={a} TO={b}\n.meas tran O1_RECOV_MAX MAX V(O1_11V) FROM={a} TO={b}\n'
+            f'.meas tran INP_RECOV_MIN MIN V(INP_OVP) FROM={a} TO={b}\n.meas tran VGS_RECOV_MIN MIN V(M_VGS) FROM={a} TO={b}\n')
+
+# ramp bench: RAW is an ideal source at 11 V from 0.1 ms; the fault is 15..25.1 ms (RAW back at 11 V at 25.1 ms).
+#   pre-fault normal window 0..14.9 ms (whole start-up included, strictest); recovery window 25.1..40 ms.
+RAMP_NORMAL_MEAS = ('.meas tran BUS_PRE_MAX MAX V(VOUT) FROM=0 TO=14.9m\n.meas tran O1_PRE_MAX MAX V(O1_11V) FROM=0 TO=14.9m\n'
+                    + recov_meas('25.1m', '40m'))
 MEAS_OVP = ('.meas tran INP_MIN MIN V(INP_OVP) FROM={a} TO={b}\n'
             '.meas tran VGS_MIN MIN V(M_VGS) FROM={a} TO={b}\n')
 SAVE_OVP = ' V(INP_OVP) V(M_VGS) V(M_VDSA) V(M_VDSB) V(V5_OVP) V(INM_OVP) V(M_IINM)'
@@ -168,6 +187,7 @@ def deck_ramp(engine, corner, slope, title=None, **over):
             '.meas tran IINM_MAX MAX V(M_IINM) FROM=14m TO=26m\n'
             '.meas tran V5_MAX MAX V(V5_OVP) FROM=14m TO=26m\n'
             '.meas tran INP_FAULT_MAX MAX V(INP_OVP) FROM=17m TO=25m\n'
+            + RAMP_NORMAL_MEAS + global_peak('40m') +
             '.options plotwinsize=0\n.save V(O1_11V) V(S2E_11V) V(VOUT) V(RAW)' + SAVE_OVP + '\n.end\n')
 
 def deck_short(engine, corner, cap, esr, stop='80m', esl=None, **over):
@@ -197,6 +217,10 @@ def deck_short(engine, corner, cap, esr, stop='80m', esl=None, **over):
             '.meas tran O1_PEAK MAX V(O1_11V) FROM=29m TO=45m\n'
             '.meas tran BUS_PEAK MAX V(VOUT) FROM=29m TO=45m\n'
             '.meas tran RAW_PEAK MAX V(RAW) FROM=29m TO=45m\n'
+            '.meas tran BUS_NORMAL_MAX MAX V(VOUT) FROM=24m TO=29m\n'
+            '.meas tran O1_NORMAL_MAX MAX V(O1_11V) FROM=24m TO=29m\n'
+            '.meas tran INFO_BENCH_STARTUP_BUS_MAX MAX V(VOUT) FROM=0 TO=24m\n'
+            + global_peak(stop) +
             '.meas tran VDSA_MAX MAX V(M_VDSA) FROM=29m TO=45m\n'
             '.meas tran VDSB_MAX MAX V(M_VDSB) FROM=29m TO=45m\n'
             '.meas tran S2E_PEAK MAX V(S2E_11V) FROM=29m TO=45m\n'
@@ -207,7 +231,13 @@ def deck_short(engine, corner, cap, esr, stop='80m', esl=None, **over):
             '.meas tran TRIP_RAW FIND V(RAW) WHEN V(INP_OVP)=2.5 TD=29m FALL=1\n'
             '.meas tran OFF_RAW FIND V(RAW) WHEN V(M_VGS)=1 TD=29m FALL=1\n'
             + ('.meas tran O1_RESET AVG V(O1_11V) FROM=75m TO=80m\n'
-               '.meas tran S2E_RESET AVG V(S2E_11V) FROM=75m TO=80m\n' if stop == '80m' else
+               '.meas tran S2E_RESET AVG V(S2E_11V) FROM=75m TO=80m\n'
+               # rev3 P0-02 post-recovery normal window 55..80 ms: loads back on since 50 ms, no fault stimulus, DRIVE in its
+               # normal 0->11.1605 V restart ramp (55-60 ms) and then at 11.1605 V. 46-50 ms (fault just removed, ALL loads
+               # still removed by the bench, OVP re-closing at its release level) is NOT a normal regime -> INFO only.
+               + recov_meas('55m', '80m') +
+               '.meas tran INFO_POSTFAULT_BUS_MAX MAX V(VOUT) FROM=46m TO=50m\n'
+               '.meas tran INFO_POSTFAULT_O1_MAX MAX V(O1_11V) FROM=46m TO=50m\n' if stop == '80m' else
                '* TRUNCATED at 45 ms: fault-window measurements only; reset NOT evaluated in this deck\n') +
             '.options plotwinsize=0\n.save V(O1_11V) V(S2E_11V) V(VOUT) V(RAW)' + SAVE_OVP + '\n.end\n')
 
@@ -227,7 +257,7 @@ def avg_meas(a='35m', b='40m', ovp_from='20m'):
             f'.meas tran PG1_MAX MAX V(PG_O1) FROM=0 TO={b}\n.meas tran PG2_MAX MAX V(PG_S2E) FROM=0 TO={b}\n'
             f'.meas tran IMON1_AVG AVG V(IMON_O1) FROM={a} TO={b}\n.meas tran IMON2_AVG AVG V(IMON_S2E) FROM={a} TO={b}\n'
             f'.meas tran RAW_MAX MAX V(RAW) FROM=0 TO={b}\n.meas tran BUS_MAX MAX V(VOUT) FROM=0 TO={b}\n'
-            f'.meas tran O1_MAX MAX V(O1_11V) FROM=0 TO={b}\n'
+            f'.meas tran O1_MAX MAX V(O1_11V) FROM=0 TO={b}\n' + global_peak(b) +
             f'.meas tran VDSB_MAX MAX V(M_VDSB) FROM=0 TO={b}\n'
             '.meas tran FET_ON_T WHEN V(M_VGS)=6 RISE=1\n' + MEAS_OVP.format(a=ovp_from, b=b))
 AVG_MEAS = avg_meas()
@@ -236,6 +266,7 @@ L_STATIC = ('Bload1 O1_11V 0 I=(3)*min(max(V(O1_11V)/5,0),1)\n'
 STEP_MEAS = ('.meas tran BUS_MIN MIN V(VOUT) FROM=20m TO=22m\n.meas tran BUS_MAX MAX V(VOUT) FROM=20m TO=22m\n'
              '.meas tran RAW_MIN MIN V(RAW) FROM=20m TO=22m\n'
              '.meas tran O1_FINAL AVG V(O1_11V) FROM=35m TO=40m\n.meas tran S2E_FINAL AVG V(S2E_11V) FROM=35m TO=40m\n'
+             '.meas tran BUS_ALL_MAX MAX V(VOUT) FROM=0 TO=40m\n' + global_peak('40m')
              + MEAS_OVP.format(a='15m', b='40m'))
 
 def deck_nofalse(engine, corner='wclo', title='', **over):
@@ -258,7 +289,7 @@ def deck_nofalse(engine, corner='wclo', title='', **over):
             '.meas tran O1_AVG AVG V(O1_11V) FROM=25m TO=30m\n'
             '.meas tran S2E_AVG AVG V(S2E_11V) FROM=25m TO=30m\n'
             '.meas tran BUS_MIN MIN V(VOUT) FROM=12m TO=30m\n'
-            + MEAS_OVP.format(a='12m', b='30m') +
+            + global_peak('30m') + MEAS_OVP.format(a='12m', b='30m') +
             '.options plotwinsize=0\n.save V(RAW) V(VOUT) V(O1_11V) V(S2E_11V)' + SAVE_OVP + '\n.end\n')
 
 def deck_ref_step7p5(engine):

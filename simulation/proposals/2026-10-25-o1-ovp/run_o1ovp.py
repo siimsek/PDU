@@ -43,6 +43,16 @@ def read_log(p):
     if len(b) > 4 and b[1:2] == b'\x00' and b[3:4] == b'\x00': return b.decode('utf-16-le', errors='replace')
     return b.decode('utf-8', errors='replace')
 
+def git_info():
+    # rev3: record the commit the run was made from and whether the package inputs were modified (dirty) at run time
+    try:
+        head = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=HERE, capture_output=True, text=True, timeout=60).stdout.strip()
+        st = subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no', '--', '.'], cwd=HERE, capture_output=True, text=True, timeout=60).stdout
+        dirty = [l for l in st.splitlines() if not (l[3:].split('/')[-1] == 'o1ovp-results.json' or '/results/' in '/' + l[3:])]
+        return dict(commit=head or 'unavailable', package_inputs_dirty=bool(dirty), dirty_files=dirty[:20])
+    except Exception as e:
+        return dict(commit=f'unavailable: {e}', package_inputs_dirty=None)
+
 def expected_measures(deck):
     return [l.split()[2].lower() for l in Path(deck).read_text().splitlines() if l.lower().startswith('.meas')]
 
@@ -100,6 +110,19 @@ def evaluate(name, c, m, chk):
         if key in m: chk(key, abs(m[key]) < .1, f'{m[key]:.6g} V; off <0.1 V')
     def o1(key='o1_peak'):
         chk('O1_input_rating', m[key] <= O1_MAX, f"{m[key]:.6g} V peak vs {O1_MAX} V instantaneous")
+    def o1_global():
+        # rev3 P0-02: whole-run O1 peak, FROM=0 TO=tran end; separate from the timed fault-window O1_PEAK (both kept)
+        chk('O1_GLOBAL_PEAK', m['o1_global_peak'] <= O1_MAX, f"{m['o1_global_peak']:.6g} V max over the whole run vs {O1_MAX} V instantaneous")
+    def recovery(window):
+        # rev3 P0-02: post-recovery normal-bus window. Regime validity first: the comparator output must be high and the
+        # FETs enhanced over the whole window, otherwise the window is not 'normal' and the check FAILS (not skipped).
+        chk('recovery_regime_normal', m['inp_recov_min'] > 2.5 and m['vgs_recov_min'] > 6.0,
+            f"{window}: INP min {m['inp_recov_min']:.4g} V (>2.5), VGS min {m['vgs_recov_min']:.4g} V (>6)")
+        normal('bus_recov_max', f'bus max after recovery {window}'); normal('o1_recov_max', f'O1 max after recovery {window}')
+    def info(key, what):
+        # INFO only (not a normal regime, see gen_o1ovp.py); printed against BOTH limits so nothing is hidden
+        if key in m: chk(f'INFO:{key}', m[key] <= NORMAL_MAX, f'{m[key]:.6g} V ({what}); vs {NORMAL_MAX} V normal limit; '
+                         f'{"<=" if m[key] <= O1_MAX else ">"} {O1_MAX} V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)')
     def normal(key, what='normal-operation bus/port level'):
         # P1-2 (rev2): the NORMAL bus upper limit is 11.1605 V (static max, owner hard criterion); 11.22 V is only the
         # +2 % band edge and the OVP false-trip TEST level - kept as separate assertions, nothing loosened.
@@ -114,11 +137,18 @@ def evaluate(name, c, m, chk):
             chk('fet_stays_off', m['inp_fault_max'] < INP_L_MAX, f"INP max {m['inp_fault_max']:.3g} V during fault (< V(INP_L) 0.8 V guaranteed)")
     if k in ('ramp', 'sweep', 'mc-ramp'):
         normal('o1_pre', 'O1 before the fault'); band('o1_pre'); off('o1_off'); off('s2e_off'); band('o1_reset'); band('s2e_reset'); o1(); stress()
+        o1_global(); normal('bus_pre_max', 'bus max 0..14.9 ms incl. start-up'); normal('o1_pre_max', 'O1 max 0..14.9 ms incl. start-up')
+        recovery('25.1..40 ms')
     if k in ('short', 'mc-short'):
         normal('normal', 'bus before the short'); normal('o1_normal', 'O1 before the short'); band('normal'); band('o1_normal'); o1(); stress()
         if 'o1_reset' in m: band('o1_reset'); band('s2e_reset')
+        o1_global(); normal('bus_normal_max', 'bus max 24..29 ms before the short'); normal('o1_normal_max', 'O1 max 24..29 ms before the short')
+        if 'bus_recov_max' in m: recovery('55..80 ms')
+        info('info_bench_startup_bus_max', 'ideal-LC bench start-up 0..24 ms, not a normal regime')
+        info('info_postfault_bus_max', 'bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level')
+        info('info_postfault_o1_max', 'O1 46..50 ms: same post-fault window')
     if k == 'board-average':
-        band('bus_avg'); band('o1_avg'); band('s2e_avg'); o1('o1_max')
+        band('bus_avg'); band('o1_avg'); band('s2e_avg'); o1('o1_max'); o1_global()
         chk('bus_max_startup', m['bus_max'] <= 11.22, f"bus max {m['bus_max']:.6g} V vs 11.22 V (+2 % band edge)")
         normal('bus_max', 'startup/static bus max incl. overshoot'); normal('bus_avg', 'static bus average')
         for key in ('pg1_max', 'pg2_max'):
@@ -137,18 +167,20 @@ def evaluate(name, c, m, chk):
     if k == 'step':
         band('o1_final'); band('s2e_final')
         chk('transient', 10.78 <= m['bus_min'] and m['bus_max'] <= 11.22, f"{m['bus_min']:.6g}..{m['bus_max']:.6g} V, 0.45->4.5 A (verify_results.py L79)")
-        normal('bus_max', 'load-step bus max')
+        normal('bus_max', 'load-step bus max'); normal('bus_all_max', 'bus max over the whole run 0..40 ms'); o1_global()
         chk('no_trip', m['inp_min'] > 4.0 and m['vgs_min'] > 4.5, f"INP min {m['inp_min']:.4g} V, VGS min {m['vgs_min']:.4g} V")
     if k == 'step75':
         band('o1_final'); band('s2e_final')
         chk('no_trip', m['inp_min'] > 4.0 and m['vgs_min'] > 4.5, f"INP min {m['inp_min']:.4g} V, VGS min {m['vgs_min']:.4g} V")
         normal('bus_max', '7.5 A load-step bus max (acceptance, separate from the WP3 tracking window)')
+        normal('bus_all_max', 'bus max over the whole run 0..40 ms'); o1_global()
         chk('TRACKING:transient_7p5A_window', 10.78 <= m['bus_min'] and m['bus_max'] <= 11.22,
             f"{m['bus_min']:.6g}..{m['bus_max']:.6g} V (WP3 tracking, not a repo criterion)")
     if k in ('nofalse', 'mc-nofalse'):
         band('o1_avg'); band('s2e_avg')
         chk('FALSE_TRIP_TEST_LEVEL_reached', m['raw_max'] >= FALSE_TRIP_TEST - 1e-3, f"RAW max {m['raw_max']:.6g} V vs test level {FALSE_TRIP_TEST} V (stimulus validity; NOT a normal-bus limit)")
         chk('no_false_trip', m['inp_min'] > 4.0 and m['vgs_min'] > 4.5, f"RAW max {m['raw_max']:.5g} V; INP min {m['inp_min']:.4g} V; VGS min {m['vgs_min']:.4g} V")
+        o1_global()
 
 def static_checks(chk):
     for name, c in CASES.items():
@@ -170,8 +202,19 @@ def static_checks(chk):
     exp = sorted([(f'COUT{i}', [1]) for i in range(1, 9)] + [('RS1', [2]), ('RS2', [2]), ('RFB1', [1]), ('XU1', [6, 12]), ('XU2', [6, 12])])
     chk('RAW split = only intended node edits', len(b) == len(n) and sorted(diff) == exp and all(y[i] == 'RAW' for x, y in zip(b, n) for i in range(len(x)) if x[i] != y[i]), str(diff))
 
+def global_peak_static(chk):
+    # rev3 P0-02: every non-reference deck must measure O1_GLOBAL_PEAK FROM=0 TO=<its .tran stop time>
+    for name, c in CASES.items():
+        if c['kind'] == 'reference': continue
+        lines = (DECKS/c['ng_file']).read_text().splitlines()
+        stop = [l.split()[2] for l in lines if l.lower().startswith('.tran')]
+        g = [l for l in lines if l.lower().startswith('.meas tran o1_global_peak ')]
+        ok = len(stop) == 1 and len(g) == 1 and g[0].split()[3:] == ['MAX', 'V(O1_11V)', 'FROM=0', f'TO={stop[0]}']
+        chk(f'O1_GLOBAL_PEAK window/{name}', ok, f'tran stop {stop}; {g}')
+
 def category(c, check_name):
     if check_name.split('/')[-1].startswith('TRACKING:'): return 'tracking'
+    if check_name.split('/')[-1].startswith('INFO:'): return 'info'
     return 'acceptance' if c.get('acceptance', True) else 'info'
 
 def mc_summary(runs):
@@ -196,7 +239,7 @@ def main():
     outdir = HERE/'results'; outdir.mkdir(exist_ok=True)
     checks, incomplete, skipped = [], [], []
     def chk(name, ok, detail, cat='acceptance'): checks.append({'check': name, 'pass': bool(ok), 'category': cat, 'detail': detail})
-    static_checks(chk)
+    static_checks(chk); global_peak_static(chk)
     if not exe['ng']: incomplete.append('ngspice: PDU_NGSPICE not set or missing')
     if not exe['lt']: skipped.append('LTspice: PDU_LTSPICE not set or missing -> LTspice decks NOT run (no LTspice result is claimed)')
     engines = [e for e in ('ng', 'lt') if exe[e]]
@@ -239,12 +282,13 @@ def main():
                 f'baseline O1_PEAK {pk:.6g} V vs 12 V -> baseline criterion {regression["baseline_criterion_result"]}')
             chk('regression/baseline deck unchanged', before == regression['deck_sha256_after'], before)
     inputs = sorted(set(['pdu-o1ovp-behavioral.lib', 'pdu-o1ovp-block.inc', 'pdu-circuit-o1ovp.inc', 'pdu-efuse-block-o1ovp.inc',
-                         'test-cases-o1ovp.json', 'net-split-changes.json', 'gen_o1ovp.py', 'run_o1ovp.py', 'window_budget.py'] +
+                         'test-cases-o1ovp.json', 'net-split-changes.json', 'gen_o1ovp.py', 'run_o1ovp.py', 'window_budget.py',
+                         'verify_candidate.py', 'rsns_power.py'] +
                         ['decks/' + c['file'] for c in CASES.values()] + ['decks/' + c['ng_file'] for c in CASES.values()]))
     acc = [c for c in checks if c['category'] == 'acceptance']
     res = {'label': a.label or 'unlabelled', 'package': '2026-10-25-o1-ovp',
            'scope': 'BEHAVIORAL/IDEAL models only; not vendor silicon; not a bench/prototype result',
-           'started': started, 'finished': now_ist(), 'tools': tool_versions(exe),
+           'started': started, 'finished': now_ist(), 'tools': tool_versions(exe), 'git': git_info(),
            'engines_run': engines, 'skipped': skipped,
            'input_sha256': {p: sha(HERE/p) for p in inputs},
            'baseline_sha256': {p: sha(SIM/p) for p in ('pdu-behavioral.lib', 'pdu-circuit.inc', 'pdu-protection.inc', 'pdu-inductor-lt.lib',

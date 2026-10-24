@@ -20,6 +20,8 @@ Bmeasure2 M_ISNS2 0 V=V(ISNS2,RAW)/0.0075
 .meas tran RAW_MIN MIN V(RAW) FROM=20m TO=22m
 .meas tran O1_FINAL AVG V(O1_11V) FROM=35m TO=40m
 .meas tran S2E_FINAL AVG V(S2E_11V) FROM=35m TO=40m
+.meas tran BUS_ALL_MAX MAX V(VOUT) FROM=0 TO=40m
+.meas tran O1_GLOBAL_PEAK MAX V(O1_11V) FROM=0 TO=40m
 .meas tran INP_MIN MIN V(INP_OVP) FROM=15m TO=40m
 .meas tran VGS_MIN MIN V(M_VGS) FROM=15m TO=40m
 .options plotwinsize=0

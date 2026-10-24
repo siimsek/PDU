@@ -28,7 +28,7 @@ jobs:
           python3 gen_o1ovp.py
           git status --porcelain -- . | tee /tmp/gen-diff.txt
           test ! -s /tmp/gen-diff.txt
-      - name: Guaranteed window budget (rev2 >= 50 mV target; must match committed JSON)
+      - name: Conditional window budget (rev2 >= 50 mV target, rev3 P0-04 wording; must match committed JSON)
         run: |
           python3 window_budget.py --json /tmp/window-budget.json > /dev/null
           cmp /tmp/window-budget.json window-budget.json
@@ -43,6 +43,12 @@ jobs:
           grep -q "NORMAL_MAX = 11.1605" run_o1ovp.py
           grep -q "NORMAL_MAX = 11.1605" verify_candidate.py
           grep -q "FALSE_TRIP_TEST = 11.22" run_o1ovp.py
+          grep -q "O1_GLOBAL_PEAK" run_o1ovp.py
+          grep -q "o1_global_peak" verify_candidate.py
+      - name: RAW divider power/derating (rev3 P0-01; must match committed JSON)
+        run: |
+          python3 rsns_power.py --check > /dev/null
+          git diff --exit-code -- rsns-power.json
       - name: Run proposal decks (+ baseline regression, expected FAIL)
         id: run
         continue-on-error: true
