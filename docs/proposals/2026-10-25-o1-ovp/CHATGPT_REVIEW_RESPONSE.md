@@ -158,3 +158,20 @@ Bulgular teknik olarak tek tek doğrulandı (otomatik kabul yok). Üç yeni P2 b
 
 ## Karar (Tur 6 sonrası)
 **WP1 tamamlanmadı; merge/üretim için uygun değil.** Tur 6'nın üç P2 bulgusu düzeltildi. Açık bloklayıcılar değişmedi: P0-03 (4 ESL deck; WP2), P0-05/N-01 (U3 maskeleme; B13), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı.
+
+# Tur 7 – ChatGPT birleşik incelemesi (PR yorumu 6395284882, HEAD `f587c60`; WP1 bölümü) yanıtı
+
+Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok). Tur 7'de WP1 için **yeni kusur bulgusu yok**; P2-T6-01/02/03 düzeltmeleri ve `wp1-rev3-tur6` temiz koşu tutarlılığı inceleyici tarafından kapalı/tutarlı bulundu. WP1 deck'leri, modelleri, limitleri, toleransları, `run_o1ovp.py`, `verify_candidate.py` ve WP1 sonuçları bu turda **değişmedi** (koşu girdisi değişmediği için yeni ngspice kabul koşusu gerekmedi). Tek WP1-dışı ortak değişiklik: `.github/workflows/proposal-ngspice.yml` dosyasına WP2 `uvlo` işine bir test adımı eklendi (WP1 `o1-ovp` işi değişmedi); bu dosya WP1 MANIFEST'inde izlendiği için MANIFEST yeniden üretildi.
+
+**Kontrol amaçlı yeniden çalıştırma (2026-10-25, TSİ, commit'li `wp1-rev3-tur6` logları üzerinde, kod `a0dea91`):** `verify_candidate.py` exit **2** (1766 kontrol, 0 sayısal FAIL, 4 MISSING – aynı 4 ESL deck); `verify_candidate.py --baseline-regression` exit **1** (baseline O1 **16,89 V** > 12,0 V, beklenen FAIL; baseline deck sha256 `7529ff25…ca7d`); `regime-selftest/guard_negative_test.py` exit 0 (**29/29**). `verify_candidate.py` sha256 `599b877b…60a2` (değişmedi).
+
+| # | Bulgu (Tur 7) | Doğrulama | Durum | Commit / kanıt |
+|---|---|---|---|---|
+| **P2 (P2-T6-01/02/03)** | Düzeltmeler belirtilen hata modları için fail-closed | İnceleyici kodu doğruladı; burada 29/29 yeniden koşuldu | **kapandı** (inceleyici) | `6aee4f7`; log-türetilmiş rev2 `completed` kuralı belgeli sınırlama olarak kalıyor (runner çıkış kodu logda yok) |
+| **P2 (tutarlılık)** | `wp1-rev3-tur6` temiz koşu tutarlılığı | 154 vaka: deck hash, durum, ölçüm, eksik alan, hata aynı | **tutarlı** (inceleyici) | `be24ab0` |
+| **P0-03** | 4 ESL kabul deck'i `imon_s2e`'de ~12,2645–12,2699 ms'de tamamlanmıyor; 131 tamamlanan deck O1 maks 11,90318 V | Doğru; yeniden çalıştırmada aynı 4 MISSING | **açık (ana bloklayıcı)** | değişiklik yok; kriter/tolerans gevşetilmedi. Global O1 ≤ 12,0 V kanıtlanmış değil. Yol: WP2 kontrollü açılış ↔ RAW sönümleme karşılaştırması, sonra B19 |
+| **P0-05 / N-01** | U3 mandallamaz varsayımıyla O1 13,03882 / 12,50435 V | Doğru | **açık (kritik)** | B13 fiziksel testi yapılmadı; simülasyonla kapatılamaz |
+| **P1** | SOA (B18), KiCad aktarımı, WP3 döngü kararlılığı | Doğru | **açık** | değişiklik yok |
+
+## Karar (Tur 7 sonrası)
+**WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık bloklayıcılar değişmedi: P0-03 (4 ESL deck; WP2 bağlantılı), P0-05/N-01 (U3 maskeleme; B13), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı.
