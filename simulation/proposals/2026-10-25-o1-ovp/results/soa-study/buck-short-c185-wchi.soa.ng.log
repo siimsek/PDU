@@ -1,0 +1,110 @@
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * soa-study copy of decks/o1ovp-buck-short-c185-wchi.ng.cir (probes appended only) - information, not acceptance
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 801121
+
+  Measurements for Transient Analysis
+
+normal              =  1.103144e+01 from=  2.400000e-02 to=  2.900007e-02
+o1_normal           =  1.102334e+01 from=  2.400000e-02 to=  2.900007e-02
+o1_peak             =  1.188069e+01 at=  3.005129e-02
+bus_peak            =  1.188315e+01 at=  3.000665e-02
+raw_peak            =  3.817925e+01 at=  3.006919e-02
+bus_normal_max      =  1.103144e+01 at=  2.403447e-02
+o1_normal_max       =  1.102334e+01 at=  2.403447e-02
+info_bench_startup_bus_max=  1.116689e+01 at=  1.226420e-02
+inp_pre_min         =  4.999499e+00 at=  2.899997e-02
+vgs_pre_min         =  1.159978e+01 at=  2.494787e-02
+info_startup_inp_min=  4.999499e+00 at=  1.052086e-03
+info_startup_vgs_fall_t=   3.00066e-02
+o1_global_peak      =  1.188069e+01 at=  3.005129e-02
+vdsa_max            =  2.617939e+01 at=  3.006999e-02
+vdsb_max            =  1.075709e+01 at=  3.013979e-02
+s2e_peak            =  1.188069e+01 at=  3.005129e-02
+inm_max             =  5.717150e+00 at=  3.006919e-02
+iinm_max            =  4.589277e-03 at=  3.006919e-02
+v5_max              =  4.999728e+00 at=  3.006969e-02
+inp_fault_max       =  4.999727e-09 at=  3.006969e-02
+trip_raw            =  1.166905e+01
+off_raw             =  1.190150e+01
+o1_reset            =  1.102334e+01 from=  7.500000e-02 to=  8.000000e-02
+s2e_reset           =  1.102739e+01 from=  7.500000e-02 to=  8.000000e-02
+bus_recov_max       =  1.107186e+01 at=  6.003575e-02
+o1_recov_max        =  1.103310e+01 at=  6.148788e-02
+inp_recov_min       =  4.999499e+00 at=  5.500049e-02
+vgs_recov_min       =  1.159978e+01 at=  6.535348e-02
+info_postfault_bus_max=  1.138352e+01 at=  4.611545e-02
+info_postfault_o1_max=  1.138352e+01 at=  4.611555e-02
+startup_pa_max      =  2.455194e+01 at=  1.226418e-02
+startup_ea          =   1.69970e-04 from=  1.00000e-09 to=  2.90000e-02
+startup_ia_max      =  1.661146e+01 at=  1.226418e-02
+startup_ia_min      =  -2.968992e-01 at=  1.226420e-02
+startup_va_max      =  4.443213e+00 at=  5.025950e-03
+startup_va_min      =  -1.779588e-01 at=  1.889171e-05
+startup_pb_max      =  7.328880e+00 at=  1.226418e-02
+startup_eb          =   1.69893e-04 from=  1.00000e-09 to=  2.90000e-02
+startup_ib_max      =  2.968132e-01 at=  1.226420e-02
+startup_ib_min      =  -1.197053e+01 at=  1.226418e-02
+startup_vb_max      =  4.121550e-03 at=  1.226420e-02
+startup_vb_min      =  -7.436649e-01 at=  1.226418e-02
+fault_pa_max        =  1.265789e-02 at=  3.000000e-02
+fault_ea            =   1.26735e-05 from=  2.90000e-02 to=  4.50000e-02
+fault_ia_max        =  1.875121e+00 at=  3.000000e-02
+fault_ia_min        =  9.938033e-12 at=  3.000667e-02
+fault_va_max        =  2.617939e+01 at=  3.006999e-02
+fault_va_min        =  9.208287e-04 at=  3.000036e-02
+fault_pb_max        =  1.265788e-02 at=  2.999997e-02
+fault_eb            =   1.26695e-05 from=  2.90000e-02 to=  4.50000e-02
+fault_ib_max        =  1.075709e-08 at=  3.013979e-02
+fault_ib_min        =  -1.875121e+00 at=  2.999997e-02
+fault_vb_max        =  1.075709e+01 at=  3.013979e-02
+fault_vb_min        =  -2.234750e-01 at=  3.003219e-02
+postfault_pa_max    =  2.273950e+01 at=  4.598467e-02
+postfault_ea        =   4.52856e-07 from=  4.50000e-02 to=  5.50000e-02
+postfault_ia_max    =  4.879296e+00 at=  4.598467e-02
+postfault_ia_min    =  -1.961876e+00 at=  4.598472e-02
+postfault_va_max    =  1.449741e+01 at=  4.500165e-02
+postfault_va_min    =  -2.575010e-02 at=  4.598467e-02
+postfault_pb_max    =  2.319523e+01 at=  4.598467e-02
+postfault_eb        =   4.52982e-07 from=  4.50000e-02 to=  5.50000e-02
+postfault_ib_max    =  4.947612e+00 at=  4.598467e-02
+postfault_ib_min    =  -1.692264e+00 at=  5.000055e-02
+postfault_vb_max    =  6.712255e+00 at=  4.598465e-02
+postfault_vb_min    =  -6.092151e-03 at=  5.000055e-02
+restart_pa_max      =  3.136896e-02 at=  6.144676e-02
+restart_ea          =   2.64328e-04 from=  5.50000e-02 to=  8.00000e-02
+restart_ia_max      =  2.951881e+00 at=  6.144676e-02
+restart_ia_min      =  -9.198656e-08 at=  5.500000e-02
+restart_va_max      =  1.062677e-02 at=  6.144676e-02
+restart_va_min      =  -3.311516e-10 at=  5.500000e-02
+restart_pb_max      =  3.136895e-02 at=  6.144676e-02
+restart_eb          =   2.64328e-04 from=  5.50000e-02 to=  8.00000e-02
+restart_ib_max      =  -8.116280e-10 at=  5.500000e-02
+restart_ib_min      =  -2.951881e+00 at=  6.144676e-02
+restart_vb_max      =  -2.921861e-12 at=  5.500000e-02
+restart_vb_min      =  -1.062677e-02 at=  6.144676e-02
+
+
+Total analysis time (seconds) = 35.3324
+
+Total elapsed time (seconds) = 35.426 
+
+Total DRAM available = 16002.312 MB.
+DRAM currently available = 1326.402 MB.
+Maximum ngspice program size =  120.180 MB.
+Current ngspice program size =  111.195 MB.
+
+Shared ngspice pages =   10.762 MB.
+Text (code) pages =    6.543 MB.
+Stack = 0 bytes.
+Library pages =  100.500 MB.
+

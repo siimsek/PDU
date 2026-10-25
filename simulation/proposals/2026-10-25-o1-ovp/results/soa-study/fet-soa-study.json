@@ -1,0 +1,1504 @@
+{
+ "_status": "INFORMATION (P1-01) - model-based, not acceptance; SOA from graph reading; bench B18 required",
+ "git_commit": "c53717b83b2cd56173af9080da30953837cac866",
+ "assumptions": {
+  "A_SHARE": "strict per-FET = whole side current (no sharing credit); ideal = /NPAR",
+  "A_TC": "Tc = 125.0 C, SOA derated x0.333",
+  "A_READ": "Fig. 10 graph reading +/-25 %",
+  "limits": "body diode, Cds current, thermal coupling between events not modelled"
+ },
+ "soa_digitized_Tc25": {
+  "10us": [
+   [
+    1.8,
+    400
+   ],
+   [
+    40,
+    400
+   ],
+   [
+    60,
+    250
+   ]
+  ],
+  "100us": [
+   [
+    1.8,
+    400
+   ],
+   [
+    10,
+    400
+   ],
+   [
+    27,
+    150
+   ],
+   [
+    60,
+    25
+   ]
+  ],
+  "1ms": [
+   [
+    2.5,
+    400
+   ],
+   [
+    10,
+    120
+   ],
+   [
+    60,
+    4
+   ]
+  ],
+  "10ms": [
+   [
+    1.3,
+    280
+   ],
+   [
+    1.8,
+    280
+   ],
+   [
+    4.5,
+    120
+   ],
+   [
+    60,
+    1.5
+   ]
+  ],
+  "100ms": [
+   [
+    0.5,
+    100
+   ],
+   [
+    1.1,
+    100
+   ],
+   [
+    10,
+    9
+   ],
+   [
+    60,
+    1.1
+   ]
+  ]
+ },
+ "all_rectangle_ok": false,
+ "all_pmax_point_ok": true,
+ "min_rect_margin_x": 0.7608456647394444,
+ "design_npar2": {
+  "note": "design decks only (NPAR=2); par1 decks are INFO (single pair, shows why 2 pairs are used)",
+  "rectangle_ok": true,
+  "pmax_point_ok": true,
+  "min_rect_margin_x": 1.0846435007634259
+ },
+ "git_dirty": true,
+ "cases": [
+  {
+   "case": "buck-short-c185-wchi",
+   "npar": 2.0,
+   "tran_stop": "80m",
+   "source_deck": "decks/o1ovp-buck-short-c185-wchi.ng.cir",
+   "source_sha256": "4c5a6d9f6e0867b20c9cb04c725370ef5a98f1c210445dfa21186f0baef4ecee",
+   "study_deck": "buck-short-c185-wchi.soa.ng.cir",
+   "study_deck_sha256": "f63f9d6e6be626c6f44a3344464603b5ad82e15b424143e36f537dd8463eb824",
+   "log": "results/soa-study/buck-short-c185-wchi.soa.ng.log",
+   "log_sha256": "f2a4560ad5e8086c9a3ef5ab97f5186d6ec9e933a6803c09f3825651391b63f9",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "startup 0..29m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 24.55194,
+     "side_E_J": 0.00016997,
+     "side_Imax_A": 16.61146,
+     "VDS_max_V": 4.443213,
+     "t_eq_s": 6.92287452641217e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 12.27597,
+      "E_J": 8.4985e-05,
+      "I_A": 8.30573
+     },
+     "per_fet_strict": {
+      "P_W": 24.55194,
+      "E_J": 0.00016997,
+      "I_A": 16.61146
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 8.02658726766541
+    },
+    {
+     "window": "startup 0..29m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 7.32888,
+     "side_E_J": 0.000169893,
+     "side_Imax_A": 11.97053,
+     "VDS_max_V": 0.7436649,
+     "t_eq_s": 2.318130464682189e-05,
+     "soa_curve": "100us",
+     "per_fet_ideal": {
+      "P_W": 3.66444,
+      "E_J": 8.49465e-05,
+      "I_A": 5.985265
+     },
+     "per_fet_strict": {
+      "P_W": 7.32888,
+      "E_J": 0.000169893,
+      "I_A": 11.97053
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 11.138465325539748
+    },
+    {
+     "window": "fault 29m..45m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 0.01265789,
+     "side_E_J": 1.26735e-05,
+     "side_Imax_A": 1.875121,
+     "VDS_max_V": 26.17939,
+     "t_eq_s": 0.0010012332229147197,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.006328945,
+      "E_J": 6.33675e-06,
+      "I_A": 0.9375605
+     },
+     "per_fet_strict": {
+      "P_W": 0.01265789,
+      "E_J": 1.26735e-05,
+      "I_A": 1.875121
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 2.0338378057950157,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 1.0846435007634259
+    },
+    {
+     "window": "fault 29m..45m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 0.01265788,
+     "side_E_J": 1.26695e-05,
+     "side_Imax_A": 1.875121,
+     "VDS_max_V": 10.75709,
+     "t_eq_s": 0.0010009180052267836,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.00632894,
+      "E_J": 6.33475e-06,
+      "I_A": 0.9375605
+     },
+     "per_fet_strict": {
+      "P_W": 0.01265788,
+      "E_J": 1.26695e-05,
+      "I_A": 1.875121
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 9.15737568511305,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 4.883618542543681
+    },
+    {
+     "window": "postfault 45m..55m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 22.7395,
+     "side_E_J": 4.52856e-07,
+     "side_Imax_A": 4.879296,
+     "VDS_max_V": 14.49741,
+     "t_eq_s": 1.9914949757030717e-08,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 11.36975,
+      "E_J": 2.26428e-07,
+      "I_A": 2.439648
+     },
+     "per_fet_strict": {
+      "P_W": 22.7395,
+      "E_J": 4.52856e-07,
+      "I_A": 4.879296
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 27.32634653305175
+    },
+    {
+     "window": "postfault 45m..55m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 23.19523,
+     "side_E_J": 4.52982e-07,
+     "side_Imax_A": 4.947612,
+     "VDS_max_V": 6.712255,
+     "t_eq_s": 1.9529101457497945e-08,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 11.597615,
+      "E_J": 2.26491e-07,
+      "I_A": 2.473806
+     },
+     "per_fet_strict": {
+      "P_W": 23.19523,
+      "E_J": 4.52982e-07,
+      "I_A": 4.947612
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 26.949027800347576
+    },
+    {
+     "window": "restart 55m..80m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 0.03136896,
+     "side_E_J": 0.000264328,
+     "side_Imax_A": 2.951881,
+     "VDS_max_V": 0.01062677,
+     "t_eq_s": 0.008426418982331577,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.01568448,
+      "E_J": 0.000132164,
+      "I_A": 1.4759405
+     },
+     "per_fet_strict": {
+      "P_W": 0.03136896,
+      "E_J": 0.000264328,
+      "I_A": 2.951881
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 93.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 31.618257420720322
+    },
+    {
+     "window": "restart 55m..80m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 0.03136895,
+     "side_E_J": 0.000264328,
+     "side_Imax_A": 2.951881,
+     "VDS_max_V": 0.01062677,
+     "t_eq_s": 0.00842642166856079,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.015684475,
+      "E_J": 0.000132164,
+      "I_A": 1.4759405
+     },
+     "per_fet_strict": {
+      "P_W": 0.03136895,
+      "E_J": 0.000264328,
+      "I_A": 2.951881
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 93.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 31.618257420720322
+    }
+   ]
+  },
+  {
+   "case": "buck-short-c483-esr12m5-wchi",
+   "npar": 2.0,
+   "tran_stop": "80m",
+   "source_deck": "decks/o1ovp-buck-short-c483-esr12m5-wchi.ng.cir",
+   "source_sha256": "268e4ec351774e8773da90294fd850cc414e00810a0f49339a3a2226c27860a2",
+   "study_deck": "buck-short-c483-esr12m5-wchi.soa.ng.cir",
+   "study_deck_sha256": "0d98e1db71cccb20f0e962a4898f1c72e6b0ce2bc87234c6cc7faa0fb74e4520",
+   "log": "results/soa-study/buck-short-c483-esr12m5-wchi.soa.ng.log",
+   "log_sha256": "62f53fef9023838edb6ecd7d9004ab813c65b1581ce807934911d2e5c00a6710",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "startup 0..29m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 14.91937,
+     "side_E_J": 0.000169929,
+     "side_Imax_A": 12.55682,
+     "VDS_max_V": 4.450876,
+     "t_eq_s": 1.1389824101151724e-05,
+     "soa_curve": "100us",
+     "per_fet_ideal": {
+      "P_W": 7.459685,
+      "E_J": 8.49645e-05,
+      "I_A": 6.27841
+     },
+     "per_fet_strict": {
+      "P_W": 14.91937,
+      "E_J": 0.000169929,
+      "I_A": 12.55682
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 10.618399669130662
+    },
+    {
+     "window": "startup 0..29m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 5.82834,
+     "side_E_J": 0.000169888,
+     "side_Imax_A": 10.71682,
+     "VDS_max_V": 0.6757124,
+     "t_eq_s": 2.914860835160612e-05,
+     "soa_curve": "100us",
+     "per_fet_ideal": {
+      "P_W": 2.91417,
+      "E_J": 8.4944e-05,
+      "I_A": 5.35841
+     },
+     "per_fet_strict": {
+      "P_W": 5.82834,
+      "E_J": 0.000169888,
+      "I_A": 10.71682
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 12.44150161459587
+    },
+    {
+     "window": "fault 29m..45m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 0.01265789,
+     "side_E_J": 1.2671e-05,
+     "side_Imax_A": 1.875121,
+     "VDS_max_V": 22.48958,
+     "t_eq_s": 0.0010010357176433039,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.006328945,
+      "E_J": 6.3355e-06,
+      "I_A": 0.9375605
+     },
+     "per_fet_strict": {
+      "P_W": 0.01265789,
+      "E_J": 1.2671e-05,
+      "I_A": 1.875121
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 2.6298648182751467,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 1.4025040614846438
+    },
+    {
+     "window": "fault 29m..45m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 0.01265788,
+     "side_E_J": 1.26675e-05,
+     "side_Imax_A": 1.875121,
+     "VDS_max_V": 6.287409,
+     "t_eq_s": 0.0010007600008848244,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.00632894,
+      "E_J": 6.33375e-06,
+      "I_A": 0.9375605
+     },
+     "per_fet_strict": {
+      "P_W": 0.01265788,
+      "E_J": 1.26675e-05,
+      "I_A": 1.875121
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 22.715431225077232,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 12.114114889160343
+    },
+    {
+     "window": "postfault 45m..55m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 23.12566,
+     "side_E_J": 6.35307e-07,
+     "side_Imax_A": 4.955908,
+     "VDS_max_V": 14.56537,
+     "t_eq_s": 2.747195107080187e-08,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 11.56283,
+      "E_J": 3.176535e-07,
+      "I_A": 2.477954
+     },
+     "per_fet_strict": {
+      "P_W": 23.12566,
+      "E_J": 6.35307e-07,
+      "I_A": 4.955908
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 26.903916160940295
+    },
+    {
+     "window": "postfault 45m..55m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 23.03281,
+     "side_E_J": 6.35156e-07,
+     "side_Imax_A": 4.942442,
+     "VDS_max_V": 6.710953,
+     "t_eq_s": 2.7576140297254222e-08,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 11.516405,
+      "E_J": 3.17578e-07,
+      "I_A": 2.471221
+     },
+     "per_fet_strict": {
+      "P_W": 23.03281,
+      "E_J": 6.35156e-07,
+      "I_A": 4.942442
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 26.97721760484661
+    },
+    {
+     "window": "restart 55m..80m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 0.01707334,
+     "side_E_J": 0.00026427,
+     "side_Imax_A": 2.17775,
+     "VDS_max_V": 0.0078399,
+     "t_eq_s": 0.01547851797012184,
+     "soa_curve": "100ms",
+     "per_fet_ideal": {
+      "P_W": 0.00853667,
+      "E_J": 0.000132135,
+      "I_A": 1.088875
+     },
+     "per_fet_strict": {
+      "P_W": 0.01707334,
+      "E_J": 0.00026427,
+      "I_A": 2.17775
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 33.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 15.3063176826235
+    },
+    {
+     "window": "restart 55m..80m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 0.01707334,
+     "side_E_J": 0.00026427,
+     "side_Imax_A": 2.17775,
+     "VDS_max_V": 0.0078399,
+     "t_eq_s": 0.01547851797012184,
+     "soa_curve": "100ms",
+     "per_fet_ideal": {
+      "P_W": 0.00853667,
+      "E_J": 0.000132135,
+      "I_A": 1.088875
+     },
+     "per_fet_strict": {
+      "P_W": 0.01707334,
+      "E_J": 0.00026427,
+      "I_A": 2.17775
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 33.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 15.3063176826235
+    }
+   ]
+  },
+  {
+   "case": "buck-short-c165-esr12m5-wchi",
+   "npar": 2.0,
+   "tran_stop": "80m",
+   "source_deck": "decks/o1ovp-buck-short-c165-esr12m5-wchi.ng.cir",
+   "source_sha256": "6e1cd30d7162ee84e36bd40c12f0740093c2ffa066c6a1d3a71a16a25416b490",
+   "study_deck": "buck-short-c165-esr12m5-wchi.soa.ng.cir",
+   "study_deck_sha256": "d7dcd15d0d885d2e64bbd009c2c55b983b5b416a6f5466161a7dd5010b99f159",
+   "log": "results/soa-study/buck-short-c165-esr12m5-wchi.soa.ng.log",
+   "log_sha256": "af2110e51a46784abe5260d94e25934d416d23d9c8b40ea0e6415d5a60683a88",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "startup 0..29m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 14.91893,
+     "side_E_J": 0.000169929,
+     "side_Imax_A": 12.55799,
+     "VDS_max_V": 4.439277,
+     "t_eq_s": 1.1390160018178247e-05,
+     "soa_curve": "100us",
+     "per_fet_ideal": {
+      "P_W": 7.459465,
+      "E_J": 8.49645e-05,
+      "I_A": 6.278995
+     },
+     "per_fet_strict": {
+      "P_W": 14.91893,
+      "E_J": 0.000169929,
+      "I_A": 12.55799
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 10.617410376448245
+    },
+    {
+     "window": "startup 0..29m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 5.832977,
+     "side_E_J": 0.000169888,
+     "side_Imax_A": 10.72495,
+     "VDS_max_V": 0.6757031,
+     "t_eq_s": 2.912543629093686e-05,
+     "soa_curve": "100us",
+     "per_fet_ideal": {
+      "P_W": 2.9164885,
+      "E_J": 8.4944e-05,
+      "I_A": 5.362475
+     },
+     "per_fet_strict": {
+      "P_W": 5.832977,
+      "E_J": 0.000169888,
+      "I_A": 10.72495
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 12.432070390382549
+    },
+    {
+     "window": "fault 29m..45m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 0.01265789,
+     "side_E_J": 1.26768e-05,
+     "side_Imax_A": 1.875121,
+     "VDS_max_V": 24.73364,
+     "t_eq_s": 0.0010014939298729883,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.006328945,
+      "E_J": 6.3384e-06,
+      "I_A": 0.9375605
+     },
+     "per_fet_strict": {
+      "P_W": 0.01265789,
+      "E_J": 1.26768e-05,
+      "I_A": 1.875121
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 2.2389982502046224,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 1.194055343737616
+    },
+    {
+     "window": "fault 29m..45m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 0.01265788,
+     "side_E_J": 1.2673e-05,
+     "side_Imax_A": 1.875121,
+     "VDS_max_V": 8.952899,
+     "t_eq_s": 0.0010011945128252126,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.00632894,
+      "E_J": 6.3365e-06,
+      "I_A": 0.9375605
+     },
+     "per_fet_strict": {
+      "P_W": 0.01265788,
+      "E_J": 1.2673e-05,
+      "I_A": 1.875121
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 12.49264412505375,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 6.662313592058193
+    },
+    {
+     "window": "postfault 45m..55m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 22.41198,
+     "side_E_J": 4.13117e-07,
+     "side_Imax_A": 4.87198,
+     "VDS_max_V": 14.4744,
+     "t_eq_s": 1.843286492313486e-08,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 11.20599,
+      "E_J": 2.065585e-07,
+      "I_A": 2.43599
+     },
+     "per_fet_strict": {
+      "P_W": 22.41198,
+      "E_J": 4.13117e-07,
+      "I_A": 4.87198
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 27.36738109215007
+    },
+    {
+     "window": "postfault 45m..55m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 23.073,
+     "side_E_J": 4.13349e-07,
+     "side_Imax_A": 4.967979,
+     "VDS_max_V": 6.71417,
+     "t_eq_s": 1.7914835522038746e-08,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 11.5365,
+      "E_J": 2.066745e-07,
+      "I_A": 2.4839895
+     },
+     "per_fet_strict": {
+      "P_W": 23.073,
+      "E_J": 4.13349e-07,
+      "I_A": 4.967979
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 26.838546083494574
+    },
+    {
+     "window": "restart 55m..80m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 0.01706776,
+     "side_E_J": 0.000264332,
+     "side_Imax_A": 2.177395,
+     "VDS_max_V": 0.007838622,
+     "t_eq_s": 0.015487210975546877,
+     "soa_curve": "100ms",
+     "per_fet_ideal": {
+      "P_W": 0.00853388,
+      "E_J": 0.000132166,
+      "I_A": 1.0886975
+     },
+     "per_fet_strict": {
+      "P_W": 0.01706776,
+      "E_J": 0.000264332,
+      "I_A": 2.177395
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 33.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 15.308813207219327
+    },
+    {
+     "window": "restart 55m..80m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 0.01706776,
+     "side_E_J": 0.000264332,
+     "side_Imax_A": 2.177395,
+     "VDS_max_V": 0.007838621,
+     "t_eq_s": 0.015487210975546877,
+     "soa_curve": "100ms",
+     "per_fet_ideal": {
+      "P_W": 0.00853388,
+      "E_J": 0.000132166,
+      "I_A": 1.0886975
+     },
+     "per_fet_strict": {
+      "P_W": 0.01706776,
+      "E_J": 0.000264332,
+      "I_A": 2.177395
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 33.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 15.308813207219327
+    }
+   ]
+  },
+  {
+   "case": "buck-short-c185-esr100m-wchi",
+   "npar": 2.0,
+   "tran_stop": "45m",
+   "source_deck": "decks/o1ovp-buck-short-c185-esr100m-wchi.ng.cir",
+   "source_sha256": "b3c12fc8d7e68057acc5153f122eea5e8d82d9f0d28fa4e9baf966377c25eb98",
+   "study_deck": "buck-short-c185-esr100m-wchi.soa.ng.cir",
+   "study_deck_sha256": "3eff787075ff2f9bc1a8491810517f0583f7869a6c159f80f7bab9e93a166505",
+   "log": "results/soa-study/buck-short-c185-esr100m-wchi.soa.ng.log",
+   "log_sha256": "3f7b78f1edcd59c38eb8cce465536aa228e33254d0dda0bdefdf18414d896e24",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "startup 0..29m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 3.927152,
+     "side_E_J": 0.000169862,
+     "side_Imax_A": 4.779459,
+     "VDS_max_V": 4.429205,
+     "t_eq_s": 4.325322778440967e-05,
+     "soa_curve": "100us",
+     "per_fet_ideal": {
+      "P_W": 1.963576,
+      "E_J": 8.4931e-05,
+      "I_A": 2.3897295
+     },
+     "per_fet_strict": {
+      "P_W": 3.927152,
+      "E_J": 0.000169862,
+      "I_A": 4.779459
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 27.897160187655818
+    },
+    {
+     "window": "startup 0..29m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 1.923065,
+     "side_E_J": 0.00016986,
+     "side_Imax_A": 4.779299,
+     "VDS_max_V": 0.5484278,
+     "t_eq_s": 8.832774763203532e-05,
+     "soa_curve": "100us",
+     "per_fet_ideal": {
+      "P_W": 0.9615325,
+      "E_J": 8.493e-05,
+      "I_A": 2.3896495
+     },
+     "per_fet_strict": {
+      "P_W": 1.923065,
+      "E_J": 0.00016986,
+      "I_A": 4.779299
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 27.898094120776566
+    },
+    {
+     "window": "fault 29m..45m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 0.01515025,
+     "side_E_J": 1.26775e-05,
+     "side_Imax_A": 2.051439,
+     "VDS_max_V": 23.65497,
+     "t_eq_s": 0.0008367848715367733,
+     "soa_curve": "1ms",
+     "per_fet_ideal": {
+      "P_W": 0.007575125,
+      "E_J": 6.33875e-06,
+      "I_A": 1.0257195
+     },
+     "per_fet_strict": {
+      "P_W": 0.01515025,
+      "E_J": 1.26775e-05,
+      "I_A": 2.051439
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 7.8030409453783545,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 3.803691430931339
+    },
+    {
+     "window": "fault 29m..45m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 0.01515025,
+     "side_E_J": 1.26714e-05,
+     "side_Imax_A": 2.051439,
+     "VDS_max_V": 2.231065,
+     "t_eq_s": 0.0008363822379168661,
+     "soa_curve": "1ms",
+     "per_fet_ideal": {
+      "P_W": 0.007575125,
+      "E_J": 6.3357e-06,
+      "I_A": 1.0257195
+     },
+     "per_fet_strict": {
+      "P_W": 0.01515025,
+      "E_J": 1.26714e-05,
+      "I_A": 2.051439
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 64.99502706799146
+    }
+   ]
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "npar": 2.0,
+   "tran_stop": "40m",
+   "source_deck": "decks/o1ovp-efuse-ovp-s023-wchi.ng.cir",
+   "source_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "study_deck": "efuse-ovp-s023-wchi.soa.ng.cir",
+   "study_deck_sha256": "af032976574670369092f13d7a5c1428c8d03716981d1aa47499553ca689aeda",
+   "log": "results/soa-study/efuse-ovp-s023-wchi.soa.ng.log",
+   "log_sha256": "16c46029ddf31c47f51265a0f2169560d3d4ee1a942c9523087dbe91479a7eff",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "startup 0..14.9m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 17.48104,
+     "side_E_J": 2.99847e-05,
+     "side_Imax_A": 14.19028,
+     "VDS_max_V": 10.62804,
+     "t_eq_s": 1.7152698008814122e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 8.74052,
+      "E_J": 1.499235e-05,
+      "I_A": 7.09514
+     },
+     "per_fet_strict": {
+      "P_W": 17.48104,
+      "E_J": 2.99847e-05,
+      "I_A": 14.19028
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 9.396103060216802
+    },
+    {
+     "window": "startup 0..14.9m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 6.401426,
+     "side_E_J": 2.99343e-05,
+     "side_Imax_A": 11.1954,
+     "VDS_max_V": 0.696286,
+     "t_eq_s": 4.676192460867313e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 3.200713,
+      "E_J": 1.496715e-05,
+      "I_A": 5.5977
+     },
+     "per_fet_strict": {
+      "P_W": 6.401426,
+      "E_J": 2.99343e-05,
+      "I_A": 11.1954
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 11.90965336953868
+    },
+    {
+     "window": "fault 14.9m..25.1m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 235.8704,
+     "side_E_J": 1.50599e-06,
+     "side_Imax_A": 55.93078,
+     "VDS_max_V": 14.20285,
+     "t_eq_s": 6.384819799347438e-09,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 117.9352,
+      "E_J": 7.52995e-07,
+      "I_A": 27.96539
+     },
+     "per_fet_strict": {
+      "P_W": 235.8704,
+      "E_J": 1.50599e-06,
+      "I_A": 55.93078
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 2.383899050457249
+    },
+    {
+     "window": "fault 14.9m..25.1m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 29.1397,
+     "side_E_J": 6.29304e-07,
+     "side_Imax_A": 25.0149,
+     "VDS_max_V": 3.258353,
+     "t_eq_s": 2.1596104283846435e-08,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 14.56985,
+      "E_J": 3.14652e-07,
+      "I_A": 12.50745
+     },
+     "per_fet_strict": {
+      "P_W": 29.1397,
+      "E_J": 6.29304e-07,
+      "I_A": 25.0149
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 5.330156560023557
+    },
+    {
+     "window": "recovery 25.1m..40m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 0.02310942,
+     "side_E_J": 6.49515e-05,
+     "side_Imax_A": 2.533631,
+     "VDS_max_V": 0.00912107,
+     "t_eq_s": 0.0028106071030774464,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.01155471,
+      "E_J": 3.247575e-05,
+      "I_A": 1.2668155
+     },
+     "per_fet_strict": {
+      "P_W": 0.02310942,
+      "E_J": 6.49515e-05,
+      "I_A": 2.533631
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 93.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 36.837776824381024
+    },
+    {
+     "window": "recovery 25.1m..40m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 0.02310941,
+     "side_E_J": 6.49516e-05,
+     "side_Imax_A": 2.53363,
+     "VDS_max_V": 0.009121069,
+     "t_eq_s": 0.0028106126465366273,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.011554705,
+      "E_J": 3.24758e-05,
+      "I_A": 1.266815
+     },
+     "per_fet_strict": {
+      "P_W": 0.02310941,
+      "E_J": 6.49516e-05,
+      "I_A": 2.53363
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 93.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 36.837791363906064
+    }
+   ]
+  },
+  {
+   "case": "efuse-ovp-s007-wchi",
+   "npar": 2.0,
+   "tran_stop": "40m",
+   "source_deck": "decks/o1ovp-efuse-ovp-s007-wchi.ng.cir",
+   "source_sha256": "6ec9809cb6c7d5c4755ca5cd7d777ac69d1a1d4a37acfbe634dc0d318075b684",
+   "study_deck": "efuse-ovp-s007-wchi.soa.ng.cir",
+   "study_deck_sha256": "959be6a1995fd18f1a3453929d321aaff4e421c2a88cb9b1fe2326f600bd17a5",
+   "log": "results/soa-study/efuse-ovp-s007-wchi.soa.ng.log",
+   "log_sha256": "47615b6d4bd7f3879cace4478e2226b2ba700242329d077daf96cb24794db978",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "startup 0..14.9m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 17.48104,
+     "side_E_J": 2.99847e-05,
+     "side_Imax_A": 14.19028,
+     "VDS_max_V": 10.62804,
+     "t_eq_s": 1.7152698008814122e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 8.74052,
+      "E_J": 1.499235e-05,
+      "I_A": 7.09514
+     },
+     "per_fet_strict": {
+      "P_W": 17.48104,
+      "E_J": 2.99847e-05,
+      "I_A": 14.19028
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 9.396103060216802
+    },
+    {
+     "window": "startup 0..14.9m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 6.401426,
+     "side_E_J": 2.99343e-05,
+     "side_Imax_A": 11.1954,
+     "VDS_max_V": 0.696286,
+     "t_eq_s": 4.676192460867313e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 3.200713,
+      "E_J": 1.496715e-05,
+      "I_A": 5.5977
+     },
+     "per_fet_strict": {
+      "P_W": 6.401426,
+      "E_J": 2.99343e-05,
+      "I_A": 11.1954
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 11.90965336953868
+    },
+    {
+     "window": "fault 14.9m..25.1m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 322.7987,
+     "side_E_J": 1.94218e-06,
+     "side_Imax_A": 65.04444,
+     "VDS_max_V": 15.35175,
+     "t_eq_s": 6.016690897454048e-09,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 161.39935,
+      "E_J": 9.7109e-07,
+      "I_A": 32.52222
+     },
+     "per_fet_strict": {
+      "P_W": 322.7987,
+      "E_J": 1.94218e-06,
+      "I_A": 65.04444
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 2.049880563708955
+    },
+    {
+     "window": "fault 14.9m..25.1m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 35.47528,
+     "side_E_J": 7.37863e-07,
+     "side_Imax_A": 27.50701,
+     "VDS_max_V": 3.259031,
+     "t_eq_s": 2.0799356622414256e-08,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 17.73764,
+      "E_J": 3.689315e-07,
+      "I_A": 13.753505
+     },
+     "per_fet_strict": {
+      "P_W": 35.47528,
+      "E_J": 7.37863e-07,
+      "I_A": 27.50701
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 4.8472492405875185
+    },
+    {
+     "window": "recovery 25.1m..40m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 0.01994618,
+     "side_E_J": 6.49516e-05,
+     "side_Imax_A": 2.353849,
+     "VDS_max_V": 0.008473856,
+     "t_eq_s": 0.0032563428185246497,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.00997309,
+      "E_J": 3.24758e-05,
+      "I_A": 1.1769245
+     },
+     "per_fet_strict": {
+      "P_W": 0.01994618,
+      "E_J": 6.49516e-05,
+      "I_A": 2.353849
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 93.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 39.65136817753957
+    },
+    {
+     "window": "recovery 25.1m..40m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 0.01994617,
+     "side_E_J": 6.49517e-05,
+     "side_Imax_A": 2.353849,
+     "VDS_max_V": 0.008473855,
+     "t_eq_s": 0.003256349464583928,
+     "soa_curve": "10ms",
+     "per_fet_ideal": {
+      "P_W": 0.009973085,
+      "E_J": 3.247585e-05,
+      "I_A": 1.1769245
+     },
+     "per_fet_strict": {
+      "P_W": 0.01994617,
+      "E_J": 6.49517e-05,
+      "I_A": 2.353849
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 93.33333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 39.65136817753957
+    }
+   ]
+  },
+  {
+   "case": "startup-26v",
+   "npar": 2.0,
+   "tran_stop": "40m",
+   "source_deck": "decks/o1ovp-startup-26v.ng.cir",
+   "source_sha256": "a9137ad3d869844f493795d089e36d9c25d631687f0310f1fa6407888a361afe",
+   "study_deck": "startup-26v.soa.ng.cir",
+   "study_deck_sha256": "f3633c45c2cc088a361aadd751b348a26ed935c6776d650de835ea60b7cfbf73",
+   "log": "results/soa-study/startup-26v.soa.ng.log",
+   "log_sha256": "22b1f64be035d0aace9c0bfd94790cf2bbb4cb94c5f96ec932288082aaddd659",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "whole 0..40m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 22.06134,
+     "side_E_J": 0.000123318,
+     "side_Imax_A": 15.95889,
+     "VDS_max_V": 6.654754,
+     "t_eq_s": 5.589778318089472e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 11.03067,
+      "E_J": 6.1659e-05,
+      "I_A": 7.979445
+     },
+     "per_fet_strict": {
+      "P_W": 22.06134,
+      "E_J": 0.000123318,
+      "I_A": 15.95889
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 8.354799947448305
+    },
+    {
+     "window": "whole 0..40m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 7.05595,
+     "side_E_J": 0.00012325,
+     "side_Imax_A": 11.72533,
+     "VDS_max_V": 0.7282641,
+     "t_eq_s": 1.746752740594817e-05,
+     "soa_curve": "100us",
+     "per_fet_ideal": {
+      "P_W": 3.527975,
+      "E_J": 6.1625e-05,
+      "I_A": 5.862665
+     },
+     "per_fet_strict": {
+      "P_W": 7.05595,
+      "E_J": 0.00012325,
+      "I_A": 11.72533
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 11.371392816520586
+    }
+   ]
+  },
+  {
+   "case": "startup-20v-ibstmin",
+   "npar": 2.0,
+   "tran_stop": "80m",
+   "source_deck": "decks/o1ovp-startup-20v-ibstmin.ng.cir",
+   "source_sha256": "fd35d2ef26928acb6b2ccafc2716784faf88c5092fb4ded934d7249338e79acf",
+   "study_deck": "startup-20v-ibstmin.soa.ng.cir",
+   "study_deck_sha256": "3882af2d940c739cd4348dbb59c28cdf40a2581972cba1ef0844c938034f8125",
+   "log": "results/soa-study/startup-20v-ibstmin.soa.ng.log",
+   "log_sha256": "3df669b9ac8589a13f50e991ce3e8d55294602c863a74b42b36d2ffa73e2eb6b",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "whole 0..80m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 183.8335,
+     "side_E_J": 0.000130475,
+     "side_Imax_A": 48.01061,
+     "VDS_max_V": 9.604655,
+     "t_eq_s": 7.097455034038953e-07,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 91.91675,
+      "E_J": 6.52375e-05,
+      "I_A": 24.005305
+     },
+     "per_fet_strict": {
+      "P_W": 183.8335,
+      "E_J": 0.000130475,
+      "I_A": 48.01061
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 2.7771639088387605
+    },
+    {
+     "window": "whole 0..80m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 23.5387,
+     "side_E_J": 0.000129781,
+     "side_Imax_A": 22.20785,
+     "VDS_max_V": 1.242503,
+     "t_eq_s": 5.513516039543391e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 11.76935,
+      "E_J": 6.48905e-05,
+      "I_A": 11.103925
+     },
+     "per_fet_strict": {
+      "P_W": 23.5387,
+      "E_J": 0.000129781,
+      "I_A": 22.20785
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 6.003883011337582
+    }
+   ]
+  },
+  {
+   "case": "startup-26v-c165",
+   "npar": 2.0,
+   "tran_stop": "40m",
+   "source_deck": "decks/o1ovp-startup-26v-c165.ng.cir",
+   "source_sha256": "7aa22a10f78ea86ba45bd2d47bc7fc27c8c782278d8ac185b4a18e1a4564d14a",
+   "study_deck": "startup-26v-c165.soa.ng.cir",
+   "study_deck_sha256": "ba7d1382a5bc55b5904fbeb9debc395e0976643eea67f74a9526100d5ce5e09b",
+   "log": "results/soa-study/startup-26v-c165.soa.ng.log",
+   "log_sha256": "22e16aaa655efbf4ed0029e88e4170700ce2241b4d90809508aff9723ce250e6",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "whole 0..40m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 21.78128,
+     "side_E_J": 0.000123317,
+     "side_Imax_A": 15.96261,
+     "VDS_max_V": 6.653891,
+     "t_eq_s": 5.661604827631802e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 10.89064,
+      "E_J": 6.16585e-05,
+      "I_A": 7.981305
+     },
+     "per_fet_strict": {
+      "P_W": 21.78128,
+      "E_J": 0.000123317,
+      "I_A": 15.96261
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 8.352852906469135
+    },
+    {
+     "window": "whole 0..40m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 7.084921,
+     "side_E_J": 0.000123249,
+     "side_Imax_A": 11.73897,
+     "VDS_max_V": 0.7256119,
+     "t_eq_s": 1.7395959672662547e-05,
+     "soa_curve": "100us",
+     "per_fet_ideal": {
+      "P_W": 3.5424605,
+      "E_J": 6.16245e-05,
+      "I_A": 5.869485
+     },
+     "per_fet_strict": {
+      "P_W": 7.084921,
+      "E_J": 0.000123249,
+      "I_A": 11.73897
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 11.358179919816926
+    }
+   ]
+  },
+  {
+   "case": "load-step-7p5a-par1-ron5m28",
+   "npar": 1.0,
+   "tran_stop": "40m",
+   "source_deck": "decks/o1ovp-load-step-7p5a-par1-ron5m28.ng.cir",
+   "source_sha256": "e01eab96d3326085324aa16e36f59ee82c4fa1369ae63bf2e8038e0c446101f0",
+   "study_deck": "load-step-7p5a-par1-ron5m28.soa.ng.cir",
+   "study_deck_sha256": "6cee24dcc94a61a5e0f827acc238626aa31f23812827c3065f4207ba7b564a61",
+   "log": "results/soa-study/load-step-7p5a-par1-ron5m28.soa.ng.log",
+   "log_sha256": "fb54cef6de70bf5576993467d8753b4ee2240650bdba3cf162b4c8ac794bf943",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "whole 0..40m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 1206.556,
+     "side_E_J": 0.00597359,
+     "side_Imax_A": 174.9908,
+     "VDS_max_V": 10.82206,
+     "t_eq_s": 4.950943014663223e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 1206.556,
+      "E_J": 0.00597359,
+      "I_A": 174.9908
+     },
+     "per_fet_strict": {
+      "P_W": 1206.556,
+      "E_J": 0.00597359,
+      "I_A": 174.9908
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": false,
+     "pmax_point_ok": true,
+     "margin_rect_x": 0.7619448184323592
+    },
+    {
+     "window": "whole 0..40m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 56.38228,
+     "side_E_J": 0.00596422,
+     "side_Imax_A": 49.38731,
+     "VDS_max_V": 1.313166,
+     "t_eq_s": 0.00010578181655654933,
+     "soa_curve": "1ms",
+     "per_fet_ideal": {
+      "P_W": 56.38228,
+      "E_J": 0.00596422,
+      "I_A": 49.38731
+     },
+     "per_fet_strict": {
+      "P_W": 56.38228,
+      "E_J": 0.00596422,
+      "I_A": 49.38731
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 2.6997488491139388
+    }
+   ]
+  },
+  {
+   "case": "bus-7p5a-par1-ron5m28",
+   "npar": 1.0,
+   "tran_stop": "40m",
+   "source_deck": "decks/o1ovp-bus-7p5a-par1-ron5m28.ng.cir",
+   "source_sha256": "6d72ef909c1df93e660d7272859d12b2011539ddf54810ab270575b86247ce62",
+   "study_deck": "bus-7p5a-par1-ron5m28.soa.ng.cir",
+   "study_deck_sha256": "14f55c7e1c73c0f4be8218c383fe3ab58b9d3aca2ec3a373c8ff989ecf485715",
+   "log": "results/soa-study/bus-7p5a-par1-ron5m28.soa.ng.log",
+   "log_sha256": "ffe0ac7cb38cfeb420319746355767aa9547561ec304431ca76367e8b256e75b",
+   "rc": 0,
+   "solver": [
+    "SPARSE 1.3"
+   ],
+   "errors": [],
+   "rows": [
+    {
+     "window": "whole 0..40m",
+     "side": "QA (RAW side)",
+     "side_Pmax_W": 1207.425,
+     "side_E_J": 0.00808825,
+     "side_Imax_A": 175.2436,
+     "VDS_max_V": 10.82724,
+     "t_eq_s": 6.698759757334824e-06,
+     "soa_curve": "10us",
+     "per_fet_ideal": {
+      "P_W": 1207.425,
+      "E_J": 0.00808825,
+      "I_A": 175.2436
+     },
+     "per_fet_strict": {
+      "P_W": 1207.425,
+      "E_J": 0.00808825,
+      "I_A": 175.2436
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.3333333333333,
+     "rectangle_ok": false,
+     "pmax_point_ok": true,
+     "margin_rect_x": 0.7608456647394444
+    },
+    {
+     "window": "whole 0..40m",
+     "side": "QB (VOUT side)",
+     "side_Pmax_W": 56.98657,
+     "side_E_J": 0.00807888,
+     "side_Imax_A": 49.83317,
+     "VDS_max_V": 1.316644,
+     "t_eq_s": 0.00014176813940547747,
+     "soa_curve": "1ms",
+     "per_fet_ideal": {
+      "P_W": 56.98657,
+      "E_J": 0.00807888,
+      "I_A": 49.83317
+     },
+     "per_fet_strict": {
+      "P_W": 56.98657,
+      "E_J": 0.00807888,
+      "I_A": 49.83317
+     },
+     "I_SOA_at_VDSmax_Tc125_A": 133.33333333333331,
+     "rectangle_ok": true,
+     "pmax_point_ok": true,
+     "margin_rect_x": 2.67559405378653
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,94 @@
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * soa-study copy of decks/o1ovp-efuse-ovp-s007-wchi.ng.cir (probes appended only) - information, not acceptance
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 401238
+
+  Measurements for Transient Analysis
+
+o1_pre              =  1.098380e+01 from=  1.300000e-02 to=  1.490001e-02
+o1_off              =  8.714317e-12 at=  1.900004e-02
+s2e_off             =  1.744148e-11 at=  1.900004e-02
+o1_reset            =  1.098380e+01 from=  3.500000e-02 to=  4.000000e-02
+s2e_reset           =  1.098785e+01 from=  3.500000e-02 to=  4.000000e-02
+o1_peak             =  1.171875e+01 at=  1.501057e-02
+bus_peak            =  1.172827e+01 at=  1.501056e-02
+trip_raw            =  1.166024e+01
+off_raw             =  1.174144e+01
+s2e_peak            =  1.172280e+01 at=  1.501057e-02
+vdsa_max            =  1.535175e+01 at=  2.500000e-02
+inm_max             =  5.637126e+00 at=  1.510025e-02
+iinm_max            =  4.694567e-04 at=  1.510025e-02
+v5_max              =  4.999522e+00 at=  2.499994e-02
+inp_fault_max       =  4.999523e-09 at=  1.781458e-02
+bus_pre_max         =  1.099984e+01 at=  7.691637e-03
+o1_pre_max          =  1.098381e+01 at=  1.007761e-02
+inp_pre_min         =  4.999499e+00 at=  1.489991e-02
+vgs_pre_min         =  1.159986e+01 at=  1.300001e-02
+bus_recov_max       =  1.099985e+01 at=  2.510000e-02
+o1_recov_max        =  1.098381e+01 at=  2.748443e-02
+inp_recov_min       =  4.999499e+00 at=  2.748407e-02
+vgs_recov_min       =  1.112758e+01 at=  2.510000e-02
+info_startup_inp_min=  4.999499e+00 at=  6.253186e-03
+info_startup_vgs_fall_t=   1.50105e-02
+o1_global_peak      =  1.171875e+01 at=  1.501057e-02
+startup_pa_max      =  1.748104e+01 at=  7.691533e-03
+startup_ea          =   2.99847e-05 from=  1.00000e-09 to=  1.49000e-02
+startup_ia_max      =  1.419028e+01 at=  7.691534e-03
+startup_ia_min      =  0.000000e+00 at=  1.000000e-09
+startup_va_max      =  1.062804e+01 at=  1.004500e-04
+startup_va_min      =  5.481637e-05 at=  1.000000e-09
+startup_pb_max      =  6.401426e+00 at=  7.691535e-03
+startup_eb          =   2.99343e-05 from=  1.00000e-09 to=  1.49000e-02
+startup_ib_max      =  0.000000e+00 at=  1.000000e-09
+startup_ib_min      =  -1.119540e+01 at=  7.691537e-03
+startup_vb_max      =  -5.481637e-05 at=  1.000000e-09
+startup_vb_min      =  -6.962860e-01 at=  7.691533e-03
+fault_pa_max        =  3.227987e+02 at=  2.509834e-02
+fault_ea            =   1.94218e-06 from=  1.49000e-02 to=  2.51000e-02
+fault_ia_max        =  6.504444e+01 at=  2.509834e-02
+fault_ia_min        =  1.103939e-11 at=  1.501059e-02
+fault_va_max        =  1.535175e+01 at=  2.500000e-02
+fault_va_min        =  6.345129e-05 at=  2.509841e-02
+fault_pb_max        =  3.547528e+01 at=  2.509835e-02
+fault_eb            =   7.37863e-07 from=  1.49000e-02 to=  2.51000e-02
+fault_ib_max        =  1.455627e+00 at=  2.509834e-02
+fault_ib_min        =  -2.750701e+01 at=  2.509835e-02
+fault_vb_max        =  3.259031e+00 at=  2.509833e-02
+fault_vb_min        =  -1.503577e+00 at=  2.509834e-02
+recovery_pa_max     =  1.994618e-02 at=  2.748401e-02
+recovery_ea         =   6.49516e-05 from=  2.51000e-02 to=  4.00000e-02
+recovery_ia_max     =  2.353849e+00 at=  2.748401e-02
+recovery_ia_min     =  2.108012e-02 at=  2.510000e-02
+recovery_va_max     =  8.473856e-03 at=  2.748401e-02
+recovery_va_min     =  7.588842e-05 at=  2.510000e-02
+recovery_pb_max     =  1.994617e-02 at=  2.748401e-02
+recovery_eb         =   6.49517e-05 from=  2.51000e-02 to=  4.00000e-02
+recovery_ib_max     =  -2.121859e-02 at=  2.510000e-02
+recovery_ib_min     =  -2.353849e+00 at=  2.748401e-02
+recovery_vb_max     =  -7.638693e-05 at=  2.510000e-02
+recovery_vb_min     =  -8.473855e-03 at=  2.748401e-02
+
+
+Total analysis time (seconds) = 14.7341
+
+Total elapsed time (seconds) = 14.776 
+
+Total DRAM available = 16002.312 MB.
+DRAM currently available = 1486.590 MB.
+Maximum ngspice program size =   71.340 MB.
+Current ngspice program size =   62.379 MB.
+
+Shared ngspice pages =   10.789 MB.
+Text (code) pages =    6.543 MB.
+Stack = 0 bytes.
+Library pages =   51.660 MB.
+
