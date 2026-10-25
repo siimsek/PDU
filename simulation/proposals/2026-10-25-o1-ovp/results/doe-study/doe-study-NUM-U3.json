@@ -1,0 +1,1280 @@
+{
+ "_status": "WP1 Tur-11 EXPLORATION DOE - diagnostic only, NOT adopted; behavioural models; sim != silicon",
+ "git_head": "6e150c839937925325b07c898da3f9691c2a7e8c",
+ "started": "2026-10-25 22:03:30 +0300",
+ "screen_cases": [
+  "buck-short-c165-esr12m5-esl2n-typ",
+  "buck-short-c165-esr12m5-esl2n-wchi",
+  "buck-short-c185-esr12m5-esl2n-typ",
+  "buck-short-c185-esr12m5-esl2n-wchi",
+  "buck-short-c165-esr12m5-typ",
+  "buck-short-c165-esr12m5-wchi",
+  "buck-short-c185-esr12m5-typ",
+  "buck-short-c185-esr12m5-wchi",
+  "efuse-ovp-s023-typ",
+  "efuse-ovp-s023-wchi",
+  "startup-20v",
+  "startup-26v",
+  "no-false-trip"
+ ],
+ "u3_cases": [
+  "buck-short-c165-esr12m5-typ",
+  "buck-short-c165-esr12m5-wchi",
+  "buck-short-c185-esr100m-typ",
+  "buck-short-c185-esr100m-wchi",
+  "efuse-ovp-s023-typ",
+  "efuse-ovp-s023-wchi"
+ ],
+ "block_inc_sha256": "40c5d1702e5e3df57a7522da88f61c3188d99eb0bc5a2546e8375f5d15d455f0",
+ "efuse_inc_sha256": "1aff9701976b43ff8adb7666ab9150e9f0e294d2adeb793236170b3f56c8b430",
+ "baseline_lib_sha256": "9fa5c122d20c2667d2760f2278716a3260bbb83392ce470f8bdb5fab369874c0",
+ "lib_sha256": "1027d7d70e84284fe9baee8105a20499ff5ab13e91d5d4e3c3d56a0576124202",
+ "variants": {
+  "NUM-gear": {
+   "screen_pass": false,
+   "completed": 9,
+   "n": 13,
+   "acceptance_fail": 0,
+   "startup_false_trip": 0
+  },
+  "NUM-trap": {
+   "screen_pass": false,
+   "completed": 9,
+   "n": 13,
+   "acceptance_fail": 0,
+   "startup_false_trip": 0
+  },
+  "U3-latched": {
+   "screen_pass": true,
+   "completed": 6,
+   "n": 6,
+   "acceptance_fail": 0,
+   "startup_false_trip": 0
+  },
+  "U3-nolatch": {
+   "screen_pass": false,
+   "completed": 6,
+   "n": 6,
+   "acceptance_fail": 1,
+   "startup_false_trip": 0
+  },
+  "U3-bypass": {
+   "screen_pass": false,
+   "completed": 5,
+   "n": 6,
+   "acceptance_fail": 1,
+   "startup_false_trip": 0
+  }
+ },
+ "rows": [
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-typ",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": false,
+   "seconds": 4.5,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122646, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "missing": [
+    "bus_normal_max",
+    "bus_peak",
+    "bus_recov_max",
+    "doe_o1_max",
+    "doe_raw_max",
+    "doe_vout_max"
+   ],
+   "log": "results/doe-study/buck-short-c165-esr12m5-esl2n-typ.NUM-gear.ng.log",
+   "log_sha256": "4c65e084553566f63bcd33db2aba9caf8aa6aa35c23f7e6bec49bb2e2724aae4",
+   "deck_sha256": "c2a9b5939408c289a9213a2f715332d3697bb038e68cce5c95da4d4b3293becd",
+   "source_deck_sha256": "fcff678f99707d76f0f42c37b994a5891826b519fb2c381b48beb47d5b543c1b",
+   "measures": {},
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-wchi",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": false,
+   "seconds": 4.7,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122699, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "missing": [
+    "bus_normal_max",
+    "bus_peak",
+    "bus_recov_max",
+    "doe_o1_max",
+    "doe_raw_max",
+    "doe_vout_max"
+   ],
+   "log": "results/doe-study/buck-short-c165-esr12m5-esl2n-wchi.NUM-gear.ng.log",
+   "log_sha256": "ef9faa815fd337093b89c73ea9f015c0f5ee575dc1e5c3ea83d912c046981b02",
+   "deck_sha256": "47b171f7ccd720013d5af7d129793788de6aa3c0a48abd5962daca8d1e727e85",
+   "source_deck_sha256": "02304a440248c4b76f0162ac4205d44a9d252be342ffa0d01449b35b8c47181b",
+   "measures": {},
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-typ",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": false,
+   "seconds": 4.5,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122645, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "missing": [
+    "bus_normal_max",
+    "bus_peak",
+    "bus_recov_max",
+    "doe_o1_max",
+    "doe_raw_max",
+    "doe_vout_max"
+   ],
+   "log": "results/doe-study/buck-short-c185-esr12m5-esl2n-typ.NUM-gear.ng.log",
+   "log_sha256": "b8ff42c49a0f4c50ebb7a4be20dcfcb36574098f104dba9655cca962c3c2f8d6",
+   "deck_sha256": "4d31f502796c5aa6ea8647e904c8bd57004f6e4a09287fea3ca4fa01afeba4f7",
+   "source_deck_sha256": "9df19208462d68caffe5264d39e2f946413f6a59fa4ba966e92a95d6101def68",
+   "measures": {},
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-wchi",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": false,
+   "seconds": 4.7,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122699, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "missing": [
+    "bus_normal_max",
+    "bus_peak",
+    "bus_recov_max",
+    "doe_o1_max",
+    "doe_raw_max",
+    "doe_vout_max"
+   ],
+   "log": "results/doe-study/buck-short-c185-esr12m5-esl2n-wchi.NUM-gear.ng.log",
+   "log_sha256": "6f781187aa8d864080d6a068f5d4c5a05cdd533ee6e014ff1443adc1f0275102",
+   "deck_sha256": "27fb38aa6a10dc69f9b4e26ae3f459c629c64723fb7e64cec1ce99b0594a4ecd",
+   "source_deck_sha256": "484700ebe94ca73199170ece51da04d19073b6955c6133b05ab94f9cb294414a",
+   "measures": {},
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-typ",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": true,
+   "seconds": 32.4,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c165-esr12m5-typ.NUM-gear.ng.log",
+   "log_sha256": "b46917977ca64576700ea129ecfc889c33b3e93b6f9b2218c1929737662fdb4d",
+   "deck_sha256": "c38eb43f1a573dfd0b4d9ccfacd1e53b26129ccd2135e764a7eb0f4cd5ef1669",
+   "source_deck_sha256": "4282d31ffab6cfe143dd77622ddef208a1afde28d70166782ea1af60948485ac",
+   "measures": {
+    "o1_peak": 11.48183,
+    "bus_peak": 11.48442,
+    "raw_peak": 36.72067,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300028,
+    "o1_global_peak": 11.48183,
+    "doe_raw_max": 36.72067,
+    "doe_o1_max": 11.48183,
+    "doe_vout_max": 11.48442
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-wchi",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": true,
+   "seconds": 32.1,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c165-esr12m5-wchi.NUM-gear.ng.log",
+   "log_sha256": "29d260f758d35fb65a1951d6124ad3d5034f67637df208411123f04cec383365",
+   "deck_sha256": "b0c73d7af7da15b411f24d9b1038de470742687acefe66087e51b9c7e609d845",
+   "source_deck_sha256": "6e1cd30d7162ee84e36bd40c12f0740093c2ffa066c6a1d3a71a16a25416b490",
+   "measures": {
+    "o1_peak": 11.90318,
+    "bus_peak": 11.90669,
+    "raw_peak": 36.75716,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300049,
+    "o1_global_peak": 11.90318,
+    "doe_raw_max": 36.75716,
+    "doe_o1_max": 11.90318,
+    "doe_vout_max": 11.90669
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr12m5-typ",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": true,
+   "seconds": 609.4,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr12m5-typ.NUM-gear.ng.log",
+   "log_sha256": "610021378c3e708e18b3832c740c418550f6663754beb2f751c2eb123348fb04",
+   "deck_sha256": "51ce69c303bb1dbc0f928fff82b9e38d4ac356572e152e56940f2ab15c429b73",
+   "source_deck_sha256": "6227950d79e75cd7001868ad5af36ff3150dfd8cf1156cf25a8b8dbea665a882",
+   "measures": {
+    "o1_peak": 11.47923,
+    "bus_peak": 11.48174,
+    "raw_peak": 36.49969,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300029,
+    "o1_global_peak": 11.47923,
+    "doe_raw_max": 36.49969,
+    "doe_o1_max": 11.47923,
+    "doe_vout_max": 11.48174
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": true,
+   "seconds": 33.4,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr12m5-wchi.NUM-gear.ng.log",
+   "log_sha256": "ff3ec4bae91736c64e911c71d2d7346830a9fcd8c1eef8434d559a8a2d21f0b1",
+   "deck_sha256": "eef11a4844a7a0049e5df2ff6fd713ab3256cc740c939635e25c5b21a1dd22b1",
+   "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
+   "measures": {
+    "o1_peak": 11.89186,
+    "bus_peak": 11.89522,
+    "raw_peak": 36.53095,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300051,
+    "o1_global_peak": 11.89186,
+    "doe_raw_max": 36.53095,
+    "doe_o1_max": 11.89186,
+    "doe_vout_max": 11.89522
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-typ",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": true,
+   "seconds": 15.9,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-typ.NUM-gear.ng.log",
+   "log_sha256": "d7802daa9fa32a95a2e09263ffbfa8ae850f290831a5576935dbdedefe9f806a",
+   "deck_sha256": "63c0ba02ff975bc560e6e5a16aa659884a325ceff488ebe92ae4ae9febf8e1ba",
+   "source_deck_sha256": "91ee34ef37d2f8b79c80318bc9a995d655fa325874839a0468d178486415e57f",
+   "measures": {
+    "o1_peak": 11.11244,
+    "bus_peak": 11.52335,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0150022,
+    "o1_global_peak": 11.11244,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.11244,
+    "doe_vout_max": 11.52335
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": true,
+   "seconds": 15.6,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-wchi.NUM-gear.ng.log",
+   "log_sha256": "c11339f226a31fb135410143cbde958375adb4ec817f3160571e7e7209166c04",
+   "deck_sha256": "bcd107063862ef952e414165a425bf9a1dffc2d91cefe63c76e9a8485b34ec0b",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "measures": {
+    "o1_peak": 11.1126,
+    "bus_peak": 11.93557,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.015004,
+    "o1_global_peak": 11.1126,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.1126,
+    "doe_vout_max": 11.93557
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "startup-20v",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": true,
+   "seconds": 3.1,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/startup-20v.NUM-gear.ng.log",
+   "log_sha256": "933d247c3b203cb436c145334f7d03f6bd862a5156574bcd96dc26841a5aa72a",
+   "deck_sha256": "917cacd77f3fbddff358bb0af7915b965d70e9398360f877152295eb45853f1a",
+   "source_deck_sha256": "edd3b34da3fd3551905868dd072c54ee5d64e925eab51ecdbff48e493c80853c",
+   "measures": {
+    "o1_global_peak": 10.98355,
+    "doe_raw_max": 11.0245,
+    "doe_o1_max": 10.98355,
+    "doe_vout_max": 10.99738
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "startup-26v",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": true,
+   "seconds": 3.2,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/startup-26v.NUM-gear.ng.log",
+   "log_sha256": "0c04b83d9ac5d78074b3848c934d942f5b8d15d2386e807e1d7e8c6f8b9463e2",
+   "deck_sha256": "2a07305ec0248899af36545f900de2fef6558fbcf979324534b03760253b7118",
+   "source_deck_sha256": "a9137ad3d869844f493795d089e36d9c25d631687f0310f1fa6407888a361afe",
+   "measures": {
+    "o1_global_peak": 10.98355,
+    "doe_raw_max": 11.02451,
+    "doe_o1_max": 10.98355,
+    "doe_vout_max": 10.99936
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "no-false-trip",
+   "tag": "NUM-gear",
+   "params": {
+    "method": "gear"
+   },
+   "completed": true,
+   "seconds": 23.9,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/no-false-trip.NUM-gear.ng.log",
+   "log_sha256": "09705a7be59fc1b9cbb3df3c78a3a6727ae2b10211e26da1b9acfa2c61b779ea",
+   "deck_sha256": "799413e774bd832cf5c69aba54798c2389957aed96881e302f1146a8ac05c54f",
+   "source_deck_sha256": "3dc26721b3d672e5d6cb6f4450a888254eb254a086f14cb75c38536cffdacb69",
+   "measures": {
+    "o1_global_peak": 11.19781,
+    "doe_raw_max": 11.22,
+    "doe_o1_max": 11.19781,
+    "doe_vout_max": 11.20603
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-typ",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": false,
+   "seconds": 5.1,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122646, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "missing": [
+    "bus_normal_max",
+    "bus_peak",
+    "bus_recov_max",
+    "doe_o1_max",
+    "doe_raw_max",
+    "doe_vout_max"
+   ],
+   "log": "results/doe-study/buck-short-c165-esr12m5-esl2n-typ.NUM-trap.ng.log",
+   "log_sha256": "660429654b4b4eb678437de1d440402c2e2eb347de2a53c87d6bb770bb3a764c",
+   "deck_sha256": "91c17967cde5c77f0dc55b7aa84f24c7305a2f2562220d44cb07c58884612480",
+   "source_deck_sha256": "fcff678f99707d76f0f42c37b994a5891826b519fb2c381b48beb47d5b543c1b",
+   "measures": {},
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-wchi",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": false,
+   "seconds": 5.9,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0135026, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "missing": [
+    "bus_normal_max",
+    "bus_peak",
+    "bus_recov_max",
+    "doe_o1_max",
+    "doe_raw_max",
+    "doe_vout_max"
+   ],
+   "log": "results/doe-study/buck-short-c165-esr12m5-esl2n-wchi.NUM-trap.ng.log",
+   "log_sha256": "911f53d607b6602141abe9947f817efa49f278e3b4b40546b3ba4a864d3bfd36",
+   "deck_sha256": "ce4549baeac005d7c7a114461f85f2bdca7ff07e51ce13b0bb74a287430a6d4e",
+   "source_deck_sha256": "02304a440248c4b76f0162ac4205d44a9d252be342ffa0d01449b35b8c47181b",
+   "measures": {},
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-typ",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": false,
+   "seconds": 5.1,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122647, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "missing": [
+    "bus_normal_max",
+    "bus_peak",
+    "bus_recov_max",
+    "doe_o1_max",
+    "doe_raw_max",
+    "doe_vout_max"
+   ],
+   "log": "results/doe-study/buck-short-c185-esr12m5-esl2n-typ.NUM-trap.ng.log",
+   "log_sha256": "e8f37847cf2cd4f164254627ff3dfad64881f2089f5e3642d108d6cec3e7f3bf",
+   "deck_sha256": "8e4e643c6d9acfc310d2a82eace23010ec8b6448af701b20e9862ad2b69a77fb",
+   "source_deck_sha256": "9df19208462d68caffe5264d39e2f946413f6a59fa4ba966e92a95d6101def68",
+   "measures": {},
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-wchi",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": false,
+   "seconds": 5.1,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122699, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "missing": [
+    "bus_normal_max",
+    "bus_peak",
+    "bus_recov_max",
+    "doe_o1_max",
+    "doe_raw_max",
+    "doe_vout_max"
+   ],
+   "log": "results/doe-study/buck-short-c185-esr12m5-esl2n-wchi.NUM-trap.ng.log",
+   "log_sha256": "3d3db3dac06e441a15a2cfe8eb9ba45224e4e2e77b22db13cfa84579deb5fca0",
+   "deck_sha256": "48abe8278f7473ed7fcec5bb45470f260647b9ac4d665d7eb17d4a479570e894",
+   "source_deck_sha256": "484700ebe94ca73199170ece51da04d19073b6955c6133b05ab94f9cb294414a",
+   "measures": {},
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-typ",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": true,
+   "seconds": 33.9,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c165-esr12m5-typ.NUM-trap.ng.log",
+   "log_sha256": "18db93d565116c1c883dbea87e90ccb0b1dd79f3804458df4d2988eb73c10cab",
+   "deck_sha256": "70b1f1aa7ac8f8f71e2cbecef89dbb050e89172c5d18c0bf754a7d6be942d59b",
+   "source_deck_sha256": "4282d31ffab6cfe143dd77622ddef208a1afde28d70166782ea1af60948485ac",
+   "measures": {
+    "o1_peak": 11.47601,
+    "bus_peak": 11.47854,
+    "raw_peak": 36.7201,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300028,
+    "o1_global_peak": 11.47601,
+    "doe_raw_max": 36.7201,
+    "doe_o1_max": 11.47601,
+    "doe_vout_max": 11.47854
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-wchi",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": true,
+   "seconds": 34.2,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c165-esr12m5-wchi.NUM-trap.ng.log",
+   "log_sha256": "0d49a9ff5a736df6a714e790f8c330d35f4677d8733edc25e8c4145f35b2a26d",
+   "deck_sha256": "de17b4a2c3d280df0a47201499ca148c9b30db799dfa7fbb6d7419da335e1ad9",
+   "source_deck_sha256": "6e1cd30d7162ee84e36bd40c12f0740093c2ffa066c6a1d3a71a16a25416b490",
+   "measures": {
+    "o1_peak": 11.89883,
+    "bus_peak": 11.9023,
+    "raw_peak": 36.75676,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300049,
+    "o1_global_peak": 11.89883,
+    "doe_raw_max": 36.75676,
+    "doe_o1_max": 11.89883,
+    "doe_vout_max": 11.9023
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr12m5-typ",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": true,
+   "seconds": 34.1,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr12m5-typ.NUM-trap.ng.log",
+   "log_sha256": "f1ee7722099f7165e61402009434d09700e97ae0ac9f09f98256b0b9e6a8fc63",
+   "deck_sha256": "4dbcd7ef0f68a51912bcc216914fe1eb913e011e8a1514d4b32c24ce3114d98b",
+   "source_deck_sha256": "6227950d79e75cd7001868ad5af36ff3150dfd8cf1156cf25a8b8dbea665a882",
+   "measures": {
+    "o1_peak": 11.47835,
+    "bus_peak": 11.48084,
+    "raw_peak": 36.49955,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300029,
+    "o1_global_peak": 11.47835,
+    "doe_raw_max": 36.49955,
+    "doe_o1_max": 11.47835,
+    "doe_vout_max": 11.48084
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": true,
+   "seconds": 33.5,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr12m5-wchi.NUM-trap.ng.log",
+   "log_sha256": "f7b8a40ea18166870b9f0fee68e47cbb9df35640f63e78c8a0eab2352448a637",
+   "deck_sha256": "45af04dec446859d268cb592740fdab1bb2f93153e67b7fbb13753261a72e4a1",
+   "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
+   "measures": {
+    "o1_peak": 11.89267,
+    "bus_peak": 11.89602,
+    "raw_peak": 36.53097,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300051,
+    "o1_global_peak": 11.89267,
+    "doe_raw_max": 36.53097,
+    "doe_o1_max": 11.89267,
+    "doe_vout_max": 11.89602
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-typ",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": true,
+   "seconds": 15.9,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-typ.NUM-trap.ng.log",
+   "log_sha256": "87cd45828344b479db2f5c553fa4ba6e5b9167a8d7a2d449f3f1a95e93ccd465",
+   "deck_sha256": "6d959bd14dd4525c2cd691c5a46504f47ddcdaf64d1feaf6d3d65f87df3a9bbe",
+   "source_deck_sha256": "91ee34ef37d2f8b79c80318bc9a995d655fa325874839a0468d178486415e57f",
+   "measures": {
+    "o1_peak": 11.11223,
+    "bus_peak": 11.52862,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0150022,
+    "o1_global_peak": 11.11223,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.11223,
+    "doe_vout_max": 11.52862
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": true,
+   "seconds": 16.0,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-wchi.NUM-trap.ng.log",
+   "log_sha256": "bf2adb55fc53e3e0a3f3191123f2ea1734e1a2bb008a576a079c95ee8f162e35",
+   "deck_sha256": "0e21b43bdc737dea82a949a738f96a663bee2839d7764f116986a96c7ccf5977",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "measures": {
+    "o1_peak": 11.11174,
+    "bus_peak": 11.93519,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.015004,
+    "o1_global_peak": 11.11174,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.11174,
+    "doe_vout_max": 11.93519
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "startup-20v",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": true,
+   "seconds": 3.1,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/startup-20v.NUM-trap.ng.log",
+   "log_sha256": "9de514710d56a568c45f38492f7f40833bafa48038344b5df44668e393e252bc",
+   "deck_sha256": "b2fa120cd1ab68ac62bcce26802738d1fefbff74494177ad2c8f47b0e4977749",
+   "source_deck_sha256": "edd3b34da3fd3551905868dd072c54ee5d64e925eab51ecdbff48e493c80853c",
+   "measures": {
+    "o1_global_peak": 10.98354,
+    "doe_raw_max": 11.02445,
+    "doe_o1_max": 10.98354,
+    "doe_vout_max": 10.99359
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "startup-26v",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": true,
+   "seconds": 3.1,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/startup-26v.NUM-trap.ng.log",
+   "log_sha256": "5340fd9e3c5d6e37802160899fde6afb347f970243ffd2017737f1852f4cf38f",
+   "deck_sha256": "7518272a99292fc80e8f2c2f8f400c1ff483cd8cfd0d8da8d8fd5ce4463f2c0a",
+   "source_deck_sha256": "a9137ad3d869844f493795d089e36d9c25d631687f0310f1fa6407888a361afe",
+   "measures": {
+    "o1_global_peak": 10.98354,
+    "doe_raw_max": 11.02444,
+    "doe_o1_max": 10.98354,
+    "doe_vout_max": 11.00967
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "no-false-trip",
+   "tag": "NUM-trap",
+   "params": {
+    "method": "trap"
+   },
+   "completed": true,
+   "seconds": 23.8,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/no-false-trip.NUM-trap.ng.log",
+   "log_sha256": "3ad8e2b538e2606033a7852b1a6154a362c579dc39e1c3569477f988bbdfbc76",
+   "deck_sha256": "b962db24fa527c35897d8109d873c06f3cd2e709bf10c6fa7539194870e8d9ab",
+   "source_deck_sha256": "3dc26721b3d672e5d6cb6f4450a888254eb254a086f14cb75c38536cffdacb69",
+   "measures": {
+    "o1_global_peak": 11.19784,
+    "doe_raw_max": 11.22,
+    "doe_o1_max": 11.19784,
+    "doe_vout_max": 11.20605
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-typ",
+   "tag": "U3-latched",
+   "params": {
+    "u3": "latched"
+   },
+   "completed": true,
+   "seconds": 32.9,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c165-esr12m5-typ.U3-latched.ng.log",
+   "log_sha256": "4238c8b70eed1b18d63ef0fcbc80991ce4641f3582718faf2ab0906c60120462",
+   "deck_sha256": "8e69a39133f882c6c390356b44bc3fc595a61d178921b84cf04735328584fd61",
+   "source_deck_sha256": "4282d31ffab6cfe143dd77622ddef208a1afde28d70166782ea1af60948485ac",
+   "measures": {
+    "o1_peak": 11.48183,
+    "bus_peak": 11.48442,
+    "raw_peak": 36.72067,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300028,
+    "o1_global_peak": 11.48183,
+    "doe_raw_max": 36.72067,
+    "doe_o1_max": 11.48183,
+    "doe_vout_max": 11.48442
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-wchi",
+   "tag": "U3-latched",
+   "params": {
+    "u3": "latched"
+   },
+   "completed": true,
+   "seconds": 34.7,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c165-esr12m5-wchi.U3-latched.ng.log",
+   "log_sha256": "c3dd5d04d5bc1a57c2d7a03e728fffe421e737d1fbe20b96c89a095bdb166a4e",
+   "deck_sha256": "a7e43b24245744e2583ac208626a72cd7f395bb1e2c54fb8117e4e605b26393d",
+   "source_deck_sha256": "6e1cd30d7162ee84e36bd40c12f0740093c2ffa066c6a1d3a71a16a25416b490",
+   "measures": {
+    "o1_peak": 11.90318,
+    "bus_peak": 11.90669,
+    "raw_peak": 36.75716,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300049,
+    "o1_global_peak": 11.90318,
+    "doe_raw_max": 36.75716,
+    "doe_o1_max": 11.90318,
+    "doe_vout_max": 11.90669
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr100m-typ",
+   "tag": "U3-latched",
+   "params": {
+    "u3": "latched"
+   },
+   "completed": true,
+   "seconds": 18.0,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr100m-typ.U3-latched.ng.log",
+   "log_sha256": "4ee72e97e6d16eb16fa5c653e8032b75d5789e620ec038c5dda0585bbcfe2278",
+   "deck_sha256": "0a85985e03f31879d1a959dbece419ea9a2c6b0e8928cd090d92429477505076",
+   "source_deck_sha256": "448e98965d206b760851fe96403332c517e8ade9fc3581acbf82ceb896825961",
+   "measures": {
+    "o1_peak": 11.59208,
+    "bus_peak": 12.50435,
+    "raw_peak": 30.16417,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300012,
+    "o1_global_peak": 11.59208,
+    "doe_raw_max": 30.16417,
+    "doe_o1_max": 11.59208,
+    "doe_vout_max": 12.50435
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr100m-wchi",
+   "tag": "U3-latched",
+   "params": {
+    "u3": "latched"
+   },
+   "completed": true,
+   "seconds": 17.6,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr100m-wchi.U3-latched.ng.log",
+   "log_sha256": "15ef7467ab7779a7d6cb5cd7ff56881e509e5e610c45772d9452d3920d808f74",
+   "deck_sha256": "c33704e0bd9dd738bee7c14d1e6cb7cbfeab3b33fb005efa5ab720b65c839f6b",
+   "source_deck_sha256": "b3c12fc8d7e68057acc5153f122eea5e8d82d9f0d28fa4e9baf966377c25eb98",
+   "measures": {
+    "o1_peak": 11.59151,
+    "bus_peak": 13.03882,
+    "raw_peak": 30.16433,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300021,
+    "o1_global_peak": 11.59151,
+    "doe_raw_max": 30.16433,
+    "doe_o1_max": 11.59151,
+    "doe_vout_max": 13.03882
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-typ",
+   "tag": "U3-latched",
+   "params": {
+    "u3": "latched"
+   },
+   "completed": true,
+   "seconds": 15.4,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-typ.U3-latched.ng.log",
+   "log_sha256": "3f59db7e472b764efc20be56727d8274e57116cf33a9fb8f10ef6ac2dfd5ea49",
+   "deck_sha256": "0b4d74b9c49a666612c37584bc0164f959f5e7d1d019f49e7d4ea3156278b225",
+   "source_deck_sha256": "91ee34ef37d2f8b79c80318bc9a995d655fa325874839a0468d178486415e57f",
+   "measures": {
+    "o1_peak": 11.11244,
+    "bus_peak": 11.52335,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0150022,
+    "o1_global_peak": 11.11244,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.11244,
+    "doe_vout_max": 11.52335
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "tag": "U3-latched",
+   "params": {
+    "u3": "latched"
+   },
+   "completed": true,
+   "seconds": 15.6,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-wchi.U3-latched.ng.log",
+   "log_sha256": "bb4479be005d2973992cdad5a916556944c6e1de5ef4bf5dc6fc7196a06319c8",
+   "deck_sha256": "cb458320fa2571a0081a95e37564a0b7fcc092b76ee4eca60c67e2fbb577d3fb",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "measures": {
+    "o1_peak": 11.1126,
+    "bus_peak": 11.93557,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.015004,
+    "o1_global_peak": 11.1126,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.1126,
+    "doe_vout_max": 11.93557
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-typ",
+   "tag": "U3-nolatch",
+   "params": {
+    "u3": "nolatch"
+   },
+   "completed": true,
+   "seconds": 272.1,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c165-esr12m5-typ.U3-nolatch.ng.log",
+   "log_sha256": "9cba1fe02eb0541ac14ea44e3603b7c5ebfb4ac2066891dc7d35d18e92209d6b",
+   "deck_sha256": "8777acb1380ac92f249488a89a28e4afdba9ebf7c149b5ab77cc449f34a7869a",
+   "source_deck_sha256": "4282d31ffab6cfe143dd77622ddef208a1afde28d70166782ea1af60948485ac",
+   "measures": {
+    "o1_peak": 11.48061,
+    "bus_peak": 11.48317,
+    "raw_peak": 36.72057,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300028,
+    "o1_global_peak": 11.48061,
+    "doe_raw_max": 36.72057,
+    "doe_o1_max": 11.48061,
+    "doe_vout_max": 11.48317
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-wchi",
+   "tag": "U3-nolatch",
+   "params": {
+    "u3": "nolatch"
+   },
+   "completed": true,
+   "seconds": 32.0,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c165-esr12m5-wchi.U3-nolatch.ng.log",
+   "log_sha256": "d7f4cee920dbf67661d9465eba67af7fc037f1370b5b900541051ca581f7159d",
+   "deck_sha256": "d3ce3ed9fcabe036a3e0e11c8bf37d3b064d793becdc6424c1712cfecfa24686",
+   "source_deck_sha256": "6e1cd30d7162ee84e36bd40c12f0740093c2ffa066c6a1d3a71a16a25416b490",
+   "measures": {
+    "o1_peak": 11.90513,
+    "bus_peak": 11.90864,
+    "raw_peak": 36.75734,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300049,
+    "o1_global_peak": 11.90513,
+    "doe_raw_max": 36.75734,
+    "doe_o1_max": 11.90513,
+    "doe_vout_max": 11.90864
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr100m-typ",
+   "tag": "U3-nolatch",
+   "params": {
+    "u3": "nolatch"
+   },
+   "completed": true,
+   "seconds": 17.6,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr100m-typ.U3-nolatch.ng.log",
+   "log_sha256": "edf3489f78aface43f3d6230dc1f900505efc6ff105cea60db9d35d1da065b58",
+   "deck_sha256": "e47862d88dce858ce99ba8aa63843ae4a493d0b1e5ca92ee34703f2ae1906778",
+   "source_deck_sha256": "448e98965d206b760851fe96403332c517e8ade9fc3581acbf82ceb896825961",
+   "measures": {
+    "o1_peak": 11.75663,
+    "bus_peak": 11.77035,
+    "raw_peak": 30.16664,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300012,
+    "o1_global_peak": 11.75663,
+    "doe_raw_max": 30.16664,
+    "doe_o1_max": 11.75663,
+    "doe_vout_max": 11.77035
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr100m-wchi",
+   "tag": "U3-nolatch",
+   "params": {
+    "u3": "nolatch"
+   },
+   "completed": true,
+   "seconds": 17.4,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr100m-wchi.U3-nolatch.ng.log",
+   "log_sha256": "95598edd69293f0bfaf8d34b2fadaaff901da4b69b12dc9bec88d58c34ed1b36",
+   "deck_sha256": "a7b02c8da7b223aea58cb18907dc2d16c0906651805e9619bf029bcaf8989e2f",
+   "source_deck_sha256": "b3c12fc8d7e68057acc5153f122eea5e8d82d9f0d28fa4e9baf966377c25eb98",
+   "measures": {
+    "o1_peak": 12.41205,
+    "bus_peak": 12.4243,
+    "raw_peak": 30.17778,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300022,
+    "o1_global_peak": 12.41205,
+    "doe_raw_max": 30.17778,
+    "doe_o1_max": 12.41205,
+    "doe_vout_max": 12.4243
+   },
+   "acceptance_fail": [
+    "O1_input_rating: 12.4121 V peak vs 12.0 V instantaneous",
+    "O1_GLOBAL_PEAK: 12.4121 V max over the whole run vs 12.0 V instantaneous"
+   ],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-typ",
+   "tag": "U3-nolatch",
+   "params": {
+    "u3": "nolatch"
+   },
+   "completed": true,
+   "seconds": 15.1,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-typ.U3-nolatch.ng.log",
+   "log_sha256": "438f163ad5c6e2bb238a50b8189ca44901e8e5e1016d574220e91cccbae799cf",
+   "deck_sha256": "f9694e525b9d72a25c9676904796ef85d904ab3e524e221f97c40e561e6db9d1",
+   "source_deck_sha256": "91ee34ef37d2f8b79c80318bc9a995d655fa325874839a0468d178486415e57f",
+   "measures": {
+    "o1_peak": 11.49362,
+    "bus_peak": 11.50525,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0150022,
+    "o1_global_peak": 11.49362,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.49362,
+    "doe_vout_max": 11.50525
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "tag": "U3-nolatch",
+   "params": {
+    "u3": "nolatch"
+   },
+   "completed": true,
+   "seconds": 14.7,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-wchi.U3-nolatch.ng.log",
+   "log_sha256": "051fd46c9ed0f97b74cc72d5540704783f4e75a02f93074840c189781d27dbe6",
+   "deck_sha256": "e92e45d25fc34fc051f60c54f6d6d92bdab1d2f43471820b67cdcac849d66997",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "measures": {
+    "o1_peak": 11.90712,
+    "bus_peak": 11.91876,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.015004,
+    "o1_global_peak": 11.90712,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.90712,
+    "doe_vout_max": 11.91876
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-typ",
+   "tag": "U3-bypass",
+   "params": {
+    "u3": "bypass"
+   },
+   "completed": false,
+   "seconds": 4.8,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0139433, timestep = 1.25e-19: trouble with node \"pu_ovp\""
+   ],
+   "missing": [
+    "bus_normal_max",
+    "bus_peak",
+    "bus_recov_max",
+    "doe_o1_max",
+    "doe_raw_max",
+    "doe_vout_max"
+   ],
+   "log": "results/doe-study/buck-short-c165-esr12m5-typ.U3-bypass.ng.log",
+   "log_sha256": "f1844c00f56f33f3e69817e67f48388db07a412f857482608e57a653ab43e627",
+   "deck_sha256": "443a5d256d0b0af75bc1998a0cf90aac1282d798073e600846f46d40f6a3ec9d",
+   "source_deck_sha256": "4282d31ffab6cfe143dd77622ddef208a1afde28d70166782ea1af60948485ac",
+   "measures": {},
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c165-esr12m5-wchi",
+   "tag": "U3-bypass",
+   "params": {
+    "u3": "bypass"
+   },
+   "completed": true,
+   "seconds": 26.6,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c165-esr12m5-wchi.U3-bypass.ng.log",
+   "log_sha256": "797f18dbaf646fa2b25d8d16d54f95c34680af2bb8cf83d98d2bb2b9980902db",
+   "deck_sha256": "922948e3933134580f10c03baadfde1d87bb83db847684d25b90057d7df9e169",
+   "source_deck_sha256": "6e1cd30d7162ee84e36bd40c12f0740093c2ffa066c6a1d3a71a16a25416b490",
+   "measures": {
+    "o1_peak": 11.907,
+    "bus_peak": 11.90794,
+    "raw_peak": 36.75717,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300049,
+    "o1_global_peak": 11.907,
+    "doe_raw_max": 36.75717,
+    "doe_o1_max": 11.907,
+    "doe_vout_max": 11.90794
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr100m-typ",
+   "tag": "U3-bypass",
+   "params": {
+    "u3": "bypass"
+   },
+   "completed": true,
+   "seconds": 14.9,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr100m-typ.U3-bypass.ng.log",
+   "log_sha256": "d35b54e656db613c8a5c6e77593f9e31ab3c8fb27a3f7a03f8b45cf601a4aff7",
+   "deck_sha256": "eab5f91330b59bd55cadbdc349106ab52e8cdd1c2d01bbc86ec84c5be62b6b32",
+   "source_deck_sha256": "448e98965d206b760851fe96403332c517e8ade9fc3581acbf82ceb896825961",
+   "measures": {
+    "o1_peak": 11.76632,
+    "bus_peak": 11.77024,
+    "raw_peak": 30.1665,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300012,
+    "o1_global_peak": 11.76632,
+    "doe_raw_max": 30.1665,
+    "doe_o1_max": 11.76632,
+    "doe_vout_max": 11.77024
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "buck-short-c185-esr100m-wchi",
+   "tag": "U3-bypass",
+   "params": {
+    "u3": "bypass"
+   },
+   "completed": true,
+   "seconds": 14.8,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/buck-short-c185-esr100m-wchi.U3-bypass.ng.log",
+   "log_sha256": "a8bf6e5c278b8cb5ac8a5c27b9e9c1196fb7a0e3aabd01457ec2da32189bcb93",
+   "deck_sha256": "fb77cce66094bc98f1afd2a4363916636ec4325ec0d00ed219efb17274785359",
+   "source_deck_sha256": "b3c12fc8d7e68057acc5153f122eea5e8d82d9f0d28fa4e9baf966377c25eb98",
+   "measures": {
+    "o1_peak": 12.41832,
+    "bus_peak": 12.42185,
+    "raw_peak": 30.17762,
+    "bus_normal_max": 11.03144,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300022,
+    "o1_global_peak": 12.41832,
+    "doe_raw_max": 30.17762,
+    "doe_o1_max": 12.41832,
+    "doe_vout_max": 12.42185
+   },
+   "acceptance_fail": [
+    "O1_input_rating: 12.4183 V peak vs 12.0 V instantaneous",
+    "O1_GLOBAL_PEAK: 12.4183 V max over the whole run vs 12.0 V instantaneous"
+   ],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-typ",
+   "tag": "U3-bypass",
+   "params": {
+    "u3": "bypass"
+   },
+   "completed": true,
+   "seconds": 12.3,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-typ.U3-bypass.ng.log",
+   "log_sha256": "507ad5c6cedd7c45f8b801c17d8489d65804a92fbec05969b781bb96551fce46",
+   "deck_sha256": "72d1c5ad56f5498cea16da0b667f56f84254eb2680452dfffc35a25f5431f37c",
+   "source_deck_sha256": "91ee34ef37d2f8b79c80318bc9a995d655fa325874839a0468d178486415e57f",
+   "measures": {
+    "o1_peak": 11.50926,
+    "bus_peak": 11.51292,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0150023,
+    "o1_global_peak": 11.50926,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.50926,
+    "doe_vout_max": 11.51292
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "tag": "U3-bypass",
+   "params": {
+    "u3": "bypass"
+   },
+   "completed": true,
+   "seconds": 12.7,
+   "errors": [],
+   "missing": [],
+   "log": "results/doe-study/efuse-ovp-s023-wchi.U3-bypass.ng.log",
+   "log_sha256": "1317e50f21643188b48e50f5eefef5f6e098101a6d329376fa22ffa0700f2c2c",
+   "deck_sha256": "8c4c3c18e27d6402d6c5897aa6f5e95587182fe4944b15335af5d6ad7c4a1ee4",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "measures": {
+    "o1_peak": 11.9162,
+    "bus_peak": 11.91989,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.015004,
+    "o1_global_peak": 11.9162,
+    "doe_raw_max": 18.0,
+    "doe_o1_max": 11.9162,
+    "doe_vout_max": 11.91989
+   },
+   "acceptance_fail": [],
+   "startup_false_trip": false
+  }
+ ],
+ "finished": "2026-10-25 22:30:05 +0300"
+}
