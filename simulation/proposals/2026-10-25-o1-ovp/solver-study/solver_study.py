@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """WP1 rev3 P0-03 SOLVER STUDY (diagnostic only - NOT acceptance evidence).
 
-Copies the two acceptance decks that fail with 'timestep too small' (pu_ovp) in the ordinary run
-(decks/o1ovp-buck-short-c185-esr12m5-esl2n-typ.ng.cir, ...-c165-...) into this folder, changes ONLY
+Copies the four acceptance ESL decks that fail with 'timestep too small' in the ordinary run (rev2: pu_ovp, typ only;
+rev3 model: imon_s2e, typ AND wchi - decks/o1ovp-buck-short-c1{85,65}-esr12m5-esl2n-{typ,wchi}.ng.cir) into this
+folder, changes ONLY
 simulator options (model, circuit, stimulus, measurements and accuracy tolerances reltol/abstol are
 unchanged), runs ngspice and records which linear solver the LOG says was used.
 Variants that loosen accuracy (larger reltol/abstol/vntol, gmin increase, smoothing caps on PU) are NOT
@@ -18,7 +19,8 @@ from pathlib import Path
 HERE = Path(__file__).absolute().parent
 PKG = HERE.parent
 OUT = PKG/'results'/'solver-study'
-DECKS = ['buck-short-c185-esr12m5-esl2n-typ', 'buck-short-c165-esr12m5-esl2n-typ']
+DECKS = ['buck-short-c185-esr12m5-esl2n-typ', 'buck-short-c165-esr12m5-esl2n-typ',      # rev2+rev3 failures
+         'buck-short-c185-esr12m5-esl2n-wchi', 'buck-short-c165-esr12m5-esl2n-wchi']    # new rev3 failures
 OPT = '.options reltol=0.0001 abstol=1n method=gear\n'
 TRAN = '.tran 100n 80m 0 100n uic\n'
 VARIANTS = {   # name: (option lines appended after the ordinary OPT line, tran line)

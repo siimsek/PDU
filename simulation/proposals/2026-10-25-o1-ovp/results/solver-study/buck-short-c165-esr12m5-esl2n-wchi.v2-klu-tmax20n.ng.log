@@ -1,0 +1,32 @@
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * solver-study copy (v2-klu-tmax20n) of decks/o1ovp-buck-short-c165-esr12m5-esl2n-wchi.ng.cir - diagnostic only, not acceptance evidence
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 618272
+doAnalyses: TRAN:  Timestep too small; time = 0.0122699, timestep = 2.5e-20: trouble with node "pu_ovp"
+
+
+run simulation(s) aborted
+
+Total analysis time (seconds) = 23.4641
+
+Total elapsed time (seconds) = 23.467 
+
+Total DRAM available = 16002.312 MB.
+DRAM currently available = 1467.715 MB.
+Maximum ngspice program size =  388.652 MB.
+Current ngspice program size =   69.941 MB.
+
+Shared ngspice pages =   10.766 MB.
+Text (code) pages =    6.543 MB.
+Stack = 0 bytes.
+Library pages =  368.973 MB.
+

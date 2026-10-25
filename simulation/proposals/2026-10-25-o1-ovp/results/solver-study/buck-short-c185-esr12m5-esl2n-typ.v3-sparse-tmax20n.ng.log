@@ -1,0 +1,32 @@
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * solver-study copy (v3-sparse-tmax20n) of decks/o1ovp-buck-short-c185-esr12m5-esl2n-typ.ng.cir - diagnostic only, not acceptance evidence
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 616812
+doAnalyses: TRAN:  Timestep too small; time = 0.0122646, timestep = 2.5e-20: trouble with node "pu_ovp"
+
+
+run simulation(s) aborted
+
+Total analysis time (seconds) = 23.0245
+
+Total elapsed time (seconds) = 23.032 
+
+Total DRAM available = 16002.312 MB.
+DRAM currently available = 1232.738 MB.
+Maximum ngspice program size =  388.562 MB.
+Current ngspice program size =   69.793 MB.
+
+Shared ngspice pages =   10.762 MB.
+Text (code) pages =    6.543 MB.
+Stack = 0 bytes.
+Library pages =  368.883 MB.
+
