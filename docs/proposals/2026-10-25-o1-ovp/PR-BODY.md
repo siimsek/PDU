@@ -3,7 +3,7 @@
 > Bu dosya PR açıklaması için önerilen metindir; PR'a kullanıcı tarafından aktarılır.
 
 ## Özet
-WP1 `2026-10-25-o1-ovp` – O1 portu için hibrit global OVP önerisi (TPS48000-Q1 + 4× CSD18540Q5B + TLV3601 + REF35409 + TPS7A1650), **rev3** (ChatGPT Tur 2 incelemesi 6390966776 Tur 3 yorumu 6394334358, Tur 4 yorumu 6394790371 Tur 5 yorumu 6394867878 Tur 6 yorumu 6395038820 ve Tur 7 birleşik yorumu 6395284882; hiçbirinde kabul yok; yanıtlar: `docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW_RESPONSE.md` → "Tur 2" … "Tur 7").
+WP1 `2026-10-25-o1-ovp` – O1 portu için hibrit global OVP önerisi (TPS48000-Q1 + 4× CSD18540Q5B + TLV3601 + REF35409 + TPS7A1650), **rev3** (ChatGPT Tur 2 incelemesi 6390966776 Tur 3 yorumu 6394334358, Tur 4 yorumu 6394790371 Tur 5 yorumu 6394867878 Tur 6 yorumu 6395038820 Tur 7 birleşik yorumu 6395284882 ve Tur 8 birleşik yorumu 6395614957; hiçbirinde kabul yok; yanıtlar: `docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW_RESPONSE.md` → "Tur 2" … "Tur 8").
 
 **Karar: WP1 tamamlanmadı. Merge/üretim için uygun değil (P0-03, P0-05/N-01 açık).**
 
@@ -22,6 +22,7 @@ WP1 `2026-10-25-o1-ovp` – O1 portu için hibrit global OVP önerisi (TPS48000-
 - **Tur 5** (`da1674a`): P2-T5-01 `rebind_rev3.py` türetilmiş alanları fail-closed yeniden hesaplıyor (`d = rev3 − rev2` toleranslı, rev2/rev3 `verdict` yeniden `judge()` ile, `changed` yeniden); P2-T5-02 ham ng satırları dict öncesi sayılıyor, tekrar CASE → exit 2; `guard_negative_test.py` **20/20** (C1–C9 yeni). Runner/doğrulayıcı/deck değişmedi; kontrol amaçlı tam koşu `wp1-rev3-tur5-check` (commit'lenmedi) ölçüm/hüküm olarak `wp1-rev3-tur3` ile birebir aynı.
 - **Tur 6** (`6aee4f7`, sonuç `be24ab0`): P2-T6-01 NaN/Inf `d` fail-closed; P2-T6-02 rev2 `completed`/`errors` sha'lı rev2 logundan yeniden türetiliyor; P2-T6-03 `model_compare.main()` ham satır denetimi (ortak `raw_run_problems()`); `guard_negative_test.py` **29/29**. `model_compare.py` runner girdisi → temiz yeniden koşu `wp1-rev3-tur6` (ölçümler `tur3` ile birebir).
 - **Tur 7** (inceleme `f587c60`): WP1 için yeni kusur yok; P2-T6 düzeltmeleri kapalı, `wp1-rev3-tur6` tutarlı. WP1 kodu/deck/sonuçları değişmedi; kontrol: `verify_candidate.py` 2 (1766/0/4 MISSING), baseline regresyonu 1 (16,89 V), `guard_negative_test.py` 29/29. P0-03 ve P0-05/N-01 açık.
+- **Tur 8** (inceleme `f923347`, yanıt `53495e2`): Tur 7 kontrol sayıları tutarlı bulundu; WP1 girdileri değişmedi, yeni ngspice kabul koşusu yok. Kontrol (HEAD `873a94a`): `verify_candidate.py` 2 (1766/0/4 MISSING), baseline 1 (16,89 V), guard 29/29. Ortak workflow dosyası yalnız WP2 işinde değişti → MANIFEST güncellendi. P0-03 (RPU10 330/1000 Ω seçilmedi; sonraki yol: ayrı açılış eğimi ↔ RAW sönümleme, 4 ESL deck + tam matris, B19) ve P0-05/N-01 (B10/B13) açık.
 - Teşhis: `solver-study/`, `slew-study/` (WP2 kontrollü açılış seçeneği), `soa-study/`, `u3-latch-study/`.
 
 ## Temiz koşu (wp1-rev3-tur6, girdiler `6aee4f7`, sonuç `be24ab0`, ngspice-44.2, Debian 13; önceki `wp1-rev3-tur3` ile ölçümler birebir)

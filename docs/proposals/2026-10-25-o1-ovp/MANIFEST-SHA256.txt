@@ -6,7 +6,7 @@ eb7e8e4479e40e9b0b97564a2a3000b909dbb0b062cfbe19ad978b728d56d3b1  docs/proposals
 0c062bc14be94883a218dd7bad738ac436d7d6366e4e7a2aed81816e7a97359b  docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW_RESPONSE.md
 4a036e7ef48feeda67dd5ae7a01e05db5274745ef240351b77b75b58bd56a4c1  docs/proposals/2026-10-25-o1-ovp/KICAD-TRANSFER.md
 03afa15afeeb40274d9258e369469fab8d57b05607c8c874837537c28c1130f2  docs/proposals/2026-10-25-o1-ovp/MODELS.md
-4def748f101bd955da2ebd829f7ab8ba542491e1ffcae072a622f38555c2ae0f  docs/proposals/2026-10-25-o1-ovp/PR-BODY.md
+1eebd82621527866bd8a7092dc4f2e2cd737b5a079240fc041e18eb425edfafa  docs/proposals/2026-10-25-o1-ovp/PR-BODY.md
 6d721552c3618c4b009ed46edc6aea8797aa3d251683caffdc111a4cecdac066  docs/proposals/2026-10-25-o1-ovp/REQUIREMENTS.md
 a6974fa4a2a12004794d64467729325fdc4ee00b927e24bedcaf39f72dd6a04d  docs/proposals/2026-10-25-o1-ovp/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
