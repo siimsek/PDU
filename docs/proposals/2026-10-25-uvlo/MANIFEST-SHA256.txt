@@ -1,5 +1,5 @@
 # WP2 2026-10-25-uvlo – SHA-256 manifest (35485d5..HEAD değişen tüm dosyalar; bu dosya hariç). Oluşturma: 2026-10-25 10:35 TSİ, HEAD c224fb4
-2dfac742af95d4fb7351fba4ab92a118ed25e1104f27f5c487a021fffa021fb6  .github/workflows/proposal-ngspice.yml
+4271019473e04c977c9bf95b21397b00499da532e88d25cd7cd620f33da0c634  .github/workflows/proposal-ngspice.yml
 60352b54f3d9bf67a29fc8242d89b07af74deba2e8b3f767ad5996744aa75226  docs/proposals/2026-10-25-uvlo/ARCHITECTURE.md
 70dbe2c85ba237d6ac6d7903421e12151031fecfb59ca22afe1501d2f1206348  docs/proposals/2026-10-25-uvlo/BENCH-TEST.md
 136c77b385b8fd0bae147725917fec3d615d2ccdf99558f78c7dd355d5b594c9  docs/proposals/2026-10-25-uvlo/BUDGET.md
