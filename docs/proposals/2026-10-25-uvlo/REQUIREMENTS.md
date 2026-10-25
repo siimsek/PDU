@@ -29,3 +29,11 @@ Sınıflar: **G** = veri sayfası garanti (MIN/MAX), **T** = tipik, **V** = vars
 - `uvlo_budget.py` exit 0 (tüm analitik marjlar ≥ 0; regresyonlar FAIL üretmeli).
 - `run_uvlo.py` exit 0 (tüm deck'ler tamamlandı) ve `verify_uvlo.py` exit 0 (tüm kabul case'leri PASS, tüm regresyonlar FAIL olarak yeniden üretildi).
 - Simülasyon PASS kanıt değil, yalnızca gerekli koşuldur. Tezgâh testleri: `BENCH-TEST.md`.
+
+## WP3 devri: R-DIP (Tur 1 P1, açık)
+Durum: **açık risk, kapatılmadı.** WP2, H2'yi (≤ 11,1605 V) yalnız normal rejim pencerelerinde (PRE/RUN/POST) uygular. Kısa VIN diplerinden (≈100–250 µs, 0 V) sonraki yeniden başlatma geçişinde bus geçici olarak 11,1605 V'u aşar: dip0v-200us-typ-ttyp BUS_GLOBAL_MAX 11,412 V, RAW 11,625 V; O1 10,978 V (H1 ≤ 12,0 V korunur; O1 WP1 OVP ile korunur). Değerler: RESULTS.md §5.
+
+- Bu aşım **kabul edilmiş bir sınır değildir**. H2 gevşetilmedi. "Normal rejim dışı" sınıflandırması bir sistem gereksinimi kararıdır ve kullanıcı/sistem onayı gerektirir.
+- Aşımın **süresi ölçülmedi** (deck'lerde 11,1605 V üstü süre .meas'i yok). WP3, geçiş için genlik **ve** süre sınırı tanımlamalı ve ölçmelidir.
+- Önerilen WP3 kapsamı: (1) buck COMP kenetleme veya VIN-kaybı algısıyla anında EN kesme (CFU gecikmesinden bağımsız), (2) RAW'da akım çekici / aktif deşarj, (3) geçiş için ayrı sert kriter önerisi (genlik + süre), (4) tezgâh B-U15.
+- WP3 tamamlanana kadar R-DIP, PR gövdesinde ve ChatGPT yanıtında açık P1 olarak taşınır.

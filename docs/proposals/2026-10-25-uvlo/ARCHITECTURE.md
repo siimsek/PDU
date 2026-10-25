@@ -43,12 +43,12 @@ Sıralama: U10 TPS48000, EN/UVLO'yu VIN'den alır (REN10/REN11, WP1). FET, TDRV_
 | B | TPS3700 (SBVS187G) + ERA bölücü | Histerezis tipik 0,27 V (min yok). Gereken I·R + 0,1 = 1,41 V → motorboating | FAIL |
 | D | LM74800/LM74810 EN/UVLO (LM74700 yerine) | V_f,min 16,94 V < 18 V | FAIL |
 | C2 | TLV3202 A + Rh geri besleme (itme-çekme) | En iyi E96 kombinasyonunda en kötü marj −0,102 V (VOH/VOL ve V5 yayılımı) | FAIL |
-| **C3** | TLV3202 A + TMUX1102 anahtarlı bölücü | Marjlar: a +0,0185 / b +0,0234 / c +0,0295 / d +0,1561 / e +0,071 V | **SEÇİLDİ** |
+| **C3** | TLV3202 A + TMUX1102 anahtarlı bölücü | Marjlar (VIO 6 mV, Tur 1 düzeltmesi): a +0,0067 / b +0,0126 / c +0,0279 / d +0,1452 / e +0,071 V; başlatma garantisi **kurulmadı** (BUDGET.md §3a, açık P0) | **SEÇİLDİ (koşullu)** |
 
 Müdahale ölçüsü: buck, kompanzasyon, WP1 OVP ve RAW bankı değişmez. RUV1 sökülür (DNP), RUV2 kalır. Yeni parçalar 3 IC (U20, U21, U22), 8 hassas direnç, 3 jenerik direnç, 1 diyot ve 7 kondansatördür. Mevcut V5_OVP ve VREF_OVP kullanılır, yeni bir regülatör ya da referans eklenmez.
 
 ## 4. Bilinen sınırlamalar
-- Marj a (+18,5 mV) dar. Sebebi ERA-3ARB'nin katı doğrusal toplamı (%0,4/parça) ve REF35'in %0,296 hatası. RSS bilgi amaçlıdır: a +0,121 V. Gevşek bir dirence geçmek bütçeyi bozar (`SOURCING.md` not 1).
+- Marj a (+6,7 mV, Tur 1'de VIO 4 → 6 mV düzeltmesiyle +18,5 mV'tan düştü) çok dar. Sebebi ERA-3ARB'nin katı doğrusal toplamı (%0,4/parça), REF35'in %0,296 hatası ve TLV3202 VIO 6 mV (G). RSS bilgi amaçlıdır: a +0,109 V. Hint (maks yok), REF uzun dönem kayması gibi G dışı terimler marjı tüketebilir: **20 V başlatma garantisi kurulmadı, açık P0** (BUDGET.md §3a; tasarım seçenekleri O1–O3 orada). Gevşek bir dirence geçmek bütçeyi bozar (`SOURCING.md` not 1).
 - 18,0 V eşiği V (hücre üretici verisi yok).
 - R_total 0,25 Ω üstü (0,30–0,45 Ω) INFO olarak raporlanır, garanti dışıdır.
 - **Artık pencere (R-DIP):** UV algılama gecikmesinden (CFU filtresi, mbmin köşesinde ~0,26–0,29 ms) kısa dipler U22'yi tetiklemez. Bu dipler sonrasında buck COMP sarılmış olarak devam eder; RAW aşımı WP1 OVP'yi açtırabilir ve regülasyon RAW boşalana kadar (onlarca–yüzlerce ms) gelmez. O1 tepe sınırı bu durumda korunur. Sayısal sonuç `RESULTS.md` (dip0v-200us / 100us, INFO).

@@ -36,10 +36,10 @@ Yöntem: her hata terimi ±1 köşelerine **katı doğrusal** toplamla girer (C3
 | ERA-3ARB lehim ısısı | ±%0,1 | G (test sınırı) | aynı |
 | **E_RES toplam** | **±%0,4** | | |
 | Jenerik %1 kalın film (RHB, RDEN, RUV2) | ±%3 (1 % + 100 ppm/K × 100 K + %1 ömür) | V | Yageo RC_L V.14 s.5/s.8 ile uyumlu |
-| TLV3202 VIO | ≤ 4 mV | G | SBOS561C s.5 |
+| TLV3202 VIO | **≤ 6 mV** (−40…125 °C; 25 °C'de ≤ 5 mV) | G | SBOS561C Rev C (Mayıs 2024) s.5 tablo 6.5, TLV3202 satırı. **Düzeltme (Tur 1 P0):** önceki 4 mV TLV3201 satırıydı |
 | TLV3202 CMRR / PSRR | ≥ 60 / 65 dB | G | SBOS561C s.5. CMRR terimi gerçek REFD = 3,3698 V'ta hesaplanır |
-| VIO_C3 toplam | 4,926 mV | Ç | |
-| TLV3202 Hint | 0–5 mV (1,2 mV tipik) | T/V | SBOS561C s.5 |
+| VIO_C3 toplam | 6,926 mV | Ç | VIO 6 mV + CMRR terimi (REFD 3,3698 V) + PSRR terimi |
+| TLV3202 Hint | 0–5 mV (1,2 mV tipik) | T/V | SBOS561C s.5: yalnız tipik; **maksimum belirtilmemiş → üst sınır varsayım (sınırsız terim)** |
 | TLV3202 IIB | ±5 nA | G | SBOS561C s.5 |
 | TLV3202 VCC−VOH / VOL | ≤ 170 / ≤ 225 mV @4 mA | G | SBOS561C s.5 |
 | TMUX1102 RON | ≤ 4,9 Ω | G | SCDS410D s.5 |
@@ -56,21 +56,47 @@ Yöntem: her hata terimi ±1 köşelerine **katı doğrusal** toplamla girer (C3
 ## 3. Marj tanımları ve sonuçlar (C3: RTU 39,2k, RBU 8,87k, RXU 90,9k, RR1U 10,0k, RR2U 46,4k)
 | Marj | Tanım | Katı | RSS (bilgi) |
 |---|---|---|---|
-| a başlatma | 20 − I_Q·R − V_r,max | **+0,0185 V** | +0,120 V |
-| b aşırı deşarj | V_f,min − 18,0 | **+0,0234 V** | +0,115 V |
-| c motorboating | min_köşe(H − (P_IN/V_f)·R) − 0,10 | **+0,0295 V** | +0,044 V |
-| d 20 V'ta çalışma | VIN_op(20 V, 7,5 A) − V_f,max − 0,10 | **+0,1561 V** | +0,249 V |
+| a başlatma | 20 − I_Q·R − V_r,max | **+0,0067 V** | +0,109 V |
+| b aşırı deşarj | V_f,min − 18,0 | **+0,0126 V** | +0,104 V |
+| c motorboating | min_köşe(H − (P_IN/V_f)·R) − 0,10 | **+0,0279 V** | +0,043 V |
+| d 20 V'ta çalışma | VIN_op(20 V, 7,5 A) − V_f,max − 0,10 | **+0,1452 V** | +0,239 V |
 | e 26 V'ta ortak mod | 4,90 − S_UV,max(26 V) | **+0,071 V** | – |
 
-Eşik aralıkları: V_r 19,470–19,978 V; V_f 18,023–18,490 V; H 1,433–1,502 V. VIN_op(20 V) = 18,746 V. Köşeler arası V_r,min − V_f,max = 0,980 V.
+Eşik aralıkları (VIO 6 mV): V_r 19,458–19,990 V; V_f 18,013–18,500 V; H 1,432–1,503 V. VIN_op(20 V) = 18,746 V. Köşeler arası V_r,min − V_f,max = 0,958 V.
+(Önceki 4 mV'lik hatalı VIO ile: a +0,0185, b +0,0234, c +0,0295, d +0,1561 V; V_r 19,470–19,978 V; V_f 18,023–18,490 V.)
 c için açıklama: kapanma anında VIN = V_f iken EMF = V_f + I·R olur. Akım kesilince VIN bu EMF'ye çıkar. EMF < V_r olmalıdır, yoksa salınım oluşur. Bu karşılaştırma aynı köşede (aynı kart, aynı sıcaklık) yapılır.
+
+## 3a. 20 V başlatma garantisi durumu (ChatGPT WP2 Tur 1 P0) – **AÇIK BLOKLAYICI**
+`start_guarantee_status()` (`uvlo_budget.py`, `results/uvlo-budget.json` → `start_guarantee`). Durum: **`NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS`**. Katı marjlar pozitif (a +6,73 mV, b +12,64 mV) ama yalnızca aşağıdaki G-dışı terimlerin varsayılan sınırları doğruysa. Bu yüzden "20 V'ta garantili yeniden başlatma" **iddia edilmiyor**. Gereksinimler (E_START 20,0 V EMF, V_FALL_MIN 18,0 V, MARGIN_DYN 0,10 V) gevşetilmedi.
+
+| G-dışı terim | Sınıf | Bütçedeki değer | a marjından yediği | b marjından yediği | Sınırı var mı? |
+|---|---|---|---|---|---|
+| TLV3202 iç histerezis Hint üst sınırı | V | 5 mV (datasheet: 1,2 mV tipik, max yok) | 11,19 mV (tipik 1,2 mV'a göre) | 10,23 mV | **Hayır** |
+| REF35 uzun dönem kayma (40 ppm/1000 h × 10) | V | 400 ppm | 7,95 mV | 7,25 mV | **Hayır** (10 kh doğrusal ekstrapolasyon) |
+| REF35 TC 105→125 °C ekstrapolasyonu | Ç | 240 ppm | 4,77 mV | 4,35 mV | spesifikasyon dışı |
+| I_Q_PRESTART × R_TOTAL_MAX | V | 15 mA × 0,25 Ω | 3,75 mV | – | varsayım |
+| REF35 termal histerezis | T | 70 ppm | 1,39 mV | 1,27 mV | tipik, sınır olarak kullanıldı |
+| REF35 yük regülasyonu | T | 20 ppm/mA | 0,03 mV | 0,03 mV | tipik |
+| REF35 lehim kayması | V | 0 | 0 | 0 | **Hayır** (belirtilmemiş; B-U07) |
+| PSRR terimi için 0,1 V besleme kayması | V | 0,1 V × 65 dB | < 0,06 mV (karşılaştırıcıda) | – | varsayım |
+
+**Kırılma noktaları:** Hint_max = **7,28 mV** olursa a = 0. REF35'te bütçe dışı **+338 ppm** ek hata (ör. lehim kayması) a'yı, **+698 ppm** b'yi sıfırlar. Tek bir sınırsız terimin (Hint, lehim kayması, uzun dönem) bu düzeyleri aşmayacağına dair datasheet garantisi yok. Bu yüzden mevcut marj, garanti için **yetersiz** kabul edildi.
+
+**Tasarım değişikliği önerileri (uygulanmadı; KiCad/BOM değişmedi; parametrik Ç, parça seçilmedi/doğrulanmadı).** `search_c3()` en iyi E96 yeniden merkezlemesi:
+| Seçenek | En kötü marj | a / b / c (mV) | Not |
+|---|---|---|---|
+| O0 yalnız bölücüyü yeniden merkezlemek (mevcut parçalar) | +6,73 mV | 6,73 / 12,64 / 27,87 | Seçili tasarım zaten optimum → **yalnız bölücü/histerezis ayarı yetmez** |
+| O1 referans toplam hatası ×0,5 (daha düşük TC/kayma sınıfı referans) | +33,47 mV | 34,03 / 40,15 / 33,47 | Aday referansın garantili TC/uzun dönem verisi doğrulanmalı |
+| O2 bölücü direnç hatası ×0,5 (oran-eşlemeli ince film ağı sınıfı) | +63,48 mV | 63,48 / 64,62 / 63,51 | En etkili seçenek. Oran toleransı ve TCR izleme garantili olmalı |
+| O3 O1 + O2 | +84,86 mV | 84,86 / 85,99 / 89,12 | |
+Ek seçenekler: (i) Hint bağımlılığını kaldırmak için garantili histerezis/ofset verisi olan karşılaştırıcı. Bunun için aday datasheet incelemesi gerekir (bu turda yapılmadı). (ii) B-U tezgâh ölçümüyle Hint, REF35 lehim kayması ve uzun dönem kaymanın sınırlanması. Bu ölçüm garantiyi ancak lot kapsamı için destekler, datasheet garantisinin yerini tutmaz. Seçim kullanıcı/donanım kararıdır.
 
 ## 4. Zamanlayıcı ve EN (RTT 11,0k, CTT 10 µF, RHB 1 M, RK1/RK2 10,0k/40,2k, RDEN/RUV2 10k/10k)
 | Büyüklük | Sonuç | Marj |
 |---|---|---|
-| Soğuk açılış gecikmesi | 77,8–255,0 ms | ≥ 60 ms: +17,8 ms; ≤ 300 ms: +45,0 ms |
-| Tam dip sonrası (T0 = 0,85 + 0,225 V) | 65,0–219,5 ms | +4,98 ms |
-| Zamanlayıcı headroom (V∞ − V_th) | ≥ 0,738 V | +0,538 V (gerekli 0,2 V) |
+| Soğuk açılış gecikmesi | 77,7–255,3 ms | ≥ 60 ms: +17,7 ms; ≤ 300 ms: +44,7 ms |
+| Tam dip sonrası (T0 = 0,85 + 0,225 V) | 64,9–219,8 ms | +4,89 ms |
+| Zamanlayıcı headroom (V∞ − V_th) | ≥ 0,736 V | +0,536 V (gerekli 0,2 V) |
 | EN yüksek | ≥ 2,289 V | VEN-TH,max + 0,5 V üzerinde +0,739 V |
 | EN düşük | ≤ 0,121 V | < 0,4 V: +0,279 V |
 | EN düşük, U22 açık (OUTA düşük) | ≤ 2,6 mV = (V5,maks/(RDEN·0,97) + IEN)·RON,maks 4,9 Ω (G, SCDS410D s.5) | < 0,4 V: +0,397 V |
@@ -84,13 +110,14 @@ Not: EN bölücüsü (RDEN, RUV2) önceki sürümde yanlışlıkla ERA tolerans�
 | A1 yalnızca bölücü | V_f tipik ≈ 16,16 V | FAIL | FAIL ✔ |
 | B TPS3700 | H tipik 0,27 V | FAIL | FAIL ✔ |
 | D LM7480x | V_f,min 16,94 V | FAIL | FAIL ✔ |
-| C2 itme-çekme Rh (en iyi E96: 28,0k/7,87k/95,3k) | −0,1019 V | FAIL | FAIL ✔ |
-| Yanlış RBU 8,66k | −0,3479 V | FAIL | FAIL ✔ |
-| Yanlış RXU 100k | −0,1009 V | FAIL | FAIL ✔ |
+| C2 itme-çekme Rh (en iyi E96: 28,0k/7,87k/95,3k) | −0,1117 V | FAIL | FAIL ✔ |
+| Yanlış RBU 8,66k | −0,3599 V | FAIL | FAIL ✔ |
+| Yanlış RXU 100k | −0,1025 V | FAIL | FAIL ✔ |
 
 ## 6. Düzeltme günlüğü
 - 2026-10-25: VIO CMRR terimi RR2 = 40,2k'da hesaplanıyordu (0,09 mV iyimser). `vio_c3(RR1, RR2)` ile düzeltildi.
 - 2026-10-25: RHB 1 M, ERA aralığı dışında kaldığı için %1 jenerik parça (katı %3) olarak hesaba katıldı.
 - 2026-10-25: RDEN/RUV2 katı %3 olarak hesaba katıldı (§4).
+- 2026-10-25 (Tur 1 P0): TLV3202 VIO 4 → 6 mV (SBOS561C Rev C s.5 tablo 6.5; 4 mV TLV3201 satırıydı). a +18,50 → +6,73 mV, b +23,41 → +12,64 mV. `start_guarantee_status()` eklendi (§3a); decks yeniden üretildi.
 - 2026-10-25: U22 EN kapısı eklendi (§4, `en_low_gated_margin_V`). Eşik bütçesi (V_r/V_f/H, marj a–e) değişmedi.
 Hiçbir sınır gevşetilmedi.
