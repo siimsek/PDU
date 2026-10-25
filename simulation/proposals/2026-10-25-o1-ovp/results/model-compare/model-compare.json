@@ -14543,7 +14543,7 @@
  "rev3_results_sha256_previous": "974b0c5ebf77a26930ee9847887412a6b78b3828f02e2071fb9f690d66751dac",
  "rev3_rebound": {
   "by": "model-compare/rebind_rev3.py",
-  "script_sha256": "4f68056c1b6c311a271d4627350e738e7fa3ab1a03bdd36a1f4e7dc9dae1c34d",
+  "script_sha256": "1796fdea2719faf72b0d8697afd154ae01fb9d259f25f567869a6279c7a877b1",
   "rev3_commit": "e8cce6793d0ab14b95239bc0ed5fc2b02da63775",
   "rule": "rev2 rows/logs untouched; rev3 measures/verdicts identical to the previous rows; only rev3 log hashes re-bound"
  }

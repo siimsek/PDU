@@ -7,6 +7,14 @@ must be from the same deck (deck_sha256), have the same completed/errors state, 
 row (delta.rev3) and the same judge() result. Only rev3 log/log_sha256, rev3_results_label/sha256 change; the
 summary is recomputed with model_compare.summarize (Tur-3 P2-A counter). Tur-4 P2-T4-02: the row set must equal
 model_compare.R.CASES exactly and every row's key/measure set must be complete (see the coverage block) - else exit 2.
+Tur-5 P2-T5-02: the RAW o1ovp-results run rows are counted before the case-keyed dict is built; a duplicated CASE (or
+(engine, case) pair) or a row count != len(CASES) -> exit 2 (a dict would otherwise merge duplicates silently).
+Tur-5 P2-T5-01: the DERIVED fields are recomputed and compared, fail closed: every delta `d` must equal rev3 - rev2
+(|err| <= D_ABS + D_REL*max(|rev2|,|rev3|,1); None iff one side is None), every stored rev2/rev3 `verdict` must equal
+the verdict re-derived exactly as model_compare.main() does (INCOMPLETE / REFERENCE / FAIL if judge() acc_fail else
+PASS, judge() re-run on the rev2 log measures and on the new rev3 run measures) and `changed` must equal the
+model_compare.main() expression re-evaluated on the recomputed verdicts/deltas; model-independent rows must keep
+changed=False, delta={} and verdict MODEL-INDEPENDENT.
 Usage: python3 model-compare/rebind_rev3.py   -> exit 0 rebound, 2 mismatch (nothing written)
 """
 import json, sys
@@ -15,9 +23,26 @@ HERE = Path(__file__).absolute().parent; PKG = HERE.parent
 sys.path.insert(0, str(HERE)); sys.path.insert(0, str(PKG))
 import model_compare as M
 f = M.OUT/'model-compare.json'; d = json.loads(f.read_text())
-res = json.loads((PKG/'o1ovp-results.json').read_text())
-new = {r['case']: r for r in res['runs'] if r['engine'] == 'ng'}
+# RES_PATH: the real package results; guard_negative_test.py may point M.REBIND_RESULTS at a mutated temp copy.
+RES_PATH = Path(getattr(M, 'REBIND_RESULTS', PKG/'o1ovp-results.json'))
+res = json.loads(RES_PATH.read_text())
 bad = []
+D_ABS, D_REL, CHG = 1e-12, 1e-9, 1e-3  # d tolerance (float re-subtraction); CHG = model_compare.main() 'changed' threshold
+# Tur-5 P2-T5-02: count RAW rows BEFORE the case-keyed dict (which would silently merge duplicate CASE rows).
+raw_all = [(r.get('engine'), r.get('case')) for r in res['runs']]
+dup_all = sorted({x for x in raw_all if raw_all.count(x) > 1}, key=str)
+if dup_all: bad.append(f"raw duplicate (engine, case) runs: {dup_all[:5]} ({len(dup_all)})")
+raw_ng = [r.get('case') for r in res['runs'] if r.get('engine') == 'ng']
+dup_ng = sorted({c for c in raw_ng if raw_ng.count(c) > 1}, key=str)
+if dup_ng: bad.append(f"raw duplicate ng CASE runs: {dup_ng[:5]} ({len(dup_ng)})")
+if len(raw_ng) != len(M.R.CASES): bad.append(f"raw ng run count {len(raw_ng)} != len(CASES) {len(M.R.CASES)}")
+new = {r['case']: r for r in res['runs'] if r['engine'] == 'ng'}
+def num(x): return isinstance(x, (int, float)) and not isinstance(x, bool)
+def want_verdict(s, c, j):  # identical rule to model_compare.main() verdict(); j = judge() recomputed now (or None)
+    if not s.get('completed'): return 'INCOMPLETE'
+    if c['kind'] == 'reference': return 'REFERENCE'
+    if j is None: return None
+    return 'FAIL' if j['acc_fail'] else 'PASS'
 # Tur-4 P2-T4-02: fail-closed COVERAGE before any per-row check - the stored row set must equal model_compare.R.CASES
 # exactly (no missing/extra/duplicate case), kind/acceptance must match the case table, every non-model-independent
 # row must carry the full rev2/rev3 key sets, and its delta key set must equal the KEYS present in the rev2 log
@@ -33,6 +58,9 @@ for r in d['rows']:
     if r.get('kind') != c['kind'] or r.get('acceptance') != c.get('acceptance', True): bad.append(f"kind/acceptance {r['case']}")
     if r.get('model_independent'):
         if '.include ../pdu-o1ovp-behavioral.lib\n' in (M.R.DECKS/c['ng_file']).read_text(): bad.append(f"model_independent but uses model {r['case']}")
+        # Tur-5 P2-T5-01: derived fields of a model-independent row are fixed by model_compare.main()
+        if r.get('changed') is not False or r.get('delta') != {} or r.get('rev2', {}).get('verdict') != 'MODEL-INDEPENDENT' \
+           or r.get('rev3', {}).get('verdict') != 'MODEL-INDEPENDENT': bad.append(f"model_independent derived fields {r['case']}")
         continue
     if 'delta' not in r: bad.append(f"no delta {r['case']}"); continue
     for ver in ('rev2', 'rev3'):
@@ -45,12 +73,28 @@ for r in d['rows']:
     w = new.get(r['case'], {}); m3 = w.get('measures', {})
     exp = {k for k in M.KEYS if k in m2 or k in m3}
     if set(r['delta']) != exp: bad.append(f"delta keys {r['case']}: missing {sorted(exp - set(r['delta']))} extra {sorted(set(r['delta']) - exp)}")
+    dd = {}  # recomputed d per key (Tur-5 P2-T5-01)
     for k, v in r['delta'].items():
-        if not {'rev2', 'rev3', 'd'} <= v.keys(): bad.append(f"delta fields {r['case']}/{k}")
-        elif v['rev2'] != m2.get(k): bad.append(f"rev2 measure {r['case']}/{k}: {v['rev2']} vs log {m2.get(k)}")
+        if not {'rev2', 'rev3', 'd'} <= v.keys(): bad.append(f"delta fields {r['case']}/{k}"); continue
+        if v['rev2'] != m2.get(k): bad.append(f"rev2 measure {r['case']}/{k}: {v['rev2']} vs log {m2.get(k)}")
+        a, b = v['rev2'], v['rev3']
+        if (a is not None and not num(a)) or (b is not None and not num(b)): bad.append(f"delta value type {r['case']}/{k}"); continue
+        e = (b - a) if a is not None and b is not None else None; dd[k] = e
+        if e is None:
+            if v['d'] is not None: bad.append(f"delta d {r['case']}/{k}: {v['d']} but one side is None")
+        elif not num(v['d']) or abs(v['d'] - e) > D_ABS + D_REL * max(abs(a), abs(b), 1.0):
+            bad.append(f"delta d {r['case']}/{k}: stored {v['d']} != rev3-rev2 {e}")
+    j2 = None
     if r['rev2'].get('completed') and c['kind'] != 'reference':
         j2 = M.judge(r['case'], c, m2)
         if any(r['rev2'].get(x) != j2[x] for x in j2): bad.append(f"rev2 verdict detail {r['case']}")
+    v2 = want_verdict(r['rev2'], c, j2)
+    if r['rev2'].get('verdict') != v2: bad.append(f"rev2 verdict {r['case']}: stored {r['rev2'].get('verdict')} != recomputed {v2}")
+    j3 = M.judge(r['case'], c, m3) if w.get('execution_pass') and c['kind'] != 'reference' else None
+    v3 = want_verdict(dict(completed=w.get('execution_pass')), c, j3)
+    if r['rev3'].get('verdict') != v3: bad.append(f"rev3 verdict {r['case']}: stored {r['rev3'].get('verdict')} != recomputed {v3}")
+    chg = v2 != v3 or any(e is not None and abs(e) > CHG for e in dd.values()) or r['rev2'].get('completed') != w.get('execution_pass')
+    if r.get('changed') is not chg: bad.append(f"changed {r['case']}: stored {r.get('changed')} != recomputed {chg}")
 for r in d['rows']:
     if r.get('model_independent'): continue
     o2 = r['rev2']
@@ -70,7 +114,7 @@ for r in d['rows']:
     if r.get('model_independent'): continue
     w = new[r['case']]; r['rev3']['log'] = w['log']; r['rev3']['log_sha256'] = w['log_sha256']
 d['rev3_results_label_previous'] = d.get('rev3_results_label'); d['rev3_results_sha256_previous'] = d.get('rev3_results_sha256')
-d['rev3_results_label'] = res.get('label'); d['rev3_results_sha256'] = M.sha(PKG/'o1ovp-results.json')
+d['rev3_results_label'] = res.get('label'); d['rev3_results_sha256'] = M.sha(RES_PATH)
 d['summary'] = M.summarize(d['rows'])
 d['rev3_rebound'] = dict(by='model-compare/rebind_rev3.py', script_sha256=M.sha(Path(__file__)), rev3_commit=res['git']['commit'],
                          rule='rev2 rows/logs untouched; rev3 measures/verdicts identical to the previous rows; only rev3 log hashes re-bound')
