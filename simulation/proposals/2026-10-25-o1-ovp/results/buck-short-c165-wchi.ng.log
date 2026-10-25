@@ -46,12 +46,12 @@ info_postfault_bus_max=  1.139537e+01 at=  4.610925e-02
 info_postfault_o1_max=  1.139537e+01 at=  4.610935e-02
 
 
-Total analysis time (seconds) = 31.5963
+Total analysis time (seconds) = 53.235
 
-Total elapsed time (seconds) = 31.631 
+Total elapsed time (seconds) = 53.296 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available = 1288.316 MB.
+DRAM currently available =  437.602 MB.
 Maximum ngspice program size =   95.555 MB.
 Current ngspice program size =   86.465 MB.
 

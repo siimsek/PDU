@@ -151,14 +151,14 @@
   }
  ],
  "synthetic_status": "PART B - SYNTHETIC: completed rev3 measures with ONLY regime values injected (no ngspice); tests judging rules",
- "o1ovp_results_sha256": "76bb4b40e883cf6c69a211ce74caeb119bd64527f7e91a57da87cefc00363507",
+ "o1ovp_results_sha256": "974b0c5ebf77a26930ee9847887412a6b78b3828f02e2071fb9f690d66751dac",
  "synthetic_rows": [
   {
    "case": "buck-short-c185-esr12m5-wchi",
    "injection": "control-unmodified",
    "injected": {},
    "base_completed": true,
-   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": true
@@ -178,7 +178,7 @@
     "inp_pre_min": 1.0
    },
    "base_completed": true,
-   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -202,7 +202,7 @@
     "vgs_pre_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -227,7 +227,7 @@
     "vgs_pre_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -251,7 +251,7 @@
     "inp_recov_min": 1.0
    },
    "base_completed": true,
-   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": false
@@ -275,7 +275,7 @@
     "vgs_recov_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": false
@@ -297,7 +297,7 @@
    "injection": "control-unmodified",
    "injected": {},
    "base_completed": true,
-   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": true
@@ -317,7 +317,7 @@
     "inp_pre_min": 1.0
    },
    "base_completed": true,
-   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -341,7 +341,7 @@
     "vgs_pre_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -366,7 +366,7 @@
     "vgs_pre_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -390,7 +390,7 @@
     "inp_recov_min": 1.0
    },
    "base_completed": true,
-   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": false
@@ -414,7 +414,7 @@
     "vgs_recov_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": false
@@ -432,5 +432,5 @@
    "selftest_pass": true
   }
  ],
- "logs_note": "Tur-3: ngspice re-run logs differed from the committed ones only in timing/memory statistics lines; committed logs kept (no timestamp-only diffs), log_sha256 refers to them"
+ "logs_note": "Tur-3: re-run mutation logs differed from the committed ones only in ngspice timing/memory statistics lines; committed logs kept (no timestamp-only diffs); log_sha256 refers to them"
 }
