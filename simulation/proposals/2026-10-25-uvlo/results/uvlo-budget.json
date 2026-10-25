@@ -144,24 +144,24 @@
   "Rx": 90900.0,
   "RR1": 10000.0,
   "RR2": 46400.0,
-  "vr_min": 19.458331828221056,
-  "vr_max": 19.989524239149013,
-  "vf_min": 18.012638918867115,
-  "vf_max": 18.500494486870462,
-  "h_min": 1.4322324670195563,
-  "h_max": 1.5026669730896458,
+  "vr_min": 19.458417563085863,
+  "vr_max": 19.989611140759155,
+  "vf_min": 18.012718343297223,
+  "vf_max": 18.500574974333265,
+  "h_min": 1.432238777454252,
+  "h_max": 1.5026733872369853,
   "vin_op_20V": 18.74571323563722,
   "s_at_26V_max": 4.828964634688589,
-  "cross_corner_rmin_minus_fmax": 0.9578373413505936,
+  "cross_corner_rmin_minus_fmax": 0.9578425887525981,
   "margins": {
-   "a_start_margin": 0.006725760850986973,
-   "b_overdischarge_margin": 0.012638918867114768,
-   "c_motorboat_margin": 0.027873740882322057,
-   "d_run_at_20V_margin": 0.14521874876675653,
+   "a_start_margin": 0.006638859240844397,
+   "b_overdischarge_margin": 0.0127183432972231,
+   "c_motorboat_margin": 0.02788579840017799,
+   "d_run_at_20V_margin": 0.14513826130395344,
    "e_sense_26V_cm_margin": 0.07103536531141152
   },
   "ok": true,
-  "worst": 0.006725760850986973
+  "worst": 0.006638859240844397
  },
  "chosen_c3_rss_info": {
   "Rt": 39200.0,
@@ -169,24 +169,24 @@
   "Rx": 90900.0,
   "RR1": 10000.0,
   "RR2": 46400.0,
-  "vr_min": 19.558277068420548,
-  "vr_max": 19.887660632864065,
-  "vf_min": 18.104194468924028,
-  "vf_max": 18.407192035739193,
-  "h_min": 1.4405782271813976,
-  "h_max": 1.4940613576176744,
+  "vr_min": 19.558327750992966,
+  "vr_max": 19.887711669201316,
+  "vf_min": 18.104241418489302,
+  "vf_max": 18.40723930768171,
+  "h_min": 1.4405819601885383,
+  "h_max": 1.4940651220124082,
   "vin_op_20V": 18.74571323563722,
   "s_at_26V_max": 4.828964634688589,
-  "cross_corner_rmin_minus_fmax": 1.1510850326813546,
+  "cross_corner_rmin_minus_fmax": 1.1510884433112558,
   "margins": {
-   "a_start_margin": 0.10858936713593437,
-   "b_overdischarge_margin": 0.10419446892402817,
-   "c_motorboat_margin": 0.04281407920465194,
-   "d_run_at_20V_margin": 0.2385211998980253,
+   "a_start_margin": 0.1085383307986838,
+   "b_overdischarge_margin": 0.1042414184893019,
+   "c_motorboat_margin": 0.04282117518328707,
+   "d_run_at_20V_margin": 0.23847392795550845,
    "e_sense_26V_cm_margin": 0.07103536531141152
   },
   "ok": true,
-  "worst": 0.04281407920465194
+  "worst": 0.04282117518328707
  },
  "timer_values": {
   "RT": 11000.0,
@@ -227,60 +227,60 @@
  },
  "spice_corners_c3": {
   "vrmax": {
-   "vr": 19.989524239149013,
-   "vf": 18.48685726605937,
+   "vr": 19.989611140759155,
+   "vf": 18.486937753522174,
    "RTU": 39356.8,
    "RBU": 8834.52,
    "RXU": 90536.4,
    "RR1U": 9960.0,
    "RR2U": 46585.6,
-   "VREF_P": 4.108138301367376,
-   "VIOA": 0.006925992997767263,
+   "VREF_P": 4.1081382860482725,
+   "VIOA": 0.006940760725897307,
    "HINTA": 0.005,
    "IS_U": 7e-09,
    "IM_U": 5e-09,
    "RON_U": 0.001
   },
   "vfmin": {
-   "vr": 19.48445176871425,
-   "vf": 18.012638918867115,
+   "vr": 19.484537554606806,
+   "vf": 18.012718343297223,
    "RTU": 39043.2,
    "RBU": 8905.48,
    "RXU": 90536.4,
    "RR1U": 10040.0,
    "RR2U": 46214.4,
-   "VREF_P": 4.083861698632624,
-   "VIOA": -0.006925992997767263,
+   "VREF_P": 4.083861683234222,
+   "VIOA": -0.006911228895127109,
    "HINTA": 0.005,
    "IS_U": -7e-09,
    "IM_U": -5e-09,
    "RON_U": 0.001
   },
   "vfmax": {
-   "vr": 19.974800251026654,
-   "vf": 18.500494486870462,
+   "vr": 19.974887152636796,
+   "vf": 18.500574974333265,
    "RTU": 39356.8,
    "RBU": 8834.52,
    "RXU": 90536.4,
    "RR1U": 9960.0,
    "RR2U": 46585.6,
-   "VREF_P": 4.108138301367376,
-   "VIOA": 0.006925992997767263,
+   "VREF_P": 4.1081382860482725,
+   "VIOA": 0.006940760725897307,
    "HINTA": 0.0,
    "IS_U": 7e-09,
    "IM_U": 5e-09,
    "RON_U": 0.001
   },
   "mbmin": {
-   "vr": 19.458331828221056,
-   "vf": 18.0260993612015,
+   "vr": 19.458417563085863,
+   "vf": 18.026178785631608,
    "RTU": 39043.2,
    "RBU": 8905.48,
    "RXU": 91263.6,
    "RR1U": 10040.0,
    "RR2U": 46214.4,
-   "VREF_P": 4.083861698632624,
-   "VIOA": -0.006925992997767263,
+   "VREF_P": 4.083861683234222,
+   "VIOA": -0.006911228895127109,
    "HINTA": 0.0,
    "IS_U": -7e-09,
    "IM_U": -5e-09,
@@ -336,24 +336,24 @@
   "Rx": 90900.0,
   "RR1": 10000.0,
   "RR2": 46400.0,
-  "vr_min": 19.814273222632018,
-  "vr_max": 20.35617217707172,
-  "vf_min": 18.36831452887967,
-  "vf_max": 18.866872353618763,
-  "h_min": 1.4322324670195563,
-  "h_max": 1.5032071154384496,
+  "vr_min": 19.814360525779186,
+  "vr_max": 20.35626067265353,
+  "vf_min": 18.36839552159214,
+  "vf_max": 18.866954435053238,
+  "h_min": 1.4322387774542484,
+  "h_max": 1.5032135295857856,
   "vin_op_20V": 18.74571323563722,
   "s_at_26V_max": 4.735460171637427,
-  "cross_corner_rmin_minus_fmax": 0.9474008690132543,
+  "cross_corner_rmin_minus_fmax": 0.9474060907259485,
   "margins": {
-   "a_start_margin": -0.35992217707172003,
-   "b_overdischarge_margin": 0.36831452887966876,
-   "c_motorboat_margin": 0.053130744169712724,
-   "d_run_at_20V_margin": -0.221159117981545,
+   "a_start_margin": -0.36001067265353015,
+   "b_overdischarge_margin": 0.3683955215921415,
+   "c_motorboat_margin": 0.05314269040202854,
+   "d_run_at_20V_margin": -0.2212411994160192,
    "e_sense_26V_cm_margin": 0.16453982836257364
   },
   "ok": false,
-  "worst": -0.35992217707172003
+  "worst": -0.36001067265353015
  },
  "regression_misset_rx_100k": {
   "Rt": 39200.0,
@@ -361,24 +361,24 @@
   "Rx": 100000.0,
   "RR1": 10000.0,
   "RR2": 46400.0,
-  "vr_min": 19.328005034292897,
-  "vr_max": 19.855263518785474,
-  "vf_min": 18.012638918867115,
-  "vf_max": 18.500494486870462,
-  "h_min": 1.3019056730913938,
-  "h_max": 1.368406252726107,
+  "vr_min": 19.328090194936166,
+  "vr_max": 19.85534983670821,
+  "vf_min": 18.012718343297223,
+  "vf_max": 18.500574974333265,
+  "h_min": 1.3019114093045552,
+  "h_max": 1.368412083186037,
   "vin_op_20V": 18.74571323563722,
   "s_at_26V_max": 4.828964634688589,
-  "cross_corner_rmin_minus_fmax": 0.8275105474224347,
+  "cross_corner_rmin_minus_fmax": 0.8275152206029013,
   "margins": {
-   "a_start_margin": 0.14098648121452584,
-   "b_overdischarge_margin": 0.012638918867114768,
-   "c_motorboat_margin": -0.10245305304583688,
-   "d_run_at_20V_margin": 0.14521874876675653,
+   "a_start_margin": 0.14090016329178923,
+   "b_overdischarge_margin": 0.0127183432972231,
+   "c_motorboat_margin": -0.10244156974951882,
+   "d_run_at_20V_margin": 0.14513826130395344,
    "e_sense_26V_cm_margin": 0.07103536531141152
   },
   "ok": false,
-  "worst": -0.10245305304583688
+  "worst": -0.10244156974951882
  },
  "alternatives": {
   "A0_baseline_180k_10k": {
@@ -451,24 +451,24 @@
     "Rx": 90900.0,
     "RR1": 10000.0,
     "RR2": 46400.0,
-    "vr_min": 19.458331828221056,
-    "vr_max": 19.989524239149013,
-    "vf_min": 18.012638918867115,
-    "vf_max": 18.500494486870462,
-    "h_min": 1.4322324670195563,
-    "h_max": 1.5026669730896458,
+    "vr_min": 19.458417563085863,
+    "vr_max": 19.989611140759155,
+    "vf_min": 18.012718343297223,
+    "vf_max": 18.500574974333265,
+    "h_min": 1.432238777454252,
+    "h_max": 1.5026733872369853,
     "vin_op_20V": 18.74571323563722,
     "s_at_26V_max": 4.828964634688589,
-    "cross_corner_rmin_minus_fmax": 0.9578373413505936,
+    "cross_corner_rmin_minus_fmax": 0.9578425887525981,
     "margins": {
-     "a_start_margin": 0.006725760850986973,
-     "b_overdischarge_margin": 0.012638918867114768,
-     "c_motorboat_margin": 0.027873740882322057,
-     "d_run_at_20V_margin": 0.14521874876675653,
+     "a_start_margin": 0.006638859240844397,
+     "b_overdischarge_margin": 0.0127183432972231,
+     "c_motorboat_margin": 0.02788579840017799,
+     "d_run_at_20V_margin": 0.14513826130395344,
      "e_sense_26V_cm_margin": 0.07103536531141152
     },
     "ok": true,
-    "worst": 0.006725760850986973
+    "worst": 0.006638859240844397
    },
    "n_candidates": 3236,
    "chosen": {
@@ -477,57 +477,57 @@
     "Rx": 90900.0,
     "RR1": 10000.0,
     "RR2": 46400.0,
-    "vr_min": 19.458331828221056,
-    "vr_max": 19.989524239149013,
-    "vf_min": 18.012638918867115,
-    "vf_max": 18.500494486870462,
-    "h_min": 1.4322324670195563,
-    "h_max": 1.5026669730896458,
+    "vr_min": 19.458417563085863,
+    "vr_max": 19.989611140759155,
+    "vf_min": 18.012718343297223,
+    "vf_max": 18.500574974333265,
+    "h_min": 1.432238777454252,
+    "h_max": 1.5026733872369853,
     "vin_op_20V": 18.74571323563722,
     "s_at_26V_max": 4.828964634688589,
-    "cross_corner_rmin_minus_fmax": 0.9578373413505936,
+    "cross_corner_rmin_minus_fmax": 0.9578425887525981,
     "margins": {
-     "a_start_margin": 0.006725760850986973,
-     "b_overdischarge_margin": 0.012638918867114768,
-     "c_motorboat_margin": 0.027873740882322057,
-     "d_run_at_20V_margin": 0.14521874876675653,
+     "a_start_margin": 0.006638859240844397,
+     "b_overdischarge_margin": 0.0127183432972231,
+     "c_motorboat_margin": 0.02788579840017799,
+     "d_run_at_20V_margin": 0.14513826130395344,
      "e_sense_26V_cm_margin": 0.07103536531141152
     },
     "ok": true,
-    "worst": 0.006725760850986973
+    "worst": 0.006638859240844397
    },
    "pass_": true
   }
  },
  "start_guarantee": {
   "status": "NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS",
-  "a_start_margin_mV": 6.725760850986973,
-  "b_overdischarge_margin_mV": 12.638918867114768,
-  "vr_max": 19.989524239149013,
-  "vf_min": 18.012638918867115,
+  "a_start_margin_mV": 6.638859240844397,
+  "b_overdischarge_margin_mV": 12.7183432972231,
+  "vr_max": 19.989611140759155,
+  "vf_min": 18.012718343297223,
   "non_guaranteed_terms": [
    {
     "term": "REF35 TC extrapolated 105->125 C, 20 K x 12 ppm (I, outside spec range)",
     "cls": "I",
     "value": 0.00024,
-    "a_mV": 4.769902656601488,
-    "b_mV": 4.348218253813485,
+    "a_mV": 4.774672559250348,
+    "b_mV": 4.3438700355586946,
     "unbounded": false
    },
    {
     "term": "REF35 long-term 40 ppm/1000 h @35 C, x10 linear for 10 kh (A)",
     "cls": "A",
     "value": 0.0004,
-    "a_mV": 7.949837761003664,
-    "b_mV": 7.247030423020107,
+    "a_mV": 7.957787598755317,
+    "b_mV": 7.239783392595456,
     "unbounded": true
    },
    {
     "term": "REF35 thermal hysteresis 70 ppm (T cycle 1, used as bound - A)",
     "cls": "T",
     "value": 7e-05,
-    "a_mV": 1.3912216081770623,
-    "b_mV": 1.2682303240296733,
+    "a_mV": 1.392612829778983,
+    "b_mV": 1.2669620937053594,
     "unbounded": false
    },
    {
@@ -542,15 +542,15 @@
     "term": "REF35 load regulation 20 ppm/mA (T used as bound)",
     "cls": "T",
     "value": 2e-05,
-    "a_mV": 0.02886749598118854,
-    "b_mV": 0.02631545798692514,
+    "a_mV": 0.028821957855029723,
+    "b_mV": 0.026357185195280408,
     "unbounded": false
    },
    {
     "term": "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet: 1.2 mV typ, NO max)",
     "cls": "A",
     "value": 0.005,
-    "a_mV": 11.190230972992765,
+    "a_mV": 11.190230972996318,
     "b_mV": 10.229936174130927,
     "unbounded": true,
     "note": "a_mV = margin gained if Hint were only its typical 1.2 mV"
@@ -579,9 +579,9 @@
    "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet: 1.2 mV typ, NO max)"
   ],
   "break_even": {
-   "hint_max_V_for_a_eq_0": 0.007283946711682976,
-   "extra_ref_error_ppm_for_a_eq_0": 338.4099677595473,
-   "extra_ref_error_ppm_for_b_eq_0": 697.6053985902286
+   "hint_max_V_for_a_eq_0": 0.007254436496984429,
+   "extra_ref_error_ppm_for_a_eq_0": 333.70376670408314,
+   "extra_ref_error_ppm_for_b_eq_0": 702.6919236412699
   },
   "design_options_parametric": {
    "O0_recentre_only (current parts)": {
@@ -590,13 +590,13 @@
     "Rx": 90900.0,
     "RR2": 46400.0,
     "margins_mV": {
-     "a_start_margin": 6.73,
-     "b_overdischarge_margin": 12.64,
-     "c_motorboat_margin": 27.87,
-     "d_run_at_20V_margin": 145.22,
+     "a_start_margin": 6.64,
+     "b_overdischarge_margin": 12.72,
+     "c_motorboat_margin": 27.89,
+     "d_run_at_20V_margin": 145.14,
      "e_sense_26V_cm_margin": 71.04
     },
-    "worst_mV": 6.73
+    "worst_mV": 6.64
    },
    "O1_reference_total_error_x0.5": {
     "Rt": 31600.0,
@@ -604,13 +604,13 @@
     "Rx": 73200.0,
     "RR2": 46400.0,
     "margins_mV": {
-     "a_start_margin": 34.03,
-     "b_overdischarge_margin": 40.15,
-     "c_motorboat_margin": 33.47,
-     "d_run_at_20V_margin": 171.89,
+     "a_start_margin": 33.97,
+     "b_overdischarge_margin": 40.21,
+     "c_motorboat_margin": 33.48,
+     "d_run_at_20V_margin": 171.83,
      "e_sense_26V_cm_margin": 71.2
     },
-    "worst_mV": 33.47
+    "worst_mV": 33.48
    },
    "O2_divider_resistor_error_x0.5 (ratio-matched network class)": {
     "Rt": 45300.0,
@@ -618,13 +618,13 @@
     "Rx": 95300.0,
     "RR2": 31600.0,
     "margins_mV": {
-     "a_start_margin": 63.48,
-     "b_overdischarge_margin": 64.62,
-     "c_motorboat_margin": 63.51,
-     "d_run_at_20V_margin": 222.78,
+     "a_start_margin": 63.4,
+     "b_overdischarge_margin": 64.69,
+     "c_motorboat_margin": 63.52,
+     "d_run_at_20V_margin": 222.71,
      "e_sense_26V_cm_margin": 437.99
     },
-    "worst_mV": 63.48
+    "worst_mV": 63.4
    },
    "O3_both_x0.5": {
     "Rt": 27400.000000000004,
@@ -632,13 +632,13 @@
     "Rx": 59000.0,
     "RR2": 37400.0,
     "margins_mV": {
-     "a_start_margin": 84.86,
-     "b_overdischarge_margin": 85.99,
-     "c_motorboat_margin": 89.12,
-     "d_run_at_20V_margin": 263.25,
+     "a_start_margin": 84.82,
+     "b_overdischarge_margin": 86.03,
+     "c_motorboat_margin": 89.13,
+     "d_run_at_20V_margin": 263.21,
      "e_sense_26V_cm_margin": 262.99
     },
-    "worst_mV": 84.86
+    "worst_mV": 84.82
    }
   },
   "note": "Status cannot become GUARANTEED by simulation: unbounded terms need datasheet max values or bench data (B-U), or a design change that leaves enough margin to cover them. Requirements are NOT loosened."
@@ -681,15 +681,15 @@
   "net_rel_terms": {
    "relative tolerance +/-0.05 % (G)": 0.0005,
    "relative TCR +/-5 ppm/K x 100 K, grade U (G; A: grade U orderable in 0606 DF, table p3 ambiguous)": 0.0005,
-   "relative drift endurance 70 C 1000 h +/-0.05 % (G for AE; A: same for DF, datasheet note (2))": 0.0005,
-   "soldering heat: NO relative limit -> absolute +/-0.1 % used as relative bound (G abs, strict)": 0.001
+   "relative drift endurance 70 C 1000 h +/-0.05 % (A: AE-only figure, note (2); assumed for DF)": 0.0005,
+   "soldering heat: NO relative limit -> absolute +/-0.1 % used as relative bound (A: AE-only figure, note (2); assumed for DF)": 0.001
   },
   "e_net_rel": 0.0025,
   "net_abs_terms": {
    "absolute tolerance +/-0.1 % (G)": 0.001,
    "absolute TCR +/-10 ppm/K x 100 K, grade U (G)": 0.001,
-   "absolute drift endurance 70 C 1000 h +/-0.1 % (G)": 0.001,
-   "soldering heat +/-0.1 % (G)": 0.001
+   "absolute drift endurance 70 C 1000 h +/-0.1 % (A: AE-only figure, note (2); assumed for DF)": 0.001,
+   "soldering heat +/-0.1 % (A: AE-only figure, note (2); assumed for DF)": 0.001
   },
   "e_net_abs": 0.004,
   "i_q_prestart": 0.0162,
@@ -706,23 +706,23 @@
    "Rx": 53600.0,
    "RR1": 10000.0,
    "RR2": 41200.0,
-   "vr_min": 19.55977217073971,
-   "vr_max": 19.922036696454047,
-   "vf_min": 18.070281138620857,
-   "vf_max": 18.3943399553615,
-   "h_min": 1.4757136900579226,
-   "h_max": 1.5418131680532952,
+   "vr_min": 19.55981718270796,
+   "vr_max": 19.922082336166994,
+   "vf_min": 18.07032275462918,
+   "vf_max": 18.39438212704373,
+   "h_min": 1.4757170860178483,
+   "h_max": 1.5418166366027393,
    "s_at_26V_max": 4.717862129866797,
-   "cross_corner_rmin_minus_fmax": 1.1654322153782104,
+   "cross_corner_rmin_minus_fmax": 1.1654350556642292,
    "margins": {
-    "a_start_margin": 0.07391330354595382,
-    "b_overdischarge_margin": 0.07028113862085661,
-    "c_motorboat_margin": 0.0755354128688138,
-    "d_run_at_20V_margin": 0.2513732802757197,
+    "a_start_margin": 0.07386766383300625,
+    "b_overdischarge_margin": 0.07032275462918136,
+    "c_motorboat_margin": 0.07554180086205706,
+    "d_run_at_20V_margin": 0.25133110859348806,
     "e_sense_26V_cm_margin": 0.1821378701332037
    },
    "ok": true,
-   "worst": 0.07028113862085661
+   "worst": 0.07032275462918136
   },
   "best_search": {
    "Rt": 24300.0,
@@ -730,69 +730,108 @@
    "Rx": 53600.0,
    "RR1": 10000.0,
    "RR2": 41200.0,
-   "vr_min": 19.55977217073971,
-   "vr_max": 19.922036696454047,
-   "vf_min": 18.070281138620857,
-   "vf_max": 18.3943399553615,
-   "h_min": 1.4757136900579226,
-   "h_max": 1.5418131680532952,
+   "vr_min": 19.55981718270796,
+   "vr_max": 19.922082336166994,
+   "vf_min": 18.07032275462918,
+   "vf_max": 18.39438212704373,
+   "h_min": 1.4757170860178483,
+   "h_max": 1.5418166366027393,
    "s_at_26V_max": 4.717862129866797,
-   "cross_corner_rmin_minus_fmax": 1.1654322153782104,
+   "cross_corner_rmin_minus_fmax": 1.1654350556642292,
    "margins": {
-    "a_start_margin": 0.07391330354595382,
-    "b_overdischarge_margin": 0.07028113862085661,
-    "c_motorboat_margin": 0.0755354128688138,
-    "d_run_at_20V_margin": 0.2513732802757197,
+    "a_start_margin": 0.07386766383300625,
+    "b_overdischarge_margin": 0.07032275462918136,
+    "c_motorboat_margin": 0.07554180086205706,
+    "d_run_at_20V_margin": 0.25133110859348806,
     "e_sense_26V_cm_margin": 0.1821378701332037
    },
    "ok": true,
-   "worst": 0.07028113862085661
+   "worst": 0.07032275462918136
   },
   "n_candidates": 3236,
+  "sensitivity_ae_only_terms": {
+   "note": "AE-only test figures (doc 28770 note (2)) applied as extra DF drift; NOT in the bound; scope of the bound = 1000 h 70 C endurance + one reflow (A)",
+   "cases": {
+    "damp heat 85 C / 85 % RH 1000 h: absolute +/-0.5 % (AE, A for DF)": {
+     "margins_mV": {
+      "a_start_margin": 66.6,
+      "b_overdischarge_margin": 69.86,
+      "c_motorboat_margin": 68.09,
+      "d_run_at_20V_margin": 250.86,
+      "e_sense_26V_cm_margin": 182.14
+     },
+     "ok": true
+    },
+    "rapid temperature change: absolute +/-0.25 % (AE, A for DF)": {
+     "margins_mV": {
+      "a_start_margin": 70.24,
+      "b_overdischarge_margin": 70.09,
+      "c_motorboat_margin": 71.82,
+      "d_run_at_20V_margin": 251.1,
+      "e_sense_26V_cm_margin": 182.14
+     },
+     "ok": true
+    },
+    "endurance 125 C 1000 h: relative +/-0.125 % instead of 70 C +/-0.05 % (AE, A for DF)": {
+     "margins_mV": {
+      "a_start_margin": 44.3,
+      "b_overdischarge_margin": 42.79,
+      "c_motorboat_margin": 72.01,
+      "d_run_at_20V_margin": 223.28,
+      "e_sense_26V_cm_margin": 176.34
+     },
+     "ok": true
+    }
+   }
+  },
+  "break_even_extra_rel_drift": {
+   "value": 0.0018714121210541635,
+   "note": "extra element-to-axis (and absolute) drift of the DF arrays beyond the assumed bound at which min(a, b) = 0"
+  },
   "sensitivity_rel_drift_125C_1000h": {
    "e_net_rel": 0.0032500000000000003,
    "margins_mV": {
-    "a_start_margin": 45.42,
-    "b_overdischarge_margin": 42.83,
-    "c_motorboat_margin": 73.12,
-    "d_run_at_20V_margin": 223.42,
+    "a_start_margin": 45.37,
+    "b_overdischarge_margin": 42.88,
+    "c_motorboat_margin": 73.13,
+    "d_run_at_20V_margin": 223.37,
     "e_sense_26V_cm_margin": 176.34
    },
    "ok": true
   },
   "c3_old_margins_mV": {
-   "a_start_margin": 6.73,
-   "b_overdischarge_margin": 12.64,
-   "c_motorboat_margin": 27.87,
-   "d_run_at_20V_margin": 145.22,
+   "a_start_margin": 6.64,
+   "b_overdischarge_margin": 12.72,
+   "c_motorboat_margin": 27.89,
+   "d_run_at_20V_margin": 145.14,
    "e_sense_26V_cm_margin": 71.04
   },
   "o3_margins_mV": {
-   "a_start_margin": 73.91,
-   "b_overdischarge_margin": 70.28,
+   "a_start_margin": 73.87,
+   "b_overdischarge_margin": 70.32,
    "c_motorboat_margin": 75.54,
-   "d_run_at_20V_margin": 251.37,
+   "d_run_at_20V_margin": 251.33,
    "e_sense_26V_cm_margin": 182.14
   },
   "start_guarantee": {
    "status": "NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS",
-   "a_start_margin_mV": 73.91330354595382,
-   "b_overdischarge_margin_mV": 70.28113862085661,
+   "a_start_margin_mV": 73.86766383300625,
+   "b_overdischarge_margin_mV": 70.32275462918136,
    "non_guaranteed_terms": [
     {
      "term": "REF5040 long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh (A, typical values extrapolated)",
      "cls": "A",
      "value": 0.000275,
-     "a_mV": 5.4557526016125735,
-     "b_mV": 4.990220304257775,
+     "a_mV": 5.461208354216041,
+     "b_mV": 4.985230083956793,
      "unbounded": true
     },
     {
      "term": "REF5040 thermal hysteresis VSSOP 50 ppm (T used as bound - A)",
      "cls": "T",
      "value": 5e-05,
-     "a_mV": 0.9919550184704917,
-     "b_mV": 0.9073127825907079,
+     "a_mV": 0.9929469734935026,
+     "b_mV": 0.9064054698164625,
      "unbounded": false
     },
     {
@@ -807,16 +846,25 @@
      "term": "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max)",
      "cls": "A",
      "value": 0.005,
-     "a_mV": 11.42521742880831,
+     "a_mV": 11.425217428811862,
      "b_mV": 10.470779966304633,
      "unbounded": true
+    },
+    {
+     "term": "ACAS DF absolute endurance +/-0.1 % + soldering heat +/-0.1 % and relative endurance/solder bounds (A: AE-only figures, doc 28770 note (2); DF not specified)",
+     "cls": "A",
+     "value": 0.002,
+     "a_mV": 40.83704968231672,
+     "b_mV": 36.83060872536714,
+     "unbounded": true,
+     "note": "DF permissible changes are not given in the datasheet -> unbounded until supplier data/bench"
     },
     {
      "term": "ACAS DF: relative drift + grade-U relative TCR (A: DF figures / grade-U availability not confirmed)",
      "cls": "A",
      "value": 0.001,
-     "a_mV": 37.88135066975684,
-     "b_mV": 36.72771843718792,
+     "a_mV": 37.88901367742881,
+     "b_mV": 36.720643101535444,
      "unbounded": false
     },
     {
@@ -831,66 +879,67 @@
    "unbounded_terms": [
     "REF5040 long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh (A, typical values extrapolated)",
     "REF5040 solder shift: typical histograms only (A: 0, unbounded, bench B-U07)",
-    "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max)"
+    "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max)",
+    "ACAS DF absolute endurance +/-0.1 % + soldering heat +/-0.1 % and relative endurance/solder bounds (A: AE-only figures, doc 28770 note (2); DF not specified)"
    ],
    "note": "OPEN: positive only under A/T terms (REF5040 long-term/solder shift, TLV3202 Hint max, ACAS DF drift). Not GUARANTEED by simulation; requirements NOT loosened."
   },
   "spice_corners": {
    "vrmax": {
-    "vr": 19.922036696454047,
-    "vf": 18.380223528400755,
+    "vr": 19.922082336166994,
+    "vf": 18.380265699564255,
     "RTU": 24397.2,
     "RBU": 5354.64,
     "RXU": 53385.6,
     "RR1U": 9960.000000000002,
     "RR2U": 41241.200000000004,
-    "VREF_UV_P": 4.1014272,
-    "VIOA": 0.006852234132519035,
+    "VREF_UV_P": 4.101427199616009,
+    "VIOA": 0.006859824271515851,
     "HINTA": 0.005,
     "IS_U": 7e-09,
     "IM_U": 5e-09,
     "RON_U": 0.001
    },
    "vfmin": {
-    "vr": 19.586671478787306,
-    "vf": 18.070281138620857,
+    "vr": 19.586716518344037,
+    "vf": 18.07032275462918,
     "RTU": 24202.800000000003,
     "RBU": 5365.360000000001,
     "RXU": 53385.6,
     "RR1U": 10010.000000000002,
     "RR2U": 41035.200000000004,
-    "VREF_UV_P": 4.0905728,
-    "VIOA": -0.006852234132519035,
+    "VREF_UV_P": 4.090572750313777,
+    "VIOA": -0.006844642659151821,
     "HINTA": 0.005,
     "IS_U": -7e-09,
     "IM_U": -5e-09,
     "RON_U": 0.001
    },
    "vfmax": {
-    "vr": 19.902708675286707,
-    "vf": 18.3943399553615,
+    "vr": 19.90275430515419,
+    "vf": 18.39438212704373,
     "RTU": 24324.300000000003,
     "RBU": 5338.56,
     "RXU": 53385.6,
     "RR1U": 9960.000000000002,
     "RR2U": 41241.200000000004,
-    "VREF_UV_P": 4.1014272,
-    "VIOA": 0.006852234132519035,
+    "VREF_UV_P": 4.101427199616009,
+    "VIOA": 0.006859824271515851,
     "HINTA": 0.0,
     "IS_U": 7e-09,
     "IM_U": 5e-09,
     "RON_U": 0.001
    },
    "mbmin": {
-    "vr": 19.55977217073971,
-    "vf": 18.084058480681783,
+    "vr": 19.55981718270796,
+    "vf": 18.084100096690108,
     "RTU": 24202.800000000003,
     "RBU": 5365.360000000001,
     "RXU": 53814.4,
     "RR1U": 10010.000000000002,
     "RR2U": 41035.200000000004,
-    "VREF_UV_P": 4.0905728,
-    "VIOA": -0.006852234132519035,
+    "VREF_UV_P": 4.090572750313777,
+    "VIOA": -0.006844642659151821,
     "HINTA": 0.0,
     "IS_U": -7e-09,
     "IM_U": -5e-09,
@@ -919,23 +968,23 @@
   "Rx": 53600.0,
   "RR1": 10000.0,
   "RR2": 41200.0,
-  "vr_min": 19.92771720599588,
-  "vr_max": 20.297243333415377,
-  "vf_min": 18.43794585753517,
-  "vf_max": 18.769269082685163,
-  "h_min": 1.4757136900579262,
-  "h_max": 1.5423794352136966,
+  "vr_min": 19.927763064691106,
+  "vr_max": 20.29728983270259,
+  "vf_min": 18.437988320270474,
+  "vf_max": 18.76931211395455,
+  "h_min": 1.475717086017852,
+  "h_max": 1.5423829037631407,
   "s_at_26V_max": 4.623785607139192,
-  "cross_corner_rmin_minus_fmax": 1.1584481233107162,
+  "cross_corner_rmin_minus_fmax": 1.1584509507365581,
   "margins": {
-   "a_start_margin": -0.30129333341537645,
-   "b_overdischarge_margin": 0.4379458575351691,
-   "c_motorboat_margin": 0.10146181926833772,
-   "d_run_at_20V_margin": -0.12355584704794467,
+   "a_start_margin": -0.30133983270258824,
+   "b_overdischarge_margin": 0.43798832027047396,
+   "c_motorboat_margin": 0.10146814759792919,
+   "d_run_at_20V_margin": -0.12359887831732977,
    "e_sense_26V_cm_margin": 0.2762143928608083
   },
   "ok": false,
-  "worst": -0.30129333341537645
+  "worst": -0.30133983270258824
  },
  "o3_info_c3_values_with_o3_parts": {
   "Rt": 39200.0,
@@ -943,22 +992,28 @@
   "Rx": 90900.0,
   "RR1": 10000.0,
   "RR2": 46400.0,
-  "vr_min": 19.5448913540489,
-  "vr_max": 19.9011459881169,
-  "vf_min": 18.096039450305483,
-  "vf_max": 18.41555337182956,
-  "h_min": 1.4353586129305107,
-  "h_max": 1.4994210354886448,
+  "vr_min": 19.544934566268406,
+  "vr_max": 19.901189785264414,
+  "vf_min": 18.09607948910422,
+  "vf_max": 18.41559392947712,
+  "h_min": 1.4353617863512795,
+  "h_max": 1.4994242754851648,
   "s_at_26V_max": 4.81717937645558,
-  "cross_corner_rmin_minus_fmax": 1.1293379822193401,
+  "cross_corner_rmin_minus_fmax": 1.1293406367912873,
   "margins": {
-   "a_start_margin": 0.09480401188309884,
-   "b_overdischarge_margin": 0.09603945030548289,
-   "c_motorboat_margin": 0.037009266422309256,
-   "d_run_at_20V_margin": 0.23015986380765838,
+   "a_start_margin": 0.0947602147355866,
+   "b_overdischarge_margin": 0.09607948910421982,
+   "c_motorboat_margin": 0.03701531038832759,
+   "d_run_at_20V_margin": 0.23011930616009976,
    "e_sense_26V_cm_margin": 0.08282062354442044
   },
   "ok": true,
-  "worst": 0.037009266422309256
+  "worst": 0.03701531038832759
+ },
+ "n_vertices": {
+  "c3": 4096,
+  "o3": 16384,
+  "timer": null,
+  "note": "Tur-3 T3-07: exhaustive sign vertices; VIO/CMRR and REF load current evaluated per vertex"
  }
 }

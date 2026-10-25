@@ -158,9 +158,10 @@ DS.update(
     TMUX1102_VIH_VIL=((1.49, 0.87), 'G SCDS410D p5 VIH min 1.49 V, VIL max 0.87 V (VDD 5 V)'),
     REF35_LOADREG=(20e-6, 'T SNAS809C p1 20 ppm/mA (used as bound, A)'),
 )
-def vio_c3(RR1, RR2):
-    """VIO max + CMRR term at the actual common-mode REFD = 4.096*RR2/(RR1+RR2) + PSRR term (0.1 V supply shift)."""
-    return DS['TLV3202_VIO'][0] + abs(4.096 * RR2 / (RR1 + RR2) - 2.5) * 10 ** (-DS['TLV3202_CMRR_DB'][0] / 20) + 0.1 * 10 ** (-DS['TLV3202_PSRR_DB'][0] / 20)
+def vio_c3(RR1, RR2, vref=4.096):
+    """VIO max + CMRR term at the actual common-mode REFD = vref*RR2/(RR1+RR2) + PSRR term (0.1 V supply shift).
+    Tur-3 T3-07: called PER VERTEX with that vertex's rr1/rr2/vref (common mode moves with the corner)."""
+    return DS['TLV3202_VIO'][0] + abs(vref * RR2 / (RR1 + RR2) - 2.5) * 10 ** (-DS['TLV3202_CMRR_DB'][0] / 20) + 0.1 * 10 ** (-DS['TLV3202_PSRR_DB'][0] / 20)
 
 
 # fixed 2026-10-25: the CMRR term was computed at RR2_NOM 40.2k instead of the chosen 46.4k (0.09 mV too optimistic)
@@ -168,7 +169,7 @@ VIO_C3 = vio_c3(10.0e3, 46.4e3)
 
 
 def c3_vertices(Rt, Rb, Rx, RR1=RR1_NOM, RR2=RR2_NOM, e_res=E_RES, e_ref=E_REF, vio=None, detail=False):
-    vio = vio_c3(RR1, RR2) if vio is None else vio
+    vio_fixed = vio      # None -> per-vertex VIO/CMRR (Tur-3 T3-07); a number overrides it (sensitivity studies)
     out = []
     iib = DS['TLV3202_IIB'][0]; ilk = DS['TMUX1102_ILEAK'][0]
     # Tur-2 UVLO-01 (ChatGPT review 6395614957): IN+ bias (s[8]), IN- bias (s[10]) and TMUX leakage (s[11]) have
@@ -176,8 +177,9 @@ def c3_vertices(Rt, Rb, Rx, RR1=RR1_NOM, RR2=RR2_NOM, e_res=E_RES, e_ref=E_REF, 
     for s in itertools.product((-1, 1), repeat=12):
         rt = Rt * (1 + s[0] * e_res); rb = Rb * (1 + s[1] * e_res); rx = Rx * (1 + s[2] * e_res)
         rr1 = RR1 * (1 + s[3] * e_res); rr2 = RR2 * (1 + s[4] * e_res)
-        vref = 4.096 * (1 + s[5] * (e_ref + DS['REF35_LOADREG'][0] * 4.096 / (RR1 + RR2) * 1e3))
-        vio_ = s[6] * vio
+        # Tur-3 T3-07: REF load current and CMRR common mode from THIS vertex's rr1/rr2 (was nominal RR1/RR2)
+        vref = 4.096 * (1 + s[5] * (e_ref + DS['REF35_LOADREG'][0] * 4.096 / (rr1 + rr2) * 1e3))
+        vio_ = s[6] * (vio_c3(rr1, rr2, vref) if vio_fixed is None else vio_fixed)
         hint = DS['TLV3202_HINT'][1] if s[7] > 0 else 0.0
         icur = s[8] * iib + s[11] * ilk                # current leaving node S (IN+ IIB + switch leakage), signs independent
         ron = DS['TMUX1102_RON'][1] if s[9] > 0 else 0.0
@@ -378,18 +380,27 @@ NON_G_REF_O3 = ('long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh 
                 'thermal hysteresis VSSOP 50 ppm (T used as bound - A)',
                 'solder shift: typical histograms only (A: 0, unbounded, bench B-U07)')
 # ACAS 0606 AT DF, accuracy grade U, per element; 'relative' = deviation from the array's medial axis (doc 28770 note p1)
+# Tur-3 T3-04 (ChatGPT review 6396616875): doc 28770 note (2) gives the test-procedure permissible changes (endurance,
+# soldering heat, damp heat, rapid temperature change) for AE arrays ONLY. For the DF design (different R1 < R2) they are
+# therefore ASSUMPTIONS (A) - the AE figures are used as the assumed DF bound; values unchanged, classification corrected.
 NET_REL_TERMS = {
     'relative tolerance +/-0.05 % (G)': 5e-4,
     'relative TCR +/-5 ppm/K x 100 K, grade U (G; A: grade U orderable in 0606 DF, table p3 ambiguous)': 5e-6 * 100,
-    'relative drift endurance 70 C 1000 h +/-0.05 % (G for AE; A: same for DF, datasheet note (2))': 5e-4,
-    'soldering heat: NO relative limit -> absolute +/-0.1 % used as relative bound (G abs, strict)': 1e-3,
+    'relative drift endurance 70 C 1000 h +/-0.05 % (A: AE-only figure, note (2); assumed for DF)': 5e-4,
+    'soldering heat: NO relative limit -> absolute +/-0.1 % used as relative bound (A: AE-only figure, note (2); assumed for DF)': 1e-3,
 }
 E_NET_REL = sum(NET_REL_TERMS.values())
 NET_ABS_TERMS = {
     'absolute tolerance +/-0.1 % (G)': 1e-3,
     'absolute TCR +/-10 ppm/K x 100 K, grade U (G)': 10e-6 * 100,
-    'absolute drift endurance 70 C 1000 h +/-0.1 % (G)': 1e-3,
-    'soldering heat +/-0.1 % (G)': 1e-3,
+    'absolute drift endurance 70 C 1000 h +/-0.1 % (A: AE-only figure, note (2); assumed for DF)': 1e-3,
+    'soldering heat +/-0.1 % (A: AE-only figure, note (2); assumed for DF)': 1e-3,
+}
+# AE-only figures NOT included in the bound (scope: 1000 h endurance at 70 C, one reflow); reported as sensitivities
+ACAS_AE_ONLY_SENS = {
+    'damp heat 85 C / 85 % RH 1000 h: absolute +/-0.5 % (AE, A for DF)': dict(e_abs_add=5e-3 - 0.0, e_rel_add=0.0),
+    'rapid temperature change: absolute +/-0.25 % (AE, A for DF)': dict(e_abs_add=2.5e-3, e_rel_add=0.0),
+    'endurance 125 C 1000 h: relative +/-0.125 % instead of 70 C +/-0.05 % (AE, A for DF)': dict(e_abs_add=0.0, e_rel_add=1.25e-3 - 5e-4),
 }
 E_NET_ABS = sum(NET_ABS_TERMS.values())
 E_NET_REL_125C = E_NET_REL - 5e-4 + 1.25e-3   # sensitivity: relative drift 125 C 1000 h +/-0.125 % (G for AE) instead of 70 C
@@ -399,17 +410,16 @@ I_Q_PRESTART_O3 = REQ['I_Q_PRESTART'] + DS_O3['REF5040_IQ'][0]
 def o3_vertices(Rt, Rb, Rx, RR1, RR2, e_rel=E_NET_REL, e_abs=E_NET_ABS, e_ref=E_REF_O3, hint_max=None, detail=False):
     """Element = nominal * (1 + s_c*(e_abs - e_rel) + s_i*e_rel): |abs| <= e_abs, element-to-axis <= e_rel (outer bound).
     Rx discrete ERA-3ARB (E_RES). IN+/IN- bias and TMUX leakage signs independent (UVLO-01). 2^14 vertices."""
-    vio = vio_c3(RR1, RR2)
     iib = DS['TLV3202_IIB'][0]; ilk = DS['TMUX1102_ILEAK'][0]
     hmax = DS['TLV3202_HINT'][1] if hint_max is None else hint_max
     ec = e_abs - e_rel
-    ilr = 4.096 / (RR1 + RR2) * 1e3   # mA drawn from U23
     out = []
     for s in itertools.product((-1, 1), repeat=14):
         rt = Rt * (1 + s[12] * ec + s[0] * e_rel); rb = Rb * (1 + s[12] * ec + s[1] * e_rel); rx = Rx * (1 + s[2] * E_RES)
         rr1 = RR1 * (1 + s[13] * ec + s[3] * e_rel); rr2 = RR2 * (1 + s[13] * ec + s[4] * e_rel)
+        ilr = 4.096 / (rr1 + rr2) * 1e3   # mA drawn from U23 at THIS vertex (Tur-3 T3-07; was nominal)
         vref = 4.096 * (1 + s[5] * (e_ref + DS_O3['REF5040_LOADREG'][0] * ilr))
-        vio_ = s[6] * vio
+        vio_ = s[6] * vio_c3(rr1, rr2, vref)
         hint = hmax if s[7] > 0 else 0.0
         icur = s[8] * iib + s[11] * ilk
         ron = DS['TMUX1102_RON'][1] if s[9] > 0 else 0.0
@@ -508,6 +518,11 @@ def o3_variant():
     r = eval_o3(**ch, hint_max=0.0012)
     terms.append(dict(term='TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max)', cls='A', value=DS['TLV3202_HINT'][1],
                       a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb), unbounded=True))
+    r = eval_o3(**ch, e_abs=E_NET_ABS - 2e-3, e_rel=E_NET_REL - 1e-3)
+    terms.append(dict(term='ACAS DF absolute endurance +/-0.1 % + soldering heat +/-0.1 % and relative endurance/solder bounds '
+                           '(A: AE-only figures, doc 28770 note (2); DF not specified)', cls='A', value=2e-3,
+                      a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb),
+                      unbounded=True, note='DF permissible changes are not given in the datasheet -> unbounded until supplier data/bench'))
     r = eval_o3(**ch, e_rel=E_NET_REL - 5e-4 - 5e-4)
     terms.append(dict(term='ACAS DF: relative drift + grade-U relative TCR (A: DF figures / grade-U availability not confirmed)', cls='A',
                       value=1e-3, a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb),
@@ -515,6 +530,17 @@ def o3_variant():
     terms.append(dict(term='I_Q_PRESTART 15 mA + REF5040 1.2 mA (G) x R_TOTAL_MAX 0.25 ohm (A)', cls='A', value=I_Q_PRESTART_O3 * REQ['R_TOTAL_MAX'],
                       a_mV=1e3 * I_Q_PRESTART_O3 * REQ['R_TOTAL_MAX'], b_mV=0.0, unbounded=False))
     s125 = eval_o3(**ch, e_rel=E_NET_REL_125C)
+    ae_sens = {}
+    for k, d in ACAS_AE_ONLY_SENS.items():
+        r = eval_o3(**ch, e_abs=E_NET_ABS + d['e_abs_add'] + d['e_rel_add'], e_rel=E_NET_REL + d['e_rel_add'])
+        ae_sens[k] = dict(margins_mV={kk: round(1e3 * v, 2) for kk, v in r['margins'].items()}, ok=r['ok'])
+    # break-even: extra relative (ratio) DF drift on top of the assumed bound that drives min(a, b) to 0
+    lo, hi = 0.0, 0.02
+    for _ in range(40):
+        mid = (lo + hi) / 2
+        r = eval_o3(**ch, e_abs=E_NET_ABS + mid, e_rel=E_NET_REL + mid)
+        lo, hi = (mid, hi) if min(r['margins']['a_start_margin'], r['margins']['b_overdischarge_margin']) >= 0 else (lo, mid)
+    break_even_rel = lo
     old = eval_c3(CHOSEN_C3['Rt'], CHOSEN_C3['Rb'], CHOSEN_C3['Rx'], RR1=CHOSEN_C3['RR1'], RR2=CHOSEN_C3['RR2'])
     unb = [t['term'] for t in terms if t['unbounded']]
     status = 'NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS' if min(ma, mb) >= 0 else 'FAIL'
@@ -522,6 +548,10 @@ def o3_variant():
                      'Rx discrete ERA-3ARB; WP1 REF35409 unchanged', ds=DS_O3, ref_terms=REF_TERMS_O3, e_ref=E_REF_O3,
                 net_rel_terms=NET_REL_TERMS, e_net_rel=E_NET_REL, net_abs_terms=NET_ABS_TERMS, e_net_abs=E_NET_ABS,
                 i_q_prestart=I_Q_PRESTART_O3, chosen_values=ch, chosen=base, best_search=best, n_candidates=n,
+                sensitivity_ae_only_terms=dict(note='AE-only test figures (doc 28770 note (2)) applied as extra DF drift; '
+                                               'NOT in the bound; scope of the bound = 1000 h 70 C endurance + one reflow (A)', cases=ae_sens),
+                break_even_extra_rel_drift=dict(value=break_even_rel, note='extra element-to-axis (and absolute) drift of the DF '
+                                                'arrays beyond the assumed bound at which min(a, b) = 0'),
                 sensitivity_rel_drift_125C_1000h=dict(e_net_rel=E_NET_REL_125C, margins_mV={k: round(1e3 * v, 2) for k, v in s125['margins'].items()},
                                                       ok=s125['ok']),
                 c3_old_margins_mV={k: round(1e3 * v, 2) for k, v in old['margins'].items()},
@@ -648,6 +678,9 @@ def main():
                spice_corners_c3=c3_spice_corners(ch), spice_corners_timer=timer_spice_corners(CHOSEN_TIMER),
                regression_misset_rb_8k66=mis_rb, regression_misset_rx_100k=mis_rx, alternatives=alt, start_guarantee=sg,
                o3_variant=o3, o3_regression_misset_rb_5k23=o3_mis_rb, o3_info_c3_values_with_o3_parts=o3_c3vals)
+    out['n_vertices'] = dict(c3=len(c3_vertices(ch['Rt'], ch['Rb'], ch['Rx'], RR1=ch['RR1'], RR2=ch['RR2'])),
+                             o3=len(o3_vertices(**CHOSEN_O3)), timer=tm.get('n_vertices'),
+                             note='Tur-3 T3-07: exhaustive sign vertices; VIO/CMRR and REF load current evaluated per vertex')
     json.dump(out, open('results/uvlo-budget.json', 'w'), indent=1, default=str)
     checks = {'C3 chosen all margins >= 0': chosen['ok'], 'timer all margins >= 0': tm['ok'],
               'regression A0 baseline fails': not alt['A0_baseline_180k_10k']['pass_'],
@@ -678,6 +711,10 @@ def main():
           o3['sensitivity_rel_drift_125C_1000h']['margins_mV'], o3_mis_rb['worst']))
     for t in og['non_guaranteed_terms']:
         print('  O3 [%s]%s %s: a %+.2f mV, b %+.2f mV' % (t['cls'], ' UNBOUNDED' if t['unbounded'] else '', t['term'], t['a_mV'], t['b_mV']))
+    for k, v in o3['sensitivity_ae_only_terms']['cases'].items():
+        print('  O3 sensitivity %s: %s ok=%s' % (k, v['margins_mV'], v['ok']))
+    print('  O3 break-even extra DF drift (rel+abs): %.4f %%' % (o3['break_even_extra_rel_drift']['value'] * 100))
+    print('n_vertices', out['n_vertices'])
     sys.exit(0 if all(checks.values()) else 1)
 
 
