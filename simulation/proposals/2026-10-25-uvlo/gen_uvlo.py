@@ -17,7 +17,7 @@ LIBS = ('.include ../../../pdu-behavioral.lib\n.include ../../../pdu-inductor-ng
         '.include ../../2026-10-25-o1-ovp/pdu-o1ovp-behavioral.lib\n.include ../pdu-uvlo-behavioral.lib\n')
 OPT = '.options reltol=0.0001 abstol=1n method=gear\n.options plotwinsize=0\n'
 B = json.loads((HERE / 'results' / 'uvlo-budget.json').read_text())
-C3 = B['spice_corners_c3']; TM = B['spice_corners_timer']; TV = B['timer_values']
+C3 = B['spice_corners_c3']; O3 = B['o3_variant']['spice_corners']; C3_ALL = C3; TM = B['spice_corners_timer']; TV = B['timer_values']
 TM['ttyp'] = dict(t=None, RTT=TV['RT'], RHB=TV['RHB'], RK1=TV['RK1'], RK2=TV['RK2'], CTT=TV['CT'], V5_P=5.0, VOHD=0.0,
                   ILKD=0.0, VIOB=0.0, HINTB=1.2e-3)
 TM['ttyp']['t'] = None
@@ -69,6 +69,18 @@ def derive():
         '* DERIVED copy of ../2026-10-25-o1-ovp/pdu-o1ovp-block.inc; ONLY change: LDO VLDO=5 -> {V5_P} (TPS7A16 +-2 % corner)\n'
         + blk.replace('XU11 VIN V5_OVP 0 O1OVP_LDO VLDO=5\n', 'XU11 VIN V5_OVP 0 O1OVP_LDO VLDO={V5_P}\n'))
     (HERE / 'pdu-uvlo-block.inc').write_text(UVLO_BLOCK)
+    o3 = UVLO_BLOCK.replace('RR1U VREF_OVP REFD_UV {RR1U}\n', O3_REF)
+    assert o3 != UVLO_BLOCK
+    o3 = o3.replace('* WP2 2026-10-25-uvlo candidate C3:', '* WP2 Tur-2 O3 CANDIDATE VARIANT (derived from C3 by gen_uvlo.py; ONLY change: RR1U fed by U23 REF5040 VREF_UV):\n* C3:', 1)
+    (HERE / 'pdu-uvlo-block-o3.inc').write_text(o3)
+
+O3_REF = '''* U23 REF5040IDGK(T) (behavioral: VOUT = VREF_UV_P, dropout VIN-0.2 V, Iq 1.2 mA max, load regulation is inside the VREF_UV_P corner)
+Bu23 VREF_UV_I 0 V=min({VREF_UV_P}, max(V(V5_OVP)-0.2,0))
+Ru23 VREF_UV_I VREF_UV 1m
+Iu23 V5_OVP 0 1.2m
+CU23 VREF_UV 0 10u
+RR1U VREF_UV REFD_UV {RR1U}
+'''
 
 UVLO_BLOCK = '''* WP2 2026-10-25-uvlo candidate C3: U20 TLV3202 (A = input UVLO, B = restart timer), U21 TMUX1102 hysteresis switch.
 * Supplies: V5_OVP (U11 TPS7A1650) and VREF_OVP (U12 REF35409) from the WP1 OVP block. EN_BUCK = U20B via RDEN/RUV2.
@@ -106,11 +118,16 @@ C22 V5_OVP 0 100n
 '''
 
 # ---------------------------------------------------------------- deck pieces
+VREF_OVP_CORNER = {'typ': '4.096', 'wchi': '4.105424', 'wclo': '4.086576'}   # same values as seq_deck()
+
 def params(uv='typ', tm='ttyp', ovp='typ', **over):
     p = dict(BASE); p.update(OVP[ovp])
     c = C3[uv]; t = TM[tm]
+    o3 = VAR['variant'] == 'O3'   # O3: U23 REF5040 feeds RR1U; REF35 (VREF_OVP) only feeds the WP1 OVP divider (its WP1 corner)
     for k in ('RTU', 'RBU', 'RXU', 'RR1U', 'RR2U', 'VREF_P', 'VIOA', 'HINTA', 'IS_U', 'IM_U', 'RON_U'):
-        p[k] = f'{c[k]:.7g}'
+        p[k] = VREF_OVP_CORNER[ovp] if (o3 and k == 'VREF_P') else f'{c[k]:.7g}'
+    if o3:
+        p['VREF_UV_P'] = f"{c['VREF_UV_P']:.7g}"
     for k in ('RTT', 'RHB', 'RK1', 'RK2', 'CTT', 'V5_P', 'VOHD', 'ILKD', 'VIOB', 'HINTB'):
         p[k] = f'{t[k]:.7g}'
     p.update(VENR='1.0', VENF='0.9', TSS='2.8m', RUV1_P='180000', RUV2_P='10000')
@@ -152,7 +169,7 @@ SAVE = ('.save V(VIN) V(VBAT) V(EN_BUCK) V(S_UV) V(REFD_UV) V(OUTA_UV) V(T_UV) V
 
 def deck(title, p, src, ld, tstop, meas, circuit='pdu-circuit-uvlo.inc', uvlo=True, tmax='1u'):
     return (HDR + f'* {title}\n' + LIBS + f'.include ../{circuit}\n.include ../pdu-o1ovp-block-uvlo.inc\n'
-            + ('.include ../pdu-uvlo-block.inc\n' if uvlo else '* UVLO block NOT included (baseline regression)\n')
+            + (f'.include ../{VAR["block"]}\n' if uvlo else '* UVLO block NOT included (baseline regression)\n')
             + p + src + ld + LOSS
             + f'.tran 100n {tstop:.6g} 0 {tmax} uic\n' + OPT + edges()
             + f'.meas tran O1_GLOBAL_PEAK MAX V(O1_11V) FROM=0 TO={tstop:.6g}\n'
@@ -187,16 +204,65 @@ def rdip_meas(t0, stop):
             f'.meas tran RD_T_ABOVE_O1 INTEG V(M_RDO) FROM={t0:.6g} TO={stop:.6g}\n')
 
 CASES = {}
+# Tur-2 O3 (review 6395614957 item 3): the same A-G scenario set (minus the R sweep) is generated a second time for the
+# O3 candidate variant with the 'o3-' prefix and pdu-uvlo-block-o3.inc; C3 cases/results stay unchanged for comparison.
+VAR = dict(pre='', block='pdu-uvlo-block.inc', variant='C3')
 def add(name, text, **meta):
+    name = VAR['pre'] + name
     (HERE / 'decks' / f'uvlo-{name}.cir').write_text(text)
+    meta.setdefault('variant', VAR['variant'] if not meta.get('regression') or meta.get('uv') != 'baseline' else 'baseline')
     CASES[name] = meta
 
 def tb(tm, factor=1.0):
     return TM[tm]['t'] * factor
 
 def gen():
+    global C3
     for f in (HERE / 'decks').glob('*.cir'):
         f.unlink()
+    E_P = '0 0 100u {e}'
+    gen_scenarios()
+    # ---- H: regressions (must FAIL the acceptance)
+    e5 = 0.03  # baseline 1 % thick film, strict 3 % (tol + TCR 100 ppm x 100 K + life, ASSUMPTION A: no MPN)
+    ts = 0.02; a = 0.25; stop = 0.35
+    add('reg-baseline-180k10k-worst', deck('REGRESSION baseline RUV1 180k / RUV2 10k (no UVLO block), worst high: R +/-3 %, VEN 1.05 V; E=20 V, R 0.25, 7.5 A',
+        params('typ', 'ttyp', 'typ', VENR='1.05', VENF='0.95', RUV1_P=f'{180000*(1+e5):.6g}', RUV2_P=f'{10000*(1-e5):.6g}'),
+        source(0.25, E_P.format(e=20.0)), loads(), stop, win('RUN', a, stop), circuit='pdu-circuit-uvlo-baseline.inc', uvlo=False),
+        kind='start', expect='FAIL', regression=True, uv='baseline', win=[a, stop], t_start_max=0.2, vf=None, vr=None)
+    t0 = 0.08; t1 = t0 + (21.0 - 16.0) / 10; stop = t1 + 0.2
+    add('reg-baseline-180k10k-typ-rampdown', deck('REGRESSION baseline 180k/10k typ (VEN 1.0/0.9 typ): start 21 V then ramp to 16 V at 10 V/s; shutdown must happen at VIN >= 18.0 V',
+        params('typ', 'ttyp', 'typ'), source(0.25, f'0 0 100u 21 {t0} 21 {t1:.6g} 16'), loads(), stop,
+        win('PRE', t0 - 0.03, t0) + '.meas tran VIN_AT_SHUTDOWN FIND V(VIN) WHEN V(EN_BUCK)=1.0 FALL=1\n'
+        '.meas tran EMF_AT_SHUTDOWN FIND V(EMFC) WHEN V(EN_BUCK)=1.0 FALL=1\n'
+        f'.meas tran VIN_MAX_AFTER MAX V(VIN) FROM={t1:.6g} TO={stop:.6g}\n',
+        circuit='pdu-circuit-uvlo-baseline.inc', uvlo=False),
+        kind='ramp_down', expect='FAIL', regression=True, uv='baseline', pre=[t0 - 0.03, t0], vf=None, vr=None)
+    ts = tb('tmax') + 0.005; a = ts + 0.06; stop = a + 0.05
+    add('reg-misset-rbu-8k66-vrmax', deck('REGRESSION mis-set RBU 8.66k (one E96 step low) at the vrmax vertex; E=20 V, R 0.25, 7.5 A',
+        params('vrmax', 'tmax', 'wchi', RBU=f'{8660*(1-B["e_res"]):.6g}'), source(0.25, E_P.format(e=20.0)), loads(), stop, win('RUN', a, stop)),
+        kind='start', expect='FAIL', regression=True, uv='vrmax', tm='tmax', win=[a, stop], t_start_max=ts + 0.004, vf=None, vr=None)
+    # ---- I: P0-03 sequencing benches (WP1 ESL bench, buck replaced by ideal DRIVE + 2.72 uH + 15.4 mOhm, RAW 165 uF ESR 12.5 mOhm ESL 2 nH)
+    # 2026-10-25: reference = identical to the accepted benches except delay 0 (A/B on the delay only). The former
+    # 'seq-ref-nodelay-typ' (ramp 5 ms, IBST 345u) aborted (Timestep too small at 12.2646 ms with gear/trap/tmax 20n/
+    # reltol 1e-3/KLU) and was therefore never valid evidence; it is replaced, not hidden (see RESULTS.md).
+    for name, delay, ramp, ovp, ib in (('seq-delay-tmin-typ-ibst100u', TM['tmin']['t'], 1.9e-3, 'typ', '100u'),
+                                       ('seq-delay-tmin-wchi-ibst100u', TM['tmin']['t'], 1.9e-3, 'wchi', '100u'),
+                                       ('seq-delay-tmin-wclo-ibst100u', TM['tmin']['t'], 1.9e-3, 'wclo', '100u'),
+                                       ('seq-ref-nodelay-typ-ibst100u', 0.0, 1.9e-3, 'typ', '100u')):
+        add(name, seq_deck(name, delay, ramp, ovp, ib), kind='seq', expect='PASS' if delay > 0 else 'FAIL', regression=delay == 0,
+            delay=delay, ramp=ramp)
+    VAR.update(pre='o3-', block='pdu-uvlo-block-o3.inc', variant='O3'); C3 = O3
+    gen_scenarios()
+    ts = tb('tmax') + 0.005; a = ts + 0.06; stop = a + 0.05
+    e_abs = B['o3_variant']['e_net_abs']
+    add('reg-misset-rbu-5k23-vrmax', deck('REGRESSION O3 mis-set RBU 5.23k (one E96 step low) at the O3 vrmax vertex; E=20 V, R 0.25, 7.5 A',
+        params('vrmax', 'tmax', 'wchi', RBU=f'{5230*(1-e_abs):.6g}'), source(0.25, E_P.format(e=20.0)), loads(), stop, win('RUN', a, stop)),
+        kind='start', expect='FAIL', regression=True, uv='vrmax', tm='tmax', win=[a, stop], t_start_max=ts + 0.004, vf=None, vr=None)
+    C3 = C3_ALL; VAR.update(pre='', block='pdu-uvlo-block.inc', variant='C3')
+    (HERE / 'test-cases-uvlo.json').write_text(json.dumps(dict(cases=CASES, corners_c3=C3_ALL, corners_o3=O3, corners_timer=TM, p_in=P_IN), indent=1))
+    print(len(CASES), 'decks')
+
+def gen_scenarios():
     E_P = '0 0 100u {e}'
     # ---- A: guaranteed start at E = 20.0 V, 7.5 A, R_total 0.25 ohm (requirement point)
     for uv, tm, tss, ovp, ibst in (('vrmax', 'tmax', '4.4m', 'wchi', '345u'), ('vrmax', 'tmin', '1.9m', 'wchi', '100u'),
@@ -241,8 +307,8 @@ def gen():
                     '.meas tran VIN_AT_SHUTDOWN FIND V(VIN) WHEN V(EN_BUCK)=1.0 FALL=1\n'),
                     kind='mb_hold', expect='PASS', uv=uv, tm=tm, pre=[t0 - 0.03, t0], e_hold=e1, estar=estar, delta=d,
                     vf=vf, vr=C3[uv]['vr'], hold=[t1, stop])
-    # ---- E: R_src sweep at E = 20.0 V (requirement up to 0.25 ohm; above = INFO, R_crit report)
-    for rt in (0.03, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.45):
+    # ---- E: R_src sweep (C3 only) at E = 20.0 V (requirement up to 0.25 ohm; above = INFO, R_crit report)
+    for rt in ((0.03, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.45) if VAR['variant'] == 'C3' else ()):
         tm = 'tmin'; ts = tb(tm) + 0.005; a = ts + 0.06; stop = 0.75
         add(f'rsweep-r{int(round(rt*1000)):03d}', deck(f'R_total sweep {rt} ohm at E=20.0 V, 7.5 A; UVLO typ, timer tmin (fastest hiccup)',
             params('typ', tm, 'typ', TSS='1.9m'), source(rt, E_P.format(e=20.0), lcab='2u' if rt <= 0.05 else '1u'), loads(), stop,
@@ -275,37 +341,6 @@ def gen():
             add(f'hotplug-{str(e).replace(".", "p")}v-{uv}-{tm}', deck(f'hot-plug 0 -> {e} V in 1 us, R_total 0.03 ohm, Lcab 1 uH, 7.5 A; {uv}/{tm}',
                 params(uv, tm, 'wclo' if e > 25 else 'typ'), source(0.03, f'0 0 1u {e}'), loads(), stop, win('RUN', a, stop)),
                 kind='hotplug', expect='PASS', uv=uv, tm=tm, e=e, win=[a, stop])
-    # ---- H: regressions (must FAIL the acceptance)
-    e5 = 0.03  # baseline 1 % thick film, strict 3 % (tol + TCR 100 ppm x 100 K + life, ASSUMPTION A: no MPN)
-    ts = 0.02; a = 0.25; stop = 0.35
-    add('reg-baseline-180k10k-worst', deck('REGRESSION baseline RUV1 180k / RUV2 10k (no UVLO block), worst high: R +/-3 %, VEN 1.05 V; E=20 V, R 0.25, 7.5 A',
-        params('typ', 'ttyp', 'typ', VENR='1.05', VENF='0.95', RUV1_P=f'{180000*(1+e5):.6g}', RUV2_P=f'{10000*(1-e5):.6g}'),
-        source(0.25, E_P.format(e=20.0)), loads(), stop, win('RUN', a, stop), circuit='pdu-circuit-uvlo-baseline.inc', uvlo=False),
-        kind='start', expect='FAIL', regression=True, uv='baseline', win=[a, stop], t_start_max=0.2, vf=None, vr=None)
-    t0 = 0.08; t1 = t0 + (21.0 - 16.0) / 10; stop = t1 + 0.2
-    add('reg-baseline-180k10k-typ-rampdown', deck('REGRESSION baseline 180k/10k typ (VEN 1.0/0.9 typ): start 21 V then ramp to 16 V at 10 V/s; shutdown must happen at VIN >= 18.0 V',
-        params('typ', 'ttyp', 'typ'), source(0.25, f'0 0 100u 21 {t0} 21 {t1:.6g} 16'), loads(), stop,
-        win('PRE', t0 - 0.03, t0) + '.meas tran VIN_AT_SHUTDOWN FIND V(VIN) WHEN V(EN_BUCK)=1.0 FALL=1\n'
-        '.meas tran EMF_AT_SHUTDOWN FIND V(EMFC) WHEN V(EN_BUCK)=1.0 FALL=1\n'
-        f'.meas tran VIN_MAX_AFTER MAX V(VIN) FROM={t1:.6g} TO={stop:.6g}\n',
-        circuit='pdu-circuit-uvlo-baseline.inc', uvlo=False),
-        kind='ramp_down', expect='FAIL', regression=True, uv='baseline', pre=[t0 - 0.03, t0], vf=None, vr=None)
-    ts = tb('tmax') + 0.005; a = ts + 0.06; stop = a + 0.05
-    add('reg-misset-rbu-8k66-vrmax', deck('REGRESSION mis-set RBU 8.66k (one E96 step low) at the vrmax vertex; E=20 V, R 0.25, 7.5 A',
-        params('vrmax', 'tmax', 'wchi', RBU=f'{8660*(1-B["e_res"]):.6g}'), source(0.25, E_P.format(e=20.0)), loads(), stop, win('RUN', a, stop)),
-        kind='start', expect='FAIL', regression=True, uv='vrmax', tm='tmax', win=[a, stop], t_start_max=ts + 0.004, vf=None, vr=None)
-    # ---- I: P0-03 sequencing benches (WP1 ESL bench, buck replaced by ideal DRIVE + 2.72 uH + 15.4 mOhm, RAW 165 uF ESR 12.5 mOhm ESL 2 nH)
-    # 2026-10-25: reference = identical to the accepted benches except delay 0 (A/B on the delay only). The former
-    # 'seq-ref-nodelay-typ' (ramp 5 ms, IBST 345u) aborted (Timestep too small at 12.2646 ms with gear/trap/tmax 20n/
-    # reltol 1e-3/KLU) and was therefore never valid evidence; it is replaced, not hidden (see RESULTS.md).
-    for name, delay, ramp, ovp, ib in (('seq-delay-tmin-typ-ibst100u', TM['tmin']['t'], 1.9e-3, 'typ', '100u'),
-                                       ('seq-delay-tmin-wchi-ibst100u', TM['tmin']['t'], 1.9e-3, 'wchi', '100u'),
-                                       ('seq-delay-tmin-wclo-ibst100u', TM['tmin']['t'], 1.9e-3, 'wclo', '100u'),
-                                       ('seq-ref-nodelay-typ-ibst100u', 0.0, 1.9e-3, 'typ', '100u')):
-        add(name, seq_deck(name, delay, ramp, ovp, ib), kind='seq', expect='PASS' if delay > 0 else 'FAIL', regression=delay == 0,
-            delay=delay, ramp=ramp)
-    (HERE / 'test-cases-uvlo.json').write_text(json.dumps(dict(cases=CASES, corners_c3=C3, corners_timer=TM, p_in=P_IN), indent=1))
-    print(len(CASES), 'decks')
 
 def seq_deck(name, delay, ramp, ovp, ib):
     drive = 11.1605; d = delay; stop = d + ramp + 0.03

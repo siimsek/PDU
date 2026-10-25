@@ -119,6 +119,7 @@ jobs:
         run: |
           python3 tests/test_uvlo_gates.py
           python3 tests/test_uvlo_tur2.py
+          python3 tests/test_uvlo_o3.py
       - name: Analytic budget (must pass and match the committed JSON)
         run: |
           python3 uvlo_budget.py

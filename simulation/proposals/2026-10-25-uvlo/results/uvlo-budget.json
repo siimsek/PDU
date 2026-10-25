@@ -642,5 +642,323 @@
    }
   },
   "note": "Status cannot become GUARANTEED by simulation: unbounded terms need datasheet max values or bench data (B-U), or a design change that leaves enough margin to cover them. Requirements are NOT loosened."
+ },
+ "o3_variant": {
+  "desc": "O3 candidate: U23 REF5040IDGK(T) dedicated VREF_UV + ACAS 0606 AT DF arrays N1 (Rt/Rb) and N2 (RR1/RR2); Rx discrete ERA-3ARB; WP1 REF35409 unchanged",
+  "ds": {
+   "REF5040_SRC": "TI SBOS410O (REF50xx, Oct 2025) https://www.ti.com/lit/ds/symlink/ref50.pdf, high grade REF5040IDGK(T), VSSOP-8",
+   "REF5040_IQ": [
+    0.0012,
+    "G SBOS410O IQ max 1.2 mA (25 C..125 C row used as bound)"
+   ],
+   "REF5040_VIN_MIN": [
+    4.296,
+    "G SBOS410O VIN >= VOUT + 0.2 V; V5_OVP min 4.90 V (TPS7A1650 +-2 %) -> 0.60 V headroom"
+   ],
+   "REF5040_LOADREG": [
+    5e-05,
+    "G SBOS410O load regulation 50 ppm/mA max (sourcing)"
+   ],
+   "ACAS_SRC": "Vishay Beyschlag ACAS 0606 AT / 0612 AT doc 28770 rev 15-Jun-2026 https://www.vishay.com/docs/28770/acasat.pdf",
+   "ACAS_DESIGN": [
+    "DF",
+    "G doc 28770 p2: ACAS 0606 AT supports DF (R1 < R2, different values, E24/E192); ACAS 0612 AT only AE/TP"
+   ],
+   "ACAS_VMAX": [
+    100.0,
+    "G doc 28770 p1: operating voltage 100 V, insulation between elements 100 V"
+   ]
+  },
+  "ref_terms": {
+   "initial +/-0.05 % high grade (G)": 0.0005,
+   "TC 3 ppm/K box over -40..125 C = 165 K (G, box -> +/- full band)": 0.000495,
+   "long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh (A, typical values extrapolated)": 0.000275,
+   "thermal hysteresis VSSOP 50 ppm (T used as bound - A)": 5e-05,
+   "line regulation 5 ppm/V x 0.2 V (G)": 1.0000000000000002e-06,
+   "solder shift: typical histograms only (A: 0, unbounded, bench B-U07)": 0.0
+  },
+  "e_ref": 0.0013210000000000001,
+  "net_rel_terms": {
+   "relative tolerance +/-0.05 % (G)": 0.0005,
+   "relative TCR +/-5 ppm/K x 100 K, grade U (G; A: grade U orderable in 0606 DF, table p3 ambiguous)": 0.0005,
+   "relative drift endurance 70 C 1000 h +/-0.05 % (G for AE; A: same for DF, datasheet note (2))": 0.0005,
+   "soldering heat: NO relative limit -> absolute +/-0.1 % used as relative bound (G abs, strict)": 0.001
+  },
+  "e_net_rel": 0.0025,
+  "net_abs_terms": {
+   "absolute tolerance +/-0.1 % (G)": 0.001,
+   "absolute TCR +/-10 ppm/K x 100 K, grade U (G)": 0.001,
+   "absolute drift endurance 70 C 1000 h +/-0.1 % (G)": 0.001,
+   "soldering heat +/-0.1 % (G)": 0.001
+  },
+  "e_net_abs": 0.004,
+  "i_q_prestart": 0.0162,
+  "chosen_values": {
+   "Rt": 24300.0,
+   "Rb": 5360.0,
+   "Rx": 53600.0,
+   "RR1": 10000.0,
+   "RR2": 41200.0
+  },
+  "chosen": {
+   "Rt": 24300.0,
+   "Rb": 5360.0,
+   "Rx": 53600.0,
+   "RR1": 10000.0,
+   "RR2": 41200.0,
+   "vr_min": 19.55977217073971,
+   "vr_max": 19.922036696454047,
+   "vf_min": 18.070281138620857,
+   "vf_max": 18.3943399553615,
+   "h_min": 1.4757136900579226,
+   "h_max": 1.5418131680532952,
+   "s_at_26V_max": 4.717862129866797,
+   "cross_corner_rmin_minus_fmax": 1.1654322153782104,
+   "margins": {
+    "a_start_margin": 0.07391330354595382,
+    "b_overdischarge_margin": 0.07028113862085661,
+    "c_motorboat_margin": 0.0755354128688138,
+    "d_run_at_20V_margin": 0.2513732802757197,
+    "e_sense_26V_cm_margin": 0.1821378701332037
+   },
+   "ok": true,
+   "worst": 0.07028113862085661
+  },
+  "best_search": {
+   "Rt": 24300.0,
+   "Rb": 5360.0,
+   "Rx": 53600.0,
+   "RR1": 10000.0,
+   "RR2": 41200.0,
+   "vr_min": 19.55977217073971,
+   "vr_max": 19.922036696454047,
+   "vf_min": 18.070281138620857,
+   "vf_max": 18.3943399553615,
+   "h_min": 1.4757136900579226,
+   "h_max": 1.5418131680532952,
+   "s_at_26V_max": 4.717862129866797,
+   "cross_corner_rmin_minus_fmax": 1.1654322153782104,
+   "margins": {
+    "a_start_margin": 0.07391330354595382,
+    "b_overdischarge_margin": 0.07028113862085661,
+    "c_motorboat_margin": 0.0755354128688138,
+    "d_run_at_20V_margin": 0.2513732802757197,
+    "e_sense_26V_cm_margin": 0.1821378701332037
+   },
+   "ok": true,
+   "worst": 0.07028113862085661
+  },
+  "n_candidates": 3236,
+  "sensitivity_rel_drift_125C_1000h": {
+   "e_net_rel": 0.0032500000000000003,
+   "margins_mV": {
+    "a_start_margin": 45.42,
+    "b_overdischarge_margin": 42.83,
+    "c_motorboat_margin": 73.12,
+    "d_run_at_20V_margin": 223.42,
+    "e_sense_26V_cm_margin": 176.34
+   },
+   "ok": true
+  },
+  "c3_old_margins_mV": {
+   "a_start_margin": 6.73,
+   "b_overdischarge_margin": 12.64,
+   "c_motorboat_margin": 27.87,
+   "d_run_at_20V_margin": 145.22,
+   "e_sense_26V_cm_margin": 71.04
+  },
+  "o3_margins_mV": {
+   "a_start_margin": 73.91,
+   "b_overdischarge_margin": 70.28,
+   "c_motorboat_margin": 75.54,
+   "d_run_at_20V_margin": 251.37,
+   "e_sense_26V_cm_margin": 182.14
+  },
+  "start_guarantee": {
+   "status": "NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS",
+   "a_start_margin_mV": 73.91330354595382,
+   "b_overdischarge_margin_mV": 70.28113862085661,
+   "non_guaranteed_terms": [
+    {
+     "term": "REF5040 long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh (A, typical values extrapolated)",
+     "cls": "A",
+     "value": 0.000275,
+     "a_mV": 5.4557526016125735,
+     "b_mV": 4.990220304257775,
+     "unbounded": true
+    },
+    {
+     "term": "REF5040 thermal hysteresis VSSOP 50 ppm (T used as bound - A)",
+     "cls": "T",
+     "value": 5e-05,
+     "a_mV": 0.9919550184704917,
+     "b_mV": 0.9073127825907079,
+     "unbounded": false
+    },
+    {
+     "term": "REF5040 solder shift: typical histograms only (A: 0, unbounded, bench B-U07)",
+     "cls": "A",
+     "value": 0.0,
+     "a_mV": 0.0,
+     "b_mV": 0.0,
+     "unbounded": true
+    },
+    {
+     "term": "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max)",
+     "cls": "A",
+     "value": 0.005,
+     "a_mV": 11.42521742880831,
+     "b_mV": 10.470779966304633,
+     "unbounded": true
+    },
+    {
+     "term": "ACAS DF: relative drift + grade-U relative TCR (A: DF figures / grade-U availability not confirmed)",
+     "cls": "A",
+     "value": 0.001,
+     "a_mV": 37.88135066975684,
+     "b_mV": 36.72771843718792,
+     "unbounded": false
+    },
+    {
+     "term": "I_Q_PRESTART 15 mA + REF5040 1.2 mA (G) x R_TOTAL_MAX 0.25 ohm (A)",
+     "cls": "A",
+     "value": 0.00405,
+     "a_mV": 4.05,
+     "b_mV": 0.0,
+     "unbounded": false
+    }
+   ],
+   "unbounded_terms": [
+    "REF5040 long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh (A, typical values extrapolated)",
+    "REF5040 solder shift: typical histograms only (A: 0, unbounded, bench B-U07)",
+    "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max)"
+   ],
+   "note": "OPEN: positive only under A/T terms (REF5040 long-term/solder shift, TLV3202 Hint max, ACAS DF drift). Not GUARANTEED by simulation; requirements NOT loosened."
+  },
+  "spice_corners": {
+   "vrmax": {
+    "vr": 19.922036696454047,
+    "vf": 18.380223528400755,
+    "RTU": 24397.2,
+    "RBU": 5354.64,
+    "RXU": 53385.6,
+    "RR1U": 9960.000000000002,
+    "RR2U": 41241.200000000004,
+    "VREF_UV_P": 4.1014272,
+    "VIOA": 0.006852234132519035,
+    "HINTA": 0.005,
+    "IS_U": 7e-09,
+    "IM_U": 5e-09,
+    "RON_U": 0.001
+   },
+   "vfmin": {
+    "vr": 19.586671478787306,
+    "vf": 18.070281138620857,
+    "RTU": 24202.800000000003,
+    "RBU": 5365.360000000001,
+    "RXU": 53385.6,
+    "RR1U": 10010.000000000002,
+    "RR2U": 41035.200000000004,
+    "VREF_UV_P": 4.0905728,
+    "VIOA": -0.006852234132519035,
+    "HINTA": 0.005,
+    "IS_U": -7e-09,
+    "IM_U": -5e-09,
+    "RON_U": 0.001
+   },
+   "vfmax": {
+    "vr": 19.902708675286707,
+    "vf": 18.3943399553615,
+    "RTU": 24324.300000000003,
+    "RBU": 5338.56,
+    "RXU": 53385.6,
+    "RR1U": 9960.000000000002,
+    "RR2U": 41241.200000000004,
+    "VREF_UV_P": 4.1014272,
+    "VIOA": 0.006852234132519035,
+    "HINTA": 0.0,
+    "IS_U": 7e-09,
+    "IM_U": 5e-09,
+    "RON_U": 0.001
+   },
+   "mbmin": {
+    "vr": 19.55977217073971,
+    "vf": 18.084058480681783,
+    "RTU": 24202.800000000003,
+    "RBU": 5365.360000000001,
+    "RXU": 53814.4,
+    "RR1U": 10010.000000000002,
+    "RR2U": 41035.200000000004,
+    "VREF_UV_P": 4.0905728,
+    "VIOA": -0.006852234132519035,
+    "HINTA": 0.0,
+    "IS_U": -7e-09,
+    "IM_U": -5e-09,
+    "RON_U": 4.9
+   },
+   "typ": {
+    "vr": 19.73649719994645,
+    "vf": 18.235366417910452,
+    "RTU": 24300.0,
+    "RBU": 5360.0,
+    "RXU": 53600.0,
+    "RR1U": 10000.0,
+    "RR2U": 41200.0,
+    "VREF_UV_P": 4.096,
+    "VIOA": 0.0,
+    "HINTA": 0.0012,
+    "IS_U": 0.0,
+    "IM_U": 0.0,
+    "RON_U": 1.8
+   }
+  }
+ },
+ "o3_regression_misset_rb_5k23": {
+  "Rt": 24300.0,
+  "Rb": 5230.0,
+  "Rx": 53600.0,
+  "RR1": 10000.0,
+  "RR2": 41200.0,
+  "vr_min": 19.92771720599588,
+  "vr_max": 20.297243333415377,
+  "vf_min": 18.43794585753517,
+  "vf_max": 18.769269082685163,
+  "h_min": 1.4757136900579262,
+  "h_max": 1.5423794352136966,
+  "s_at_26V_max": 4.623785607139192,
+  "cross_corner_rmin_minus_fmax": 1.1584481233107162,
+  "margins": {
+   "a_start_margin": -0.30129333341537645,
+   "b_overdischarge_margin": 0.4379458575351691,
+   "c_motorboat_margin": 0.10146181926833772,
+   "d_run_at_20V_margin": -0.12355584704794467,
+   "e_sense_26V_cm_margin": 0.2762143928608083
+  },
+  "ok": false,
+  "worst": -0.30129333341537645
+ },
+ "o3_info_c3_values_with_o3_parts": {
+  "Rt": 39200.0,
+  "Rb": 8870.0,
+  "Rx": 90900.0,
+  "RR1": 10000.0,
+  "RR2": 46400.0,
+  "vr_min": 19.5448913540489,
+  "vr_max": 19.9011459881169,
+  "vf_min": 18.096039450305483,
+  "vf_max": 18.41555337182956,
+  "h_min": 1.4353586129305107,
+  "h_max": 1.4994210354886448,
+  "s_at_26V_max": 4.81717937645558,
+  "cross_corner_rmin_minus_fmax": 1.1293379822193401,
+  "margins": {
+   "a_start_margin": 0.09480401188309884,
+   "b_overdischarge_margin": 0.09603945030548289,
+   "c_motorboat_margin": 0.037009266422309256,
+   "d_run_at_20V_margin": 0.23015986380765838,
+   "e_sense_26V_cm_margin": 0.08282062354442044
+  },
+  "ok": true,
+  "worst": 0.037009266422309256
  }
 }

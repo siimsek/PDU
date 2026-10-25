@@ -306,6 +306,11 @@ def main():
                    acceptance_fail=acc_fail, regression_not_reproduced=reg_bad, incomplete=incomplete,
                    info_cases=[n for n, c in cases.items() if c.get('expect') == 'INFO'],
                    hard_limit_gate='H1/H2 enforced for every non-regression case (PASS and INFO)',
+                   per_variant={v: dict(n=sum(1 for n, c in cases.items() if c.get('variant', 'C3') == v),
+                                        n_pass=sum(1 for n, c in cases.items() if c.get('variant', 'C3') == v and out[n]['status'] == 'PASS'),
+                                        acceptance_fail=[n for n in acc_fail if cases[n].get('variant', 'C3') == v],
+                                        regression_not_reproduced=[n for n in reg_bad if cases[n].get('variant', 'C3') == v])
+                                for v in sorted({c.get('variant', 'C3') for c in cases.values()})},
                    limits=dict(O1_PEAK_MAX=O1_PEAK_MAX, BUS_NORMAL_MAX=BUS_NORMAL_MAX, V_FALL_MIN=V_FALL_MIN, T_SEQ_MIN=T_SEQ_MIN))
     (HERE / 'results' / 'uvlo-verify.json').write_text(json.dumps(dict(summary=summary, cases=out,
         input_sha256={str(p.relative_to(HERE.parent.parent)): sha(p) for p in files},

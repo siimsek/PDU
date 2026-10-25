@@ -352,6 +352,187 @@ def start_guarantee_status():
                      'or a design change that leaves enough margin to cover them. Requirements are NOT loosened.')
 
 
+# ---------------- O3 candidate variant (WP2 Tur 2, ChatGPT review 6395614957 item 3) ----------------
+# U23 REF5040 (dedicated VREF_UV for RR1/RR2; WP1 REF35409/VREF_OVP unchanged) + ratio-matched thin-film arrays:
+# N1 = ACAS 0606 AT DF (Rt, Rb), N2 = ACAS 0606 AT DF (RR1, RR2); Rx stays a discrete ERA-3ARB.
+# Status of the 20 V start guarantee stays OPEN: A/T terms remain (see o3_variant()['start_guarantee']).
+DS_O3 = dict(
+    REF5040_SRC='TI SBOS410O (REF50xx, Oct 2025) https://www.ti.com/lit/ds/symlink/ref50.pdf, high grade REF5040IDGK(T), VSSOP-8',
+    REF5040_IQ=(1.2e-3, 'G SBOS410O IQ max 1.2 mA (25 C..125 C row used as bound)'),
+    REF5040_VIN_MIN=(4.096 + 0.2, 'G SBOS410O VIN >= VOUT + 0.2 V; V5_OVP min 4.90 V (TPS7A1650 +-2 %) -> 0.60 V headroom'),
+    REF5040_LOADREG=(50e-6, 'G SBOS410O load regulation 50 ppm/mA max (sourcing)'),
+    ACAS_SRC='Vishay Beyschlag ACAS 0606 AT / 0612 AT doc 28770 rev 15-Jun-2026 https://www.vishay.com/docs/28770/acasat.pdf',
+    ACAS_DESIGN=('DF', 'G doc 28770 p2: ACAS 0606 AT supports DF (R1 < R2, different values, E24/E192); ACAS 0612 AT only AE/TP'),
+    ACAS_VMAX=(100.0, 'G doc 28770 p1: operating voltage 100 V, insulation between elements 100 V'),
+)
+REF_TERMS_O3 = {
+    'initial +/-0.05 % high grade (G)': 0.0005,
+    'TC 3 ppm/K box over -40..125 C = 165 K (G, box -> +/- full band)': 3e-6 * 165,
+    'long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh (A, typical values extrapolated)': 50e-6 + 25e-6 * 9,
+    'thermal hysteresis VSSOP 50 ppm (T used as bound - A)': 50e-6,
+    'line regulation 5 ppm/V x 0.2 V (G)': 5e-6 * 0.2,
+    'solder shift: typical histograms only (A: 0, unbounded, bench B-U07)': 0.0,
+}
+E_REF_O3 = sum(REF_TERMS_O3.values())
+NON_G_REF_O3 = ('long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh (A, typical values extrapolated)',
+                'thermal hysteresis VSSOP 50 ppm (T used as bound - A)',
+                'solder shift: typical histograms only (A: 0, unbounded, bench B-U07)')
+# ACAS 0606 AT DF, accuracy grade U, per element; 'relative' = deviation from the array's medial axis (doc 28770 note p1)
+NET_REL_TERMS = {
+    'relative tolerance +/-0.05 % (G)': 5e-4,
+    'relative TCR +/-5 ppm/K x 100 K, grade U (G; A: grade U orderable in 0606 DF, table p3 ambiguous)': 5e-6 * 100,
+    'relative drift endurance 70 C 1000 h +/-0.05 % (G for AE; A: same for DF, datasheet note (2))': 5e-4,
+    'soldering heat: NO relative limit -> absolute +/-0.1 % used as relative bound (G abs, strict)': 1e-3,
+}
+E_NET_REL = sum(NET_REL_TERMS.values())
+NET_ABS_TERMS = {
+    'absolute tolerance +/-0.1 % (G)': 1e-3,
+    'absolute TCR +/-10 ppm/K x 100 K, grade U (G)': 10e-6 * 100,
+    'absolute drift endurance 70 C 1000 h +/-0.1 % (G)': 1e-3,
+    'soldering heat +/-0.1 % (G)': 1e-3,
+}
+E_NET_ABS = sum(NET_ABS_TERMS.values())
+E_NET_REL_125C = E_NET_REL - 5e-4 + 1.25e-3   # sensitivity: relative drift 125 C 1000 h +/-0.125 % (G for AE) instead of 70 C
+I_Q_PRESTART_O3 = REQ['I_Q_PRESTART'] + DS_O3['REF5040_IQ'][0]
+
+
+def o3_vertices(Rt, Rb, Rx, RR1, RR2, e_rel=E_NET_REL, e_abs=E_NET_ABS, e_ref=E_REF_O3, hint_max=None, detail=False):
+    """Element = nominal * (1 + s_c*(e_abs - e_rel) + s_i*e_rel): |abs| <= e_abs, element-to-axis <= e_rel (outer bound).
+    Rx discrete ERA-3ARB (E_RES). IN+/IN- bias and TMUX leakage signs independent (UVLO-01). 2^14 vertices."""
+    vio = vio_c3(RR1, RR2)
+    iib = DS['TLV3202_IIB'][0]; ilk = DS['TMUX1102_ILEAK'][0]
+    hmax = DS['TLV3202_HINT'][1] if hint_max is None else hint_max
+    ec = e_abs - e_rel
+    ilr = 4.096 / (RR1 + RR2) * 1e3   # mA drawn from U23
+    out = []
+    for s in itertools.product((-1, 1), repeat=14):
+        rt = Rt * (1 + s[12] * ec + s[0] * e_rel); rb = Rb * (1 + s[12] * ec + s[1] * e_rel); rx = Rx * (1 + s[2] * E_RES)
+        rr1 = RR1 * (1 + s[13] * ec + s[3] * e_rel); rr2 = RR2 * (1 + s[13] * ec + s[4] * e_rel)
+        vref = 4.096 * (1 + s[5] * (e_ref + DS_O3['REF5040_LOADREG'][0] * ilr))
+        vio_ = s[6] * vio
+        hint = hmax if s[7] > 0 else 0.0
+        icur = s[8] * iib + s[11] * ilk
+        ron = DS['TMUX1102_RON'][1] if s[9] > 0 else 0.0
+        vm = vref * rr2 / (rr1 + rr2) + s[10] * iib * (rr1 * rr2 / (rr1 + rr2))
+        th_r = vm + vio_ + hint / 2
+        vr = rt * (th_r * (1 / rt + 1 / rb + 1 / (rx + ron)) + icur)
+        th_f = vm + vio_ - hint / 2
+        vf = rt * (th_f * (1 / rt + 1 / rb) + icur)
+        if detail:
+            out.append(dict(vr=vr, vf=vf, RTU=rt, RBU=rb, RXU=rx, RR1U=rr1, RR2U=rr2, VREF_UV_P=vref, VIOA=vio_, HINTA=hint,
+                            IS_U=icur, IM_U=s[10] * iib, RON_U=max(ron, 1e-3)))
+        else:
+            out.append((vr, vf))
+    return out
+
+
+def eval_o3(Rt, Rb, Rx, RR1, RR2, iq=None, **kw):
+    V = o3_vertices(Rt, Rb, Rx, RR1, RR2, **kw)
+    R = REQ['R_TOTAL_MAX']; iq = I_Q_PRESTART_O3 if iq is None else iq
+    e_rel = kw.get('e_rel', E_NET_REL)
+    vr_max = max(v[0] for v in V); vf_min = min(v[1] for v in V); vf_max = max(v[1] for v in V)
+    mb = min((v[0] - v[1]) - (P_IN / v[1]) * R for v in V)
+    vin_op = vin_operating(REQ['E_START'], R, P_IN)
+    s26 = 26.0 * Rb * (1 + e_rel) / (Rt * (1 - e_rel) + Rb * (1 + e_rel))
+    m = dict(a_start_margin=REQ['E_START'] - iq * R - vr_max,
+             b_overdischarge_margin=vf_min - REQ['V_FALL_MIN'],
+             c_motorboat_margin=mb - REQ['MARGIN_DYN'],
+             d_run_at_20V_margin=vin_op - vf_max - REQ['MARGIN_DYN'],
+             e_sense_26V_cm_margin=(DS['TPS7A1650_V5'][0]) - s26)
+    return dict(Rt=Rt, Rb=Rb, Rx=Rx, RR1=RR1, RR2=RR2, vr_min=min(v[0] for v in V), vr_max=vr_max, vf_min=vf_min, vf_max=vf_max,
+                h_min=min(v[0] - v[1] for v in V), h_max=max(v[0] - v[1] for v in V), s_at_26V_max=s26,
+                cross_corner_rmin_minus_fmax=min(v[0] for v in V) - vf_max, margins=m, ok=all(x >= 0 for x in m.values()),
+                worst=min(m.values()))
+
+
+def search_o3(max_eval=400):
+    """E96 values (subset of the ACAS E192 series), N1/N2 elements 1 k..100 k (grade U range 47 R..100 k), Rx ERA-3ARB 10 k..100 k.
+    Ratio Rmax/Rmin <= 20 (doc 28770 p3: >1:20 only for grade S)."""
+    dec = lambda lo, hi: [m * d for d in (1e3, 1e4, 1e5) for m in E96 if lo <= m * d <= hi]
+    cands = []
+    for rr2 in dec(20e3, 100e3):
+        rr1 = 10.0e3
+        if not (0.70 < rr2 / (rr1 + rr2) < 0.86):
+            continue
+        vm = 4.096 * rr2 / (rr1 + rr2)
+        for rb in dec(4.99e3, 30e3):
+            for rt in dec(10e3, 100e3):
+                if rt / rb > 20:
+                    continue
+                vf = vm * (1 + rt / rb)
+                if not (18.05 < vf < 18.40):
+                    continue
+                for rx in dec(10e3, 100e3):
+                    h = vm * rt / rx
+                    if 1.42 < h < 1.52:
+                        cands.append((rt, rb, rx, rr1, rr2))
+    # rank by the analytic nominal centre of the a/b window (fast pre-screen), then full vertex evaluation
+    def centre(c):
+        rt, rb, rx, rr1, rr2 = c
+        vm = 4.096 * rr2 / (rr1 + rr2); vf = vm * (1 + rt / rb); vr = vf + vm * rt / rx
+        ea = REQ['E_START'] - I_Q_PRESTART_O3 * REQ['R_TOTAL_MAX'] - vr; eb = vf - REQ['V_FALL_MIN']
+        return -min(ea - 0.012 * vr, eb - 0.012 * vf)
+    cands.sort(key=centre)
+    best = None
+    for c in cands[:max_eval]:
+        r = eval_o3(*c)
+        if best is None or r['worst'] > best['worst']:
+            best = r
+    return best, len(cands)
+
+
+def o3_spice_corners(ch):
+    V = o3_vertices(ch['Rt'], ch['Rb'], ch['Rx'], ch['RR1'], ch['RR2'], detail=True)
+    R = REQ['R_TOTAL_MAX']
+    pick = dict(vrmax=max(V, key=lambda v: v['vr']), vfmin=min(V, key=lambda v: v['vf']), vfmax=max(V, key=lambda v: v['vf']),
+                mbmin=min(V, key=lambda v: (v['vr'] - v['vf']) - (P_IN / v['vf']) * R))
+    vm = 4.096 * ch['RR2'] / (ch['RR1'] + ch['RR2'])
+    typ = dict(vr=ch['Rt'] * ((vm + 0.6e-3) * (1 / ch['Rt'] + 1 / ch['Rb'] + 1 / (ch['Rx'] + 1.8))),
+               vf=ch['Rt'] * ((vm - 0.6e-3) * (1 / ch['Rt'] + 1 / ch['Rb'])), RTU=ch['Rt'], RBU=ch['Rb'], RXU=ch['Rx'],
+               RR1U=ch['RR1'], RR2U=ch['RR2'], VREF_UV_P=4.096, VIOA=0.0, HINTA=1.2e-3, IS_U=0.0, IM_U=0.0, RON_U=1.8)
+    pick['typ'] = typ
+    return pick
+
+
+def o3_variant():
+    best, n = search_o3()
+    ch = CHOSEN_O3
+    base = eval_o3(**ch)
+    ma, mb = base['margins']['a_start_margin'], base['margins']['b_overdischarge_margin']
+    terms = []
+    for k in NON_G_REF_O3:
+        r = eval_o3(**ch, e_ref=E_REF_O3 - REF_TERMS_O3[k])
+        terms.append(dict(term='REF5040 ' + k, cls='T' if 'T used' in k else 'A', value=REF_TERMS_O3[k],
+                          a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb),
+                          unbounded=not k.startswith('thermal')))
+    r = eval_o3(**ch, hint_max=0.0012)
+    terms.append(dict(term='TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max)', cls='A', value=DS['TLV3202_HINT'][1],
+                      a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb), unbounded=True))
+    r = eval_o3(**ch, e_rel=E_NET_REL - 5e-4 - 5e-4)
+    terms.append(dict(term='ACAS DF: relative drift + grade-U relative TCR (A: DF figures / grade-U availability not confirmed)', cls='A',
+                      value=1e-3, a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb),
+                      unbounded=False))
+    terms.append(dict(term='I_Q_PRESTART 15 mA + REF5040 1.2 mA (G) x R_TOTAL_MAX 0.25 ohm (A)', cls='A', value=I_Q_PRESTART_O3 * REQ['R_TOTAL_MAX'],
+                      a_mV=1e3 * I_Q_PRESTART_O3 * REQ['R_TOTAL_MAX'], b_mV=0.0, unbounded=False))
+    s125 = eval_o3(**ch, e_rel=E_NET_REL_125C)
+    old = eval_c3(CHOSEN_C3['Rt'], CHOSEN_C3['Rb'], CHOSEN_C3['Rx'], RR1=CHOSEN_C3['RR1'], RR2=CHOSEN_C3['RR2'])
+    unb = [t['term'] for t in terms if t['unbounded']]
+    status = 'NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS' if min(ma, mb) >= 0 else 'FAIL'
+    return dict(desc='O3 candidate: U23 REF5040IDGK(T) dedicated VREF_UV + ACAS 0606 AT DF arrays N1 (Rt/Rb) and N2 (RR1/RR2); '
+                     'Rx discrete ERA-3ARB; WP1 REF35409 unchanged', ds=DS_O3, ref_terms=REF_TERMS_O3, e_ref=E_REF_O3,
+                net_rel_terms=NET_REL_TERMS, e_net_rel=E_NET_REL, net_abs_terms=NET_ABS_TERMS, e_net_abs=E_NET_ABS,
+                i_q_prestart=I_Q_PRESTART_O3, chosen_values=ch, chosen=base, best_search=best, n_candidates=n,
+                sensitivity_rel_drift_125C_1000h=dict(e_net_rel=E_NET_REL_125C, margins_mV={k: round(1e3 * v, 2) for k, v in s125['margins'].items()},
+                                                      ok=s125['ok']),
+                c3_old_margins_mV={k: round(1e3 * v, 2) for k, v in old['margins'].items()},
+                o3_margins_mV={k: round(1e3 * v, 2) for k, v in base['margins'].items()},
+                start_guarantee=dict(status=status, a_start_margin_mV=1e3 * ma, b_overdischarge_margin_mV=1e3 * mb,
+                                     non_guaranteed_terms=terms, unbounded_terms=unb,
+                                     note='OPEN: positive only under A/T terms (REF5040 long-term/solder shift, TLV3202 Hint max, ACAS DF drift). '
+                                          'Not GUARANTEED by simulation; requirements NOT loosened.'),
+                spice_corners=o3_spice_corners(ch))
+
+
 # ---------------- timer (TLV3202 B) + EN drive ----------------
 def timer_vertices(RT, CT, RHB, RK1, RK2, RD, RUV2, v0_list=(0.0,)):
     res = []
@@ -437,6 +618,7 @@ def alternatives():
 
 
 CHOSEN_C3 = dict(Rt=39.2e3, Rb=8.87e3, Rx=90.9e3, RR1=10.0e3, RR2=46.4e3)   # frozen from search_c3() output
+CHOSEN_O3 = dict(Rt=24.3e3, Rb=5.36e3, Rx=53.6e3, RR1=10.0e3, RR2=41.2e3)   # frozen from search_o3() (full 3236-candidate scan = same optimum)
 CHOSEN_TIMER = dict(RT=11.0e3, CT=10e-6, RHB=1.0e6, RK1=10.0e3, RK2=40.2e3, RD=10.0e3, RUV2=10.0e3)
 
 
@@ -452,6 +634,9 @@ def main():
     mis_rx = eval_c3(ch['Rt'], ch['Rb'], 100e3, RR1=ch['RR1'], RR2=ch['RR2'])       # Rx one-two steps high -> must FAIL
     alt = alternatives()
     sg = start_guarantee_status()
+    o3 = o3_variant()
+    o3_mis_rb = eval_o3(CHOSEN_O3['Rt'], 5.23e3, CHOSEN_O3['Rx'], CHOSEN_O3['RR1'], CHOSEN_O3['RR2'])   # Rb one E96 step low -> must FAIL
+    o3_c3vals = eval_o3(**CHOSEN_C3)   # info: C3 values with O3 parts
     alt['C2_TLV3202_pushpull_Rh'] = dict(desc='TLV3202 A with Rh from OUTA (hysteresis ~ VOH-VOL)', best=c2_best, n_candidates=n2,
                                           verdict=('PASS' if c2_best['ok'] else 'FAIL: best E96 worst margin %.3f V (VOH/VOL spread)' % c2_best['worst']),
                                           pass_=c2_best['ok'])
@@ -461,11 +646,13 @@ def main():
                ds=DS, ref_terms=REF_TERMS, e_ref=E_REF, res_terms=RES_TERMS, e_res=E_RES, vio_c2=VIO_TOT, vio_c3=VIO_C3,
                chosen_c3_values=CHOSEN_C3, chosen_c3=chosen, chosen_c3_rss_info=rss, timer_values=CHOSEN_TIMER, timer=tm,
                spice_corners_c3=c3_spice_corners(ch), spice_corners_timer=timer_spice_corners(CHOSEN_TIMER),
-               regression_misset_rb_8k66=mis_rb, regression_misset_rx_100k=mis_rx, alternatives=alt, start_guarantee=sg)
+               regression_misset_rb_8k66=mis_rb, regression_misset_rx_100k=mis_rx, alternatives=alt, start_guarantee=sg,
+               o3_variant=o3, o3_regression_misset_rb_5k23=o3_mis_rb, o3_info_c3_values_with_o3_parts=o3_c3vals)
     json.dump(out, open('results/uvlo-budget.json', 'w'), indent=1, default=str)
     checks = {'C3 chosen all margins >= 0': chosen['ok'], 'timer all margins >= 0': tm['ok'],
               'regression A0 baseline fails': not alt['A0_baseline_180k_10k']['pass_'],
-              'regression mis-set Rb 8.66k fails': not mis_rb['ok'], 'regression mis-set Rx 100k fails': not mis_rx['ok']}
+              'regression mis-set Rb 8.66k fails': not mis_rb['ok'], 'regression mis-set Rx 100k fails': not mis_rx['ok'],
+              'O3 candidate all margins >= 0 (under A/T terms)': o3['chosen']['ok'], 'O3 regression mis-set Rb 5.23k fails': not o3_mis_rb['ok']}
     for k, v in checks.items():
         print(('PASS ' if v else 'FAIL ') + k)
     print('C3 chosen: Vr %.3f..%.3f  Vf %.3f..%.3f  H %.3f..%.3f  margins %s' % (chosen['vr_min'], chosen['vr_max'], chosen['vf_min'],
@@ -483,6 +670,14 @@ def main():
               'n/a' if t['a_mV'] is None else '%+.2f' % t['a_mV'], 'n/a' if t['b_mV'] is None else '%+.2f' % t['b_mV']))
     for k, v in sg['design_options_parametric'].items():
         print('  option', k, 'worst %+.2f mV' % v['worst_mV'], v['margins_mV'])
+    o = o3['chosen']; og = o3['start_guarantee']
+    print('O3 candidate %s: Vr %.3f..%.3f Vf %.3f..%.3f H %.3f..%.3f margins mV %s' % (o3['chosen_values'], o['vr_min'], o['vr_max'], o['vf_min'],
+          o['vf_max'], o['h_min'], o['h_max'], o3['o3_margins_mV']))
+    print('O3 START GUARANTEE: %s a=%+.2f mV b=%+.2f mV unbounded %d ; C3 old %s ; rel-drift 125C sensitivity %s ; mis Rb 5.23k worst %.4f' % (
+          og['status'], og['a_start_margin_mV'], og['b_overdischarge_margin_mV'], len(og['unbounded_terms']), o3['c3_old_margins_mV'],
+          o3['sensitivity_rel_drift_125C_1000h']['margins_mV'], o3_mis_rb['worst']))
+    for t in og['non_guaranteed_terms']:
+        print('  O3 [%s]%s %s: a %+.2f mV, b %+.2f mV' % (t['cls'], ' UNBOUNDED' if t['unbounded'] else '', t['term'], t['a_mV'], t['b_mV']))
     sys.exit(0 if all(checks.values()) else 1)
 
 
