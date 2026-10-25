@@ -171,15 +171,17 @@ def c3_vertices(Rt, Rb, Rx, RR1=RR1_NOM, RR2=RR2_NOM, e_res=E_RES, e_ref=E_REF, 
     vio = vio_c3(RR1, RR2) if vio is None else vio
     out = []
     iib = DS['TLV3202_IIB'][0]; ilk = DS['TMUX1102_ILEAK'][0]
-    for s in itertools.product((-1, 1), repeat=10):
+    # Tur-2 UVLO-01 (ChatGPT review 6395614957): IN+ bias (s[8]), IN- bias (s[10]) and TMUX leakage (s[11]) have
+    # independent signs (previously one shared sign s[8]) -> 2^12 vertices.
+    for s in itertools.product((-1, 1), repeat=12):
         rt = Rt * (1 + s[0] * e_res); rb = Rb * (1 + s[1] * e_res); rx = Rx * (1 + s[2] * e_res)
         rr1 = RR1 * (1 + s[3] * e_res); rr2 = RR2 * (1 + s[4] * e_res)
         vref = 4.096 * (1 + s[5] * (e_ref + DS['REF35_LOADREG'][0] * 4.096 / (RR1 + RR2) * 1e3))
         vio_ = s[6] * vio
         hint = DS['TLV3202_HINT'][1] if s[7] > 0 else 0.0
-        icur = s[8] * (iib + ilk)                      # current leaving node S (IIB + switch leakage), sign enumerated
+        icur = s[8] * iib + s[11] * ilk                # current leaving node S (IN+ IIB + switch leakage), signs independent
         ron = DS['TMUX1102_RON'][1] if s[9] > 0 else 0.0
-        vm = vref * rr2 / (rr1 + rr2) + s[8] * iib * (rr1 * rr2 / (rr1 + rr2))   # IN- incl. its own bias current
+        vm = vref * rr2 / (rr1 + rr2) + s[10] * iib * (rr1 * rr2 / (rr1 + rr2))  # IN- incl. its own (independent) bias current
         # rising: OUTA low, switch ON -> Rx+RON in parallel with Rb
         th_r = vm + vio_ + hint / 2
         vr = rt * (th_r * (1 / rt + 1 / rb + 1 / (rx + ron)) + icur)
@@ -187,7 +189,7 @@ def c3_vertices(Rt, Rb, Rx, RR1=RR1_NOM, RR2=RR2_NOM, e_res=E_RES, e_ref=E_REF, 
         vf = rt * (th_f * (1 / rt + 1 / rb) + icur)
         if detail:
             out.append(dict(vr=vr, vf=vf, RTU=rt, RBU=rb, RXU=rx, RR1U=rr1, RR2U=rr2, VREF_P=vref, VIOA=vio_, HINTA=hint,
-                            IS_U=icur, IM_U=s[8] * iib, RON_U=max(ron, 1e-3)))
+                            IS_U=icur, IM_U=s[10] * iib, RON_U=max(ron, 1e-3)))
         else:
             out.append((vr, vf))
     return out
