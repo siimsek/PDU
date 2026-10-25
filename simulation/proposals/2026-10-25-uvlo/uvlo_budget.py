@@ -3,7 +3,7 @@
 
 All parameter sources are tagged:  G = datasheet guaranteed (min/max), T = datasheet typical,
 A = assumption (marked, strictest safe reading), I = inference (derived from G/T values by stated reasoning).
-Output: uvlo-budget.json.  Exit 0 = chosen design passes every analytic criterion, 1 = a criterion fails.
+Output: results/uvlo-budget.json.  Exit 0 = chosen design passes every analytic criterion, 1 = a criterion fails.
 """
 import itertools, json, math, sys
 
