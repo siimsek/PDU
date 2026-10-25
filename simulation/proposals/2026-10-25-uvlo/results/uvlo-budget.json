@@ -115,6 +115,28 @@
    0.06,
    "G SCDS410D ROC: IDC 60 mA at Tj 125 C"
   ],
+  "LVC1G74_VIH_VIL": [
+   [
+    0.7,
+    0.3
+   ],
+   "G SN74LVC1G74 (SCES203) VIH min 0.7*VCC / VIL max 0.3*VCC at VCC 3..5.5 V; async PRE/CLR active low; function table: PRE=L, CLR=L -> Q=H, Q#=H"
+  ],
+  "LVC1G74_RO": [
+   22.0,
+   "I: SN74LVC1G74 VOH 3.8 V min @ IOH -32 mA, VCC 4.5 V -> ~22 ohm output resistance (model value)"
+  ],
+  "TLV3201_AS_TLV3202": [
+   "A: U29 TLV3201 (single channel of SBOS561C); the TLV3202 VIO/CMRR/PSRR/HINT/VOH/VOL rows are used (conservative)"
+  ],
+  "TMUX1101": [
+   "G SCDS410D: TMUX1101 = TMUX1102 with inverted logic (switch ON when SEL high); same RON/leakage/VIH/VIL/IDC rows"
+  ],
+  "GRDY_DETECTOR": [
+   7.0,
+   0.005,
+   "A: gate-ready qualifier VGS >= 7.0 V continuously for 5 ms (behavioural; physical level-shift detector and part NOT designed -> open item)"
+  ],
   "C0G_TOL": [
    0.054950000000000006,
    "A: CST C0G/NP0 +/-5 % + 30 ppm/K over 165 K (MPN not selected)"
@@ -363,6 +385,209 @@
     "p_peak_W": 0.12188378631677599
    }
   ],
+  "latch": {
+   "note": "Tur-5 UVLO-T5-01/02 latch candidate (replaces the Tur-3/4 RC stretcher RST/CST/DST/DST2/RSA/RSB and the DTT/RDIS fast path). PRE=OUTA_UV: any VIN-OK loss (however short) sets Q_INH; CLR = U29 (CTT > V_CLR): the latch clears only when OUTA is high AND CTT has been discharged below V_CLR, so every restart ramps from <= V_CLR,max. PRE+CLR low -> Q high (function table) keeps the inhibit while VIN is not OK. U28 gate-ready qualifier (A) holds EN low until VGS >= 7 V for 5 ms. Simulation is not physical measurement.",
+   "values": {
+    "RC1": 40200.0,
+    "RC2": 1500.0,
+    "RDSC": 180.0
+   },
+   "v_clr_min": 0.13470947102907868,
+   "v_clr_max": 0.15748195610275004,
+   "v_eq_max": 0.08805634254434577,
+   "i_peak_max": 0.029209621993127148,
+   "i_peak_review_target": 0.03,
+   "i_peak_target_met": true,
+   "t_dsc_max": 0.011258531348661959,
+   "t_after_release_min": 0.07597516285653437,
+   "t_target_65ms_margin_s": 0.010975162856534368,
+   "t_cold_min": 0.07767994558160285,
+   "t_cold_max": 0.255527652808786,
+   "t_vinok_to_en_max": 0.2667861841574479,
+   "e_per_event_J": 0.00016451325,
+   "p_peak_W": 0.14896907216494845,
+   "release_margin_V": 0.04665312848473291,
+   "margins": {
+    "release_margin_V": 0.03665312848473291,
+    "after_release_limit_60ms_margin_s": 0.015975162856534372,
+    "cold_start_limit_60ms_margin_s": 0.01767994558160285,
+    "latency_margin_s": 0.033213815842552064,
+    "i_peak_margin_A": 0.15079037800687284,
+    "i_continuous_IDC_margin_A": 0.03079037800687285,
+    "gate_ready_before_ramp_s": 0.021879945581602854
+   },
+   "ok": true
+  },
+  "latch_sweep": [
+   {
+    "RC2": 1000.0,
+    "RDSC": 100.0,
+    "v_clr_min": 0.08729106559514951,
+    "v_clr_max": 0.10905439015781052,
+    "v_eq_max": 0.050299745226873735,
+    "i_peak_max": 0.05257731958762886,
+    "t_dsc_max": 0.006710567614032143,
+    "t_after_release_min": 0.0765050368861655,
+    "t_vinok_to_en_max": 0.26223822042281814,
+    "ok": true,
+    "i_peak_target_met": false,
+    "target_65ms": true
+   },
+   {
+    "RC2": 1000.0,
+    "RDSC": 150.0,
+    "v_clr_min": 0.08729106559514951,
+    "v_clr_max": 0.10905439015781052,
+    "v_eq_max": 0.07396321891426569,
+    "i_peak_max": 0.03505154639175258,
+    "t_dsc_max": 0.011962415749999506,
+    "t_after_release_min": 0.0765050368861655,
+    "t_vinok_to_en_max": 0.2674900685587855,
+    "ok": true,
+    "i_peak_target_met": false,
+    "target_65ms": true
+   },
+   {
+    "RC2": 1000.0,
+    "RDSC": 180.0,
+    "v_clr_min": 0.08729106559514951,
+    "v_clr_max": 0.10905439015781052,
+    "v_eq_max": 0.08805634254434577,
+    "i_peak_max": 0.029209621993127148,
+    "t_dsc_max": Infinity,
+    "t_after_release_min": 0.0765050368861655,
+    "t_vinok_to_en_max": Infinity,
+    "ok": false,
+    "i_peak_target_met": true,
+    "target_65ms": true
+   },
+   {
+    "RC2": 1000.0,
+    "RDSC": 220.0,
+    "v_clr_min": 0.08729106559514951,
+    "v_clr_max": 0.10905439015781052,
+    "v_eq_max": 0.10672607291577724,
+    "i_peak_max": 0.02389878163074039,
+    "t_dsc_max": Infinity,
+    "t_after_release_min": 0.0765050368861655,
+    "t_vinok_to_en_max": Infinity,
+    "ok": false,
+    "i_peak_target_met": true,
+    "target_65ms": true
+   },
+   {
+    "RC2": 1500.0,
+    "RDSC": 100.0,
+    "v_clr_min": 0.13470947102907868,
+    "v_clr_max": 0.15748195610275004,
+    "v_eq_max": 0.050299745226873735,
+    "i_peak_max": 0.05257731958762886,
+    "t_dsc_max": 0.0055844971547636965,
+    "t_after_release_min": 0.07597516285653437,
+    "t_vinok_to_en_max": 0.2611121499635497,
+    "ok": true,
+    "i_peak_target_met": false,
+    "target_65ms": true
+   },
+   {
+    "RC2": 1500.0,
+    "RDSC": 150.0,
+    "v_clr_min": 0.13470947102907868,
+    "v_clr_max": 0.15748195610275004,
+    "v_eq_max": 0.07396321891426569,
+    "i_peak_max": 0.03505154639175258,
+    "t_dsc_max": 0.008903824634878892,
+    "t_after_release_min": 0.07597516285653437,
+    "t_vinok_to_en_max": 0.26443147744366485,
+    "ok": true,
+    "i_peak_target_met": false,
+    "target_65ms": true
+   },
+   {
+    "RC2": 1500.0,
+    "RDSC": 180.0,
+    "v_clr_min": 0.13470947102907868,
+    "v_clr_max": 0.15748195610275004,
+    "v_eq_max": 0.08805634254434577,
+    "i_peak_max": 0.029209621993127148,
+    "t_dsc_max": 0.011258531348661959,
+    "t_after_release_min": 0.07597516285653437,
+    "t_vinok_to_en_max": 0.2667861841574479,
+    "ok": true,
+    "i_peak_target_met": true,
+    "target_65ms": true
+   },
+   {
+    "RC2": 1500.0,
+    "RDSC": 220.0,
+    "v_clr_min": 0.13470947102907868,
+    "v_clr_max": 0.15748195610275004,
+    "v_eq_max": 0.10672607291577724,
+    "i_peak_max": 0.02389878163074039,
+    "t_dsc_max": 0.015181904528573114,
+    "t_after_release_min": 0.07597516285653437,
+    "t_vinok_to_en_max": 0.2707095573373591,
+    "ok": true,
+    "i_peak_target_met": true,
+    "target_65ms": true
+   },
+   {
+    "RC2": 2000.0,
+    "RDSC": 100.0,
+    "v_clr_min": 0.1810127503362936,
+    "v_clr_max": 0.2047531725591142,
+    "v_eq_max": 0.050299745226873735,
+    "i_peak_max": 0.05257731958762886,
+    "t_dsc_max": 0.004987581747344361,
+    "t_after_release_min": 0.07545298407761213,
+    "t_vinok_to_en_max": 0.26051523455613035,
+    "ok": true,
+    "i_peak_target_met": false,
+    "target_65ms": true
+   },
+   {
+    "RC2": 2000.0,
+    "RDSC": 150.0,
+    "v_clr_min": 0.1810127503362936,
+    "v_clr_max": 0.2047531725591142,
+    "v_eq_max": 0.07396321891426569,
+    "i_peak_max": 0.03505154639175258,
+    "t_dsc_max": 0.007761354452290402,
+    "t_after_release_min": 0.07545298407761213,
+    "t_vinok_to_en_max": 0.2632890072610764,
+    "ok": true,
+    "i_peak_target_met": false,
+    "target_65ms": true
+   },
+   {
+    "RC2": 2000.0,
+    "RDSC": 180.0,
+    "v_clr_min": 0.1810127503362936,
+    "v_clr_max": 0.2047531725591142,
+    "v_eq_max": 0.08805634254434577,
+    "i_peak_max": 0.029209621993127148,
+    "t_dsc_max": 0.009598964655249512,
+    "t_after_release_min": 0.07545298407761213,
+    "t_vinok_to_en_max": 0.2651266174640355,
+    "ok": true,
+    "i_peak_target_met": true,
+    "target_65ms": true
+   },
+   {
+    "RC2": 2000.0,
+    "RDSC": 220.0,
+    "v_clr_min": 0.1810127503362936,
+    "v_clr_max": 0.2047531725591142,
+    "v_eq_max": 0.10672607291577724,
+    "i_peak_max": 0.02389878163074039,
+    "t_dsc_max": 0.012322775178425326,
+    "t_after_release_min": 0.07545298407761213,
+    "t_vinok_to_en_max": 0.2678504279872113,
+    "ok": true,
+    "i_peak_target_met": true,
+    "target_65ms": true
+   }
+  ],
   "rdsc_review_targets": {
    "i_peak_max": 0.03,
    "t_dsc_max": 0.0055,
@@ -470,7 +695,15 @@
    "RSB": 970000.0,
    "RDSC": 97.0,
    "VTHS": 0.87,
-   "T_HOLD": 0.00935832155029299
+   "T_HOLD_TUR4": 0.00935832155029299,
+   "RC1": 40039.2,
+   "RC2": 1506.0,
+   "VIOC": 0.008556234132519035,
+   "HINTC": 0.0,
+   "VTRL": 0.3,
+   "RDSCL": 174.6,
+   "VRDY": 7.0,
+   "TQ_GRDY": 0.005
   },
   "tmax": {
    "t": 0.255527652808786,
@@ -493,7 +726,15 @@
    "RSB": 1030000.0,
    "RDSC": 103.0,
    "VTHS": 1.49,
-   "T_HOLD": 0.02625595939227855
+   "T_HOLD_TUR4": 0.02625595939227855,
+   "RC1": 40360.8,
+   "RC2": 1494.0,
+   "VIOC": -0.008556234132519035,
+   "HINTC": 0.005,
+   "VTRL": 0.7,
+   "RDSCL": 185.4,
+   "VRDY": 7.0,
+   "TQ_GRDY": 0.005
   }
  },
  "spice_corners_timer_noreset": {

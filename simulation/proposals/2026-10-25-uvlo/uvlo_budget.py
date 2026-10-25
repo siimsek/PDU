@@ -158,6 +158,14 @@ DS.update(
     TMUX1102_VIH_VIL=((1.49, 0.87), 'G SCDS410D p5 VIH min 1.49 V, VIL max 0.87 V (VDD 5 V)'),
     TMUX1102_IPEAK=(0.180, 'G SCDS410D ROC: Ipeak 180 mA at Tj 125 C (1 ms period max, 10 % duty); continuous IDC 60 mA at 125 C'),
     TMUX1102_IDC=(0.060, 'G SCDS410D ROC: IDC 60 mA at Tj 125 C'),
+    # Tur-5 UVLO-T5-01/02 latch candidate parts (datasheet rows; MPN choice is a candidate, not a BOM change)
+    LVC1G74_VIH_VIL=((0.7, 0.3), 'G SN74LVC1G74 (SCES203) VIH min 0.7*VCC / VIL max 0.3*VCC at VCC 3..5.5 V; async PRE/CLR active low; '
+                                 'function table: PRE=L, CLR=L -> Q=H, Q#=H'),
+    LVC1G74_RO=(22.0, 'I: SN74LVC1G74 VOH 3.8 V min @ IOH -32 mA, VCC 4.5 V -> ~22 ohm output resistance (model value)'),
+    TLV3201_AS_TLV3202=('A: U29 TLV3201 (single channel of SBOS561C); the TLV3202 VIO/CMRR/PSRR/HINT/VOH/VOL rows are used (conservative)',),
+    TMUX1101=('G SCDS410D: TMUX1101 = TMUX1102 with inverted logic (switch ON when SEL high); same RON/leakage/VIH/VIL/IDC rows',),
+    GRDY_DETECTOR=(7.0, 5e-3, 'A: gate-ready qualifier VGS >= 7.0 V continuously for 5 ms (behavioural; physical level-shift '
+                              'detector and part NOT designed -> open item)'),
     C0G_TOL=(0.05 + 30e-6 * 165, 'A: CST C0G/NP0 +/-5 % + 30 ppm/K over 165 K (MPN not selected)'),
     REF35_LOADREG=(20e-6, 'T SNAS809C p1 20 ppm/mA (used as bound, A)'),
 )
@@ -255,7 +263,10 @@ def timer_spice_corners(T):
             d.update(RST=T['RST'] * (1 + sg * E_RES), CST=T['CST'] * (1 + sg * DS['C0G_TOL'][0]),
                      RSA=T['RSA'] * (1 - sg * E_RES_1PCT), RSB=T['RSB'] * (1 + sg * E_RES_1PCT),
                      RDSC=T['RDSC'] * (1 + sg * E_RES_1PCT), VTHS=DS['TMUX1102_VIH_VIL'][0][1] if sg < 0 else DS['TMUX1102_VIH_VIL'][0][0])
-            d['T_HOLD'] = stretch_hold(d['RST'], d['CST'], d['RSA'], d['RSB'], d['V5_P'] - d['VOHD'], d['VTHS'])
+            # Tur-5: the stretcher is now only the Tur-4 REGRESSION block -> its hold is T_HOLD_TUR4 (not added to the
+            # latch candidate's analytic delay)
+            d['T_HOLD_TUR4'] = stretch_hold(d['RST'], d['CST'], d['RSA'], d['RSB'], d['V5_P'] - d['VOHD'], d['VTHS'])
+            d.update(latch_spice_params(name))
     return out
 
 
@@ -754,6 +765,74 @@ CHOSEN_O3 = dict(Rt=24.3e3, Rb=5.36e3, Rx=53.6e3, RR1=10.0e3, RR2=41.2e3)   # fr
 # (100 ohm: discharge current <= IDC 60 mA continuous rating, so the Ipeak pulse rating (<= 10 % of a 1 ms period) is not needed).
 CHOSEN_TIMER = dict(RT=11.0e3, CT=10e-6, RHB=1.0e6, RK1=10.0e3, RK2=40.2e3, RD=10.0e3, RUV2=10.0e3,
                     RK1A=10.5e3, RK4=210e3, RST=100e3, CST=150e-9, RSA=1.6e6, RSB=1.0e6, RDSC=100.0)
+# Tur-5 UVLO-T5-01/02: reset-dominant latch candidate. RC1/RC2 set the release level V_CLR = VREF_OVP*RC2/(RC1+RC2) of U29.
+CHOSEN_LATCH = dict(RC1=40.2e3, RC2=1.5e3, RDSC=180.0)
+LATCH_TARGETS = dict(i_peak_review_target=0.030, t_after_release_target=0.065, t_seq_min=REQ['T_SEQ_MIN'], t_seq_max=REQ['T_SEQ_MAX'],
+                     release_margin_min=0.010)
+
+
+def eval_latch(T, L, cold_tx, tdrv=0.0508):
+    """Tur-5 UVLO-T5-01/02: U27 SN74LVC1G74 latch set (PRE) by any OUTA_UV low, cleared (CLR) only when OUTA is high AND
+    U29 sees CTT < V_CLR. While Q_INH is high: U22 (TMUX1101) holds EN low, U24 (TMUX1101) discharges CTT via RDSC.
+    Worst-case linear bounds (G = datasheet limit, A = assumption)."""
+    v5lo, v5hi = DS['TPS7A1650_V5'][:2]; hmax = DS['TLV3202_HINT'][1]
+    cm = 10 ** (-DS['TLV3202_CMRR_DB'][0] / 20); ps = 0.1 * 10 ** (-DS['TLV3202_PSRR_DB'][0] / 20)
+    vio_l = DS['TLV3202_VIO'][0] + abs(0.0 - 2.5) * cm + ps          # CM near 0 V (conservative)
+    vref_lo, vref_hi = 4.096 * (1 - E_REF), 4.096 * (1 + E_REF)
+    rc1lo, rc1hi = L['RC1'] * (1 - E_RES), L['RC1'] * (1 + E_RES)
+    rc2lo, rc2hi = L['RC2'] * (1 - E_RES), L['RC2'] * (1 + E_RES)
+    iib = DS['TLV3202_IIB'][0]; rthc = rc1hi * rc2hi / (rc1hi + rc2hi)
+    # release (CLR low) when CTT < REFC + VIO - HINT/2
+    v_clr_max = vref_hi * rc2hi / (rc1lo + rc2hi) + iib * rthc + vio_l
+    v_clr_min = vref_lo * rc2lo / (rc1hi + rc2lo) - iib * rthc - vio_l - hmax / 2
+    rdlo, rdhi = L['RDSC'] * (1 - E_RES_1PCT), L['RDSC'] * (1 + E_RES_1PCT)
+    rtlo = T['RT'] * (1 - E_RES); ronhi = DS['TMUX1102_RON'][1]
+    rl = rdhi + ronhi
+    # CTT level while U24 holds it with OUTA high (<= V5max via RTT) and OUTB high (RHB): no diode any more (DTT removed)
+    v_eq_max = (v5hi / rtlo + v5hi / (T['RHB'] * (1 - E_RHB)) + iib) * (1 / (1 / rl + 1 / rtlo))
+    i_peak_max = v5hi / rdlo                                          # RON min not specified -> 0 (strict)
+    ctmax = T['CT'] * 1.10 * 1.15
+    tau_dsc_max = rl * ctmax
+    t_dsc_max = tau_dsc_max * math.log((v5hi - v_eq_max) / (v_clr_min - v_eq_max)) if v_clr_min > v_eq_max else float('inf')
+    rel = timer_vertices(T['RT'], T['CT'], T['RHB'], T['RK1'], T['RK2'], T['RD'], T['RUV2'], (v_clr_max,), TX=T)
+    t_after_release_min = min(x['t'] for x in rel)
+    t_cold_max = max(x['t'] for x in cold_tx); t_cold_min = min(x['t'] for x in cold_tx)
+    gq = DS['GRDY_DETECTOR'][1]
+    t_vinok_to_en_max = t_dsc_max + max(t_cold_max, tdrv + gq)
+    m = dict(release_margin_V=v_clr_min - v_eq_max - LATCH_TARGETS['release_margin_min'],
+             after_release_limit_60ms_margin_s=t_after_release_min - REQ['T_SEQ_MIN'],
+             cold_start_limit_60ms_margin_s=t_cold_min - REQ['T_SEQ_MIN'],
+             latency_margin_s=REQ['T_SEQ_MAX'] - t_vinok_to_en_max,
+             i_peak_margin_A=DS['TMUX1102_IPEAK'][0] - i_peak_max,
+             i_continuous_IDC_margin_A=DS['TMUX1102_IDC'][0] - i_peak_max,
+             gate_ready_before_ramp_s=t_cold_min - (tdrv + gq))
+    return dict(note='Tur-5 UVLO-T5-01/02 latch candidate (replaces the Tur-3/4 RC stretcher RST/CST/DST/DST2/RSA/RSB and the '
+                     'DTT/RDIS fast path). PRE=OUTA_UV: any VIN-OK loss (however short) sets Q_INH; CLR = U29 (CTT > V_CLR): the latch '
+                     'clears only when OUTA is high AND CTT has been discharged below V_CLR, so every restart ramps from <= V_CLR,max. '
+                     'PRE+CLR low -> Q high (function table) keeps the inhibit while VIN is not OK. U28 gate-ready qualifier (A) holds '
+                     'EN low until VGS >= 7 V for 5 ms. Simulation is not physical measurement.',
+                values=L, v_clr_min=v_clr_min, v_clr_max=v_clr_max, v_eq_max=v_eq_max, i_peak_max=i_peak_max,
+                i_peak_review_target=LATCH_TARGETS['i_peak_review_target'],
+                i_peak_target_met=bool(i_peak_max <= LATCH_TARGETS['i_peak_review_target']),
+                t_dsc_max=t_dsc_max, t_after_release_min=t_after_release_min,
+                t_target_65ms_margin_s=t_after_release_min - LATCH_TARGETS['t_after_release_target'],
+                t_cold_min=t_cold_min, t_cold_max=t_cold_max, t_vinok_to_en_max=t_vinok_to_en_max,
+                e_per_event_J=0.5 * ctmax * v5hi ** 2, p_peak_W=v5hi ** 2 / rdlo,
+                release_margin_V=v_clr_min - v_eq_max, margins=m, ok=all(v >= 0 for v in m.values()))
+
+
+def latch_spice_params(name):
+    """U29 / latch corner per timer corner: tmin = highest release level (ramp from V_CLR,max, fastest restart), tmax = lowest."""
+    L = CHOSEN_LATCH; hmax = DS['TLV3202_HINT'][1]
+    cm = 10 ** (-DS['TLV3202_CMRR_DB'][0] / 20); ps = 0.1 * 10 ** (-DS['TLV3202_PSRR_DB'][0] / 20)
+    vio_l = DS['TLV3202_VIO'][0] + 2.5 * cm + ps
+    sg = -1 if name == 'tmin' else 1
+    vih, vil = DS['LVC1G74_VIH_VIL'][0]
+    return dict(RC1=L['RC1'] * (1 + sg * E_RES), RC2=L['RC2'] * (1 - sg * E_RES), VIOC=-sg * vio_l, HINTC=0.0 if sg < 0 else hmax,
+                VTRL=vil if sg < 0 else vih, RDSCL=L['RDSC'] * (1 + sg * E_RES_1PCT), VRDY=DS['GRDY_DETECTOR'][0],
+                TQ_GRDY=DS['GRDY_DETECTOR'][1])
+
+
 CHOSEN_TIMER_TUR2 = dict(RT=11.0e3, CT=10e-6, RHB=1.0e6, RK1=10.0e3, RK2=40.2e3, RD=10.0e3, RUV2=10.0e3)   # no-reset regression
 
 
@@ -806,6 +885,18 @@ def main():
                           e_per_event_J=0.5 * CHOSEN_TIMER['CT'] * 1.10 * 1.15 * v5hi ** 2,
                           p_peak_W=v5hi ** 2 / (rd * (1 - E_RES_1PCT))))
     tm['rdsc_sweep'] = sweep
+    # Tur-5 UVLO-T5-01/02: latch candidate budget + (RDSC, RC2) exploration at the frozen RT/CT
+    cold = timer_vertices(CHOSEN_TIMER['RT'], CHOSEN_TIMER['CT'], CHOSEN_TIMER['RHB'], CHOSEN_TIMER['RK1'], CHOSEN_TIMER['RK2'],
+                          CHOSEN_TIMER['RD'], CHOSEN_TIMER['RUV2'], (0.0,), TX=CHOSEN_TIMER)
+    tm['latch'] = eval_latch(CHOSEN_TIMER, CHOSEN_LATCH, cold)
+    tm['latch_sweep'] = []
+    for rc2 in (1.0e3, 1.5e3, 2.0e3):
+        for rd in (100.0, 150.0, 180.0, 220.0):
+            r = eval_latch(CHOSEN_TIMER, dict(CHOSEN_LATCH, RC2=rc2, RDSC=rd), cold)
+            tm['latch_sweep'].append(dict(RC2=rc2, RDSC=rd, v_clr_min=r['v_clr_min'], v_clr_max=r['v_clr_max'], v_eq_max=r['v_eq_max'],
+                                          i_peak_max=r['i_peak_max'], t_dsc_max=r['t_dsc_max'], t_after_release_min=r['t_after_release_min'],
+                                          t_vinok_to_en_max=r['t_vinok_to_en_max'], ok=r['ok'], i_peak_target_met=r['i_peak_target_met'],
+                                          target_65ms=r['t_target_65ms_margin_s'] >= 0))
     tm['rdsc_review_targets'] = tgt
     tm['rdsc_note'] = ('Tur-4 T4-02: no RDSC value meets all four review targets at the frozen RT 11k / CT 10 uF: V_rel scales with '
                        'RDSC/(RDSC+RTT) so only 100 ohm keeps V_rel <= 53.5 mV, while Ipk <= 30 mA needs >= ~170 ohm. Candidate stays '
@@ -815,6 +906,7 @@ def main():
     checks = {'C3 chosen all margins >= 0': chosen['ok'], 'timer all margins >= 0': tm['ok'], 'timer reset all margins >= 0': tm['reset']['ok'],
               'regression A0 baseline fails': not alt['A0_baseline_180k_10k']['pass_'],
               'regression mis-set Rb 8.66k fails': not mis_rb['ok'], 'regression mis-set Rx 100k fails': not mis_rx['ok'],
+              'timer latch (Tur-5 candidate) all margins >= 0': tm['latch']['ok'],
               'O3 candidate all margins >= 0 (under A/T terms)': o3['chosen']['ok'], 'O3 regression mis-set Rb 5.23k fails': not o3_mis_rb['ok']}
     for k, v in checks.items():
         print(('PASS ' if v else 'FAIL ') + k)
@@ -828,6 +920,17 @@ def main():
           rs_['v_l_min'], rs_['v_l_max'], rs_['v_rel_max'], rs_['hold_min'] * 1e3, rs_['hold_max'] * 1e3, rs_['t_dsc_max'] * 1e3,
           rs_['i_peak_max'] * 1e3, rs_['t_after_reset_min'] * 1e3, rs_['t_after_short_dip_min'] * 1e3, rs_['t_vinok_to_en_max'] * 1e3,
           {k: round(v, 5) for k, v in rs_['margins'].items()}))
+    la = tm['latch']
+    print('timer latch (Tur-5): V_CLR %.1f..%.1f mV, CTT eq <= %.1f mV, release margin %.1f mV, Ipk <= %.1f mA (target 30 mA %s), '
+          't_dsc <= %.2f ms, after release >= %.2f ms (65 ms target margin %.2f ms), VIN-OK->EN <= %.1f ms; margins %s' % (
+          la['v_clr_min'] * 1e3, la['v_clr_max'] * 1e3, la['v_eq_max'] * 1e3, la['release_margin_V'] * 1e3, la['i_peak_max'] * 1e3,
+          'MET' if la['i_peak_target_met'] else 'NOT MET', la['t_dsc_max'] * 1e3, la['t_after_release_min'] * 1e3,
+          la['t_target_65ms_margin_s'] * 1e3, la['t_vinok_to_en_max'] * 1e3, {k: round(v, 5) for k, v in la['margins'].items()}))
+    for r in tm['latch_sweep']:
+        print('latch sweep RC2 %4.0f RDSC %3.0f: V_CLR >= %.1f mV, eq <= %.1f mV, Ipk %.1f mA, t_dsc %.2f ms, after release >= %.2f ms, '
+              'VIN-OK->EN <= %.1f ms, ok %s, 30 mA %s, 65 ms %s' % (r['RC2'], r['RDSC'], r['v_clr_min'] * 1e3, r['v_eq_max'] * 1e3,
+              r['i_peak_max'] * 1e3, r['t_dsc_max'] * 1e3, r['t_after_release_min'] * 1e3, r['t_vinok_to_en_max'] * 1e3, r['ok'],
+              r['i_peak_target_met'], r['target_65ms']))
     for r in tm['rdsc_sweep']:
         print('RDSC sweep %5.0f ohm: Ipk <= %.1f mA (IDC 60 mA), t_dsc <= %.2f ms, hold_min %.2f ms, separation %.2f ms, V_rel <= %.1f mV, '
               'after full reset >= %.2f ms, short dip >= %.2f ms, VIN-OK->EN <= %.1f ms, E %.3f mJ, Ppk %.3f W, reset ok %s, review targets %s %s' % (
