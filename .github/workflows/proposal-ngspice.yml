@@ -14,6 +14,8 @@ on:
     paths:
       - 'simulation/proposals/2026-10-25-o1-ovp/**'
       - 'hardware/proposals/2026-10-25-o1-ovp/**'
+      - 'simulation/proposals/2026-10-25-uvlo/**'
+      - 'hardware/proposals/2026-10-25-uvlo/**'
       - '.github/workflows/proposal-ngspice.yml'
 permissions:
   contents: read
@@ -85,3 +87,46 @@ jobs:
           path: |
             simulation/proposals/2026-10-25-o1-ovp/o1ovp-results.json
             simulation/proposals/2026-10-25-o1-ovp/results/
+
+  # WP2 2026-10-25-uvlo (added by WP2; the o1-ovp job above is unchanged).
+  #   uvlo_budget.py  0 = chosen C3 + timer pass every analytic margin and the budget regressions fail as expected
+  #   run_uvlo.py     0 = every deck completed, 2 = a deck did not complete (verifier decides PASS/FAIL)
+  #   verify_uvlo.py  0 = all acceptance PASS and regressions FAIL as expected, 1 = FAIL, 2 = missing/incomplete deck
+  # Note: apt ngspice may differ from the ngspice-44.2 used for the committed results.
+  uvlo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    defaults:
+      run:
+        working-directory: simulation/proposals/2026-10-25-uvlo
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install ngspice (apt)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ngspice && ngspice --version || true
+      - name: Hard limits present (must not be loosened)
+        run: |
+          grep -q "O1_PEAK_MAX = 12.0" verify_uvlo.py
+          grep -q "BUS_NORMAL_MAX = 11.1605" verify_uvlo.py
+          grep -q "V_FALL_MIN = 18.0" verify_uvlo.py
+          grep -q "T_SEQ_MIN = 0.060" verify_uvlo.py
+      - name: Analytic budget (must pass and match the committed JSON)
+        run: |
+          python3 uvlo_budget.py
+          git diff --exit-code -- results/uvlo-budget.json
+      - name: Regenerate decks and check they match the committed ones
+        run: |
+          python3 gen_uvlo.py
+          git status --porcelain -- decks *.inc | tee /tmp/gen-diff.txt
+          test ! -s /tmp/gen-diff.txt
+      - name: Run decks
+        continue-on-error: true
+        run: PDU_NGSPICE="$(command -v ngspice)" python3 run_uvlo.py -j 4
+      - name: Independent verification
+        run: python3 verify_uvlo.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: uvlo-results
+          path: simulation/proposals/2026-10-25-uvlo/results/
