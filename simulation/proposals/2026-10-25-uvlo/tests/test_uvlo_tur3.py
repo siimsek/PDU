@@ -114,9 +114,11 @@ def design_tests():
     blk = (PKG / 'pdu-uvlo-block.inc').read_text()
     blko = (PKG / 'pdu-uvlo-block-o3.inc').read_text()
     lines = {l.split()[0]: l.split() for l in blk.splitlines() if l.strip() and not l.startswith(('*', '.'))}
-    ok = ('XU24' in lines and lines['XU24'][3] == 'SEL24_UV' and 'RDSC' in lines and 'T_UV' in lines['RDSC']
-          and lines.get('XU22', [None] * 4)[3] == 'OUTA_D' and 'DST' in lines and 'CST' in lines and 'RST' in lines
-          and lines.get('XU25', [None] * 4)[3] == 'OUTB_UV')
+    # 2026-10-25 test fix (own bug, not a loosening): TMUX1102 subckt pin order is D S GND SEL VDD -> SEL is token
+    # index 4 (index 3 is GND); the first version of this test read index 3 and could never pass for a correct netlist.
+    ok = ('XU24' in lines and lines['XU24'][4] == 'SEL24_UV' and 'RDSC' in lines and 'T_UV' in lines['RDSC']
+          and lines.get('XU22', [None] * 5)[4] == 'OUTA_D' and 'DST' in lines and 'CST' in lines and 'RST' in lines
+          and lines.get('XU25', [None] * 5)[4] == 'OUTB_UV')
     res.append(('D1 C3 block: CTT reset switch U24 (SEL = scaled stretched OUTA_D) + RDSC, U22 gated by OUTA_D, '
                 'Schmitt threshold switch U25 (SEL = OUTB)', ok, 'present' if ok else 'missing'))
     ok = all(x in blko for x in ('XU24 ', 'XU25 ', 'DST ', 'XU22 EN_BUCK 0 0 OUTA_D'))

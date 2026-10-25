@@ -26,14 +26,35 @@ DTT T_UV DTK_UV UVLO_1N4148WS
 RDIS DTK_UV OUTA_UV 100
 Bilkd OUTA_UV T_UV I={ILKD}*min(max(V(OUTA_UV,T_UV)/0.5,0),1)
 RHB OUTB_UV T_UV {RHB}
-RK1 V5_OVP KTH_UV {RK1}
+* --- Tur-3 UVLO-T3-02 (candidate): CTT fast reset + Schmitt timer comparator
+* OUTA_D = OUTA stretched: rises slowly via RST/CST, falls fast via DST (BAT54A common anode at OUTA_D; cathodes to OUTA_UV
+* and V5_OVP, the latter also discharges OUTA_D when V5 collapses). BAT54 parameters: generic (ASSUMPTION).
+RST OUTA_UV OUTA_D {RST}
+CST OUTA_D 0 {CST}
+DST OUTA_D OUTA_UV UVLO_BAT54
+DST2 OUTA_D V5_OVP UVLO_BAT54
+* U24 TMUX1102: CTT -> RDSC -> GND while SEL24 = OUTA_D*RSB/(RSA+RSB) is below the TMUX logic threshold (VTHS corner).
+* Holds CTT near 0 V until OUTA_D (and VIN-OK) has been stable for T_HOLD (>= 7.9 ms analytic), then the timer runs from ~0 V.
+RSA OUTA_D SEL24_UV {RSA}
+RSB SEL24_UV 0 {RSB}
+RDSC T_UV DSC_UV {RDSC}
+XU24 DSC_UV 0 0 SEL24_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0 VTH={VTHS}
+C24 V5_OVP 0 100n
+* U25 TMUX1102: RK1A in the upper threshold leg only while OUTB is LOW (switch ON when SEL low):
+* OUTB low -> (RK1A+RON)||RK4 = RK1 eff 10.0k, threshold ~3.9 V (unchanged); OUTB high -> KTH = V5*RK2/(RK4+RK2) ~ 0.80 V,
+* so after a PARTIAL CTT discharge the timer output stays high (no restart) until CTT < V_L, then a full ramp >= 67.8 ms follows.
+RK1A V5_OVP K1_UV {RK1A}
+XU25 K1_UV KTH_UV 0 OUTB_UV V5_OVP UVLO_TMUX1102 RON={RON_K} ILK=0 VTH={VTHS}
+RK4 V5_OVP KTH_UV {RK4}
 RK2 KTH_UV 0 {RK2}
 CK KTH_UV 0 10n
 XU20B T_UV KTH_UV V5_OVP 0 OUTB_UV UVLO_CMP VIO={VIOB} HINT={HINTB} VOHD={VOHD} VOL={VOL}
 RDEN OUTB_UV EN_BUCK 10k
 * U22 TMUX1102 (2026-10-25 fix, dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV LOW (VIN not OK).
+* Tur-3: SEL = OUTA_D (stretched) so EN also stays low during the reset hold.
 * Stops the buck at once when UV is detected, instead of waiting for the timer comparator (CTT discharge, ~0.14 ms).
-XU22 EN_BUCK 0 0 OUTA_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0
+XU22 EN_BUCK 0 0 OUTA_D V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0
 C22 V5_OVP 0 100n
 * 1N4148WS: generic small-signal diode parameters (ASSUMPTION, typical-class; reverse leakage is Bilkd)
+.model UVLO_BAT54 D(Is=1e-7 N=1.05 Rs=2.4 Cjo=10p Bv=30 Ibv=2u)
 .model UVLO_1N4148WS D(Is=2.52n N=1.752 Rs=0.568 Cjo=4p Bv=100 Ibv=100u)

@@ -107,6 +107,18 @@
    ],
    "G SCDS410D p5 VIH min 1.49 V, VIL max 0.87 V (VDD 5 V)"
   ],
+  "TMUX1102_IPEAK": [
+   0.18,
+   "G SCDS410D ROC: Ipeak 180 mA at Tj 125 C (1 ms period max, 10 % duty); continuous IDC 60 mA at 125 C"
+  ],
+  "TMUX1102_IDC": [
+   0.06,
+   "G SCDS410D ROC: IDC 60 mA at Tj 125 C"
+  ],
+  "C0G_TOL": [
+   0.054950000000000006,
+   "A: CST C0G/NP0 +/-5 % + 30 ppm/K over 165 K (MPN not selected)"
+  ],
   "REF35_LOADREG": [
    2e-05,
    "T SNAS809C p1 20 ppm/mA (used as bound, A)"
@@ -195,7 +207,14 @@
   "RK1": 10000.0,
   "RK2": 40200.0,
   "RD": 10000.0,
-  "RUV2": 10000.0
+  "RUV2": 10000.0,
+  "RK1A": 10500.0,
+  "RK4": 210000.0,
+  "RST": 100000.0,
+  "CST": 1.5e-07,
+  "RSA": 1600000.0,
+  "RSB": 1000000.0,
+  "RDSC": 100.0
  },
  "timer": {
   "RT": 11000.0,
@@ -205,25 +224,51 @@
   "RK2": 40200.0,
   "RD": 10000.0,
   "RUV2": 10000.0,
-  "t_cold_min": 0.07773636028039783,
-  "t_cold_max": 0.2553414856607876,
-  "t_after_dip_min": 0.06489093917730912,
-  "t_after_dip_max": 0.21981541355448198,
-  "timer_headroom_min": 0.736457681605438,
+  "t_cold_min": 0.07767994558160285,
+  "t_cold_max": 0.255527652808786,
+  "t_after_dip_min": 0.06483452447851415,
+  "t_after_dip_max": 0.2199998292272455,
+  "timer_headroom_min": 0.7354658040858326,
   "en_high_min": 2.2890400000000004,
   "en_high_max": 2.6315,
   "en_low_max": 0.12087500000000001,
   "en_low_gated_max": 0.0025811886597938145,
   "margins": {
-   "seq_min_margin_s": 0.017736360280397837,
-   "latency_margin_s": 0.04465851433921236,
-   "seq_after_full_dip_margin_s": 0.004890939177309123,
-   "timer_headroom_margin_V": 0.536457681605438,
+   "seq_min_margin_s": 0.01767994558160285,
+   "latency_margin_s": 0.04447234719121401,
+   "seq_after_full_dip_margin_s": 0.004834524478514152,
+   "timer_headroom_margin_V": 0.5354658040858327,
    "en_high_margin_V": 0.7390400000000004,
    "en_low_margin_V": 0.279125,
    "en_low_gated_margin_V": 0.39741881134020624
   },
-  "ok": true
+  "ok": true,
+  "n_vertices": 1024,
+  "reset": {
+   "note": "Tur-3 UVLO-T3-02 CTT fast reset + Schmitt timer comparator (candidate). U24 TMUX1102 discharges CTT via RDSC while SEL24 = OUTA_D*RSB/(RSA+RSB) < VIL/VIH band; OUTA_D = OUTA stretched by RST/CST, pulled down fast through DST (BAT54A, A: generic model). U25 TMUX1102 in series with RK1A (ON while OUTB low): rising threshold leg (RK1A+RON)||RK4 = 10.0k as before; with OUTB high the falling threshold is V_L. TMUX logic threshold is only bounded by VIL max 0.87 / VIH min 1.49 V (G) -> both used as corners. Discharge current is bounded below the 60 mA continuous IDC rating at Tj 125 C (G), so no pulse-rating assumption is needed. Simulation is not physical measurement.",
+   "v_l_max": 0.8523855615053704,
+   "v_l_min": 0.7538723747656908,
+   "v_rel_max": 0.05350464234615354,
+   "i_peak_max": 0.05257731958762886,
+   "t_dsc_max": 0.0029058195913114404,
+   "t_above_idc_max": 0.0,
+   "hold_min": 0.007930591368681395,
+   "hold_max": 0.02625595939227855,
+   "t_after_reset_min": 0.08503722640727499,
+   "t_after_short_dip_min": 0.06775139389013216,
+   "t_vinok_to_en_max": 0.2817836122010645,
+   "n_vertices": 1024,
+   "margins": {
+    "release_margin_V": 0.6003677324195373,
+    "short_dip_target_65ms_margin_s": 0.0027513938901321533,
+    "short_dip_limit_60ms_margin_s": 0.007751393890132158,
+    "hold_vs_discharge_margin_s": 0.005024771777369955,
+    "i_peak_margin_A": 0.12742268041237115,
+    "i_continuous_IDC_margin_A": 0.007422680412371138,
+    "latency_incl_hold_margin_s": 0.018216387798935474
+   },
+   "ok": true
+  }
  },
  "spice_corners_c3": {
   "vrmax": {
@@ -304,6 +349,54 @@
  },
  "spice_corners_timer": {
   "tmin": {
+   "t": 0.07767994558160285,
+   "RTT": 10956.0,
+   "RHB": 1030000.0,
+   "RK1": 10056.537999858052,
+   "RK2": 40039.2,
+   "CTT": 5.08725e-06,
+   "V5_P": 4.9,
+   "VOHD": 0.0,
+   "ILKD": 3e-05,
+   "VIOB": -0.007652234132519036,
+   "HINTB": 0.0,
+   "RK1A": 10542.0,
+   "RK4": 216300.0,
+   "RON_K": 4.9,
+   "RST": 99600.0,
+   "CST": 1.4175749999999998e-07,
+   "RSA": 1648000.0,
+   "RSB": 970000.0,
+   "RDSC": 97.0,
+   "VTHS": 0.87,
+   "T_HOLD": 0.00935832155029299
+  },
+  "tmax": {
+   "t": 0.255527652808786,
+   "RTT": 11044.0,
+   "RHB": 970000.0,
+   "RK1": 9947.303392822121,
+   "RK2": 40360.8,
+   "CTT": 1.2650000000000001e-05,
+   "V5_P": 4.9,
+   "VOHD": 0.17,
+   "ILKD": 0.0,
+   "VIOB": 0.007652234132519036,
+   "HINTB": 0.005,
+   "RK1A": 10458.0,
+   "RK4": 203700.0,
+   "RON_K": 0.001,
+   "RST": 100400.0,
+   "CST": 1.582425e-07,
+   "RSA": 1552000.0,
+   "RSB": 1030000.0,
+   "RDSC": 103.0,
+   "VTHS": 1.49,
+   "T_HOLD": 0.02625595939227855
+  }
+ },
+ "spice_corners_timer_noreset": {
+  "tmin": {
    "t": 0.07773636028039783,
    "RTT": 10956.0,
    "RHB": 1030000.0,
@@ -329,6 +422,35 @@
    "VIOB": 0.007652234132519036,
    "HINTB": 0.005
   }
+ },
+ "timer_noreset": {
+  "RT": 11000.0,
+  "CT": 1e-05,
+  "RHB": 1000000.0,
+  "RK1": 10000.0,
+  "RK2": 40200.0,
+  "RD": 10000.0,
+  "RUV2": 10000.0,
+  "t_cold_min": 0.07773636028039783,
+  "t_cold_max": 0.2553414856607876,
+  "t_after_dip_min": 0.06489093917730912,
+  "t_after_dip_max": 0.21981541355448198,
+  "timer_headroom_min": 0.736457681605438,
+  "en_high_min": 2.2890400000000004,
+  "en_high_max": 2.6315,
+  "en_low_max": 0.12087500000000001,
+  "en_low_gated_max": 0.0025811886597938145,
+  "margins": {
+   "seq_min_margin_s": 0.017736360280397837,
+   "latency_margin_s": 0.04465851433921236,
+   "seq_after_full_dip_margin_s": 0.004890939177309123,
+   "timer_headroom_margin_V": 0.536457681605438,
+   "en_high_margin_V": 0.7390400000000004,
+   "en_low_margin_V": 0.279125,
+   "en_low_gated_margin_V": 0.39741881134020624
+  },
+  "ok": true,
+  "n_vertices": 1024
  },
  "regression_misset_rb_8k66": {
   "Rt": 39200.0,
@@ -1013,7 +1135,7 @@
  "n_vertices": {
   "c3": 4096,
   "o3": 16384,
-  "timer": null,
+  "timer": 1024,
   "note": "Tur-3 T3-07: exhaustive sign vertices; VIO/CMRR and REF load current evaluated per vertex"
  }
 }

@@ -156,6 +156,9 @@ DS.update(
     TMUX1102_RON=(0.0, 4.9, 'G SCDS410D p5 RON max -40..125 C, VDD 5 V +/-10 %'),
     TMUX1102_ILEAK=(2e-9, 'G SCDS410D p5 ID(ON)/IS(ON) +/-2 nA (OFF +/-0.9 nA) -40..125 C'),
     TMUX1102_VIH_VIL=((1.49, 0.87), 'G SCDS410D p5 VIH min 1.49 V, VIL max 0.87 V (VDD 5 V)'),
+    TMUX1102_IPEAK=(0.180, 'G SCDS410D ROC: Ipeak 180 mA at Tj 125 C (1 ms period max, 10 % duty); continuous IDC 60 mA at 125 C'),
+    TMUX1102_IDC=(0.060, 'G SCDS410D ROC: IDC 60 mA at Tj 125 C'),
+    C0G_TOL=(0.05 + 30e-6 * 165, 'A: CST C0G/NP0 +/-5 % + 30 ppm/K over 165 K (MPN not selected)'),
     REF35_LOADREG=(20e-6, 'T SNAS809C p1 20 ppm/mA (used as bound, A)'),
 )
 def vio_c3(RR1, RR2, vref=4.096):
@@ -213,6 +216,16 @@ def c3_spice_corners(ch):
     return pick
 
 
+def rk1_eff(T, s2):
+    """Tur-3 T3-02 Schmitt: upper threshold leg = (RK1A + RON(U25)) || RK4 while OUTB low (U25 ON).
+    s2 > 0: all high (RK1A, RK4 +tol, RON max) -> highest leg; s2 < 0: all low (RON 0)."""
+    if 'RK1A' not in T:
+        return T['RK1'] * (1 + s2 * E_RES), None, None
+    a = T['RK1A'] * (1 + s2 * E_RES); b = T['RK4'] * (1 + s2 * E_RES_1PCT)
+    ron = DS['TMUX1102_RON'][1] if s2 > 0 else 0.0
+    return 1 / (1 / (a + ron) + 1 / b), a, b
+
+
 def timer_spice_corners(T):
     """Fastest / slowest cold-start timer vertices (parameters for SPICE)."""
     out = {}
@@ -220,7 +233,7 @@ def timer_spice_corners(T):
         best = None
         for s in itertools.product((-1, 1), repeat=10):
             rt = T['RT'] * (1 + s[0] * E_RES); rhb = T['RHB'] * (1 + s[1] * E_RHB)
-            rk1 = T['RK1'] * (1 + s[2] * E_RES); rk2 = T['RK2'] * (1 + s[3] * E_RES)
+            rk1, rk1a, rk4 = rk1_eff(T, s[2]); rk2 = T['RK2'] * (1 + s[3] * E_RES)
             ct = T['CT'] * (1.10 * 1.15 if s[4] > 0 else 0.90 * 0.85 * 0.70 * 0.95)
             v5 = DS['TPS7A1650_V5'][1] if s[5] > 0 else DS['TPS7A1650_V5'][0]
             vohd = DS['TLV3202_VOH_DROP'][1] if s[6] > 0 else 0.0
@@ -230,10 +243,30 @@ def timer_spice_corners(T):
             vth = rk2 / (rk1 + rk2) * v5 + vio + hint / 2
             t = rth * ct * math.log(vinf / (vinf - vth)) if vinf - vth > 0.05 else float('inf')
             d = dict(t=t, RTT=rt, RHB=rhb, RK1=rk1, RK2=rk2, CTT=ct, V5_P=v5, VOHD=vohd, ILKD=leak, VIOB=vio, HINTB=hint)
+            if rk1a is not None:
+                d.update(RK1A=rk1a, RK4=rk4, RON_K=DS['TMUX1102_RON'][1] if s[2] > 0 else 1e-3)
             if best is None or key(t, best['t']) == t and t != best['t']:
                 best = d
         out[name] = best
+    if 'RST' in T:
+        # Tur-3 T3-02: reset stretcher corner per timer corner (tmin = shortest hold, tmax = longest hold), analytic hold
+        for name, sg in (('tmin', -1), ('tmax', 1)):
+            d = out[name]
+            d.update(RST=T['RST'] * (1 + sg * E_RES), CST=T['CST'] * (1 + sg * DS['C0G_TOL'][0]),
+                     RSA=T['RSA'] * (1 - sg * E_RES_1PCT), RSB=T['RSB'] * (1 + sg * E_RES_1PCT),
+                     RDSC=T['RDSC'] * (1 + sg * E_RES_1PCT), VTHS=DS['TMUX1102_VIH_VIL'][0][1] if sg < 0 else DS['TMUX1102_VIH_VIL'][0][0])
+            d['T_HOLD'] = stretch_hold(d['RST'], d['CST'], d['RSA'], d['RSB'], d['V5_P'] - d['VOHD'], d['VTHS'])
     return out
+
+
+def stretch_hold(rst, cst, rsa, rsb, voh, vth, v0=0.0):
+    """Time for OUTA_D to charge from v0 until SEL24 = OUTA_D*RSB/(RSA+RSB) reaches the TMUX logic threshold vth
+    (reset switch U24 releases). OUTA_D final value = VOH * Rload/(RST+Rload), Rload = RSA+RSB."""
+    rl = rsa + rsb; vf = voh * rl / (rst + rl); rth = rst * rl / (rst + rl)
+    vrel = vth * rl / rsb
+    if vrel >= vf:
+        return float('inf')
+    return rth * cst * math.log((vf - v0) / (vf - vrel))
 
 
 def eval_c3(Rt, Rb, Rx, **kw):
@@ -564,11 +597,11 @@ def o3_variant():
 
 
 # ---------------- timer (TLV3202 B) + EN drive ----------------
-def timer_vertices(RT, CT, RHB, RK1, RK2, RD, RUV2, v0_list=(0.0,)):
+def timer_vertices(RT, CT, RHB, RK1, RK2, RD, RUV2, v0_list=(0.0,), TX=None):
     res = []
     for s in itertools.product((-1, 1), repeat=10):
         rt = RT * (1 + s[0] * E_RES); rhb = RHB * (1 + s[1] * E_RHB)
-        rk1 = RK1 * (1 + s[2] * E_RES); rk2 = RK2 * (1 + s[3] * E_RES)
+        rk1 = rk1_eff(TX, s[2])[0] if TX else RK1 * (1 + s[2] * E_RES); rk2 = RK2 * (1 + s[3] * E_RES)
         # CT: X7R 10 uF 25 V 1206: tol +/-10 % (G, MPN), X7R +/-15 % over -55..125 C (G, EIA class), DC bias at 5 V 0..-30 % (A), aging -5 % (A)
         ct = CT * (1.10 * 1.15 if s[4] > 0 else 0.90 * 0.85 * 0.70 * 0.95)
         v5 = DS['TPS7A1650_V5'][1] if s[5] > 0 else DS['TPS7A1650_V5'][0]
@@ -585,13 +618,71 @@ def timer_vertices(RT, CT, RHB, RK1, RK2, RD, RUV2, v0_list=(0.0,)):
             if vinf - vth <= 0.05:
                 res.append(dict(t=float('inf'), vinf=vinf, vth=vth))
             else:
-                res.append(dict(t=tau * math.log((vinf - v0) / (vinf - vth)), vinf=vinf, vth=vth, v0=v0))
+                res.append(dict(t=tau * math.log((vinf - v0) / (vinf - vth)), vinf=vinf, vth=vth, v0=v0, tau=tau, v5=v5))
     return res
 
 
-def eval_timer(RT, CT, RHB=1e6, RK1=10e3, RK2=40.2e3, RD=10e3, RUV2=10e3):
-    cold = timer_vertices(RT, CT, RHB, RK1, RK2, RD, RUV2, (0.0,))
-    dip = timer_vertices(RT, CT, RHB, RK1, RK2, RD, RUV2, (DS['D_VF_RESID'][0] + DS['TLV3202_VOL'][1],))
+def eval_reset(T, cold_tx):
+    """Tur-3 UVLO-T3-02: CTT fast reset (U24 TMUX1102 + RDSC to GND while the stretched OUTA_D is low) and
+    Schmitt timer comparator (U25 removes RK1A while OUTB is high -> falling threshold V_L = V5*RK2/(RK4+RK2)).
+    Worst-case linear bounds (G = datasheet limit, A = assumption)."""
+    v5lo, v5hi = DS['TPS7A1650_V5'][:2]; hmax = DS['TLV3202_HINT'][1]
+    cm = 10 ** (-DS['TLV3202_CMRR_DB'][0] / 20); ps = 0.1 * 10 ** (-DS['TLV3202_PSRR_DB'][0] / 20)
+    vio_l = DS['TLV3202_VIO'][0] + abs(0.0 - 2.5) * cm + ps          # CM down to 0 V (conservative)
+    rk2lo, rk2hi = T['RK2'] * (1 - E_RES), T['RK2'] * (1 + E_RES)
+    rk4lo, rk4hi = T['RK4'] * (1 - E_RES_1PCT), T['RK4'] * (1 + E_RES_1PCT)
+    ilk = DS['TMUX1102_ILEAK'][0]
+    # V_L (OUTB high -> low) = KTH_high + VIO - HINT/2 ; KTH_high = V5*RK2/(RK4+RK2) +/- leakage x Rth
+    v_l_max = v5hi * rk2hi / (rk4lo + rk2hi) + ilk * rk4hi + vio_l
+    v_l_min = v5lo * rk2lo / (rk4hi + rk2lo) - ilk * rk4hi - vio_l - hmax / 2
+    rdlo, rdhi = T['RDSC'] * (1 - E_RES_1PCT), T['RDSC'] * (1 + E_RES_1PCT)
+    rtlo = T['RT'] * (1 - E_RES); ronhi = DS['TMUX1102_RON'][1]
+    leak = DS['D_LEAK'][0]
+    # CTT level while U24 holds it: divider RTT (from OUTA high <= V5max) / (RDSC + RON) + DTT leakage + RHB from OUTB high
+    rl = rdhi + ronhi
+    v_rel_max = (v5hi / rtlo + leak + v5hi / (T['RHB'] * (1 - E_RHB))) * (1 / (1 / rl + 1 / rtlo))
+    i_peak_max = (v5hi + 0.0) / rdlo                    # RON min not specified -> 0 (strict)
+    ctmax = T['CT'] * 1.10 * 1.15
+    tau_dsc_max = rl * ctmax
+    t_dsc_max = tau_dsc_max * math.log((v5hi - v_rel_max) / (v_l_min - 0.1 - v_rel_max))   # until CTT < V_L,min - 0.1 V
+    t_above_idc = tau_dsc_max * math.log(max(i_peak_max / DS['TMUX1102_IDC'][0], 1.0))
+    # stretcher hold (U24 ON time after the last OUTA rise) min/max
+    vohlo = v5lo - DS['TLV3202_VOH_DROP'][1]
+    v0max = 0.6   # A: OUTA_D residual low level = BAT54 VF (<= 0.4 V class at low current, A) + TLV3202 VOL 0.225 V (G)
+    hold_min = stretch_hold(T['RST'] * (1 - E_RES), T['CST'] * (1 - DS['C0G_TOL'][0]), T['RSA'] * (1 + E_RES_1PCT),
+                            T['RSB'] * (1 - E_RES_1PCT), vohlo, DS['TMUX1102_VIH_VIL'][0][1], v0=v0max)
+    hold_max = stretch_hold(T['RST'] * (1 + E_RES), T['CST'] * (1 + DS['C0G_TOL'][0]), T['RSA'] * (1 - E_RES_1PCT),
+                            T['RSB'] * (1 + E_RES_1PCT), vohlo, DS['TMUX1102_VIH_VIL'][0][0], v0=0.0)
+    # delay after any reset: full reset -> charge from v_rel_max; partial reset (Schmitt) -> OUTB only low below V_L,max
+    full = timer_vertices(T['RT'], T['CT'], T['RHB'], T['RK1'], T['RK2'], T['RD'], T['RUV2'], (v_rel_max,), TX=T)
+    part = timer_vertices(T['RT'], T['CT'], T['RHB'], T['RK1'], T['RK2'], T['RD'], T['RUV2'], (v_l_max,), TX=T)
+    t_after_reset_min = min(x['t'] for x in full) + hold_min
+    t_after_short_dip_min = min(x['t'] for x in part)
+    t_vinok_to_en_max = max(x['t'] for x in cold_tx) + hold_max
+    m = dict(release_margin_V=(v_l_min - 0.1) - v_rel_max,
+             short_dip_target_65ms_margin_s=t_after_short_dip_min - 0.065,
+             short_dip_limit_60ms_margin_s=t_after_short_dip_min - REQ['T_SEQ_MIN'],
+             hold_vs_discharge_margin_s=hold_min - t_dsc_max,
+             i_peak_margin_A=DS['TMUX1102_IPEAK'][0] - i_peak_max,
+             i_continuous_IDC_margin_A=DS['TMUX1102_IDC'][0] - i_peak_max,
+             latency_incl_hold_margin_s=REQ['T_SEQ_MAX'] - t_vinok_to_en_max)
+    return dict(note='Tur-3 UVLO-T3-02 CTT fast reset + Schmitt timer comparator (candidate). U24 TMUX1102 discharges CTT via '
+                     'RDSC while SEL24 = OUTA_D*RSB/(RSA+RSB) < VIL/VIH band; OUTA_D = OUTA stretched by RST/CST, pulled down '
+                     'fast through DST (BAT54A, A: generic model). U25 TMUX1102 in series with RK1A (ON while OUTB low): '
+                     'rising threshold leg (RK1A+RON)||RK4 = 10.0k as before; with OUTB high the falling threshold is V_L. '
+                     'TMUX logic threshold is only bounded by VIL max 0.87 / VIH min 1.49 V (G) -> both used as corners. '
+                     'Discharge current is bounded below the 60 mA continuous IDC rating at Tj 125 C (G), so no pulse-rating '
+                     'assumption is needed. Simulation is not physical measurement.',
+                v_l_max=v_l_max, v_l_min=v_l_min, v_rel_max=v_rel_max, i_peak_max=i_peak_max, t_dsc_max=t_dsc_max,
+                t_above_idc_max=t_above_idc, hold_min=hold_min, hold_max=hold_max, t_after_reset_min=t_after_reset_min,
+                t_after_short_dip_min=t_after_short_dip_min, t_vinok_to_en_max=t_vinok_to_en_max,
+                n_vertices=len(full), margins=m, ok=all(v >= 0 for v in m.values()))
+
+
+def eval_timer(RT, CT, RHB=1e6, RK1=10e3, RK2=40.2e3, RD=10e3, RUV2=10e3, **reset):
+    TX = dict(RT=RT, CT=CT, RHB=RHB, RK1=RK1, RK2=RK2, RD=RD, RUV2=RUV2, **reset) if reset else None
+    cold = timer_vertices(RT, CT, RHB, RK1, RK2, RD, RUV2, (0.0,), TX=TX)
+    dip = timer_vertices(RT, CT, RHB, RK1, RK2, RD, RUV2, (DS['D_VF_RESID'][0] + DS['TLV3202_VOL'][1],), TX=TX)
     tmin = min(x['t'] for x in cold); tmax = max(x['t'] for x in cold)
     headroom = min(x['vinf'] - x['vth'] for x in cold)
     # EN drive from OUTB through RD/RUV2 (both ERA-3ARB). EN high/low worst values
@@ -612,7 +703,8 @@ def eval_timer(RT, CT, RHB=1e6, RK1=10e3, RK2=40.2e3, RD=10e3, RUV2=10e3):
     return dict(RT=RT, CT=CT, RHB=RHB, RK1=RK1, RK2=RK2, RD=RD, RUV2=RUV2, t_cold_min=tmin, t_cold_max=tmax,
                 t_after_dip_min=min(x['t'] for x in dip), t_after_dip_max=max(x['t'] for x in dip),
                 timer_headroom_min=headroom, en_high_min=en_hi_min, en_high_max=en_hi_max, en_low_max=en_lo_max, en_low_gated_max=en_lo_gated_max,
-                margins=m, ok=all(v >= 0 for v in m.values()))
+                margins=m, ok=all(v >= 0 for v in m.values()), n_vertices=len(cold),
+                **({'reset': eval_reset(TX, cold)} if TX else {}))
 
 
 # ---------------- alternatives ----------------
@@ -649,7 +741,12 @@ def alternatives():
 
 CHOSEN_C3 = dict(Rt=39.2e3, Rb=8.87e3, Rx=90.9e3, RR1=10.0e3, RR2=46.4e3)   # frozen from search_c3() output
 CHOSEN_O3 = dict(Rt=24.3e3, Rb=5.36e3, Rx=53.6e3, RR1=10.0e3, RR2=41.2e3)   # frozen from search_o3() (full 3236-candidate scan = same optimum)
-CHOSEN_TIMER = dict(RT=11.0e3, CT=10e-6, RHB=1.0e6, RK1=10.0e3, RK2=40.2e3, RD=10.0e3, RUV2=10.0e3)
+# Tur-3 T3-02: RK1 is now the EFFECTIVE rising-threshold leg (RK1A 10.5k + U25) || RK4 210k = 10.0k (same threshold as Tur-2);
+# reset: RST 100k / CST 150 nF C0G stretcher, RSA 1.6M / RSB 1.0M SEL24 divider, RDSC 100 ohm discharge resistor
+# (100 ohm: discharge current <= IDC 60 mA continuous rating, so the Ipeak pulse rating (<= 10 % of a 1 ms period) is not needed).
+CHOSEN_TIMER = dict(RT=11.0e3, CT=10e-6, RHB=1.0e6, RK1=10.0e3, RK2=40.2e3, RD=10.0e3, RUV2=10.0e3,
+                    RK1A=10.5e3, RK4=210e3, RST=100e3, CST=150e-9, RSA=1.6e6, RSB=1.0e6, RDSC=100.0)
+CHOSEN_TIMER_TUR2 = dict(RT=11.0e3, CT=10e-6, RHB=1.0e6, RK1=10.0e3, RK2=40.2e3, RD=10.0e3, RUV2=10.0e3)   # no-reset regression
 
 
 def main():
@@ -676,13 +773,14 @@ def main():
                ds=DS, ref_terms=REF_TERMS, e_ref=E_REF, res_terms=RES_TERMS, e_res=E_RES, vio_c2=VIO_TOT, vio_c3=VIO_C3,
                chosen_c3_values=CHOSEN_C3, chosen_c3=chosen, chosen_c3_rss_info=rss, timer_values=CHOSEN_TIMER, timer=tm,
                spice_corners_c3=c3_spice_corners(ch), spice_corners_timer=timer_spice_corners(CHOSEN_TIMER),
+               spice_corners_timer_noreset=timer_spice_corners(CHOSEN_TIMER_TUR2), timer_noreset=eval_timer(**CHOSEN_TIMER_TUR2),
                regression_misset_rb_8k66=mis_rb, regression_misset_rx_100k=mis_rx, alternatives=alt, start_guarantee=sg,
                o3_variant=o3, o3_regression_misset_rb_5k23=o3_mis_rb, o3_info_c3_values_with_o3_parts=o3_c3vals)
     out['n_vertices'] = dict(c3=len(c3_vertices(ch['Rt'], ch['Rb'], ch['Rx'], RR1=ch['RR1'], RR2=ch['RR2'])),
                              o3=len(o3_vertices(**CHOSEN_O3)), timer=tm.get('n_vertices'),
                              note='Tur-3 T3-07: exhaustive sign vertices; VIO/CMRR and REF load current evaluated per vertex')
     json.dump(out, open('results/uvlo-budget.json', 'w'), indent=1, default=str)
-    checks = {'C3 chosen all margins >= 0': chosen['ok'], 'timer all margins >= 0': tm['ok'],
+    checks = {'C3 chosen all margins >= 0': chosen['ok'], 'timer all margins >= 0': tm['ok'], 'timer reset all margins >= 0': tm['reset']['ok'],
               'regression A0 baseline fails': not alt['A0_baseline_180k_10k']['pass_'],
               'regression mis-set Rb 8.66k fails': not mis_rb['ok'], 'regression mis-set Rx 100k fails': not mis_rx['ok'],
               'O3 candidate all margins >= 0 (under A/T terms)': o3['chosen']['ok'], 'O3 regression mis-set Rb 5.23k fails': not o3_mis_rb['ok']}
@@ -692,6 +790,12 @@ def main():
           chosen['vf_max'], chosen['h_min'], chosen['h_max'], {k: round(v, 4) for k, v in chosen['margins'].items()}))
     print('timer cold %.1f..%.1f ms, after deep dip %.1f..%.1f ms, EN hi>=%.3f V lo<=%.3f V' % (tm['t_cold_min'] * 1e3, tm['t_cold_max'] * 1e3,
           tm['t_after_dip_min'] * 1e3, tm['t_after_dip_max'] * 1e3, tm['en_high_min'], tm['en_low_max']))
+    rs_ = tm['reset']
+    print('timer reset: V_L %.3f..%.3f V, CTT at release <= %.4f V, hold %.2f..%.2f ms, discharge <= %.2f ms, Ipk <= %.1f mA, '
+          'after full reset >= %.1f ms, after partial (Schmitt) reset >= %.1f ms, VIN-OK->EN <= %.1f ms; margins %s' % (
+          rs_['v_l_min'], rs_['v_l_max'], rs_['v_rel_max'], rs_['hold_min'] * 1e3, rs_['hold_max'] * 1e3, rs_['t_dsc_max'] * 1e3,
+          rs_['i_peak_max'] * 1e3, rs_['t_after_reset_min'] * 1e3, rs_['t_after_short_dip_min'] * 1e3, rs_['t_vinok_to_en_max'] * 1e3,
+          {k: round(v, 5) for k, v in rs_['margins'].items()}))
     print('C2 best worst margin %.4f V ; mis Rb worst %.4f ; mis Rx worst %.4f' % (c2_best['worst'], mis_rb['worst'], mis_rx['worst']))
     for k, v in alt.items():
         print(k, '->', v.get('verdict', v.get('desc')))

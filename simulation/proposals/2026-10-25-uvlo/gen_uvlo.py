@@ -18,11 +18,24 @@ LIBS = ('.include ../../../pdu-behavioral.lib\n.include ../../../pdu-inductor-ng
 OPT = '.options reltol=0.0001 abstol=1n method=gear\n.options plotwinsize=0\n'
 B = json.loads((HERE / 'results' / 'uvlo-budget.json').read_text())
 C3 = B['spice_corners_c3']; O3 = B['o3_variant']['spice_corners']; C3_ALL = C3; TM = B['spice_corners_timer']; TV = B['timer_values']
-TM['ttyp'] = dict(t=None, RTT=TV['RT'], RHB=TV['RHB'], RK1=TV['RK1'], RK2=TV['RK2'], CTT=TV['CT'], V5_P=5.0, VOHD=0.0,
-                  ILKD=0.0, VIOB=0.0, HINTB=1.2e-3)
-TM['ttyp']['t'] = None
-# analytic timer value per corner (cold start); typical computed here with the same formula as uvlo_budget.py
 import math
+def stretch_hold(rst, cst, rsa, rsb, voh, vth, v0=0.0):
+    """same formula as uvlo_budget.stretch_hold (U24 reset-switch hold after an OUTA rise)"""
+    rl = rsa + rsb; vf = voh * rl / (rst + rl); rth = rst * rl / (rst + rl); vrel = vth * rl / rsb
+    return rth * cst * math.log((vf - v0) / (vf - vrel))
+# Tur-3 T3-02: typical reset/Schmitt values; RK1 = effective rising-threshold leg (RK1A + RON) || RK4
+RON_TYP = 1.8
+TM['ttyp'] = dict(t=None, RTT=TV['RT'], RHB=TV['RHB'], RK1=1 / (1 / (TV['RK1A'] + RON_TYP) + 1 / TV['RK4']), RK2=TV['RK2'],
+                  CTT=TV['CT'], V5_P=5.0, VOHD=0.0, ILKD=0.0, VIOB=0.0, HINTB=1.2e-3, RK1A=TV['RK1A'], RK4=TV['RK4'], RON_K=RON_TYP,
+                  RST=TV['RST'], CST=TV['CST'], RSA=TV['RSA'], RSB=TV['RSB'], RDSC=TV['RDSC'], VTHS=1.18)
+TM['ttyp']['T_HOLD'] = stretch_hold(TV['RST'], TV['CST'], TV['RSA'], TV['RSB'], 5.0, 1.18)
+# no-reset (Tur-2 timer) corners, used only by the 'noreset' regression decks
+TMN = B['spice_corners_timer_noreset']
+for k in ('tmin', 'tmax'):
+    TM['nr-' + k] = dict(TMN[k])
+TM['nr-ttyp'] = dict(t=None, RTT=TV['RT'], RHB=TV['RHB'], RK1=10.0e3, RK2=TV['RK2'], CTT=TV['CT'], V5_P=5.0, VOHD=0.0,
+                     ILKD=0.0, VIOB=0.0, HINTB=1.2e-3)
+# analytic timer value per corner (cold start); typical computed here with the same formula as uvlo_budget.py
 def t_timer(d):
     rth = 1 / (1 / d['RTT'] + 1 / d['RHB']); vinf = ((d['V5_P'] - d['VOHD']) / d['RTT'] + d['ILKD']) * rth
     vth = d['RK2'] / (d['RK1'] + d['RK2']) * d['V5_P'] + d['VIOB'] + d['HINTB'] / 2
@@ -30,6 +43,9 @@ def t_timer(d):
 for k in TM:
     TM[k]['t'] = t_timer(TM[k])
 assert abs(TM['tmin']['t'] - B['timer']['t_cold_min']) < 1e-6 and abs(TM['tmax']['t'] - B['timer']['t_cold_max']) < 1e-6
+assert abs(TM['nr-tmin']['t'] - B['timer_noreset']['t_cold_min']) < 1e-6
+for k in ('tmin', 'tmax'):   # SPICE RK1A/RK4/RON_K reproduce the effective RK1 of the budget vertex
+    d = TM[k]; assert abs(1 / (1 / (d['RK1A'] + d['RON_K']) + 1 / d['RK4']) - d['RK1']) < 0.02, (k, d)
 
 # WP1 OVP corners (gen_o1ovp.py CORNERS, copied verbatim except VREF_P which is set by the UVLO corner: one REF35 feeds both)
 OVP = {'typ':  dict(RT_P='2050', RB_P='1150', CMP_VTRIP='1.5m', CMP_VREL='-1.5m', CMP_IB='1u', TDOFF='0.3625u'),
@@ -68,11 +84,13 @@ def derive():
     (HERE / 'pdu-o1ovp-block-uvlo.inc').write_text(
         '* DERIVED copy of ../2026-10-25-o1-ovp/pdu-o1ovp-block.inc; ONLY change: LDO VLDO=5 -> {V5_P} (TPS7A16 +-2 % corner)\n'
         + blk.replace('XU11 VIN V5_OVP 0 O1OVP_LDO VLDO=5\n', 'XU11 VIN V5_OVP 0 O1OVP_LDO VLDO={V5_P}\n'))
-    (HERE / 'pdu-uvlo-block.inc').write_text(UVLO_BLOCK)
-    o3 = UVLO_BLOCK.replace('RR1U VREF_OVP REFD_UV {RR1U}\n', O3_REF)
-    assert o3 != UVLO_BLOCK
-    o3 = o3.replace('* WP2 2026-10-25-uvlo candidate C3:', '* WP2 Tur-2 O3 CANDIDATE VARIANT (derived from C3 by gen_uvlo.py; ONLY change: RR1U fed by U23 REF5040 VREF_UV):\n* C3:', 1)
-    (HERE / 'pdu-uvlo-block-o3.inc').write_text(o3)
+    for blk_, fn in ((UVLO_BLOCK, 'pdu-uvlo-block'), (UVLO_BLOCK_NORESET, 'pdu-uvlo-block-noreset')):
+        (HERE / f'{fn}.inc').write_text(blk_)
+        o3 = blk_.replace('RR1U VREF_OVP REFD_UV {RR1U}\n', O3_REF)
+        assert o3 != blk_
+        o3 = o3.replace('* WP2 2026-10-25-uvlo candidate C3:', '* WP2 Tur-2 O3 CANDIDATE VARIANT (derived from C3 by gen_uvlo.py; ONLY change: RR1U fed by U23 REF5040 VREF_UV):\n* C3:', 1)
+        assert o3.count('O3 CANDIDATE VARIANT') == 1
+        (HERE / f'{fn}-o3.inc').write_text(o3)
 
 O3_REF = '''* U23 REF5040IDGK(T) (behavioral: VOUT = VREF_UV_P, dropout VIN-0.2 V, Iq 1.2 mA max, load regulation is inside the VREF_UV_P corner)
 Bu23 VREF_UV_I 0 V=min({VREF_UV_P}, max(V(V5_OVP)-0.2,0))
@@ -82,7 +100,7 @@ CU23 VREF_UV 0 10u
 RR1U VREF_UV REFD_UV {RR1U}
 '''
 
-UVLO_BLOCK = '''* WP2 2026-10-25-uvlo candidate C3: U20 TLV3202 (A = input UVLO, B = restart timer), U21 TMUX1102 hysteresis switch.
+UVLO_BLOCK_NORESET = '''* WP2 2026-10-25-uvlo candidate C3: U20 TLV3202 (A = input UVLO, B = restart timer), U21 TMUX1102 hysteresis switch.
 * Supplies: V5_OVP (U11 TPS7A1650) and VREF_OVP (U12 REF35409) from the WP1 OVP block. EN_BUCK = U20B via RDEN/RUV2.
 * --- channel A: S_UV = VIN * divider; switched divider RXU+U21 adds hysteresis (switch ON while OUTA low = VIN not OK)
 RTU VIN S_UV {RTU}
@@ -117,6 +135,39 @@ C22 V5_OVP 0 100n
 .model UVLO_1N4148WS D(Is=2.52n N=1.752 Rs=0.568 Cjo=4p Bv=100 Ibv=100u)
 '''
 
+assert UVLO_BLOCK_NORESET.count('RK1 V5_OVP KTH_UV {RK1}\n') == 1 and UVLO_BLOCK_NORESET.count('XU22 EN_BUCK 0 0 OUTA_UV V5_OVP') == 1
+UVLO_BLOCK_NORESET = UVLO_BLOCK_NORESET.replace('* WP2 2026-10-25-uvlo candidate C3:',
+    '* REGRESSION BLOCK (Tur-2 timer WITHOUT the Tur-3 CTT reset / Schmitt; used only by *noreset* decks, expect FAIL)\n* WP2 2026-10-25-uvlo candidate C3:', 1)
+RESET_PART = '''* --- Tur-3 UVLO-T3-02 (candidate): CTT fast reset + Schmitt timer comparator
+* OUTA_D = OUTA stretched: rises slowly via RST/CST, falls fast via DST (BAT54A common anode at OUTA_D; cathodes to OUTA_UV
+* and V5_OVP, the latter also discharges OUTA_D when V5 collapses). BAT54 parameters: generic (ASSUMPTION).
+RST OUTA_UV OUTA_D {RST}
+CST OUTA_D 0 {CST}
+DST OUTA_D OUTA_UV UVLO_BAT54
+DST2 OUTA_D V5_OVP UVLO_BAT54
+* U24 TMUX1102: CTT -> RDSC -> GND while SEL24 = OUTA_D*RSB/(RSA+RSB) is below the TMUX logic threshold (VTHS corner).
+* Holds CTT near 0 V until OUTA_D (and VIN-OK) has been stable for T_HOLD (>= 7.9 ms analytic), then the timer runs from ~0 V.
+RSA OUTA_D SEL24_UV {RSA}
+RSB SEL24_UV 0 {RSB}
+RDSC T_UV DSC_UV {RDSC}
+XU24 DSC_UV 0 0 SEL24_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0 VTH={VTHS}
+C24 V5_OVP 0 100n
+* U25 TMUX1102: RK1A in the upper threshold leg only while OUTB is LOW (switch ON when SEL low):
+* OUTB low -> (RK1A+RON)||RK4 = RK1 eff 10.0k, threshold ~3.9 V (unchanged); OUTB high -> KTH = V5*RK2/(RK4+RK2) ~ 0.80 V,
+* so after a PARTIAL CTT discharge the timer output stays high (no restart) until CTT < V_L, then a full ramp >= 67.8 ms follows.
+RK1A V5_OVP K1_UV {RK1A}
+XU25 K1_UV KTH_UV 0 OUTB_UV V5_OVP UVLO_TMUX1102 RON={RON_K} ILK=0 VTH={VTHS}
+RK4 V5_OVP KTH_UV {RK4}
+'''
+UVLO_BLOCK = UVLO_BLOCK_NORESET.replace('* REGRESSION BLOCK (Tur-2 timer WITHOUT the Tur-3 CTT reset / Schmitt; used only by *noreset* decks, expect FAIL)\n', '', 1)
+UVLO_BLOCK = UVLO_BLOCK.replace('RK1 V5_OVP KTH_UV {RK1}\n', RESET_PART, 1)
+UVLO_BLOCK = UVLO_BLOCK.replace('XU22 EN_BUCK 0 0 OUTA_UV V5_OVP', 'XU22 EN_BUCK 0 0 OUTA_D V5_OVP', 1)
+UVLO_BLOCK = UVLO_BLOCK.replace('* U22 TMUX1102 (2026-10-25 fix, dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV LOW (VIN not OK).',
+    '* U22 TMUX1102 (2026-10-25 fix, dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV LOW (VIN not OK).\n'
+    '* Tur-3: SEL = OUTA_D (stretched) so EN also stays low during the reset hold.', 1)
+UVLO_BLOCK = UVLO_BLOCK.replace('.model UVLO_1N4148WS', '.model UVLO_BAT54 D(Is=1e-7 N=1.05 Rs=2.4 Cjo=10p Bv=30 Ibv=2u)\n.model UVLO_1N4148WS', 1)
+assert UVLO_BLOCK.count('XU24 ') == 1 and UVLO_BLOCK.count('XU22 EN_BUCK 0 0 OUTA_D') == 1 and 'RK1 V5_OVP' not in UVLO_BLOCK
+
 # ---------------------------------------------------------------- deck pieces
 VREF_OVP_CORNER = {'typ': '4.096', 'wchi': '4.105424', 'wclo': '4.086576'}   # same values as seq_deck()
 
@@ -128,8 +179,10 @@ def params(uv='typ', tm='ttyp', ovp='typ', **over):
         p[k] = VREF_OVP_CORNER[ovp] if (o3 and k == 'VREF_P') else f'{c[k]:.7g}'
     if o3:
         p['VREF_UV_P'] = f"{c['VREF_UV_P']:.7g}"
-    for k in ('RTT', 'RHB', 'RK1', 'RK2', 'CTT', 'V5_P', 'VOHD', 'ILKD', 'VIOB', 'HINTB'):
-        p[k] = f'{t[k]:.7g}'
+    for k in ('RTT', 'RHB', 'RK1', 'RK2', 'CTT', 'V5_P', 'VOHD', 'ILKD', 'VIOB', 'HINTB',
+              'RK1A', 'RK4', 'RON_K', 'RST', 'CST', 'RSA', 'RSB', 'RDSC', 'VTHS'):
+        if k in t:
+            p[k] = f'{t[k]:.7g}'
     p.update(VENR='1.0', VENF='0.9', TSS='2.8m', RUV1_P='180000', RUV2_P='10000')
     p.update({k: str(v) for k, v in over.items()})
     return '.param ' + ' '.join(f'{k}={v}' for k, v in p.items()) + '\n'
@@ -160,6 +213,8 @@ def edges(n=4):
     s += ('.meas tran OUTA_R1 WHEN V(OUTA_UV)=2.5 RISE=1\n.meas tran OUTA_F1 WHEN V(OUTA_UV)=2.5 FALL=1\n'
           '.meas tran OUTA_R2 WHEN V(OUTA_UV)=2.5 RISE=2\n.meas tran OUTA_R3 WHEN V(OUTA_UV)=2.5 RISE=3\n'
           '.meas tran OUTA_RLAST WHEN V(OUTA_UV)=2.5 RISE=LAST\n.meas tran OUTA_F2 WHEN V(OUTA_UV)=2.5 FALL=2\n'
+          '.meas tran OUTA_R4 WHEN V(OUTA_UV)=2.5 RISE=4\n.meas tran OUTA_R5 WHEN V(OUTA_UV)=2.5 RISE=5\n'
+          '.meas tran EN_RLAST WHEN V(EN_BUCK)=1.0 RISE=LAST\n'
           '.meas tran FET_ON1 WHEN V(M_VGS)=6 RISE=1\n.meas tran FET_ON2 WHEN V(M_VGS)=6 RISE=2\n'
           '.meas tran FET_OFF1 WHEN V(M_VGS)=6 FALL=1\n')
     return s
@@ -214,7 +269,20 @@ def add(name, text, **meta):
     CASES[name] = meta
 
 def tb(tm, factor=1.0):
-    return TM[tm]['t'] * factor
+    """analytic VIN-OK -> EN delay of a timer corner: timer ramp + (Tur-3) reset hold T_HOLD"""
+    return TM[tm]['t'] * factor + TM[tm].get('T_HOLD', 0.0)
+
+def dip_extra(t0, t1, stop, reset=True):
+    """Tur-3 T3-02 dip instrumentation: V(T_UV) at every OUTA / EN rise and at the reset release, V5 min, CTT min after."""
+    s = ''.join(f'.meas tran VT_AT_OUTA_R{i} FIND V(T_UV) WHEN V(OUTA_UV)=2.5 RISE={i}\n' for i in (1, 2, 3))
+    s += '.meas tran VT_AT_OUTA_RLAST FIND V(T_UV) WHEN V(OUTA_UV)=2.5 RISE=LAST\n'
+    s += ''.join(f'.meas tran VT_AT_EN_R{i} FIND V(T_UV) WHEN V(EN_BUCK)=1.0 RISE={i}\n' for i in (2, 3))
+    s += f'.meas tran V5_MIN_DIP MIN V(V5_OVP) FROM={t0:.6g} TO={min(t1 + 0.01, stop):.6g}\n'
+    s += f'.meas tran VT_MIN_POST MIN V(T_UV) FROM={t1:.6g} TO={stop:.6g}\n'
+    if reset:
+        s += ('Bmrel M_REL 0 V=V(SEL24_UV)-{VTHS}\n.meas tran T_REL WHEN V(M_REL)=0 RISE=LAST\n'
+              '.meas tran VT_AT_REL FIND V(T_UV) WHEN V(M_REL)=0 RISE=LAST\n')
+    return s
 
 def gen():
     global C3
@@ -251,8 +319,11 @@ def gen():
                                        ('seq-ref-nodelay-typ-ibst100u', 0.0, 1.9e-3, 'typ', '100u')):
         add(name, seq_deck(name, delay, ramp, ovp, ib), kind='seq', expect='PASS' if delay > 0 else 'FAIL', regression=delay == 0,
             delay=delay, ramp=ramp)
+    # ---- Tur-3 T3-02 regressions: Tur-2 timer WITHOUT CTT reset / Schmitt (must FAIL the 60 ms M1 gate)
+    noreset_regs('pdu-uvlo-block-noreset.inc', (('dip0v-300us', 'mbmin', 'nr-tmin', 'wclo', '100u'), ('dip0v-250us', 'typ', 'nr-ttyp', 'typ', '345u')))
     VAR.update(pre='o3-', block='pdu-uvlo-block-o3.inc', variant='O3'); C3 = O3
     gen_scenarios()
+    noreset_regs('pdu-uvlo-block-noreset-o3.inc', (('dip0v-250us', 'mbmin', 'nr-tmin', 'wclo', '100u'), ('dip0v-200us', 'typ', 'nr-ttyp', 'typ', '345u')))
     ts = tb('tmax') + 0.005; a = ts + 0.06; stop = a + 0.05
     e_abs = B['o3_variant']['e_net_abs']
     add('reg-misset-rbu-5k23-vrmax', deck('REGRESSION O3 mis-set RBU 5.23k (one E96 step low) at the O3 vrmax vertex; E=20 V, R 0.25, 7.5 A',
@@ -261,6 +332,18 @@ def gen():
     C3 = C3_ALL; VAR.update(pre='', block='pdu-uvlo-block.inc', variant='C3')
     (HERE / 'test-cases-uvlo.json').write_text(json.dumps(dict(cases=CASES, corners_c3=C3_ALL, corners_o3=O3, corners_timer=TM, p_in=P_IN), indent=1))
     print(len(CASES), 'decks')
+
+def noreset_regs(block, items):
+    keep = VAR['block']; VAR['block'] = block
+    for name, uv, tm, ovp, ib in items:
+        dt = {'dip0v-300us': 0.0003, 'dip0v-250us': 0.00025, 'dip0v-200us': 0.0002}[name]
+        cn = tm.replace('nr-', '')
+        dip_deck(f'noreset-{name}', [(0.0, dt)], 1.0, 'FAIL', uv, tm, ovp, ib, reset=False,
+                 title_pre='REGRESSION Tur-2 timer without CTT reset: ')
+        # rename '<name>-<uv>-nr-<tm>' -> '<name>-<uv>-<tm>' for readability
+        old = VAR['pre'] + f'noreset-{name}-{uv}-{tm}'; new = VAR['pre'] + f'noreset-{name}-{uv}-{cn}'
+        (HERE / 'decks' / f'uvlo-{old}.cir').rename(HERE / 'decks' / f'uvlo-{new}.cir'); CASES[new] = CASES.pop(old)
+    VAR['block'] = keep
 
 def gen_scenarios():
     E_P = '0 0 100u {e}'
@@ -315,16 +398,41 @@ def gen_scenarios():
             win('RUN', a, stop) + f'.meas tran VIN_PP_RUN PP V(VIN) FROM={a:.6g} TO={stop:.6g}\n'),
             kind='rsweep', expect='PASS' if rt <= 0.25 + 1e-9 else 'INFO', r=rt, win=[a, stop], vf=C3['typ']['vf'], vr=C3['typ']['vr'])
     # ---- F: brown-outs (E nominal 22.2 V, 7.5 A, R 0.25) and deep dip at light load
-    # 2026-10-25: 250 us added as acceptance; 200 us / 100 us added as INFO = residual window below the UV detection
-    # latency (CFU filter), where the U22 EN gate cannot act (see RESULTS.md, residual risk R-DIP).
+    # 2026-10-25: 250 us added as acceptance; 200 us / 100 us were INFO (residual window below the UV detection latency).
+    # Tur-3 T3-02: with the CTT reset + Schmitt timer all dips are PASS-gated (60 ms M1 gate on every EN rise in any case);
+    # dip0v-50ms at FULL load and double dips added.
     dips = (('dip19v-50ms', 19.0, 0.050, 1.0, 'PASS'), ('dip0v-1ms', 0.0, 0.001, 1.0, 'PASS'), ('dip0v-300us', 0.0, 0.0003, 1.0, 'PASS'),
-            ('dip0v-250us', 0.0, 0.00025, 1.0, 'PASS'), ('dip0v-200us', 0.0, 0.0002, 1.0, 'INFO'), ('dip0v-100us', 0.0, 0.0001, 1.0, 'INFO'),
+            ('dip0v-250us', 0.0, 0.00025, 1.0, 'PASS'), ('dip0v-200us', 0.0, 0.0002, 1.0, 'PASS'), ('dip0v-100us', 0.0, 0.0001, 1.0, 'PASS'),
+            ('dip0v-50ms', 0.0, 0.050, 1.0, 'PASS'),
             ('dip15v-20ms', 15.0, 0.020, 1.0, 'PASS'), ('deepdip0v-50ms-light', 0.0, 0.050, 0.0667, 'PASS'))
     for name, ed, dt, sc, exp in dips:
         for uv, tm, ovp, ib in (('typ', 'ttyp', 'typ', '345u'), ('mbmin', 'tmin', 'wclo', '100u')):
-            t0 = tb(tm) + 0.08; t1 = t0 + dt; tr = tb(tm) * 1.0 + 0.005; a = t1 + tr + 0.06; stop = a + 0.05
-            pwl = f'0 0 100u 22.2 {t0:.6g} 22.2 {t0+20e-6:.6g} {ed} {t1:.6g} {ed} {t1+20e-6:.6g} 22.2'
-            add(f'{name}-{uv}-{tm}', deck(f'brown-out {name}: 22.2 V -> {ed} V for {dt*1e3:g} ms (20 us edges); load x{sc}; {uv}/{tm}/OVP {ovp}/IBST {ib}',
+            dip_deck(name, [(ed, dt)], sc, exp, uv, tm, ovp, ib)
+    # double dips (Tur-3 T3-02): 0 V 300 us, gap 20 ms, 0 V 300 us; 0 V 1 ms, gap 40 ms, 0 V 1 ms
+    for name, dt, gap in (('dbldip0v-300us-20ms', 0.0003, 0.020), ('dbldip0v-1ms-40ms', 0.001, 0.040)):
+        for uv, tm, ovp, ib in (('typ', 'ttyp', 'typ', '345u'), ('mbmin', 'tmin', 'wclo', '100u')):
+            dip_deck(name, [(0.0, dt), (0.0, dt)], 1.0, 'PASS', uv, tm, ovp, ib, gap=gap)
+    # ---- G: hot-plug, stiff source (R_total 0.03 ohm, 1 uH), 1 us edge
+    gen_hotplug()
+
+def dip_deck(name, segs, sc, exp, uv, tm, ovp, ib, gap=0.0, reset=True, title_pre=''):
+    """one brown-out deck; segs = [(E_dip, duration), ...] separated by `gap` at 22.2 V"""
+    t0 = tb(tm) + 0.08; spans = []; t = t0
+    for ed, dt in segs:
+        spans.append((t, t + dt, ed)); t = t + dt + gap
+    t1 = spans[-1][1]; tr = tb(tm) * 1.0 + 0.005; a = t1 + tr + 0.06; stop = a + 0.05
+    pwl = f'0 0 100u 22.2'
+    for s0, s1, ed in spans:
+        pwl += f' {s0:.6g} 22.2 {s0+20e-6:.6g} {ed} {s1:.6g} {ed} {s1+20e-6:.6g} 22.2'
+    desc = ' + '.join(f'{ed} V for {(s1-s0)*1e3:g} ms' for s0, s1, ed in spans) + (f' (gap {gap*1e3:g} ms)' if gap else '')
+    meta = dict(kind='dip2' if len(spans) > 1 else 'dip', expect=exp, uv=uv, tm=tm, pre=[t0 - 0.03, t0], post=[a, stop], t0=t0, t1=t1,
+                e_dip=spans[0][2], light=sc < 1)
+    if len(spans) > 1:
+        meta['dips'] = [[s0, s1] for s0, s1, _ in spans]
+    if not reset:   # Tur-2 timer block (no CTT reset): its own variant label, not the C3/O3 candidate
+        meta.update(regression=True, expect='FAIL', variant=VAR['variant'] + '-noreset-tur2')
+    if True:
+            add(f'{name}-{uv}-{tm}', deck(f'{title_pre}brown-out {name}: 22.2 V -> {desc} (20 us edges); load x{sc}; {uv}/{tm}/OVP {ovp}/IBST {ib}',
                 params(uv, tm, ovp, IBST=ib), source(0.25, pwl), loads(sc), stop,
                 win('PRE', t0 - 0.03, t0) + win('POST', a, stop)
                 + f'.meas tran O1_DIP_MAX MAX V(O1_11V) FROM={t0:.6g} TO={stop:.6g}\n'
@@ -332,9 +440,10 @@ def gen_scenarios():
                 f'.meas tran RAW_RESTART_MAX MAX V(RAW) FROM={t1:.6g} TO={a:.6g}\n'
                 f'.meas tran INP_RESTART_MIN MIN V(INP_OVP) FROM={t1:.6g} TO={a:.6g}\n'
                 f'.meas tran RAW_AT_DIP_END FIND V(RAW) AT={t1:.6g}\n.meas tran T_AT_DIP_END FIND V(T_UV) AT={t1:.6g}\n'
-                + rdip_meas(t0, stop)),
-                kind='dip', expect=exp, uv=uv, tm=tm, pre=[t0 - 0.03, t0], post=[a, stop], t0=t0, t1=t1, e_dip=ed, light=sc < 1)
-    # ---- G: hot-plug, stiff source (R_total 0.03 ohm, 1 uH), 1 us edge
+                + rdip_meas(t0, stop) + dip_extra(t0, t1, stop, reset)),
+                **meta)
+
+def gen_hotplug():
     for e in (20.0, 25.2, 26.0):
         for uv, tm in (('typ', 'ttyp'), ('vrmax', 'tmin')):
             ts = tb(tm) + 0.005; a = ts + 0.06; stop = a + 0.04

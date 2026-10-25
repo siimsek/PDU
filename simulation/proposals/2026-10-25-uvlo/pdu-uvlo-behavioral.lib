@@ -87,8 +87,10 @@ Riq VCC GND 77k
 *  RON parameter (p5: 1.8 typ / 4.9 ohm max over temperature at VDD 5 V), OFF leakage ILK from D
 *  (p5: +-0.9 nA). Logic threshold modelled at 1.18 V with a 0.1 V soft band (VIL 0.87 / VIH 1.49 V p5).
 *  Switch is OFF while VDD < 1.08 V (recommended min) : ASSUMPTION.
-.subckt UVLO_TMUX1102 D S GND SEL VDD RON=1.8 ILK=0
-Bsw D S I=V(D,S)*(1n+min(max((1.18-V(SEL,GND))/0.1+0.5,0),1)*min(max((V(VDD,GND)-1.08)/0.1,0),1)/{RON})
+*  Tur-3 (2026-10-25): logic threshold is a parameter VTH (default 1.18 V = previous fixed value); the reset decks
+*  use VTH corners 0.87 / 1.49 V (= the VIL max / VIH min datasheet bounds, the real threshold lies between: ASSUMPTION).
+.subckt UVLO_TMUX1102 D S GND SEL VDD RON=1.8 ILK=0 VTH=1.18
+Bsw D S I=V(D,S)*(1n+min(max(({VTH}-V(SEL,GND))/0.1+0.5,0),1)*min(max((V(VDD,GND)-1.08)/0.1,0),1)/{RON})
 Ilk D GND {ILK}
 Riq VDD GND 1Meg
 .ends UVLO_TMUX1102
