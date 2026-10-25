@@ -120,7 +120,9 @@ def verifier_tests():
     DIPF = dict(DIP, en_force_max=1e-6, vgs_at_en_min=6.0)
 
     def dipf(**o):
-        m = dip_meas(); m.update(OUTA_F1=0.2601, EN_F1=0.2601 + 0.4e-6, VGS_AT_EN_R1=12.0, VGS_AT_EN_R2=12.0); m.update(o); return m
+        # Tur-5 UVLO-T5-03: M3 now REQUIRES the direct lag -> the control set carries a consistent EN_LAG_F1 (0.4 us);
+        # tests that override EN_F1 without EN_LAG_F1 still expect FAIL (now also for the missing/inconsistent lag)
+        m = dip_meas(); m.update(OUTA_F1=0.2601, EN_F1=0.2601 + 0.4e-6, EN_LAG_F1=0.4e-6, VGS_AT_EN_R1=12.0, VGS_AT_EN_R2=12.0); m.update(o); return m
     T.append(vt('W05a control: EN low 0.4 us after OUTA fall, VGS 12 V at both EN rises -> exit 0', {'d': DIPF}, {'d': dipf()}, 0))
     T.append(vt('W05b EN low 2.0 us after OUTA fall (> 1 us) -> exit != 0', {'d': DIPF}, {'d': dipf(EN_F1=0.2601 + 2e-6)}, 'nonzero',
                 check=in_acc_fail('d')))
@@ -146,9 +148,9 @@ def verifier_tests():
                 {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275438, EN_LAG_F1=2.5e-6)}, 'nonzero', check=in_acc_fail('d')))
     T.append(vt('W05l EN_LAG_F1 0.3 us inconsistent with 5 us absolute difference -> exit != 0', {'d': DIPF},
                 {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275441, EN_LAG_F1=0.3e-6)}, 'nonzero', check=in_acc_fail('d')))
-    T.append(vt('W05m EN_LAG_F1 NaN -> falls back to absolute 2 us -> exit != 0', {'d': DIPF},
+    T.append(vt('W05m EN_LAG_F1 NaN -> M3 not provable (Tur-5 fail-closed; absolute 2 us also > 1 us) -> exit != 0', {'d': DIPF},
                 {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275438, EN_LAG_F1=float('nan'))}, 'nonzero', check=in_acc_fail('d')))
-    T.append(vt('W05n negative EN_LAG_F1 (EN fell before OUTA) not used; absolute 2 us -> exit != 0', {'d': DIPF},
+    T.append(vt('W05n negative EN_LAG_F1 (EN fell before OUTA) -> M3 not provable (Tur-5 fail-closed) -> exit != 0', {'d': DIPF},
                 {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275438, EN_LAG_F1=-1e-6)}, 'nonzero', check=in_acc_fail('d')))
     # ---- W06 R-DIP event classification
     T.append(vt('W06a R-DIP: restart case classified event=restart', {'d': DIP}, {'d': dip_meas(RD_PEAK=11.0)}, 0,

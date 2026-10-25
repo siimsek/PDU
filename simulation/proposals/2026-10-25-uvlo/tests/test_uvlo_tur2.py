@@ -97,7 +97,11 @@ def build_tree(cases, logs, failed=None, manifest='fresh', run_id='run-123'):
     return tmp, here
 
 
-def run_verifier(here, argv=()):
+def run_verifier(here, argv=None):
+    # Tur-5 UVLO-T5-03 harness change (not an assertion change): acceptance mode now requires a run id, the default call
+    # therefore uses the fixture manifest's run id 'run-123'; an explicit argv (incl. []) is passed unchanged.
+    if argv is None:
+        argv = ['--run-id', 'run-123']
     v = load('verify_uvlo_t2', here / 'verify_uvlo.py')
     code, old = None, sys.argv
     sys.argv = ['verify_uvlo.py'] + list(argv)
@@ -113,7 +117,7 @@ def run_verifier(here, argv=()):
     return code, (json.loads(p.read_text()) if p.exists() else {})
 
 
-def vt(name, cases, logs, want, failed=None, manifest='fresh', argv=(), check=None):
+def vt(name, cases, logs, want, failed=None, manifest='fresh', argv=None, check=None):
     tmp, here = build_tree(cases, logs, failed, manifest)
     try:
         code, out = run_verifier(here, argv)

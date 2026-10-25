@@ -175,12 +175,16 @@ def m3_m4_errors(c, m, failed):
             if not fl:
                 e.append(f'MANDATORY M3: {k} at {t:.6g} s with EN high but no EN fall after it'); continue
             d = min(fl) - t
-            # Tur-4 W05j-n: .meas prints 6 significant digits (1 us at 0.27 s). Use the direct TRIG/TARG lag EN_LAG_F<k> when it
-            # is finite, >= 0 and consistent with the absolute times within their print resolution; else keep the absolute d.
+            # Tur-5 UVLO-T5-03 (fail-closed; replaces the Tur-4 W05j-n fallback): .meas prints 6 significant digits (1 us at
+            # 0.27 s), so the absolute difference cannot prove <= 1 us. The direct TRIG/TARG lag EN_LAG_F<k> is REQUIRED: it
+            # must be present, not 'failed', finite, >= 0 and consistent with the printed absolute times within their print
+            # resolution; otherwise M3 is not provable -> FAIL (even if the absolute difference is <= en_force_max).
             lk = 'EN_LAG_F' + k[-1]
-            lag = fin(m, failed, lk) if lk in m else None
-            if lag is not None and lag >= 0 and abs(lag - d) <= half_ulp6(t) + half_ulp6(min(fl)) + 1e-12:
-                d = lag
+            lag = fin(m, failed, lk)
+            if lag is None or lag < 0 or abs(lag - d) > half_ulp6(t) + half_ulp6(min(fl)) + 1e-12:
+                e.append(f'MANDATORY M3: direct lag {lk} missing/failed/non-finite/negative or inconsistent with the printed '
+                         f'{k} -> EN fall ({m.get(lk, "absent")!r} vs {d*1e6:.3f} us) -> EN forcing not provable'); continue
+            d = lag
             if d > lim:
                 e.append(f'MANDATORY M3: EN fell {d*1e6:.3f} us after {k} > {lim*1e6:.3f} us')
     if 'vgs_at_en_min' in c:
@@ -245,8 +249,11 @@ def mandatory_errors(c, m, failed):
                      + (f' after the dip start {after:.6g} s' if after is not None else '') + ' -> 60 ms gate not provable')
             continue
         det[k] = t - rs
-        if t - rs < T_SEQ_MIN:
-            e.append(f'MANDATORY M1: {k} {(t-rs)*1e3:.3f} ms after VIN-OK < {T_SEQ_MIN*1e3:.0f} ms')
+        # Tur-5 UVLO-T5-07: both times are printed with 6 significant digits; the gate must hold for the WORST case inside
+        # that resolution: (t - rs) - (half_ulp6(t) + half_ulp6(rs)) >= T_SEQ_MIN (a printed 60.000 ms is not proof).
+        if t - rs - (half_ulp6(t) + half_ulp6(rs)) < T_SEQ_MIN:
+            e.append(f'MANDATORY M1: {k} {(t-rs)*1e3:.4f} ms after VIN-OK (print resolution +-{(half_ulp6(t)+half_ulp6(rs))*1e6:.2f} us)'
+                     f' not provably >= {T_SEQ_MIN*1e3:.0f} ms')
     r4, rl = fin(m, failed, 'EN_R4'), fin(m, failed, 'EN_RLAST')
     if r4 is not None and rl is not None and rl > r4:
         e.append('MANDATORY M1: more than 4 EN rises (EN_RLAST after EN_R4; intermediate rises untracked)')
@@ -440,11 +447,16 @@ def provenance(cases, run_id):
                    n_runs=len(runs))
 
 def main():
-    argv = sys.argv[1:]; run_id = os.environ.get('UVLO_RUN_ID') or ''
-    if argv[:1] == ['--run-id'] and len(argv) > 1: run_id = argv[1]
-    elif argv: print(f'usage: verify_uvlo.py [--run-id ID]  (got {argv})', file=sys.stderr); sys.exit(2)
+    # Tur-5 UVLO-T5-03: acceptance mode REQUIRES a run id (--run-id ID or UVLO_RUN_ID) so the logs are bound to one run of
+    # the current HEAD; --historical is the explicit, never-acceptance review mode (old manifest-HEAD diff comparison).
+    argv = sys.argv[1:]; run_id = os.environ.get('UVLO_RUN_ID') or ''; mode = 'acceptance'
+    if argv[:1] == ['--run-id'] and len(argv) == 2 and argv[1]: run_id = argv[1]
+    elif argv == ['--historical']: mode = 'historical'; run_id = ''
+    elif argv: print(f'usage: verify_uvlo.py --run-id ID | --historical  (got {argv})', file=sys.stderr); sys.exit(2)
     cases = json.loads((HERE / 'test-cases-uvlo.json').read_text())['cases']
     prov_err, prov = provenance(cases, run_id)
+    if mode == 'acceptance' and not run_id:
+        prov_err = ['acceptance mode requires --run-id ID (or UVLO_RUN_ID); use --historical for a non-acceptance review'] + prov_err
     out, acc_fail, reg_bad, incomplete = {}, [], [], []
     for name, c in cases.items():
         log = HERE / 'results' / 'logs' / f'uvlo-{name}.log'
@@ -504,13 +516,13 @@ def main():
                 counts={s: sum(1 for v in rd.values() if v['status'] == s) for s in ('PASS', 'FAIL', 'UNDETERMINED')},
                 counts_by_event={f'{ev}/{s}': sum(1 for v in rd.values() if v.get('event') == ev and v['status'] == s)
                                  for ev in ('rode_through', 'restart') for s in ('PASS', 'FAIL', 'UNDETERMINED')})
-    summary = dict(exit_code=code, git_head=head_now, provenance_errors=prov_err, run_manifest=prov, expected_run_id=run_id or None,
+    summary = dict(exit_code=code, mode=mode, git_head=head_now, provenance_errors=prov_err, run_manifest=prov, expected_run_id=run_id or None,
                    provisional_rdip_screen=rdip, worktree_dirty_at_verify=dirty, package_inputs_dirty=inputs_dirty, n_cases=len(cases),
                    n_pass=sum(1 for r in out.values() if r['status'] == 'PASS'),
                    acceptance_fail=acc_fail, regression_not_reproduced=reg_bad, incomplete=incomplete,
                    info_cases=[n for n, c in cases.items() if c.get('expect') == 'INFO'],
                    hard_limit_gate='H1/H2 enforced for every non-regression case (PASS and INFO)',
-                   mandatory_gate='M0 (regime measurement validity), M1 (60 ms VIN-OK->EN on every EN rise), M2 (V_f >= 18.0 V), M3 (EN low <= en_force_max after VIN-OK loss, opt-in), M4 (VGS >= vgs_at_en_min at every EN rise, opt-in) and the seq delay schema enforced for every non-regression case (PASS and INFO)',
+                   mandatory_gate='M0 (regime measurement validity), M1 (60 ms VIN-OK->EN on every EN rise), M2 (V_f >= 18.0 V), M3 (EN low <= en_force_max after VIN-OK loss, direct EN_LAG required, opt-in), M4 (VGS >= vgs_at_en_min at every EN rise, opt-in) and the seq delay schema enforced for every non-regression case (PASS and INFO)',
                    seq_evidence='seq cases are stimulus-only benches (ideal DRIVE delay, configured delay schema-validated >= 60 ms); not a measured OUTA->EN edge',
                    ci_status='GitHub Actions workflow proposal-ngspice DISABLED by the user (2026-10-25); CI gating not active; evidence = local runs + run manifest SHA-256',
                    per_variant={v: dict(n=sum(1 for n, c in cases.items() if c.get('variant', 'C3') == v),

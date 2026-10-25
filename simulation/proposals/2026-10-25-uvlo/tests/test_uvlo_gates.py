@@ -81,11 +81,15 @@ def run_verifier(cases, logs):
             cases_sha256=sh((here / 'test-cases-uvlo.json').read_text()), runs=runs)))
         v = load('verify_uvlo_under_test', here / 'verify_uvlo.py')
         code = None
+        # Tur-5 UVLO-T5-03 harness change (not an assertion change): acceptance mode requires the fixture run id
+        old_argv, sys.argv = sys.argv, ['verify_uvlo.py', '--run-id', 'fixture']
         with contextlib.redirect_stdout(io.StringIO()):
             try:
                 v.main()
             except SystemExit as e:
                 code = e.code
+            finally:
+                sys.argv = old_argv
         summ = json.loads((here / 'results' / 'uvlo-verify.json').read_text())['summary']
         return code, summ
     finally:
