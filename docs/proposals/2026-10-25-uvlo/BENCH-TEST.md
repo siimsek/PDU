@@ -15,7 +15,7 @@ Geçme ölçütleri REQUIREMENTS.md ile aynıdır. **O1 anlık tepe ≤ 12,0 V; 
 | B-U8 | Zamanlayıcı | Soğuk açılış: OUTA ↑ → EN ↑ gecikmesi, −40 / 25 / 85 °C | 77,8–255 ms bandı içinde, ≥ 60 ms |
 | B-U9 | COMP windup / restart | RAW bankı dolu iken (ayar noktası üstü) kısa dip (300 µs, 1 ms, 20 ms) sonrası yeniden etkinleşme. COMP, RAW ve VOUT izlenir | Ölü buck süresi yok; RAW aşımı OVP eşiğinin altında; bus ≤ 11,1605 V (simülasyondaki model kenetlemesi doğrulanır) |
 | B-U10 | TPS48000 yeniden kurma gecikmesi (P0-03) | U10 EN/UVLO düşüp tekrar kalktığında G_OVP gecikmesi ölçülür (TDRV_EN). 300 µs / 1 ms dip sonrasında FET ↑ ve EN_BUCK ↑ sırası | **FET, buck EN'den önce açık olmalı.** Değilse P0-03 riski gerçekleşmiştir → zamanlayıcı süresini (RTT/CTT) artırın veya kısmi boşalmayı engelleyin |
-| B-U11 | Kısa dip sonrası bus | 300 µs 0 V dip, 7,5 A | VOUT tepe değeri kaydedilir (simülasyon 11,43 V, anormal rejim INFO). O1 ≤ 12,0 V zorunlu |
+| B-U11 | Kısa dip sonrası bus | 300 µs 0 V dip, 7,5 A | VOUT tepe değeri kaydedilir (simülasyon: U22 öncesi 11,43 V, U22 ile 11,006 V; RESULTS.md §4). O1 ≤ 12,0 V zorunlu |
 | B-U12 | Kahverengi düşüş (brown-out) | 19 V'a 50 ms ve 15 V'a 20 ms çökme | Kapanma/yeniden başlama temiz, O1 ≤ 12,0 V |
 | B-U13 | OVP etkileşimi | WP1 BENCH-TEST testleri UVLO bloğu takılıyken tekrarlanır | WP1 ölçütleri değişmez (U13 ve U10 davranışı) |
 | B-U15 | U22 EN kapısı ve artık kısa dip penceresi | 7,5 A, 0,25 Ω; 0 V dipler 50 / 100 / 150 / 200 / 250 / 300 / 500 µs (20 µs kenar). OUTA_UV, EN_BUCK, COMP, RAW, VGS izlenir. Ayrıca OUTA ↓ → EN_BUCK < 0,4 V gecikmesi | OUTA düşükken EN_BUCK < 0,4 V. Her dipte O1 ≤ 12,0 V. U22'nin tetiklemediği en uzun dip süresi ve RAW aşımı/OVP açması kaydedilir (simülasyon: R-DIP, RESULTS.md) |
