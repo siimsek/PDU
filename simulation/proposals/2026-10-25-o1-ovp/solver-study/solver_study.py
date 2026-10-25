@@ -35,7 +35,7 @@ sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def git_head():
     try:
         h = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=PKG, capture_output=True, text=True).stdout.strip()
-        d = subprocess.run(['git', 'status', '--porcelain', '--', '.'], cwd=PKG, capture_output=True, text=True).stdout.strip()
+        d = subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no', '--', '.', ':!results', ':!o1ovp-results.json'], cwd=PKG, capture_output=True, text=True).stdout.strip()  # inputs only (results/ excluded)
         return h, bool(d)
     except Exception as e: return f'unavailable: {e}', None
 
