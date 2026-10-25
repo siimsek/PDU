@@ -23,3 +23,35 @@ Sert kriterler değişmedi: O1 anlık ≤ 12,0 V; normal bus ≤ 11,1605 V; mima
 
 ## Karar
 **Koşullu kabul (WP1 tamamlanmadı).** Koşullar: (1) 2 ESL-typ deck'in yakınsaması veya eşdeğer kanıt (PSpice/LTspice veya tezgâh); (2) V/Ç terimlerinin tezgâh testleri B2, B5, B11, B13–B15; (3) WP3 döngü kararlılığı 165–483 µF; (4) TPS48000 DGX footprint + pin doğrulaması; (5) TR stoğu doğrulanamadı.
+
+---
+
+# Tur 2 – ChatGPT incelemesi (review 6390966776, `3fec938`) yanıtı – rev3
+
+İnceleme kararı: **RET** (WP1 kapanışı/merge/üretim için). Her bulgu kutuda yeniden doğrulandı. Sert kriterler değişmedi: **O1 anlık ≤ 12,0 V**, **normal bus ≤ 11,1605 V**; 11,22 V yalnız yanlış-tetik uyaranı. Hiçbir FAIL silinmedi/gizlenmedi. LTspice bulut ortamında çalıştırılmadı; sim ≠ silikon. Durumlar: **düzeltildi** / **gerekçeyle kabul edilmedi** / **ertelendi** / **açık**. Commit'ler `wp/baseline-2026-10-24` dalında (rev3 ilk 5 commit `7056b54…a7d8f92` rutin tarafından; inceleme sonrası düzeltmeler `bc63e66` sonrası).
+
+| # | Bulgu | Doğrulama | Durum | Commit / kanıt (sayılar) |
+|---|---|---|---|---|
+| **P0-01** | RSNS10 güç/derating (0603, 26 V sürekli arıza) | Doğru: tek 2,05 k 1206 bile en kötü 166,2 mW > 107,1 mW (125 °C derate). | **düzeltildi (tasarım önerisi)** – fiziksel doğrulama B16 | `7056b54`, `a4025eb`; RSNS10A 1,0 k + RSNS10B 1,05 k + RSNS11 1,15 k, ERA-8ARB 1206 0,1 %; oran aynı; `rsns_power.py --check` exit 0: en kötü parça **85,1 mW = derate 107,1 mW'ın %79,4'ü** (@85 °C %34,0); kelepçe varsayımı dahil; KiCad/ana BOM'a **işlenmedi** (yalnız aday BOM) |
+| **P0-02** | O1 global tepe tüm zamanı kapsamıyor | Doğru | **düzeltildi** | `9d3ffd2`, `a1430fe`; her kabul deck'inde `O1_GLOBAL_PEAK` 0…tran sonu, iki doğrulayıcıda zorunlu (yoksa MISSING); toparlanma pencerelerinde bus/O1 ≤ 11,1605 V + rejim kontrolü; **O1 global maks 11,90318 V** (c165-esr12m5-wchi, 96,8 mV marj); **normal bus maks 11,09192 V** (bus_recov, c483-wchi, 68,6 mV marj) |
+| **P0-03** | ESL-typ deck'leri yakınsamıyor | Doğru ve **kötüleşti**: rev3 modelinde 4 ESL deck (typ + wchi) 12,2645–12,2699 ms'de `imon_s2e` ile duruyor. Kök neden sondası: açılışta RAW ≈13,33 V çınlama → **komparatör açılışta yanlış tetikliyor** (INP → 0 V, 12,2642–12,2643 ms). | **açık (bloklayıcı)** | `bc63e66` (model rev3, rev2 kopyası + `model_compare.py` eski/yeni regresyon), `a1430fe`; `solver-study/` (KLU/SPARSE, tmax, trap; doğruluk gevşetilmedi), `slew-study/` (RPU10 10/100/330/1k Ω kontrollü açılış + açılış sondası) – sonuçlar RESULTS.md §H; PU-cap **kullanılmadı** (yalnız negatif öz-testte bozma olarak) |
+| **P0-04** | "Garanti marjı" bağımsız garanti değil | Doğru | **düzeltildi (terminoloji)** + **ertelendi** (B2, B5, B11, B13) | `b5ef5ca`; BUDGET.md §0: "varsayımlar ve çıkarımlar altında hesaplanan koşullu marj"; G/T/V/Ç sınıfları; A1 VCM, tPD 0,9685 (Ç), 165 µF (V), 2 nH (V), O1 ≤ RAW (Ç) ayrı listelendi |
+| **P1-01** | MOSFET SOA/enerji/paylaşım | Doğru: VDS < 60 V SOA değildir | **kısmen düzeltildi (sim teşhisi)** + **ertelendi** (B5/B13 + gerçek FET modeli) | `67ab057`; `soa-study/fet_soa_study.py` – SOA grafiği okuması (SLPS488B Fig. 10, ±%25 okuma varsayımı, Tc 125 °C derate), ideal ve "bir FET tüm akım" paylaşımı; sonuçlar RESULTS.md §H; davranışsal FET doyumsuz, gövde diyotu dahil değil |
+| **P1-02** | KiCad sembol/footprint eşlemesi | Doğru | **ertelendi** (KiCad'e işlenmedi – kural gereği) | KICAD-TRANSFER.md §2b pin tabloları (U10 DGX-19 pin 16 yok; U13 DCK 1 OUT 2 VEE 3 IN+ 4 IN− 5 VCC; U11 EP; U12 6 pin); durum tablosu: sembol/footprint **doğrulanmadı**, DGX-19 ve Q10–Q13 footprint **oluşturulmalı** (PCB blokörü) |
+| **P1-03** | BOM derating; RBLD11; RPD10/RSRC10 | Doğru | **düzeltildi (doküman/BOM notu)** + **ertelendi** (B15 efektif C ölçümü) | `a4025eb`; candidate-bom.csv notları: RBLD11 499 Ω 54,2 mW @5,2 V (0603 0,1 W'ın %54,2'si; 125 °C derate'te 1206 önerisi/kontrol notu); CIN11/COUT11/CREF12/CBST10 efektif değer birleşik ölçüm gerekli; KICAD-TRANSFER.md §3: RPD10 10 mΩ = doğrudan iz (sim), RSRC10 10 MΩ yalnız sim, BOM'da yok |
+| **P1-04** | Buck kompanzasyonu, gerçek eFuse | Doğru | **ertelendi (WP3/B13)** | PLAN.md WP3: 165–483 µF döngü kazanç/faz marjı, soft-start inrush; INFO postfault bus 11,29486–11,47708 V (B17); 100 mΩ stres O1 11,59 V yalnız davranışsal U3 |
+| **P1-05** | U12 EN "VIN" belirsizliği | Doğru | **düzeltildi (doküman)** | `7056b54`; KICAD-TRANSFER.md: **U12.EN(3) = U12.VIN(4) = V5_OVP**; U11 EN(5)=IN(8)=VIN ayrıca netleştirildi; ERC/netlist karşılaştırması KiCad aktarımında (ertelendi) |
+| **P2-01** | 7,5 A izleme, OD200, tedarik | Doğru | **ertelendi** | 7,5 A bus min 10,649–10,7584 V (TRACKING, WP3); TR stoğu doğrulanamadı |
+| **P2-02** | Runner çıkış kodu yanlış belgelenmiş | Doğru (rev2'de exit 2 olmalıydı) | **düzeltildi** | runner `sys.exit(2 if incomplete else (1 if acceptance_failed else 0))`, doğrulayıcı `2 missing / 1 fail / 0`; rev3 temiz koşuda yakalanan `$?`: gen 0, runner **2**, verify **2**, baseline **1**, rsns 0, öz-test 0 |
+
+## Tur 2'de yeni bulunanlar (inceleme dışı)
+| # | Bulgu | Durum |
+|---|---|---|
+| **N-01** | U3/U4 davranışsal eFuse mandalı (ITRIP 4,96 A) hızlı rampa deck'lerinde açılıp O1'i maskeleyebilir | **açık / teşhis** – `u3-latch-study/` "U3 açılmaz" en katı varsayımıyla O1 ≤ BUS_PEAK yeniden değerlendirmesi (RESULTS.md §H); gerçek TPS259824 davranışı B13 |
+| **N-02** | rev1/rev2 modelinde TPS48000 `.subckt` içindeki `ov` düğümü `OV` parametresiyle (büyük/küçük harf duyarsız) çakışıyor → OV yedeği **ölüydü** | **düzeltildi** (model rev3 `ovs`, ayrı revizyon, `model_compare.py` ile tüm case'lerde eski/yeni regresyon) |
+| **N-03** | Açılışta komparatör yanlış tetiklemesi (ESL deck'leri, RAW ≈13,33 V) | **açık** (P0-03 parçası; WP2 kontrollü açılış seçeneği, B18) |
+| **N-04** | INFO bench start-up bus 11,150–11,167 V (0–24 ms ideal LC açılış, 46 deck) 11,1605 V'u aşabiliyor | **açık / INFO** – normal işletme penceresi değil, gizlenmedi; B18 |
+| **N-05** | Rejim kontrolü olmadan "FET hiç açılmadı" deck'i düşük O1 ile PASS görünebilirdi | **düzeltildi** – `4e64ec6` negatif öz-test: runner ve doğrulayıcı FAIL |
+
+## Karar (Tur 2 sonrası)
+**Koşullu – WP1 tamamlanmadı.** Açık bloklayıcılar: P0-03 (4 ESL deck yakınsamıyor + açılış yanlış tetiği), KiCad sembol/footprint (P1-02), WP3 döngü kararlılığı, tezgâh testleri B2/B5/B11/B13–B18 yapılmadı, LTspice çalıştırılmadı, TR stoğu doğrulanamadı.
