@@ -700,6 +700,8 @@ def eval_timer(RT, CT, RHB=1e6, RK1=10e3, RK2=40.2e3, RD=10e3, RUV2=10e3, **rese
     # U22 (second TMUX1102, 2026-10-25 fix for dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV is LOW.
     # OFF leakage (2 nA, conservative ON/OFF bound) loads EN in the high state; ON state: EN = I(RDEN) * RON.
     en_hi_min -= DS['TMUX1102_ILEAK'][0] * (RD * RUV2 / (RD + RUV2))
+    if reset:   # Tur-4 T4-05: U26 (direct OUTA_UV -> EN pull-down, third TMUX1102) adds one more OFF leakage
+        en_hi_min -= DS['TMUX1102_ILEAK'][0] * (RD * RUV2 / (RD + RUV2))
     en_lo_gated_max = (DS['TPS7A1650_V5'][1] / (RD * (1 - E_EN)) + DS['LM70880_IEN'][0]) * DS['TMUX1102_RON'][1]
     m = dict(seq_min_margin_s=tmin - REQ['T_SEQ_MIN'], latency_margin_s=REQ['T_SEQ_MAX'] - tmax,
              seq_after_full_dip_margin_s=min(x['t'] for x in dip) - REQ['T_SEQ_MIN'],

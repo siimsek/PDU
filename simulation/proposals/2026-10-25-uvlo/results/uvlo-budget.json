@@ -229,7 +229,7 @@
   "t_after_dip_min": 0.06483452447851415,
   "t_after_dip_max": 0.2199998292272455,
   "timer_headroom_min": 0.7354658040858326,
-  "en_high_min": 2.2890400000000004,
+  "en_high_min": 2.2890300000000003,
   "en_high_max": 2.6315,
   "en_low_max": 0.12087500000000001,
   "en_low_gated_max": 0.0025811886597938145,
@@ -238,7 +238,7 @@
    "latency_margin_s": 0.04447234719121401,
    "seq_after_full_dip_margin_s": 0.004834524478514152,
    "timer_headroom_margin_V": 0.5354658040858327,
-   "en_high_margin_V": 0.7390400000000004,
+   "en_high_margin_V": 0.7390300000000003,
    "en_low_margin_V": 0.279125,
    "en_low_gated_margin_V": 0.39741881134020624
   },
