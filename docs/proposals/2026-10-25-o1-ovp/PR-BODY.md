@@ -28,11 +28,15 @@ WP1 `2026-10-25-o1-ovp` – O1 portu için hibrit global OVP önerisi (TPS48000-
 | `verify_candidate.py --baseline-regression` | 1 – O1 16,89 V FAIL (beklenen) |
 | `rsns_power.py --check` | 0 |
 | `regime-selftest/regime_selftest.py` | 0 |
+| `model-compare/model_compare.py` | 0 |
+| `solver-study` / `slew-study` / `soa-study` | 0 / 0 / 0 |
+| `u3-latch-study` | **1** (N-01) |
 
 - **O1 global maks 11,90318 V** (buck-short-c165-esr12m5-wchi; 96,8 mV marj).
 - **Normal bus maks 11,09192 V** (bus_recov, c483-wchi; 68,6 mV marj).
 - **Yanlış tetik 11,22 V: 22/22 deck tetik yok** (INP 4,9995 V, VGS 11,6 V); mc-nofalse O1 11,19781 V.
 - Monte Carlo: mc-ramp O1 11,11178–11,57673 V; mc-short O1 11,57582–11,7582 V.
+- Model rev2↔rev3 regresyonu (`model-compare/`, exit 0): kabul FAIL 0/0; tamamlanmadı 2 → 4; O1 global maks 11,90272 → 11,90318 V; s023 O1 farkları (±0,54 V) davranışsal U3 mandalından (N-01).
 - INFO: postfault bus 11,29486–11,47708 V (24 deck); bench açılış bus 11,150–11,167 V (46 deck). TRACKING 7,5 A bus min 10,649–10,7584 V.
 
 ## Açık bloklayıcılar
