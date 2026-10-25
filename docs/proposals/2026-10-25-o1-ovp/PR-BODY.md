@@ -1,0 +1,46 @@
+# PR #1 gövde metni – WP1 rev3 (öneri; KiCad/baseline/ana BOM değişmedi)
+
+> Bu dosya PR açıklaması için önerilen metindir; PR'a kullanıcı tarafından aktarılır.
+
+## Özet
+WP1 `2026-10-25-o1-ovp` – O1 portu için hibrit global OVP önerisi (TPS48000-Q1 + 4× CSD18540Q5B + TLV3601 + REF35409 + TPS7A1650), **rev3** (ChatGPT Tur 2 incelemesi 6390966776, karar RET, yanıtlandı: `docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW_RESPONSE.md` → "Tur 2").
+
+**Karar: Koşullu – WP1 tamamlanmadı. Merge/üretim için uygun değil (P0-03 açık).**
+
+## Sert kriterler (değiştirilmedi)
+- O1 anlık tepe ≤ 12,0 V; normal bus ≤ 11,1605 V; 11,22 V yalnız yanlış-tetik uyaranı.
+- Hiçbir FAIL silinmedi/gizlenmedi. Davranışsal modeller; sim ≠ silikon. LTspice bulut ortamında çalıştırılmadı.
+
+## rev3 değişiklikleri
+- **Model rev3** (`bc63e66`): TPS48000 iç düğümü `ov`→`ovs` (OV pini ile büyük/küçük harf çakışması; rev1/rev2'de OV yedeği ölüydü). rev2 lib kopyası + `model-compare/` eski/yeni regresyon.
+- **P0-01** RAW bölücü RSNS10A 1,0 k + RSNS10B 1,05 k + RSNS11 1,15 k, 1206 ERA-8ARB: en kötü parça 85,1 mW = 125 °C derate'in %79,4'ü (`rsns_power.py --check` exit 0).
+- **P0-02** O1_GLOBAL_PEAK (0…tran sonu) + arıza öncesi/toparlanma rejim kontrolleri (INP > 2,5 V, VGS > 6 V); negatif öz-test (`regime-selftest/`, exit 0): FET hiç açılmazsa runner ve doğrulayıcı FAIL.
+- **P0-04** "garanti marjı" → koşullu marj (BUDGET.md §0).
+- **P1-01** SOA teşhisi; **P1-02/P1-05** pin tabloları ve U12 EN; **P1-03** BOM derating notları, RBLD11 1206, RPD10/RSRC10 yalnız sim; **P2-02** çıkış kodları.
+- Teşhis: `solver-study/`, `slew-study/` (WP2 kontrollü açılış seçeneği), `soa-study/`, `u3-latch-study/`.
+
+## Temiz koşu (wp1-rev3, `4bde43a`, ngspice-44.2, Debian 13)
+| Komut | Çıkış |
+|---|---|
+| `gen_o1ovp.py` | 0 (deck farkı yok) |
+| `run_o1ovp.py --label wp1-rev3` | **2** – 2534 PASS / 4 kabul FAIL / 4 tamamlanmadı |
+| `verify_candidate.py` | **2** – 1766 / 0 FAIL / 4 MISSING |
+| `verify_candidate.py --baseline-regression` | 1 – O1 16,89 V FAIL (beklenen) |
+| `rsns_power.py --check` | 0 |
+| `regime-selftest/regime_selftest.py` | 0 |
+
+- **O1 global maks 11,90318 V** (buck-short-c165-esr12m5-wchi; 96,8 mV marj).
+- **Normal bus maks 11,09192 V** (bus_recov, c483-wchi; 68,6 mV marj).
+- **Yanlış tetik 11,22 V: 22/22 deck tetik yok** (INP 4,9995 V, VGS 11,6 V); mc-nofalse O1 11,19781 V.
+- Monte Carlo: mc-ramp O1 11,11178–11,57673 V; mc-short O1 11,57582–11,7582 V.
+- INFO: postfault bus 11,29486–11,47708 V (24 deck); bench açılış bus 11,150–11,167 V (46 deck). TRACKING 7,5 A bus min 10,649–10,7584 V.
+
+## Açık bloklayıcılar
+1. **P0-03**: 4 ESL deck (c185/c165-esr12m5-esl2n-typ/wchi) 12,264–12,270 ms'de duruyor; açılışta RAW ≈13,33 V çınlama → komparatör yanlış tetiği. Çözücü değişikliği çözmüyor (20/20). RPU10 330 Ω deck'leri tamamlıyor ama efuse-ovp-s023-wchi toparlanma rejimini bozuyor → WP2 sayısal karşılaştırma.
+2. **N-01**: 100 mΩ stres köşesi O1 PASS'i davranışsal U3 mandalına dayanıyor; U3 açılmaz varsayımıyla 12,50–13,04 V.
+3. P1-01 SOA marjı 1,085× (grafik okuma ±%25) – B18.
+4. KiCad sembol/footprint (DGX-19, Q10–Q13) doğrulanmadı/oluşturulmadı; WP3 buck döngü kararlılığı.
+5. Tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı.
+
+## Bütünlük
+`docs/proposals/2026-10-25-o1-ovp/MANIFEST-SHA256.txt` (`sha256sum -c` ile doğrulanır).
