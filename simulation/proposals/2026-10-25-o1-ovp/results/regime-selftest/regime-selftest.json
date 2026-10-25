@@ -14,7 +14,7 @@
     "Error: measure  info_startup_vgs_fall_t  when(WHEN) : out of interval"
    ],
    "log": "results/regime-selftest/buck-short-c185-esr12m5-wchi.inp-forced-low.ng.log",
-   "log_sha256": "7e5360b24c2bf055c285752ccc9a62316d1b1449f9cb167049cd1f646a223937",
+   "log_sha256": "fddbcb41a276a1f0c77bf2b38dbc4b7e717fd9850b1759ffd2f917bd5e06a300",
    "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
    "o1_global_peak": 0.007288102,
    "o1_peak": 6.344333e-11,
@@ -50,7 +50,7 @@
     "Error: measure  info_startup_vgs_fall_t  when(WHEN) : out of interval"
    ],
    "log": "results/regime-selftest/buck-short-c185-esr12m5-wchi.pu-cap-1u.ng.log",
-   "log_sha256": "87156e1cfea6cb620d0d35e8e548b953490a228f004cc642e24f388f7023a7c0",
+   "log_sha256": "29d8ecf8251f19d2736349d072e8be5a2a0e5ab48857fd2e16fdcc50bbda0072",
    "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
    "o1_global_peak": 0.007780188,
    "o1_peak": 2.748221e-09,
@@ -86,7 +86,7 @@
     "Error: measure  trip_raw  find(AT) : out of interval"
    ],
    "log": "results/regime-selftest/efuse-ovp-s023-wchi.inp-forced-low.ng.log",
-   "log_sha256": "d8a7f0418174561e6ead6d09c46ab0164db6e5dcb1eb16f6bfacf9ff113adbdb",
+   "log_sha256": "4d463a4f8b608392967e37d0cf6868199e8d36375ed2a01fb4cc40a311635a6b",
    "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
    "o1_global_peak": 0.00730458,
    "o1_peak": 8.982852e-12,
@@ -122,7 +122,7 @@
     "Error: measure  info_startup_vgs_fall_t  when(WHEN) : out of interval"
    ],
    "log": "results/regime-selftest/efuse-ovp-s023-wchi.pu-cap-1u.ng.log",
-   "log_sha256": "1d1e603dfcd617c6a1c10134d3a0fcd26d0dd759208953f47e9600729b72d401",
+   "log_sha256": "0006fd83c3d80c0cc87627d98b543acf8029503512d84634235d8c04c6423ad9",
    "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
    "o1_global_peak": 0.04266975,
    "o1_peak": 0.007812302,
@@ -151,14 +151,14 @@
   }
  ],
  "synthetic_status": "PART B - SYNTHETIC: completed rev3 measures with ONLY regime values injected (no ngspice); tests judging rules",
- "o1ovp_results_sha256": "974b0c5ebf77a26930ee9847887412a6b78b3828f02e2071fb9f690d66751dac",
+ "o1ovp_results_sha256": "0a55a89ee1b3fbf6f73a0cd6ab27d04f69ebf03173dccaf639173c13ac9011e9",
  "synthetic_rows": [
   {
    "case": "buck-short-c185-esr12m5-wchi",
    "injection": "control-unmodified",
    "injected": {},
    "base_completed": true,
-   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
+   "base_log_sha256": "b189bc1065a8fce4a573a66cd09d44006c5d28781f6e98e47c44c18097d3d8aa",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": true
@@ -178,7 +178,7 @@
     "inp_pre_min": 1.0
    },
    "base_completed": true,
-   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
+   "base_log_sha256": "b189bc1065a8fce4a573a66cd09d44006c5d28781f6e98e47c44c18097d3d8aa",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -202,7 +202,7 @@
     "vgs_pre_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
+   "base_log_sha256": "b189bc1065a8fce4a573a66cd09d44006c5d28781f6e98e47c44c18097d3d8aa",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -227,7 +227,7 @@
     "vgs_pre_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
+   "base_log_sha256": "b189bc1065a8fce4a573a66cd09d44006c5d28781f6e98e47c44c18097d3d8aa",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -251,7 +251,7 @@
     "inp_recov_min": 1.0
    },
    "base_completed": true,
-   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
+   "base_log_sha256": "b189bc1065a8fce4a573a66cd09d44006c5d28781f6e98e47c44c18097d3d8aa",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": false
@@ -275,7 +275,7 @@
     "vgs_recov_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
+   "base_log_sha256": "b189bc1065a8fce4a573a66cd09d44006c5d28781f6e98e47c44c18097d3d8aa",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": false
@@ -297,7 +297,7 @@
    "injection": "control-unmodified",
    "injected": {},
    "base_completed": true,
-   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
+   "base_log_sha256": "4a7732a596d4320361b417c40730bce7fde61a1bdf494032b0e1d9561bbaf4ea",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": true
@@ -317,7 +317,7 @@
     "inp_pre_min": 1.0
    },
    "base_completed": true,
-   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
+   "base_log_sha256": "4a7732a596d4320361b417c40730bce7fde61a1bdf494032b0e1d9561bbaf4ea",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -341,7 +341,7 @@
     "vgs_pre_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
+   "base_log_sha256": "4a7732a596d4320361b417c40730bce7fde61a1bdf494032b0e1d9561bbaf4ea",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -366,7 +366,7 @@
     "vgs_pre_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
+   "base_log_sha256": "4a7732a596d4320361b417c40730bce7fde61a1bdf494032b0e1d9561bbaf4ea",
    "runner_regime": {
     "pre_fault_regime_normal": false,
     "recovery_regime_normal": true
@@ -390,7 +390,7 @@
     "inp_recov_min": 1.0
    },
    "base_completed": true,
-   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
+   "base_log_sha256": "4a7732a596d4320361b417c40730bce7fde61a1bdf494032b0e1d9561bbaf4ea",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": false
@@ -414,7 +414,7 @@
     "vgs_recov_min": 4.0
    },
    "base_completed": true,
-   "base_log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
+   "base_log_sha256": "4a7732a596d4320361b417c40730bce7fde61a1bdf494032b0e1d9561bbaf4ea",
    "runner_regime": {
     "pre_fault_regime_normal": true,
     "recovery_regime_normal": false
@@ -431,6 +431,5 @@
    ],
    "selftest_pass": true
   }
- ],
- "logs_note": "Tur-3: re-run mutation logs differed from the committed ones only in ngspice timing/memory statistics lines; committed logs kept (no timestamp-only diffs); log_sha256 refers to them"
+ ]
 }

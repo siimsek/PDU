@@ -42,17 +42,17 @@ info_startup_vgs_fall_t=   1.50033e-02
 o1_global_peak      =  1.111257e+01 at=  1.500059e-02
 
 
-Total analysis time (seconds) = 26.9052
+Total analysis time (seconds) = 14.4494
 
-Total elapsed time (seconds) = 26.943 
+Total elapsed time (seconds) = 14.467 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available =  689.828 MB.
-Maximum ngspice program size =   58.941 MB.
-Current ngspice program size =   49.777 MB.
+DRAM currently available = 1571.086 MB.
+Maximum ngspice program size =   58.949 MB.
+Current ngspice program size =   49.801 MB.
 
-Shared ngspice pages =   10.633 MB.
+Shared ngspice pages =   10.652 MB.
 Text (code) pages =    6.543 MB.
 Stack = 0 bytes.
-Library pages =   39.262 MB.
+Library pages =   39.270 MB.
 

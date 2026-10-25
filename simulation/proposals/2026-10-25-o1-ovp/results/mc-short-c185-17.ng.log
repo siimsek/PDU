@@ -38,16 +38,16 @@ trip_raw            =  1.153478e+01
 off_raw             =  1.168943e+01
 
 
-Total analysis time (seconds) = 32.8602
+Total analysis time (seconds) = 18.8095
 
-Total elapsed time (seconds) = 32.904 
+Total elapsed time (seconds) = 18.829 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available =  634.312 MB.
+DRAM currently available = 1643.824 MB.
 Maximum ngspice program size =   63.496 MB.
-Current ngspice program size =   54.566 MB.
+Current ngspice program size =   54.449 MB.
 
-Shared ngspice pages =   10.859 MB.
+Shared ngspice pages =   10.742 MB.
 Text (code) pages =    6.543 MB.
 Stack = 0 bytes.
 Library pages =   43.816 MB.

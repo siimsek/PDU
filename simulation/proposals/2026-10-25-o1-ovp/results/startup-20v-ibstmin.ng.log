@@ -34,16 +34,16 @@ inp_min             =  4.999499e+00 at=  8.000000e-02
 vgs_min             =  1.220250e+01 at=  6.000006e-02
 
 
-Total analysis time (seconds) = 8.76762
+Total analysis time (seconds) = 5.62106
 
-Total elapsed time (seconds) = 8.783 
+Total elapsed time (seconds) = 5.629 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available =  738.715 MB.
+DRAM currently available = 1667.062 MB.
 Maximum ngspice program size =   33.562 MB.
-Current ngspice program size =   24.477 MB.
+Current ngspice program size =   24.469 MB.
 
-Shared ngspice pages =   10.762 MB.
+Shared ngspice pages =   10.754 MB.
 Text (code) pages =    6.543 MB.
 Stack = 0 bytes.
 Library pages =   13.883 MB.

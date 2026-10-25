@@ -1,9 +1,9 @@
 {
-  "label": "wp1-rev3-tur3",
+  "label": "wp1-rev3-tur6",
   "package": "2026-10-25-o1-ovp",
   "scope": "BEHAVIORAL/IDEAL models only; not vendor silicon; not a bench/prototype result",
-  "started": "2026-10-25 09:48:34 +0300 (Europe/Istanbul)",
-  "finished": "2026-10-25 10:03:24 +0300 (Europe/Istanbul)",
+  "started": "2026-10-25 10:48:58 +0300 (Europe/Istanbul)",
+  "finished": "2026-10-25 10:58:05 +0300 (Europe/Istanbul)",
   "tools": {
     "python": "3.13.5",
     "platform": "Linux-6.12.94+-x86_64-with-glibc2.41",
@@ -15,7 +15,7 @@
     "ltspice": "SKIPPED: PDU_LTSPICE not set or file missing"
   },
   "git": {
-    "commit": "e8cce6793d0ab14b95239bc0ed5fc2b02da63775",
+    "commit": "6aee4f73c084ec82390e54178d0483bdc00d1062",
     "package_inputs_dirty": false,
     "dirty_files": []
   },
@@ -335,7 +335,7 @@
     "decks/o1ovp-sweep-tdoff2p0u-s023-wchi.cir": "2da9fa3808e2916b53a9fa11fffc2b1d5ae7dd57994a25f419852ceef61ea49e",
     "decks/o1ovp-sweep-tdoff2p0u-s023-wchi.ng.cir": "d4c7620dd35b7d9f34c213b6667bed580c9f5195cbf5ba7a3a778f35ba3d56af",
     "gen_o1ovp.py": "d408cab9727b1e4014eeb53cdb2d4acf43c86be9b6bbdea40f456817f1e766bb",
-    "model-compare/model_compare.py": "16ab7b13419f63f180a432d2b3b802d30357aec6d5b3a06d653bb2e03c45f7e6",
+    "model-compare/model_compare.py": "495fc4d02ca5b865ddbc0717fd6e2d53266ffe4542642ae7041ebd767fd2e0e1",
     "model-compare/pdu-o1ovp-behavioral-rev2.lib": "62d862b4166c0348775510a72612f627d2157896d031922164fdb8bffe86588b",
     "net-split-changes.json": "950a4590a34bc515ee52f7704ee9cec07c9a074e695d3e8d352bfdf5dbf226d0",
     "pdu-circuit-o1ovp.inc": "3aa7ee8f20aa9364423f0b916b5ab3ceb902fde2d42f2300ccb9ce3d68695bbc",
@@ -362,10 +362,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 15.0,
+      "seconds": 14.3,
       "deck_sha256": "6ec9809cb6c7d5c4755ca5cd7d777ac69d1a1d4a37acfbe634dc0d318075b684",
       "log": "results/efuse-ovp-s007-wchi.ng.log",
-      "log_sha256": "9f61204ed72501f848f3f4026e91b66b3d8ce4b954ed8706d639c271818a44d3",
+      "log_sha256": "1bbef4c8ef0441af26f0113dee1b1d9c9ce7d194771c13b927add95e93d73463",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -403,10 +403,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 15.1,
+      "seconds": 14.9,
       "deck_sha256": "3f1589809178094e663543f47644c3263c8b443f564e2849b3cd75c4d3e5ef38",
       "log": "results/efuse-ovp-s007-typ.ng.log",
-      "log_sha256": "4a4f21bb1f408cd03547f346a33027c1e56d7160775edd4433d56b0014f9405a",
+      "log_sha256": "f66a391c697972f8f06468a905c2c82c7025e7af93c8c2d7e235978d9f4b661b",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -444,10 +444,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 15.5,
+      "seconds": 14.7,
       "deck_sha256": "3707725c97cdbb86a2a59af592ca1b3e5b6d44bbedb7790069b83f11f7ae5aac",
       "log": "results/efuse-ovp-s017-wchi.ng.log",
-      "log_sha256": "95c614303b342c2434dd1bcdcbbaad5437521930f9c87f1a6e0b7a5719ae169e",
+      "log_sha256": "642d2e6be76eccff67c8c2433d412a25c6b83bb7bb7bfc7d26de249e7afb2451",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -485,10 +485,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 14.9,
+      "seconds": 15.1,
       "deck_sha256": "cd1d1dd5388ee32403a8026083d3c27e7feeaadac07e06d635028f80843b147f",
       "log": "results/efuse-ovp-s017-typ.ng.log",
-      "log_sha256": "5c15d97fa9f719b037effe7b581461a57d5c424359e6185d1c6ed4aa96abf1e4",
+      "log_sha256": "5d5078c9dc3f827bc8f4115019a1aaf511c2dbeab96e8e26046f09a386058568",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -529,7 +529,7 @@
       "seconds": 15.1,
       "deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
       "log": "results/efuse-ovp-s023-wchi.ng.log",
-      "log_sha256": "e28c4beca055ec5f6ebd6924ad9d4425c78b1d206b3ba3a4a9fe0a1e411a3d25",
+      "log_sha256": "4a7732a596d4320361b417c40730bce7fde61a1bdf494032b0e1d9561bbaf4ea",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -567,10 +567,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 15.1,
+      "seconds": 14.7,
       "deck_sha256": "91ee34ef37d2f8b79c80318bc9a995d655fa325874839a0468d178486415e57f",
       "log": "results/efuse-ovp-s023-typ.ng.log",
-      "log_sha256": "b0c77a667fb15752a93626c51bc9fb2697ab87e86f77721f6fe010824e7703a7",
+      "log_sha256": "20461aab7e6812d3e82ee8e79277e66d49c7e0911120151534537b2ced19bfab",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -608,10 +608,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 19.2,
+      "seconds": 14.6,
       "deck_sha256": "f72891d2cd03a2f1aebeec31505700a0ae9ce0504072d61743e9736a057a7d96",
       "log": "results/sweep-tdoff0p3625u-s023-wchi.ng.log",
-      "log_sha256": "caa683db609ccd17f75ca451b0b655a1e220895359063ce3b2d68aed65c2fe88",
+      "log_sha256": "eefdf3ab8553c82356f42ad239b75ab6baae385de3e55222f03470f0ce4e73ae",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -649,10 +649,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 16.8,
+      "seconds": 14.5,
       "deck_sha256": "54bfb6238bb4be5adc7c480590d06b0bc15aa5acc1273bdf0a1f8dd525e6cd6f",
       "log": "results/sweep-tdoff0p7u-s023-wchi.ng.log",
-      "log_sha256": "518ccb2d3429cfb4f8aab0a2f8483acf46a6589982b0fb7befeafa3e774e2c21",
+      "log_sha256": "afd01643805fdee18f9c43d093ff387f6a2e308462394f1d062d2f8f90ad51e6",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -690,10 +690,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 21.4,
+      "seconds": 14.8,
       "deck_sha256": "f4b70ed1d67866dc68454cc29738b3ab18f767f355e393f9cb74f0aac00fa466",
       "log": "results/sweep-tdoff1p0545u-s023-wchi.ng.log",
-      "log_sha256": "a4a7a3a2a975a56e2bb41545751c0325fc87d6b44d527271f77304e7a0186d81",
+      "log_sha256": "a6833d26c3fec04c042d1834a2220883bf1cec479b3bd26b618645bbd69f9a44",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -731,10 +731,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 16.6,
+      "seconds": 14.5,
       "deck_sha256": "567cee8362029ec21bec0aaccdc2174b98d4292993289dd92d406843271ddc66",
       "log": "results/sweep-tdoff1p5u-s023-wchi.ng.log",
-      "log_sha256": "2d205e776d7829753077c7f19d76bcf88be0a70e1832e63de70edf73a13a68e3",
+      "log_sha256": "fb63be263539d3f177e0ed488c4919c735feac9c6a9a8e857f7c8f0ba2c14535",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -772,10 +772,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 82.7,
+      "seconds": 48.4,
       "deck_sha256": "d4c7620dd35b7d9f34c213b6667bed580c9f5195cbf5ba7a3a778f35ba3d56af",
       "log": "results/sweep-tdoff2p0u-s023-wchi.ng.log",
-      "log_sha256": "8f852934163d1709cab2bf83d7024eba7f257631c4ad0e97d769bfc449ce0b21",
+      "log_sha256": "95f54ac9fdbfa82a3df9e27bd1d075ae98ae5278f3ee0ca974623ae4ee7162a5",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -813,10 +813,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 53.6,
+      "seconds": 35.9,
       "deck_sha256": "f1a9bfbec89e0ef6b83f55e4c15cf6c902b69afea03cfc603139ee1688bd811c",
       "log": "results/sweep-od0-s023-wchi.ng.log",
-      "log_sha256": "d773c8e2868ea7f73406b10c3a217e834a36cf6600290ed0b3a46cd438ceba30",
+      "log_sha256": "727f708d71db7ada9f9d42d57ef1d65d288e42d7983f5a2cb6b15a7739ae99e8",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -854,10 +854,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 27.1,
+      "seconds": 14.3,
       "deck_sha256": "ca0443a8c42bcbf87b46568d70136c8038acadb20af5be944391504103b3e7c3",
       "log": "results/sweep-od50-s023-wchi.ng.log",
-      "log_sha256": "f32b534850d321d16903b2783b112b23a602679970a706b870bd6ebbf24eda8a",
+      "log_sha256": "3611527018c0be2fc9309ae63d88f9f3378265d23a90e0a55a72eca800a2ecac",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -895,10 +895,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 112.4,
+      "seconds": 68.9,
       "deck_sha256": "590de5b7dcd5dc953ef3392d50149b6fd3558d0aa4ea214ff04b13d6a1c8182c",
       "log": "results/sweep-od100-s023-wchi.ng.log",
-      "log_sha256": "3032daead8fc67aa8972a620e3a023778665248ca1afa03f1b2474d59272e8fa",
+      "log_sha256": "de438b57f41469c04390b13d50617adc52701b5086fe627ce05858cdecd3b6b8",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -936,10 +936,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 22.8,
+      "seconds": 14.4,
       "deck_sha256": "4af99530aea9b5be448021a57cb4bc7e5676cba0b8cc9e981eac4c2d7467bac3",
       "log": "results/sweep-od200-s023-wchi.ng.log",
-      "log_sha256": "5c2d441a0d6b5369d9077ab0e9d32ed0a17b6398c0112f7ea43e10e7c60a5052",
+      "log_sha256": "2848771b3848f81f056257cf6c06b424dbf4da2f0ad64117c303710378d72385",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -977,10 +977,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 24.1,
+      "seconds": 14.4,
       "deck_sha256": "9a9a2a54890f05ea4d43c0f4fa48a772eddd17676ab964e80179396ac9f82cc1",
       "log": "results/sweep-slope0p4-wchi.ng.log",
-      "log_sha256": "5a68a0c1321f3adacaba326671236a6207172aff63c49e30a0df372422f63cbe",
+      "log_sha256": "653775ba02948dd0b42ed4d97f776718c3eb8475f75b04b0e99fc07e393055fe",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1018,10 +1018,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 22.1,
+      "seconds": 14.5,
       "deck_sha256": "ea4dd9ac9b5e48d5779c7ac1326f829a527c315bcc394ff03eb49cc409e2bd6a",
       "log": "results/sweep-slope0p55-wchi.ng.log",
-      "log_sha256": "dbccf47028376502e8ca1380c949941cbb015aba6dc8664c186824c5a8351070",
+      "log_sha256": "00d0ea756dc35467e3c3bec231b9bdc427df2635b2f030f091f6b94f14a1032d",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1059,10 +1059,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 26.8,
+      "seconds": 16.6,
       "deck_sha256": "3936ba9ffee8adde3d11c6d5721b11abf916830cdf084591b0489095b2ef0ade",
       "log": "results/sweep-slope1p0-wchi.ng.log",
-      "log_sha256": "0389a6e902ca537b02e60c41d8eee650929b27c6bc65a4f4d8eeef5cd9ab06ed",
+      "log_sha256": "e3ae3c581b8577cf7819da34513fa56f7d0f66bbddea65342a4e9f7b0c955bb1",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1100,10 +1100,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 49.7,
+      "seconds": 31.4,
       "deck_sha256": "4c5a6d9f6e0867b20c9cb04c725370ef5a98f1c210445dfa21186f0baef4ecee",
       "log": "results/buck-short-c185-wchi.ng.log",
-      "log_sha256": "94d9d23d4e429ef9699dc90038fbdb1ce2cc503d579f02cd5d4c42ee6dac327e",
+      "log_sha256": "dafae35248f3cb593e1d8cba9140588f399784b949835815bebe030a91200c05",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1145,10 +1145,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 54.2,
+      "seconds": 31.2,
       "deck_sha256": "2e49b5c0ac1d8163f0de3c06749fc4d370660bc86869ac34e3305583b2afda37",
       "log": "results/buck-short-c185-typ.ng.log",
-      "log_sha256": "8b767e59d427c634676a606f72619611523bfbe4ff71a9767b01e60c1990a10c",
+      "log_sha256": "a74fc308b08ae58062de4cf1d0d233a8ed348579d5e8d75108a09adc2adb2045",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1190,10 +1190,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 51.4,
+      "seconds": 31.7,
       "deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
       "log": "results/buck-short-c185-esr12m5-wchi.ng.log",
-      "log_sha256": "61c5436c19edb1f4f943e9c9a6aab8f1d3667d1a9e4dc59cc7e14c3358889f1d",
+      "log_sha256": "b189bc1065a8fce4a573a66cd09d44006c5d28781f6e98e47c44c18097d3d8aa",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1235,10 +1235,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 53.0,
+      "seconds": 32.1,
       "deck_sha256": "6227950d79e75cd7001868ad5af36ff3150dfd8cf1156cf25a8b8dbea665a882",
       "log": "results/buck-short-c185-esr12m5-typ.ng.log",
-      "log_sha256": "7a9fc8d466f48d7f3e13989188cfe8b5466d489364462fd8cdbfb44a5f8c778f",
+      "log_sha256": "23559446a0f86d36e09cf933dcec7c241491e1870baf3e4bb5e85770cd76a08a",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1280,10 +1280,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 46.2,
+      "seconds": 31.8,
       "deck_sha256": "aa0c496c5f5359cca309346b4017d7caf3474c749129d70839cdd58f576e1fdf",
       "log": "results/buck-short-c483-wchi.ng.log",
-      "log_sha256": "0c43f2d399c6f3919f40a7222928748d7b39c17976d4e440b7186e19ff710aee",
+      "log_sha256": "be6ba47e85091534d0ec5422103c90be370608739de918f0a2df77330e1262c8",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1325,10 +1325,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 48.1,
+      "seconds": 31.4,
       "deck_sha256": "075668671f9197dea362781fab43a443dd5c7048686ad7ab8742ddc791020ae8",
       "log": "results/buck-short-c483-typ.ng.log",
-      "log_sha256": "72451a63009bb53a22656e6afc3d6c8d357a228e010b1c247d5b24402a1e9207",
+      "log_sha256": "e504ab76b440f037379a9cac6d912496eb022948df5eab8c7a63a511d84df11f",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1370,10 +1370,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 58.6,
+      "seconds": 31.8,
       "deck_sha256": "268e4ec351774e8773da90294fd850cc414e00810a0f49339a3a2226c27860a2",
       "log": "results/buck-short-c483-esr12m5-wchi.ng.log",
-      "log_sha256": "a21cab53432481d8d15123d566b24c757ff02285ac2a383cfdf9d67fe42debc8",
+      "log_sha256": "fd7a5ba850b308774da31ddcb1c97b431f7a499de391ef7fbea8b5f45fac4c80",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1415,10 +1415,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 55.8,
+      "seconds": 31.8,
       "deck_sha256": "a6ac44c12500ca2194d0e798b4132a13ab63b25a328accaaecdcc8395f2aa761",
       "log": "results/buck-short-c483-esr12m5-typ.ng.log",
-      "log_sha256": "7ac0425be130f1e964a4f215b50bff4027514001a24196ca6526cd790f0060aa",
+      "log_sha256": "f56335474881197b386cf6bdf12676c467d9e670fcf80028e35b008edcc7a477",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1460,10 +1460,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 63.1,
+      "seconds": 31.9,
       "deck_sha256": "bb21d99ad57522399371654c62e8cdb5886d076c86a0e61e59cda40d602612e4",
       "log": "results/buck-short-c176-wchi.ng.log",
-      "log_sha256": "00f617e9f90c9bda3f3d0863868558e09e01c0d5dc8abe29178bbe0204f51969",
+      "log_sha256": "c7e61c473912ad14795307372ccd3994c80c50853579afc7809fa064e4b529b0",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1505,10 +1505,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 47.9,
+      "seconds": 32.3,
       "deck_sha256": "9881999013c3de4e850a41d61e793fb4ab341c4db4084bd75c8e92c3ef1caa78",
       "log": "results/buck-short-c176-typ.ng.log",
-      "log_sha256": "c02fa3578b9c1de1bbd297c0f23f135ade64a92456c1c1943833be36404c9318",
+      "log_sha256": "8e0bb0615ad539c28d41a3c3acba67f7c6ad7cab8279372d0d2d5a6c80adb3c1",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1550,10 +1550,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 60.4,
+      "seconds": 32.1,
       "deck_sha256": "051cbf8cbcd4525de43875cb36d553b84d4b6d1df252d0fcec21730179ac6269",
       "log": "results/buck-short-c176-esr12m5-wchi.ng.log",
-      "log_sha256": "571a42f000578457150bbdc9c156e102628ee5d0c19dd998240bf6a7298acd67",
+      "log_sha256": "2d8e51fe66e3cfbaab13c64706820423692576004a2d30a3685368599a7173cf",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1595,10 +1595,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 57.0,
+      "seconds": 32.2,
       "deck_sha256": "77cfdc6c1cd1b28ab36bd0a15242e3ee1b1fe75e866cd76e5b5c347b3978d297",
       "log": "results/buck-short-c176-esr12m5-typ.ng.log",
-      "log_sha256": "29e13a6425e44a3c287d08c65c2117dcda0591271de00b99a4aefc1111d4b606",
+      "log_sha256": "6f0f05c89664f88718d7a76cf76fc0750260f85d1118a34f07ddb28a6cd88227",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1640,10 +1640,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 53.3,
+      "seconds": 33.3,
       "deck_sha256": "3a34d81aef98f4a067f0dc1ecafaa78b4e1130bbc6b75b932e62b5822b45706c",
       "log": "results/buck-short-c165-wchi.ng.log",
-      "log_sha256": "35abaadfe405b8deb6ee37b92a766663bd59bfacdc30a47bc6de43c1afd342d3",
+      "log_sha256": "ad4b11d12fe9c8550e389aa1288feba43833c53e127f19b4585954b06c6162e8",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1685,10 +1685,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 53.5,
+      "seconds": 32.3,
       "deck_sha256": "19166798121298a1e0b9ed2abc1f848dfd8bbc32e1f3be5bec3436b509924dfe",
       "log": "results/buck-short-c165-typ.ng.log",
-      "log_sha256": "79618106a0bc002c4c5bf3567883c67f7390e0cdd06af86b504217e050c06e30",
+      "log_sha256": "440c3a075ba5b1de73295f0908931804454c08d2ddadf6cb85487b87a9cd3923",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1730,10 +1730,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 57.0,
+      "seconds": 31.8,
       "deck_sha256": "6e1cd30d7162ee84e36bd40c12f0740093c2ffa066c6a1d3a71a16a25416b490",
       "log": "results/buck-short-c165-esr12m5-wchi.ng.log",
-      "log_sha256": "b8203412902d7ddeb3a39c91a01f54ffe1d7ef4cb48549598cb8c42b3a81304d",
+      "log_sha256": "db3b5ec1b5e3fa1b78f1f84c72f26e90b19734d742087668432640df6d91942d",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1775,10 +1775,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 52.2,
+      "seconds": 32.3,
       "deck_sha256": "4282d31ffab6cfe143dd77622ddef208a1afde28d70166782ea1af60948485ac",
       "log": "results/buck-short-c165-esr12m5-typ.ng.log",
-      "log_sha256": "d6984e0375acc410025524b3a020192617559fb0858e35a611c340f06a539fc4",
+      "log_sha256": "0989a6163a4501480b6c7870b8bcbac4c54565abca85c5a1fe65ad2dfa5de0cf",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -1820,10 +1820,10 @@
     {
       "engine": "ng",
       "returncode": 1,
-      "seconds": 6.7,
+      "seconds": 4.6,
       "deck_sha256": "484700ebe94ca73199170ece51da04d19073b6955c6133b05ab94f9cb294414a",
       "log": "results/buck-short-c185-esr12m5-esl2n-wchi.ng.log",
-      "log_sha256": "d8583b3d0e5f315482da5a519fe99ada9e8fc1a989a7152c14bd547f5621e716",
+      "log_sha256": "79d62471bc5070505c04c4cf7e162f31b7231e4a60c815eb14c7e14a2cd65a0c",
       "execution_pass": false,
       "missing": [
         "bus_normal_max",
@@ -1868,10 +1868,10 @@
     {
       "engine": "ng",
       "returncode": 1,
-      "seconds": 7.6,
+      "seconds": 4.5,
       "deck_sha256": "9df19208462d68caffe5264d39e2f946413f6a59fa4ba966e92a95d6101def68",
       "log": "results/buck-short-c185-esr12m5-esl2n-typ.ng.log",
-      "log_sha256": "a8124d8003191eb44fc18fd82541420eb3e72961afee1bbe8f4bd0b054ab81d4",
+      "log_sha256": "5a6509195446d37931443000a3576044807dbf5e32873e9dbaa028ae1f0f7692",
       "execution_pass": false,
       "missing": [
         "bus_normal_max",
@@ -1916,10 +1916,10 @@
     {
       "engine": "ng",
       "returncode": 1,
-      "seconds": 8.8,
+      "seconds": 4.6,
       "deck_sha256": "02304a440248c4b76f0162ac4205d44a9d252be342ffa0d01449b35b8c47181b",
       "log": "results/buck-short-c165-esr12m5-esl2n-wchi.ng.log",
-      "log_sha256": "eeaf04712cc1bb7ba8d51c9b8ef549bf6a8281ff786f35c4082df3ecccd38354",
+      "log_sha256": "cdd1493bb9aba3c3f13206644b93c45870ac0cf784fec519db3449b0e8d2197e",
       "execution_pass": false,
       "missing": [
         "bus_normal_max",
@@ -1964,10 +1964,10 @@
     {
       "engine": "ng",
       "returncode": 1,
-      "seconds": 7.3,
+      "seconds": 4.5,
       "deck_sha256": "fcff678f99707d76f0f42c37b994a5891826b519fb2c381b48beb47d5b543c1b",
       "log": "results/buck-short-c165-esr12m5-esl2n-typ.ng.log",
-      "log_sha256": "a04f9eb68ac3d9602da1d4b64bc43a6eb45bf45cebf7a2bc910ab0f2f24af5ac",
+      "log_sha256": "c5beafbf6fe1947d701c7144782697289bcf71285b41e53cad7e13902fd9f8ce",
       "execution_pass": false,
       "missing": [
         "bus_normal_max",
@@ -2012,10 +2012,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 25.8,
+      "seconds": 16.9,
       "deck_sha256": "b3c12fc8d7e68057acc5153f122eea5e8d82d9f0d28fa4e9baf966377c25eb98",
       "log": "results/buck-short-c185-esr100m-wchi.ng.log",
-      "log_sha256": "e83617e2ff6764b51dc3e6ecb8ef4033a9e862c5ce289306ef4fbdedb902347a",
+      "log_sha256": "9c4068fa0b915e2ad8fdeb098784ae95ca751bdd292b1b3562216cfea6051ee6",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2049,10 +2049,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 27.7,
+      "seconds": 17.2,
       "deck_sha256": "448e98965d206b760851fe96403332c517e8ade9fc3581acbf82ceb896825961",
       "log": "results/buck-short-c185-esr100m-typ.ng.log",
-      "log_sha256": "e24076be61b038e31a0a635991ef680770eb6a6f89865619072c1ab0e6b17c73",
+      "log_sha256": "69f1793e89659591f78e75d12cea36e447f5033fea06754bd7024d2f1a0aca55",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2086,10 +2086,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 49.1,
+      "seconds": 32.0,
       "deck_sha256": "71584e94195caace1441400f56cc5d8b8a646a43fd72f02b9a63d501dbf64583",
       "log": "results/buck-short-rev1-c92-wchi.ng.log",
-      "log_sha256": "211481822f8b88b91a445ce6356bf9b59668c1d905492dc399dd72954db828d2",
+      "log_sha256": "79522101a6d14ffb130eee6b72f1dc62adda5012a0190a1ce1d92045886c69a2",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2131,10 +2131,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 58.2,
+      "seconds": 32.6,
       "deck_sha256": "e73a03abaf5aaf9936c875c2c29cbd71947ff22f7c42e18a07c343bc24dc5baa",
       "log": "results/buck-short-rev1-c92-typ.ng.log",
-      "log_sha256": "b3f7fc3f572ad2e9205e818d31df8dc1e8d90eb7e0dc993e26d4f1538e67067d",
+      "log_sha256": "3442ea578354d3e267f3a71fe670150929f90e8908ee7c361e9e3a135c32e76f",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2176,10 +2176,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 48.5,
+      "seconds": 31.2,
       "deck_sha256": "c63d42da7368ca70a88446a3a0917b1c809f166bf625c447833fe65f3ddc1a41",
       "log": "results/buck-short-rev1-c92-esr12m5-wchi.ng.log",
-      "log_sha256": "41644e883f56cd4dbac780cd721af8ccca42c417409b8f3962beee6c399c4241",
+      "log_sha256": "807e01ad00e598fae9a20d54e882e57b90854634153cca78597f8daaa8669b5c",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2221,10 +2221,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 45.7,
+      "seconds": 32.0,
       "deck_sha256": "7b1a79d30d5b259d6dab0d558c90d0588ecc7e8741319709d76e691588ddde29",
       "log": "results/buck-short-rev1-c92-esr12m5-typ.ng.log",
-      "log_sha256": "f6fbe63eb8adccf8fb9e890916990cb51e49833257c6f1925eacada0743684bc",
+      "log_sha256": "42127031a7ced712787b9c28de5159b7a99dd95b515c1301639f49028c2318aa",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2266,10 +2266,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 49.7,
+      "seconds": 31.4,
       "deck_sha256": "48feb1bc6c290333d6b55b611b1560850cf4f5e219abfa744dd7414d62322f3f",
       "log": "results/buck-short-c120-esr12m5-wchi.ng.log",
-      "log_sha256": "d2e0011363ccd2a01e0d13f715d5cc3d45b63a8c11e9a32ab430a148ba86687b",
+      "log_sha256": "be844fceb3d580d217dbe8bfb20941f31041f5e0dfd43c044f712b57e95be8b1",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2311,10 +2311,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 54.2,
+      "seconds": 32.1,
       "deck_sha256": "8a9c5e16d91bc403f4818d5e8294c640e9c9d37c8439f8b5860b0afce889285d",
       "log": "results/buck-short-c120-esr12m5-typ.ng.log",
-      "log_sha256": "e8b8eb8db2212e02ea991b74198646ecb8f0d73c560437649ced2033a47c31b8",
+      "log_sha256": "78ff9bd609404c3440a432c1649e75a2c77bd7288b3dc398dd4c1e2650eb61d3",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2356,10 +2356,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 59.6,
+      "seconds": 32.3,
       "deck_sha256": "5ac4816c1f71ae89739fd138c56d5768db57224646e19b6e10b997c33f74345c",
       "log": "results/buck-short-c130-esr12m5-wchi.ng.log",
-      "log_sha256": "4c645ad9484042c86ed7080923c467184246f4de818d0737fe48625fa328ba9f",
+      "log_sha256": "8a6e2be6f97efcdc8f1b24e68d40797ecc29fc0dd95a0f065d55b49a0e7c10b9",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2401,10 +2401,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 45.4,
+      "seconds": 32.0,
       "deck_sha256": "148f422c7aef67ba899b155868368a7927c34ee71db985e3cf128d50d8167498",
       "log": "results/buck-short-c130-esr12m5-typ.ng.log",
-      "log_sha256": "9ab408f1a9c276cdaf941d2478dfab77d5857cd139d0d3083b0d66c1f6cc3788",
+      "log_sha256": "2e78e54d35a377a9d21f76bd33b548b2956ccc820407f3ce8d8ecf3ebfe7f043",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2446,10 +2446,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 4.4,
+      "seconds": 3.0,
       "deck_sha256": "edd3b34da3fd3551905868dd072c54ee5d64e925eab51ecdbff48e493c80853c",
       "log": "results/startup-20v.ng.log",
-      "log_sha256": "12554676a90d2410906448baf412fe16d4cdad284fa495439695003bf8f29a7b",
+      "log_sha256": "8cb6854f1ba1b75193448c42dc3ab4b41495007400664303eda82093566025a5",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2479,10 +2479,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 3.7,
+      "seconds": 3.0,
       "deck_sha256": "89c388a71d487dd8a09407a300050a84f971b16756dab4b6795a89f7a363f578",
       "log": "results/startup-22p2v.ng.log",
-      "log_sha256": "18cbe3b06b8f8aeac96b4ab82d1e995b3bf585162e4a1abed7d97c325ce7e8a1",
+      "log_sha256": "287f1ac734b9ebbfdfa8ec79c881b45090a9882019a553d353f81527060c8cf0",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2512,10 +2512,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 4.5,
+      "seconds": 3.0,
       "deck_sha256": "a9137ad3d869844f493795d089e36d9c25d631687f0310f1fa6407888a361afe",
       "log": "results/startup-26v.ng.log",
-      "log_sha256": "5ae70b43641eb5988ac550dd3917541b669b67c1a0a8e791888f266811b086d5",
+      "log_sha256": "ec74c134db6570992f592054b4097c358a1e63923204e3f2a0ad5bf9de9a5d5d",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2545,10 +2545,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 3.7,
+      "seconds": 3.0,
       "deck_sha256": "9f879491880d268328dd49c4d66efc4634a890237d969d55cbb81e9ab8e85cd5",
       "log": "results/startup-26v-wchi.ng.log",
-      "log_sha256": "4e7043cd502a8a96897708ebc717338cf77668f33901ca618832d2a7bd9ef0b6",
+      "log_sha256": "54efbace79955668d011ec5e74a59036bb2fe141411a6c1fe42702de4c1bc8e5",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2578,10 +2578,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 8.8,
+      "seconds": 5.6,
       "deck_sha256": "fd35d2ef26928acb6b2ccafc2716784faf88c5092fb4ded934d7249338e79acf",
       "log": "results/startup-20v-ibstmin.ng.log",
-      "log_sha256": "9b56da3a8c7fa392af8a12dac1e6dec27a1bbc455b3744aeba2bfde5289b9f3d",
+      "log_sha256": "0050a973e6b512d67a8c596635ba6f6c062cf8f441432014e29f5f05165ed286",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2611,10 +2611,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 4.6,
+      "seconds": 3.1,
       "deck_sha256": "7aa22a10f78ea86ba45bd2d47bc7fc27c8c782278d8ac185b4a18e1a4564d14a",
       "log": "results/startup-26v-c165.ng.log",
-      "log_sha256": "df99ca2fa2e54a5bc2e65bffa3a49c3478bf6cd8550405a273a1f8b7855a4962",
+      "log_sha256": "27dd9045d6f07ba6ae026f2ff069f751e7f0db071141397c5ed48a218a76afdc",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2644,10 +2644,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 5.3,
+      "seconds": 3.0,
       "deck_sha256": "38e9a1282f974145cae6a19e57fefe3d3f87f17844e19dc81cde240f14813606",
       "log": "results/startup-20v-chi.ng.log",
-      "log_sha256": "391327222d57f444a5f63ede85ef2d6d297a762f99ec578441a7cb3fe7096dc5",
+      "log_sha256": "67918105cffa7818f929ce1f5f1ae69c80acd53a1bdedeb93fbe30e88413e57f",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2677,10 +2677,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 6.4,
+      "seconds": 3.1,
       "deck_sha256": "0ec457a9da6ecbcff83854ef65b8a15b201d31f6e5b75b80baa8c1e69f808209",
       "log": "results/startup-26v-chi.ng.log",
-      "log_sha256": "78a160a4b8828eb18722cf077286900f12fa6c0c3babd73b4a67cac976665166",
+      "log_sha256": "c72e2321d625a7bc0b79ead9b49ca775df90b3f071ca0461524f3a47b529abfe",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2710,10 +2710,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 4.1,
+      "seconds": 3.1,
       "deck_sha256": "f484e7b88120e9e9e174a80c77a232c7712702a5a7e253ccd3eecbece2d7eb61",
       "log": "results/load-step-ron3m3-c165.ng.log",
-      "log_sha256": "876ac2ddf56598d1d89df2e0f0ef8359a0075f7478d940c7055ae92239f7f211",
+      "log_sha256": "31afb228c47f99a26fe22fc265db87d2dc1a76967c9cb1d42cdfb1309b6e97b5",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2734,10 +2734,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 5.4,
+      "seconds": 3.1,
       "deck_sha256": "b9bfe2d5358977d447140ca94e0d6dda198c7c53934c39c5b3a763d5df136582",
       "log": "results/load-step-ron3m3-chi.ng.log",
-      "log_sha256": "cfecee68d103a7626790185153daed37134077825d36821a7522d51cd5d1cc22",
+      "log_sha256": "782b32165ce0355c573ff8c0b832a6de4c2ad0ed52f251f659181f7b063c5c65",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2758,10 +2758,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 4.8,
+      "seconds": 3.2,
       "deck_sha256": "18713fa8ba2c1f73fd4868b0f98e88288eec1b24a116a14b7438303c6e1e8fc3",
       "log": "results/load-step-7p5a-ron3m3-chi.ng.log",
-      "log_sha256": "779f7aacfa8f097cd1d9e4ac545f243713c24aeb4d9eb3fa71feac63d12561f2",
+      "log_sha256": "b6cb17bf98923eab747a4d7160dc701e7b9c131196613dc0c106c681c1840797",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2782,10 +2782,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 5.4,
+      "seconds": 3.1,
       "deck_sha256": "2d27120a9e38d1658fe36b53350066ca77e4f8f22cb0af565c426895083d66d2",
       "log": "results/load-step-ron1m8.ng.log",
-      "log_sha256": "ba93f8e1d6d217d5d8bd6b200e996288c58eb34a064468e01fec957666138e16",
+      "log_sha256": "a813cd2d59388f3cba4920bbf3010db6b10068af94c277ad1bdc71159f526eed",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2806,10 +2806,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 6.2,
+      "seconds": 3.2,
       "deck_sha256": "60792ad8dfd2ba3205d79b82f7f395c14b2fdf3adb2957ba276d56b980501a75",
       "log": "results/load-step-7p5a-ron1m8.ng.log",
-      "log_sha256": "f92f17fc56724fdb006d3fc72103b09dfe1214551a60240fca15f5192cc995fd",
+      "log_sha256": "b0671bcd84bfec62faaa15e172ea2524fd76aef3428525f06a3541992dd7855e",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2830,10 +2830,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 6.1,
+      "seconds": 3.1,
       "deck_sha256": "d790c2751e5a229a087d161b975f949f01e7266641b529a18462c77b5f751356",
       "log": "results/bus-7p5a-ron1m8.ng.log",
-      "log_sha256": "898055197f13743b236a5f85c194428397982082f8a83d053fd98c71714c9540",
+      "log_sha256": "fd64826e912ca7fe1dc8b1e001cdf170527beeaccdf28f43e5beb513b84c51f6",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2863,10 +2863,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 3.6,
+      "seconds": 3.1,
       "deck_sha256": "5f7d8799c4de1f3761c1f9bc0b914e2fb36be49e4bfd4bd009993a372275364b",
       "log": "results/load-step-ron3m3.ng.log",
-      "log_sha256": "514aa5d1fbe7cccda0c358ff6c7e29b585910b614aefb6bce4898728c2e84ad6",
+      "log_sha256": "a4b1c2e296c62f4aef49c282fa17ecfd6f8549c29285cf76aecd8e955a1820fd",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2887,10 +2887,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 4.8,
+      "seconds": 3.1,
       "deck_sha256": "f1079a1ff9cafe7bcdb1c57cdd530955984b0ef696606b3f33825b53f1193a46",
       "log": "results/load-step-7p5a-ron3m3.ng.log",
-      "log_sha256": "845ae5dc2c8acf340499830da67ffd052f4fca0166f54667e476408559b9d4b8",
+      "log_sha256": "769c282681d7c0acb3c9b68ea383ba40c1f4611c46b69f55ac14a8bd9214b000",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2911,10 +2911,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 6.4,
+      "seconds": 3.1,
       "deck_sha256": "6c1e125c38f8d310a90be357313d78e9ff457b736362d34254f071b4ebbaba2a",
       "log": "results/bus-7p5a-ron3m3.ng.log",
-      "log_sha256": "fb46ad76ebb9cfcb716f0e7cbf06ab472858ff60a1d60e6cca081c8372101fa2",
+      "log_sha256": "509e9bcfb1b78c70c5b38ed6ef276fa3cda43b955fd5e6e1c866cc74c232c3e6",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2944,10 +2944,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 6.5,
+      "seconds": 3.3,
       "deck_sha256": "0f20c661c5b9901f906593c9cfbbfca3114d96d8166e40bdf70fe83562571fc1",
       "log": "results/load-step-ron5m28.ng.log",
-      "log_sha256": "b8718be8dc732964ef557eb6a096485adb4aaadd353273ded848310e0a7446e9",
+      "log_sha256": "93ae41683c98d56d8ff9203572031ec31d446a3bd63dd3a5530167d450c906c2",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2968,10 +2968,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 4.8,
+      "seconds": 3.0,
       "deck_sha256": "a4d98251d88749343eb6ac4bf4db5a0a3cd1231ef77c9751db137cc15ff7743a",
       "log": "results/load-step-7p5a-ron5m28.ng.log",
-      "log_sha256": "45a2f026858ee39ba574fd0993a934729686100797ff567b1baeeeafd678da9a",
+      "log_sha256": "1e38f3fe9b2c30bfaf6a24404819f12b545c5cbf512d25d59e7caa234fa04e72",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -2992,10 +2992,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 5.7,
+      "seconds": 3.1,
       "deck_sha256": "d2f39e15ff97ae393e11b58c7afed6ad5cd0124804d5e2a86c90f397b4dc302a",
       "log": "results/bus-7p5a-ron5m28.ng.log",
-      "log_sha256": "8096a159e18c5448e7b3f8304b32bc7d3c0772b5e657f59b1de9c8760818f7fe",
+      "log_sha256": "eeecf29e34a3f48e92d44bde0894e284321c4c4b781b7d7fb9c38b861698a14d",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3025,10 +3025,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 6.4,
+      "seconds": 3.2,
       "deck_sha256": "3c7b4c13adf7e370ed6e30412860727495f1ac46324296d0f19f75b2b711aeda",
       "log": "results/load-step-par1-ron5m28.ng.log",
-      "log_sha256": "877ac072e5d5667cab7f8029f81cc5858c666eaf90a9111341d55472f7da1fc2",
+      "log_sha256": "f0ef9dacab6adb5457ce3d0bc1a8ea3b91c17ef8203272a44a5e88973bbd3e55",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3049,10 +3049,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 6.5,
+      "seconds": 3.0,
       "deck_sha256": "e01eab96d3326085324aa16e36f59ee82c4fa1369ae63bf2e8038e0c446101f0",
       "log": "results/load-step-7p5a-par1-ron5m28.ng.log",
-      "log_sha256": "dcc35829537b687d206bf69ab2a163cd9c4f576d393f897e8bb5e513ccc4660e",
+      "log_sha256": "3796801378c0f0e344ced4591ce15479b3dac320157278894a746f27af7395c7",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3073,10 +3073,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 4.1,
+      "seconds": 2.9,
       "deck_sha256": "6d72ef909c1df93e660d7272859d12b2011539ddf54810ab270575b86247ce62",
       "log": "results/bus-7p5a-par1-ron5m28.ng.log",
-      "log_sha256": "a8d293f74bf7176ef4036d7d8899bf13fd7a2366543da6b3b793ff37ca763786",
+      "log_sha256": "e760da321eda14e7818f55e4f52e795936bad74b973e3e723bed55d8aaafb4ab",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3106,10 +3106,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 36.0,
+      "seconds": 22.7,
       "deck_sha256": "3dc26721b3d672e5d6cb6f4450a888254eb254a086f14cb75c38536cffdacb69",
       "log": "results/no-false-trip.ng.log",
-      "log_sha256": "0ede68acc536e1f7a79e4222fcb1282dd4e20bcf7519e2aeab88940d93d67290",
+      "log_sha256": "714e643d82fefc5ae1aa2d28e6744eac44737296c29456d0ad6244d217387965",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3128,10 +3128,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 35.1,
+      "seconds": 23.4,
       "deck_sha256": "3a995eca0540992d065285541f5dc393bed560ae589396f28603aaad205d5ace",
       "log": "results/no-false-trip-ron5m28.ng.log",
-      "log_sha256": "53bae5f7ee142368a9446e506d504b4ccbe0d7642a067a65bfa6747aaea7098d",
+      "log_sha256": "670ec975c499a48d5e561e816ba6e67ddcd2ac94a468b0dc248d8ed88d5eacd0",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3150,10 +3150,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 27.0,
+      "seconds": 14.5,
       "deck_sha256": "18f3116e79c255511188c90342519182a73db855448140f61e2239e7ceecea7b",
       "log": "results/mc-ramp-s023-00.ng.log",
-      "log_sha256": "d5f5f9e8d5bbb93f76f61fa14847e18cea23c805ba8224bac3df99193fd6cbc1",
+      "log_sha256": "ca9c716285ffcced8149d2559bed32db02414bde65b4ceefe7abf6b3306f48ee",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3191,10 +3191,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 61.5,
+      "seconds": 38.0,
       "deck_sha256": "f57109ccedd3ff3610d9674d5200b8379c12f796038bc0a88589f250ddcd42e6",
       "log": "results/mc-ramp-s023-01.ng.log",
-      "log_sha256": "dfe4239c3a429a60338599225a03adf51dc8c17ef0eca570e94583740a79b23e",
+      "log_sha256": "17ad146dcc84af70fef5d0fdf812f2be7156755c62c1b5db7584e847aee4f26e",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3232,10 +3232,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 24.2,
+      "seconds": 14.7,
       "deck_sha256": "5566bb915d0023e94a8bc3146d05aed279c95f044dd1247e8db1d034d0230f51",
       "log": "results/mc-ramp-s023-02.ng.log",
-      "log_sha256": "08411bf974cc6d10078cff74e646d6809f0287c6a1701a15e6e12155192dbeb4",
+      "log_sha256": "2a5cf4d676027ad0217f65c0c6143815c67ed7490fe861e33b9e6b934bae71fd",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3273,10 +3273,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 58.1,
+      "seconds": 36.6,
       "deck_sha256": "84d4ec5927feb9d15643462183d7d21aca38a90bd20b36d3af33d20d4ec5b9e6",
       "log": "results/mc-ramp-s023-03.ng.log",
-      "log_sha256": "c8a0009bb41ea0fe6b2f2818cfe700908beb5b3238820653443206f42af3ce39",
+      "log_sha256": "b666567bc1a1af01b998f7a7ed9d2426779735abf874465a8d4fc173d7b652ed",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3314,10 +3314,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 53.0,
+      "seconds": 33.4,
       "deck_sha256": "2476bce0b865a804fcab014f3fdc8b9500cdb377fbf4499fe5d0b059ffa16edd",
       "log": "results/mc-ramp-s023-04.ng.log",
-      "log_sha256": "cd2e63ba77191dbc5390f24a7957dda64482f06fccaad465420dd4ab3ece811c",
+      "log_sha256": "c29bc6b10441bffbfdb46dd6be5a51efa0e552ea5c36494d0360bbba5e871b40",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3355,10 +3355,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 25.1,
+      "seconds": 15.5,
       "deck_sha256": "56cea418c7e1f43bf098f52f009a60c21549d61c337f5a2c043db38d6bbb500a",
       "log": "results/mc-ramp-s023-05.ng.log",
-      "log_sha256": "27652e4450e3084e464fbf82a584a0d6becf5931363b44ea685cc64096384048",
+      "log_sha256": "794589cd80fd41c8d4a2e00836ae0cf05ad521b4bc0e73bf24a64e002738af68",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3396,10 +3396,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 23.6,
+      "seconds": 15.2,
       "deck_sha256": "2067aafaa4eaa25bf7675c93cdb256de189de22c05ce7af36836a5d7cdbece92",
       "log": "results/mc-ramp-s023-06.ng.log",
-      "log_sha256": "96dc7ba6df03d609e5ed4e0cf78a6db0be065dbe9b25ba5756cc9e0fd843f216",
+      "log_sha256": "5992f7f9a98e89c3c02de1d97e7757e6521ac668d3d64f19797140284e92674e",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3437,10 +3437,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 26.9,
+      "seconds": 15.0,
       "deck_sha256": "e1062bbaa12c47ca37cd933c20bc46b837ef684ce36253b01050dc635722e13c",
       "log": "results/mc-ramp-s023-07.ng.log",
-      "log_sha256": "ded03d0bed6474b03d457b240fae4daa2950b81c0f47051606f09a2f99cb191b",
+      "log_sha256": "bfb3d458699423786daf5b1433a1536fc9607d19bcc6ac0e0990e225e2fb03e7",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3478,10 +3478,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 24.3,
+      "seconds": 14.9,
       "deck_sha256": "13d73d2975716ff2ead96c133b3d78c5edda9f89d472be2779deb5dbe8bc2ef9",
       "log": "results/mc-ramp-s023-08.ng.log",
-      "log_sha256": "3a65e3193cac87768db9b3f5f59f7068d0cbd6f9b4d09e90e125d2e610491c6b",
+      "log_sha256": "fb8eff95f4256c34bff6cd4080190536861251277ad3cc66c0046f1685f8f261",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3519,10 +3519,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 57.9,
+      "seconds": 37.7,
       "deck_sha256": "8e2b2cb5988cf7341ba43188dbf6bbc0d2d06caa3f615e6fa046f8c7ab0b60a0",
       "log": "results/mc-ramp-s023-09.ng.log",
-      "log_sha256": "ec9499af0884681801135f19fd08a761547437b49a9f420bb22bd5dbdaef83b5",
+      "log_sha256": "dc82e959b3a589073d69c5ea78fd83ee7428107e25eb644a9d1cbdafa46ae123",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3560,10 +3560,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 21.3,
+      "seconds": 15.2,
       "deck_sha256": "be905cf84743ec92503aba6a9424c3b2c29177f4b76ac3506541aecab758d4fc",
       "log": "results/mc-ramp-s023-10.ng.log",
-      "log_sha256": "ea2ef3836bc0f89549e0e74cc24174ca8f4b246b4fa88f74429e5a042f0d5fb3",
+      "log_sha256": "27c0b1fe662aa2a60cb8dc7cfaf72d1d89a3f7b09e8b2a07ec1d847cdf6cd9e5",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3601,10 +3601,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 65.5,
+      "seconds": 38.7,
       "deck_sha256": "0c53a27fccf0a9c672a50425e9c2e7b7bcb6de9dd8827ffd87d05e726ec34495",
       "log": "results/mc-ramp-s023-11.ng.log",
-      "log_sha256": "6643f04b906b73434675f99af49e1d2ce4789a42221673bd06a15cf3c83d1693",
+      "log_sha256": "24dc1a63271b8b6e98f288083e4753af150173e0a9d160af011d3edec470d4ea",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3642,10 +3642,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 68.1,
+      "seconds": 38.2,
       "deck_sha256": "3a33052d5952496678ffe8912c77f33dbde957a90095a6a1a7c04cd9541d8f69",
       "log": "results/mc-ramp-s023-12.ng.log",
-      "log_sha256": "cd201a0022d59ba82709ddc72424399dff38969d14f5719521aa863cbbb390ea",
+      "log_sha256": "e950ca4a35bf699776f66a5955139e2e6b0791e848fade5fd0a3d85f76c76fe0",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3683,10 +3683,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 59.6,
+      "seconds": 36.4,
       "deck_sha256": "2291a97bf0a3d5a8cfa240ec9c842cab18e12cbcfb5331c55843ef7756049b68",
       "log": "results/mc-ramp-s023-13.ng.log",
-      "log_sha256": "0ac184cac6bc5d5dccb8272a5d1bcffef2c1961234e9ad66c56739b32914155a",
+      "log_sha256": "b3e9ab1aec6765fc3b34ce789dbcd66ad93f53a0bd4ded920250eea229eb772b",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3724,10 +3724,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 70.8,
+      "seconds": 39.0,
       "deck_sha256": "f38e476082cf38b456004dd548846729ddf7df990b6729ee91054c793127b0c2",
       "log": "results/mc-ramp-s023-14.ng.log",
-      "log_sha256": "6a636887a97742ccb4181c337c85fb8f4a9d33904eae402da7aff3bde0cb56c2",
+      "log_sha256": "5f4063705e7dc87aaacb813130fd1c9c512931aef8771c2d9e7f762df6dba517",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3765,10 +3765,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 23.2,
+      "seconds": 15.1,
       "deck_sha256": "0bcd65a80e13687f29e240f70d8069a8471fedaabe200085c9dce8516f98eac2",
       "log": "results/mc-ramp-s023-15.ng.log",
-      "log_sha256": "a263447389f6f4bcd1b9b1ccab2bc89bd68699cfef4dd64d26088ee6f29de974",
+      "log_sha256": "9734c8811c71c1081a317db4d6b4db7b9cec4768700839b287060d6afaee665a",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3806,10 +3806,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 63.3,
+      "seconds": 40.5,
       "deck_sha256": "92f9411e25797dc5a9fd4c0322297d9852a51ceb42dc4e7c1770d9ff7e8693d1",
       "log": "results/mc-ramp-s023-16.ng.log",
-      "log_sha256": "779cb3ce886f4a4a05a4c07f6b60d3c6632087bf27a91352c3529b17136e6e33",
+      "log_sha256": "95edd2f85a07deaeba727d1c2f18a20c49efcfe329c101521244ec23c106f70e",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3847,10 +3847,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 23.7,
+      "seconds": 15.5,
       "deck_sha256": "63cf79db4253cafe5d9b837647b66719db99371875b73806c9ff79faeee3d64b",
       "log": "results/mc-ramp-s023-17.ng.log",
-      "log_sha256": "52118ea4c9f385f55ee3503e519f9ca7fbac67d802e1f63c034ab4a2da04da59",
+      "log_sha256": "601c2e6e76aab7c2184f98c3a5eed65ed07252ea8106bfc16090485eb3bd72e0",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3888,10 +3888,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 21.8,
+      "seconds": 14.6,
       "deck_sha256": "1d345dc52e5540871fdb1f1db9abedd614e1760aaf083ed3dd451d89fc3608b8",
       "log": "results/mc-ramp-s023-18.ng.log",
-      "log_sha256": "94db329564e07836bec3deccf06cfccfcb62d0d6827f63be38c54e56d6d23710",
+      "log_sha256": "fa3c45b18341f531af20665791402b03352a4126e8ce1a31b2a6a3777ef70d5f",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3929,10 +3929,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 74.3,
+      "seconds": 37.8,
       "deck_sha256": "729aa279da66c7ff5f4ddf702d5acc049a5607061e6e8c17133ecba410f22940",
       "log": "results/mc-ramp-s023-19.ng.log",
-      "log_sha256": "e073c349734c580dda3a2a26e6d64191e63b4b863ad3f47ef3d765d02cb71eab",
+      "log_sha256": "143517cb3a1012e2d4418e53a20462ba9ffe4f143a95383f46601fe3ea228401",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -3970,10 +3970,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 23.0,
+      "seconds": 15.0,
       "deck_sha256": "bbf60dabaee44b399bd763f65d007989b7b81f072154d69e38293125d1077518",
       "log": "results/mc-ramp-s023-20.ng.log",
-      "log_sha256": "a69e533a8379ec93d0dbdd164eb88ab9cda453587da4b647dfb1b9108a88d1a0",
+      "log_sha256": "8ce89fe0d7eec3c6d919a4a0771716f0375f06dca07610cf7c67209493784d84",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4011,10 +4011,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 23.5,
+      "seconds": 14.8,
       "deck_sha256": "943107b54ce508024894f2031006d4bf8dc2ae51fb59a112da11f7f79c619087",
       "log": "results/mc-ramp-s023-21.ng.log",
-      "log_sha256": "18f57ef895760d50b5a8b9cede3c9ffefc71c42c5938db5e87d0b753722fad74",
+      "log_sha256": "db00b9fdea8acd71d3f8be38d03bdcebbffb15c740d6ff9723d054d7ce3a2ace",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4052,10 +4052,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 60.9,
+      "seconds": 39.7,
       "deck_sha256": "b2305b8e9529e5b499b86ab886f94bdb405f45c90d0da62a9c45a8235dfa7ef7",
       "log": "results/mc-ramp-s023-22.ng.log",
-      "log_sha256": "eb5b8f906cd903ffb8a56629a89ccb497c6bd4fcff25b181dd9d71a2983b15a1",
+      "log_sha256": "56af7e5d94e9ded0a1651048521ea9c0a0fd765e9531c6110aa694e853c8e773",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4093,10 +4093,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 65.3,
+      "seconds": 44.7,
       "deck_sha256": "264120ff10f2eccca062cd5f4cc2b60c56ef49832862c5002711d925b22b0cde",
       "log": "results/mc-ramp-s023-23.ng.log",
-      "log_sha256": "dacfe55a80d39d1ef704d1734946c0e9970ad10014355ef439b4e15952d426ce",
+      "log_sha256": "34ed9a0c4df248eff424597607a4a445ac3773e9b9744611a6ce04755137d4cc",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4134,10 +4134,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 77.1,
+      "seconds": 45.2,
       "deck_sha256": "351894cc1e0a19e5f2b265f739aa66db5e4dec2b2022e41baf878234c3634138",
       "log": "results/mc-ramp-s023-24.ng.log",
-      "log_sha256": "2578e2ee75901a6199b2595c5bf00c11b90c2f8cc2a73d0390fa59c9d2b0a4ad",
+      "log_sha256": "d8c4b2e29b954a3809eb5da25489e124ff5b7471815c9ed9b8e7497a506c9f74",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4175,10 +4175,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 23.1,
+      "seconds": 15.3,
       "deck_sha256": "ffb45c7f810f74bb976d1aee3831b6dce6218b12a3a1408cc48008840cfe4a36",
       "log": "results/mc-ramp-s023-25.ng.log",
-      "log_sha256": "a2bc286e1d329307527eea6ac1d83f3cb5ffb3ede7c02f313dd8b0cd2801d827",
+      "log_sha256": "cfd72b253f23dfb821c1131c7a0de9905c1b53a8af5e44f0294ec897ce92cc5b",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4216,10 +4216,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 24.9,
+      "seconds": 15.3,
       "deck_sha256": "74bd183ec98efddad2901f491a76d4fc76ff893f57c135979a8b613c31d7c600",
       "log": "results/mc-ramp-s023-26.ng.log",
-      "log_sha256": "3104cb28682c150dec5125ae211b35f28967ebd730ab19ea2fb13b25c1d83f4e",
+      "log_sha256": "f2bc752f28746ee5da96d23c5e40965670781159e31c78ce538c8d831cb1317e",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4257,10 +4257,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 22.3,
+      "seconds": 15.1,
       "deck_sha256": "d7ca7999339419b651633002ffba82ea8eaf8a8c96703a8764aea187131c5301",
       "log": "results/mc-ramp-s023-27.ng.log",
-      "log_sha256": "0252fb69f0e61dce1d982b37c8445126f8db93e56a80ed11e8e686df18f82bed",
+      "log_sha256": "9ad01b49b166b17629720a94c0ae3c407a6381548db91a5e2c32438b54d960b7",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4298,10 +4298,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 26.6,
+      "seconds": 15.3,
       "deck_sha256": "228d04741d24914bb7dda157fa6c725f2ecd36f2ec2e99a916a6b8c1fa0712dd",
       "log": "results/mc-ramp-s023-28.ng.log",
-      "log_sha256": "3eaf7b53f5b96d8088f46fd4f3406e5e040c553b3c54db156fdb7e97cf8512e0",
+      "log_sha256": "07c5398ae918393e563c32dafa5b6b53e3855724b5a531bd387b55f9ed7e72d7",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4339,10 +4339,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 59.2,
+      "seconds": 39.3,
       "deck_sha256": "34431c85a72c8bc388d8c4f5867c097b94e06d3fb64985361efc7ed9c330967b",
       "log": "results/mc-ramp-s023-29.ng.log",
-      "log_sha256": "366b17c0aba7971083656d0cb71db4cf2abf254ac73c57e69516bf54bc37481e",
+      "log_sha256": "d411ed398b2bf69b56d419db62da2b881b5eb8e857cdf94a3bb961c33ab924ca",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4380,10 +4380,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 26.7,
+      "seconds": 15.2,
       "deck_sha256": "1fa895e3f7e8802602a258bdc051371997b7d03e1b5c32df2e2cb3158f4f5aec",
       "log": "results/mc-ramp-s023-30.ng.log",
-      "log_sha256": "2381a8ad87c2c868ab077c0eb78194769aa724e86fa63e993a4f58c264a97e27",
+      "log_sha256": "82f1465dbd23df9e29c28c1a2022309bff2c0452fb3e2724656a9b308d2e5bf3",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4421,10 +4421,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 66.4,
+      "seconds": 40.7,
       "deck_sha256": "9c195cca903e21b1ffb61c44a67e49fde9506baf77de602a9ddec5494366c22b",
       "log": "results/mc-ramp-s023-31.ng.log",
-      "log_sha256": "31b6af866dfff602e124418b36d5b020f8b2b7b435f6d5a4cefec71d7177fbd1",
+      "log_sha256": "dfe37d245bc310df5f391fb980246ec19a22b46797cf074183de29e80d83633c",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4462,10 +4462,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 79.9,
+      "seconds": 43.6,
       "deck_sha256": "5a4c538d6afba4f6808398de0b465189cbe3c2d2d883ddf9d04df1b54da7f98a",
       "log": "results/mc-ramp-s023-32.ng.log",
-      "log_sha256": "b0787358965ef0f3c8d0a50dca37eed54a69851efd704d38e5babfdcac35161f",
+      "log_sha256": "69befe5ad4535336e605e99a368f3638fc8af2e15662e56490b6dd3cc38f7f67",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4503,10 +4503,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 25.1,
+      "seconds": 15.0,
       "deck_sha256": "ba2068c901e231deae7aff986f9edc81fe5bd9cf50d4544d08d69c14f6d811ea",
       "log": "results/mc-ramp-s023-33.ng.log",
-      "log_sha256": "74d903c1c6f0ee6f040dff4aaf16653b6f079f11541763138857787ec2bac46c",
+      "log_sha256": "442e3e3e9a1add1dd64298025c2bc79384863b32ea0c8466037a15aa10db128b",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4544,10 +4544,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 20.0,
+      "seconds": 14.9,
       "deck_sha256": "5339e520fce701498ff03cf12d6993f37a8a36ff50e23800377b907d051f74e3",
       "log": "results/mc-ramp-s023-34.ng.log",
-      "log_sha256": "3b922b14aabc0fc665497b8bd60231aa35313bf1c5d04a013fbc64f7afa1ef73",
+      "log_sha256": "c449562677a6258ac436d26fee46de423719b2935e812fcc7a8db6a49387b6c1",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4585,10 +4585,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 70.4,
+      "seconds": 39.3,
       "deck_sha256": "be004991369571e6236345e61be78cf7df5baf465e039694a6c716ac44d8f126",
       "log": "results/mc-ramp-s023-35.ng.log",
-      "log_sha256": "e22bbb31dfa916b7844a453ed3179772939483b055c481bcdd16f7cc4c9c0db8",
+      "log_sha256": "2085897e7f98057686398d57744bb943fd0c2c186f2c34a35394c5cce7cf86ed",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4626,10 +4626,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 61.5,
+      "seconds": 41.9,
       "deck_sha256": "4e0721e51d68a5a2bc23f3585657469f909aa0ef95c40f4dc976177f2ae9842b",
       "log": "results/mc-ramp-s023-36.ng.log",
-      "log_sha256": "5a379fd5fe66ad0ecf1f15170d90098aad342ee41c20e3ce2caaec07c513981c",
+      "log_sha256": "c0409aad795332593768257d06eb150c15b64fb641dd91cde4e66e500254731b",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4667,10 +4667,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 63.8,
+      "seconds": 39.2,
       "deck_sha256": "fbe91dc384810ece322ead00ce01e40740874bda57e08e427da735015f433622",
       "log": "results/mc-ramp-s023-37.ng.log",
-      "log_sha256": "419ddd3d3f372385a798b5eb08af82232d588003e6f7ead38e8302e2b0012675",
+      "log_sha256": "06b77f1fd680fc5dcebb97ad09153cf7891f62086dc3387926f29b95d0514aa2",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4708,10 +4708,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 24.9,
+      "seconds": 16.9,
       "deck_sha256": "63af48ee1485df03925aad5f597e2209d93d031532f28eb658f69c96529c22bc",
       "log": "results/mc-ramp-s023-38.ng.log",
-      "log_sha256": "f25b1961d2baaf8267511f5850eda52dc5e8b73d02ac2365dfc37b893980658c",
+      "log_sha256": "5738a554ad53a4faaac2d1fc79ba16b758b6e98878a3c2ca3de49b4663123d80",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4749,10 +4749,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 24.8,
+      "seconds": 16.0,
       "deck_sha256": "e12b1d558612805652d1e8eb1dae2213aadc866ec947cd3f95b512b515214ad3",
       "log": "results/mc-ramp-s023-39.ng.log",
-      "log_sha256": "7befddb5205b102d8422060ae1b4e7985161c732b4ff0971038ea09faaef7171",
+      "log_sha256": "67265540336981dc297a8b1d3605e7198b9fe62d2c0f84925dc170aa1650b585",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4790,10 +4790,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 28.9,
+      "seconds": 17.9,
       "deck_sha256": "11b2f83fff0903a072c9b14d2a1f3f0b04529b9dd25857fde45cfb49978f3bdf",
       "log": "results/mc-short-c185-00.ng.log",
-      "log_sha256": "1e87c0592eaa2eef58ccc88aec5e940c2311129a2b6c4da7b41994b2d9729107",
+      "log_sha256": "fd58e0181ce36b7da8a873c7ccabd2117a4d91fb84b89045f62f7f0ffd237f86",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4827,10 +4827,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 29.3,
+      "seconds": 17.7,
       "deck_sha256": "25bcfeae58bec22a84e53cf5c7cd751f59f99d7f2aa7aab4f1c4c4375f1c8ae3",
       "log": "results/mc-short-c185-01.ng.log",
-      "log_sha256": "b395f34888d69fca465c4873167ad82a5f531376a9c083d9e07d1942911d8a5a",
+      "log_sha256": "d1c9c068c7181ab1d735eec3987af76a5cf4fee68ec864db69fb24326279841b",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4864,10 +4864,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 29.7,
+      "seconds": 17.5,
       "deck_sha256": "0e5d7b2cd95bb88f2de27d4cbdea58aa4bc4e52d437e810dc8f6ba57a83d5890",
       "log": "results/mc-short-c185-02.ng.log",
-      "log_sha256": "d6c1a0d3bcbc5a112744f257f4eee7486a72df55169f9c680146337703839b1b",
+      "log_sha256": "0a669199b5e5a8138682aeb4fc818df2c73f01506cf1a506c68c7689f2a3291c",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4901,10 +4901,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 26.7,
+      "seconds": 17.9,
       "deck_sha256": "cacbf4e2c8b2fbc09e8cdac8de97c9f1a0d164a53c5f739ff1e49ddfc80966dc",
       "log": "results/mc-short-c185-03.ng.log",
-      "log_sha256": "9be7c6b0a154174fe5b1283de526d08ccf6f0e7ef857b122dbcf775baa4439f4",
+      "log_sha256": "21c4c89a2774f4b9cb83399d66fb2501c52c4618187f27ab1778ed943ace2162",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4938,10 +4938,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 34.7,
+      "seconds": 17.9,
       "deck_sha256": "00c79132c71b5f6bc8cd070bc1d65e26b8d232df82ce9f1df8fdc66b61059cc0",
       "log": "results/mc-short-c185-04.ng.log",
-      "log_sha256": "bcb7a20fd822a66c0ae7b692ed64f624caf916da6d0ebb335c66a09e2ae9c3b0",
+      "log_sha256": "5f925068b62d69eb9ccef5a6b94d5d208729ac723c5e7831d3bc54cfa29c61e9",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -4975,10 +4975,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 27.2,
+      "seconds": 18.1,
       "deck_sha256": "1629daf287956180e0b884c37c574b7576a726c206fdb26b4ab404e52f2012be",
       "log": "results/mc-short-c185-05.ng.log",
-      "log_sha256": "3c5f3b9bc061bf91a1f5fd3c603b7d845b8e1ca65bcef0ac2f7ec437a3cab4c8",
+      "log_sha256": "18a30ff1fff98d476482bf180ad5b5777546db8240659b575cbaa65d00161bbc",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5012,10 +5012,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 26.0,
+      "seconds": 18.1,
       "deck_sha256": "58e31efd95007f2ebcc5820d13af30fc87365813c8b0f7db2db3a61d1ac0dcfc",
       "log": "results/mc-short-c185-06.ng.log",
-      "log_sha256": "f67d9234d7859e4bd799c4f71ad954b69acf6cd8fd2dd43d5b85f836a9ebf60f",
+      "log_sha256": "9f429a4d3f1d54d4ce0dde76e4106fe76a848c64155c04527d9b2b00d707afb2",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5049,10 +5049,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 29.0,
+      "seconds": 17.8,
       "deck_sha256": "7f58edd2e26922ada16694371dee390cf6b6423dbddabcf9cfe2b5fe69b9f114",
       "log": "results/mc-short-c185-07.ng.log",
-      "log_sha256": "88dd2a46803ce52e0cc17bbb4e5dd197f68d15366bea2c536246a1446ac4635e",
+      "log_sha256": "1e4996f5f63c91e338af7f3ac10a7595608c6ea3dac43e324bfc6a706c0912c5",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5086,10 +5086,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 27.5,
+      "seconds": 17.8,
       "deck_sha256": "bfd61f1aef468b96689f46b9e7cbf0d8039233780da521d076b8f490924f61f6",
       "log": "results/mc-short-c185-08.ng.log",
-      "log_sha256": "77968be2d54596d0678de65e413e3e5d387c3341c928a08ff246097fe0b5a5e9",
+      "log_sha256": "3ad4d15c39f6c3d8938dcd12627a436426ffda37583b6384b664c15854adcfab",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5123,10 +5123,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 28.2,
+      "seconds": 18.1,
       "deck_sha256": "c3f51199d1f3d63353da8e9607bd66d245051c1dea889c0acf4af3d6bd9fcb27",
       "log": "results/mc-short-c185-09.ng.log",
-      "log_sha256": "c1714fe933226812c5ec736f9c1cfabc32e2604e90e01d416fdffa2d96d451a2",
+      "log_sha256": "1109f3606bd9a537bab5b267b3f2eee6ae16b048908d4461053fe14a75c0bcef",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5160,10 +5160,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 29.9,
+      "seconds": 18.1,
       "deck_sha256": "fd707847533d0a55217a2a94cc106e2b915c17fcd6bf7139569734b3d2ca8f2b",
       "log": "results/mc-short-c185-10.ng.log",
-      "log_sha256": "1074394b92c232795d5697fe8c14e184079d4de369828eca276a476e5d7109cc",
+      "log_sha256": "fcf4659fea69336ff2de7d82c2afcd23e575e2ef204c1531ca071437c80b1fb0",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5197,10 +5197,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 31.3,
+      "seconds": 18.3,
       "deck_sha256": "6cd27e034e739249988c1bb2af85a4c1f8bd65d2ce7005bedb31aca963b0a9d6",
       "log": "results/mc-short-c185-11.ng.log",
-      "log_sha256": "60d782f6282721afd3482288879e6164d9b767e85327a1dc237871949326589e",
+      "log_sha256": "7290f3e7de0bedfca38192c7af1853d926ab025d6ad29c7a13c38f4e279c4cbf",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5234,10 +5234,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 29.7,
+      "seconds": 18.3,
       "deck_sha256": "b99318cb13ebb261af793d63bb94def67ce3eb81dabc91009dc7ac7ab9d464da",
       "log": "results/mc-short-c185-12.ng.log",
-      "log_sha256": "4680d2b3a43fecc42b2418176e3707cd0a60cb5f67ea0c2fca39ff35c70764a7",
+      "log_sha256": "a431cce5638eea9bc0fb34ba239627bca5bd285d39539747c6d9bf6e62cfb97e",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5271,10 +5271,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 26.0,
+      "seconds": 18.1,
       "deck_sha256": "a4fbb1ae58a09e4b8d61b64d94e93092f39d60fd60d391c654aaacdd2749d183",
       "log": "results/mc-short-c185-13.ng.log",
-      "log_sha256": "71bb6f58f7818ec690c04762da4305ef1f9d91db97b3fcf4ad4852b7335cef6e",
+      "log_sha256": "922776d76334b3f79cbd90c067204cc6722113f1897da424981bdfa6c0bd28fd",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5308,10 +5308,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 32.1,
+      "seconds": 18.4,
       "deck_sha256": "ca54e0ac5d5d27f08af85e611e0a5a6103d8fe9171ba456da7ece4d83bc24d4e",
       "log": "results/mc-short-c185-14.ng.log",
-      "log_sha256": "c7545cd5e00266ec1972ff73eb58ef0f5dc86bf6612c7d78c8675ad763deb03e",
+      "log_sha256": "f251fb8af43f28b4432a363d2715cda2113508414bee9cd19276e40cd3c83fad",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5345,10 +5345,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 30.9,
+      "seconds": 18.5,
       "deck_sha256": "8b46440b2212924fc13babbf5b61aea01cf8e464e003e9d10ba9db5425d153b6",
       "log": "results/mc-short-c185-15.ng.log",
-      "log_sha256": "e81079d599b6111a58a8108747f5c20accb805e85820da779cfccbf44b0d14a1",
+      "log_sha256": "d84dc16aea5592cb019064417b503567f20b7f96897f2c0663ad2e20e514c460",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5382,10 +5382,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 26.0,
+      "seconds": 18.6,
       "deck_sha256": "15baa8f84f161adedb02e6611ebb3969b6cb2200c87e4de1ed1671cf6502f978",
       "log": "results/mc-short-c185-16.ng.log",
-      "log_sha256": "c2df140886538e6e19bd547e177dbd992ae9942a71c9750d3240ffaaa7efe72f",
+      "log_sha256": "afadcb37b2be15d62e20eeede4473f0604d863d8332c4c4fed6ff5801d4623b9",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5419,10 +5419,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 32.9,
+      "seconds": 18.9,
       "deck_sha256": "e82a82365fa6a55658c64099808dc7ad27a6b1638eb0abec271e6535ea3f4edb",
       "log": "results/mc-short-c185-17.ng.log",
-      "log_sha256": "7915e2037ba97a23d88507e762150ec9e2b94d10d4cf0e170f87fde0420c8d9b",
+      "log_sha256": "fcb0ef84b08de9e6f999297042c980683c3617f87c3ab8e4c065f962f9f8bb79",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5456,10 +5456,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 28.2,
+      "seconds": 18.4,
       "deck_sha256": "b6354c8ebbcde9eedff0c644e403a069817814b2b46d678c0353c2423aaa9d5a",
       "log": "results/mc-short-c185-18.ng.log",
-      "log_sha256": "155b3ad7f18825e38a17d5d9e68512fb1d98b4a0e8eaee2472a85b85613b4298",
+      "log_sha256": "fdfb0ee1946532336d89ba771470ddcbdd7ca7e5ba6d253b23f62a300993a140",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5493,10 +5493,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 26.1,
+      "seconds": 18.9,
       "deck_sha256": "e09ae57636623c65cc6eeb6242fabf9869537d4d41eb274ac9709a0f069fc538",
       "log": "results/mc-short-c185-19.ng.log",
-      "log_sha256": "2ae23b354a90f05ba4ff656e5b7c88ab1c434085e51dd331f8e21e68531eb974",
+      "log_sha256": "ae5de72e0b9b343dab3dfbc16a47e4176fc8e589feefb16d1eb46f44cec5ec85",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5530,10 +5530,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 38.5,
+      "seconds": 23.4,
       "deck_sha256": "3e2ae4eb65772fd5fc952ad862e204803a17eec591cc9f7cd5ff2c90112baaf1",
       "log": "results/mc-nofalse-00.ng.log",
-      "log_sha256": "298334506b718a9024e1ca5f0cd70103fe6aa1d933e790a4745af89200aa5358",
+      "log_sha256": "9861ddaaeedc87cd2cf2d8a427346961bb698a8bc7ee4cd8f30b4b0d88ea4d3f",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5552,10 +5552,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 45.5,
+      "seconds": 23.3,
       "deck_sha256": "bb6631afff29c98a2c8b8668298d1a2d3f67c32f792dd3da904cb22406d3cf6b",
       "log": "results/mc-nofalse-01.ng.log",
-      "log_sha256": "53ce43f94eebdc43d0f0e034523918c0f84dda1e19eebe44f2bf528857948b20",
+      "log_sha256": "c77b33be704ee5e92f1e460ae288d5b9636fa45c540fc69fecf96856adbf165c",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5574,10 +5574,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 41.0,
+      "seconds": 23.0,
       "deck_sha256": "bead4a00de7e08c13587c4bcee36f405a4a571a8988fe9d5c5e421f1828e8b9f",
       "log": "results/mc-nofalse-02.ng.log",
-      "log_sha256": "f943d142af3228ad45396fcc6d60c84799219115a6ead6bc275b7724b3dc127d",
+      "log_sha256": "d59d3c04a5b63400e0d214e3c9e5dee324fc61f1845430ff1a5c0892687b617b",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5596,10 +5596,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 36.9,
+      "seconds": 23.0,
       "deck_sha256": "7dff92f38f3307da40361a89a8ced4e526a40df96f298658992c6c9aee3752aa",
       "log": "results/mc-nofalse-03.ng.log",
-      "log_sha256": "9bd7c0dc4e2a837e19c82bd7d026b8f7224b05476e6f6cc253b70b23750b61a9",
+      "log_sha256": "865d38f871ca2329b78e750dd377eb64654f80b8c09724f41b236ac7c8fe83cb",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5618,10 +5618,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 40.5,
+      "seconds": 22.9,
       "deck_sha256": "9cd2e1fa767cd2793714ffc27d81f7496c06ec7de6ee9d8149a66fe99efb228b",
       "log": "results/mc-nofalse-04.ng.log",
-      "log_sha256": "e99329cba8e6d8c1d03d3cc94e7cf86bb4bdc2600e3f4535b19960f53586ac9d",
+      "log_sha256": "2dadf1dded30b550e6bf7e4befbee8b1f38424ccb5bb856836df59685d80507f",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5640,10 +5640,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 44.5,
+      "seconds": 23.6,
       "deck_sha256": "3f8179d953e9e55a4419339c2d75b5d1705a97b327eaf4c71e23e497162f3380",
       "log": "results/mc-nofalse-05.ng.log",
-      "log_sha256": "cb93c25cec76cdbe66dd45dd674b3d5897295e5a9576eca1634083ea904a150a",
+      "log_sha256": "61dba5fa9c16b73211fee526a31687dc643dfd9a8e006ccba05394b26a963419",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5662,10 +5662,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 35.3,
+      "seconds": 23.1,
       "deck_sha256": "2176beda8c4a7d0a9a2d7fe29a762447fbe14264c21cfb1a236b0f84a0360c13",
       "log": "results/mc-nofalse-06.ng.log",
-      "log_sha256": "3a9cab4ae554ac85d1bb291390d2ce71cc57e0b5ab7ef58928d6ee4b812c0e1e",
+      "log_sha256": "a6f9e5cf7d271e6c0fadede9004c91bdb32e558abe1826c759288770feb337e7",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5684,10 +5684,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 41.6,
+      "seconds": 23.4,
       "deck_sha256": "dc88be8f3826c0bca2b7717ce2e1360ba38c4093f7459a354423c69fab83ef3e",
       "log": "results/mc-nofalse-07.ng.log",
-      "log_sha256": "c06ba162c1ab302d4c88a52f673790f6060565040bf12a8a00540776303d5992",
+      "log_sha256": "cebcf627543f2ab0a6445e86e10957f8c08b260214f658ce8605c136d48b468f",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5706,10 +5706,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 44.4,
+      "seconds": 23.3,
       "deck_sha256": "ef8e15db52921c1c099dbc6adda814f2f837a82e62e0590deac790f358a104d3",
       "log": "results/mc-nofalse-08.ng.log",
-      "log_sha256": "2f1dd745358ed6175c10655343a1ad8e2cb1e058fd9d58191ee4b7907e1982d7",
+      "log_sha256": "42855508d30046747e1d76a62e7a3c56cd6693981293507ca8a3909dba260938",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5728,10 +5728,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 40.0,
+      "seconds": 23.1,
       "deck_sha256": "e4fbfeec233f512ee6be79e7a272f8605a64ce3e457a8f32b683136a71be9f26",
       "log": "results/mc-nofalse-09.ng.log",
-      "log_sha256": "948a2644be0060d29c14c52320d0d421033ed9111eee0a0c3cb4fea8f00fd88a",
+      "log_sha256": "9a6c85efbebb5a39d11d125f1ba8fe6966119e9de0dfd1fee6a798cb3f3f2179",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5750,10 +5750,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 40.7,
+      "seconds": 23.2,
       "deck_sha256": "2988e1f2d003c32fd547ed6e6f6ec7febfb8385f1dae357aec0ec885a75c00ec",
       "log": "results/mc-nofalse-10.ng.log",
-      "log_sha256": "b76c48af441c75577ff3f74b1b62cbfa445af8e01e345989adb346c1ae49cae2",
+      "log_sha256": "c2d6615f76ad8c1ad342c335f5b8d38168ee680646c5a08c7842e4f5a31342f9",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5772,10 +5772,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 37.8,
+      "seconds": 23.4,
       "deck_sha256": "fc86223eb2b409d19c0801e1aa1226d1d4ed9f91ccfeb44e214b29b5f35d3e09",
       "log": "results/mc-nofalse-11.ng.log",
-      "log_sha256": "fbb4af54a4cfab828e960cd130c987d31d4a825a6359ceb675202fd0a1475b40",
+      "log_sha256": "ac458f11eb4936eac42c25ab2c2b741ad250b93342c9566cecaf293c0230c3ef",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5794,10 +5794,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 39.0,
+      "seconds": 23.1,
       "deck_sha256": "65a3e2195bebc312cd9a839227d26c1e4067c4ab63b92f6b102f8b47d6978252",
       "log": "results/mc-nofalse-12.ng.log",
-      "log_sha256": "a25bd950e98fb060dc69c0156fa283866cf75f30fcf57f313551cb426db16e47",
+      "log_sha256": "942abd7ba3fe8e07e73021c325a20628b3a2ed15b0deeabc1ab5b63977f63b16",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5816,10 +5816,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 45.1,
+      "seconds": 23.3,
       "deck_sha256": "be928e39732b71ea8acfdc42b53f0277aa2db466475e3c7920ae591f90fc2913",
       "log": "results/mc-nofalse-13.ng.log",
-      "log_sha256": "b668374c8f1c617fedd56e04a557e93fcd42cd6472db238af90a4fe681c3a9eb",
+      "log_sha256": "e6c777f28e23af3278d415684b55e1663666ba5a1b32698b67f8dff566d2575f",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5838,10 +5838,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 42.6,
+      "seconds": 23.9,
       "deck_sha256": "97da70a77624425ce927d5ee2a96c50fba54ac5f93e568dda9381f26f23a5644",
       "log": "results/mc-nofalse-14.ng.log",
-      "log_sha256": "ff768bc24ca3912a675fb804da49b354a41afca9546ccba49bf1809b011bca05",
+      "log_sha256": "292f6c231503a9b9e711d1226dbf1c7e4bea3cc2db286948cfc06f608c5f0c9d",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5860,10 +5860,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 44.0,
+      "seconds": 23.1,
       "deck_sha256": "eabd122f8809a4fd0731093902f801c34391bcfb9da59608c277a41f49dba803",
       "log": "results/mc-nofalse-15.ng.log",
-      "log_sha256": "0394750ddf3f76ff6914d9ab3e3c01b53044685bbd057d4c501e56419df00bc3",
+      "log_sha256": "1a5e718a688c51cdd5046a8bb8e634e1ab620eb6828a35dc6a04d39242961caa",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5882,10 +5882,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 36.0,
+      "seconds": 23.1,
       "deck_sha256": "225766c3b058ca647b3bd954d99e5e04fd7c52b25693d38732215778f3f26b7e",
       "log": "results/mc-nofalse-16.ng.log",
-      "log_sha256": "b4785b29348b8fbdee71569b3f302c921a72942d7ff480d389646ca3fcf97bbd",
+      "log_sha256": "83368caab9e3d0ba2a67a7bfcf1a32f418e4d713dd13a9127219649442030b85",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5904,10 +5904,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 38.7,
+      "seconds": 22.7,
       "deck_sha256": "8cf89b1ec8056f2a65a386c01f35ab72a7d2978acd78bcc534ec181f988481a3",
       "log": "results/mc-nofalse-17.ng.log",
-      "log_sha256": "6e3f75ebc72579050277250cde5540ac3d354cd3d667e076004e85d108b9db58",
+      "log_sha256": "2f074655609049dd15fd2e94c29296f5fc3d7be892439170ed727ef461fa6537",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5926,10 +5926,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 37.0,
+      "seconds": 23.0,
       "deck_sha256": "b0cf29dd1a3ab7bd90744be592cd11b642e256c1a256973fc41c0664b5d5bcbf",
       "log": "results/mc-nofalse-18.ng.log",
-      "log_sha256": "5c83e8264460043e3682d4005d1e38b40bd8e1788919b02f1635ae31f6568b67",
+      "log_sha256": "bd9a9ec61c485b1bb62326c98565dbc2d27190bff875ac85e401a11bc6ccc006",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5948,10 +5948,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 30.6,
+      "seconds": 22.7,
       "deck_sha256": "7fafa8ffc86575ec841e63f7f2afbcb364c9b0087890ddd48548adbe1c685994",
       "log": "results/mc-nofalse-19.ng.log",
-      "log_sha256": "c2f47597d35cdba9cc777a0d8f6ab3d175ccd6fd0bb4ba9ed795b7313184efaa",
+      "log_sha256": "75ac2457df8236bb69fc921e78aa7ad4761298d3ceaf6ae61045b5697ed9e1fb",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5970,10 +5970,10 @@
     {
       "engine": "ng",
       "returncode": 0,
-      "seconds": 2.9,
+      "seconds": 1.7,
       "deck_sha256": "3a0281bdf0c2421a789292815708ba43bccc5d02732bc253e805af5b84867da7",
       "log": "results/ref-baseline-load-step-7p5a.ng.log",
-      "log_sha256": "da63088fd1c9422e664c0ecf825fcb05fb5b85dbf73bf8fcf4e45e44755aaf10",
+      "log_sha256": "2f9fd37b48b0c354dce944d42e457a917e3117cd08dd34d62152aab1f8d87f2d",
       "execution_pass": true,
       "missing": [],
       "errors": [],
@@ -5994,7 +5994,7 @@
     "seconds": 0.7,
     "deck_sha256": "7529ff252662febabccdfd11000170d5931798d62413f4d0ed9428d7a655ca7d",
     "log": "results/baseline-regression-efuse-ovp.ng.log",
-    "log_sha256": "035450d93ee6bf57b2d42fe91e4a23df4963ed4fbbeb2837283fa58a7cf386ec",
+    "log_sha256": "fc1030a44d296e0767b8c57a0732dad552969f6308d4155aa8db00a99c7e262f",
     "execution_pass": true,
     "missing": [],
     "errors": [],
@@ -7962,7 +7962,7 @@
       "check": "ngspice/efuse-ovp-s007-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "15.0 s"
+      "detail": "14.3 s"
     },
     {
       "check": "ngspice/efuse-ovp-s007-wchi/finite",
@@ -8094,7 +8094,7 @@
       "check": "ngspice/efuse-ovp-s007-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "15.1 s"
+      "detail": "14.9 s"
     },
     {
       "check": "ngspice/efuse-ovp-s007-typ/finite",
@@ -8226,7 +8226,7 @@
       "check": "ngspice/efuse-ovp-s017-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "15.5 s"
+      "detail": "14.7 s"
     },
     {
       "check": "ngspice/efuse-ovp-s017-wchi/finite",
@@ -8358,7 +8358,7 @@
       "check": "ngspice/efuse-ovp-s017-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "14.9 s"
+      "detail": "15.1 s"
     },
     {
       "check": "ngspice/efuse-ovp-s017-typ/finite",
@@ -8622,7 +8622,7 @@
       "check": "ngspice/efuse-ovp-s023-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "15.1 s"
+      "detail": "14.7 s"
     },
     {
       "check": "ngspice/efuse-ovp-s023-typ/finite",
@@ -8754,7 +8754,7 @@
       "check": "ngspice/sweep-tdoff0p3625u-s023-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "19.2 s"
+      "detail": "14.6 s"
     },
     {
       "check": "ngspice/sweep-tdoff0p3625u-s023-wchi/finite",
@@ -8886,7 +8886,7 @@
       "check": "ngspice/sweep-tdoff0p7u-s023-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "16.8 s"
+      "detail": "14.5 s"
     },
     {
       "check": "ngspice/sweep-tdoff0p7u-s023-wchi/finite",
@@ -9018,7 +9018,7 @@
       "check": "ngspice/sweep-tdoff1p0545u-s023-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "21.4 s"
+      "detail": "14.8 s"
     },
     {
       "check": "ngspice/sweep-tdoff1p0545u-s023-wchi/finite",
@@ -9150,7 +9150,7 @@
       "check": "ngspice/sweep-tdoff1p5u-s023-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "16.6 s"
+      "detail": "14.5 s"
     },
     {
       "check": "ngspice/sweep-tdoff1p5u-s023-wchi/finite",
@@ -9282,7 +9282,7 @@
       "check": "ngspice/sweep-tdoff2p0u-s023-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "82.7 s"
+      "detail": "48.4 s"
     },
     {
       "check": "ngspice/sweep-tdoff2p0u-s023-wchi/finite",
@@ -9414,7 +9414,7 @@
       "check": "ngspice/sweep-od0-s023-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "53.6 s"
+      "detail": "35.9 s"
     },
     {
       "check": "ngspice/sweep-od0-s023-wchi/finite",
@@ -9546,7 +9546,7 @@
       "check": "ngspice/sweep-od50-s023-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "27.1 s"
+      "detail": "14.3 s"
     },
     {
       "check": "ngspice/sweep-od50-s023-wchi/finite",
@@ -9678,7 +9678,7 @@
       "check": "ngspice/sweep-od100-s023-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "112.4 s"
+      "detail": "68.9 s"
     },
     {
       "check": "ngspice/sweep-od100-s023-wchi/finite",
@@ -9810,7 +9810,7 @@
       "check": "ngspice/sweep-od200-s023-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "22.8 s"
+      "detail": "14.4 s"
     },
     {
       "check": "ngspice/sweep-od200-s023-wchi/finite",
@@ -9942,7 +9942,7 @@
       "check": "ngspice/sweep-slope0p4-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "24.1 s"
+      "detail": "14.4 s"
     },
     {
       "check": "ngspice/sweep-slope0p4-wchi/finite",
@@ -10074,7 +10074,7 @@
       "check": "ngspice/sweep-slope0p55-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "22.1 s"
+      "detail": "14.5 s"
     },
     {
       "check": "ngspice/sweep-slope0p55-wchi/finite",
@@ -10206,7 +10206,7 @@
       "check": "ngspice/sweep-slope1p0-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "26.8 s"
+      "detail": "16.6 s"
     },
     {
       "check": "ngspice/sweep-slope1p0-wchi/finite",
@@ -10338,7 +10338,7 @@
       "check": "ngspice/buck-short-c185-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "49.7 s"
+      "detail": "31.4 s"
     },
     {
       "check": "ngspice/buck-short-c185-wchi/finite",
@@ -10494,7 +10494,7 @@
       "check": "ngspice/buck-short-c185-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "54.2 s"
+      "detail": "31.2 s"
     },
     {
       "check": "ngspice/buck-short-c185-typ/finite",
@@ -10650,7 +10650,7 @@
       "check": "ngspice/buck-short-c185-esr12m5-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "51.4 s"
+      "detail": "31.7 s"
     },
     {
       "check": "ngspice/buck-short-c185-esr12m5-wchi/finite",
@@ -10806,7 +10806,7 @@
       "check": "ngspice/buck-short-c185-esr12m5-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "53.0 s"
+      "detail": "32.1 s"
     },
     {
       "check": "ngspice/buck-short-c185-esr12m5-typ/finite",
@@ -10962,7 +10962,7 @@
       "check": "ngspice/buck-short-c483-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "46.2 s"
+      "detail": "31.8 s"
     },
     {
       "check": "ngspice/buck-short-c483-wchi/finite",
@@ -11118,7 +11118,7 @@
       "check": "ngspice/buck-short-c483-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "48.1 s"
+      "detail": "31.4 s"
     },
     {
       "check": "ngspice/buck-short-c483-typ/finite",
@@ -11274,7 +11274,7 @@
       "check": "ngspice/buck-short-c483-esr12m5-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "58.6 s"
+      "detail": "31.8 s"
     },
     {
       "check": "ngspice/buck-short-c483-esr12m5-wchi/finite",
@@ -11430,7 +11430,7 @@
       "check": "ngspice/buck-short-c483-esr12m5-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "55.8 s"
+      "detail": "31.8 s"
     },
     {
       "check": "ngspice/buck-short-c483-esr12m5-typ/finite",
@@ -11586,7 +11586,7 @@
       "check": "ngspice/buck-short-c176-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "63.1 s"
+      "detail": "31.9 s"
     },
     {
       "check": "ngspice/buck-short-c176-wchi/finite",
@@ -11742,7 +11742,7 @@
       "check": "ngspice/buck-short-c176-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "47.9 s"
+      "detail": "32.3 s"
     },
     {
       "check": "ngspice/buck-short-c176-typ/finite",
@@ -11898,7 +11898,7 @@
       "check": "ngspice/buck-short-c176-esr12m5-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "60.4 s"
+      "detail": "32.1 s"
     },
     {
       "check": "ngspice/buck-short-c176-esr12m5-wchi/finite",
@@ -12054,7 +12054,7 @@
       "check": "ngspice/buck-short-c176-esr12m5-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "57.0 s"
+      "detail": "32.2 s"
     },
     {
       "check": "ngspice/buck-short-c176-esr12m5-typ/finite",
@@ -12210,7 +12210,7 @@
       "check": "ngspice/buck-short-c165-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "53.3 s"
+      "detail": "33.3 s"
     },
     {
       "check": "ngspice/buck-short-c165-wchi/finite",
@@ -12366,7 +12366,7 @@
       "check": "ngspice/buck-short-c165-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "53.5 s"
+      "detail": "32.3 s"
     },
     {
       "check": "ngspice/buck-short-c165-typ/finite",
@@ -12522,7 +12522,7 @@
       "check": "ngspice/buck-short-c165-esr12m5-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "57.0 s"
+      "detail": "31.8 s"
     },
     {
       "check": "ngspice/buck-short-c165-esr12m5-wchi/finite",
@@ -12678,7 +12678,7 @@
       "check": "ngspice/buck-short-c165-esr12m5-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "52.2 s"
+      "detail": "32.3 s"
     },
     {
       "check": "ngspice/buck-short-c165-esr12m5-typ/finite",
@@ -12870,7 +12870,7 @@
       "check": "ngspice/buck-short-c185-esr100m-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "25.8 s"
+      "detail": "16.9 s"
     },
     {
       "check": "ngspice/buck-short-c185-esr100m-wchi/finite",
@@ -12984,7 +12984,7 @@
       "check": "ngspice/buck-short-c185-esr100m-typ/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "27.7 s"
+      "detail": "17.2 s"
     },
     {
       "check": "ngspice/buck-short-c185-esr100m-typ/finite",
@@ -13098,7 +13098,7 @@
       "check": "ngspice/buck-short-rev1-c92-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "49.1 s"
+      "detail": "32.0 s"
     },
     {
       "check": "ngspice/buck-short-rev1-c92-wchi/finite",
@@ -13254,7 +13254,7 @@
       "check": "ngspice/buck-short-rev1-c92-typ/execution",
       "pass": true,
       "category": "info",
-      "detail": "58.2 s"
+      "detail": "32.6 s"
     },
     {
       "check": "ngspice/buck-short-rev1-c92-typ/finite",
@@ -13410,7 +13410,7 @@
       "check": "ngspice/buck-short-rev1-c92-esr12m5-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "48.5 s"
+      "detail": "31.2 s"
     },
     {
       "check": "ngspice/buck-short-rev1-c92-esr12m5-wchi/finite",
@@ -13566,7 +13566,7 @@
       "check": "ngspice/buck-short-rev1-c92-esr12m5-typ/execution",
       "pass": true,
       "category": "info",
-      "detail": "45.7 s"
+      "detail": "32.0 s"
     },
     {
       "check": "ngspice/buck-short-rev1-c92-esr12m5-typ/finite",
@@ -13722,7 +13722,7 @@
       "check": "ngspice/buck-short-c120-esr12m5-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "49.7 s"
+      "detail": "31.4 s"
     },
     {
       "check": "ngspice/buck-short-c120-esr12m5-wchi/finite",
@@ -13878,7 +13878,7 @@
       "check": "ngspice/buck-short-c120-esr12m5-typ/execution",
       "pass": true,
       "category": "info",
-      "detail": "54.2 s"
+      "detail": "32.1 s"
     },
     {
       "check": "ngspice/buck-short-c120-esr12m5-typ/finite",
@@ -14034,7 +14034,7 @@
       "check": "ngspice/buck-short-c130-esr12m5-wchi/execution",
       "pass": true,
       "category": "info",
-      "detail": "59.6 s"
+      "detail": "32.3 s"
     },
     {
       "check": "ngspice/buck-short-c130-esr12m5-wchi/finite",
@@ -14190,7 +14190,7 @@
       "check": "ngspice/buck-short-c130-esr12m5-typ/execution",
       "pass": true,
       "category": "info",
-      "detail": "45.4 s"
+      "detail": "32.0 s"
     },
     {
       "check": "ngspice/buck-short-c130-esr12m5-typ/finite",
@@ -14346,7 +14346,7 @@
       "check": "ngspice/startup-20v/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "4.4 s"
+      "detail": "3.0 s"
     },
     {
       "check": "ngspice/startup-20v/finite",
@@ -14448,7 +14448,7 @@
       "check": "ngspice/startup-22p2v/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "3.7 s"
+      "detail": "3.0 s"
     },
     {
       "check": "ngspice/startup-22p2v/finite",
@@ -14550,7 +14550,7 @@
       "check": "ngspice/startup-26v/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "4.5 s"
+      "detail": "3.0 s"
     },
     {
       "check": "ngspice/startup-26v/finite",
@@ -14652,7 +14652,7 @@
       "check": "ngspice/startup-26v-wchi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "3.7 s"
+      "detail": "3.0 s"
     },
     {
       "check": "ngspice/startup-26v-wchi/finite",
@@ -14754,7 +14754,7 @@
       "check": "ngspice/startup-20v-ibstmin/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "8.8 s"
+      "detail": "5.6 s"
     },
     {
       "check": "ngspice/startup-20v-ibstmin/finite",
@@ -14856,7 +14856,7 @@
       "check": "ngspice/startup-26v-c165/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "4.6 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/startup-26v-c165/finite",
@@ -14958,7 +14958,7 @@
       "check": "ngspice/startup-20v-chi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "5.3 s"
+      "detail": "3.0 s"
     },
     {
       "check": "ngspice/startup-20v-chi/finite",
@@ -15060,7 +15060,7 @@
       "check": "ngspice/startup-26v-chi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "6.4 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/startup-26v-chi/finite",
@@ -15162,7 +15162,7 @@
       "check": "ngspice/load-step-ron3m3-c165/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "4.1 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/load-step-ron3m3-c165/finite",
@@ -15216,7 +15216,7 @@
       "check": "ngspice/load-step-ron3m3-chi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "5.4 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/load-step-ron3m3-chi/finite",
@@ -15270,7 +15270,7 @@
       "check": "ngspice/load-step-7p5a-ron3m3-chi/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "4.8 s"
+      "detail": "3.2 s"
     },
     {
       "check": "ngspice/load-step-7p5a-ron3m3-chi/finite",
@@ -15324,7 +15324,7 @@
       "check": "ngspice/load-step-ron1m8/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "5.4 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/load-step-ron1m8/finite",
@@ -15378,7 +15378,7 @@
       "check": "ngspice/load-step-7p5a-ron1m8/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "6.2 s"
+      "detail": "3.2 s"
     },
     {
       "check": "ngspice/load-step-7p5a-ron1m8/finite",
@@ -15432,7 +15432,7 @@
       "check": "ngspice/bus-7p5a-ron1m8/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "6.1 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/bus-7p5a-ron1m8/finite",
@@ -15540,7 +15540,7 @@
       "check": "ngspice/load-step-ron3m3/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "3.6 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/load-step-ron3m3/finite",
@@ -15594,7 +15594,7 @@
       "check": "ngspice/load-step-7p5a-ron3m3/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "4.8 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/load-step-7p5a-ron3m3/finite",
@@ -15648,7 +15648,7 @@
       "check": "ngspice/bus-7p5a-ron3m3/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "6.4 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/bus-7p5a-ron3m3/finite",
@@ -15756,7 +15756,7 @@
       "check": "ngspice/load-step-ron5m28/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "6.5 s"
+      "detail": "3.3 s"
     },
     {
       "check": "ngspice/load-step-ron5m28/finite",
@@ -15810,7 +15810,7 @@
       "check": "ngspice/load-step-7p5a-ron5m28/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "4.8 s"
+      "detail": "3.0 s"
     },
     {
       "check": "ngspice/load-step-7p5a-ron5m28/finite",
@@ -15864,7 +15864,7 @@
       "check": "ngspice/bus-7p5a-ron5m28/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "5.7 s"
+      "detail": "3.1 s"
     },
     {
       "check": "ngspice/bus-7p5a-ron5m28/finite",
@@ -15972,7 +15972,7 @@
       "check": "ngspice/load-step-par1-ron5m28/execution",
       "pass": true,
       "category": "info",
-      "detail": "6.4 s"
+      "detail": "3.2 s"
     },
     {
       "check": "ngspice/load-step-par1-ron5m28/finite",
@@ -16026,7 +16026,7 @@
       "check": "ngspice/load-step-7p5a-par1-ron5m28/execution",
       "pass": true,
       "category": "info",
-      "detail": "6.5 s"
+      "detail": "3.0 s"
     },
     {
       "check": "ngspice/load-step-7p5a-par1-ron5m28/finite",
@@ -16080,7 +16080,7 @@
       "check": "ngspice/bus-7p5a-par1-ron5m28/execution",
       "pass": true,
       "category": "info",
-      "detail": "4.1 s"
+      "detail": "2.9 s"
     },
     {
       "check": "ngspice/bus-7p5a-par1-ron5m28/finite",
@@ -16188,7 +16188,7 @@
       "check": "ngspice/no-false-trip/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "36.0 s"
+      "detail": "22.7 s"
     },
     {
       "check": "ngspice/no-false-trip/finite",
@@ -16230,7 +16230,7 @@
       "check": "ngspice/no-false-trip-ron5m28/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "35.1 s"
+      "detail": "23.4 s"
     },
     {
       "check": "ngspice/no-false-trip-ron5m28/finite",
@@ -16272,7 +16272,7 @@
       "check": "ngspice/mc-ramp-s023-00/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "27.0 s"
+      "detail": "14.5 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-00/finite",
@@ -16404,7 +16404,7 @@
       "check": "ngspice/mc-ramp-s023-01/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "61.5 s"
+      "detail": "38.0 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-01/finite",
@@ -16536,7 +16536,7 @@
       "check": "ngspice/mc-ramp-s023-02/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "24.2 s"
+      "detail": "14.7 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-02/finite",
@@ -16668,7 +16668,7 @@
       "check": "ngspice/mc-ramp-s023-03/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "58.1 s"
+      "detail": "36.6 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-03/finite",
@@ -16800,7 +16800,7 @@
       "check": "ngspice/mc-ramp-s023-04/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "53.0 s"
+      "detail": "33.4 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-04/finite",
@@ -16932,7 +16932,7 @@
       "check": "ngspice/mc-ramp-s023-05/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "25.1 s"
+      "detail": "15.5 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-05/finite",
@@ -17064,7 +17064,7 @@
       "check": "ngspice/mc-ramp-s023-06/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "23.6 s"
+      "detail": "15.2 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-06/finite",
@@ -17196,7 +17196,7 @@
       "check": "ngspice/mc-ramp-s023-07/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "26.9 s"
+      "detail": "15.0 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-07/finite",
@@ -17328,7 +17328,7 @@
       "check": "ngspice/mc-ramp-s023-08/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "24.3 s"
+      "detail": "14.9 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-08/finite",
@@ -17460,7 +17460,7 @@
       "check": "ngspice/mc-ramp-s023-09/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "57.9 s"
+      "detail": "37.7 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-09/finite",
@@ -17592,7 +17592,7 @@
       "check": "ngspice/mc-ramp-s023-10/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "21.3 s"
+      "detail": "15.2 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-10/finite",
@@ -17724,7 +17724,7 @@
       "check": "ngspice/mc-ramp-s023-11/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "65.5 s"
+      "detail": "38.7 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-11/finite",
@@ -17856,7 +17856,7 @@
       "check": "ngspice/mc-ramp-s023-12/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "68.1 s"
+      "detail": "38.2 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-12/finite",
@@ -17988,7 +17988,7 @@
       "check": "ngspice/mc-ramp-s023-13/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "59.6 s"
+      "detail": "36.4 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-13/finite",
@@ -18120,7 +18120,7 @@
       "check": "ngspice/mc-ramp-s023-14/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "70.8 s"
+      "detail": "39.0 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-14/finite",
@@ -18252,7 +18252,7 @@
       "check": "ngspice/mc-ramp-s023-15/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "23.2 s"
+      "detail": "15.1 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-15/finite",
@@ -18384,7 +18384,7 @@
       "check": "ngspice/mc-ramp-s023-16/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "63.3 s"
+      "detail": "40.5 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-16/finite",
@@ -18516,7 +18516,7 @@
       "check": "ngspice/mc-ramp-s023-17/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "23.7 s"
+      "detail": "15.5 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-17/finite",
@@ -18648,7 +18648,7 @@
       "check": "ngspice/mc-ramp-s023-18/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "21.8 s"
+      "detail": "14.6 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-18/finite",
@@ -18780,7 +18780,7 @@
       "check": "ngspice/mc-ramp-s023-19/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "74.3 s"
+      "detail": "37.8 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-19/finite",
@@ -18912,7 +18912,7 @@
       "check": "ngspice/mc-ramp-s023-20/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "23.0 s"
+      "detail": "15.0 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-20/finite",
@@ -19044,7 +19044,7 @@
       "check": "ngspice/mc-ramp-s023-21/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "23.5 s"
+      "detail": "14.8 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-21/finite",
@@ -19176,7 +19176,7 @@
       "check": "ngspice/mc-ramp-s023-22/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "60.9 s"
+      "detail": "39.7 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-22/finite",
@@ -19308,7 +19308,7 @@
       "check": "ngspice/mc-ramp-s023-23/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "65.3 s"
+      "detail": "44.7 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-23/finite",
@@ -19440,7 +19440,7 @@
       "check": "ngspice/mc-ramp-s023-24/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "77.1 s"
+      "detail": "45.2 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-24/finite",
@@ -19572,7 +19572,7 @@
       "check": "ngspice/mc-ramp-s023-25/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "23.1 s"
+      "detail": "15.3 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-25/finite",
@@ -19704,7 +19704,7 @@
       "check": "ngspice/mc-ramp-s023-26/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "24.9 s"
+      "detail": "15.3 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-26/finite",
@@ -19836,7 +19836,7 @@
       "check": "ngspice/mc-ramp-s023-27/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "22.3 s"
+      "detail": "15.1 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-27/finite",
@@ -19968,7 +19968,7 @@
       "check": "ngspice/mc-ramp-s023-28/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "26.6 s"
+      "detail": "15.3 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-28/finite",
@@ -20100,7 +20100,7 @@
       "check": "ngspice/mc-ramp-s023-29/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "59.2 s"
+      "detail": "39.3 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-29/finite",
@@ -20232,7 +20232,7 @@
       "check": "ngspice/mc-ramp-s023-30/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "26.7 s"
+      "detail": "15.2 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-30/finite",
@@ -20364,7 +20364,7 @@
       "check": "ngspice/mc-ramp-s023-31/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "66.4 s"
+      "detail": "40.7 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-31/finite",
@@ -20496,7 +20496,7 @@
       "check": "ngspice/mc-ramp-s023-32/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "79.9 s"
+      "detail": "43.6 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-32/finite",
@@ -20628,7 +20628,7 @@
       "check": "ngspice/mc-ramp-s023-33/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "25.1 s"
+      "detail": "15.0 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-33/finite",
@@ -20760,7 +20760,7 @@
       "check": "ngspice/mc-ramp-s023-34/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "20.0 s"
+      "detail": "14.9 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-34/finite",
@@ -20892,7 +20892,7 @@
       "check": "ngspice/mc-ramp-s023-35/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "70.4 s"
+      "detail": "39.3 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-35/finite",
@@ -21024,7 +21024,7 @@
       "check": "ngspice/mc-ramp-s023-36/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "61.5 s"
+      "detail": "41.9 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-36/finite",
@@ -21156,7 +21156,7 @@
       "check": "ngspice/mc-ramp-s023-37/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "63.8 s"
+      "detail": "39.2 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-37/finite",
@@ -21288,7 +21288,7 @@
       "check": "ngspice/mc-ramp-s023-38/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "24.9 s"
+      "detail": "16.9 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-38/finite",
@@ -21420,7 +21420,7 @@
       "check": "ngspice/mc-ramp-s023-39/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "24.8 s"
+      "detail": "16.0 s"
     },
     {
       "check": "ngspice/mc-ramp-s023-39/finite",
@@ -21552,7 +21552,7 @@
       "check": "ngspice/mc-short-c185-00/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "28.9 s"
+      "detail": "17.9 s"
     },
     {
       "check": "ngspice/mc-short-c185-00/finite",
@@ -21666,7 +21666,7 @@
       "check": "ngspice/mc-short-c185-01/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "29.3 s"
+      "detail": "17.7 s"
     },
     {
       "check": "ngspice/mc-short-c185-01/finite",
@@ -21780,7 +21780,7 @@
       "check": "ngspice/mc-short-c185-02/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "29.7 s"
+      "detail": "17.5 s"
     },
     {
       "check": "ngspice/mc-short-c185-02/finite",
@@ -21894,7 +21894,7 @@
       "check": "ngspice/mc-short-c185-03/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "26.7 s"
+      "detail": "17.9 s"
     },
     {
       "check": "ngspice/mc-short-c185-03/finite",
@@ -22008,7 +22008,7 @@
       "check": "ngspice/mc-short-c185-04/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "34.7 s"
+      "detail": "17.9 s"
     },
     {
       "check": "ngspice/mc-short-c185-04/finite",
@@ -22122,7 +22122,7 @@
       "check": "ngspice/mc-short-c185-05/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "27.2 s"
+      "detail": "18.1 s"
     },
     {
       "check": "ngspice/mc-short-c185-05/finite",
@@ -22236,7 +22236,7 @@
       "check": "ngspice/mc-short-c185-06/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "26.0 s"
+      "detail": "18.1 s"
     },
     {
       "check": "ngspice/mc-short-c185-06/finite",
@@ -22350,7 +22350,7 @@
       "check": "ngspice/mc-short-c185-07/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "29.0 s"
+      "detail": "17.8 s"
     },
     {
       "check": "ngspice/mc-short-c185-07/finite",
@@ -22464,7 +22464,7 @@
       "check": "ngspice/mc-short-c185-08/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "27.5 s"
+      "detail": "17.8 s"
     },
     {
       "check": "ngspice/mc-short-c185-08/finite",
@@ -22578,7 +22578,7 @@
       "check": "ngspice/mc-short-c185-09/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "28.2 s"
+      "detail": "18.1 s"
     },
     {
       "check": "ngspice/mc-short-c185-09/finite",
@@ -22692,7 +22692,7 @@
       "check": "ngspice/mc-short-c185-10/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "29.9 s"
+      "detail": "18.1 s"
     },
     {
       "check": "ngspice/mc-short-c185-10/finite",
@@ -22806,7 +22806,7 @@
       "check": "ngspice/mc-short-c185-11/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "31.3 s"
+      "detail": "18.3 s"
     },
     {
       "check": "ngspice/mc-short-c185-11/finite",
@@ -22920,7 +22920,7 @@
       "check": "ngspice/mc-short-c185-12/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "29.7 s"
+      "detail": "18.3 s"
     },
     {
       "check": "ngspice/mc-short-c185-12/finite",
@@ -23034,7 +23034,7 @@
       "check": "ngspice/mc-short-c185-13/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "26.0 s"
+      "detail": "18.1 s"
     },
     {
       "check": "ngspice/mc-short-c185-13/finite",
@@ -23148,7 +23148,7 @@
       "check": "ngspice/mc-short-c185-14/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "32.1 s"
+      "detail": "18.4 s"
     },
     {
       "check": "ngspice/mc-short-c185-14/finite",
@@ -23262,7 +23262,7 @@
       "check": "ngspice/mc-short-c185-15/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "30.9 s"
+      "detail": "18.5 s"
     },
     {
       "check": "ngspice/mc-short-c185-15/finite",
@@ -23376,7 +23376,7 @@
       "check": "ngspice/mc-short-c185-16/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "26.0 s"
+      "detail": "18.6 s"
     },
     {
       "check": "ngspice/mc-short-c185-16/finite",
@@ -23490,7 +23490,7 @@
       "check": "ngspice/mc-short-c185-17/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "32.9 s"
+      "detail": "18.9 s"
     },
     {
       "check": "ngspice/mc-short-c185-17/finite",
@@ -23604,7 +23604,7 @@
       "check": "ngspice/mc-short-c185-18/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "28.2 s"
+      "detail": "18.4 s"
     },
     {
       "check": "ngspice/mc-short-c185-18/finite",
@@ -23718,7 +23718,7 @@
       "check": "ngspice/mc-short-c185-19/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "26.1 s"
+      "detail": "18.9 s"
     },
     {
       "check": "ngspice/mc-short-c185-19/finite",
@@ -23832,7 +23832,7 @@
       "check": "ngspice/mc-nofalse-00/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "38.5 s"
+      "detail": "23.4 s"
     },
     {
       "check": "ngspice/mc-nofalse-00/finite",
@@ -23874,7 +23874,7 @@
       "check": "ngspice/mc-nofalse-01/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "45.5 s"
+      "detail": "23.3 s"
     },
     {
       "check": "ngspice/mc-nofalse-01/finite",
@@ -23916,7 +23916,7 @@
       "check": "ngspice/mc-nofalse-02/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "41.0 s"
+      "detail": "23.0 s"
     },
     {
       "check": "ngspice/mc-nofalse-02/finite",
@@ -23958,7 +23958,7 @@
       "check": "ngspice/mc-nofalse-03/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "36.9 s"
+      "detail": "23.0 s"
     },
     {
       "check": "ngspice/mc-nofalse-03/finite",
@@ -24000,7 +24000,7 @@
       "check": "ngspice/mc-nofalse-04/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "40.5 s"
+      "detail": "22.9 s"
     },
     {
       "check": "ngspice/mc-nofalse-04/finite",
@@ -24042,7 +24042,7 @@
       "check": "ngspice/mc-nofalse-05/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "44.5 s"
+      "detail": "23.6 s"
     },
     {
       "check": "ngspice/mc-nofalse-05/finite",
@@ -24084,7 +24084,7 @@
       "check": "ngspice/mc-nofalse-06/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "35.3 s"
+      "detail": "23.1 s"
     },
     {
       "check": "ngspice/mc-nofalse-06/finite",
@@ -24126,7 +24126,7 @@
       "check": "ngspice/mc-nofalse-07/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "41.6 s"
+      "detail": "23.4 s"
     },
     {
       "check": "ngspice/mc-nofalse-07/finite",
@@ -24168,7 +24168,7 @@
       "check": "ngspice/mc-nofalse-08/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "44.4 s"
+      "detail": "23.3 s"
     },
     {
       "check": "ngspice/mc-nofalse-08/finite",
@@ -24210,7 +24210,7 @@
       "check": "ngspice/mc-nofalse-09/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "40.0 s"
+      "detail": "23.1 s"
     },
     {
       "check": "ngspice/mc-nofalse-09/finite",
@@ -24252,7 +24252,7 @@
       "check": "ngspice/mc-nofalse-10/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "40.7 s"
+      "detail": "23.2 s"
     },
     {
       "check": "ngspice/mc-nofalse-10/finite",
@@ -24294,7 +24294,7 @@
       "check": "ngspice/mc-nofalse-11/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "37.8 s"
+      "detail": "23.4 s"
     },
     {
       "check": "ngspice/mc-nofalse-11/finite",
@@ -24336,7 +24336,7 @@
       "check": "ngspice/mc-nofalse-12/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "39.0 s"
+      "detail": "23.1 s"
     },
     {
       "check": "ngspice/mc-nofalse-12/finite",
@@ -24378,7 +24378,7 @@
       "check": "ngspice/mc-nofalse-13/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "45.1 s"
+      "detail": "23.3 s"
     },
     {
       "check": "ngspice/mc-nofalse-13/finite",
@@ -24420,7 +24420,7 @@
       "check": "ngspice/mc-nofalse-14/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "42.6 s"
+      "detail": "23.9 s"
     },
     {
       "check": "ngspice/mc-nofalse-14/finite",
@@ -24462,7 +24462,7 @@
       "check": "ngspice/mc-nofalse-15/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "44.0 s"
+      "detail": "23.1 s"
     },
     {
       "check": "ngspice/mc-nofalse-15/finite",
@@ -24504,7 +24504,7 @@
       "check": "ngspice/mc-nofalse-16/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "36.0 s"
+      "detail": "23.1 s"
     },
     {
       "check": "ngspice/mc-nofalse-16/finite",
@@ -24546,7 +24546,7 @@
       "check": "ngspice/mc-nofalse-17/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "38.7 s"
+      "detail": "22.7 s"
     },
     {
       "check": "ngspice/mc-nofalse-17/finite",
@@ -24588,7 +24588,7 @@
       "check": "ngspice/mc-nofalse-18/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "37.0 s"
+      "detail": "23.0 s"
     },
     {
       "check": "ngspice/mc-nofalse-18/finite",
@@ -24630,7 +24630,7 @@
       "check": "ngspice/mc-nofalse-19/execution",
       "pass": true,
       "category": "acceptance",
-      "detail": "30.6 s"
+      "detail": "22.7 s"
     },
     {
       "check": "ngspice/mc-nofalse-19/finite",
@@ -24672,7 +24672,7 @@
       "check": "ngspice/ref-baseline-load-step-7p5a/execution",
       "pass": true,
       "category": "info",
-      "detail": "2.9 s"
+      "detail": "1.7 s"
     },
     {
       "check": "ngspice/ref-baseline-load-step-7p5a/finite",

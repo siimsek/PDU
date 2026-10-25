@@ -16,17 +16,17 @@ doAnalyses: TRAN:  Timestep too small; time = 0.0122646, timestep = 1.25e-19: tr
 
 run simulation(s) aborted
 
-Total analysis time (seconds) = 7.23682
+Total analysis time (seconds) = 4.5201
 
-Total elapsed time (seconds) = 7.243 
+Total elapsed time (seconds) = 4.523 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available =  557.875 MB.
-Maximum ngspice program size =   95.594 MB.
-Current ngspice program size =   24.855 MB.
+DRAM currently available = 1542.426 MB.
+Maximum ngspice program size =   95.590 MB.
+Current ngspice program size =   25.031 MB.
 
-Shared ngspice pages =   10.746 MB.
+Shared ngspice pages =   10.922 MB.
 Text (code) pages =    6.543 MB.
 Stack = 0 bytes.
-Library pages =   75.914 MB.
+Library pages =   75.910 MB.
 
