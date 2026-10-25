@@ -152,6 +152,27 @@ Hiçbir değer tüm hedefleri sağlamıyor; aday **100 Ω kalır** (Ppk 0,268 W;
 
 Not: incelemenin geçici hedefi "her dip sonrası OUTA ↑ anında V_CTT ≤ 1,0 V" bu mimaride **harfiyen sağlanmaz**: reset OUTA döndükten sonraki tutma penceresinde tamamlanır (OUTA ↑ anında CTT simülasyonda 4,37 V'a kadar görülebilir), bırakma anında CTT ≤ 53,5 mV'tur ve gecikme son OUTA ↑'tan ölçülür. Asıl sınır (≥ 60 ms, son OUTA ↑'tan) ve 65 ms geçici hedef bütçede ve simülasyonda sağlanır (RESULTS.md §11). µs mertebesindeki darbeler (OUTA ~1,6 ms'den kısa düşük) Schmitt yeniden başlatmasını tetiklemeyebilir; reset-baskın mandal önerisi açık. Simülasyon fiziksel ölçüm değildir.
 
+## 4c. Asenkron reset-baskın mandal + gate-ready (WP2 Tur 5 UVLO-T5-02/T5-05) – **aday, KiCad/ana BOM değişmedi; davranışsal model**
+Kaynak: `uvlo_budget.py` → `results/uvlo-budget.json` anahtarı `timer.latch` (3a84460). Simülasyon/hesap, fiziksel ölçüm değil.
+
+| Terim | Değer | Not |
+|---|---|---|
+| Devre | U27 SN74LVC1G74 PRE# = OUTA_UV (her VIN-OK kaybı mandalı kurar), CLR# = U29 (CTT > V_CLR); U24 TMUX1101 Q_INH iken CTT'yi RDSC 180 Ω ile boşaltır; U22 Q_INH iken EN_BUCK → GND; U26 OUTA_UV düşükken EN_BUCK → GND (doğrudan); U28 + XG28 gate-ready (VGS ≥ VRDY 7 V, TQ_GRDY 5 ms, Q_INH ile temizlenir) | XG28 dedektörü **davranışsal varsayım**, parça seçilmedi/tasarlanmadı |
+| RC1 / RC2 / RDSC | 40,2 k / 1,5 k / 180 Ω | |
+| V_CLR (bırakma eşiği) | 134,7 – 157,5 mV | |
+| V_eq_max (Q_INH iken CTT son değeri) | 88,1 mV | V_eq_max < V_CLR_min → bırakma garanti |
+| Ipk (RDSC boşaltma) | 29,2 mA | ≤ 30 mA hedefi **sağlanıyor** |
+| t_dsc_max (CTT → V_CLR) | 11,26 ms | İnceleme hedefi ≤ 5,5 ms **sağlanmıyor**; mandal mimarisinde yalnız gecikme ekler (bırakma CTT < V_CLR'yi bekler, yarış yok) |
+| V_rel ≤ 53,5 mV hedefi | sağlanmıyor (V_CLR ≤ 157,5 mV) | Amaç (yeniden başlatma ≥ 65 ms) aşağıdaki t_after_release_min ile sağlanıyor → kısmi itiraz, kanıtlı |
+| t_after_release_min | 75,98 ms | 65 ms hedefine marj 10,98 ms; 60 ms gereksinim |
+| t_cold_min / t_cold_max | 77,68 / 255,5 ms | |
+| t_vinok_to_en_max | 266,8 ms | ≤ 300 ms |
+| Enerji / olay, p_peak | 164 µJ, 0,149 W | RDSC darbe dayanımı datasheet ile doğrulanmadı (açık kalem) |
+| gate_ready_before_ramp | 21,9 ms | |
+| D_LEAK | muhafazakâr tutuldu (değişmedi) | Mandal değerlendirmesi için sızıntısız tb ayrı (`start20-mbmin` geç sonuç düzeltmesi) |
+
+Koşu kanıtı (`tur5-6e150c8`, RESULTS §13): M1 en kısa **90,51 ms** (hotplug-26p0v-vrmax-tmin), EN ↑ anında VGS en düşük **9,64 V** (TDRV mbmin), Tur-4'teki 71 M3 FAIL'i mandal adayında 2'ye indi (dip15v-20ms-mbmin C3/O3, negatif EN_LAG, fail-closed, açık). **O3 20 V başlatma garantisi hâlâ AÇIK** (NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS).
+
 ## 5. Alternatifler ve regresyonlar
 | Durum | En kötü | Beklenen | Gerçekleşen |
 |---|---|---|---|
@@ -173,4 +194,5 @@ Not: incelemenin geçici hedefi "her dip sonrası OUTA ↑ anında V_CTT ≤ 1,0
 - 2026-10-25 (Tur 3 T3-04): ACAS DF dayanıklılık/lehim terimleri G → V (AE-only) (f6482f0).
 - 2026-10-25 (Tur 3 T3-02): §4b CTT hızlı reset + Schmitt aday bütçesi (5a81584).
 - 2026-10-25 (Tur 4): ACAS DF mutlak+göreli tek sınırsız grup, grade-U TCR ayrı G terimi (5ac9f50); RDSC taraması (5ac9f50); U26 kaçağı (2392878). a/b marjları değişmedi.
+- 2026-10-25 (Tur 5 T5-02/T5-05): §4c mandal + gate-ready aday bütçesi (3a84460); koşu kanıtı tur5-6e150c8 (28b6d41). a/b marjları değişmedi.
 Hiçbir sınır gevşetilmedi.
