@@ -10,38 +10,49 @@ Using SPARSE 1.3 as Direct Linear Solver
 Operating point simulation skipped by 'uic',
   now using transient initial conditions.
 
-No. of Data Rows : 401378
+No. of Data Rows : 401379
 
   Measurements for Transient Analysis
 
-o1_pre              =  1.098380e+01 from=  1.300000e-02 to=  1.490009e-02
-o1_off              =  9.023085e-12 at=  1.900001e-02
-s2e_off             =  1.805948e-11 at=  1.900001e-02
+o1_pre              =  1.098380e+01 from=  1.300000e-02 to=  1.490006e-02
+o1_off              =  1.241002e-11 at=  1.900004e-02
+s2e_off             =  2.483847e-11 at=  1.900004e-02
 o1_reset            =  1.098380e+01 from=  3.500000e-02 to=  4.000000e-02
 s2e_reset           =  1.098785e+01 from=  3.500000e-02 to=  4.000000e-02
-o1_peak             =  1.111326e+01 at=  1.500060e-02
-bus_peak            =  1.179399e+01 at=  1.503043e-02
-trip_raw            =  1.158541e+01
-off_raw             =  1.179429e+01
-s2e_peak            =  1.108208e+01 at=  1.500047e-02
-vdsa_max            =  1.525968e+01 at=  2.500000e-02
-inm_max             =  5.637773e+00 at=  1.503062e-02
-iinm_max            =  4.761660e-04 at=  1.503062e-02
-v5_max              =  4.999523e+00 at=  1.811554e-02
-inp_fault_max       =  4.999524e-09 at=  1.811545e-02
+o1_peak             =  1.111299e+01 at=  1.500060e-02
+bus_peak            =  1.178665e+01 at=  1.503043e-02
+trip_raw            =  1.157804e+01
+off_raw             =  1.178692e+01
+s2e_peak            =  1.108242e+01 at=  1.500047e-02
+vdsa_max            =  1.424970e+01 at=  2.500000e-02
+inm_max             =  5.637773e+00 at=  1.503064e-02
+iinm_max            =  4.761714e-04 at=  1.503064e-02
+v5_max              =  4.999523e+00 at=  2.500000e-02
+inp_fault_max       =  4.999524e-09 at=  2.087183e-02
+bus_pre_max         =  1.099984e+01 at=  7.691641e-03
+o1_pre_max          =  1.098381e+01 at=  1.007763e-02
+inp_pre_min         =  4.999499e+00 at=  1.489996e-02
+vgs_pre_min         =  1.159986e+01 at=  1.300006e-02
+bus_recov_max       =  1.099985e+01 at=  2.510000e-02
+o1_recov_max        =  1.098381e+01 at=  2.748446e-02
+inp_recov_min       =  4.999499e+00 at=  2.748361e-02
+vgs_recov_min       =  1.112747e+01 at=  2.510000e-02
+info_startup_inp_min=  4.999499e+00 at=  1.007728e-02
+info_startup_vgs_fall_t=   1.50034e-02
+o1_global_peak      =  1.111299e+01 at=  1.500060e-02
 
 
-Total analysis time (seconds) = 17.4257
+Total analysis time (seconds) = 14.7803
 
-Total elapsed time (seconds) = 17.439 
+Total elapsed time (seconds) = 14.799 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available = 2046.898 MB.
-Maximum ngspice program size =   58.941 MB.
-Current ngspice program size =   49.887 MB.
+DRAM currently available = 1378.734 MB.
+Maximum ngspice program size =   58.949 MB.
+Current ngspice program size =   49.879 MB.
 
-Shared ngspice pages =   10.746 MB.
+Shared ngspice pages =   10.723 MB.
 Text (code) pages =    6.543 MB.
 Stack = 0 bytes.
-Library pages =   39.262 MB.
+Library pages =   39.270 MB.
 

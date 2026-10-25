@@ -14,26 +14,28 @@ No. of Data Rows : 40550
 
   Measurements for Transient Analysis
 
-bus_min             =  1.068845e+01 at=  2.001610e-02
-bus_max             =  1.098984e+01 at=  2.000000e-02
-raw_min             =  1.072802e+01 at=  2.001610e-02
+bus_min             =  1.068850e+01 at=  2.001594e-02
+bus_max             =  1.098569e+01 at=  2.000001e-02
+raw_min             =  1.072806e+01 at=  2.001594e-02
 o1_final            =  1.094827e+01 from=  3.500000e-02 to=  4.000000e-02
 s2e_final           =  1.095232e+01 from=  3.500000e-02 to=  4.000000e-02
-inp_min             =  4.999499e+00 at=  2.000032e-02
-vgs_min             =  1.049538e+01 at=  1.500059e-02
+bus_all_max         =  1.099584e+01 at=  1.473629e-02
+o1_global_peak      =  1.099503e+01 at=  1.473629e-02
+inp_min             =  4.999499e+00 at=  2.000045e-02
+vgs_min             =  1.049517e+01 at=  1.500029e-02
 
 
-Total analysis time (seconds) = 2.95069
+Total analysis time (seconds) = 2.99821
 
-Total elapsed time (seconds) = 2.956 
+Total elapsed time (seconds) = 3.004 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available = 2003.090 MB.
-Maximum ngspice program size =   28.074 MB.
-Current ngspice program size =   18.996 MB.
+DRAM currently available = 1570.172 MB.
+Maximum ngspice program size =   28.086 MB.
+Current ngspice program size =   19.008 MB.
 
 Shared ngspice pages =   10.777 MB.
 Text (code) pages =    6.543 MB.
 Stack = 0 bytes.
-Library pages =    8.395 MB.
+Library pages =    8.406 MB.
 
