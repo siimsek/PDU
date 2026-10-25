@@ -7,6 +7,13 @@
 *  TPS48000-Q1 SLUSEZ1B (Dec 2023, rev. Mar 2026) Sec. 5.5/5.6 (p6-7), Fig. 6-1 (p11)
 *  CSD18540Q5B SLPS488B (Jun 2014, rev. Apr 2017) Sec. 5.1 (p3)
 *  TPS7A1650  SBVS171F (Dec 2011, rev. Oct 2015) Sec. 6.5
+* MODEL REVISION: rev3 (2026-10-25, WP1 rev3 / ChatGPT tur-2 P0-03 investigation).
+*  rev3 change (ONLY this): the TPS48000 internal OV-latch node was named `ov`, which SPICE treats
+*  case-insensitively as the SAME node as the subckt pin `OV`. Bov/Cov/Rh2 therefore loaded the
+*  ROV10/ROV11 divider (OV pin 0.112 V instead of 1.127 V at RAW 11.37 V) and the OV backstop could
+*  never fire in rev1/rev2 (all rev1/rev2 results were comparator-only). Renamed to `ovs`.
+*  Old file kept unchanged as model-compare/pdu-o1ovp-behavioral-rev2.lib; old-vs-new regression:
+*  model-compare/model_compare.py -> results/model-compare/model-compare.json.
 * Simplifications (stated, not hidden): no supply-current model, no thermal model, comparator
 * tPD lumped into the TPS48000 TDOFF transport delay, FET = gate-controlled resistor (no
 * saturation -> conducts MORE during turn-off = conservative for overshoot), lumped linear Cgs.
@@ -54,14 +61,14 @@ Rleak OUT GND 1Meg
 + IBST=345u IPU=1.69 IPD=2 VCPOFF=11.6 VBSTR=9 VBSTF=8.2 VENR=1.23 VENF=1.14 VOVR=1.23 VOVF=1.14
 Ben GND en I=(if(V(en,GND)>0.5, if(V(ENUV,GND)>{VENF},1,0), if(V(ENUV,GND)>{VENR},1,0))-V(en,GND))/1k
 Cen en GND 1p
-Bov GND ov I=(if(V(ov,GND)>0.5, if(V(OV,GND)>{VOVF},1,0), if(V(OV,GND)>{VOVR},1,0))-V(ov,GND))/1k
-Cov ov GND 1p
+Bov GND ovs I=(if(V(ovs,GND)>0.5, if(V(OV,GND)>{VOVF},1,0), if(V(OV,GND)>{VOVR},1,0))-V(ovs,GND))/1k
+Cov ovs GND 1p
 Binp GND inh I=(if(V(inh,GND)>0.5, if(V(INP,GND)>1.35,1,0), if(V(INP,GND)>1.45,1,0))-V(inh,GND))/1k
 Cinh inh GND 1p
 Bdrv GND drv I=(if(V(drv,GND)>0.5, if(V(BST,SRC)>{VBSTF},1,0), if(V(BST,SRC)>{VBSTR},1,0))-V(drv,GND))/1k
 Cdrv drv GND 1p
 Rh1 en GND 1T
-Rh2 ov GND 1T
+Rh2 ovs GND 1T
 Rh3 inh GND 1T
 Rh4 drv GND 1T
 * Charge pump from VS into BST (stops at VCPOFF)
@@ -74,7 +81,7 @@ Rl1 b1 GND 50
 Rs2 c1 a2 50
 Toff a2 GND b2 GND Z0=50 TD={TDOFF}
 Rl2 b2 GND 50
-Bovc c3 GND V=1-min(max(V(ov,GND),0),1)
+Bovc c3 GND V=1-min(max(V(ovs,GND),0),1)
 Rs3 c3 a3 50
 Tov a3 GND b3 GND Z0=50 TD={TDOV}
 Rl3 b3 GND 50
