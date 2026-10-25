@@ -113,3 +113,27 @@ Pre-fault rejim (104 deck): INP min 4,9995 V, VGS min 11,5998 V → hepsi geçer
 | efuse-ovp-s023-wchi | PU 1 µF | 42,7 mV | 5,0 V | −4,93 V | FAIL | FAIL |
 
 Öz-test exit 0. Not: rev3 modelinde eski 100 pF PU-cap tanısı FET'i artık kapalı tutmuyor (O1 11,887 V), bu yüzden daha güçlü bozmalar kullanıldı. Böyle bir "düşük O1" artık PASS sayılamaz.
+
+## H. Teşhis çalışmaları (kabul kanıtı değil; davranışsal model; sim ≠ silikon)
+
+### H1. P0-03 çözücü çalışması – `solver-study/` (SOLVER_EXIT=0)
+4 ESL deck × 5 varyant (v0 sıradan SPARSE, v1 KLU, v2 KLU + tmax 20 ns, v3 SPARSE + tmax 20 ns, v4 KLU + trap); devre, uyaran, ölçümler ve reltol/abstol **değiştirilmedi**.
+**20/20 tamamlanmadı**: hepsi 12,2645–12,2699 ms'de "Timestep too small" (raporlanan düğüm `imon_s2e` veya `pu_ovp`, timestep 1,25e-19 / 2,5e-20 s). Sonuç: durma çözücü/tmax/integrasyon seçimine bağlı değil → kök neden devre davranışı (açılış çınlaması + açılışta OVP tetiği, §A). Çözücü ayarıyla "geçirme" yapılmadı.
+
+### H2. WP2 seçeneği – kontrollü açılış (RPU10 seri direnci) – `slew-study/` (SLEW_EXIT=0)
+Yalnız RPU10 (PU_OVP→G_OVP) değişti; kapatma yolu (RPD10) aynı. **Benimsenmedi**; aday RPU10 = 10 Ω kalır. Sayılar (VGS 1→6 V süresi, açılış RAW tepesi 0–24 ms, O1 global):
+
+| Case | RPU10 = 10 Ω | 100 Ω | 330 Ω | 1 kΩ |
+|---|---|---|---|---|
+| t(VGS 1→6 V) | 0,21 µs | 2,04 µs | 6,73 µs | 20,37 µs |
+| c185-esl2n-typ | durdu 12,2645 ms | durdu | tamam; RAW_su 11,666; O1 11,4816 | tamam; RAW_su 11,339; O1 11,4749 |
+| c185-esl2n-wchi | durdu 12,2699 ms | tamam; RAW_su 12,353; O1 11,8914 | tamam; 11,665; O1 11,8854 | tamam; 11,336; O1 11,8855 |
+| c165-esl2n-typ | durdu | durdu | tamam; 11,663; O1 11,4822 | tamam; 11,339; O1 11,4824 |
+| c185-esr12m5-wchi (ESL yok) | O1 11,8919 | 11,8891 | 11,8915 | 11,8920 |
+| rev1-c92 (yalnız referans) | O1 12,0317 | 12,0372 | 12,0386 | 12,0391 |
+| efuse-ovp-s023-wchi | O1 11,1126 PASS | O1 11,6492 PASS | O1 11,1128 **kabul FAIL** | O1 11,1118 **kabul FAIL** |
+
+- Sondalar (RPU10 = 10 Ω, 4 ESL deck): RAW tepe 13,332–13,337 V, INP 12,2642–12,2643 ms'de 0 V → **açılışta yanlış tetik doğrulandı**.
+- 330 Ω / 1 kΩ: ESL deck'leri tamamlanıyor, açılış RAW tepesi 11,34–11,67 V (100 Ω wchi: 12,353 V); açılışta INP min 4,9995 V → tetik yok (çınlama tepesi kısa; RAW tepesi trip bandına değse de INP düşmedi – davranışsal komparatör, sim ≠ silikon), O1 değişimi ≤ 6 mV. **Ancak** `efuse-ovp-s023-wchi` toparlanma rejim kontrolü FAIL: 25,1–40 ms penceresinde VGS min 2,563 V (330 Ω) / 0,931 V (1 kΩ) < 6 V. Yani yavaş açılış toparlanma süresini uzatıyor; kriter gevşetilmedi.
+- 100 Ω: yalnız wchi ESL deck'i tamamlanıyor; s023 O1 +0,54 V (11,6492 V) yükseliyor.
+- **Sonuç:** Tek bir RPU10 değeri tüm kabul koşullarını sağlamıyor. WP2'de kontrollü açılış + toparlanma zamanlaması (ör. RPU10 330 Ω + ayrı hızlı yeniden-açma yolu ya da açılış süresince OVP maskeleme yerine RAW snubber/ESL azaltımı) **sayısal karşılaştırmayla** değerlendirilmeli. Mimari değişikliği bu pakette yapılmadı.
