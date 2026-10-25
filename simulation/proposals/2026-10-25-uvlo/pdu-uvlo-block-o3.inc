@@ -55,6 +55,9 @@ RDEN OUTB_UV EN_BUCK 10k
 * Stops the buck at once when UV is detected, instead of waiting for the timer comparator (CTT discharge, ~0.14 ms).
 XU22 EN_BUCK 0 0 OUTA_D V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0
 C22 V5_OVP 0 100n
+* U26 TMUX1102 (Tur-4 T4-05): EN_BUCK -> GND directly while OUTA_UV LOW (no stretcher in the path; EN low <= 1 us gate M3).
+XU26 EN_BUCK 0 0 OUTA_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0
+C26 V5_OVP 0 100n
 * 1N4148WS: generic small-signal diode parameters (ASSUMPTION, typical-class; reverse leakage is Bilkd)
 .model UVLO_BAT54 D(Is=1e-7 N=1.05 Rs=2.4 Cjo=10p Bv=30 Ibv=2u)
 .model UVLO_1N4148WS D(Is=2.52n N=1.752 Rs=0.568 Cjo=4p Bv=100 Ibv=100u)

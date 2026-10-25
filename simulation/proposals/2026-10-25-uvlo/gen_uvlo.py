@@ -165,8 +165,13 @@ UVLO_BLOCK = UVLO_BLOCK.replace('XU22 EN_BUCK 0 0 OUTA_UV V5_OVP', 'XU22 EN_BUCK
 UVLO_BLOCK = UVLO_BLOCK.replace('* U22 TMUX1102 (2026-10-25 fix, dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV LOW (VIN not OK).',
     '* U22 TMUX1102 (2026-10-25 fix, dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV LOW (VIN not OK).\n'
     '* Tur-3: SEL = OUTA_D (stretched) so EN also stays low during the reset hold.', 1)
+# Tur-4 T4-05 (review 6398375361): direct, UNSTRETCHED VIN-OK-loss path. U22 follows OUTA_D, whose fall is slowed by
+# DST/CST (2-3 us EN lag measured in the Tur-3 dips); U26 (third TMUX1102, same part) pulls EN_BUCK low straight from OUTA_UV.
+UVLO_BLOCK = UVLO_BLOCK.replace('C22 V5_OVP 0 100n\n', 'C22 V5_OVP 0 100n\n'
+    '* U26 TMUX1102 (Tur-4 T4-05): EN_BUCK -> GND directly while OUTA_UV LOW (no stretcher in the path; EN low <= 1 us gate M3).\n'
+    'XU26 EN_BUCK 0 0 OUTA_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0\nC26 V5_OVP 0 100n\n', 1)
 UVLO_BLOCK = UVLO_BLOCK.replace('.model UVLO_1N4148WS', '.model UVLO_BAT54 D(Is=1e-7 N=1.05 Rs=2.4 Cjo=10p Bv=30 Ibv=2u)\n.model UVLO_1N4148WS', 1)
-assert UVLO_BLOCK.count('XU24 ') == 1 and UVLO_BLOCK.count('XU22 EN_BUCK 0 0 OUTA_D') == 1 and 'RK1 V5_OVP' not in UVLO_BLOCK
+assert UVLO_BLOCK.count('XU26 EN_BUCK 0 0 OUTA_UV') == 1 and UVLO_BLOCK.count('XU24 ') == 1 and UVLO_BLOCK.count('XU22 EN_BUCK 0 0 OUTA_D') == 1 and 'RK1 V5_OVP' not in UVLO_BLOCK
 
 # ---------------------------------------------------------------- deck pieces
 VREF_OVP_CORNER = {'typ': '4.096', 'wchi': '4.105424', 'wclo': '4.086576'}   # same values as seq_deck()
@@ -277,9 +282,17 @@ def dip_extra(t0, t1, stop, reset=True):
     s = ''.join(f'.meas tran VT_AT_OUTA_R{i} FIND V(T_UV) WHEN V(OUTA_UV)=2.5 RISE={i}\n' for i in (1, 2, 3))
     s += '.meas tran VT_AT_OUTA_RLAST FIND V(T_UV) WHEN V(OUTA_UV)=2.5 RISE=LAST\n'
     s += ''.join(f'.meas tran VT_AT_EN_R{i} FIND V(T_UV) WHEN V(EN_BUCK)=1.0 RISE={i}\n' for i in (2, 3))
+    # Tur-4 W05j/D48: direct OUTA fall k -> EN fall k lag (sub-us resolution for the 1 us M3 gate)
+    s += ''.join(f'.meas tran EN_LAG_F{k} TRIG V(OUTA_UV) VAL=2.5 FALL={k} TARG V(EN_BUCK) VAL=1.0 FALL={k}\n' for k in (1, 2))
+    # Tur-4 T4-05 (M4): OVP FET gate-source voltage at EVERY EN rise; FET-off / VGS minimum after the dip start (info)
+    s += ''.join(f'.meas tran VGS_AT_EN_R{i} FIND V(M_VGS) WHEN V(EN_BUCK)=1.0 RISE={i}\n' for i in (1, 2, 3, 4))
+    s += '.meas tran VGS_AT_EN_RLAST FIND V(M_VGS) WHEN V(EN_BUCK)=1.0 RISE=LAST\n'
+    s += f'.meas tran VGS_MIN_AFTER_T0 MIN V(M_VGS) FROM={t0:.6g} TO={stop:.6g}\n'
+    s += f'.meas tran EN_MIN_AFTER_T0 MIN V(EN_BUCK) FROM={t0:.6g} TO={stop:.6g}\n'
     s += f'.meas tran V5_MIN_DIP MIN V(V5_OVP) FROM={t0:.6g} TO={min(t1 + 0.01, stop):.6g}\n'
     s += f'.meas tran VT_MIN_POST MIN V(T_UV) FROM={t1:.6g} TO={stop:.6g}\n'
     if reset:
+        s += f'.meas tran OUTAD_MIN MIN V(OUTA_D) FROM={t0:.6g} TO={stop:.6g}\n'
         s += ('Bmrel M_REL 0 V=V(SEL24_UV)-{VTHS}\n.meas tran T_REL WHEN V(M_REL)=0 RISE=LAST\n'
               '.meas tran VT_AT_REL FIND V(T_UV) WHEN V(M_REL)=0 RISE=LAST\n')
     return s
@@ -405,9 +418,23 @@ def gen_scenarios():
             ('dip0v-250us', 0.0, 0.00025, 1.0, 'PASS'), ('dip0v-200us', 0.0, 0.0002, 1.0, 'PASS'), ('dip0v-100us', 0.0, 0.0001, 1.0, 'PASS'),
             ('dip0v-50ms', 0.0, 0.050, 1.0, 'PASS'),
             ('dip15v-20ms', 15.0, 0.020, 1.0, 'PASS'), ('deepdip0v-50ms-light', 0.0, 0.050, 0.0667, 'PASS'))
+    # Tur-4 T4-05: microsecond dips (below the CFU/UV detection latency), a near-threshold 225 us dip and 0 V 20 ms
+    dips += (('dip0v-1us', 0.0, 1e-6, 1.0, 'PASS'), ('dip0v-5us', 0.0, 5e-6, 1.0, 'PASS'), ('dip0v-10us', 0.0, 10e-6, 1.0, 'PASS'),
+             ('dip0v-50us', 0.0, 50e-6, 1.0, 'PASS'), ('dip0v-225us', 0.0, 225e-6, 1.0, 'PASS'), ('dip0v-20ms', 0.0, 0.020, 1.0, 'PASS'))
     for name, ed, dt, sc, exp in dips:
         for uv, tm, ovp, ib in (('typ', 'ttyp', 'typ', '345u'), ('mbmin', 'tmin', 'wclo', '100u')):
             dip_deck(name, [(ed, dt)], sc, exp, uv, tm, ovp, ib)
+    # Tur-4 T4-05: conservative TPS48000 EN -> gate-drive enable delay TDRV_EN = 50.8 ms (pdu-tdrv-en.inc, ASSUMPTION A):
+    # the OVP FET restarts its delay on every VIN-EN loss; M4 checks VGS >= 6 V at every buck EN rise. INFO (model assumption).
+    for name, segs, gap in (('dip0v-100us', [(0.0, 1e-4)], 0.0), ('dip0v-1ms', [(0.0, 0.001)], 0.0), ('dip0v-20ms', [(0.0, 0.020)], 0.0),
+                            ('dbldip0v-1ms-30ms-50ms', [(0.0, 0.001), (0.0, 0.050)], 0.030)):
+        for uv, tm, ovp, ib in (('typ', 'ttyp', 'typ', '345u'), ('mbmin', 'tmin', 'wclo', '100u')):
+            dip_deck(name, segs, 1.0, 'INFO', uv, tm, ovp, ib, gap=gap, tdrv=True)
+    # Tur-4 T4-02: RDSC 180 ohm exploration (Ipk <= 30 mA; V_rel 93.7 mV > 53.5 mV target) - INFO, candidate stays 100 ohm
+    for name, segs, gap in (('dip0v-1ms', [(0.0, 0.001)], 0.0), ('dip0v-300us', [(0.0, 3e-4)], 0.0),
+                            ('dbldip0v-1ms-30ms-50ms', [(0.0, 0.001), (0.0, 0.050)], 0.030)):
+        for uv, tm, ovp, ib in (('typ', 'ttyp', 'typ', '345u'), ('mbmin', 'tmin', 'wclo', '100u')):
+            dip_deck(name, segs, 1.0, 'INFO', uv, tm, ovp, ib, gap=gap, rdsc=180.0)
     # double dips (Tur-3 T3-02): 0 V 300 us, gap 20 ms, 0 V 300 us; 0 V 1 ms, gap 40 ms, 0 V 1 ms
     for name, dt, gap in (('dbldip0v-300us-20ms', 0.0003, 0.020), ('dbldip0v-1ms-40ms', 0.001, 0.040)):
         for uv, tm, ovp, ib in (('typ', 'ttyp', 'typ', '345u'), ('mbmin', 'tmin', 'wclo', '100u')):
@@ -419,15 +446,18 @@ def gen_scenarios():
     # ---- G: hot-plug, stiff source (R_total 0.03 ohm, 1 uH), 1 us edge
     gen_hotplug()
 
-def dip_deck(name, segs, sc, exp, uv, tm, ovp, ib, gap=0.0, reset=True, title_pre=''):
-    """one brown-out deck; segs = [(E_dip, duration), ...] separated by `gap` at 22.2 V"""
+def dip_deck(name, segs, sc, exp, uv, tm, ovp, ib, gap=0.0, reset=True, title_pre='', tdrv=False, rdsc=None):
+    """one brown-out deck; segs = [(E_dip, duration), ...] separated by `gap` at 22.2 V.
+    Tur-4: edges = min(20 us, duration/4) so that microsecond dips keep a monotonic PWL; tdrv = include the conservative
+    TDRV_EN model; rdsc = RDSC override (scaled with the corner's RDSC/100 ohm)."""
     t0 = tb(tm) + 0.08; spans = []; t = t0
     for ed, dt in segs:
         spans.append((t, t + dt, ed)); t = t + dt + gap
     t1 = spans[-1][1]; tr = tb(tm) * 1.0 + 0.005; a = t1 + tr + 0.06; stop = a + 0.05
     pwl = f'0 0 100u 22.2'
     for s0, s1, ed in spans:
-        pwl += f' {s0:.6g} 22.2 {s0+20e-6:.6g} {ed} {s1:.6g} {ed} {s1+20e-6:.6g} 22.2'
+        eg = min(20e-6, (s1 - s0) / 4)
+        pwl += f' {s0:.9g} 22.2 {s0+eg:.9g} {ed} {s1:.9g} {ed} {s1+eg:.9g} 22.2'
     desc = ' + '.join(f'{ed} V for {(s1-s0)*1e3:g} ms' for s0, s1, ed in spans) + (f' (gap {gap*1e3:g} ms)' if gap else '')
     meta = dict(kind='dip2' if len(spans) > 1 else 'dip', expect=exp, uv=uv, tm=tm, pre=[t0 - 0.03, t0], post=[a, stop], t0=t0, t1=t1,
                 e_dip=spans[0][2], light=sc < 1)
@@ -435,9 +465,18 @@ def dip_deck(name, segs, sc, exp, uv, tm, ovp, ib, gap=0.0, reset=True, title_pr
         meta['dips'] = [[s0, s1] for s0, s1, _ in spans]
     if not reset:   # Tur-2 timer block (no CTT reset): its own variant label, not the C3/O3 candidate
         meta.update(regression=True, expect='FAIL', variant=VAR['variant'] + '-noreset-tur2')
+    else:           # Tur-4 T4-05: M3 (EN low <= 1 us after VIN-OK loss) and M4 (VGS >= 6 V at every EN rise) requested
+        meta.update(en_force_max=1e-6, vgs_at_en_min=6.0)
+    over, pre, extra = dict(IBST=ib), '', ''
+    if tdrv:
+        meta.update(tdrv_en=0.0508); pre = 'tdrv-'; extra = '.include ../pdu-tdrv-en.inc\n'
+        title_pre += 'TDRV_EN 50.8 ms conservative FET-rearm model (A); '
+    if rdsc is not None:
+        over['RDSC'] = f"{TM[tm]['RDSC'] * rdsc / TV['RDSC']:.7g}"; meta.update(rdsc=rdsc); pre = f'rdsc{int(rdsc)}-'
+        title_pre += f'RDSC {rdsc:g} ohm exploration; '
     if True:
-            add(f'{name}-{uv}-{tm}', deck(f'{title_pre}brown-out {name}: 22.2 V -> {desc} (20 us edges); load x{sc}; {uv}/{tm}/OVP {ovp}/IBST {ib}',
-                params(uv, tm, ovp, IBST=ib), source(0.25, pwl), loads(sc), stop,
+            add(f'{pre}{name}-{uv}-{tm}', deck(f'{title_pre}brown-out {name}: 22.2 V -> {desc} (edges min(20 us, dip/4)); load x{sc}; {uv}/{tm}/OVP {ovp}/IBST {ib}',
+                params(uv, tm, ovp, **over), source(0.25, pwl) + extra, loads(sc), stop,
                 win('PRE', t0 - 0.03, t0) + win('POST', a, stop)
                 + f'.meas tran O1_DIP_MAX MAX V(O1_11V) FROM={t0:.6g} TO={stop:.6g}\n'
                 f'.meas tran BUS_RESTART_MAX MAX V(VOUT) FROM={t1:.6g} TO={a:.6g}\n'
