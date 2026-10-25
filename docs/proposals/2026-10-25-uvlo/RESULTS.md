@@ -3,6 +3,8 @@
 **Durum: öneri. Tezgâh testi yapılmadı. "Üretime hazır" DEĞİLDİR.**
 
 ## 1. Koşu bilgisi
+> **WP2 Tur 3 notu:** Commit'li `results/` artık Tur 3 koşusunu (`box-tur3b-20261025-1522`, 121 deck, temiz HEAD dbe4690, C3 + O3, CTT hızlı reset adayı) içerir; doğrulama **exit 1** (yalnız rsweep-r350/r450). Ayrıntılar §11. **CI:** GitHub Actions `proposal-ngspice` kullanıcı tarafından devre dışı bırakıldı; CI kapısı etkin değildir, kanıt yerel koşu + `run-manifest.json` hash'leridir.
+>
 > **WP2 Tur 2 notu:** Aşağıdaki §1 tablosu Tur 1 koşusudur (58 deck, HEAD a0dea91, verify exit 0) ve karşılaştırma için tutuldu. Commit'li `results/` artık Tur 2 koşusunu (`box-tur2-20261025T1230`, 101 deck, C3 + O3) içerir; Tur 2 doğrulaması daha sıkı kapılarla **exit 1** verir. Ayrıntılar §10.
 
 | Alan | Değer |
@@ -118,7 +120,7 @@ Eski `seq-ref-nodelay-typ` deck'i ngspice'ta yarıda kesiliyordu ("Timestep too 
 
 ## 8. rsweep INFO
 - R_total 0,30 Ω: çalışır, VIN payı +0,198 V.
-- 0,35 Ω: yük altında VIN 18,256 V ≤ V_f (typ) 18,259 V. Buck kapanır, salınım yok (tek kapanma).
+- 0,35 Ω: yük altında VIN 18,256 V ≤ V_f (typ) 18,259 V. Buck kapanır. **Düzeltme (Tur 3):** "salınım yok (tek kapanma)" ifadesi Tur 2 ve Tur 3 deck'lerinde yanlıştır: kapanmadan sonra EMF > V_r olduğu için OUTA yeniden yükselir ve EN tekrar tekrar yükselir (hiccup/motorboat; Tur 2'de ~80 ms, Tur 3'te ~119 ms periyot). Tur 2'de bu durum INFO olduğu için engelleyici değildi (UVLO-T3-01); Tur 3'te zorunlu kapılar INFO'ya da uygulandığından FAIL'dir (§11).
 - 0,45 Ω: VIN 17,993 V. Buck kapanır.
 - Bunlar garanti dışıdır (gereksinim ≤ 0,25 Ω). Kapanma, aşırı deşarj korumasının beklenen davranışıdır.
 
@@ -171,8 +173,50 @@ Yorum: zamanlayıcı (RTT/CTT, değişmedi) ≲ 1 ms diplerde tam sıfırlanmıy
 | C3 dip0v-250us-mbmin | 11,34552 V | 9,0 µs | **81,52 ms** | FAIL |
 | C3 dip0v-100us-typ | 11,12123 V | 0 | – | PASS |
 | O3 tüm 16 dip durumu | maks 11,12314 V (o3-dip0v-100us-typ) | 0 | – | PASS |
-Toplam: 29 PASS, 3 FAIL, 0 UNDETERMINED. Not: "dönüş" ölçümü son 11,1605 V üstü anı dip sonuna göre alır; C3'te tepe süresi kısa (≤ 18 µs) ama geç ikincil aşımlar dönüş süresini uzatıyor. O3'te R-DIP'in görülmemesi, bu dip sürelerinde O3'ün yeniden başlatmaya geçmesinin (ve 60 ms kapısında FAIL vermesinin) sonucudur; R-DIP sorununun çözüldüğü anlamına gelmez.
+Toplam: 29 PASS, 3 FAIL, 0 UNDETERMINED. Not: "dönüş" ölçümü 11,1605 V eşiğinin **son aşağı yönlü geçişini** (Tur 3 T3-09 adlandırması; eski metinde "son aşım anı") dip sonuna göre alır; C3'te tepe süresi kısa (≤ 18 µs) ama geç ikincil aşımlar dönüş süresini uzatıyor. O3'te R-DIP'in görülmemesi, bu dip sürelerinde O3'ün yeniden başlatmaya geçmesinin (ve 60 ms kapısında FAIL vermesinin) sonucudur; R-DIP sorununun çözüldüğü anlamına gelmez.
 
 **Regresyonlar (beklenen FAIL, hepsi FAIL):** reg-baseline-180k10k-worst, reg-baseline-180k10k-typ-rampdown, reg-misset-rbu-8k66-vrmax, seq-ref-nodelay-typ-ibst100u, o3-reg-misset-rbu-5k23-vrmax.
 
 **Tur 1 ile karşılaştırma (C3, aynı deck'ler):** dip0v-200us-typ BUS_GLOBAL_MAX 11,41249 → 11,41426 V; mbmin 11,35757 → 11,35498 V (deck'lere R-DIP ölçümleri eklendi; küçük sayısal fark). Tur 1 verify exit 0 idi çünkü 60 ms kapısı dip yeniden başlatmalarına uygulanmıyordu; Tur 2'deki exit 1 sınırın sıkılaştırılmasının değil, eksik kapının eklenmesinin sonucudur.
+
+## 11. WP2 Tur 3 koşusu (CTT hızlı reset adayı, C3 + O3) – simülasyon, fiziksel ölçüm değil
+| Alan | Değer |
+|---|---|
+| CI | GitHub Actions `proposal-ngspice` (id 395474051) kullanıcı tarafından 2026-10-25'te **devre dışı** bırakıldı; yeniden etkinleştirilmedi, YAML tutuldu. **CI kapısı etkin değildir.** Kanıt: aşağıdaki yerel koşu, `run-manifest.json` (deck/log SHA-256) ve `uvlo-verify.json` (`input_sha256`, `log_sha256`) |
+| Koşu | `python3 run_uvlo.py -j 8 --run-id box-tur3b-20261025-1522`, 2026-10-25 15:22:03 – 15:52:43 TSİ, kutu (8 CPU), ngspice-44.2 `-b -D ngbehavior=ltpsa`, temiz HEAD **dbe4690** (`package_inputs_dirty_at_run: false`), 121/121 deck rc 0, `runner_exit_code` 0. Koşu sırasında commit yapılmadı. LTspice / kullanıcı PC'si kullanılmadı |
+| Doğrulama | `python3 verify_uvlo.py --run-id box-tur3b-20261025-1522` (HEAD dbe4690 = manifest HEAD) → `provenance_errors: []`, **çıkış kodu 1**. Sonuçlar e35b3bb'de commit'lendi |
+| Önceki deneme | `box-tur3-20261025-1432` (a86add6): koşu sırasında doküman commit'i yapıldığı için `--run-id` HEAD eşleşmesi FAIL (exit 2) + 8 çift-dip deck'inde doğrulayıcı çapası hatası → kanıt sayılmadı; çapa dbe4690'da düzeltildi, koşu yinelendi |
+| Testler | `test_uvlo_gates.py` 13/13, `test_uvlo_o3.py` 10/10, `test_uvlo_tur2.py` 31/31, `test_uvlo_tur3.py` 45/45 |
+| Sayım | 121 durum, 110 PASS; kabul FAIL 2 (**rsweep-r350, rsweep-r450**, INFO, zorunlu kapı); eksik 0; regresyon **9/9** beklenen FAIL |
+
+**Zorunlu kapılar (M1 60 ms her EN yükselişinde, son OUTA ↑'tan; M2 V_f ≥ 18,0 V) ve sert sınırlar (H1/H2) – regresyon dışı tüm durumlar, PASS ve INFO:**
+| Ölçüt | C3 | O3 | Sınır |
+|---|---|---|---|
+| O1 anlık tepe maks | 11,16998 V (seq-delay-tmin-wclo-ibst100u) | 10,99836 V (o3-deepdip0v-50ms-light-typ) | ≤ 12,0 V |
+| En kısa VIN-OK → EN (tüm EN yükselişleri) | **86,00 ms** (dip0v-300us-mbmin, dbldip0v-300us-20ms-mbmin) | **85,94 ms** (o3-dip0v-200us-mbmin) | ≥ 60 ms (geçici hedef 65 ms) |
+| Soğuk açılış (dip deck'leri, EN_R1) | typ 195,25 / mbmin 87,21 ms | aynı | bütçe 77,7–255,5 ms |
+| En düşük kapanma VIN (rampdown) | 18,00483 V (rampdown-10vps-vfmin-tmin) | 18,06563 V | ≥ 18,0 V |
+| Bırakmada CTT (VT_AT_REL) | 46,0–49,0 mV | 46,0–49,0 mV | bütçe ≤ 53,5 mV |
+
+**Kısa dip yeniden başlatma (son OUTA ↑ → EN ↑), Tur 2 ile karşılaştırma:**
+| Dip (0 V) | Köşe | C3 Tur 3 | C3 Tur 2 | O3 Tur 3 | O3 Tur 2 |
+|---|---|---|---|---|---|
+| 300 µs | typ / mbmin | 193,99 / 86,00 ms | **15,90 / 1,39 ms FAIL** | 194,31 / 86,53 ms | 62,47 / **37,56 ms FAIL** |
+| 250 µs | typ / mbmin | 193,44 ms / rode-through | **0,00 ms FAIL** / rode-through | 194,14 / 86,32 ms | **38,63 / 24,33 ms FAIL** |
+| 200 µs (artık PASS-kapılı) | typ / mbmin | rode-through | rode-through (INFO) | 193,88 / 85,94 ms | **0,00 / 0,00 ms FAIL** (INFO) |
+| 100 µs | typ / mbmin | rode-through | rode-through | rode-through | rode-through |
+| 1 ms | typ / mbmin | 194,90 / 86,93 ms | 140,06 / 67,37 ms | 194,87 / 86,92 ms | 134,37 / 66,18 ms |
+| 50 ms (tam yük, yeni) | typ / mbmin | 195,23 / 87,19 ms | – | 195,23 / 87,19 ms | – |
+| 15 V 20 ms / 19 V 50 ms / 0 V 50 ms hafif | mbmin | 87,17 / 87,19 / 87,19 ms | 74,24 / 75,73 / 75,81 ms | 87,17 / 87,19 / 87,19 ms | 74,24 / 75,76 / 75,80 ms |
+
+**Çift dipler (yeni, T3-02):** son OUTA ↑'tan ölçülür. 300 µs + 20 ms: C3 193,99 / 86,00 ms, O3 194,31 / 86,53 ms; 1 ms + 40 ms: C3 194,90 / 86,93, O3 194,87 / 86,92 ms; 1 ms + 30 ms + 50 ms (ikinci OUTA kaybı sayım sırasında): C3 195,23 / 87,19, O3 195,32 / 87,28 ms (typ / mbmin). Hepsi PASS. 2. dip VIN-OK'u düşürmediğinde gecikme, yalnız ngspice kanıtı varsa (OUTA_F2 ve OUTA_R3 'failed', OUTA_RLAST == OUTA_R2) son OUTA ↑'tan ölçülür (dbe4690); diğer belirsiz durumlar fail-closed.
+
+**Regresyonlar (beklenen FAIL, 9/9 FAIL):** reg-baseline-180k10k-worst, reg-baseline-180k10k-typ-rampdown, reg-misset-rbu-8k66-vrmax, seq-ref-nodelay-typ-ibst100u, o3-reg-misset-rbu-5k23-vrmax ve reset devresi olmadan (Tur 2 zamanlayıcısı) `noreset` deck'leri: C3 300 µs mbmin **1,295 ms**, 250 µs typ **0,000 ms**; O3 250 µs mbmin **24,296 ms**, 200 µs typ **0,000 ms** (< 60 ms → FAIL, eski hatayı yeniden üretir).
+
+**Dürüst not – OUTA ↑ anında CTT:** incelemenin geçici hedefi "her dip sonrası OUTA ↑ anında V_CTT ≤ 1,0 V" bu aday mimaride **harfiyen sağlanmıyor**: CTT, OUTA döndükten sonraki gerdirici tutma penceresinde (bütçe 7,93–26,26 ms) boşaltılır; OUTA ↑ anında CTT C3'te 4,37 V'a (dip0v-250us-typ), O3'te 3,50 V'a (o3-dip0v-200us-typ) kadar görülür. Bırakmada CTT ≤ 49,0 mV (simülasyon) / ≤ 53,5 mV (bütçe) ve gecikme son OUTA ↑'tan ölçüldüğünde ≥ 85,94 ms'dir; asıl ≥ 60 ms sınırı ve 65 ms geçici hedefi bu koşuda sağlanır. Hedefin harfiyen istenmesi durumunda reset-baskın mandal (OUTA ↓ ile kurulan, CTT boşalınca bırakılan) alternatifi açıktır.
+
+**Açık – rsweep-r350/r450 (INFO, gereksinim dışı R ≥ 0,35 Ω; gereksinim ≤ 0,25 Ω):** yük altında VIN 18,2557 / 18,0114 V ≤ V_f (typ) 18,2588 V; kapanmadan sonra EMF > V_r olduğundan ~119 ms periyotla hiccup (4'ten fazla EN yükselişi, doğrulayıcı ara yükselişleri izleyemediği için fail-closed M1). Her izlenen yükselişte gecikme ≥ 60 ms olsa da sistem çalışmıyor. Tur 2'de aynı hiccup (~80 ms periyot, gecikme ~48 ms) INFO olduğu için engelleyici değildi; T3-01 ile artık görünür FAIL. Sınır/test gevşetilmedi; bu bir **açık bulgudur** (öneri: tekrar deneme sayacı/kilitleme ya da R_TOTAL sınırının sistem gereksinimi olarak sabitlenmesi – kullanıcı kararı).
+
+**Açık – µs darbeler:** OUTA'nın ~1,6 ms'den kısa düşük kalması Schmitt alt eşiğine kadar deşarjı garanti etmez; 100/200 µs dipler bu yüzden rode-through. Reset-baskın mandal önerisi açık; TDRV_EN silikon davranışı modellenmedi (§6, tezgâh B-U10/B-U15).
+
+**Geçici R-DIP taraması (rapor amaçlı, gereksinim DEĞİL):** 49 PASS, 3 FAIL (C3): dip0v-200us-typ 11,41297 V / 18,1 µs üstte / son aşağı yönlü geçiş dip sonundan 9,69 ms; dip0v-200us-mbmin 11,35635 V / 8,2 µs / 41,26 ms; dip0v-250us-mbmin 11,34331 V / 8,2 µs / 79,46 ms. O3 dipleri PASS, ama bu diplerde O3 yeniden başlatır (yükü keser); R-DIP çözülmüş sayılmaz (WP3).
