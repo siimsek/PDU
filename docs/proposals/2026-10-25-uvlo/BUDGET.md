@@ -80,7 +80,7 @@ c için açıklama: kapanma anında VIN = V_f iken EMF = V_f + I·R olur. Akım 
 | REF35 lehim kayması | V | 0 | 0 | 0 | **Hayır** (belirtilmemiş; B-U07) |
 | PSRR terimi için 0,1 V besleme kayması | V | 0,1 V × 65 dB | < 0,06 mV (karşılaştırıcıda) | – | varsayım |
 
-**Kırılma noktaları (Tur 2 hesabı, Tur 3 düzeltmesi ≤ 0,09 mV):** Hint_max = **7,28 mV** olursa a = 0. REF35'te bütçe dışı **+338 ppm** ek hata (ör. lehim kayması) a'yı, **+698 ppm** b'yi sıfırlar. Tek bir sınırsız terimin (Hint, lehim kayması, uzun dönem) bu düzeyleri aşmayacağına dair datasheet garantisi yok. Bu yüzden mevcut marj, garanti için **yetersiz** kabul edildi.
+**Kırılma noktaları (Tur 3 köşe başına hesap; Tur 2: 7,28 mV / 338 / 698 ppm):** Hint_max = **7,25 mV** olursa a = 0. REF35'te bütçe dışı **+334 ppm** ek hata (ör. lehim kayması) a'yı, **+703 ppm** b'yi sıfırlar. Tek bir sınırsız terimin (Hint, lehim kayması, uzun dönem) bu düzeyleri aşmayacağına dair datasheet garantisi yok. Bu yüzden mevcut marj, garanti için **yetersiz** kabul edildi.
 
 **Tasarım değişikliği önerileri (uygulanmadı; KiCad/BOM değişmedi; parametrik Ç, parça seçilmedi/doğrulanmadı).** `search_c3()` en iyi E96 yeniden merkezlemesi:
 | Seçenek | En kötü marj | a / b / c (mV) | Not |
@@ -100,7 +100,7 @@ Ek seçenekler: (i) Hint bağımlılığını kaldırmak için garantili histere
 | V_r / V_f / H (köşe aralığı) | 19,560–19,922 V / 18,070–18,394 V / 1,476–1,542 V |
 | Marjlar a / b / c / d / e | **+73,87 / +70,32 / +75,54 / +251,33 / +182,14 mV** (Tur 3 köşe başına hesap, 16384 köşe; Tur 2: +73,91 / +70,28 / +75,54 / +251,37 / +182,14). C3: +6,64 / +12,72 / +27,89 / +145,14 / +71,04 |
 | 125 °C göreli kayma duyarlılığı | a +45,37, b +42,88 mV |
-| Durum | **`NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS`** – 3 sınırsız terim: REF5040 uzun dönem, REF5040 lehim kayması, TLV3202 Hint |
+| Durum | **`NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS`** – Tur 3'te **4** sınırsız terim: REF5040 uzun dönem, REF5040 lehim kayması, TLV3202 Hint, ACAS DF dayanıklılık/lehim (AE-only veri, T3-04). C3: 3 sınırsız terim |
 | Terim etkileri a / b | uzun dönem +5,46 / +4,99; termal histerezis +0,99 / +0,91; Hint +11,43 / +10,47; ACAS DF varsayımı (Tur 2 değeri) +37,88 / +36,73; I_Q +4,05 (yalnız a) mV |
 | Regresyon | Yanlış Rb 5,23k: en kötü −0,3013 V → beklenen FAIL (bütçe ve deck `o3-reg-misset-rbu-5k23-vrmax`) |
 
