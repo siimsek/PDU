@@ -10,7 +10,7 @@ B-tests  (P0 startup budget): uvlo_budget.py must use the guaranteed TLV3202 VIO
 Usage: python3 tests/test_uvlo_gates.py [path/to/package_dir]   (default: the package dir that contains tests/)
 No real file in the package is written (the verifier runs against a temporary copy of the tree layout).
 """
-import importlib.util, json, shutil, sys, tempfile, contextlib, io
+import hashlib, importlib.util, json, shutil, sys, tempfile, contextlib, io
 from pathlib import Path
 
 PKG = Path(sys.argv[1]).absolute() if len(sys.argv) > 1 else Path(__file__).absolute().parent.parent
@@ -64,9 +64,19 @@ def run_verifier(cases, logs):
         o1 = tmp / 'simulation' / 'proposals' / '2026-10-25-o1-ovp'; o1.mkdir()
         for p in ('pdu-o1ovp-behavioral.lib', 'pdu-o1ovp-block.inc', 'pdu-circuit-o1ovp.inc', 'pdu-efuse-block-o1ovp.inc'):
             (o1 / p).write_text('* dummy\n')
-        for n, m in logs.items():
-            if m is not None:
-                (here / 'results' / 'logs' / f'uvlo-{n}.log').write_text(log_text(m))
+        # Tur-2 (UVLO-04): the verifier only accepts logs bound to a fresh run manifest -> the fixture writes one
+        # (decks + manifest with matching SHA-256); stale/failed-run negatives are in test_uvlo_tur2.py
+        sh = lambda t: hashlib.sha256(t.encode()).hexdigest()
+        runs = {}
+        for n in cases:
+            d = f'* deck {n}\n.end\n'; (here / 'decks').mkdir(exist_ok=True); (here / 'decks' / f'uvlo-{n}.cir').write_text(d)
+            lt = log_text(logs[n]) if logs.get(n) is not None else None
+            if lt is not None:
+                (here / 'results' / 'logs' / f'uvlo-{n}.log').write_text(lt)
+            runs[f'uvlo-{n}'] = dict(rc=0, completed=True, deck_sha256=sh(d), log_sha256=sh(lt) if lt else None)
+        (here / 'results' / 'run-manifest.json').write_text(json.dumps(dict(
+            run_id='fixture', git_head='', package_inputs_dirty_at_run=False, runner_exit_code=0,
+            cases_sha256=sh((here / 'test-cases-uvlo.json').read_text()), runs=runs)))
         v = load('verify_uvlo_under_test', here / 'verify_uvlo.py')
         code = None
         with contextlib.redirect_stdout(io.StringIO()):

@@ -104,7 +104,11 @@ jobs:
         with:
           persist-credentials: false
       - name: Install ngspice (apt)
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ngspice && ngspice --version || true
+        # Tur-2 UVLO-04: an install failure must fail the job (no error masking)
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends ngspice
+          command -v ngspice
+          ngspice -v
       - name: Hard limits present (must not be loosened)
         run: |
           grep -q "O1_PEAK_MAX = 12.0" verify_uvlo.py
@@ -112,7 +116,9 @@ jobs:
           grep -q "V_FALL_MIN = 18.0" verify_uvlo.py
           grep -q "T_SEQ_MIN = 0.060" verify_uvlo.py
       - name: Verifier/budget gate self-tests (fail-closed; synthetic logs incl. INFO cases O1 12.01 V and stable bus 11.17 V)
-        run: python3 tests/test_uvlo_gates.py
+        run: |
+          python3 tests/test_uvlo_gates.py
+          python3 tests/test_uvlo_tur2.py
       - name: Analytic budget (must pass and match the committed JSON)
         run: |
           python3 uvlo_budget.py
@@ -122,11 +128,13 @@ jobs:
           python3 gen_uvlo.py
           git status --porcelain -- decks *.inc | tee /tmp/gen-diff.txt
           test ! -s /tmp/gen-diff.txt
+      # Tur-2 UVLO-04: the runner deletes old logs/manifest first and fails the step on any deck error;
+      # the verifier still runs for the report (if: !cancelled()) but refuses logs not bound to THIS run id + HEAD.
       - name: Run decks
-        continue-on-error: true
-        run: PDU_NGSPICE="$(command -v ngspice)" python3 run_uvlo.py -j 4
+        run: PDU_NGSPICE="$(command -v ngspice)" python3 run_uvlo.py -j 4 --run-id "gha-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
       - name: Independent verification
-        run: python3 verify_uvlo.py
+        if: ${{ !cancelled() }}
+        run: python3 verify_uvlo.py --run-id "gha-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -138,7 +138,11 @@ def edges(n=4):
     s = ''
     for i in range(1, n + 1):
         s += f'.meas tran EN_R{i} WHEN V(EN_BUCK)=1.0 RISE={i}\n.meas tran EN_F{i} WHEN V(EN_BUCK)=1.0 FALL={i}\n'
+    # Tur-2 (UVLO-05): OUTA_R2/R3/RLAST = VIN-OK restoration after a dip; the 60 ms restart gate is measured from the
+    # last OUTA rise before the EN rise (fail-closed if missing).
     s += ('.meas tran OUTA_R1 WHEN V(OUTA_UV)=2.5 RISE=1\n.meas tran OUTA_F1 WHEN V(OUTA_UV)=2.5 FALL=1\n'
+          '.meas tran OUTA_R2 WHEN V(OUTA_UV)=2.5 RISE=2\n.meas tran OUTA_R3 WHEN V(OUTA_UV)=2.5 RISE=3\n'
+          '.meas tran OUTA_RLAST WHEN V(OUTA_UV)=2.5 RISE=LAST\n.meas tran OUTA_F2 WHEN V(OUTA_UV)=2.5 FALL=2\n'
           '.meas tran FET_ON1 WHEN V(M_VGS)=6 RISE=1\n.meas tran FET_ON2 WHEN V(M_VGS)=6 RISE=2\n'
           '.meas tran FET_OFF1 WHEN V(M_VGS)=6 FALL=1\n')
     return s
@@ -167,6 +171,20 @@ def win(name, a, b):
             f'.meas tran {name}_RAW_AVG AVG V(RAW) FROM={a:.6g} TO={b:.6g}\n.meas tran {name}_O1_AVG AVG V(O1_11V) FROM={a:.6g} TO={b:.6g}\n'
             f'.meas tran {name}_VIN_MIN MIN V(VIN) FROM={a:.6g} TO={b:.6g}\n.meas tran {name}_EN_MIN MIN V(EN_BUCK) FROM={a:.6g} TO={b:.6g}\n'
             f'.meas tran {name}_VGS_MIN MIN V(M_VGS) FROM={a:.6g} TO={b:.6g}\n.meas tran {name}_INP_MIN MIN V(INP_OVP) FROM={a:.6g} TO={b:.6g}\n')
+
+RDIP_THR = 11.1605
+
+def rdip_meas(t0, stop):
+    """Tur-2 (UVLO-06) PROVISIONAL WP3 R-DIP screen measurements (review proposal, not a requirement): bus (VOUT) peak,
+    integrated time above 11.1605 V (smooth 0.1 mV indicator, unloaded B-source node), first rise / last fall through
+    11.1605 V, all from the dip start t0 to the end of the run; O1 peak and time above for information."""
+    return (f'Brdb M_RDB 0 V=min(max((V(VOUT)-{RDIP_THR})/1e-4,0),1)\nBrdo M_RDO 0 V=min(max((V(O1_11V)-{RDIP_THR})/1e-4,0),1)\n'
+            f'.meas tran RD_PEAK MAX V(VOUT) FROM={t0:.6g} TO={stop:.6g}\n'
+            f'.meas tran RD_T_ABOVE INTEG V(M_RDB) FROM={t0:.6g} TO={stop:.6g}\n'
+            f'.meas tran RD_ABOVE_FIRST WHEN V(VOUT)={RDIP_THR} RISE=1 FROM={t0:.6g}\n'
+            f'.meas tran RD_ABOVE_LAST WHEN V(VOUT)={RDIP_THR} FALL=LAST FROM={t0:.6g}\n'
+            f'.meas tran RD_PEAK_O1 MAX V(O1_11V) FROM={t0:.6g} TO={stop:.6g}\n'
+            f'.meas tran RD_T_ABOVE_O1 INTEG V(M_RDO) FROM={t0:.6g} TO={stop:.6g}\n')
 
 CASES = {}
 def add(name, text, **meta):
@@ -247,7 +265,8 @@ def gen():
                 f'.meas tran BUS_RESTART_MAX MAX V(VOUT) FROM={t1:.6g} TO={a:.6g}\n'
                 f'.meas tran RAW_RESTART_MAX MAX V(RAW) FROM={t1:.6g} TO={a:.6g}\n'
                 f'.meas tran INP_RESTART_MIN MIN V(INP_OVP) FROM={t1:.6g} TO={a:.6g}\n'
-                f'.meas tran RAW_AT_DIP_END FIND V(RAW) AT={t1:.6g}\n.meas tran T_AT_DIP_END FIND V(T_UV) AT={t1:.6g}\n'),
+                f'.meas tran RAW_AT_DIP_END FIND V(RAW) AT={t1:.6g}\n.meas tran T_AT_DIP_END FIND V(T_UV) AT={t1:.6g}\n'
+                + rdip_meas(t0, stop)),
                 kind='dip', expect=exp, uv=uv, tm=tm, pre=[t0 - 0.03, t0], post=[a, stop], t0=t0, t1=t1, e_dip=ed, light=sc < 1)
     # ---- G: hot-plug, stiff source (R_total 0.03 ohm, 1 uH), 1 us edge
     for e in (20.0, 25.2, 26.0):

@@ -1,0 +1,33 @@
+OK  U00 control: clean start + ramp_down + dip restart 60.5 ms with fresh manifest -> exit 0  -> exit 0 (want 0)
+BAD U03a start: OUTA_R1 missing -> exit != 0 (60 ms check must not be skipped)  -> exit 0 (want nonzero)
+BAD U03b start: OUTA_R1 failed! -> exit != 0  -> exit 0 (want nonzero)
+OK  U03c start: EN_R1 - OUTA_R1 = 59 ms -> exit != 0 (control of the gate itself)  -> exit 1 (want nonzero)
+BAD U03d ramp_down: EN_F1 present, VIN_AT_SHUTDOWN missing -> exit != 0  -> exit 0 (want nonzero)
+BAD U03e ramp_down: VIN_AT_SHUTDOWN failed! -> exit != 0  -> exit 0 (want nonzero)
+BAD U03f mb_hold: EN_F1 present, VIN_AT_SHUTDOWN missing -> exit != 0  -> exit 0 (want nonzero)
+BAD U05a dip: restart 16.1 ms after VIN restoration -> exit != 0  -> exit 0 (want nonzero)
+BAD U05b dip: restart 21 us (EN pulse) after VIN restoration -> exit != 0  -> exit 0 (want nonzero)
+BAD U05c dip: restart without OUTA restoration measurement -> exit != 0  -> exit 0 (want nonzero)
+OK  U05d dip: ride-through (no EN fall) -> no restart gate, exit 0  -> exit 0 (want 0)
+BAD M1 no run-manifest.json -> exit != 0  -> exit 0 (want nonzero)
+BAD M2 log SHA-256 differs from the manifest (stale/replaced log) -> exit != 0  -> exit 0 (want nonzero)
+BAD M3 deck SHA-256 differs from the manifest (log from an older deck) -> exit != 0  -> exit 0 (want nonzero)
+BAD M4 --run-id other than the manifest run_id -> exit != 0  -> exit 0 (want nonzero)
+OK  M4b --run-id equal to the manifest run_id -> exit 0  -> exit 0 (want 0)
+BAD M5 manifest rc = 1 for a deck (ngspice failed) -> exit != 0  -> exit 0 (want nonzero)
+BAD M6 deck/case missing from the manifest (partial run) -> exit != 0  -> exit 0 (want nonzero)
+BAD M6b case table changed after the run -> exit != 0  -> exit 0 (want nonzero)
+BAD R1 R-DIP screen: peak 11.41 V, 0.5 ms above, back in 3 ms -> PASS, exit 0  -> exit 0 (want 0); screen=None (want PASS)
+BAD R2 R-DIP screen: 1.5 ms above 11.1605 V -> FAIL (report-only, exit 0)  -> exit 0 (want 0); screen=None (want FAIL)
+BAD R3 R-DIP screen: peak 11.6 V -> FAIL (report-only, exit 0)  -> exit 0 (want 0); screen=None (want FAIL)
+BAD R4 R-DIP screen: above-threshold timing missing while peak > 11.1605 V -> UNDETERMINED  -> exit 0 (want 0); screen=None (want UNDETERMINED)
+BAD M7a runner: ngspice binary missing -> non-zero, old logs/manifest removed  -> rc 1; stale log survived; run_id not recorded; git_head not recorded
+BAD M7b runner: ngspice exits 1 (even if it printed Total analysis time) -> non-zero, fresh manifest  -> rc 0; runner exit 0; stale log survived; run_id not recorded; git_head not recorded
+BAD M8 runner: success -> exit 0, manifest has run_id + git_head, no stale entries  -> rc 0; stale log survived; run_id not recorded; git_head not recorded
+BAD W1 CI uvlo job: no "|| true" (install failure must fail the job)  -> found
+BAD W2 CI uvlo job: no continue-on-error (failed ngspice run must fail the job)  -> found
+BAD W3 CI uvlo job: verifier bound to this run (--run-id)  -> missing
+BAD W4 CI uvlo job: runner gets the same run id  -> missing
+BAD B3 UVLO-01: IN+ / IN- bias and leakage signs independent (opposite-sign vertices exist)  -> 1024 vertices, opposite-sign vertex present=False
+4/31 OK
+rc=1
