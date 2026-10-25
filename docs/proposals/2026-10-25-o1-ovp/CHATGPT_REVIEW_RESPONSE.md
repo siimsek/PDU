@@ -208,3 +208,21 @@ Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok). Bu turda W
 
 ## Karar (Tur 9 sonrası)
 **WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık bloklayıcılar: P0-03 (4 ESL deck), P0-05/N-01 (U3 maskeleme; B10/B13), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı. CI kullanıcı tarafından devre dışı. Simülasyon fiziksel ölçüm değildir.
+
+# Tur 10 – ChatGPT birleşik incelemesi (PR yorumu 6398375361, HEAD `a6a3d99`; WP1 bölümü) yanıtı
+
+Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok). Bu turda WP1 deck'leri, modelleri, limitleri, `run_o1ovp.py`, `verify_candidate.py` ve WP1 sonuçları **değişmedi**; yeni WP1 ngspice kabul koşusu yapılmadı, yeni simülasyon kanıtı a6a3d99'a ya da sonraki HEAD'lere atfedilmiyor.
+
+**CI durumu:** `proposal-ngspice` (id 395474051) kullanıcı tarafından devre dışı bırakıldı; yeniden etkinleştirilmedi, YAML tutuldu. **CI kapısı etkin değildir**; kanıt yerel koşular + kayıtlı run-id/sha256.
+
+**Kontrol amaçlı yeniden çalıştırma (2026-10-25 19:21 TSİ, commit'li `wp1-rev3-tur6` logları, HEAD `d538a8d`):** `verify_candidate.py` exit **2** (1766 kontrol, 0 sayısal FAIL, 4 MISSING – `buck-short-c165/c185-esr12m5-esl2n` × typ/wchi); `--baseline-regression` exit **1** (baseline O1 16,89 V > 12,0 V, beklenen FAIL); `guard_negative_test.py` **29/29**.
+
+| # | Bulgu (Tur 10) | Doğrulama | Durum | Commit / kanıt |
+|---|---|---|---|---|
+| **WP1-T10-00** (P2) | Tur 10 kanıtı a6a3d99'da yok | Doğru | **düzeltildi** (bu yanıt) | bu commit; yeni WP1 simülasyon kanıtı yok |
+| **WP1-T10-01** (P0) | 4 ESL deck abort; RPU10 330/1000 Ω s023 toparlanmayı bozuyor. Öneri: (A) yalnız eğim kontrolü (RPD10 10 Ω, asimetrik/diyot yönlendirmeli yol), (B) yalnız RAW/giriş sönümleme (mevcut izlerden baskın halka frekansına göre), (C) birleşimi; her dal için 4 ESL + ESL=0 eşleri + s023 typ/wchi + tam matris, sıfır MISSING; sonra WP2 gecikmeli-EN ile çapraz koşu | Doğru; sayılar yeniden üretildi. RPU10 330/1000 Ω seçilmedi | **açık (ana bloklayıcı)** | değişiklik yok; A/B/C dal planı bir sonraki iş kalemi olarak kabul edildi. Not: WP2 Tur 4'te 0 V 50 µs dip deck'lerinin 3'ü de aynı U3 eFuse davranışsal IMON düğümünde (`imon_o1`) "Timestep too small" ile durdu → ortak sayısal kök neden olabilir |
+| **WP1-T10-02** (P0) | O1 sınırı davranışsal U3 mandalına dayanıyor; mandallı / mandalsız / U3-yok matrisi, O1 konnektörde bağımsız ölçüm | Doğru (mandalsız VOUT 12,50435 / 13,03882 V; VOUT vekil, O1 kanıtlanmadı) | **açık (kritik)** | değişiklik yok; matris (c165/c185-esr100m typ/wchi + s023 typ/wchi, ESL'ler T10-01 sonrası) bir sonraki iş kalemi; B10/B13 tezgâh yapılmadı |
+| **P1** | SOA (B18), KiCad aktarımı, WP3 döngü kararlılığı | Doğru | **açık** | değişiklik yok |
+
+## Karar (Tur 10 sonrası)
+**WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık: P0-03 / WP1-T10-01 (4 ESL deck), P0-05 / N-01 / WP1-T10-02 (U3 maskeleme; B10/B13), P1-01 SOA (B18), P1-02 KiCad, P1-04 WP3 döngü kararlılığı; tezgâh testleri yapılmadı; CI kullanıcı tarafından devre dışı. Simülasyon fiziksel ölçüm değildir.
