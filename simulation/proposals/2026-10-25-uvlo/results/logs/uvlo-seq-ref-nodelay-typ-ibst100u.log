@@ -9,50 +9,50 @@ Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
 Using SPARSE 1.3 as Direct Linear Solver
 Operating point simulation skipped by 'uic',
   now using transient initial conditions.
- Reference value :  6.07016e-04
- Reference value :  1.33402e-03
- Reference value :  2.05535e-03
- Reference value :  2.73845e-03
- Reference value :  3.47475e-03
- Reference value :  4.19945e-03
- Reference value :  4.83085e-03
- Reference value :  5.44215e-03
- Reference value :  6.14115e-03
- Reference value :  6.87175e-03
- Reference value :  7.59635e-03
- Reference value :  8.33595e-03
- Reference value :  9.07305e-03
- Reference value :  9.79635e-03
- Reference value :  1.05368e-02
- Reference value :  1.12582e-02
- Reference value :  1.19782e-02
- Reference value :  1.27020e-02
- Reference value :  1.33963e-02
- Reference value :  1.41296e-02
- Reference value :  1.48625e-02
- Reference value :  1.55760e-02
- Reference value :  1.62267e-02
- Reference value :  1.69156e-02
- Reference value :  1.76401e-02
- Reference value :  1.83767e-02
- Reference value :  1.91072e-02
- Reference value :  1.98286e-02
- Reference value :  2.05682e-02
- Reference value :  2.12860e-02
- Reference value :  2.20180e-02
- Reference value :  2.27616e-02
- Reference value :  2.34854e-02
- Reference value :  2.42230e-02
- Reference value :  2.47454e-02
- Reference value :  2.54571e-02
- Reference value :  2.61844e-02
- Reference value :  2.68957e-02
- Reference value :  2.76134e-02
- Reference value :  2.83519e-02
- Reference value :  2.90638e-02
- Reference value :  2.98044e-02
- Reference value :  3.05339e-02
- Reference value :  3.12551e-02
+ Reference value :  6.67116e-04
+ Reference value :  1.39852e-03
+ Reference value :  2.12875e-03
+ Reference value :  2.85745e-03
+ Reference value :  3.59185e-03
+ Reference value :  4.32515e-03
+ Reference value :  5.03835e-03
+ Reference value :  5.75085e-03
+ Reference value :  6.48255e-03
+ Reference value :  7.20535e-03
+ Reference value :  7.93045e-03
+ Reference value :  8.66445e-03
+ Reference value :  9.40575e-03
+ Reference value :  1.01248e-02
+ Reference value :  1.08583e-02
+ Reference value :  1.15979e-02
+ Reference value :  1.23184e-02
+ Reference value :  1.30578e-02
+ Reference value :  1.37868e-02
+ Reference value :  1.45102e-02
+ Reference value :  1.52594e-02
+ Reference value :  1.59746e-02
+ Reference value :  1.66898e-02
+ Reference value :  1.74302e-02
+ Reference value :  1.81514e-02
+ Reference value :  1.88761e-02
+ Reference value :  1.95954e-02
+ Reference value :  2.03140e-02
+ Reference value :  2.10390e-02
+ Reference value :  2.17712e-02
+ Reference value :  2.24937e-02
+ Reference value :  2.32276e-02
+ Reference value :  2.39670e-02
+ Reference value :  2.46857e-02
+ Reference value :  2.54149e-02
+ Reference value :  2.61032e-02
+ Reference value :  2.67914e-02
+ Reference value :  2.75156e-02
+ Reference value :  2.82432e-02
+ Reference value :  2.89594e-02
+ Reference value :  2.96868e-02
+ Reference value :  3.04163e-02
+ Reference value :  3.11302e-02
+ Reference value :  3.18493e-02
 No. of Data Rows : 319327
 
   Measurements for Transient Analysis
@@ -70,16 +70,16 @@ run_vgs_min         =  7.216450e-16 at=  3.189995e-02
 run_inp_min         =  4.999499e+00 at=  3.190000e-02
 
 
-Total analysis time (seconds) = 23.8773
+Total analysis time (seconds) = 11.0115
 
-Total elapsed time (seconds) = 23.893 
+Total elapsed time (seconds) = 11.025 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available =  570.812 MB.
+DRAM currently available = 1002.340 MB.
 Maximum ngspice program size =   46.555 MB.
-Current ngspice program size =   37.660 MB.
+Current ngspice program size =   37.469 MB.
 
-Shared ngspice pages =   10.867 MB.
+Shared ngspice pages =   10.676 MB.
 Text (code) pages =    6.543 MB.
 Stack = 0 bytes.
 Library pages =   26.875 MB.

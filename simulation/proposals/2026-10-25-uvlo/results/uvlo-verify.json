@@ -1,8 +1,9 @@
 {
  "summary": {
   "exit_code": 0,
-  "git_head": "bfec6916aa584550121ee8c5e64ecb57e589d7bb",
+  "git_head": "a0dea9156cdfe1dd6c4c4edd6af1b2c2a3dc2163",
   "worktree_dirty_at_verify": true,
+  "package_inputs_dirty": false,
   "n_cases": 58,
   "n_pass": 52,
   "acceptance_fail": [],
@@ -17,6 +18,7 @@
    "dip0v-100us-typ-ttyp",
    "dip0v-100us-mbmin-tmin"
   ],
+  "hard_limit_gate": "H1/H2 enforced for every non-regression case (PASS and INFO)",
   "limits": {
    "O1_PEAK_MAX": 12.0,
    "BUS_NORMAL_MAX": 11.1605,
@@ -35,15 +37,16 @@
     "VIN_GLOBAL_MAX": 20.16231,
     "S_MINUS_V5_MAX": 0.0003797713,
     "SWD_MINUS_V5_MAX": 0.0003797369,
-    "EN_R1": 0.259965,
-    "OUTA_R1": 0.00476367,
+    "EN_R1": 0.261081,
+    "OUTA_R1": 0.00550467,
     "FET_ON1": 0.0123392,
-    "delay_after_vin_ok": 0.25520133,
-    "seq_margin_s": 0.2476258,
-    "RUN_VIN_MIN": 18.73354,
-    "run_margin_to_vf": 0.2575925105895074
+    "delay_after_vin_ok": 0.25557633,
+    "seq_margin_s": 0.2487418,
+    "RUN_VIN_MIN": 18.73355,
+    "run_margin_to_vf": 0.2466927339406304
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "start20-vrmax-tmin": {
    "status": "PASS",
@@ -55,55 +58,58 @@
     "VIN_GLOBAL_MAX": 20.16236,
     "S_MINUS_V5_MAX": 0.0003797604,
     "SWD_MINUS_V5_MAX": 0.000379726,
-    "EN_R1": 0.082655,
-    "OUTA_R1": 0.00476139,
+    "EN_R1": 0.0833055,
+    "OUTA_R1": 0.00549939,
     "FET_ON1": 0.042396,
-    "delay_after_vin_ok": 0.07789361,
-    "seq_margin_s": 0.040259,
-    "RUN_VIN_MIN": 18.73352,
-    "run_margin_to_vf": 0.2575725105895046
+    "delay_after_vin_ok": 0.07780611000000001,
+    "seq_margin_s": 0.0409095,
+    "RUN_VIN_MIN": 18.73353,
+    "run_margin_to_vf": 0.2466727339406276
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "start20-vfmax-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.02082,
+    "BUS_GLOBAL_MAX": 11.02083,
     "RAW_GLOBAL_MAX": 11.02907,
     "VIN_GLOBAL_MAX": 20.16236,
     "S_MINUS_V5_MAX": 0.0003797604,
     "SWD_MINUS_V5_MAX": 0.000379726,
-    "EN_R1": 0.082249,
-    "OUTA_R1": 0.00435539,
+    "EN_R1": 0.0824645,
+    "OUTA_R1": 0.00465839,
     "FET_ON1": 0.042396,
-    "delay_after_vin_ok": 0.07789361,
-    "seq_margin_s": 0.039853,
-    "RUN_VIN_MIN": 18.73351,
-    "run_margin_to_vf": 0.2439252897784101
+    "delay_after_vin_ok": 0.07780611,
+    "seq_margin_s": 0.04006849999999999,
+    "RUN_VIN_MIN": 18.73352,
+    "run_margin_to_vf": 0.23302551312953668
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "start20-mbmin-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.02082,
-    "RAW_GLOBAL_MAX": 11.02907,
+    "BUS_GLOBAL_MAX": 11.02083,
+    "RAW_GLOBAL_MAX": 11.02908,
     "VIN_GLOBAL_MAX": 20.16236,
     "S_MINUS_V5_MAX": 0.0003847224,
     "SWD_MINUS_V5_MAX": 0.0003846873,
-    "EN_R1": 0.080398,
-    "OUTA_R1": 0.00250439,
-    "FET_ON1": 0.042396,
-    "delay_after_vin_ok": 0.07789361,
-    "seq_margin_s": 0.038001999999999994,
+    "EN_R1": 0.080296,
+    "OUTA_R1": 0.00248983,
+    "FET_ON1": 0.0423961,
+    "delay_after_vin_ok": 0.07780617000000001,
+    "seq_margin_s": 0.03789990000000001,
     "RUN_VIN_MIN": 18.73349,
-    "run_margin_to_vf": 0.6966222849309922
+    "run_margin_to_vf": 0.7073906387985005
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "start20-vfmin-tmax": {
    "status": "PASS",
@@ -115,15 +121,16 @@
     "VIN_GLOBAL_MAX": 20.16231,
     "S_MINUS_V5_MAX": 0.0003847224,
     "SWD_MINUS_V5_MAX": 0.0003846876,
-    "EN_R1": 0.257738,
-    "OUTA_R1": 0.00253667,
+    "EN_R1": 0.258098,
+    "OUTA_R1": 0.00252167,
     "FET_ON1": 0.0123392,
-    "delay_after_vin_ok": 0.25520133,
-    "seq_margin_s": 0.24539880000000003,
+    "delay_after_vin_ok": 0.25557633,
+    "seq_margin_s": 0.2457588,
     "RUN_VIN_MIN": 18.73351,
-    "run_margin_to_vf": 0.7101027272653759
+    "run_margin_to_vf": 0.7208710811328842
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "start20-typ-ttyp": {
    "status": "PASS",
@@ -143,27 +150,29 @@
     "RUN_VIN_MIN": 18.73345,
     "run_margin_to_vf": 0.474660073000873
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rampup-10vps-mbmin-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.00621,
-    "RAW_GLOBAL_MAX": 11.01568,
-    "VIN_GLOBAL_MAX": 20.25539,
+    "BUS_GLOBAL_MAX": 11.00622,
+    "RAW_GLOBAL_MAX": 11.01569,
+    "VIN_GLOBAL_MAX": 20.2429,
     "S_MINUS_V5_MAX": 0.01872747,
     "SWD_MINUS_V5_MAX": 0.01872576,
-    "EN_R1": 0.53594,
-    "OUTA_R1": 0.458047,
+    "EN_R1": 0.534691,
+    "OUTA_R1": 0.456885,
     "FET_ON1": 0.0212945,
-    "delay_after_vin_ok": 0.07789299999999999,
-    "seq_margin_s": 0.5146455,
+    "delay_after_vin_ok": 0.07780600000000004,
+    "seq_margin_s": 0.5133965,
     "RUN_VIN_MIN": 19.80132,
-    "run_margin_to_vf": 1.764452284930993
+    "run_margin_to_vf": 1.7752206387985012
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rampup-10vps-vrmax-tmax": {
    "status": "PASS",
@@ -175,15 +184,16 @@
     "VIN_GLOBAL_MAX": 20.99602,
     "S_MINUS_V5_MAX": 0.01850932,
     "SWD_MINUS_V5_MAX": 0.01850764,
-    "EN_R1": 0.764026,
-    "OUTA_R1": 0.508825,
+    "EN_R1": 0.765579,
+    "OUTA_R1": 0.510003,
     "FET_ON1": 0.0212945,
-    "delay_after_vin_ok": 0.255201,
-    "seq_margin_s": 0.7427315,
+    "delay_after_vin_ok": 0.255576,
+    "seq_margin_s": 0.7442845,
     "RUN_VIN_MIN": 19.80202,
-    "run_margin_to_vf": 1.3260725105895048
+    "run_margin_to_vf": 1.3151627339406282
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rampup-10vps-typ-ttyp": {
    "status": "PASS",
@@ -203,48 +213,51 @@
     "RUN_VIN_MIN": 19.80196,
     "run_margin_to_vf": 1.5431700730008728
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rampup-1vps-mbmin-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.00621,
-    "RAW_GLOBAL_MAX": 11.01568,
+    "BUS_GLOBAL_MAX": 11.00622,
+    "RAW_GLOBAL_MAX": 11.01569,
     "VIN_GLOBAL_MAX": 19.8013,
     "S_MINUS_V5_MAX": 0.0154132,
     "SWD_MINUS_V5_MAX": 0.01541179,
-    "EN_R1": 0.762235,
-    "OUTA_R1": 0.684342,
+    "EN_R1": 0.750523,
+    "OUTA_R1": 0.672717,
     "FET_ON1": 0.0194705,
-    "delay_after_vin_ok": 0.07789299999999999,
-    "seq_margin_s": 0.7427645,
+    "delay_after_vin_ok": 0.07780600000000004,
+    "seq_margin_s": 0.7310525000000001,
     "RUN_VIN_MIN": 19.80128,
-    "run_margin_to_vf": 1.764412284930991
+    "run_margin_to_vf": 1.7751806387984992
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rampdown-10vps-vfmin-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.00622,
-    "RAW_GLOBAL_MAX": 11.01568,
+    "BUS_GLOBAL_MAX": 11.00621,
+    "RAW_GLOBAL_MAX": 11.01569,
     "VIN_GLOBAL_MAX": 21.17196,
     "S_MINUS_V5_MAX": 0.0003753052,
     "SWD_MINUS_V5_MAX": 0.0003752713,
-    "EN_R1": 0.0797247,
-    "EN_F1": 0.324853,
-    "OUTA_R1": 0.00183113,
+    "EN_R1": 0.0796323,
+    "EN_F1": 0.325763,
+    "OUTA_R1": 0.00182613,
     "FET_ON1": 0.0123357,
-    "VIN_AT_SHUTDOWN": 18.02282,
-    "EMF_AT_SHUTDOWN": 19.32971,
-    "VIN_AT_OUTA_FALL": 18.02213,
+    "VIN_AT_SHUTDOWN": 18.01206,
+    "EMF_AT_SHUTDOWN": 19.31973,
+    "VIN_AT_OUTA_FALL": 18.01138,
     "VIN_MAX_AFTER": 16.99639
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rampdown-10vps-mbmin-tmin": {
    "status": "PASS",
@@ -256,16 +269,17 @@
     "VIN_GLOBAL_MAX": 21.17196,
     "S_MINUS_V5_MAX": 0.0003753052,
     "SWD_MINUS_V5_MAX": 0.000375271,
-    "EN_R1": 0.0797147,
-    "EN_F1": 0.323604,
-    "OUTA_R1": 0.00182113,
-    "FET_ON1": 0.0123367,
-    "VIN_AT_SHUTDOWN": 18.03628,
-    "EMF_AT_SHUTDOWN": 19.3422,
-    "VIN_AT_OUTA_FALL": 18.03559,
+    "EN_R1": 0.0796222,
+    "EN_F1": 0.324515,
+    "OUTA_R1": 0.00181608,
+    "FET_ON1": 0.012336,
+    "VIN_AT_SHUTDOWN": 18.02552,
+    "EMF_AT_SHUTDOWN": 19.33221,
+    "VIN_AT_OUTA_FALL": 18.02483,
     "VIN_MAX_AFTER": 16.99639
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rampdown-10vps-typ-ttyp": {
    "status": "PASS",
@@ -286,7 +300,8 @@
     "VIN_AT_OUTA_FALL": 18.2575,
     "VIN_MAX_AFTER": 16.99634
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rampdown-1vps-mbmin-tmin": {
    "status": "PASS",
@@ -298,16 +313,17 @@
     "VIN_GLOBAL_MAX": 21.17196,
     "S_MINUS_V5_MAX": 0.0003753052,
     "SWD_MINUS_V5_MAX": 0.000375271,
-    "EN_R1": 0.0797147,
-    "EN_F1": 0.707646,
-    "OUTA_R1": 0.00182113,
-    "FET_ON1": 0.0123367,
-    "VIN_AT_SHUTDOWN": 18.04331,
-    "EMF_AT_SHUTDOWN": 19.35128,
-    "VIN_AT_OUTA_FALL": 18.04262,
+    "EN_R1": 0.0796222,
+    "EN_F1": 0.717549,
+    "OUTA_R1": 0.00181608,
+    "FET_ON1": 0.012336,
+    "VIN_AT_SHUTDOWN": 18.03255,
+    "EMF_AT_SHUTDOWN": 19.34129,
+    "VIN_AT_OUTA_FALL": 18.03186,
     "VIN_MAX_AFTER": 18.79618
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "mbhold-mbmin-tmin-r250-m50mv": {
    "status": "PASS",
@@ -319,16 +335,17 @@
     "VIN_GLOBAL_MAX": 21.17196,
     "S_MINUS_V5_MAX": 0.0003753052,
     "SWD_MINUS_V5_MAX": 0.000375271,
-    "EN_R1": 0.0797147,
-    "EN_F1": 0.323604,
-    "OUTA_R1": 0.00182113,
-    "FET_ON1": 0.0123367,
-    "VIN_AT_SHUTDOWN": 18.03628,
-    "VIN_MIN_HOLD": 19.10713,
+    "EN_R1": 0.0796222,
+    "EN_F1": 0.324516,
+    "OUTA_R1": 0.00181608,
+    "FET_ON1": 0.012336,
+    "VIN_AT_SHUTDOWN": 18.02552,
+    "VIN_MIN_HOLD": 19.09703,
     "shut_down": true,
-    "e_hold": 19.2904477141814
+    "e_hold": 19.280458087338733
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "mbhold-mbmin-tmin-r250-p50mv": {
    "status": "PASS",
@@ -340,14 +357,15 @@
     "VIN_GLOBAL_MAX": 21.17196,
     "S_MINUS_V5_MAX": 0.0003753052,
     "SWD_MINUS_V5_MAX": 0.000375271,
-    "EN_R1": 0.0797147,
-    "OUTA_R1": 0.00182113,
-    "FET_ON1": 0.0123367,
-    "VIN_MIN_HOLD": 18.07798,
+    "EN_R1": 0.0796222,
+    "OUTA_R1": 0.00181608,
+    "FET_ON1": 0.012336,
+    "VIN_MIN_HOLD": 18.06721,
     "shut_down": false,
-    "e_hold": 19.390447714181402
+    "e_hold": 19.380458087338734
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "mbhold-typ-ttyp-r250-m50mv": {
    "status": "PASS",
@@ -368,7 +386,8 @@
     "shut_down": true,
     "e_hold": 19.496525866456555
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "mbhold-typ-ttyp-r250-p50mv": {
    "status": "PASS",
@@ -387,89 +406,94 @@
     "shut_down": false,
     "e_hold": 19.596525866456556
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "mbhold-vfmax-tmin-r250-m50mv": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.00623,
-    "RAW_GLOBAL_MAX": 11.0157,
+    "BUS_GLOBAL_MAX": 11.00622,
+    "RAW_GLOBAL_MAX": 11.01569,
     "VIN_GLOBAL_MAX": 21.17197,
     "S_MINUS_V5_MAX": 0.0003705262,
     "SWD_MINUS_V5_MAX": 0.0003704926,
-    "EN_R1": 0.0799665,
-    "EN_F1": 0.281524,
-    "OUTA_R1": 0.00207288,
-    "FET_ON1": 0.0123364,
-    "VIN_AT_SHUTDOWN": 18.48888,
-    "VIN_MIN_HOLD": 19.53224,
+    "EN_R1": 0.0798867,
+    "EN_F1": 0.280421,
+    "OUTA_R1": 0.00208055,
+    "FET_ON1": 0.0123366,
+    "VIN_AT_SHUTDOWN": 18.49978,
+    "VIN_MIN_HOLD": 19.54251,
     "shut_down": true,
-    "e_hold": 19.711246587354047
+    "e_hold": 19.72140646258476
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "mbhold-vfmax-tmin-r250-p50mv": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.00623,
-    "RAW_GLOBAL_MAX": 11.0157,
+    "BUS_GLOBAL_MAX": 11.00622,
+    "RAW_GLOBAL_MAX": 11.01569,
     "VIN_GLOBAL_MAX": 21.17197,
     "S_MINUS_V5_MAX": 0.0003705262,
     "SWD_MINUS_V5_MAX": 0.0003704926,
-    "EN_R1": 0.0799665,
-    "OUTA_R1": 0.00207288,
-    "FET_ON1": 0.0123364,
-    "VIN_MIN_HOLD": 18.53072,
+    "EN_R1": 0.0798867,
+    "OUTA_R1": 0.00208055,
+    "FET_ON1": 0.0123366,
+    "VIN_MIN_HOLD": 18.54163,
     "shut_down": false,
-    "e_hold": 19.81124658735405
+    "e_hold": 19.82140646258476
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rsweep-r030": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.02081,
-    "RAW_GLOBAL_MAX": 11.02906,
-    "VIN_GLOBAL_MAX": 22.07847,
+    "BUS_GLOBAL_MAX": 11.02083,
+    "RAW_GLOBAL_MAX": 11.02908,
+    "VIN_GLOBAL_MAX": 22.07851,
     "S_MINUS_V5_MAX": 0.0003803971,
     "SWD_MINUS_V5_MAX": 0.0003803625,
-    "EN_R1": 0.0806886,
-    "OUTA_R1": 0.00279507,
-    "FET_ON1": 0.0123396,
-    "delay_after_vin_ok": 0.07789353,
-    "seq_margin_s": 0.068349,
+    "EN_R1": 0.0806012,
+    "OUTA_R1": 0.00279512,
+    "FET_ON1": 0.0123387,
+    "delay_after_vin_ok": 0.07780608,
+    "seq_margin_s": 0.0682625,
     "RUN_VIN_MIN": 19.85656,
     "run_margin_to_vf": 1.5977700730008735,
-    "VIN_PP_RUN": 0.000185507
+    "VIN_PP_RUN": 0.0001855127
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rsweep-r050": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.02083,
-    "RAW_GLOBAL_MAX": 11.02908,
-    "VIN_GLOBAL_MAX": 21.81488,
+    "BUS_GLOBAL_MAX": 11.02082,
+    "RAW_GLOBAL_MAX": 11.02907,
+    "VIN_GLOBAL_MAX": 21.81513,
     "S_MINUS_V5_MAX": 0.0003850771,
     "SWD_MINUS_V5_MAX": 0.0003850421,
-    "EN_R1": 0.0807614,
-    "OUTA_R1": 0.00286785,
-    "FET_ON1": 0.0123384,
-    "delay_after_vin_ok": 0.07789354999999999,
-    "seq_margin_s": 0.068423,
+    "EN_R1": 0.0806746,
+    "OUTA_R1": 0.00286848,
+    "FET_ON1": 0.012338,
+    "delay_after_vin_ok": 0.07780611999999999,
+    "seq_margin_s": 0.0683366,
     "RUN_VIN_MIN": 19.75976,
     "run_margin_to_vf": 1.5009700730008717,
-    "VIN_PP_RUN": 0.001130594
+    "VIN_PP_RUN": 0.001130628
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rsweep-r100": {
    "status": "PASS",
@@ -481,58 +505,61 @@
     "VIN_GLOBAL_MAX": 20.74023,
     "S_MINUS_V5_MAX": 0.0003348708,
     "SWD_MINUS_V5_MAX": 0.0003348403,
-    "EN_R1": 0.0808058,
-    "OUTA_R1": 0.00291218,
-    "FET_ON1": 0.0123337,
-    "delay_after_vin_ok": 0.07789362,
-    "seq_margin_s": 0.0684721,
+    "EN_R1": 0.0807187,
+    "OUTA_R1": 0.00291259,
+    "FET_ON1": 0.0123341,
+    "delay_after_vin_ok": 0.07780611,
+    "seq_margin_s": 0.0683846,
     "RUN_VIN_MIN": 19.51348,
     "run_margin_to_vf": 1.254690073000873,
-    "VIN_PP_RUN": 0.003604015
+    "VIN_PP_RUN": 0.003604186
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rsweep-r150": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.02082,
-    "RAW_GLOBAL_MAX": 11.02907,
+    "BUS_GLOBAL_MAX": 11.02083,
+    "RAW_GLOBAL_MAX": 11.02908,
     "VIN_GLOBAL_MAX": 20.52288,
     "S_MINUS_V5_MAX": 0.0003505729,
     "SWD_MINUS_V5_MAX": 0.000350541,
-    "EN_R1": 0.0808123,
-    "OUTA_R1": 0.0029187,
-    "FET_ON1": 0.0123363,
-    "delay_after_vin_ok": 0.07789360000000001,
-    "seq_margin_s": 0.06847600000000001,
+    "EN_R1": 0.0807245,
+    "OUTA_R1": 0.00291838,
+    "FET_ON1": 0.0123369,
+    "delay_after_vin_ok": 0.07780612,
+    "seq_margin_s": 0.0683876,
     "RUN_VIN_MIN": 19.26068,
     "run_margin_to_vf": 1.0018900730008724,
-    "VIN_PP_RUN": 0.006243113
+    "VIN_PP_RUN": 0.006242998
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rsweep-r200": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.02084,
-    "RAW_GLOBAL_MAX": 11.0291,
+    "BUS_GLOBAL_MAX": 11.02082,
+    "RAW_GLOBAL_MAX": 11.02907,
     "VIN_GLOBAL_MAX": 20.32984,
     "S_MINUS_V5_MAX": 0.0003670742,
     "SWD_MINUS_V5_MAX": 0.0003670408,
-    "EN_R1": 0.0808167,
-    "OUTA_R1": 0.0029231,
-    "FET_ON1": 0.0123377,
-    "delay_after_vin_ok": 0.07789360000000001,
-    "seq_margin_s": 0.06847900000000001,
+    "EN_R1": 0.0807297,
+    "OUTA_R1": 0.00292355,
+    "FET_ON1": 0.0123371,
+    "delay_after_vin_ok": 0.07780615,
+    "seq_margin_s": 0.0683926,
     "RUN_VIN_MIN": 19.00082,
     "run_margin_to_vf": 0.7420300730008726,
-    "VIN_PP_RUN": 0.009072551
+    "VIN_PP_RUN": 0.009073234
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rsweep-r250": {
    "status": "PASS",
@@ -540,97 +567,101 @@
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
     "BUS_GLOBAL_MAX": 11.02083,
-    "RAW_GLOBAL_MAX": 11.02907,
+    "RAW_GLOBAL_MAX": 11.02908,
     "VIN_GLOBAL_MAX": 20.16231,
     "S_MINUS_V5_MAX": 0.0003822289,
     "SWD_MINUS_V5_MAX": 0.0003821942,
-    "EN_R1": 0.0808212,
+    "EN_R1": 0.0807338,
     "OUTA_R1": 0.00292767,
     "FET_ON1": 0.0123392,
-    "delay_after_vin_ok": 0.07789353,
-    "seq_margin_s": 0.068482,
+    "delay_after_vin_ok": 0.07780613,
+    "seq_margin_s": 0.0683946,
     "RUN_VIN_MIN": 18.73326,
     "run_margin_to_vf": 0.47447007300087307,
-    "VIN_PP_RUN": 0.01212264
+    "VIN_PP_RUN": 0.01212283
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "rsweep-r300": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.02083,
-    "RAW_GLOBAL_MAX": 11.02908,
+    "BUS_GLOBAL_MAX": 11.02082,
+    "RAW_GLOBAL_MAX": 11.02907,
     "VIN_GLOBAL_MAX": 20.03346,
     "S_MINUS_V5_MAX": 0.0003981011,
     "SWD_MINUS_V5_MAX": 0.0003980649,
-    "EN_R1": 0.0808256,
+    "EN_R1": 0.0807381,
     "OUTA_R1": 0.00293199,
-    "FET_ON1": 0.0123415,
-    "delay_after_vin_ok": 0.07789361,
-    "seq_margin_s": 0.06848409999999999,
+    "FET_ON1": 0.0123405,
+    "delay_after_vin_ok": 0.07780611,
+    "seq_margin_s": 0.06839759999999999,
     "RUN_VIN_MIN": 18.45728,
     "run_margin_to_vf": 0.1984900730008725,
-    "VIN_PP_RUN": 0.01542912
+    "VIN_PP_RUN": 0.01542908
    },
-   "expect": "INFO"
+   "expect": "INFO",
+   "hard_limit_errors": []
   },
   "rsweep-r350": {
    "status": "FAIL",
    "errors": [
-    "EN fell at 0.1126 s (shutdown/motorboat)",
+    "EN fell at 0.1125 s (shutdown/motorboat)",
     "RUN: EN low (0.000 V) -> not running",
-    "RUN: RAW avg 4.3100 V not regulated",
+    "RUN: RAW avg 4.3208 V not regulated",
     "VIN under load 18.2557 <= V_f 18.2588"
    ],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.02084,
-    "RAW_GLOBAL_MAX": 11.02909,
+    "BUS_GLOBAL_MAX": 11.02085,
+    "RAW_GLOBAL_MAX": 11.0291,
     "VIN_GLOBAL_MAX": 19.99449,
     "S_MINUS_V5_MAX": 0.0004140408,
     "SWD_MINUS_V5_MAX": 0.0004140032,
-    "EN_R1": 0.0808293,
-    "EN_F1": 0.112593,
-    "EN_R2": 0.161729,
-    "OUTA_R1": 0.0029357,
-    "FET_ON1": 0.0123423,
-    "delay_after_vin_ok": 0.07789360000000001,
-    "seq_margin_s": 0.068487,
+    "EN_R1": 0.0807422,
+    "EN_F1": 0.112505,
+    "EN_R2": 0.161576,
+    "OUTA_R1": 0.00293607,
+    "FET_ON1": 0.0123416,
+    "delay_after_vin_ok": 0.07780613,
+    "seq_margin_s": 0.0684006,
     "RUN_VIN_MIN": 18.25569,
     "run_margin_to_vf": -0.0030999269991269784,
-    "VIN_PP_RUN": 1.716637
+    "VIN_PP_RUN": 1.716546
    },
-   "expect": "INFO"
+   "expect": "INFO",
+   "hard_limit_errors": []
   },
   "rsweep-r450": {
    "status": "FAIL",
    "errors": [
-    "EN fell at 0.0843 s (shutdown/motorboat)",
+    "EN fell at 0.0842 s (shutdown/motorboat)",
     "RUN: EN low (0.000 V) -> not running",
-    "RUN: RAW avg 1.3315 V not regulated",
+    "RUN: RAW avg 1.3313 V not regulated",
     "VIN under load 17.9928 <= V_f 18.2588"
    ],
    "info": {
-    "O1_GLOBAL_PEAK": 8.836552,
+    "O1_GLOBAL_PEAK": 8.836798,
     "BUS_GLOBAL_MAX": 11.02085,
     "RAW_GLOBAL_MAX": 11.0291,
     "VIN_GLOBAL_MAX": 19.99292,
     "S_MINUS_V5_MAX": 0.000446463,
     "SWD_MINUS_V5_MAX": 0.0004464225,
-    "EN_R1": 0.0808385,
-    "EN_F1": 0.0842648,
-    "EN_R2": 0.102439,
+    "EN_R1": 0.080751,
+    "EN_F1": 0.0841774,
+    "EN_R2": 0.102258,
     "OUTA_R1": 0.00294492,
     "FET_ON1": 0.0123455,
-    "delay_after_vin_ok": 0.07789357999999999,
-    "seq_margin_s": 0.068493,
-    "RUN_VIN_MIN": 17.99281,
-    "run_margin_to_vf": -0.26597992699912965,
-    "VIN_PP_RUN": 1.979057
+    "delay_after_vin_ok": 0.07780608,
+    "seq_margin_s": 0.06840550000000001,
+    "RUN_VIN_MIN": 17.99278,
+    "run_margin_to_vf": -0.2660099269991285,
+    "VIN_PP_RUN": 1.978997
    },
-   "expect": "INFO"
+   "expect": "INFO",
+   "hard_limit_errors": []
   },
   "dip19v-50ms-typ-ttyp": {
    "status": "PASS",
@@ -656,7 +687,8 @@
     "rode_through": false,
     "restart_delay_after_dip_end": 0.1741814674471331
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "dip19v-50ms-mbmin-tmin": {
    "status": "PASS",
@@ -668,21 +700,22 @@
     "VIN_GLOBAL_MAX": 22.3836,
     "S_MINUS_V5_MAX": 0.000355317,
     "SWD_MINUS_V5_MAX": 0.0003552846,
-    "EN_R1": 0.0793621,
-    "EN_F1": 0.159517,
-    "EN_R2": 0.283774,
-    "OUTA_R1": 0.00146852,
-    "FET_ON1": 0.0423891,
+    "EN_R1": 0.0792718,
+    "EN_F1": 0.159452,
+    "EN_R2": 0.283595,
+    "OUTA_R1": 0.00146567,
+    "FET_ON1": 0.0423889,
     "BUS_RESTART_MAX": 11.00622,
-    "RAW_RESTART_MAX": 11.01569,
+    "RAW_RESTART_MAX": 11.01568,
     "INP_RESTART_MIN": 4.899497,
     "RAW_AT_DIP_END": 6.956881e-06,
-    "T_AT_DIP_END": 0.1911723,
+    "T_AT_DIP_END": 0.1912551,
     "O1_DIP_MAX": 10.97811,
     "rode_through": false,
-    "restart_delay_after_dip_end": 0.07595028587385172
+    "restart_delay_after_dip_end": 0.07585863971960216
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "dip0v-1ms-typ-ttyp": {
    "status": "PASS",
@@ -711,36 +744,38 @@
     "restart_delay_after_dip_end": 0.14097946744713308,
     "P0_03_buck_before_fet": false
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "dip0v-1ms-mbmin-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.00622,
+    "BUS_GLOBAL_MAX": 11.00621,
     "RAW_GLOBAL_MAX": 11.30368,
-    "VIN_GLOBAL_MAX": 22.85607,
+    "VIN_GLOBAL_MAX": 22.85623,
     "S_MINUS_V5_MAX": 0.000355317,
     "SWD_MINUS_V5_MAX": 0.0003552846,
-    "EN_R1": 0.0793621,
-    "EN_F1": 0.158108,
-    "EN_R2": 0.227175,
-    "OUTA_R1": 0.00146852,
-    "FET_ON1": 0.0423891,
-    "FET_OFF1": 0.157884,
-    "FET_ON2": 0.158846,
-    "BUS_RESTART_MAX": 11.00622,
+    "EN_R1": 0.0792718,
+    "EN_F1": 0.158021,
+    "EN_R2": 0.226976,
+    "OUTA_R1": 0.00146567,
+    "FET_ON1": 0.0423889,
+    "FET_OFF1": 0.157796,
+    "FET_ON2": 0.158758,
+    "BUS_RESTART_MAX": 11.00621,
     "RAW_RESTART_MAX": 11.01568,
     "INP_RESTART_MIN": 4.899497,
-    "RAW_AT_DIP_END": 9.553878,
-    "T_AT_DIP_END": 1.839431,
+    "RAW_AT_DIP_END": 9.545525,
+    "T_AT_DIP_END": 1.841106,
     "O1_DIP_MAX": 10.97811,
     "rode_through": false,
-    "restart_delay_after_dip_end": 0.06835128587385167,
+    "restart_delay_after_dip_end": 0.06823963971960217,
     "P0_03_buck_before_fet": false
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "dip0v-300us-typ-ttyp": {
    "status": "PASS",
@@ -769,7 +804,8 @@
     "restart_delay_after_dip_end": 0.016088467447133048,
     "P0_03_buck_before_fet": false
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "dip0v-300us-mbmin-tmin": {
    "status": "PASS",
@@ -778,27 +814,28 @@
     "O1_GLOBAL_PEAK": 10.97811,
     "BUS_GLOBAL_MAX": 11.00622,
     "RAW_GLOBAL_MAX": 11.30368,
-    "VIN_GLOBAL_MAX": 22.81127,
+    "VIN_GLOBAL_MAX": 22.81213,
     "S_MINUS_V5_MAX": 0.000355317,
     "SWD_MINUS_V5_MAX": 0.0003552846,
-    "EN_R1": 0.0793621,
-    "EN_F1": 0.158108,
-    "EN_R2": 0.160422,
-    "OUTA_R1": 0.00146852,
-    "FET_ON1": 0.0423891,
-    "FET_OFF1": 0.157884,
-    "FET_ON2": 0.158146,
-    "BUS_RESTART_MAX": 11.00621,
-    "RAW_RESTART_MAX": 11.01568,
+    "EN_R1": 0.0792718,
+    "EN_F1": 0.158021,
+    "EN_R2": 0.159457,
+    "OUTA_R1": 0.00146567,
+    "FET_ON1": 0.0423889,
+    "FET_OFF1": 0.157796,
+    "FET_ON2": 0.158058,
+    "BUS_RESTART_MAX": 11.00622,
+    "RAW_RESTART_MAX": 11.0157,
     "INP_RESTART_MIN": 4.899497,
-    "RAW_AT_DIP_END": 9.784258,
-    "T_AT_DIP_END": 4.682325,
+    "RAW_AT_DIP_END": 9.776303,
+    "T_AT_DIP_END": 4.68804,
     "O1_DIP_MAX": 10.97811,
     "rode_through": false,
-    "restart_delay_after_dip_end": 0.0022982858738516965,
+    "restart_delay_after_dip_end": 0.001420639719602157,
     "P0_03_buck_before_fet": false
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "dip0v-250us-typ-ttyp": {
    "status": "PASS",
@@ -827,32 +864,34 @@
     "restart_delay_after_dip_end": 4.146744713312556e-05,
     "P0_03_buck_before_fet": false
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "dip0v-250us-mbmin-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.35111,
-    "RAW_GLOBAL_MAX": 13.08176,
+    "BUS_GLOBAL_MAX": 11.35281,
+    "RAW_GLOBAL_MAX": 13.10592,
     "VIN_GLOBAL_MAX": 22.3836,
     "S_MINUS_V5_MAX": 0.000355317,
     "SWD_MINUS_V5_MAX": 0.0003552846,
-    "EN_R1": 0.0793621,
-    "OUTA_R1": 0.00146852,
-    "FET_ON1": 0.0423891,
-    "FET_OFF1": 0.157884,
-    "FET_ON2": 0.158096,
-    "BUS_RESTART_MAX": 11.35111,
-    "RAW_RESTART_MAX": 13.08176,
-    "INP_RESTART_MIN": -2.268825e-08,
-    "RAW_AT_DIP_END": 9.977316,
-    "T_AT_DIP_END": 4.79711,
+    "EN_R1": 0.0792718,
+    "OUTA_R1": 0.00146567,
+    "FET_ON1": 0.0423889,
+    "FET_OFF1": 0.157796,
+    "FET_ON2": 0.158008,
+    "BUS_RESTART_MAX": 11.35281,
+    "RAW_RESTART_MAX": 13.10592,
+    "INP_RESTART_MIN": -2.611496e-08,
+    "RAW_AT_DIP_END": 9.968018,
+    "T_AT_DIP_END": 4.79686,
     "O1_DIP_MAX": 10.97811,
     "rode_through": true
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "dip0v-200us-typ-ttyp": {
    "status": "PASS",
@@ -877,32 +916,34 @@
     "O1_DIP_MAX": 10.97811,
     "rode_through": true
    },
-   "expect": "INFO"
+   "expect": "INFO",
+   "hard_limit_errors": []
   },
   "dip0v-200us-mbmin-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.34397,
-    "RAW_GLOBAL_MAX": 12.17709,
+    "BUS_GLOBAL_MAX": 11.35757,
+    "RAW_GLOBAL_MAX": 12.18884,
     "VIN_GLOBAL_MAX": 22.3836,
     "S_MINUS_V5_MAX": 0.000355317,
     "SWD_MINUS_V5_MAX": 0.0003552846,
-    "EN_R1": 0.0793621,
-    "OUTA_R1": 0.00146852,
-    "FET_ON1": 0.0423891,
-    "FET_OFF1": 0.157884,
-    "FET_ON2": 0.158046,
-    "BUS_RESTART_MAX": 11.34397,
-    "RAW_RESTART_MAX": 12.17709,
-    "INP_RESTART_MIN": 0.0,
-    "RAW_AT_DIP_END": 10.48597,
-    "T_AT_DIP_END": 4.796957,
+    "EN_R1": 0.0792718,
+    "OUTA_R1": 0.00146567,
+    "FET_ON1": 0.0423889,
+    "FET_OFF1": 0.157796,
+    "FET_ON2": 0.157958,
+    "BUS_RESTART_MAX": 11.35757,
+    "RAW_RESTART_MAX": 12.18884,
+    "INP_RESTART_MIN": -1.374696e-09,
+    "RAW_AT_DIP_END": 10.48087,
+    "T_AT_DIP_END": 4.796706,
     "O1_DIP_MAX": 10.97811,
     "rode_through": true
    },
-   "expect": "INFO"
+   "expect": "INFO",
+   "hard_limit_errors": []
   },
   "dip0v-100us-typ-ttyp": {
    "status": "PASS",
@@ -927,32 +968,34 @@
     "O1_DIP_MAX": 10.97811,
     "rode_through": true
    },
-   "expect": "INFO"
+   "expect": "INFO",
+   "hard_limit_errors": []
   },
   "dip0v-100us-mbmin-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.00622,
+    "BUS_GLOBAL_MAX": 11.00621,
     "RAW_GLOBAL_MAX": 11.30368,
     "VIN_GLOBAL_MAX": 22.3836,
     "S_MINUS_V5_MAX": 0.000355317,
     "SWD_MINUS_V5_MAX": 0.0003552846,
-    "EN_R1": 0.0793621,
-    "OUTA_R1": 0.00146852,
-    "FET_ON1": 0.0423891,
-    "FET_OFF1": 0.157884,
-    "FET_ON2": 0.157945,
-    "BUS_RESTART_MAX": 11.0038,
-    "RAW_RESTART_MAX": 11.14942,
+    "EN_R1": 0.0792718,
+    "OUTA_R1": 0.00146567,
+    "FET_ON1": 0.0423889,
+    "FET_OFF1": 0.157796,
+    "FET_ON2": 0.157857,
+    "BUS_RESTART_MAX": 11.00592,
+    "RAW_RESTART_MAX": 11.14807,
     "INP_RESTART_MIN": 4.899497,
-    "RAW_AT_DIP_END": 11.14942,
-    "T_AT_DIP_END": 4.79665,
+    "RAW_AT_DIP_END": 11.14812,
+    "T_AT_DIP_END": 4.796399,
     "O1_DIP_MAX": 10.97811,
     "rode_through": true
    },
-   "expect": "INFO"
+   "expect": "INFO",
+   "hard_limit_errors": []
   },
   "dip15v-20ms-typ-ttyp": {
    "status": "PASS",
@@ -978,7 +1021,8 @@
     "rode_through": false,
     "restart_delay_after_dip_end": 0.17220046744713308
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "dip15v-20ms-mbmin-tmin": {
    "status": "PASS",
@@ -987,24 +1031,25 @@
     "O1_GLOBAL_PEAK": 10.97811,
     "BUS_GLOBAL_MAX": 11.00622,
     "RAW_GLOBAL_MAX": 11.01569,
-    "VIN_GLOBAL_MAX": 22.49079,
+    "VIN_GLOBAL_MAX": 22.49078,
     "S_MINUS_V5_MAX": 0.000355317,
     "SWD_MINUS_V5_MAX": 0.0003552846,
-    "EN_R1": 0.0793621,
-    "EN_F1": 0.158219,
-    "EN_R2": 0.252844,
-    "OUTA_R1": 0.00146852,
-    "FET_ON1": 0.0423891,
-    "BUS_RESTART_MAX": 11.00621,
-    "RAW_RESTART_MAX": 11.01568,
+    "EN_R1": 0.0792718,
+    "EN_F1": 0.158133,
+    "EN_R2": 0.252665,
+    "OUTA_R1": 0.00146567,
+    "FET_ON1": 0.0423889,
+    "BUS_RESTART_MAX": 11.00622,
+    "RAW_RESTART_MAX": 11.01569,
     "INP_RESTART_MIN": 4.899497,
     "RAW_AT_DIP_END": 6.956868e-06,
-    "T_AT_DIP_END": 0.3277173,
+    "T_AT_DIP_END": 0.3277284,
     "O1_DIP_MAX": 10.97811,
     "rode_through": false,
-    "restart_delay_after_dip_end": 0.0750202858738517
+    "restart_delay_after_dip_end": 0.07492863971960215
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "deepdip0v-50ms-light-typ-ttyp": {
    "status": "PASS",
@@ -1033,7 +1078,8 @@
     "restart_delay_after_dip_end": 0.17550946744713308,
     "P0_03_buck_before_fet": false
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "deepdip0v-50ms-light-mbmin-tmin": {
    "status": "PASS",
@@ -1042,27 +1088,28 @@
     "O1_GLOBAL_PEAK": 10.99836,
     "BUS_GLOBAL_MAX": 11.02296,
     "RAW_GLOBAL_MAX": 11.02375,
-    "VIN_GLOBAL_MAX": 23.28626,
+    "VIN_GLOBAL_MAX": 23.28645,
     "S_MINUS_V5_MAX": 0.000355317,
     "SWD_MINUS_V5_MAX": 0.0003552846,
-    "EN_R1": 0.0793621,
-    "EN_F1": 0.158638,
-    "EN_R2": 0.285069,
-    "OUTA_R1": 0.00146852,
-    "FET_ON1": 0.0423891,
-    "FET_OFF1": 0.158556,
-    "FET_ON2": 0.207847,
-    "BUS_RESTART_MAX": 11.02295,
-    "RAW_RESTART_MAX": 11.02374,
-    "INP_RESTART_MIN": 1.933019,
-    "RAW_AT_DIP_END": 2.684097,
-    "T_AT_DIP_END": 0.1881258,
+    "EN_R1": 0.0792718,
+    "EN_F1": 0.158552,
+    "EN_R2": 0.28489,
+    "OUTA_R1": 0.00146567,
+    "FET_ON1": 0.0423892,
+    "FET_OFF1": 0.158468,
+    "FET_ON2": 0.207759,
+    "BUS_RESTART_MAX": 11.02296,
+    "RAW_RESTART_MAX": 11.02375,
+    "INP_RESTART_MIN": 1.932966,
+    "RAW_AT_DIP_END": 2.684044,
+    "T_AT_DIP_END": 0.18813,
     "O1_DIP_MAX": 10.99836,
     "rode_through": false,
-    "restart_delay_after_dip_end": 0.07724528587385171,
+    "restart_delay_after_dip_end": 0.07715363971960215,
     "P0_03_buck_before_fet": false
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "hotplug-20p0v-typ-ttyp": {
    "status": "PASS",
@@ -1081,26 +1128,28 @@
     "seq_margin_s": 0.168953,
     "RUN_VIN_MIN": 19.85657
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "hotplug-20p0v-vrmax-tmin": {
    "status": "PASS",
    "errors": [],
    "info": {
     "O1_GLOBAL_PEAK": 10.97811,
-    "BUS_GLOBAL_MAX": 11.00621,
-    "RAW_GLOBAL_MAX": 11.01568,
-    "VIN_GLOBAL_MAX": 35.58041,
-    "S_MINUS_V5_MAX": 0.8256443,
-    "SWD_MINUS_V5_MAX": 0.825126,
-    "EN_R1": 0.0784315,
+    "BUS_GLOBAL_MAX": 11.00623,
+    "RAW_GLOBAL_MAX": 11.0157,
+    "VIN_GLOBAL_MAX": 35.58058,
+    "S_MINUS_V5_MAX": 0.8257952,
+    "SWD_MINUS_V5_MAX": 0.8252769,
+    "EN_R1": 0.078345,
     "OUTA_R1": 0.000190898,
     "FET_ON1": 0.0122727,
-    "delay_after_vin_ok": 0.078240602,
-    "seq_margin_s": 0.0661588,
+    "delay_after_vin_ok": 0.078154102,
+    "seq_margin_s": 0.0660723,
     "RUN_VIN_MIN": 19.85658
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "hotplug-25p2v-typ-ttyp": {
    "status": "PASS",
@@ -1119,7 +1168,8 @@
     "seq_margin_s": 0.1688699,
     "RUN_VIN_MIN": 25.08633
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "hotplug-25p2v-vrmax-tmin": {
    "status": "PASS",
@@ -1128,17 +1178,18 @@
     "O1_GLOBAL_PEAK": 10.97811,
     "BUS_GLOBAL_MAX": 11.00622,
     "RAW_GLOBAL_MAX": 11.01569,
-    "VIN_GLOBAL_MAX": 43.92204,
-    "S_MINUS_V5_MAX": 1.159963,
-    "SWD_MINUS_V5_MAX": 1.159414,
-    "EN_R1": 0.0783462,
+    "VIN_GLOBAL_MAX": 43.93199,
+    "S_MINUS_V5_MAX": 1.160341,
+    "SWD_MINUS_V5_MAX": 1.159792,
+    "EN_R1": 0.0782597,
     "OUTA_R1": 0.000190722,
-    "FET_ON1": 0.0122718,
-    "delay_after_vin_ok": 0.078155478,
-    "seq_margin_s": 0.0660744,
+    "FET_ON1": 0.0122711,
+    "delay_after_vin_ok": 0.078068978,
+    "seq_margin_s": 0.06598860000000001,
     "RUN_VIN_MIN": 25.08634
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "hotplug-26p0v-typ-ttyp": {
    "status": "PASS",
@@ -1157,7 +1208,8 @@
     "seq_margin_s": 0.1688661,
     "RUN_VIN_MIN": 25.88983
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "hotplug-26p0v-vrmax-tmin": {
    "status": "PASS",
@@ -1166,17 +1218,18 @@
     "O1_GLOBAL_PEAK": 10.97811,
     "BUS_GLOBAL_MAX": 11.00622,
     "RAW_GLOBAL_MAX": 11.01569,
-    "VIN_GLOBAL_MAX": 45.13766,
-    "S_MINUS_V5_MAX": 1.171612,
-    "SWD_MINUS_V5_MAX": 1.171063,
-    "EN_R1": 0.0783427,
+    "VIN_GLOBAL_MAX": 45.1417,
+    "S_MINUS_V5_MAX": 1.172161,
+    "SWD_MINUS_V5_MAX": 1.171611,
+    "EN_R1": 0.0782562,
     "OUTA_R1": 0.00019071,
-    "FET_ON1": 0.0122711,
-    "delay_after_vin_ok": 0.07815199,
-    "seq_margin_s": 0.06607160000000001,
+    "FET_ON1": 0.0122713,
+    "delay_after_vin_ok": 0.07806549,
+    "seq_margin_s": 0.0659849,
     "RUN_VIN_MIN": 25.88984
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "reg-baseline-180k10k-worst": {
    "status": "FAIL",
@@ -1199,6 +1252,7 @@
     "RUN_VIN_MIN": 19.99617
    },
    "expect": "FAIL",
+   "hard_limit_errors": [],
    "regression_reproduced": true
   },
   "reg-baseline-180k10k-typ-rampdown": {
@@ -1219,6 +1273,7 @@
     "VIN_MAX_AFTER": 15.99653
    },
    "expect": "FAIL",
+   "hard_limit_errors": [],
    "regression_reproduced": true
   },
   "reg-misset-rbu-8k66-vrmax": {
@@ -1229,9 +1284,9 @@
     "RUN: RAW avg 0.0000 V not regulated"
    ],
    "info": {
-    "O1_GLOBAL_PEAK": 1.541225e-14,
-    "BUS_GLOBAL_MAX": 0.01090059,
-    "RAW_GLOBAL_MAX": 0.01092742,
+    "O1_GLOBAL_PEAK": 1.541208e-14,
+    "BUS_GLOBAL_MAX": 0.01090046,
+    "RAW_GLOBAL_MAX": 0.01092729,
     "VIN_GLOBAL_MAX": 20.16231,
     "S_MINUS_V5_MAX": 0.0003797226,
     "SWD_MINUS_V5_MAX": 0.0003796883,
@@ -1239,6 +1294,7 @@
     "RUN_VIN_MIN": 19.99608
    },
    "expect": "FAIL",
+   "hard_limit_errors": [],
    "regression_reproduced": true
   },
   "seq-delay-tmin-typ-ibst100u": {
@@ -1251,7 +1307,8 @@
     "BUS_STARTUP_MAX": 11.26307,
     "INP_MIN_AFTER_ON": 4.999499
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "seq-delay-tmin-wchi-ibst100u": {
    "status": "PASS",
@@ -1263,7 +1320,8 @@
     "BUS_STARTUP_MAX": 11.26307,
     "INP_MIN_AFTER_ON": 4.999499
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "seq-delay-tmin-wclo-ibst100u": {
    "status": "PASS",
@@ -1275,7 +1333,8 @@
     "BUS_STARTUP_MAX": 11.26307,
     "INP_MIN_AFTER_ON": 4.999499
    },
-   "expect": "PASS"
+   "expect": "PASS",
+   "hard_limit_errors": []
   },
   "seq-ref-nodelay-typ-ibst100u": {
    "status": "FAIL",
@@ -1290,6 +1349,7 @@
     "INP_MIN_AFTER_ON": 4.999499
    },
    "expect": "FAIL",
+   "hard_limit_errors": [],
    "regression_reproduced": true
   }
  },
@@ -1300,134 +1360,134 @@
   "proposals/2026-10-25-o1-ovp/pdu-efuse-block-o1ovp.inc": "1aff9701976b43ff8adb7666ab9150e9f0e294d2adeb793236170b3f56c8b430",
   "proposals/2026-10-25-o1-ovp/pdu-o1ovp-behavioral.lib": "1027d7d70e84284fe9baee8105a20499ff5ab13e91d5d4e3c3d56a0576124202",
   "proposals/2026-10-25-o1-ovp/pdu-o1ovp-block.inc": "40c5d1702e5e3df57a7522da88f61c3188d99eb0bc5a2546e8375f5d15d455f0",
-  "proposals/2026-10-25-uvlo/decks/uvlo-deepdip0v-50ms-light-mbmin-tmin.cir": "4998bf1d0aa140f5d18ad3421b7939b125019bcd35583e713500169bdc02aa77",
+  "proposals/2026-10-25-uvlo/decks/uvlo-deepdip0v-50ms-light-mbmin-tmin.cir": "9807c641a3f4a77a1579a02d3e8fb07e3b1c324f9bdc8f710451c40e3902d9da",
   "proposals/2026-10-25-uvlo/decks/uvlo-deepdip0v-50ms-light-typ-ttyp.cir": "a19b0bbab78678d1b09164cded41899a9418a90bb2093e3149c5c3d56a7356df",
-  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-100us-mbmin-tmin.cir": "228cd36ece3c24c18db5638eb6eee9d8249c77727904cbf19a82cd57a670cf36",
+  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-100us-mbmin-tmin.cir": "b528e77db63065476b6f8493f1ef95faa212958017c70cfc2a9f7ba24ade32e1",
   "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-100us-typ-ttyp.cir": "1826444c6a155ec6a2b47b459eb05de5162f3e034aa0769ac2d56697de27928c",
-  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-1ms-mbmin-tmin.cir": "dd115b1130b529308dfa30b42778635fa2fb2d2a627101bb95f4f1e967d5ed30",
+  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-1ms-mbmin-tmin.cir": "cb5b2e408e19df3191707b877eed381583549924f528f82cc8c79896f00b2fbb",
   "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-1ms-typ-ttyp.cir": "69546322c6c94527b3ccd3e563a775d921599b4fa59fcef653afab846fe623b8",
-  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-200us-mbmin-tmin.cir": "ce20d4facbb91e3d568e1c27806c24bb2553aa4fe29bf7591a9f1eb627fb249f",
+  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-200us-mbmin-tmin.cir": "8c664701b9d6f08799b13900edfa42a8e3ba9dec5db29702ed56dcb8f944370f",
   "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-200us-typ-ttyp.cir": "8aefda6e3d8d12a17df8b2088a1fc383151cd78674b34467cc453df4d61d8a3b",
-  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-250us-mbmin-tmin.cir": "cc303f27733952a4b8c896d61bc6f0b339fd70f8028d0ea6188dae7352b260b9",
+  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-250us-mbmin-tmin.cir": "43302280fb622b05dceaded12b93b1a6adbd5622af2e2f77fb7743328fa9c492",
   "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-250us-typ-ttyp.cir": "0f6adb40ce40485b6e40e6c78439a620d5f075f4888536e4d25409ed4d01b7ba",
-  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-300us-mbmin-tmin.cir": "6fd018de6070cda7453124ea2ad6f03095378c44e5bfad101f27f1128160f124",
+  "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-300us-mbmin-tmin.cir": "62e2d674c276055c28b085b486fce8109325fe3c57b20c0dce39d409378f6e89",
   "proposals/2026-10-25-uvlo/decks/uvlo-dip0v-300us-typ-ttyp.cir": "f988634ff80db0f0137cee4f7a699bf8e524d75c00e2a9ba1ffa6e4f9544d151",
-  "proposals/2026-10-25-uvlo/decks/uvlo-dip15v-20ms-mbmin-tmin.cir": "c53c9e819ba849c0fbed09bafa8e522b5caf474b2307ae5a2e413e369264f9e0",
+  "proposals/2026-10-25-uvlo/decks/uvlo-dip15v-20ms-mbmin-tmin.cir": "4d1e272d5a0a40a2451a1420f0735f2f5cf704a6c79f64ab7572be16ab9896ba",
   "proposals/2026-10-25-uvlo/decks/uvlo-dip15v-20ms-typ-ttyp.cir": "9d22f0b33de79dfa7a51402674eadac990eab9d6d4fe2d80f06551173871ff05",
-  "proposals/2026-10-25-uvlo/decks/uvlo-dip19v-50ms-mbmin-tmin.cir": "e5676101d6abfa95e4cdb4454aa34abc863e8d3c5c74315df5dfb476c1030847",
+  "proposals/2026-10-25-uvlo/decks/uvlo-dip19v-50ms-mbmin-tmin.cir": "122b2589ab30c0b8d5450d1484d1f18254637d506fbca926c941e90dce3b96fb",
   "proposals/2026-10-25-uvlo/decks/uvlo-dip19v-50ms-typ-ttyp.cir": "6b2ede0ffdc8aaec3f6cb39fa27b182b1c47c17f66d2168613bc029ca84ed490",
   "proposals/2026-10-25-uvlo/decks/uvlo-hotplug-20p0v-typ-ttyp.cir": "f4ec2fa8cbbbd94cf6b5dfc2391b3a1dfffc6849ba1ae5717e94a8807975fad5",
-  "proposals/2026-10-25-uvlo/decks/uvlo-hotplug-20p0v-vrmax-tmin.cir": "997f8e680190d654e40fb50ae7644f0ec858866ea6e8813633cff6d983192e99",
+  "proposals/2026-10-25-uvlo/decks/uvlo-hotplug-20p0v-vrmax-tmin.cir": "557d18d01b84e27e0b762aa15acf99186bcbbf510a56249edf2e626a7562e6ce",
   "proposals/2026-10-25-uvlo/decks/uvlo-hotplug-25p2v-typ-ttyp.cir": "f701d3de701991e85f29fc953956bd6ae4f84a492b57138b5dadeeab5bbf7210",
-  "proposals/2026-10-25-uvlo/decks/uvlo-hotplug-25p2v-vrmax-tmin.cir": "dc91a3e2e7063d578c6bef8e8209d61670c9424e92fc13ce6b7eb70800b4a69a",
+  "proposals/2026-10-25-uvlo/decks/uvlo-hotplug-25p2v-vrmax-tmin.cir": "64e42dbaff6200f8c24a267093cc471c60765a8d069965b906cf7c27da6956de",
   "proposals/2026-10-25-uvlo/decks/uvlo-hotplug-26p0v-typ-ttyp.cir": "b5d79b21520584c29d467366a662cdf28832610a832af3495405a1a42b1154a1",
-  "proposals/2026-10-25-uvlo/decks/uvlo-hotplug-26p0v-vrmax-tmin.cir": "2b84a4e57434b2bd40a186cc2ab55a0721ee2b65959b003ebe3d21774ff0af21",
-  "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-mbmin-tmin-r250-m50mv.cir": "8ffe0fd9af93aa6e24e67eb0e28b1c5de985e43ca8cbf2d72f6c0d0908782241",
-  "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-mbmin-tmin-r250-p50mv.cir": "d7d2832e30bc53d599c35fce0fddf6778f475ff85ae78a88a66f2a81f87ff037",
+  "proposals/2026-10-25-uvlo/decks/uvlo-hotplug-26p0v-vrmax-tmin.cir": "63c43145eebfcae65e8aaae47cbd0af60b4ee4bfca689a8925f2ee6582f497b8",
+  "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-mbmin-tmin-r250-m50mv.cir": "b1cdfdfe60c1bfd4460ab5a9054b2755a21c003b7abb50466ed47d09b40b1516",
+  "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-mbmin-tmin-r250-p50mv.cir": "e06684685466fe4a3cba2fb1ce09de70cfaa7d2953d678d67df2cd8db0097010",
   "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-typ-ttyp-r250-m50mv.cir": "453fa6297b35cc68a9d683cd1b2e8807fe8133bb43cfa7519fa69c17d5e1bfe5",
   "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-typ-ttyp-r250-p50mv.cir": "5a0a35ee79267f631c4d7739b82c86a451f3f868983ff3fd8d1d1f925fc6c81b",
-  "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-vfmax-tmin-r250-m50mv.cir": "d146e48f11c82a5ff843670d83723ca21d4c99158a43c739afa038dba2c2cc95",
-  "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-vfmax-tmin-r250-p50mv.cir": "d9526d3ffbf4005ec1560b9b29df5115b8052e632f2ee2aa8ddf8b7e5e0b7cff",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rampdown-10vps-mbmin-tmin.cir": "6f8bbb2d6c7eeb6d98d79a8b68f3e58513022c71486838d95317e8a069c2cd9a",
+  "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-vfmax-tmin-r250-m50mv.cir": "8150ac17018fbfd05b44f41f94baaf7a3f14ca34395ee6403ac94d59a6b37527",
+  "proposals/2026-10-25-uvlo/decks/uvlo-mbhold-vfmax-tmin-r250-p50mv.cir": "5e6cd93c6fee84f067e71441ab3ef44b59148bd31b834b9627cf756ea17319cd",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rampdown-10vps-mbmin-tmin.cir": "d07961132674ce41f08c2b2eda3cd9abcbe19978e8add3b0a7f4ee51fa9e3fcb",
   "proposals/2026-10-25-uvlo/decks/uvlo-rampdown-10vps-typ-ttyp.cir": "d46005d464aab8023c737bf5f5745649e44de49a49b15055274b2a4ea8858c3c",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rampdown-10vps-vfmin-tmin.cir": "1dbea3195f29c8818fe79bfa8196a2467bbb39348ce3a16a69adfd215d291630",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rampdown-1vps-mbmin-tmin.cir": "4a9f6882e040c58d44159ada77a8e062601137cd585e925a5b948115c507f426",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rampup-10vps-mbmin-tmin.cir": "3a1ddc411e6257c37eb40a422df6dbb6084b814e9308f57db52d549a54a04c13",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rampdown-10vps-vfmin-tmin.cir": "567cedd6e6781ac199c656cdb5a02f37b19b712984cecd80a19ef3d27faaed22",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rampdown-1vps-mbmin-tmin.cir": "6b74c3eb5a63097783ffd31c6b1b0273b31572458d77dd2a4a2be1a3a6f737b3",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rampup-10vps-mbmin-tmin.cir": "100a3dee32d1a7eb31dca74b8cb489d836f80045f96c89b3a9808f942dc136ec",
   "proposals/2026-10-25-uvlo/decks/uvlo-rampup-10vps-typ-ttyp.cir": "b4e2f3918737b8352b28a210b174fd969ade035db325c48b8b654340f3df90ba",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rampup-10vps-vrmax-tmax.cir": "bd0299477105cd6180c5e1cffa76d1881c0f0adebbc1ed8cfcbf954944f6da16",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rampup-1vps-mbmin-tmin.cir": "605ae8a1ea2f682fd6d391bfe192c3ab3e494933693b6f430d73868de184839b",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rampup-10vps-vrmax-tmax.cir": "e5dd4978dcd99bdde4f6e9f610dbb30287b858d3fd1fa5ac5e05941769cd87f0",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rampup-1vps-mbmin-tmin.cir": "bbb1b3597febb21197e184076dfebb44dcac2dce5fb9db01640e04bded8dc942",
   "proposals/2026-10-25-uvlo/decks/uvlo-reg-baseline-180k10k-typ-rampdown.cir": "430e84b164553a715552aac1b0752374d30cf9b11381f4a3acc998b821ca33f9",
   "proposals/2026-10-25-uvlo/decks/uvlo-reg-baseline-180k10k-worst.cir": "b70038eddfd5e92b3dbff8a170d540c82e7a0134243723eda947ac1c78fe9b00",
-  "proposals/2026-10-25-uvlo/decks/uvlo-reg-misset-rbu-8k66-vrmax.cir": "c1072a279d88433f430797c1e075b6435485f5f33101e5d3add8f048b8122ff0",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r030.cir": "670631987658b8c787e3b40f2baa56324ee80c21ca74e54c3a524abc36bfc691",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r050.cir": "8fc5b9101d70b12d80748efa56ee6f4c1c68bc05ee4eb94957b64bfa46a37bfe",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r100.cir": "8bd1e1a6f7604de9c3804ef0723bece239773633a7741878bbbcfa504d8bdbdc",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r150.cir": "2eb722720f11a802ca22330d9655bddc3e735b3de46f5fc35cb0540a34b6c119",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r200.cir": "634a5b85cf8e55ced76a784c25a6ed5a15ade007dd3acfa48f2eeb70adacd71a",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r250.cir": "d5d98fc5d708352343077cae1124ac7831f60574cb7a1ef89306368534ec6767",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r300.cir": "83bed27db97f64557d75a4a3e600fea0eb80bb836a8e71a72ccaf9280f9a67cf",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r350.cir": "6b06b2bb55fb9bcdc68356d4dd56105a7ccd6f9a91598df7117fc346445b0d6a",
-  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r450.cir": "b80ce8a37f590924b9dd70cca5732ca1499c26a6718392a34cb6136d24b0201d",
-  "proposals/2026-10-25-uvlo/decks/uvlo-seq-delay-tmin-typ-ibst100u.cir": "8343d0092816f1fc9f549d569337dacb32a02c80962947a0eb7b4aad057c3e5c",
-  "proposals/2026-10-25-uvlo/decks/uvlo-seq-delay-tmin-wchi-ibst100u.cir": "48e138373755723650cb03409198c489c6ee32277dd400b909b28509c90ae025",
-  "proposals/2026-10-25-uvlo/decks/uvlo-seq-delay-tmin-wclo-ibst100u.cir": "7cdf3e62483ec83a8ec9d841279265ba48019dd9937828326b73a06ce14e3d65",
+  "proposals/2026-10-25-uvlo/decks/uvlo-reg-misset-rbu-8k66-vrmax.cir": "4cbffc29a3b002f17380b55851ee68af16b6f515df8046d3deafa669da9cc95a",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r030.cir": "d419567f1d6e33428cbc8dc8bb7e5a2678e7c384251e547a553c601ed6c2caa1",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r050.cir": "a05f14beb20618a7577a6ee3e9c6fdcecc7b4dafe70ef26017d408a277b197ca",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r100.cir": "89ebf411c7300749c906143f0474d58960a672cf8e9845130dfd7ed17b3be0f8",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r150.cir": "e80fa9bffe7322813feeadcd4ff2a2afe75d3871544327ebd37d8bab99467b5e",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r200.cir": "21dbd5c00a85a484e25ea443cd8ee91edd7c751dc084ecde4847a970f5ea3deb",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r250.cir": "ad1094aab483172546f5ea2851af18425c45357d6eb59ed9dec9d29b538b5664",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r300.cir": "3d535ef01d9d9ecab147bd1896ba2a34ffd8ab79cc8a9c51f3bdeebc46739541",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r350.cir": "55de0d46d3f349bf066c80525d0d5e00cc919070ae4cde7302cc4737448d3a06",
+  "proposals/2026-10-25-uvlo/decks/uvlo-rsweep-r450.cir": "a1cefd42734448e9429966cdc656b01afd499c13dc5de439f630b2613564780b",
+  "proposals/2026-10-25-uvlo/decks/uvlo-seq-delay-tmin-typ-ibst100u.cir": "aa3ae3d05bea9841bdcaa2bf5a756dfcb75329766ec2feca38fe94962d330b37",
+  "proposals/2026-10-25-uvlo/decks/uvlo-seq-delay-tmin-wchi-ibst100u.cir": "259510e54088a5ea023fba50be214cbe6194cfc727f9fbbeb1f3e606e805a96a",
+  "proposals/2026-10-25-uvlo/decks/uvlo-seq-delay-tmin-wclo-ibst100u.cir": "49860e7f5a094cead9ea03b181608eb4c5e68c4993a3f1c2afda15ee29eea199",
   "proposals/2026-10-25-uvlo/decks/uvlo-seq-ref-nodelay-typ-ibst100u.cir": "1e993c62cfb3f2ad17e56d1a4d73664a543c9fa177bf54bbd2a973c3ce307c91",
-  "proposals/2026-10-25-uvlo/decks/uvlo-start20-mbmin-tmin.cir": "5de083b1e6bae315015068451f2236538565b45e228232e59360cff931b37850",
+  "proposals/2026-10-25-uvlo/decks/uvlo-start20-mbmin-tmin.cir": "32912d0cc9267770f14c6815a8984a65c3ea85c59faed4cb46bbc9aec8238196",
   "proposals/2026-10-25-uvlo/decks/uvlo-start20-typ-ttyp.cir": "02d67802a8b289d934ef7b76672073b3d6abc113da18bde8833dd419444733f6",
-  "proposals/2026-10-25-uvlo/decks/uvlo-start20-vfmax-tmin.cir": "a9ade82c1cb08d9c829573f97ce29a33f4da2c3b93faba13ccb1d028883bc7e1",
-  "proposals/2026-10-25-uvlo/decks/uvlo-start20-vfmin-tmax.cir": "941996a92c1eeefe971cdbfba205de992be14f08ecf4cc44bee41594e2589e0d",
-  "proposals/2026-10-25-uvlo/decks/uvlo-start20-vrmax-tmax.cir": "68e845018d756552a8f99f57f3bd0e0baeeb942471a278ed6c649f8ad1f600e4",
-  "proposals/2026-10-25-uvlo/decks/uvlo-start20-vrmax-tmin.cir": "4c8e7a3b63b6a7cdeecd7c6f467930e600f395c33c6bfde73d2c1c64ef53d3fd",
+  "proposals/2026-10-25-uvlo/decks/uvlo-start20-vfmax-tmin.cir": "7f15a13538b9c48f61ff11c371f64820bda0416df206e444f5c29efb56abed79",
+  "proposals/2026-10-25-uvlo/decks/uvlo-start20-vfmin-tmax.cir": "2565ebfd635128654417de5a72963ff8f36430e819fa375bf1e1dde815945482",
+  "proposals/2026-10-25-uvlo/decks/uvlo-start20-vrmax-tmax.cir": "1bb43dc7c786846e7fdbbee5c5ba4097a98485243f1ae71381afb1d686a3614a",
+  "proposals/2026-10-25-uvlo/decks/uvlo-start20-vrmax-tmin.cir": "7ef6543dc36c8535fef89514cb4b92c74bc2751db468f452198271e0a6ed0639",
   "proposals/2026-10-25-uvlo/gen_uvlo.py": "aad7313220f356804c714b84cc564c74f6da40e964cec6db81b7f48b5da23410",
   "proposals/2026-10-25-uvlo/pdu-circuit-uvlo-baseline.inc": "0a7c27547b6af71498f202bed7284a7e823d79c9b3bde4fea3c45df8ad5eb08f",
   "proposals/2026-10-25-uvlo/pdu-circuit-uvlo.inc": "d6e91ff8f3796f3cb6805f8ce60d87b546321b6de561fb9479e6315744233d6e",
   "proposals/2026-10-25-uvlo/pdu-o1ovp-block-uvlo.inc": "25435b8d90cf337de2b0f80202207652b68a57571cb5949e106c24508f6e0132",
   "proposals/2026-10-25-uvlo/pdu-uvlo-behavioral.lib": "f36c971f8eaaee4d807378a49d98e258ee55242df317dec0f8a0304ff75b4c4a",
   "proposals/2026-10-25-uvlo/pdu-uvlo-block.inc": "9c9085e7ccd9449c6f65c75327a1b773c6f328b5e9fac224e895dfbe0a648419",
-  "proposals/2026-10-25-uvlo/results/uvlo-budget.json": "96d10dcc66cee2545ae57d604d71c06e150b3ce208644efdb9c0a66b02f00cfe",
+  "proposals/2026-10-25-uvlo/results/uvlo-budget.json": "045a2ca76a936bbae0268b3f86ab7923407bd3879577d1dac2897b7851e73950",
   "proposals/2026-10-25-uvlo/run_uvlo.py": "d6810171b8c35a547e06ba3e16ae3ebc47901e955ffb9baf76721aa16a0f16d1",
-  "proposals/2026-10-25-uvlo/test-cases-uvlo.json": "03f593840326f3144b7dd1ffa143b75cbf41e96ad9566654a8784c531b52c7f0",
-  "proposals/2026-10-25-uvlo/uvlo_budget.py": "42e0c5052dce5ce3dc0d913c177b85f51b85f2e59d26509877fa79f039f27db6",
-  "proposals/2026-10-25-uvlo/verify_uvlo.py": "5b5366c88b2988b5e7c8299e2f262e03dc0ff71dd367d57c00b1ed54e1017882"
+  "proposals/2026-10-25-uvlo/test-cases-uvlo.json": "3e7a39dfafa13e2dd7180437136abeed583ef6cb1f33fb23cb00817008c921ed",
+  "proposals/2026-10-25-uvlo/uvlo_budget.py": "4c28d8027ca2fcbe2f72187142525bd5afb45b5654ec13d521f4a7b297fc9555",
+  "proposals/2026-10-25-uvlo/verify_uvlo.py": "3d11dfed987e950a27fa782cfe47c8b8a3baf16a459f554d7379504b3f1e04af"
  },
  "log_sha256": {
-  "uvlo-deepdip0v-50ms-light-mbmin-tmin.log": "9eb9a94726b1f5405fd1a8ed1867e712c465282040d4681dd638524e604c56bc",
-  "uvlo-deepdip0v-50ms-light-typ-ttyp.log": "229b691d1c4df7b2bffcbfa1af7b9390ffa0f5b02abd05d15e7a1c36fac63c69",
-  "uvlo-dip0v-100us-mbmin-tmin.log": "580eb105ec3bab473442624c67ade5ade0303dc615ed74c810f018dca9e25a84",
-  "uvlo-dip0v-100us-typ-ttyp.log": "499d9bde3a29233a02c82b178b24b04cb9c982df5bcfd245e7a872c65da080f0",
-  "uvlo-dip0v-1ms-mbmin-tmin.log": "de65818289fd32b29c9e017b2643eb4b4d6fcb85c7d303441ba68a5532637762",
-  "uvlo-dip0v-1ms-typ-ttyp.log": "e91c4bedec43b9382c9bf6532c72497592e16c0479409955ec15b6deb0b8ac88",
-  "uvlo-dip0v-200us-mbmin-tmin.log": "20e52cac61f3fd2276044e0b2d69bd6acb48a590bb69ea5dc626ab2744c61289",
-  "uvlo-dip0v-200us-typ-ttyp.log": "891ee87012978bb01022df887f68d5588f5e86eb93121841b1b42da5cb676de2",
-  "uvlo-dip0v-250us-mbmin-tmin.log": "199d90630b40cde2a7a607f377320826218ec3bb7830de21aa0e5ef533ef27f3",
-  "uvlo-dip0v-250us-typ-ttyp.log": "70bf0a3a7b3d185274aa2f8d1b75e27e5a06af1c68f75b86d8adee876784402d",
-  "uvlo-dip0v-300us-mbmin-tmin.log": "24e5d21e3b0d00a036e7a4eb56875f61ffc6171665a98b213875549d7a9352f4",
-  "uvlo-dip0v-300us-typ-ttyp.log": "37eafb516a37fb594d8cb33bf8dcf4fe16c889ff91781d7827fa9b781a0d8df5",
-  "uvlo-dip15v-20ms-mbmin-tmin.log": "98e346103b1fa007703a876e33bd8002427c46df901a20f20ee37c82a89f27c4",
-  "uvlo-dip15v-20ms-typ-ttyp.log": "a4a63e71c06004127e82ea45c787bf3b8039d89ccba288e7fcfed2264c609d7b",
-  "uvlo-dip19v-50ms-mbmin-tmin.log": "09b63176b139e67af828b235165db536be981423c8573788c09129e21f5a693e",
-  "uvlo-dip19v-50ms-typ-ttyp.log": "0f144ee679fb502c1e14c28af74463feefbe6a7c845cd563cd9924a3db87484b",
-  "uvlo-hotplug-20p0v-typ-ttyp.log": "4d62c9365edf1718fa63996052f6890a6e3362f46b59c8690cc3e368d922a346",
-  "uvlo-hotplug-20p0v-vrmax-tmin.log": "684f10b74bc81296e88cf86c6a4fb04345bf13e109848f0d9ec1ecf87e7005d0",
-  "uvlo-hotplug-25p2v-typ-ttyp.log": "87e00bdf9a4500a5137926d76eb249f1f0ac6d930f3f641d9518530913d96add",
-  "uvlo-hotplug-25p2v-vrmax-tmin.log": "b6c3b9d6f1aa36c7696490a6066ba7d92a2fd8bd58d2904ba1f048022bb9cc5b",
-  "uvlo-hotplug-26p0v-typ-ttyp.log": "928a44ffbfd167faece125dea4bfeba704e85160cce64cb46e2298216fac679b",
-  "uvlo-hotplug-26p0v-vrmax-tmin.log": "9e08e2bac5d51f2f709e6f641338cc71d931e9f3fb31645d4b93a74364fd63ae",
-  "uvlo-mbhold-mbmin-tmin-r250-m50mv.log": "3ac9132bff710b2f708bd060dd0f36189b206cc0aaa795b5c755cc3b5bc843af",
-  "uvlo-mbhold-mbmin-tmin-r250-p50mv.log": "ba7905f5a51bf4afed8fbb052ebafd8ab0dcd5c509a7c936e9bf8cada3f565bb",
-  "uvlo-mbhold-typ-ttyp-r250-m50mv.log": "c5259b57a738b2542ea3c3de8aa7c4809a8cd0c5eac66c3a7fa67ee9d8b1f095",
-  "uvlo-mbhold-typ-ttyp-r250-p50mv.log": "da8a511216c9797182516cc763d493634f0c2701e4fb96691bcb35b42c94f259",
-  "uvlo-mbhold-vfmax-tmin-r250-m50mv.log": "bd16c4167e53891558443fceb35135e9575b14e212688768163137c647c8b845",
-  "uvlo-mbhold-vfmax-tmin-r250-p50mv.log": "c0affac12fea1656f5b993d9fdc768bec905c3401f589b5418f25890abb2caaa",
-  "uvlo-rampdown-10vps-mbmin-tmin.log": "649ace3a90b48d60ce0961f965874e475c001318611add09f1a2b8c12f18ca37",
-  "uvlo-rampdown-10vps-typ-ttyp.log": "3addf143f536f43f92f075a62f5e63ae9b556b5f08c2de2216ee5adcbad3f736",
-  "uvlo-rampdown-10vps-vfmin-tmin.log": "292e2abdcaa65abee80a824523b90e2765775707230e12561b00c7e7f53a3a39",
-  "uvlo-rampdown-1vps-mbmin-tmin.log": "b809132fc8734dba382625b8ea56a2892f5bbfb96d5d54d2749e4046d03c2ea0",
-  "uvlo-rampup-10vps-mbmin-tmin.log": "faa44ec04b3343d6e1875772d31359f7d49f884b71b30ae0492cb6e400b157d3",
-  "uvlo-rampup-10vps-typ-ttyp.log": "e625c3c37a5dfaa9a7294bc42f9025d9777ebf4d3cb8244acadb7b71246c556f",
-  "uvlo-rampup-10vps-vrmax-tmax.log": "948372437af099fed212ea199d6ef4843b2c92b31ecea4ec7ed63398caa1a54f",
-  "uvlo-rampup-1vps-mbmin-tmin.log": "8eb17da9d1ff8fc7bb9ffbc808c28b9a2197514dd96abf2f785ba542573f291a",
-  "uvlo-reg-baseline-180k10k-typ-rampdown.log": "5f0d4f8dfa3c90fac8587f62fcd2a2b09bb4f6640acf16b6097cccc3a10c2794",
-  "uvlo-reg-baseline-180k10k-worst.log": "278f54ef944dc624d6bc58a4912e805db24f17a07d7b7314e82a95cdb7e0a677",
-  "uvlo-reg-misset-rbu-8k66-vrmax.log": "6917976a7a972d2856d401751606119153d2c1285da422138ea811c97c2c56a9",
-  "uvlo-rsweep-r030.log": "1dadfeb189f85c863b38e7aee358697b6fb43e410e336a6f321a328bba5a6454",
-  "uvlo-rsweep-r050.log": "dc6b0d205bb5112512a88af9909e63feb78dbe1dba51e28db92566d291cbb79c",
-  "uvlo-rsweep-r100.log": "412c7a083b767182644614051d56c5d25004db5ed2ceed78cc2258d1b803dd59",
-  "uvlo-rsweep-r150.log": "68885f7b8c08e5891ea899817e607cc0498d075ee5a883edacb00c3c12d07991",
-  "uvlo-rsweep-r200.log": "37d74eb00ec8dcbeda462cccd3d371f8f4f27f439eeb77e9d52992f4b5cee3dd",
-  "uvlo-rsweep-r250.log": "266c57b48a4b3f584a96202f74aef065c3c4aa723f523ee2c6be4185dd05fdc5",
-  "uvlo-rsweep-r300.log": "653d96d8161459613b613ab860566e346833ce55f20cf3f9f2b8aabe63fbb0eb",
-  "uvlo-rsweep-r350.log": "497060a81f779545ff0a94f2e30f61eb1c5950bc6911067dde9ba77f41dd9eb7",
-  "uvlo-rsweep-r450.log": "c14de0b6034a7930a3a88bf4a4d0c0273bba34a0165f013644ed5d8778e19fc3",
-  "uvlo-seq-delay-tmin-typ-ibst100u.log": "6fbd7eee63a63d937dfd4750146d56f791eda9248f7933f2fb8c0ca6c5d0d725",
-  "uvlo-seq-delay-tmin-wchi-ibst100u.log": "076880046975c4d641fab4faa1528bfb98859caaba6aa51d029b27c61a86df66",
-  "uvlo-seq-delay-tmin-wclo-ibst100u.log": "624c9788e4812a1b7657f16dfbbb88417956846d406672c696d59dd9b96ce4f6",
-  "uvlo-seq-ref-nodelay-typ-ibst100u.log": "1f3debe7ebcf168b43ceda83140a81f9480d6ea48c2a6b38dfcf0e9d773860f4",
-  "uvlo-start20-mbmin-tmin.log": "023aa1cda05199ebc05b35edf7ac579e28082a29ade83e90a9b2cf693e16e63d",
-  "uvlo-start20-typ-ttyp.log": "67a64f723f63f88d1ae3bc02c56aa45ef36a900959bef159913dd412ae74a523",
-  "uvlo-start20-vfmax-tmin.log": "a9d32713c00e6b867df9f1b6f720bb84e0f7f533ec40968b9fcf029317ab6012",
-  "uvlo-start20-vfmin-tmax.log": "6e944df0ceffdab719e1c9b57e1df90ab647a69b734f2a7e28ebd04815568a5c",
-  "uvlo-start20-vrmax-tmax.log": "2a81ba55e93bbcfe9bb1d15ab0580c1697946c68674c37bbc4b073b7f354cfdf",
-  "uvlo-start20-vrmax-tmin.log": "0c403ce9067ddb30a2ebf021704af76d1bffa337e34997f9e889dd8cb265e03d"
+  "uvlo-deepdip0v-50ms-light-mbmin-tmin.log": "56ce0a7d805a73e6e3ccb51f7caaaa147d1a335acd1637798fca4bf2562bf3ce",
+  "uvlo-deepdip0v-50ms-light-typ-ttyp.log": "0478a72a70ae27e60587cae2be940c63c3615a090e6271f68d9d04055e0be18e",
+  "uvlo-dip0v-100us-mbmin-tmin.log": "409a23fef7a6475490c22c7777809d34a379ed06ff50b5cd754a4e061978e4dd",
+  "uvlo-dip0v-100us-typ-ttyp.log": "709ef77a3e5e928dc61ed3ff8cb4ca9a9da55054ff84f3c2d55ba5c1558212c8",
+  "uvlo-dip0v-1ms-mbmin-tmin.log": "b01128abd1524e854959a4bf78e1216caf98969371d87d9791e7ae7dc2068cdd",
+  "uvlo-dip0v-1ms-typ-ttyp.log": "d0b363a69accfd667be11e09e86449afbfdb644992777948c83635759bd42262",
+  "uvlo-dip0v-200us-mbmin-tmin.log": "5bdd6a37456a121769bcd18a2a5a47a27462530809483e34361d410cac73aa18",
+  "uvlo-dip0v-200us-typ-ttyp.log": "5899d1878482955bff3e0d847f9f2e570b510c88a73f083e07caed7d804459a7",
+  "uvlo-dip0v-250us-mbmin-tmin.log": "d28030ac17e2d1e6b0b595c0d1ef8f1b15a64a55c899de69c973f0289ca206f4",
+  "uvlo-dip0v-250us-typ-ttyp.log": "7b3eef45566972efe10afd04df1a50bd93f5aa25b55161e689ecc509f31c99cc",
+  "uvlo-dip0v-300us-mbmin-tmin.log": "59fa9637e872220472a9e60ad7cab7c6c13153de691ee2458cde8bf84a72693e",
+  "uvlo-dip0v-300us-typ-ttyp.log": "ababdad42c217357efbc009df816382872e5331bf832fc2909673fc020a60594",
+  "uvlo-dip15v-20ms-mbmin-tmin.log": "5ea6e378a31d70367401e25bff2153a1bf12aae0da982d1249c5c2c7f7adef20",
+  "uvlo-dip15v-20ms-typ-ttyp.log": "150435dc24fed8b3cf45ce322d87288d37aa127d9d839e291b85b023aea30367",
+  "uvlo-dip19v-50ms-mbmin-tmin.log": "2d2e21fa6de9994d6567e99b6035d5091d9d7a1759bf6c64a0c5153b181d9357",
+  "uvlo-dip19v-50ms-typ-ttyp.log": "3366a2c54a5a481c0d7904cfafd622b29dd43bacc7ffd8fc021f7d2b04b119e3",
+  "uvlo-hotplug-20p0v-typ-ttyp.log": "21b080eee981d0180bac5abc0b766cbfa65fffeea2b8de3c0ae0910d6e98f062",
+  "uvlo-hotplug-20p0v-vrmax-tmin.log": "5a3f01a6dda8dbb7dec77040794da71d1a7ed1f29b60df8799bafbc48a5d3a06",
+  "uvlo-hotplug-25p2v-typ-ttyp.log": "925809883bb1ba2838caf96bc818fade0cb683086ffb40502273c54bde874673",
+  "uvlo-hotplug-25p2v-vrmax-tmin.log": "4c65ec78e830421e4b47d04ac02dc44a3c196db50763ed7e1b9508bda519ab91",
+  "uvlo-hotplug-26p0v-typ-ttyp.log": "baa1408a940fb3ea84701b15b1d85cc152efa1502d4e25c3457fefddeef3aec0",
+  "uvlo-hotplug-26p0v-vrmax-tmin.log": "f2ae65540b00eb080ef722a6dc3e9390d03d2245ecdaacaccf0bc6ce125661ec",
+  "uvlo-mbhold-mbmin-tmin-r250-m50mv.log": "870ded17aac23e2276f5c3d1da95733ef6d054c0659970c1d51686cccea6c371",
+  "uvlo-mbhold-mbmin-tmin-r250-p50mv.log": "5756c1a029d34e69badbc973dcd009eff2133f1ed346798653086064e00cde62",
+  "uvlo-mbhold-typ-ttyp-r250-m50mv.log": "0c2d6b79a4154c89958b0a4ee2de18d8970015e563252e03eb700e0fb94ebe36",
+  "uvlo-mbhold-typ-ttyp-r250-p50mv.log": "daacf2389fce5fcd37d6c72d8b6e93a864607ae6f86da578f239c08657d85406",
+  "uvlo-mbhold-vfmax-tmin-r250-m50mv.log": "b1b30202facced73b853a8eeae21e4b54359e95b52bf6969a0fab6a74252bf93",
+  "uvlo-mbhold-vfmax-tmin-r250-p50mv.log": "ab99294d22357a16f1d07d6b1933b2a4835922c089cb013482ceeebc1c19635e",
+  "uvlo-rampdown-10vps-mbmin-tmin.log": "82a6d01cbeab3a2015c34aa9e5b3649868bf23efbcecde8f8a02f73a08aedb74",
+  "uvlo-rampdown-10vps-typ-ttyp.log": "e4e315b538c9b4cbf1398ef38c1182f16325f43de700909c208693721ad855a9",
+  "uvlo-rampdown-10vps-vfmin-tmin.log": "2aaabf53f8b8a4c214892aee0fb0e526edd6f4ff220ae455e2ae322fc32b58b9",
+  "uvlo-rampdown-1vps-mbmin-tmin.log": "07510a2588a9a6f279884bf4d26605db785dad5bb12f4ffdf0a73c259eb3dfeb",
+  "uvlo-rampup-10vps-mbmin-tmin.log": "0873f180dfcbe7c15c43b4a3b5b525277f811e80ec2134bad5e7c3b907dd0f4b",
+  "uvlo-rampup-10vps-typ-ttyp.log": "c0f600e212cb6a6a5ce831fa5108b5ce454782eca605d4ebdb68a5de2068747f",
+  "uvlo-rampup-10vps-vrmax-tmax.log": "26d1cf9f05554e9fddc60de41b86efad80f541a0ba87f45eb836e12b8d49e7df",
+  "uvlo-rampup-1vps-mbmin-tmin.log": "3c7380650fc793785d940f5110e1a342cba8e77139df72edb12f7bd0c717b1d4",
+  "uvlo-reg-baseline-180k10k-typ-rampdown.log": "581fd50a620e901705a73780a3c17dc57c8e29975854d80d43bd1befeb1b83cb",
+  "uvlo-reg-baseline-180k10k-worst.log": "0ef7f5e9b1a0a359d15364d4ebcb83751b85b9fff0ac14718295703c1f37a913",
+  "uvlo-reg-misset-rbu-8k66-vrmax.log": "624bbf433cc480486471df83d6bf21367e01ef9f9a4d4181251fabc5ac2fc76c",
+  "uvlo-rsweep-r030.log": "123190bb0306e95c429b9ead08f38f795e5d3088c64253d5e57d8b6841626a7f",
+  "uvlo-rsweep-r050.log": "59c3af6ff454d6311a263ba6444afabb5e293d0a31ccfd7490c94a9028a27cd4",
+  "uvlo-rsweep-r100.log": "60ab9dab876cbc437aaa14a5e568a83c4c9cc1912995e5934c0a536fef310895",
+  "uvlo-rsweep-r150.log": "d6b77ab6377e728787fe2f78ec5632ee850277b8c53b4b140cb1fd31c5bd8957",
+  "uvlo-rsweep-r200.log": "36cddd79a28b9dd3eb0b132c2a1f761235064adc3b5d9f912b3d4994dc6292e2",
+  "uvlo-rsweep-r250.log": "2f51fc66e2739ce7829c896bb129600d9194fd8871a7e39a3a66eedacbcd6a30",
+  "uvlo-rsweep-r300.log": "bcd7e604e91422745c2a859898248102272225096f719d07a675b99804ac9125",
+  "uvlo-rsweep-r350.log": "4a335d370f6ba14fd8c7e4fb6a65aa554d16845efe34f0aaacd1b0571b9ad15c",
+  "uvlo-rsweep-r450.log": "297c4d053fcbc55b263f07f92e1d169a81d806acca99f1f98ac5b118b82efff9",
+  "uvlo-seq-delay-tmin-typ-ibst100u.log": "0fcdeace31bd98ce61302213356bb8afe58af49072615f9d69394bcec593959f",
+  "uvlo-seq-delay-tmin-wchi-ibst100u.log": "022169191fd9a4e1a37c6e89182f101cb9a879dce202a95938b591c8cdc74967",
+  "uvlo-seq-delay-tmin-wclo-ibst100u.log": "140bae5fed1cd18bd9cd286480426484b1819b1896f6767efe830d480c282253",
+  "uvlo-seq-ref-nodelay-typ-ibst100u.log": "642c1034015c0ea6fce05be3940dde3d0e4b421fad3e019ec84ef7391173e5af",
+  "uvlo-start20-mbmin-tmin.log": "9dbae2795dd1dfab2774bc40ab3d01a15db87c69c56eee40b76619f4ef2575ec",
+  "uvlo-start20-typ-ttyp.log": "1dc04bc6a4b4567bd72ba2045a881115deea5c9c1c36a21e2467fbd5528454a4",
+  "uvlo-start20-vfmax-tmin.log": "7685e3f426542ced321accbbe782610eea94129fb4bc330cb46e1cec8e1adc6e",
+  "uvlo-start20-vfmin-tmax.log": "3464ae18ec22576bd779fccc8c2481c32843c8fcb55815f1aaf66e863203fd30",
+  "uvlo-start20-vrmax-tmax.log": "028c70c77a33da37a99dd9dca6a51601bb4665ecd0b2d0d672d69a4f449420b2",
+  "uvlo-start20-vrmax-tmin.log": "456ae9af37915f0f75cdadcf23fb315cf3daa4503e44fad7619a4963dc190b3c"
  }
 }

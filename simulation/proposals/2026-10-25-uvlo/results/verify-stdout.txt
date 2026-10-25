@@ -25,8 +25,8 @@ PASS        rsweep-r150
 PASS        rsweep-r200 
 PASS        rsweep-r250 
 PASS        rsweep-r300 
-FAIL        rsweep-r350 EN fell at 0.1126 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 4.3100 V not regulated; VIN under load 18.2557 <= V_f 18.2588
-FAIL        rsweep-r450 EN fell at 0.0843 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 1.3315 V not regulated; VIN under load 17.9928 <= V_f 18.2588
+FAIL        rsweep-r350 EN fell at 0.1125 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 4.3208 V not regulated; VIN under load 18.2557 <= V_f 18.2588
+FAIL        rsweep-r450 EN fell at 0.0842 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 1.3313 V not regulated; VIN under load 17.9928 <= V_f 18.2588
 PASS        dip19v-50ms-typ-ttyp 
 PASS        dip19v-50ms-mbmin-tmin 
 PASS        dip0v-1ms-typ-ttyp 
@@ -58,8 +58,9 @@ PASS        seq-delay-tmin-wclo-ibst100u
 FAIL       (regression, reproduced) seq-ref-nodelay-typ-ibst100u FET never on; RUN: FET/comparator not in normal state
 {
  "exit_code": 0,
- "git_head": "bfec6916aa584550121ee8c5e64ecb57e589d7bb",
+ "git_head": "a0dea9156cdfe1dd6c4c4edd6af1b2c2a3dc2163",
  "worktree_dirty_at_verify": true,
+ "package_inputs_dirty": false,
  "n_cases": 58,
  "n_pass": 52,
  "acceptance_fail": [],
@@ -74,6 +75,7 @@ FAIL       (regression, reproduced) seq-ref-nodelay-typ-ibst100u FET never on; R
   "dip0v-100us-typ-ttyp",
   "dip0v-100us-mbmin-tmin"
  ],
+ "hard_limit_gate": "H1/H2 enforced for every non-regression case (PASS and INFO)",
  "limits": {
   "O1_PEAK_MAX": 12.0,
   "BUS_NORMAL_MAX": 11.1605,
