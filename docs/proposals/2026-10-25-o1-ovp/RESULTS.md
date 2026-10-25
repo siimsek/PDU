@@ -157,3 +157,11 @@ Baseline davranışsal eFuse (ITRIP 4,96 A) mandallanınca O1 VOUT'u izlemeyi b�
 - **Varsayım altında FAIL: `buck-short-c185-esr100m-wchi` (VOUT 13,03882 V; ölçülen O1 11,59151 V, fark 1,447 V) ve `buck-short-c185-esr100m-typ` (12,50435 V).** Yani −40 °C 100 mΩ stres köşesindeki O1 PASS'i yalnız davranışsal U3 mandalına dayanır.
 - 100 mΩ hariç en kötü sınır: efuse-ovp-s023-wchi 11,93557 V (PASS, 64,4 mV).
 - Kabul deck'leri/sınırları değiştirilmedi; ana sonuç tablosu (O1 global maks 11,90318 V) ölçülen O1'dir. **N-01 açık**; B10 (−40 °C ESR) + B13 (gerçek U3) gerekli.
+
+### H5. Model rev2 ↔ rev3 regresyonu – `model-compare/` (MC_EXIT=0; teşhis, kabul değil)
+Tek değişiklik: TPS48000 iç düğümü `ov`→`ovs`. rev2 lib sha256 `62d862b4…588b`, rev3 lib `1027d7d7…4202`; rev3 tarafı temiz koşu `wp1-rev3` (o1ovp-results.json sha256 `76bb4b40…3507`). Çıktı: `results/model-compare/model-compare.json` + `rev2/*.ng.log` (153 deck; `ref-baseline-load-step-7p5a` modelden bağımsız).
+- 154 case, 135 kabul. **Kabul FAIL: rev2 0 / rev3 0.** Tamamlanmadı: rev2 **2** (c185/c165-esr12m5-esl2n-typ, 12,2645–12,2646 ms, `pu_ovp`) / rev3 **4** (aynı ikisi + c185/c165-esr12m5-esl2n-wchi). Yani rev3 düzeltmesi iki ESL-wchi deck'ini PASS → tamamlanmadı'ya çevirdi (P0-03 kapsamı büyüdü; gizlenmedi). Bilgi deck'i rev1-c92-wchi: rev2 31,39 ms'de durur (`xu4.ena`), rev3 tamamlanır.
+- O1 global maks: rev2 11,90272 V → rev3 11,90318 V (aynı deck, c165-esr12m5-wchi; +0,46 mV).
+- 111 ölçümde değer farkı. |ΔO1| > 0,1 V olan 23 kabul deck'inin tümü s023 rampası (efuse-ovp-s023-typ, 2 tdoff taraması, mc-ramp-s023): O1 11,11 V ↔ 11,55–11,65 V arasında **iki yönde** sıçrar, bus tepe farkı ≤ 22,2 mV. Bu, O1 OVP'nin değil davranışsal U3 mandalının (N-01, §H4) ikili davranışıdır; bu deck'lerde en yüksek değer 11,64916 V (rev2). VDS maks farkı en çok 1,015 V (mc-ramp-s023-27: 14,24 → 15,26 V; 60 V sınırından uzak).
+- INFO açılış tetik (startup_no_ovp_trip ihlali): rev2 29 deck / rev3 27 deck.
+- Sonuç: rev3 kabul sonuçlarını kötüleştirmez (0 FAIL), ancak P0-03 (tamamlanmayan deck) 2 → 4 oldu ve s023 O1 değerleri U3 mandal zamanlamasına duyarlıdır → N-01 açık kalır.
