@@ -119,6 +119,16 @@ def evaluate(name, c, m, chk):
         chk('recovery_regime_normal', m['inp_recov_min'] > 2.5 and m['vgs_recov_min'] > 6.0,
             f"{window}: INP min {m['inp_recov_min']:.4g} V (>2.5), VGS min {m['vgs_recov_min']:.4g} V (>6)")
         normal('bus_recov_max', f'bus max after recovery {window}'); normal('o1_recov_max', f'O1 max after recovery {window}')
+    def pre_regime(window):
+        # rev3: the pre-fault normal window must be a valid normal regime (INP high, FETs enhanced); a FET that never turned
+        # on / a hiccuping OVP FAILS here instead of producing a meaningless low fault-window peak.
+        chk('pre_fault_regime_normal', m['inp_pre_min'] > 2.5 and m['vgs_pre_min'] > 6.0,
+            f"{window}: INP min {m['inp_pre_min']:.4g} V (>2.5), VGS min {m['vgs_pre_min']:.4g} V (>6)")
+    def startup(fault_t):
+        # rev3 finding (INFO, reported, never hidden): comparator trip or gate turn-off during the bench start-up, before the fault
+        chk('INFO:startup_no_ovp_trip', m['info_startup_inp_min'] > 2.5 and m['info_startup_vgs_fall_t'] >= fault_t,
+            f"start-up: INP min {m['info_startup_inp_min']:.4g} V (>2.5); first VGS fall below 6 V at "
+            f"{m['info_startup_vgs_fall_t']*1e3:.5g} ms (fault starts {fault_t*1e3:.4g} ms)")
     def info(key, what):
         # INFO only (not a normal regime, see gen_o1ovp.py); printed against BOTH limits so nothing is hidden
         if key in m: chk(f'INFO:{key}', m[key] <= NORMAL_MAX, f'{m[key]:.6g} V ({what}); vs {NORMAL_MAX} V normal limit; '
@@ -138,11 +148,12 @@ def evaluate(name, c, m, chk):
     if k in ('ramp', 'sweep', 'mc-ramp'):
         normal('o1_pre', 'O1 before the fault'); band('o1_pre'); off('o1_off'); off('s2e_off'); band('o1_reset'); band('s2e_reset'); o1(); stress()
         o1_global(); normal('bus_pre_max', 'bus max 0..14.9 ms incl. start-up'); normal('o1_pre_max', 'O1 max 0..14.9 ms incl. start-up')
-        recovery('25.1..40 ms')
+        pre_regime('13..14.9 ms'); recovery('25.1..40 ms'); startup(14.9e-3)
     if k in ('short', 'mc-short'):
         normal('normal', 'bus before the short'); normal('o1_normal', 'O1 before the short'); band('normal'); band('o1_normal'); o1(); stress()
         if 'o1_reset' in m: band('o1_reset'); band('s2e_reset')
         o1_global(); normal('bus_normal_max', 'bus max 24..29 ms before the short'); normal('o1_normal_max', 'O1 max 24..29 ms before the short')
+        pre_regime('24..29 ms'); startup(29e-3)
         if 'bus_recov_max' in m: recovery('55..80 ms')
         info('info_bench_startup_bus_max', 'ideal-LC bench start-up 0..24 ms, not a normal regime')
         info('info_postfault_bus_max', 'bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level')
@@ -202,6 +213,25 @@ def static_checks(chk):
     exp = sorted([(f'COUT{i}', [1]) for i in range(1, 9)] + [('RS1', [2]), ('RS2', [2]), ('RFB1', [1]), ('XU1', [6, 12]), ('XU2', [6, 12])])
     chk('RAW split = only intended node edits', len(b) == len(n) and sorted(diff) == exp and all(y[i] == 'RAW' for x, y in zip(b, n) for i in range(len(x)) if x[i] != y[i]), str(diff))
 
+def node_case_static(chk):
+    # rev3: SPICE node names are case-insensitive. rev1/rev2 had an internal node `ov` colliding with pin `OV` inside
+    # O1OVP_TPS48000 (OV backstop dead). Fail if any subckt/top level uses two spellings of one node name.
+    for f in ('pdu-o1ovp-behavioral.lib', 'pdu-o1ovp-block.inc', 'pdu-circuit-o1ovp.inc', 'pdu-efuse-block-o1ovp.inc'):
+        scope, nodes, bad = 'TOP', {}, []
+        for l in (HERE/f).read_text().splitlines():
+            if not l.strip() or l[0] in '*+': continue
+            t = l.split(); h = t[0].lower()
+            if h == '.subckt': scope, nodes = t[1], {}; toks = [x for x in t[2:] if '=' not in x]
+            elif h.startswith('.ends'): scope, nodes = 'TOP', {}; continue
+            elif h[0] in 'rcldbvi': toks = t[1:3]
+            elif h[0] == 't': toks = t[1:5]
+            elif h[0] == 'x': toks = [x for x in t[1:-1] if '=' not in x]
+            else: continue
+            for n in toks:
+                s = nodes.setdefault(n.lower(), set()); s.add(n)
+                if len(s) > 1: bad.append((scope, sorted(s)))
+        chk(f'node names case-unique/{f}', not bad, str(sorted(set(map(str, bad)))) or 'no case-insensitive collisions')
+
 def global_peak_static(chk):
     # rev3 P0-02: every non-reference deck must measure O1_GLOBAL_PEAK FROM=0 TO=<its .tran stop time>
     for name, c in CASES.items():
@@ -239,7 +269,7 @@ def main():
     outdir = HERE/'results'; outdir.mkdir(exist_ok=True)
     checks, incomplete, skipped = [], [], []
     def chk(name, ok, detail, cat='acceptance'): checks.append({'check': name, 'pass': bool(ok), 'category': cat, 'detail': detail})
-    static_checks(chk); global_peak_static(chk)
+    static_checks(chk); global_peak_static(chk); node_case_static(chk)
     if not exe['ng']: incomplete.append('ngspice: PDU_NGSPICE not set or missing')
     if not exe['lt']: skipped.append('LTspice: PDU_LTSPICE not set or missing -> LTspice decks NOT run (no LTspice result is claimed)')
     engines = [e for e in ('ng', 'lt') if exe[e]]
@@ -283,7 +313,8 @@ def main():
             chk('regression/baseline deck unchanged', before == regression['deck_sha256_after'], before)
     inputs = sorted(set(['pdu-o1ovp-behavioral.lib', 'pdu-o1ovp-block.inc', 'pdu-circuit-o1ovp.inc', 'pdu-efuse-block-o1ovp.inc',
                          'test-cases-o1ovp.json', 'net-split-changes.json', 'gen_o1ovp.py', 'run_o1ovp.py', 'window_budget.py',
-                         'verify_candidate.py', 'rsns_power.py'] +
+                         'verify_candidate.py', 'rsns_power.py', 'model-compare/model_compare.py',
+                         'model-compare/pdu-o1ovp-behavioral-rev2.lib'] +
                         ['decks/' + c['file'] for c in CASES.values()] + ['decks/' + c['ng_file'] for c in CASES.values()]))
     acc = [c for c in checks if c['category'] == 'acceptance']
     res = {'label': a.label or 'unlabelled', 'package': '2026-10-25-o1-ovp',

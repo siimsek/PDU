@@ -147,10 +147,18 @@ def recov_meas(a, b):
     return (f'.meas tran BUS_RECOV_MAX MAX V(VOUT) FROM={a} TO={b}\n.meas tran O1_RECOV_MAX MAX V(O1_11V) FROM={a} TO={b}\n'
             f'.meas tran INP_RECOV_MIN MIN V(INP_OVP) FROM={a} TO={b}\n.meas tran VGS_RECOV_MIN MIN V(M_VGS) FROM={a} TO={b}\n')
 
+# rev3 (model rev3 regression): the pre-fault 'normal' window must itself be a valid normal regime (comparator output high,
+# FETs enhanced). A FET that never turned on (or a hiccuping OVP) leaves O1/bus low and would otherwise make every
+# fault-window peak look 'good'; INP/VGS minima over the SAME window make such a run FAIL instead.
+def pre_regime_meas(a, b):
+    return (f'.meas tran INP_PRE_MIN MIN V(INP_OVP) FROM={a} TO={b}\n.meas tran VGS_PRE_MIN MIN V(M_VGS) FROM={a} TO={b}\n')
+
 # ramp bench: RAW is an ideal source at 11 V from 0.1 ms; the fault is 15..25.1 ms (RAW back at 11 V at 25.1 ms).
 #   pre-fault normal window 0..14.9 ms (whole start-up included, strictest); recovery window 25.1..40 ms.
 RAMP_NORMAL_MEAS = ('.meas tran BUS_PRE_MAX MAX V(VOUT) FROM=0 TO=14.9m\n.meas tran O1_PRE_MAX MAX V(O1_11V) FROM=0 TO=14.9m\n'
-                    + recov_meas('25.1m', '40m'))
+                    + pre_regime_meas('13m', '14.9m') + recov_meas('25.1m', '40m')
+                    + '.meas tran INFO_STARTUP_INP_MIN MIN V(INP_OVP) FROM=1m TO=13m\n'
+                    '.meas tran INFO_STARTUP_VGS_FALL_T WHEN V(M_VGS)=6 FALL=1\n')
 MEAS_OVP = ('.meas tran INP_MIN MIN V(INP_OVP) FROM={a} TO={b}\n'
             '.meas tran VGS_MIN MIN V(M_VGS) FROM={a} TO={b}\n')
 SAVE_OVP = ' V(INP_OVP) V(M_VGS) V(M_VDSA) V(M_VDSB) V(V5_OVP) V(INM_OVP) V(M_IINM)'
@@ -220,6 +228,10 @@ def deck_short(engine, corner, cap, esr, stop='80m', esl=None, **over):
             '.meas tran BUS_NORMAL_MAX MAX V(VOUT) FROM=24m TO=29m\n'
             '.meas tran O1_NORMAL_MAX MAX V(O1_11V) FROM=24m TO=29m\n'
             '.meas tran INFO_BENCH_STARTUP_BUS_MAX MAX V(VOUT) FROM=0 TO=24m\n'
+            + pre_regime_meas('24m', '29m') +
+            # rev3 finding: start-up comparator trips / gate chatter (bench start-up is INFO, not a normal regime; reported)
+            '.meas tran INFO_STARTUP_INP_MIN MIN V(INP_OVP) FROM=1m TO=24m\n'
+            '.meas tran INFO_STARTUP_VGS_FALL_T WHEN V(M_VGS)=6 FALL=1\n'
             + global_peak(stop) +
             '.meas tran VDSA_MAX MAX V(M_VDSA) FROM=29m TO=45m\n'
             '.meas tran VDSB_MAX MAX V(M_VDSB) FROM=29m TO=45m\n'

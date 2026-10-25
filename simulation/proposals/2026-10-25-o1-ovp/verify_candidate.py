@@ -9,7 +9,9 @@
          L90-91; bus 10.78..11.22 V for the 0.45->4.5 A step - L79; 11 V +/-2 % levels; rev2: normal bus
          <= 11.1605 V (separate from the 11.22 V false-trip test level); FET off
          during the fault; device ratings) to every acceptance case.
-      Exit 0 = all acceptance checks pass, 1 = a check failed, 2 = missing/mismatched evidence.
+      rev3: pre-fault (and recovery) windows must be a valid normal regime (INP > 2.5 V, VGS > 6 V) - a FET that never turned on
+      FAILS instead of producing a meaningless low O1 peak. Start-up OVP trips are printed as INFO (exit code unaffected).
+      Exit 0 = all acceptance checks pass, 1 = a check failed, 2 = missing/mismatched evidence (takes precedence over 1).
   python3 verify_candidate.py --baseline-regression
       applies the same O1 criterion to the log of the UNMODIFIED baseline deck
       simulation/pdu-efuse-ovp.ng.cir (run by run_o1ovp.py) -> expected to FAIL (~16.89 V), exit 1.
@@ -49,6 +51,8 @@ def rules(kind, m):
     nrm = lambda k, w: (f'normal bus <= 11.1605 ({k})', m[k] <= NORMAL_MAX, f'{m[k]:.6g} V ({w})')
     # rev3 P0-02: whole-run O1 peak is REQUIRED in every acceptance deck (KeyError -> counted as missing evidence)
     gpk = lambda: ('O1 global peak <= 12V (0..tran end)', m['o1_global_peak'] <= O1_MAX, f"O1 global {m['o1_global_peak']:.6g} V")
+    # rev3: pre-fault window must be a valid normal regime (FET never on / hiccup -> FAIL, not a meaningless low peak)
+    pre = lambda w: ('pre-fault regime normal (INP>2.5, VGS>6)', m['inp_pre_min'] > 2.5 and m['vgs_pre_min'] > 6, f"INP {m['inp_pre_min']:.3g} VGS {m['vgs_pre_min']:.3g} ({w})")
     def rec(w):
         yield 'recovery regime normal (INP>2.5, VGS>6)', m['inp_recov_min'] > 2.5 and m['vgs_recov_min'] > 6, f"INP {m['inp_recov_min']:.3g} VGS {m['vgs_recov_min']:.3g} ({w})"
         yield nrm('bus_recov_max', f'after recovery {w}'); yield nrm('o1_recov_max', f'after recovery {w}')
@@ -67,9 +71,9 @@ def rules(kind, m):
         if 'bus_peak' in m: yield 'U3/U4 IN <= 30 V', m['bus_peak'] <= 30, f"bus {m['bus_peak']:.5g} V"
         yield gpk()
         if kind in ('ramp', 'sweep', 'mc-ramp'):
-            yield nrm('bus_pre_max', '0..14.9 ms'); yield nrm('o1_pre_max', '0..14.9 ms'); yield from rec('25.1..40 ms')
+            yield nrm('bus_pre_max', '0..14.9 ms'); yield nrm('o1_pre_max', '0..14.9 ms'); yield pre('13..14.9 ms'); yield from rec('25.1..40 ms')
         else:
-            yield nrm('bus_normal_max', '24..29 ms'); yield nrm('o1_normal_max', '24..29 ms')
+            yield nrm('bus_normal_max', '24..29 ms'); yield nrm('o1_normal_max', '24..29 ms'); yield pre('24..29 ms')
             if 'o1_reset' in m: yield from rec('55..80 ms')   # 80 ms decks carry the recovery window; 45 ms decks do not
     elif kind == 'board-average':
         yield 'O1<=12V', m['o1_max'] <= O1_MAX, f"O1 max {m['o1_max']:.6g} V"
@@ -139,10 +143,22 @@ def main():
                 if not ok: fails.append(f"{r['case']}: {nm}: {d}")
         except KeyError as e:
             missing.append(f"{r['case']}: required measurement {e} absent from deck/log")
+    # INFO (not acceptance, exit code unaffected, printed so nothing is hidden): start-up OVP trips before the fault
+    info = []
+    for r in runs:
+        lg = HERE/r['log']
+        if not lg.exists() or cases[r['case']]['kind'] not in ('ramp', 'sweep', 'mc-ramp', 'short', 'mc-short'): continue
+        m, miss, bad = measures(lg, HERE/r['deck'])
+        if miss or bad or 'info_startup_inp_min' not in m: continue
+        ft = 14.9e-3 if cases[r['case']]['kind'] in ('ramp', 'sweep', 'mc-ramp') else 29e-3
+        if not (m['info_startup_inp_min'] > 2.5 and m['info_startup_vgs_fall_t'] >= ft):
+            info.append(f"{r['case']}: start-up INP min {m['info_startup_inp_min']:.3g} V, first VGS fall {m['info_startup_vgs_fall_t']*1e3:.5g} ms")
     print(f'verify_candidate: {n} acceptance re-checks, {len(fails)} failed, {len(missing)} evidence problems; '
           f"runner label {res.get('label')!r}, finished {res.get('finished')}")
     for f in fails: print('FAIL', f)
     for x in missing: print('MISSING', x)
+    print(f'verify_candidate: INFO start-up OVP trip findings: {len(info)}')
+    for x in info: print('INFO', x)
     sys.exit(2 if missing else (1 if fails else 0))
 
 if __name__ == '__main__':
