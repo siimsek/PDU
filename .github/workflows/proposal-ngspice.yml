@@ -111,6 +111,8 @@ jobs:
           grep -q "BUS_NORMAL_MAX = 11.1605" verify_uvlo.py
           grep -q "V_FALL_MIN = 18.0" verify_uvlo.py
           grep -q "T_SEQ_MIN = 0.060" verify_uvlo.py
+      - name: Verifier/budget gate self-tests (fail-closed; synthetic logs incl. INFO cases O1 12.01 V and stable bus 11.17 V)
+        run: python3 tests/test_uvlo_gates.py
       - name: Analytic budget (must pass and match the committed JSON)
         run: |
           python3 uvlo_budget.py
