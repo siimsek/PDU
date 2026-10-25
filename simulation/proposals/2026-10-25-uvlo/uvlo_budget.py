@@ -315,13 +315,18 @@ def eval_timer(RT, CT, RHB=1e6, RK1=10e3, RK2=40.2e3, RD=10e3, RUV2=10e3):
     en_hi_min = (DS['TPS7A1650_V5'][0] - DS['TLV3202_VOH_DROP'][1]) * RUV2 * (1 - E_EN) / (RD * (1 + E_EN) + RUV2 * (1 - E_EN)) - DS['LM70880_IEN'][0] * (RD * RUV2 / (RD + RUV2))
     en_hi_max = DS['TPS7A1650_V5'][1] * RUV2 * (1 + E_EN) / (RD * (1 - E_EN) + RUV2 * (1 + E_EN)) + DS['LM70880_IEN'][0] * (RD * RUV2 / (RD + RUV2))
     en_lo_max = DS['TLV3202_VOL'][1] * RUV2 * (1 + E_EN) / (RD * (1 - E_EN) + RUV2 * (1 + E_EN)) + DS['LM70880_IEN'][0] * (RD * RUV2 / (RD + RUV2))
+    # U22 (second TMUX1102, 2026-10-25 fix for dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV is LOW.
+    # OFF leakage (2 nA, conservative ON/OFF bound) loads EN in the high state; ON state: EN = I(RDEN) * RON.
+    en_hi_min -= DS['TMUX1102_ILEAK'][0] * (RD * RUV2 / (RD + RUV2))
+    en_lo_gated_max = (DS['TPS7A1650_V5'][1] / (RD * (1 - E_EN)) + DS['LM70880_IEN'][0]) * DS['TMUX1102_RON'][1]
     m = dict(seq_min_margin_s=tmin - REQ['T_SEQ_MIN'], latency_margin_s=REQ['T_SEQ_MAX'] - tmax,
              seq_after_full_dip_margin_s=min(x['t'] for x in dip) - REQ['T_SEQ_MIN'],
              timer_headroom_margin_V=headroom - 0.2, en_high_margin_V=en_hi_min - DS['LM70880_VEN_TH'][1] - 0.5,
-             en_low_margin_V=DS['LM70880_EN_LOW_LOGIC'][0] - en_lo_max)
+             en_low_margin_V=DS['LM70880_EN_LOW_LOGIC'][0] - en_lo_max,
+             en_low_gated_margin_V=DS['LM70880_EN_LOW_LOGIC'][0] - en_lo_gated_max)
     return dict(RT=RT, CT=CT, RHB=RHB, RK1=RK1, RK2=RK2, RD=RD, RUV2=RUV2, t_cold_min=tmin, t_cold_max=tmax,
                 t_after_dip_min=min(x['t'] for x in dip), t_after_dip_max=max(x['t'] for x in dip),
-                timer_headroom_min=headroom, en_high_min=en_hi_min, en_high_max=en_hi_max, en_low_max=en_lo_max,
+                timer_headroom_min=headroom, en_high_min=en_hi_min, en_high_max=en_hi_max, en_low_max=en_lo_max, en_low_gated_max=en_lo_gated_max,
                 margins=m, ok=all(v >= 0 for v in m.values()))
 
 

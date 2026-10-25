@@ -25,5 +25,9 @@ RK2 KTH_UV 0 {RK2}
 CK KTH_UV 0 10n
 XU20B T_UV KTH_UV V5_OVP 0 OUTB_UV UVLO_CMP VIO={VIOB} HINT={HINTB} VOHD={VOHD} VOL={VOL}
 RDEN OUTB_UV EN_BUCK 10k
+* U22 TMUX1102 (2026-10-25 fix, dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV LOW (VIN not OK).
+* Stops the buck at once when UV is detected, instead of waiting for the timer comparator (CTT discharge, ~0.14 ms).
+XU22 EN_BUCK 0 0 OUTA_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0
+C22 V5_OVP 0 100n
 * 1N4148WS: generic small-signal diode parameters (ASSUMPTION, typical-class; reverse leakage is Bilkd)
 .model UVLO_1N4148WS D(Is=2.52n N=1.752 Rs=0.568 Cjo=4p Bv=100 Ibv=100u)

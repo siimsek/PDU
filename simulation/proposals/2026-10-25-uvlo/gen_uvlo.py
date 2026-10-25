@@ -97,6 +97,10 @@ RK2 KTH_UV 0 {RK2}
 CK KTH_UV 0 10n
 XU20B T_UV KTH_UV V5_OVP 0 OUTB_UV UVLO_CMP VIO={VIOB} HINT={HINTB} VOHD={VOHD} VOL={VOL}
 RDEN OUTB_UV EN_BUCK 10k
+* U22 TMUX1102 (2026-10-25 fix, dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV LOW (VIN not OK).
+* Stops the buck at once when UV is detected, instead of waiting for the timer comparator (CTT discharge, ~0.14 ms).
+XU22 EN_BUCK 0 0 OUTA_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0
+C22 V5_OVP 0 100n
 * 1N4148WS: generic small-signal diode parameters (ASSUMPTION, typical-class; reverse leakage is Bilkd)
 .model UVLO_1N4148WS D(Is=2.52n N=1.752 Rs=0.568 Cjo=4p Bv=100 Ibv=100u)
 '''
@@ -227,9 +231,12 @@ def gen():
             win('RUN', a, stop) + f'.meas tran VIN_PP_RUN PP V(VIN) FROM={a:.6g} TO={stop:.6g}\n'),
             kind='rsweep', expect='PASS' if rt <= 0.25 + 1e-9 else 'INFO', r=rt, win=[a, stop], vf=C3['typ']['vf'], vr=C3['typ']['vr'])
     # ---- F: brown-outs (E nominal 22.2 V, 7.5 A, R 0.25) and deep dip at light load
-    dips = (('dip19v-50ms', 19.0, 0.050, 1.0), ('dip0v-1ms', 0.0, 0.001, 1.0), ('dip0v-300us', 0.0, 0.0003, 1.0),
-            ('dip15v-20ms', 15.0, 0.020, 1.0), ('deepdip0v-50ms-light', 0.0, 0.050, 0.0667))
-    for name, ed, dt, sc in dips:
+    # 2026-10-25: 250 us added as acceptance; 200 us / 100 us added as INFO = residual window below the UV detection
+    # latency (CFU filter), where the U22 EN gate cannot act (see RESULTS.md, residual risk R-DIP).
+    dips = (('dip19v-50ms', 19.0, 0.050, 1.0, 'PASS'), ('dip0v-1ms', 0.0, 0.001, 1.0, 'PASS'), ('dip0v-300us', 0.0, 0.0003, 1.0, 'PASS'),
+            ('dip0v-250us', 0.0, 0.00025, 1.0, 'PASS'), ('dip0v-200us', 0.0, 0.0002, 1.0, 'INFO'), ('dip0v-100us', 0.0, 0.0001, 1.0, 'INFO'),
+            ('dip15v-20ms', 15.0, 0.020, 1.0, 'PASS'), ('deepdip0v-50ms-light', 0.0, 0.050, 0.0667, 'PASS'))
+    for name, ed, dt, sc, exp in dips:
         for uv, tm, ovp, ib in (('typ', 'ttyp', 'typ', '345u'), ('mbmin', 'tmin', 'wclo', '100u')):
             t0 = tb(tm) + 0.08; t1 = t0 + dt; tr = tb(tm) * 1.0 + 0.005; a = t1 + tr + 0.06; stop = a + 0.05
             pwl = f'0 0 100u 22.2 {t0:.6g} 22.2 {t0+20e-6:.6g} {ed} {t1:.6g} {ed} {t1+20e-6:.6g} 22.2'
@@ -241,7 +248,7 @@ def gen():
                 f'.meas tran RAW_RESTART_MAX MAX V(RAW) FROM={t1:.6g} TO={a:.6g}\n'
                 f'.meas tran INP_RESTART_MIN MIN V(INP_OVP) FROM={t1:.6g} TO={a:.6g}\n'
                 f'.meas tran RAW_AT_DIP_END FIND V(RAW) AT={t1:.6g}\n.meas tran T_AT_DIP_END FIND V(T_UV) AT={t1:.6g}\n'),
-                kind='dip', expect='PASS', uv=uv, tm=tm, pre=[t0 - 0.03, t0], post=[a, stop], t0=t0, t1=t1, e_dip=ed, light=sc < 1)
+                kind='dip', expect=exp, uv=uv, tm=tm, pre=[t0 - 0.03, t0], post=[a, stop], t0=t0, t1=t1, e_dip=ed, light=sc < 1)
     # ---- G: hot-plug, stiff source (R_total 0.03 ohm, 1 uH), 1 us edge
     for e in (20.0, 25.2, 26.0):
         for uv, tm in (('typ', 'ttyp'), ('vrmax', 'tmin')):
