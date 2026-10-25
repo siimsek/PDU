@@ -12,7 +12,8 @@ rules (run_o1ovp.evaluate). Diagnostic/regression evidence only; acceptance is d
 Usage: PDU_NGSPICE=/usr/bin/ngspice python3 model_compare.py [--jobs N]
        python3 model_compare.py --resummarize   (summary only, from stored rows; verifies stored log sha256)
   -> ../results/model-compare/rev2/*.ng.log + ../results/model-compare/model-compare.json
-Exit 0 = comparison complete (differences are data, not errors), 2 = rev3 results missing / deck mismatch.
+Exit 0 = comparison complete (differences are data, not errors), 2 = rev3 results missing / deck mismatch /
+duplicated or missing RAW run rows (Tur-6 P2-T6-03, raw_run_problems(), checked before any ngspice run).
 """
 import argparse, hashlib, json, os, re, subprocess, sys, tempfile
 from concurrent.futures import ThreadPoolExecutor
@@ -26,6 +27,21 @@ KEYS = ['o1_peak', 'o1_global_peak', 'bus_peak', 'raw_peak', 'trip_raw', 'off_ra
         'bus_pre_max', 'o1_pre', 'inp_pre_min', 'vgs_pre_min', 'bus_recov_max', 'inp_recov_min', 'vgs_recov_min', 'o1_reset',
         'info_startup_inp_min', 'info_startup_vgs_fall_t', 'inp_min', 'vgs_min', 'bus_max', 'raw_max', 'o1_max', 'vdsa_max', 'vdsb_max']
 sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+RESULTS = PKG/'o1ovp-results.json'  # rev3 acceptance run; guard_negative_test.py may point this at a mutated temp copy
+
+def raw_run_problems(res, cases):
+    """Tur-6 P2-T6-03 (shared with rebind_rev3.py): validate the RAW run rows BEFORE any case-keyed dict is built
+    (a dict would silently keep the last of duplicated rows). Returns a list of problems; empty = OK."""
+    bad = []
+    raw_all = [(r.get('engine'), r.get('case')) for r in res.get('runs', [])]
+    dup_all = sorted({x for x in raw_all if raw_all.count(x) > 1}, key=str)
+    if dup_all: bad.append(f"raw duplicate (engine, case) runs: {dup_all[:5]} ({len(dup_all)})")
+    raw_ng = [r.get('case') for r in res.get('runs', []) if r.get('engine') == 'ng']
+    dup_ng = sorted({c for c in raw_ng if raw_ng.count(c) > 1}, key=str)
+    if dup_ng: bad.append(f"raw duplicate ng CASE runs: {dup_ng[:5]} ({len(dup_ng)})")
+    if len(raw_ng) != len(cases): bad.append(f"raw ng run count {len(raw_ng)} != len(CASES) {len(cases)}")
+    if set(raw_ng) != set(cases): bad.append(f"raw ng case set != CASES: missing {sorted(set(cases) - set(raw_ng))[:5]} extra {sorted(set(raw_ng) - set(cases), key=str)[:5]}")
+    return bad
 
 def judge(name, c, m):
     out = []
@@ -83,7 +99,9 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--jobs', type=int, default=os.cpu_count() or 2)
     ap.add_argument('--resummarize', action='store_true', help='recompute summary from stored rows only (no ngspice)'); a = ap.parse_args()
     if a.resummarize: return resummarize()
-    res = json.loads((PKG/'o1ovp-results.json').read_text())
+    res = json.loads(Path(RESULTS).read_text())
+    raw = raw_run_problems(res, R.CASES)  # Tur-6 P2-T6-03: fail closed on duplicated/missing RAW rows (exit 2, nothing run/written)
+    if raw: print('model_compare: refused raw o1ovp-results rows:', raw); return 2
     new = {r['case']: r for r in res['runs'] if r['engine'] == 'ng'}
     bad = [n for n, c in R.CASES.items() if n not in new or new[n]['deck_sha256'] != sha(R.DECKS/c['ng_file'])]
     if bad: print('model_compare: rev3 results missing or from other decks:', bad[:5]); return 2
@@ -119,7 +137,7 @@ def main():
     out = dict(_status='MODEL-REVISION REGRESSION (rev2 vs rev3 behavioral model) - diagnostic; acceptance = run_o1ovp.py + verify_candidate.py',
                change='O1OVP_TPS48000 internal node ov -> ovs (case-insensitive collision with pin OV removed); nothing else',
                old_lib='model-compare/pdu-o1ovp-behavioral-rev2.lib', old_lib_sha256=sha(OLD), new_lib_sha256=sha(PKG/'pdu-o1ovp-behavioral.lib'),
-               rev3_results_label=res.get('label'), rev3_results_sha256=sha(PKG/'o1ovp-results.json'), git_commit=head, summary=summ, rows=rows)
+               rev3_results_label=res.get('label'), rev3_results_sha256=sha(RESULTS), git_commit=head, summary=summ, rows=rows)
     (OUT/'model-compare.json').write_text(json.dumps(out, indent=1) + '\n')
     print(json.dumps(summ, indent=1))
     return 0

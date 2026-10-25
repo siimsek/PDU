@@ -15,9 +15,11 @@ the verdict re-derived exactly as model_compare.main() does (INCOMPLETE / REFERE
 PASS, judge() re-run on the rev2 log measures and on the new rev3 run measures) and `changed` must equal the
 model_compare.main() expression re-evaluated on the recomputed verdicts/deltas; model-independent rows must keep
 changed=False, delta={} and verdict MODEL-INDEPENDENT.
+Tur-6: P2-T6-01 num() rejects NaN/Inf and the d tolerance test is NaN-safe; P2-T6-02 rev2 completed/errors are
+re-derived from the sha-pinned rev2 log (runner rule) instead of trusted; P2-T6-03 raw-row check = M.raw_run_problems().
 Usage: python3 model-compare/rebind_rev3.py   -> exit 0 rebound, 2 mismatch (nothing written)
 """
-import json, sys
+import json, math, sys
 from pathlib import Path
 HERE = Path(__file__).absolute().parent; PKG = HERE.parent
 sys.path.insert(0, str(HERE)); sys.path.insert(0, str(PKG))
@@ -28,16 +30,10 @@ RES_PATH = Path(getattr(M, 'REBIND_RESULTS', PKG/'o1ovp-results.json'))
 res = json.loads(RES_PATH.read_text())
 bad = []
 D_ABS, D_REL, CHG = 1e-12, 1e-9, 1e-3  # d tolerance (float re-subtraction); CHG = model_compare.main() 'changed' threshold
-# Tur-5 P2-T5-02: count RAW rows BEFORE the case-keyed dict (which would silently merge duplicate CASE rows).
-raw_all = [(r.get('engine'), r.get('case')) for r in res['runs']]
-dup_all = sorted({x for x in raw_all if raw_all.count(x) > 1}, key=str)
-if dup_all: bad.append(f"raw duplicate (engine, case) runs: {dup_all[:5]} ({len(dup_all)})")
-raw_ng = [r.get('case') for r in res['runs'] if r.get('engine') == 'ng']
-dup_ng = sorted({c for c in raw_ng if raw_ng.count(c) > 1}, key=str)
-if dup_ng: bad.append(f"raw duplicate ng CASE runs: {dup_ng[:5]} ({len(dup_ng)})")
-if len(raw_ng) != len(M.R.CASES): bad.append(f"raw ng run count {len(raw_ng)} != len(CASES) {len(M.R.CASES)}")
+# Tur-5 P2-T5-02 / Tur-6 P2-T6-03: RAW rows validated BEFORE the case-keyed dict (shared with model_compare.main()).
+bad += M.raw_run_problems(res, M.R.CASES)
 new = {r['case']: r for r in res['runs'] if r['engine'] == 'ng'}
-def num(x): return isinstance(x, (int, float)) and not isinstance(x, bool)
+def num(x): return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)  # Tur-6 P2-T6-01: NaN/Inf rejected
 def want_verdict(s, c, j):  # identical rule to model_compare.main() verdict(); j = judge() recomputed now (or None)
     if not s.get('completed'): return 'INCOMPLETE'
     if c['kind'] == 'reference': return 'REFERENCE'
@@ -69,7 +65,15 @@ for r in d['rows']:
     lg = r.get('rev2', {}).get('log')
     if not lg or not (PKG/lg).exists(): bad.append(f"rev2 log absent {r['case']}"); continue
     want = M.R.expected_measures(M.R.DECKS/c['ng_file'])
-    m2 = {k.lower(): float(v) for k, v in M.R.MEAS_RE.findall(M.R.read_log(PKG/lg)) if k.lower() in want}
+    txt2 = M.R.read_log(PKG/lg)
+    m2 = {k.lower(): float(v) for k, v in M.R.MEAS_RE.findall(txt2) if k.lower() in want}
+    # Tur-6 P2-T6-02: rev2 `completed`/`errors` are NOT trusted as stored; re-derived from the sha-pinned rev2 log with the
+    # runner's own rule (run_o1ovp.run_deck: no ERR_RE match and every deck .meas present; the exit code is not in the log,
+    # so a stored completed=True is additionally required to agree with the log, never the other way round).
+    e2 = M.R.ERR_RE.findall(txt2); log_ok = not e2 and set(want) <= m2.keys()
+    if r['rev2'].get('completed') is not log_ok: bad.append(f"rev2 completed {r['case']}: stored {r['rev2'].get('completed')} != log-derived {log_ok}")
+    if r['rev2'].get('errors') != e2[:1]: bad.append(f"rev2 errors {r['case']}: stored {r['rev2'].get('errors')} != log {e2[:1]}")
+    if any(not num(x) for x in m2.values()): bad.append(f"rev2 log non-finite measure {r['case']}")
     w = new.get(r['case'], {}); m3 = w.get('measures', {})
     exp = {k for k in M.KEYS if k in m2 or k in m3}
     if set(r['delta']) != exp: bad.append(f"delta keys {r['case']}: missing {sorted(exp - set(r['delta']))} extra {sorted(set(r['delta']) - exp)}")
@@ -82,7 +86,7 @@ for r in d['rows']:
         e = (b - a) if a is not None and b is not None else None; dd[k] = e
         if e is None:
             if v['d'] is not None: bad.append(f"delta d {r['case']}/{k}: {v['d']} but one side is None")
-        elif not num(v['d']) or abs(v['d'] - e) > D_ABS + D_REL * max(abs(a), abs(b), 1.0):
+        elif not num(v['d']) or not (abs(v['d'] - e) <= D_ABS + D_REL * max(abs(a), abs(b), 1.0)):  # NaN-safe (Tur-6 P2-T6-01)
             bad.append(f"delta d {r['case']}/{k}: stored {v['d']} != rev3-rev2 {e}")
     j2 = None
     if r['rev2'].get('completed') and c['kind'] != 'reference':

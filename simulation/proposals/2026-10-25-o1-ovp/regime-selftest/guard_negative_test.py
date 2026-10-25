@@ -11,6 +11,9 @@ Proves the two fail-closed guards added in Tur-4 actually reject incomplete or o
     corrupted stored rev3 / rev2 `verdict`, a flipped `changed` (model-dependent and model-independent row) -> exit 2;
     a duplicated RAW ng run row in a temp copy of o1ovp-results.json (M.REBIND_RESULTS) -> exit 2. The real
     o1ovp-results.json is never touched.
+D/C10-C11. Tur-6 P2-T6-01/02/03: NaN/Inf delta d or measure, a completed rev2 row consistently rewritten as INCOMPLETE,
+    fabricated rev2 errors -> rebind exit 2; model_compare.main() run directly on a temp results copy with a duplicated
+    (first/last) or missing RAW ng row -> exit 2 before any ngspice run and without writing (M.RESULTS / M.OUT temp).
 Exit 0 = every guard behaved as expected; 1 otherwise.
 """
 import copy, json, runpy, sys, tempfile
@@ -87,5 +90,38 @@ def c8(rr):
     rr['runs'].insert(0, copy.deepcopy(rr['runs'][i]))  # duplicate placed FIRST (dict would keep the original last)
 check('C8 duplicated raw ng row placed first -> exit 2', rebind(lambda d: None, c8) == 2)
 check('C9 unmodified results copy via M.REBIND_RESULTS -> exit 0', rebind(lambda d: None, lambda rr: None) == 0)
+# Tur-6 P2-T6-01: NaN / Inf delta d must not slip through the tolerance comparison
+def c10(d): d['rows'][mi]['delta'][dk]['d'] = float('nan')
+check('C10 NaN delta d -> exit 2', rebind(c10) == 2)
+def c10b(d): d['rows'][mi]['delta'][dk]['d'] = float('inf')
+check('C10b Inf delta d -> exit 2', rebind(c10b) == 2)
+def c10c(d): d['rows'][mi]['delta'][dk]['rev3'] = float('nan')
+check('C10c NaN rev3 measure in delta -> exit 2', rebind(c10c) == 2)
+# Tur-6 P2-T6-02: a completed rev2 row rewritten consistently as INCOMPLETE (completed=False, verdict, changed) -> exit 2
+ci = next(i for i, r in enumerate(base['rows']) if not r.get('model_independent') and r['kind'] != 'reference'
+          and r['rev2'].get('completed') and r['rev3'].get('completed'))
+def c11(d):
+    s = d['rows'][ci]['rev2']; s['completed'] = False; s['verdict'] = 'INCOMPLETE'; d['rows'][ci]['changed'] = True
+check(f'C11 rev2 completed->False + INCOMPLETE + consistent changed ({base["rows"][ci]["case"]}) -> exit 2', rebind(c11) == 2)
+def c11b(d): d['rows'][ci]['rev2']['errors'] = ['doAnalyses: TRAN:  Timestep too small']
+check('C11b fabricated rev2 errors -> exit 2', rebind(c11b) == 2)
+# Tur-6 P2-T6-03: model_compare.main() direct path must reject duplicated RAW rows BEFORE any ngspice run / write
+check('D0 raw_run_problems(real o1ovp-results) == []', M.raw_run_problems(res, M.R.CASES) == [])
+def main_with(mut_res):
+    rr = copy.deepcopy(res); mut_res(rr)
+    with tempfile.TemporaryDirectory() as tmp:
+        oldo, oldr, argv = M.OUT, M.RESULTS, sys.argv
+        M.OUT = Path(tmp)/'mc'; M.RESULTS = Path(tmp)/'o1ovp-results.json'; M.RESULTS.write_text(json.dumps(rr)); sys.argv = ['model_compare.py']
+        saved_ng = M.os.environ.pop('PDU_NGSPICE', None)  # if the guard failed, run_old would raise KeyError, never run ngspice
+        try: code = M.main()
+        except KeyError: code = 'reached ngspice stage'
+        finally:
+            wrote = M.OUT.exists(); M.OUT, M.RESULTS, sys.argv = oldo, oldr, argv
+            if saved_ng is not None: M.os.environ['PDU_NGSPICE'] = saved_ng
+    return code, wrote
+check('D1 model_compare.main(): duplicated raw ng row (last) -> exit 2, nothing written', main_with(c7) == (2, False))
+check('D2 model_compare.main(): duplicated raw ng row (first) -> exit 2, nothing written', main_with(c8) == (2, False))
+def d3(rr): rr['runs'] = [r for r in rr['runs'] if not (r['engine'] == 'ng' and r['case'] == base['rows'][mi]['case'])]
+check('D3 model_compare.main(): missing raw ng row -> exit 2, nothing written', main_with(d3) == (2, False))
 print(f"{sum(k for _, k in results)}/{len(results)} guard checks OK")
 sys.exit(0 if all(k for _, k in results) else 1)
