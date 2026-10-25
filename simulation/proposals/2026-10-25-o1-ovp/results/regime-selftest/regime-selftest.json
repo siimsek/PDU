@@ -1,0 +1,153 @@
+{
+ "_status": "NEGATIVE SELF-TEST - temporary block mutations that keep the FET off; INVALID as design fixes; behavioral models",
+ "block_inc_sha256": "40c5d1702e5e3df57a7522da88f61c3188d99eb0bc5a2546e8375f5d15d455f0",
+ "lib_sha256": "1027d7d70e84284fe9baee8105a20499ff5ab13e91d5d4e3c3d56a0576124202",
+ "run_o1ovp_sha256": "04203dbd52c66ae06e43db04a3e0c6ed806c57e62a61846fee334c4ff59649dd",
+ "verify_candidate_sha256": "599b877bf8b15ef619aa830cf90942b3cd2b1890e56d59b7ef553398a35460a2",
+ "rows": [
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "mutation": "inp-forced-low",
+   "mutation_line": "RPU10 PU_OVP G_OVP 10\nRINM_DIAG INM_OVP V5_OVP 10",
+   "completed": false,
+   "errors": [
+    "Error: measure  info_startup_vgs_fall_t  when(WHEN) : out of interval"
+   ],
+   "log": "results/regime-selftest/buck-short-c185-esr12m5-wchi.inp-forced-low.ng.log",
+   "log_sha256": "7e5360b24c2bf055c285752ccc9a62316d1b1449f9cb167049cd1f646a223937",
+   "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
+   "o1_global_peak": 0.007288102,
+   "o1_peak": 6.344333e-11,
+   "inp_pre_min": 4.999469e-09,
+   "vgs_pre_min": 1.214306e-16,
+   "runner_regime_check": [
+    [
+     "pre_fault_regime_normal",
+     false,
+     "24..29 ms: INP min 4.999e-09 V (>2.5), VGS min 1.214e-16 V (>6)"
+    ]
+   ],
+   "runner_acceptance_fails": 6,
+   "verifier_regime_check": [
+    [
+     "pre-fault regime normal (INP>2.5, VGS>6)",
+     false,
+     "INP 5e-09 VGS 1.21e-16 (24..29 ms)"
+    ]
+   ],
+   "verifier_fails": 6,
+   "runner_rejects": true,
+   "verifier_rejects": true,
+   "regime_check_flagged": true,
+   "selftest_pass": true
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "mutation": "pu-cap-1u",
+   "mutation_line": "RPU10 PU_OVP G_OVP 10\nCPU_DIAG PU_OVP 0 1u",
+   "completed": false,
+   "errors": [
+    "Error: measure  info_startup_vgs_fall_t  when(WHEN) : out of interval"
+   ],
+   "log": "results/regime-selftest/buck-short-c185-esr12m5-wchi.pu-cap-1u.ng.log",
+   "log_sha256": "87156e1cfea6cb620d0d35e8e548b953490a228f004cc642e24f388f7023a7c0",
+   "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
+   "o1_global_peak": 0.007780188,
+   "o1_peak": 2.748221e-09,
+   "inp_pre_min": 4.999499,
+   "vgs_pre_min": -2.594365e-07,
+   "runner_regime_check": [
+    [
+     "pre_fault_regime_normal",
+     false,
+     "24..29 ms: INP min 4.999 V (>2.5), VGS min -2.594e-07 V (>6)"
+    ]
+   ],
+   "runner_acceptance_fails": 6,
+   "verifier_regime_check": [
+    [
+     "pre-fault regime normal (INP>2.5, VGS>6)",
+     false,
+     "INP 5 VGS -2.59e-07 (24..29 ms)"
+    ]
+   ],
+   "verifier_fails": 6,
+   "runner_rejects": true,
+   "verifier_rejects": true,
+   "regime_check_flagged": true,
+   "selftest_pass": true
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "mutation": "inp-forced-low",
+   "mutation_line": "RPU10 PU_OVP G_OVP 10\nRINM_DIAG INM_OVP V5_OVP 10",
+   "completed": false,
+   "errors": [
+    "Error: measure  trip_raw  find(AT) : out of interval"
+   ],
+   "log": "results/regime-selftest/efuse-ovp-s023-wchi.inp-forced-low.ng.log",
+   "log_sha256": "d8a7f0418174561e6ead6d09c46ab0164db6e5dcb1eb16f6bfacf9ff113adbdb",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "o1_global_peak": 0.00730458,
+   "o1_peak": 8.982852e-12,
+   "inp_pre_min": 4.999468e-09,
+   "vgs_pre_min": 2.220446e-14,
+   "runner_regime_check": [
+    [
+     "pre_fault_regime_normal",
+     false,
+     "13..14.9 ms: INP min 4.999e-09 V (>2.5), VGS min 2.22e-14 V (>6)"
+    ]
+   ],
+   "runner_acceptance_fails": 6,
+   "verifier_regime_check": [
+    [
+     "pre-fault regime normal (INP>2.5, VGS>6)",
+     false,
+     "INP 5e-09 VGS 2.22e-14 (13..14.9 ms)"
+    ]
+   ],
+   "verifier_fails": 5,
+   "runner_rejects": true,
+   "verifier_rejects": true,
+   "regime_check_flagged": true,
+   "selftest_pass": true
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "mutation": "pu-cap-1u",
+   "mutation_line": "RPU10 PU_OVP G_OVP 10\nCPU_DIAG PU_OVP 0 1u",
+   "completed": false,
+   "errors": [
+    "Error: measure  info_startup_vgs_fall_t  when(WHEN) : out of interval"
+   ],
+   "log": "results/regime-selftest/efuse-ovp-s023-wchi.pu-cap-1u.ng.log",
+   "log_sha256": "1d1e603dfcd617c6a1c10134d3a0fcd26d0dd759208953f47e9600729b72d401",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "o1_global_peak": 0.04266975,
+   "o1_peak": 0.007812302,
+   "inp_pre_min": 4.999499,
+   "vgs_pre_min": -4.9343,
+   "runner_regime_check": [
+    [
+     "pre_fault_regime_normal",
+     false,
+     "13..14.9 ms: INP min 4.999 V (>2.5), VGS min -4.934 V (>6)"
+    ]
+   ],
+   "runner_acceptance_fails": 7,
+   "verifier_regime_check": [
+    [
+     "pre-fault regime normal (INP>2.5, VGS>6)",
+     false,
+     "INP 5 VGS -4.93 (13..14.9 ms)"
+    ]
+   ],
+   "verifier_fails": 6,
+   "runner_rejects": true,
+   "verifier_rejects": true,
+   "regime_check_flagged": true,
+   "selftest_pass": true
+  }
+ ]
+}
