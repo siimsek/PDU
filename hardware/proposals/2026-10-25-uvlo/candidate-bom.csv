@@ -18,6 +18,6 @@ RHB,1M,RC0603FR-071ML,YAGEO,Resistor_SMD:R_0603_1608Metric,1 %,+/-100 ppm/K,<= 5
 RK1,10.0k,ERA-3ARB1002V,Panasonic,Resistor_SMD:R_0603_1608Metric,0.1 %,+/-10 ppm/K,<= 5 V,https://industrial.panasonic.com/cdbs/www-data/pdf/RDM0000/AOA0000C307.pdf,AOA0000C307,V5_OVP -> KTH_UV
 RK2,40.2k,ERA-3ARB4022V,Panasonic,Resistor_SMD:R_0603_1608Metric,0.1 %,+/-10 ppm/K,<= 5 V,https://industrial.panasonic.com/cdbs/www-data/pdf/RDM0000/AOA0000C307.pdf,AOA0000C307,KTH_UV -> GND (KTH = 0.8008 x V5)
 CK,10nF,generic X7R 0603 >= 16 V (MPN not selected),,Capacitor_SMD:C_0603_1608Metric,+/-10 %,X7R,>= 16 V,,,KTH_UV filter
-RDEN,10k,generic 1 % thick film 0603,,Resistor_SMD:R_0603_1608Metric,1 %,+/-100 ppm/K,<= 5 V,,,OUTB_UV -> EN_BUCK; with RUV2 10k gives EN_BUCK = OUTB/2 (high >= 2.351 V worst-case > 2 V; low <= 0.118 V < 0.4 V)
+RDEN,10k,generic 1 % thick film 0603,,Resistor_SMD:R_0603_1608Metric,1 %,+/-100 ppm/K,<= 5 V,,,OUTB_UV -> EN_BUCK; with RUV2 10k gives EN_BUCK = OUTB/2 (high >= 2.289 V worst-case > 2 V; low <= 0.121 V < 0.4 V (budget: RDEN, RUV2 strict 3 %))
 RUV1,DNP (was 180k),DNP,,Resistor_SMD:R_0603_1608Metric,,,,,,"BASELINE CHANGE: footprint kept, part NOT populated (VIN -> EN_BUCK divider replaced by U20). Populating it again restores the baseline regression (reg-baseline-180k10k-*) = FAIL"
 RUV2,10.0k,unchanged baseline part,,Resistor_SMD:R_0603_1608Metric,1 %,,,,,"unchanged; now the lower leg of RDEN/RUV2 and an EN pull-down while U20 is unpowered"

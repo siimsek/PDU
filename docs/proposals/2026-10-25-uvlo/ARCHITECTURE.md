@@ -26,8 +26,8 @@ U20 VCC(8) = U21 VDD(5) = V5_OVP (U11 TPS7A1650, WP1)
   V_r = REFD·(1 + RTU/(RBU‖RXU)). Tipik değerler: REFD = 4,096·46,4/56,4 = 3,3698 V, V_r = 19,72 V.
 - OUTA yükselince U21 açılır ve eşik V_f = REFD·(1 + RTU/RBU) = 18,26 V (tipik) değerine iner.
 - Histerezis yalnızca direnç oranlarına, REF35'e, VIO'ya, Hint'e ve RON'a bağlıdır. **VOH/VOL'a ve V5'e bağlı değildir.** C2'yi bozan şey bu bağımlılıktı (bkz. §3).
-- OUTA yüksekken CTT, RTT üzerinden dolar. T_UV > KTH = 0,8008·V5 olunca OUTB yükselir (RHB ile mandallanır) ve EN_BUCK = OUTB/2 ≥ 2,351 V olur.
-- OUTA düştüğünde CTT, DTT + RDIS üzerinden hızla boşalır, OUTB düşer ve EN ≤ 0,118 V olur.
+- OUTA yüksekken CTT, RTT üzerinden dolar. T_UV > KTH = 0,8008·V5 olunca OUTB yükselir (RHB ile mandallanır) ve EN_BUCK = OUTB/2 ≥ 2,289 V olur.
+- OUTA düştüğünde CTT, DTT + RDIS üzerinden hızla boşalır, OUTB düşer ve EN ≤ 0,121 V olur.
 - Gecikme oranla belirlenir (V5'ten bağımsız): t ≈ RTT·CTT·ln(1/(1−0,8)). Soğuk açılışta 77,8–255,0 ms, tam boşalmış dip sonrasında 65,0–219,5 ms.
 - **Besleme yokken** (V5 < 2,7 V) çıkışlar düşük kabul edildi (V; TLV3202 bu bölgede tanımsız). RUV2, EN'i GND'ye çeker. Tezgâh testi B-U4.
 

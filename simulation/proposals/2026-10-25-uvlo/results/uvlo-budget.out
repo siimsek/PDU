@@ -4,7 +4,7 @@ PASS regression A0 baseline fails
 PASS regression mis-set Rb 8.66k fails
 PASS regression mis-set Rx 100k fails
 C3 chosen: Vr 19.470..19.978  Vf 18.023..18.490  H 1.433..1.502  margins {'a_start_margin': 0.0185, 'b_overdischarge_margin': 0.0234, 'c_motorboat_margin': 0.0295, 'd_run_at_20V_margin': 0.1561, 'e_sense_26V_cm_margin': 0.071}
-timer cold 77.8..255.0 ms, after deep dip 65.0..219.5 ms, EN hi>=2.351 V lo<=0.118 V
+timer cold 77.8..255.0 ms, after deep dip 65.0..219.5 ms, EN hi>=2.289 V lo<=0.121 V
 C2 best worst margin -0.1019 V ; mis Rb worst -0.3479 ; mis Rx worst -0.1009
 A0_baseline_180k_10k -> FAIL: rise_max > 20.0 V (no guaranteed start at 20 V) and fall not guaranteed
 A1_divider_retune -> FAIL: falling threshold typ (nominal) ~16.16 V < 18.0 V and never guaranteed

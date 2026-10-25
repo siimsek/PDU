@@ -310,9 +310,11 @@ def eval_timer(RT, CT, RHB=1e6, RK1=10e3, RK2=40.2e3, RD=10e3, RUV2=10e3):
     tmin = min(x['t'] for x in cold); tmax = max(x['t'] for x in cold)
     headroom = min(x['vinf'] - x['vth'] for x in cold)
     # EN drive from OUTB through RD/RUV2 (both ERA-3ARB). EN high/low worst values
-    en_hi_min = (DS['TPS7A1650_V5'][0] - DS['TLV3202_VOH_DROP'][1]) * RUV2 * (1 - E_RES) / (RD * (1 + E_RES) + RUV2 * (1 - E_RES)) - DS['LM70880_IEN'][0] * (RD * RUV2 / (RD + RUV2))
-    en_hi_max = DS['TPS7A1650_V5'][1] * RUV2 * (1 + E_RES) / (RD * (1 - E_RES) + RUV2 * (1 + E_RES)) + DS['LM70880_IEN'][0] * (RD * RUV2 / (RD + RUV2))
-    en_lo_max = DS['TLV3202_VOL'][1] * RUV2 * (1 + E_RES) / (RD * (1 - E_RES) + RUV2 * (1 + E_RES)) + DS['LM70880_IEN'][0] * (RD * RUV2 / (RD + RUV2))
+    # RD (RDEN) and RUV2 are generic 1 % parts (RUV2 = unchanged baseline 1 %): strict E_RES_1PCT (fixed 2026-10-25, was ERA E_RES)
+    E_EN = E_RES_1PCT
+    en_hi_min = (DS['TPS7A1650_V5'][0] - DS['TLV3202_VOH_DROP'][1]) * RUV2 * (1 - E_EN) / (RD * (1 + E_EN) + RUV2 * (1 - E_EN)) - DS['LM70880_IEN'][0] * (RD * RUV2 / (RD + RUV2))
+    en_hi_max = DS['TPS7A1650_V5'][1] * RUV2 * (1 + E_EN) / (RD * (1 - E_EN) + RUV2 * (1 + E_EN)) + DS['LM70880_IEN'][0] * (RD * RUV2 / (RD + RUV2))
+    en_lo_max = DS['TLV3202_VOL'][1] * RUV2 * (1 + E_EN) / (RD * (1 - E_EN) + RUV2 * (1 + E_EN)) + DS['LM70880_IEN'][0] * (RD * RUV2 / (RD + RUV2))
     m = dict(seq_min_margin_s=tmin - REQ['T_SEQ_MIN'], latency_margin_s=REQ['T_SEQ_MAX'] - tmax,
              seq_after_full_dip_margin_s=min(x['t'] for x in dip) - REQ['T_SEQ_MIN'],
              timer_headroom_margin_V=headroom - 0.2, en_high_margin_V=en_hi_min - DS['LM70880_VEN_TH'][1] - 0.5,
