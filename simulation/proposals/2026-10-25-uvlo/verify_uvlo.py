@@ -106,13 +106,26 @@ def restoration(m, failed, t_en, after=None):
     ts = [t for t in ts if t is not None and t <= t_en and (after is None or t > after)]
     return max(ts) if ts else None
 
+def held_since_only_restoration(m, failed, t_en):
+    """Tur-3 (full run box-tur3-20261025-1432): a later dip may not drop VIN-OK at all (VIN held behind the ideal diode),
+    so no OUTA rise follows its start. Returns OUTA_R2 only if ngspice PROVES OUTA never fell again: OUTA_F1 < OUTA_R2 <=
+    t_en, OUTA_F2 and OUTA_R3 reported 'failed' (= event absent in the whole transient), OUTA_RLAST == OUTA_R2. Then VIN-OK
+    is continuously high from OUTA_R2 to the end of the run and OUTA_R2 is the latest VIN-OK before t_en. Else None."""
+    f1, r2, rl = fin(m, failed, 'OUTA_F1'), fin(m, failed, 'OUTA_R2'), fin(m, failed, 'OUTA_RLAST')
+    if None in (f1, r2, rl) or not (f1 < r2 <= t_en) or abs(rl - r2) > 1e-9:
+        return None
+    if 'OUTA_F2' not in failed or 'OUTA_R3' not in failed:
+        return None
+    return r2
+
 def dip_starts(c):
     if c.get('kind') == 'dip2': return sorted(d[0] for d in c.get('dips') or [])
     return [c['t0']] if 't0' in c else []
 
 def mandatory_errors(c, m, failed):
     """Tur-3 UVLO-T3-01: gates that hold for EVERY non-regression case (PASS and INFO); fail-closed.
-    M1: each EN rise >= T_SEQ_MIN after the latest OUTA rise before it (after the latest dip start before it).
+    M1: each EN rise >= T_SEQ_MIN after the latest OUTA rise before it (after the latest dip start before it; if that dip
+        did not drop VIN-OK, only with ngspice proof that OUTA never fell again, see held_since_only_restoration).
     M2: V_f >= 18.0 V at shutdown (ramp_down / mb_hold)."""
     e, det = [], {}
     kind = c.get('kind')
@@ -133,6 +146,8 @@ def mandatory_errors(c, m, failed):
         if bad:
             e.append(f'MANDATORY M1: {bad} non-finite -> latest VIN-OK before {k} not determinable'); continue
         rs = restoration(m, failed, t, after)
+        if rs is None and after is not None:
+            rs = held_since_only_restoration(m, failed, t)
         if rs is None:
             e.append(f'MANDATORY M1: {k} at {t:.6g} s without a VIN-OK (OUTA) rise before it'
                      + (f' after the dip start {after:.6g} s' if after is not None else '') + ' -> 60 ms gate not provable')

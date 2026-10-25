@@ -88,6 +88,21 @@ def verifier_tests():
                 {'s': T2.START}, {'s': m}, 'nonzero'))
     m = dip_meas(); m.update(EN_R3=0.40, EN_R4=0.45, EN_RLAST=0.47, EN_F2=0.39, EN_F3=0.44)
     T.append(vt('V01m > 4 EN rises (EN_RLAST after EN_R4, untracked) -> exit != 0', {'d': DIP}, {'d': m}, 'nonzero'))
+    # ---- Tur-3 full run box-tur3-20261025-1432: a later dip that does NOT drop VIN-OK (VIN held behind the ideal diode)
+    # leaves no OUTA rise after its start; the gate is then measured from the last OUTA rise ONLY if ngspice proves that
+    # OUTA never fell again (OUTA_F2 'failed' = 2nd fall absent, OUTA_R3 absent, OUTA_RLAST == OUTA_R2).
+    def nofall2(**o):
+        m = dip2_meas(); m.pop('OUTA_R3'); m.update(OUTA_RLAST=0.2604, EN_R2=0.2604 + 0.0605); m.update(o); return m
+    T.append(vt('V01n double dip, 2nd dip without VIN-OK loss (OUTA_F2/R3 failed), EN 60.5 ms after the only restoration -> exit 0',
+                {'d': DIP2}, {'d': nofall2()}, 0, failed={'d': ['OUTA_F2', 'OUTA_R3']}))
+    T.append(vt('V01o same, EN 50 ms after the only restoration -> exit != 0', {'d': DIP2},
+                {'d': nofall2(EN_R2=0.2604 + 0.050)}, 'nonzero', failed={'d': ['OUTA_F2', 'OUTA_R3']}, check=in_acc_fail('d')))
+    T.append(vt('V01p same, but OUTA_F2 measured (VIN-OK lost again, no later rise) -> exit != 0', {'d': DIP2},
+                {'d': nofall2(OUTA_F2=0.3001)}, 'nonzero', failed={'d': ['OUTA_R3']}, check=in_acc_fail('d')))
+    T.append(vt('V01q same, but OUTA_F2 simply missing from the log (not proven absent) -> exit != 0', {'d': DIP2},
+                {'d': nofall2()}, 'nonzero', failed={'d': ['OUTA_R3']}, check=in_acc_fail('d')))
+    T.append(vt('V01r same, but OUTA_RLAST != OUTA_R2 -> exit != 0', {'d': DIP2},
+                {'d': nofall2(OUTA_RLAST=0.2700)}, 'nonzero', failed={'d': ['OUTA_F2', 'OUTA_R3']}))
     # ---- T3-05
     T.append(vt('V05a unknown kind with regression=true/expect=FAIL -> exit != 0 (kind validated first)',
                 {'x': {'kind': 'bogus', 'expect': 'FAIL', 'regression': True}}, {'x': start_meas(O1_GLOBAL_PEAK=13.0)}, 'nonzero',
