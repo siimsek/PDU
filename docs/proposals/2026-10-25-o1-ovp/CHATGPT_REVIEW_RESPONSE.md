@@ -90,3 +90,24 @@ Bulgular teknik olarak tek tek doğrulandı (otomatik kabul yok). Düzeltme comm
 
 ## Karar (Tur 3 sonrası)
 **WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık bloklayıcılar: P0-03 (4 ESL deck + açılış yanlış tetiği; WP2), P0-05/N-01 (U3 maskeleme, 12,50–13,04 V varsayımı), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı.
+
+# Tur 4 – ChatGPT incelemesi (PR yorumu 6394790371, HEAD `54b8209`, karar RET) yanıtı
+
+Bulgular teknik olarak tek tek doğrulandı (otomatik kabul yok). Düzeltme commit'i **`e4b4046`**. Kabul deck'leri, modeller, limitler, toleranslar ve runner/doğrulayıcı (`run_o1ovp.py`, `verify_candidate.py`, `model_compare.py`) **değişmedi**; değişen yalnız iki yardımcı test betiği (runner girdisi değil – `o1ovp-results.json`'da hash'leri yok), yeni `guard_negative_test.py` ve CI adımı. Bu nedenle kabul koşusu yeniden yapılmadı; `wp1-rev3-tur3` sonuçları geçerli.
+
+**Sayılar (değişmedi, `wp1-rev3-tur3`):** doğrulayıcı exit **2** – 1766 kontrol, 0 sayısal FAIL, 4 MISSING (P0-03 ESL deck'leri); baseline regresyonu exit 1 (O1 16,89 V, beklenen); O1 global maks **11,90318 V** (c165-esr12m5-wchi); normal bus maks **11,09192 V**; 11,22 V yanlış tetik 22/22 yok. `regime_selftest.py` (yeni kod) tam koşu exit **0** (A 4/4, B 12/12; Part B satırları kayıtlı JSON ile birebir aynı; Part A logları yalnız ngspice süre/bellek satırlarında farklı → commit'lenmedi). `rebind_rev3.py` (yeni kod) kayıtlı JSON'a karşı exit **0**, satır/özet değişmedi (dosya yeniden yazılmadı). `guard_negative_test.py` exit **0**, **10/10**.
+
+| # | Bulgu | Doğrulama | Durum | Commit / kanıt |
+|---|---|---|---|---|
+| **P2-T4-01** | Part B: eksik pencerede `continue`, 12 satır zorunlu değil, "yalnız enjekte kontrol FAIL" zorunlu değil | Doğru | **düzeltildi** | `e4b4046`: her CASE için taban koşu ve tüm enjeksiyon pencereleri zorunlu (yoksa exit 2); `(case, injection)` kümesi tam 2×6 olmalı; her enjeksiyonda runner kabul FAIL listesi **tam olarak** `[ilgili rejim]`, doğrulayıcı FAIL listesi **tam olarak** ilgili rejim kontrolü, diğer rejim penceresi PASS; kontrolde iki pencere PASS ve hiç FAIL yok. Negatif kanıt: pencere silme → None (A1), CASE silme → None (A2), enjeksiyona ek O1 13 V bozulması → o satır FAIL (A3) |
+| **P2-T4-02** | `rebind_rev3.py` tam vaka/anahtar kümesini doğrulamıyor | Doğru | **düzeltildi** | `e4b4046`: satır kümesi = `R.CASES` (eksik/fazla/tekrar → exit 2), `o1ovp-results` ng koşu kümesi = `R.CASES`, kind/acceptance tabloyla aynı, rev2/rev3 zorunlu anahtarlar (tamamlanmış deck'te judge anahtarları dahil), `delta` anahtar kümesi = rev2 logundan (runner `MEAS_RE` + deck `.meas` listesi) ve rev3 koşusundan çıkan KEYS, rev2 değerleri logla birebir, rev2 hükmü yeniden `judge()` ile. Negatif kanıt (geçici kopyalar, gerçek dosyaya dokunulmadı): değişmemiş → 0 (B0); satır silme, satır tekrarı, delta anahtarı silme, rev3 judge anahtarı silme, rev2 değeri değiştirme → 2 (B1–B5) |
+| **P0-01** | RSNS derating | Doğru | **ertelendi (B16)** | değişiklik yok |
+| **P0-02** | 4 ESL deck'inde global O1 kanıtı yok | Doğru | **açık (P0-03'e bağlı)** | 4 MISSING, doğrulayıcı exit 2 – gizlenmedi |
+| **P0-03** | 4 ESL deck tamamlanmıyor (12,2645–12,2699 ms, `imon_s2e` timestep) | Doğru | **açık (ana bloklayıcı, WP2)** | bu turda tasarım değişikliği yapılmadı; tolerans gevşetilmedi |
+| **P0-04** | Elektriksel garanti | Doğru | **ertelendi (B2/B5/B11/B13)** | değişiklik yok |
+| **P0-05 / N-01** | U3 mandalı O1'i maskeliyor (12,50435 / 13,03882 V) | Doğru | **açık (kritik)** | değişiklik yok |
+| **P1-01…P1-05, P2-01** | SOA, KiCad, BOM, kompanzasyon, U12 EN uygulaması, 7,5 A | Doğru | Tur 3 durumları geçerli (açık/ertelendi) | değişiklik yok |
+| **P2-A / P2-B / P2-02 / N-02** | – | İncelemeyle uyumlu | **kapalı** | – |
+
+## Karar (Tur 4 sonrası)
+**WP1 tamamlanmadı; merge/üretim için uygun değil.** Tur 4'ün iki yeni P2 bulgusu kapatıldı. Açık bloklayıcılar değişmedi: P0-03 (4 ESL deck + açılış yanlış tetiği; WP2), P0-05/N-01 (U3 maskeleme), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı.

@@ -3,7 +3,7 @@
 > Bu dosya PR açıklaması için önerilen metindir; PR'a kullanıcı tarafından aktarılır.
 
 ## Özet
-WP1 `2026-10-25-o1-ovp` – O1 portu için hibrit global OVP önerisi (TPS48000-Q1 + 4× CSD18540Q5B + TLV3601 + REF35409 + TPS7A1650), **rev3** (ChatGPT Tur 2 incelemesi 6390966776 ve Tur 3 yorumu 6394334358, ikisinde de karar RET; yanıtlar: `docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW_RESPONSE.md` → "Tur 2", "Tur 3").
+WP1 `2026-10-25-o1-ovp` – O1 portu için hibrit global OVP önerisi (TPS48000-Q1 + 4× CSD18540Q5B + TLV3601 + REF35409 + TPS7A1650), **rev3** (ChatGPT Tur 2 incelemesi 6390966776 Tur 3 yorumu 6394334358 ve Tur 4 yorumu 6394790371, hepsinde karar RET; yanıtlar: `docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW_RESPONSE.md` → "Tur 2", "Tur 3", "Tur 4").
 
 **Karar: WP1 tamamlanmadı. Merge/üretim için uygun değil (P0-03, P0-05/N-01 açık).**
 
@@ -18,6 +18,7 @@ WP1 `2026-10-25-o1-ovp` – O1 portu için hibrit global OVP önerisi (TPS48000-
 - **P0-04** "garanti marjı" → koşullu marj (BUDGET.md §0).
 - **P1-01** SOA teşhisi; **P1-02/P1-05** pin tabloları ve U12 EN; **P1-03** BOM derating notları, RBLD11 1206, RPD10/RSRC10 yalnız sim; **P2-02** çıkış kodları.
 - **Tur 3** (`e8cce67`): P2-A `model_compare.py` açılış tetik sayacı yalnız `INFO:startup_no_ovp_trip` (gerçek: rev2 2 / rev3 0 tamamlanmış deck; 29/27 bench açılış bus INFO'suydu); Ek-P1 `regime_selftest.py` Part B tamamlanmış sentetik yanlış-rejim 12/12; P1-05 U12 pin tablosu EN = V5_OVP; P2-B RESULTS B18→B19, MODELS Dbody ifadesi. `1b72e0f`: temiz yeniden koşu `wp1-rev3-tur3` (ölçümler birebir aynı) + `model-compare/rebind_rev3.py`.
+- **Tur 4** (`e4b4046`): P2-T4-01 `regime_selftest.py` Part B fail-closed (2×6 matris zorunlu, her enjeksiyonda yalnız ilgili rejim kontrolü FAIL); P2-T4-02 `rebind_rev3.py` vaka/anahtar/rev2-değer kümesi tam eşitlik; `regime-selftest/guard_negative_test.py` 10/10 (CI adımı). Runner/doğrulayıcı/deck değişmedi → kabul koşusu yeniden yapılmadı.
 - Teşhis: `solver-study/`, `slew-study/` (WP2 kontrollü açılış seçeneği), `soa-study/`, `u3-latch-study/`.
 
 ## Temiz koşu (wp1-rev3-tur3, girdiler `e8cce67`, sonuç `1b72e0f`, ngspice-44.2, Debian 13)
@@ -30,6 +31,7 @@ WP1 `2026-10-25-o1-ovp` – O1 portu için hibrit global OVP önerisi (TPS48000-
 | `rsns_power.py --check` | 0 |
 | `regime-selftest/regime_selftest.py` | 0 (A 4/4, B 12/12) |
 | `model-compare/rebind_rev3.py` + `model_compare.py --resummarize` | 0 / 0 |
+| Tur 4 (`e4b4046` kodu): `regime_selftest.py` / `rebind_rev3.py` / `guard_negative_test.py` | 0 (A 4/4, B 12/12) / 0 / 0 (10/10) |
 | `solver-study` / `slew-study` / `soa-study` | 0 / 0 / 0 |
 | `u3-latch-study` | **1** (N-01) |
 
