@@ -1,4 +1,4 @@
-# WP1 rev2 – KiCad aktarım adımları (UYGULANMADI)
+# WP1 rev3 – KiCad aktarım adımları (UYGULANMADI)
 
 Bu paket hiçbir `.kicad_sch/.kicad_pcb/.kicad_pro` dosyasını değiştirmez. Aşağıdaki adımlar kullanıcı tarafından, **WP2 kararından sonra** KiCad'de uygulanmalıdır. Referans: `simulation/proposals/2026-10-25-o1-ovp/pdu-o1ovp-block.inc` ve `net-split-changes.json`.
 

@@ -1,5 +1,7 @@
 # WP1 rev2 – Mimari karşılaştırma ve seçilen aday
 
+> **rev3 notu:** Mimari rev2 ile aynıdır (değişiklik yok). rev3 değişiklikleri: davranışsal model düzeltmesi (`ov`→`ovs`), RAW bölücü 2×1206 + 1206 (P0-01), RBLD11 1206, doğrulama/rejim kontrolleri. Kontrollü açılış (RPU10 330 Ω vb.) yalnız WP2 seçeneği olarak sayısal incelendi (`RESULTS.md` §H2), **benimsenmedi**; aday RPU10 = 10 Ω.
+
 ## 1. Sorun
 Baseline'da (`simulation/pdu-efuse-ovp.ng.cir`) bus 11→18 V'a çıktığında O1 portu **~16,89 V** görür (U3 TPS259824'ün sabit OVP'si O1'in 12 V sınırının çok üstünde). Kriter `o1_peak ≤ 12 V` bilerek FAIL eden regresyon olarak tutulur.
 
