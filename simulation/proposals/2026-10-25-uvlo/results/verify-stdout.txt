@@ -45,10 +45,10 @@ PASS        dip15v-20ms-typ-ttyp
 PASS        dip15v-20ms-mbmin-tmin 
 PASS        deepdip0v-50ms-light-typ-ttyp 
 PASS        deepdip0v-50ms-light-mbmin-tmin 
-FAIL        dbldip0v-300us-20ms-typ-ttyp MANDATORY M1: EN_R2 at 0.469632 s without a VIN-OK (OUTA) rise before it after the dip start 0.295467 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.469632 s without a VIN-OK (OUTA) rise before it after the dip start 0.295467 s -> 60 ms gate not provable
-FAIL        dbldip0v-300us-20ms-mbmin-tmin MANDATORY M1: EN_R2 at 0.25346 s without a VIN-OK (OUTA) rise before it after the dip start 0.187338 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.25346 s without a VIN-OK (OUTA) rise before it after the dip start 0.187338 s -> 60 ms gate not provable
-FAIL        dbldip0v-1ms-40ms-typ-ttyp MANDATORY M1: EN_R2 at 0.471995 s without a VIN-OK (OUTA) rise before it after the dip start 0.316167 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.471995 s without a VIN-OK (OUTA) rise before it after the dip start 0.316167 s -> 60 ms gate not provable
-FAIL        dbldip0v-1ms-40ms-mbmin-tmin MANDATORY M1: EN_R2 at 0.255848 s without a VIN-OK (OUTA) rise before it after the dip start 0.208038 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.255848 s without a VIN-OK (OUTA) rise before it after the dip start 0.208038 s -> 60 ms gate not provable
+PASS        dbldip0v-300us-20ms-typ-ttyp 
+PASS        dbldip0v-300us-20ms-mbmin-tmin 
+PASS        dbldip0v-1ms-40ms-typ-ttyp 
+PASS        dbldip0v-1ms-40ms-mbmin-tmin 
 PASS        dbldip0v-1ms-30ms-50ms-typ-ttyp 
 PASS        dbldip0v-1ms-30ms-50ms-mbmin-tmin 
 PASS        hotplug-20p0v-typ-ttyp 
@@ -104,10 +104,10 @@ PASS        o3-dip15v-20ms-typ-ttyp
 PASS        o3-dip15v-20ms-mbmin-tmin 
 PASS        o3-deepdip0v-50ms-light-typ-ttyp 
 PASS        o3-deepdip0v-50ms-light-mbmin-tmin 
-FAIL        o3-dbldip0v-300us-20ms-typ-ttyp MANDATORY M1: EN_R2 at 0.470094 s without a VIN-OK (OUTA) rise before it after the dip start 0.295467 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.470094 s without a VIN-OK (OUTA) rise before it after the dip start 0.295467 s -> 60 ms gate not provable
-FAIL        o3-dbldip0v-300us-20ms-mbmin-tmin MANDATORY M1: EN_R2 at 0.254165 s without a VIN-OK (OUTA) rise before it after the dip start 0.187338 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.254165 s without a VIN-OK (OUTA) rise before it after the dip start 0.187338 s -> 60 ms gate not provable
-FAIL        o3-dbldip0v-1ms-40ms-typ-ttyp MANDATORY M1: EN_R2 at 0.471673 s without a VIN-OK (OUTA) rise before it after the dip start 0.316167 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.471673 s without a VIN-OK (OUTA) rise before it after the dip start 0.316167 s -> 60 ms gate not provable
-FAIL        o3-dbldip0v-1ms-40ms-mbmin-tmin MANDATORY M1: EN_R2 at 0.255574 s without a VIN-OK (OUTA) rise before it after the dip start 0.208038 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.255574 s without a VIN-OK (OUTA) rise before it after the dip start 0.208038 s -> 60 ms gate not provable
+PASS        o3-dbldip0v-300us-20ms-typ-ttyp 
+PASS        o3-dbldip0v-300us-20ms-mbmin-tmin 
+PASS        o3-dbldip0v-1ms-40ms-typ-ttyp 
+PASS        o3-dbldip0v-1ms-40ms-mbmin-tmin 
 PASS        o3-dbldip0v-1ms-30ms-50ms-typ-ttyp 
 PASS        o3-dbldip0v-1ms-30ms-50ms-mbmin-tmin 
 PASS        o3-hotplug-20p0v-typ-ttyp 
@@ -119,17 +119,14 @@ PASS        o3-hotplug-26p0v-vrmax-tmin
 FAIL       (regression, reproduced) o3-noreset-dip0v-250us-mbmin-tmin MANDATORY M1: EN_R2 24.296 ms after VIN-OK < 60 ms; MANDATORY M1: EN_RLAST 24.296 ms after VIN-OK < 60 ms
 FAIL       (regression, reproduced) o3-noreset-dip0v-200us-typ-ttyp MANDATORY M1: EN_R2 0.000 ms after VIN-OK < 60 ms; MANDATORY M1: EN_RLAST 0.000 ms after VIN-OK < 60 ms
 FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enabled (no start); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated; MANDATORY M1: EN_R1 missing/failed/non-finite -> start/gate not provable
-PROVENANCE manifest git_head '5574964ce734' != current HEAD 'a35893e42868' (CI run must verify its own checkout)
 {
- "exit_code": 2,
- "git_head": "a35893e42868b56e43497c172c1b3795298f670e",
- "provenance_errors": [
-  "manifest git_head '5574964ce734' != current HEAD 'a35893e42868' (CI run must verify its own checkout)"
- ],
+ "exit_code": 1,
+ "git_head": "dbe469046a5dbfc929c7fdced2dabcc024167d3c",
+ "provenance_errors": [],
  "run_manifest": {
-  "run_id": "box-tur3-20261025-1432",
-  "git_head": "5574964ce734d67688f06516d05c599b7f23d597",
-  "started_utc": "2026-10-25T11:32:28+00:00",
+  "run_id": "box-tur3b-20261025-1522",
+  "git_head": "dbe469046a5dbfc929c7fdced2dabcc024167d3c",
+  "started_utc": "2026-10-25T12:22:03+00:00",
   "ngspice": [
    "** ngspice-44.2 : Circuit level simulation program",
    "** Copyright 2001-2024, The ngspice team.",
@@ -138,7 +135,7 @@ PROVENANCE manifest git_head '5574964ce734' != current HEAD 'a35893e42868' (CI r
   ],
   "n_runs": 121
  },
- "expected_run_id": "box-tur3-20261025-1432",
+ "expected_run_id": "box-tur3b-20261025-1522",
  "provisional_rdip_screen": {
   "note": "PROVISIONAL WP3 screen proposed in ChatGPT review 6395614957 (UVLO-06); report-only, NOT an acceptance limit and NOT a requirement change; simulation, not measurement",
   "limits": {
@@ -528,18 +525,10 @@ PROVENANCE manifest git_head '5574964ce734' != current HEAD 'a35893e42868' (CI r
  "worktree_dirty_at_verify": true,
  "package_inputs_dirty": false,
  "n_cases": 121,
- "n_pass": 102,
+ "n_pass": 110,
  "acceptance_fail": [
   "rsweep-r350",
-  "rsweep-r450",
-  "dbldip0v-300us-20ms-typ-ttyp",
-  "dbldip0v-300us-20ms-mbmin-tmin",
-  "dbldip0v-1ms-40ms-typ-ttyp",
-  "dbldip0v-1ms-40ms-mbmin-tmin",
-  "o3-dbldip0v-300us-20ms-typ-ttyp",
-  "o3-dbldip0v-300us-20ms-mbmin-tmin",
-  "o3-dbldip0v-1ms-40ms-typ-ttyp",
-  "o3-dbldip0v-1ms-40ms-mbmin-tmin"
+  "rsweep-r450"
  ],
  "regression_not_reproduced": [],
  "incomplete": [],
@@ -554,14 +543,10 @@ PROVENANCE manifest git_head '5574964ce734' != current HEAD 'a35893e42868' (CI r
  "per_variant": {
   "C3": {
    "n": 64,
-   "n_pass": 56,
+   "n_pass": 60,
    "acceptance_fail": [
     "rsweep-r350",
-    "rsweep-r450",
-    "dbldip0v-300us-20ms-typ-ttyp",
-    "dbldip0v-300us-20ms-mbmin-tmin",
-    "dbldip0v-1ms-40ms-typ-ttyp",
-    "dbldip0v-1ms-40ms-mbmin-tmin"
+    "rsweep-r450"
    ],
    "regression_not_reproduced": []
   },
@@ -573,13 +558,8 @@ PROVENANCE manifest git_head '5574964ce734' != current HEAD 'a35893e42868' (CI r
   },
   "O3": {
    "n": 51,
-   "n_pass": 46,
-   "acceptance_fail": [
-    "o3-dbldip0v-300us-20ms-typ-ttyp",
-    "o3-dbldip0v-300us-20ms-mbmin-tmin",
-    "o3-dbldip0v-1ms-40ms-typ-ttyp",
-    "o3-dbldip0v-1ms-40ms-mbmin-tmin"
-   ],
+   "n_pass": 50,
+   "acceptance_fail": [],
    "regression_not_reproduced": []
   },
   "O3-noreset-tur2": {

@@ -1,7 +1,7 @@
 {
- "run_id": "box-tur3-20261025-1432",
- "started_utc": "2026-10-25T11:32:28+00:00",
- "git_head": "5574964ce734d67688f06516d05c599b7f23d597",
+ "run_id": "box-tur3b-20261025-1522",
+ "started_utc": "2026-10-25T12:22:03+00:00",
+ "git_head": "dbe469046a5dbfc929c7fdced2dabcc024167d3c",
  "package_inputs_dirty_at_run": false,
  "cases_sha256": "6662c0fb700db2458c65291f75592b08d93b9bf79fd2f44e3928fd9d4332f9f8",
  "partial": false,
@@ -18,851 +18,851 @@
   "uvlo-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 173.9,
+   "elapsed_s": 167.2,
    "deck_sha256": "6aae64dceb0be4641f52f5e510f9e1e10cef630d542c263bb3440b59cb50a1af",
-   "log_sha256": "e63f011fc136ae94e43b1459d145a4d78ff3aac83112da646bd958c78013e7cc"
+   "log_sha256": "a0f8bdd02ee470fd48da50b8b06f87601f1e3691fba9d699def4aa82d596e660"
   },
   "uvlo-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 194.3,
+   "elapsed_s": 188.6,
    "deck_sha256": "f8ba365a70f74b579824c46e3221333dcf31a3f69ead8164f8a77a8ca7f1f231",
-   "log_sha256": "9f184c4ec75b80eb3881dc3210bee0e7d68cc9c0c64478319baf01a9cfce61ce"
+   "log_sha256": "4d140ba5641ed2c1386fb23671c066dcba413e9786d67782939d8dd4ce6548e8"
   },
   "uvlo-dbldip0v-1ms-40ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 89.3,
+   "elapsed_s": 82.3,
    "deck_sha256": "d6511017d490eca48312775d92fd3105497aa04c4c2fb796547c1e72cbab757b",
-   "log_sha256": "f956957fb738adeb4350bd9d7643399dccdf37af3ede9f7d1589af856af81101"
+   "log_sha256": "539396a37b38a6397f0781365037379bd7b1bb025976925f0be374cd0e014ef6"
   },
   "uvlo-dbldip0v-1ms-40ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 112.2,
+   "elapsed_s": 104.3,
    "deck_sha256": "b4412a413034a2ed7bd9bea24e217072b4917e67c097c330a4a05af85c11089a",
-   "log_sha256": "53db24e6c4c260295ddba902a30bae91375dc476297561c09f042dcce7a83828"
+   "log_sha256": "da3f32721f4bbf35c8c705b565c539694263cd2fb1923484014dc2ba9fe8bbd6"
   },
   "uvlo-dbldip0v-300us-20ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 65.5,
+   "elapsed_s": 58.8,
    "deck_sha256": "39d105e85f17ca52f3d82942139afa563d30870756f0fd2c31f8baab648b4da7",
-   "log_sha256": "c0d90c0301ff1e6d080baf544abc8c0e7059875c115d46855ae7172bad47e847"
+   "log_sha256": "50261b007e93a05c9cb2c4b068edc09a21e05088ab4598da4bdbf506e85427ae"
   },
   "uvlo-dbldip0v-300us-20ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 92.2,
+   "elapsed_s": 84.1,
    "deck_sha256": "0a74de3f91ab28ab79371058594e34690d1cefcb148ca87e477584e3ebb442c8",
-   "log_sha256": "393b2187d339f269b9f807f16e2ba8f3d122276e94ba727ec9e1cde8eab264d3"
+   "log_sha256": "8d8df57570bf0fbcd15ff49725147b73e09ff48aacebe47c3d8bc8e4e067371b"
   },
   "uvlo-deepdip0v-50ms-light-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 341.6,
+   "elapsed_s": 582.5,
    "deck_sha256": "9156cdc5b86f530678714da304f3ab2760ba79b50d510cc1b6ea78c64cbbff45",
-   "log_sha256": "f140d233485207897eef9c33f68fd3908a3f3f276e05cec06f5c45596bcb8fc0"
+   "log_sha256": "0cafb50273ca28886e180fdde3fdd2945194e3745d868dccaeed69d7a056b2e6"
   },
   "uvlo-deepdip0v-50ms-light-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 361.5,
+   "elapsed_s": 607.7,
    "deck_sha256": "332856aeb5186826917977578f8a86e5f1b6752c94f534f3a937345f5106ef4b",
-   "log_sha256": "9be2bce51b1e1605dd28a5ec1ab1b80f256ead69cdc9d6bed1eaad8ea6709f60"
+   "log_sha256": "71d5fdc704b35b376cde48c1b5a65d758de43a8cf764d36ff313b119c5066c61"
   },
   "uvlo-dip0v-100us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
    "elapsed_s": 49.7,
    "deck_sha256": "e000bfb08fa04b336a89ca6cff88dffa345cf54af36cfa17524f7067298bba91",
-   "log_sha256": "7e6fc56e8e77b47cf57c26cbe1293b03223965debe4bdf38704cb991159e31c9"
+   "log_sha256": "24d1858a7d195d228503e910821afe150faa2c65d69b015f4489171994bc6bda"
   },
   "uvlo-dip0v-100us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 74.0,
+   "elapsed_s": 75.1,
    "deck_sha256": "ce7cdb916d8452fde115be2d3a06639d057e8cfee7408375174aa73387f95a2a",
-   "log_sha256": "4b821ade1f049e941b3ae797b865e3444772b0dea64fc83b8c9345452855bc12"
+   "log_sha256": "1ff85f2d8ff898c4950d3ea2e18297cc5a2c9d725f329c82dcc1fc846fbace72"
   },
   "uvlo-dip0v-1ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 61.1,
+   "elapsed_s": 61.9,
    "deck_sha256": "7cdd320e98cb4289209db141f09ef2f9f01b831597958f383bae8d80240a39f1",
-   "log_sha256": "de68d15554c1029296825df0f6be8fcee97d4ca9391035ce0621bf34a50052ef"
+   "log_sha256": "d15ff2ffd4019d81b59e2f60b1513620db6a67611cb57d090936142c62ecb68a"
   },
   "uvlo-dip0v-1ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 84.4,
+   "elapsed_s": 84.9,
    "deck_sha256": "40586642514ae924e953c3caa577619fdc042791474c59ccd53011945ebe6d97",
-   "log_sha256": "92a531d187c573bcc7f9a63da6e649f52b9081f41f5d17f3f4c737962acad559"
+   "log_sha256": "e4c7329b5ed2ba160725ec190a25fb4d119ebed518b8351cdac3bda7024842b8"
   },
   "uvlo-dip0v-200us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 49.7,
+   "elapsed_s": 49.9,
    "deck_sha256": "60a2226f2b6e5563765583694e960ebbbf2a0a3454a055964fffb472c1836ed6",
-   "log_sha256": "6b32a0c5bb967a979dba1d28468805d28460dd4341e56b27f57f8a0bb440cdc8"
+   "log_sha256": "839869804a16766659118bb67976202085b89195ecedaab7ac270a1039b25569"
   },
   "uvlo-dip0v-200us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 76.7,
+   "elapsed_s": 145.5,
    "deck_sha256": "a33957077d1b7fb99390e7ab9ca1f3c084c003ff5a6fb5af30747c29679138aa",
-   "log_sha256": "cd4577211376cf49e4319baedbca9f93d3c924bee983302a0ca11e5b5718a003"
+   "log_sha256": "efbc1e4ff5886383947215795a12f58982d7660c8bc13bb3d6bf50b1d97ba18f"
   },
   "uvlo-dip0v-250us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 50.4,
+   "elapsed_s": 50.1,
    "deck_sha256": "c2839c09355a661173281b802444114a46c508dd5f720d340c446ac695ce1b8f",
-   "log_sha256": "e848f355f6bd96d7aee3ba4e4ad0dbb2ee04a5a6dba25a5541ae7347a55f7871"
+   "log_sha256": "95b875e518af7f9dde4e8c9c3d79160fdb4cdb11d67596048330e574009ae524"
   },
   "uvlo-dip0v-250us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 73.5,
+   "elapsed_s": 322.4,
    "deck_sha256": "0132cfd966297a33966db5ecc66ba1a07a63f23c9c881b6177f0eec7d02fc49a",
-   "log_sha256": "a7eb83bd55e0bbf42055f16df3de55b4a6208dd71b6ebacead7e03962bcaf5d5"
+   "log_sha256": "2747651cbe5d4bb5261e101a1bdabe92425c06ebe396654b01941280b32cb842"
   },
   "uvlo-dip0v-300us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 51.4,
+   "elapsed_s": 51.5,
    "deck_sha256": "da0066dbad9ecc06a2bc78f48b1f663b842ad9259368495030a4d0c58f0fb3f1",
-   "log_sha256": "83aacea6b7810a315c06c977272bed29f57c58cbee3ad7e3e9f76e2fb92094a4"
+   "log_sha256": "2e463acdd7fc9d6467e1d76e34fcea33021f7e74ed912ded9934ba019eadb9c6"
   },
   "uvlo-dip0v-300us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 73.9,
+   "elapsed_s": 322.4,
    "deck_sha256": "dcb3639d912bcdcf73fe419afdb38a45b250256e69d720dbc46800ef0cf921bb",
-   "log_sha256": "1d83b5040e9e63007aaeccdc38676f79856d70bd6b9a36b9f561405ec2b68c6a"
+   "log_sha256": "096ee727845b547fe66cefda0975b5399b5a6ae5ed4de4dc84c7fbaf9a8ed4b6"
   },
   "uvlo-dip0v-50ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 283.5,
+   "elapsed_s": 535.4,
    "deck_sha256": "05ba065981b6534fa72b157c009db432863798b98ddcffadc9258c9a77d989ae",
-   "log_sha256": "04d207519c30289b9650232fdbcb669de9e4210669401d0a64b3149a722cdc3e"
+   "log_sha256": "afcd499fc91ef7232ae94a94e71a3f4c6bb35297d1548c197de340932f3def79"
   },
   "uvlo-dip0v-50ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 313.3,
+   "elapsed_s": 563.7,
    "deck_sha256": "84ee607e23700e811056a2b2aeb806ecf76c0cc9e45dff0fa78d8a12021fb7ab",
-   "log_sha256": "c66575dab01cd0781f7bba9eea594e6127586efb987d802138e6eb21ec707ba6"
+   "log_sha256": "c4fe48b3536a8cabfdda3a951151d275dd03d3d5757dd61d63a3649dcc5b3ef3"
   },
   "uvlo-dip15v-20ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 48.6,
+   "elapsed_s": 296.7,
    "deck_sha256": "05b857cdcf9f45633f2590c49e0a0523b92934b160d9a4e817095b1acc1e5b30",
-   "log_sha256": "5a646756bfd9ca894dc427fd1318b274b1bfc56980cf0cdd93ef30714dd19d7e"
+   "log_sha256": "b1e3a4d75e77300b9ebd6cadc670ee94d2c544a2d5fbd93df2084738baaf42bb"
   },
   "uvlo-dip15v-20ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 71.5,
+   "elapsed_s": 250.9,
    "deck_sha256": "1a37510f051558821c2d53e33b64fe1764e806001314db18c3e2ef9ea187f769",
-   "log_sha256": "7ac38e3bbed0c03be5973920ba8f9cb0750919252b8f08164fb8784df8306dd0"
+   "log_sha256": "defe5c22531a92eeee9b7c2c5ef825aa5b4bb3add128d60e4cff987ab3787551"
   },
   "uvlo-dip19v-50ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 51.6,
+   "elapsed_s": 53.7,
    "deck_sha256": "3aaec9e21694c05c7d801b223f7207c7693a75c87eff041eb6155a3d050633af",
-   "log_sha256": "d9e8468b0f94684bf7fdb67b73b4ce6f96f565ad4764792ab421f23559bddb2c"
+   "log_sha256": "52a2a71084f8b0c4426da1e74a32cecbd0898720e2be219036f93abf30534b79"
   },
   "uvlo-dip19v-50ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
    "elapsed_s": 77.0,
    "deck_sha256": "582d00c1fc3606d145b5f21985224a99076c06bbc0138a1fd35193493fe49fd4",
-   "log_sha256": "46a28ac368c1a168622473066f7af8c67b8832c2b360135ad671bbfb189366c9"
+   "log_sha256": "655b0302573dc8acba0f5ce655fd3de55dad417cd1ef2e8007246efb81c249fe"
   },
   "uvlo-hotplug-20p0v-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 173.6,
+   "elapsed_s": 179.3,
    "deck_sha256": "a01ab27a8b19af4d9e75041ac5e65b64e4cfcc265112c563a8c39b7ffaadb43f",
-   "log_sha256": "141209210c2f7bfa1ecea62385dd11eaee7042a930623f7ccde22c330a9d764a"
+   "log_sha256": "f0dde0715e8dff7d69ff9a720611430082b0b030e447eafb5d019b9eb88721b3"
   },
   "uvlo-hotplug-20p0v-vrmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 163.0,
+   "elapsed_s": 166.7,
    "deck_sha256": "da7f28ea4703cc6eed16dd1c52f7bacc0d49982c754b84407321fb581b9edeeb",
-   "log_sha256": "b807834582c53b5bd24fd78a8d7d9adbce57b17da6eedb729e876de50d03b8fc"
+   "log_sha256": "1bf194480329361a0fa43969f147eb7b5506edcf32ddcf0d3fb904c209b1d4ff"
   },
   "uvlo-hotplug-25p2v-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 134.0,
+   "elapsed_s": 139.0,
    "deck_sha256": "1343a7bc705b99b75a31ff298eb676cf853f9328a124ab07a92d180dbb0d8968",
-   "log_sha256": "36be5dce7ef7e079a46114938111d34422f3a7c7b92024f1aa34edf214caea61"
+   "log_sha256": "5f61769c8de848b6f3b944b3eb1fc2c4d876a341b2fa0c63d3e5e340ebe8c246"
   },
   "uvlo-hotplug-25p2v-vrmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 123.3,
+   "elapsed_s": 126.6,
    "deck_sha256": "39f02a353a3fed5d313bcd6220527c33fd3368c2f3132ae8331bb65bb9063f24",
-   "log_sha256": "ffb508a14893112782739f550bf8ae71ac2343246cbd6dc745820de00743f815"
+   "log_sha256": "803e16996356da2070b6b0f679327b196ebf0cb4a51532e891c9ead9a2de9bfa"
   },
   "uvlo-hotplug-26p0v-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 124.8,
+   "elapsed_s": 129.5,
    "deck_sha256": "e63df40b095fa7c871f7a13c5fc4a7bd48d585bd43a07c4ecf5be852523e3705",
-   "log_sha256": "7f8270148865da635874b2134224936d3754025f8e271f04be6d19f09ca9e477"
+   "log_sha256": "3a5f83d8ab7d24bf5f7439b8a89fbefbb7321e9bad9d0025b2663326a1f8b09d"
   },
   "uvlo-hotplug-26p0v-vrmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 113.4,
+   "elapsed_s": 118.1,
    "deck_sha256": "df1eb705de0a3110548dd8bd77ee42715d71b5e2157ab6f4d5a12bd977795948",
-   "log_sha256": "894d5ecf1b6157f93b7db8723151f6775205ad5e50d23a8621de6d0da8e6ae2c"
+   "log_sha256": "d385554bc54f6aa6a5cf9133ef68fde2876067d91d8c163debd75a33d06df913"
   },
   "uvlo-mbhold-mbmin-tmin-r250-m50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 94.8,
+   "elapsed_s": 94.2,
    "deck_sha256": "7c8434dc70373b7467de8b9dd0dd7c096324b0b98cec0b1454c3150005bc71b4",
-   "log_sha256": "fc0089301675c9b68f57025868b9bfc798180901fc2d1b8f63c9acb6211e49c7"
+   "log_sha256": "1b7af2628e091572f05bde22ad85bd5e4730105fac5e1616029246f36f8895d0"
   },
   "uvlo-mbhold-mbmin-tmin-r250-p50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 99.7,
+   "elapsed_s": 98.1,
    "deck_sha256": "0d7899bf703f35f19d521821458b839d7fa37e389739fee4d46f770fddab4e01",
-   "log_sha256": "33e6abae4723582f86eb1e026d859a9f505f6718c6714ae47dd31da22e38da52"
+   "log_sha256": "49f1c0da645591ee0ffce656b5c15c4648f60c9fdbf2b5570568281ced1082e6"
   },
   "uvlo-mbhold-typ-ttyp-r250-m50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 101.9,
+   "elapsed_s": 101.6,
    "deck_sha256": "3166c6b8067a78736d5477ccd63ad2dea1a363debcb4835739dfaedd7c5ecf8d",
-   "log_sha256": "051ae20b91c398729cbd80513769611390a303b889607b2a6542fa5901b973a2"
+   "log_sha256": "94b8aa76e84ccfe307b6fc37415d30cb5f90966bddfaf6a90788d7901693a016"
   },
   "uvlo-mbhold-typ-ttyp-r250-p50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 104.6,
+   "elapsed_s": 107.0,
    "deck_sha256": "cd447a788aadbe950e77bf3387a3fba1efda35f62bf34266504eec45978f9522",
-   "log_sha256": "b4deeec52f64f872dfc03f91bf92988b8007e47b4749310a6d97f120b006546e"
+   "log_sha256": "9280d1d8f3fd5965e7d407218c605d6a5b066686aa718dd8f05c97bfe4a971c5"
   },
   "uvlo-mbhold-vfmax-tmin-r250-m50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 86.6,
+   "elapsed_s": 86.8,
    "deck_sha256": "86843999cd3a345726f2510a384cfe21105690fae5236b50463bea6b99ee5b61",
-   "log_sha256": "61022f458c255975a4e5686a12551950501bcb37db994c5dd21dd741b38cecee"
+   "log_sha256": "e00ad47431093065a1b4c0e8d85f724c0975febf376e4c66589020ef5fbd95ae"
   },
   "uvlo-mbhold-vfmax-tmin-r250-p50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 91.8,
+   "elapsed_s": 93.0,
    "deck_sha256": "ef387fc56b99cf4ec1dae2620294d6bedabe9c23176629c5f388307864e5ae4b",
-   "log_sha256": "f921d211c8b1cda40fb0bfec871bcb698ac9944f73331b3c54183e0199e5cb9c"
+   "log_sha256": "811a2ba12affc2c9cc45d74924a5dbfb42970768ddc9ef373d75ac4520b64c79"
   },
   "uvlo-noreset-dip0v-250us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 69.3,
+   "elapsed_s": 67.9,
    "deck_sha256": "49ab443266f97ba30b790f152f1c872aa595bdcd3a4d0cad10c82970b09c7e59",
-   "log_sha256": "2a61aee1a40fcbbb680f3feb8dacfce66b158af05a15fcb915e9fd278e3e7e8b"
+   "log_sha256": "a2a8703f31dabcc7f46b8b718236c8c44afe16fde9430cb1742d20090b67d7b1"
   },
   "uvlo-noreset-dip0v-300us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 45.4,
+   "elapsed_s": 47.6,
    "deck_sha256": "680ccfc01e1985c35b0aebc1e2794074ec5ff863a8776cdcd7fc8440a51a2660",
-   "log_sha256": "1c80ec95df0f83bb65619474bb59b540cb0a9171d2199f7dbc47cfa41657d1da"
+   "log_sha256": "da2b22ca6b4b89f824ee304be27e02b6aec776442d008ccb53ee76cce116d875"
   },
   "uvlo-o3-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 160.8,
+   "elapsed_s": 166.0,
    "deck_sha256": "e67032e518522f88e0cd21069deb429ed4131c2125785661ccbd949e0cbf7ed3",
-   "log_sha256": "05ee0eac9f02a6445bb60e5f1f8d7c0ac6782cb54ee49900fe6c602c8557af4a"
+   "log_sha256": "1da8bf226c4d48ce69573cf34f82e0229087d0ce778fa987756d252ddfa30b8b"
   },
   "uvlo-o3-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 184.4,
+   "elapsed_s": 186.7,
    "deck_sha256": "e9fc1e3b3897f4ffb9c49ff6b05245e2604e18169ea424d9fdd2a63ffbb4bfc8",
-   "log_sha256": "26448fd3f302b83b37f02828dc4c50d663b5f09918ac8a1a2bd59b570b662987"
+   "log_sha256": "12202c3e0eece1fa8df5e8ed6700f289e075b893a79a208a3e1b85a15aba147b"
   },
   "uvlo-o3-dbldip0v-1ms-40ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 77.8,
+   "elapsed_s": 80.8,
    "deck_sha256": "3fc87da7ed0e222384b71ee00f8077a8f39a2b4fdccd497f3ca35711abc84591",
-   "log_sha256": "63c51df6714eaae5d5f8935bbedd03695dac3490e8656a93c0a57f7747c8ba03"
+   "log_sha256": "065084d940c6a43a37feb57c0a52f097be0e97ed8e33fd8c743f0b6f9836028a"
   },
   "uvlo-o3-dbldip0v-1ms-40ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 101.4,
+   "elapsed_s": 104.6,
    "deck_sha256": "94b3ece51e304c4ed392d50a76acb12493cce20774a793b790daa2e53171f5d8",
-   "log_sha256": "2960d8d13ad622119464f2964aa64230aed55fc9a9c689e12ca4543c0cdf4742"
+   "log_sha256": "bf2e307d4e9bf2f62ccc574529e832b5938e4606abace6d92963cefb32aee767"
   },
   "uvlo-o3-dbldip0v-300us-20ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 57.7,
+   "elapsed_s": 59.8,
    "deck_sha256": "175d00fe83862b799049acf8b7c5ab821e044e7b9135dbc8e84c21092dbddfe7",
-   "log_sha256": "c09194d35953f1a18a751e33237e38c3b7583913b94ab8a6d27d23ecccc95c82"
+   "log_sha256": "d6acac60f76187ad697c17e345aefe355ac7d84028900c85db1968a1966bf14b"
   },
   "uvlo-o3-dbldip0v-300us-20ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 82.2,
+   "elapsed_s": 84.3,
    "deck_sha256": "c80beb7fc4d2a1f4cd25fe45eb8a0d3d257f854f96eedd296eeb758f4cc6f36c",
-   "log_sha256": "703ef99cce0f2a749d28fd3b16cfe95416ce61391119aa27e3e258cc732f98e9"
+   "log_sha256": "ecc290e34bc0bb59245fcb229a6700035fc77648eb006de1fa4e52dc70e842b8"
   },
   "uvlo-o3-deepdip0v-50ms-light-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 543.7,
+   "elapsed_s": 321.3,
    "deck_sha256": "1c62a94dc8402fb59fdf8da444fe1ebeac48b08598e4dec7463bf248caeb3bc7",
-   "log_sha256": "47bd4c9bbbefbc46fb2a731708e21a805de0abdf7b2648ba41beb092304c21a5"
+   "log_sha256": "872872dc03167c84d43e72b895bc6791059af9daeed99fdee0bbc68be4c1c70f"
   },
   "uvlo-o3-deepdip0v-50ms-light-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 633.3,
+   "elapsed_s": 336.7,
    "deck_sha256": "86cceba78f52ceb860aafc5efb021cdc45e5d127ed72eb34cc993cb34456380d",
-   "log_sha256": "ad9726d5e7668a01881be4513da28d191d007cc52d1ef878cfb759d22f31e842"
+   "log_sha256": "321596c8ff3623af2084158ec81418a404d5f72e290106e1a55f341cb1700c80"
   },
   "uvlo-o3-dip0v-100us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 48.3,
+   "elapsed_s": 49.1,
    "deck_sha256": "fcd0f6219f96ea7f124db643f720ec12261b74d005f25d57ca3fb3ab302896f0",
-   "log_sha256": "300c40dc48373971b34b966cb1122076d45902386aa9f449fb63f890ec18fac6"
+   "log_sha256": "16b0f6fa9d5e0dfef82a8ac032e11073a20d1a8e49529742819f0cd963199d88"
   },
   "uvlo-o3-dip0v-100us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 73.6,
+   "elapsed_s": 75.6,
    "deck_sha256": "5eac166f524506a0d952fc3087190e6735edbc548e2dc6255ab96800fff46724",
-   "log_sha256": "0f8d8de93f417ec70c8b8bd862e77301fe59f72a5ca320840972aee30fb6a63b"
+   "log_sha256": "a5c970ff6e6ee939cc7add7b8cc2fd2b43221635e9ef73da9c4b4af1bf16f431"
   },
   "uvlo-o3-dip0v-1ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 61.7,
+   "elapsed_s": 60.7,
    "deck_sha256": "5364fb9b791626c68efed2794f5431fb273e8f023ad64718b18e8b26b4a8da90",
-   "log_sha256": "95b1f6a7412852ca8e954a578ebde0c4728ec70ff1752b0ff4013892c5d5a8f0"
+   "log_sha256": "63efe52f8b9a47de331447d40749b3e508d179a48b2890caf60fd9b7a5802ab7"
   },
   "uvlo-o3-dip0v-1ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 85.0,
+   "elapsed_s": 82.4,
    "deck_sha256": "52c6f0b9e728c140288c012ec9a4c528db424989e9bda6294872fdb9f3d27fbc",
-   "log_sha256": "82bb2b08f83905eff9678b9f3906f34f58baa3a73a8f9ef1cc2fe1e695b7f433"
+   "log_sha256": "98ebec8603bd0a4bd7d66840170487f12bec76cd843b3455f10fc2f329df7d11"
   },
   "uvlo-o3-dip0v-200us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 50.1,
+   "elapsed_s": 49.7,
    "deck_sha256": "52ba0c9a12d796241dd87cde2e254a526769d0a23cec2660e16a34d6c816ba3d",
-   "log_sha256": "4a8b806b546d523b07dd19bd4ff1da8bf00a206fb7eefbca9ff771e70cd9dede"
+   "log_sha256": "43ac4e8b0c54834058b9240891c9d3d1dc34a0a84f8be2fc713fc2f576e1ce9b"
   },
   "uvlo-o3-dip0v-200us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 74.0,
+   "elapsed_s": 73.0,
    "deck_sha256": "22ba48874a252fe6785b8f5c2b235c3f5894f36cb76a4dc5edbc70ecb8152e7e",
-   "log_sha256": "13614421629587a27319931c71ab210a20af24f3f15cf592ac40789983ffed14"
+   "log_sha256": "5e514b831e4e985b410999578a63cc1a339038ab110c5b666b9dece170ad5fee"
   },
   "uvlo-o3-dip0v-250us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 50.6,
+   "elapsed_s": 49.6,
    "deck_sha256": "96ed8d12b25519335465be22927de5805f5a769a63b7126ba1570c5c7d2b6d24",
-   "log_sha256": "681879bfa3f32fc96d2d0114276f1f197f4aab96db81c98d07ff371cbb9af5ce"
+   "log_sha256": "a9cb8c2b5c45c93206e8cbcc2c630d9571a2804c8ce29bbff816a07e219e7ff7"
   },
   "uvlo-o3-dip0v-250us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 74.8,
+   "elapsed_s": 73.1,
    "deck_sha256": "9ef0315d16250811331cdfc9ef14c39183039adf7892ba42c73a7b7edbd0584b",
-   "log_sha256": "3396280f0602995b7492cd174f128e327e54f14ae40c0523e552d61559ce7738"
+   "log_sha256": "5296c96ef4b474fdac3cd0ebc2321bbc15ec5a6a99f399ab6d0f310ade49ab15"
   },
   "uvlo-o3-dip0v-300us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 50.9,
+   "elapsed_s": 51.2,
    "deck_sha256": "dbb03df5ca578285d627fe56b25584b12d8e551503afc05333780e5e922711c1",
-   "log_sha256": "0212949fb3d1b777c761e9a5f985baf138fc231d5caeafe9d52cc4b0b6c2d31f"
+   "log_sha256": "852c403149ab481be56a5c91b5eed8181f19318e50694761a14bbddf88e8d650"
   },
   "uvlo-o3-dip0v-300us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 75.5,
+   "elapsed_s": 73.2,
    "deck_sha256": "1e54c69bec19902fdd440101383e36a867845249273909d216f09a0d7ccebcf9",
-   "log_sha256": "0fbc4b8180f6047f66992bfcb16e5799b12e05c333bddd92e24d2582df071921"
+   "log_sha256": "2260f24880748ababf211eaf8278cdca98d9256275f5f28e3edfa148d268345c"
   },
   "uvlo-o3-dip0v-50ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 593.8,
+   "elapsed_s": 289.2,
    "deck_sha256": "f7a19522c728679f5dfa08a1d775d7a3a704cf887abc743794bc55d3103205e9",
-   "log_sha256": "83cabc4b29d5f8919bd7038767619721383a94a756128f3f6fe2f5aca821dc2b"
+   "log_sha256": "2c45fc96d02ceca74bdcbf497c7c4e04cfc2b8d2a072661d221c35ce1be4f419"
   },
   "uvlo-o3-dip0v-50ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 623.3,
+   "elapsed_s": 322.4,
    "deck_sha256": "44111fb58fe23cb6f9dbe8ecf94e756df31787d9f594fee004219bf6365e85dd",
-   "log_sha256": "6473da06d710a29b8bf79e80d6bee121f14e857c2f97b4a113b71f51725e39e5"
+   "log_sha256": "abab3067ad675c36406c9f1046d1b642b0d4d4d1328ad7fd327e083ee4d61d7c"
   },
   "uvlo-o3-dip15v-20ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 48.1,
+   "elapsed_s": 49.3,
    "deck_sha256": "7c73e02d0f1394f4f604edc88b21dc5f546f683cd2ceae2351850fbdb899df09",
-   "log_sha256": "90813c208456828796a746ff729186ef246369140678efde8362f93c7ef18ecd"
+   "log_sha256": "2e6b593dac92f0842943207f919dacff02a54264f990c9a69c384ae50501770f"
   },
   "uvlo-o3-dip15v-20ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 71.9,
+   "elapsed_s": 76.0,
    "deck_sha256": "97f0d2c71bb63706fe17075dbdcdbe3eab4a2469f894db71ea3dead3166c1aa4",
-   "log_sha256": "be7383a394939d0eb676cc62ab8b0ddbcd0e508908f4fe9c4e008e26759fed68"
+   "log_sha256": "f4cd02364af23c1630a3ec7939cbefd7b30fcde1c6ddffa264fe18d064366655"
   },
   "uvlo-o3-dip19v-50ms-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 51.5,
+   "elapsed_s": 55.6,
    "deck_sha256": "043b7868392f33eecb8c977ed59ff94273c43fce54f08e179202c50212c7c03c",
-   "log_sha256": "9313fdcc99191236e462473ed8aef6151fa151078af4d06c24d2369436841f18"
+   "log_sha256": "ddbaf5b5742cd3a19b2d15d332f7cfb7b27e288c27bd46674f13ef779f5d675b"
   },
   "uvlo-o3-dip19v-50ms-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 76.1,
+   "elapsed_s": 79.0,
    "deck_sha256": "8c9b82fb075243d36aa2c4392e92ab3c121cbaa9f0c68f24c625d8c8362f3cd1",
-   "log_sha256": "cc4fe1d54bf583a9411a421d784f50c2fb91d1faaa4b0f0bcf4504a3639b5dc0"
+   "log_sha256": "f0b02c689487a1fbfc8eb606b92707f41b55202aa37d61ef595057143fb23d86"
   },
   "uvlo-o3-hotplug-20p0v-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 471.8,
+   "elapsed_s": 165.7,
    "deck_sha256": "1f4df85d46a94a2e5d92223694994f6638b1b3f822e86ec0e9ea4e8fdb158fcd",
-   "log_sha256": "9f48dad7d72423bf0408a5c40ce1f815a4e54063c616f774031679b64fbcb2e3"
+   "log_sha256": "9c81cc5518970d05a430dae0e5e636873dccbbe4748a8bf15c47e474daa40abe"
   },
   "uvlo-o3-hotplug-20p0v-vrmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 460.1,
+   "elapsed_s": 157.1,
    "deck_sha256": "256ba08ea5a8d64147c7738bcdcd7b7d24133c46abd0e75d030c0726add5f7f8",
-   "log_sha256": "4d9130d0f4a451d3ff3aa7030f1d44fd6423f043f0f83fa5bdbec1653f42a227"
+   "log_sha256": "fa898b41145134e323fdf167be8d0ae71209737b25121578adc6f6c82b717738"
   },
   "uvlo-o3-hotplug-25p2v-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 434.6,
+   "elapsed_s": 130.2,
    "deck_sha256": "4bbf54f9a000d684e4f608709f89baba6b1f905ad4896f2298fb7380bc34ce12",
-   "log_sha256": "fa7726ce2de9a2b0e1c4ae704755b41a1fe767e7a58b24a3ca3f47f6fbeb2d34"
+   "log_sha256": "66f9d3ea93b795e60b75b8d263413d53a647e1f0422068101a04ece4420e893e"
   },
   "uvlo-o3-hotplug-25p2v-vrmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 422.0,
+   "elapsed_s": 115.9,
    "deck_sha256": "1ec8311d179d5f8e978ad7fa888f3baf0db8d2ec68e93566df47c742d046ad5f",
-   "log_sha256": "d1423feec0539e0abd3079fb10b048ca7bf66e85fbfce403a58f41d4aae37311"
+   "log_sha256": "9935b76171f4771c621f0f63b738a67c836bdae882ff54fdabdac2fa872c6cdc"
   },
   "uvlo-o3-hotplug-26p0v-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 198.5,
+   "elapsed_s": 118.9,
    "deck_sha256": "7f661b1457436e09da06177313e814b8471cbc668d926568eda9f322f167b032",
-   "log_sha256": "0fe76af18299086402b0e8acf6cf2a7333856ff2eb675adac35cc8f7936cf210"
+   "log_sha256": "9b29105aa48070fc779b563bfa3804956fd0076960b43cb6d27b4e0578487cb0"
   },
   "uvlo-o3-hotplug-26p0v-vrmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 112.8,
+   "elapsed_s": 109.2,
    "deck_sha256": "769dcfb0328775b87a9980811e7c26ca18034bd7e4012d473fa8255c5ca53063",
-   "log_sha256": "5f6d6c1941ad73a33d19a9f73bbcabe97ed25ea472a07dfa1f340227c09d9b9b"
+   "log_sha256": "eb849c4dae8abd2dbf8f7fd9b5f51365287ebf5c3f3eb501a44d9843d7c8ec4c"
   },
   "uvlo-o3-mbhold-mbmin-tmin-r250-m50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 92.9,
+   "elapsed_s": 88.2,
    "deck_sha256": "3d1969e7669f054af83d19ae50b88f493f3c1a9a10434f918c26a82469dbfe78",
-   "log_sha256": "36799cc09db550a6e10d93197ac5f9048c58a4a3a02e30c04a668dc38eba9d88"
+   "log_sha256": "61ef07e16b18e735701a3426e4cdb8b04e5127df4065e19f0891eb5aa0bdc30e"
   },
   "uvlo-o3-mbhold-mbmin-tmin-r250-p50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 95.9,
+   "elapsed_s": 94.8,
    "deck_sha256": "f0a0a114ab72b8663e1a1b8b0f5ce934a4d43fc988c1db8322f82bb533dcda17",
-   "log_sha256": "f875f13d59623b6a511a7c42611af8ab8153b7f7b1f6a648f58a9b48e77a9e56"
+   "log_sha256": "28e051e88e058e30055839c7be06a287d0cf62a95349628b4db782592216782a"
   },
   "uvlo-o3-mbhold-typ-ttyp-r250-m50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 100.8,
+   "elapsed_s": 97.6,
    "deck_sha256": "9da9d95c3bc7200476a0730603cc909f11b72e0bdf1fd98d54d56c4841320e3b",
-   "log_sha256": "e7add1db51d170d9d4b1613bdf3fa3142a167f3f4a0b32ed5bdb61601d0ed2dd"
+   "log_sha256": "14f6c64a4bd1adaf32e35aa9b8fa7f3854c8cbc68140925e2879d46300cea963"
   },
   "uvlo-o3-mbhold-typ-ttyp-r250-p50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 105.9,
+   "elapsed_s": 101.6,
    "deck_sha256": "cadc347ae4f015e54cbb8f66e4019a2eaf1f20e1ca5dbaf68335781a9b93efe2",
-   "log_sha256": "61bd8f1e70b5d72cf72ec2d2d0f304c3e97f2756f5c8eb0ff3a1dd7438a26172"
+   "log_sha256": "fe01cce4024b7b8089fa84ddc4286b7234c9789ee0ea14c802028204dff91660"
   },
   "uvlo-o3-mbhold-vfmax-tmin-r250-m50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 88.3,
+   "elapsed_s": 85.8,
    "deck_sha256": "c511d2274f477385cd7173827f4eb28c2a3e6990021ae4287a77c67f50d95f59",
-   "log_sha256": "a42a39e7ba485045430af996f8945f4c31cc0c0841750aafb08d388262fb875c"
+   "log_sha256": "07cdcd28bc9fd80e4c01ba1883efaa23552507d45d824ac30442c8f7cfe492b4"
   },
   "uvlo-o3-mbhold-vfmax-tmin-r250-p50mv": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 93.1,
+   "elapsed_s": 90.3,
    "deck_sha256": "8f6e6f0c14da063f40c06cde9413dbaefbe4171fec81d4cf7bf9f9902645016c",
-   "log_sha256": "e8b1c4e3031acd805db1384b2814a9aff4472ebab6fc81d3e62529f251f19dbe"
+   "log_sha256": "246a624fbcc11717097bd972edf82b3d5efe56771b6a6300faff7fbab809bfcd"
   },
   "uvlo-o3-noreset-dip0v-200us-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 67.5,
+   "elapsed_s": 65.2,
    "deck_sha256": "56dba1410035b397569738a227a2a75e2a43b796f258acc59fa43ba28eaafde3",
-   "log_sha256": "60c09944b8ca0a5a0c7ac62936dcaa000c4e0cbc1de24bffd3f3cfda0e3e2234"
+   "log_sha256": "316d3282a9828f86bb50d87e8aeedb8624d636873e654c915c8e4bf32c3b1435"
   },
   "uvlo-o3-noreset-dip0v-250us-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 45.8,
+   "elapsed_s": 44.2,
    "deck_sha256": "097821406679de28a1d23601b6e9dd70c80c15e8318f6a176ac7d7df13a28e60",
-   "log_sha256": "7cfe3f72963d375636ed38510d1f88b90a5a03711a415741cb9955f5f6bc614e"
+   "log_sha256": "f99eb0d9359e167d7373e8f98f90c1b92dac7581e73de6a98f407e34d5b02b43"
   },
   "uvlo-o3-rampdown-10vps-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 107.2,
+   "elapsed_s": 106.2,
    "deck_sha256": "b5bc5c61907c28f76d2f4ade823b467c372bc2451ce5191cd4032072167002f3",
-   "log_sha256": "c2adcfa5568a6fc112cee318084f40342af07cd5cab88c62f9f5fa7143eca1d0"
+   "log_sha256": "5549c026659d517307625019efe7532898f246e0894d4b2e7ca51e58205ab22a"
   },
   "uvlo-o3-rampdown-10vps-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 118.1,
+   "elapsed_s": 115.9,
    "deck_sha256": "802767339f4c28325731b4181c46dba4fabdba6fa983e005fad6a7afe496098f",
-   "log_sha256": "bd05f1a96df53ea554796c7f9748e55f9e5679cc0b1ed0542d520906e9652c72"
+   "log_sha256": "518b0a9f80b1d8c88bc2d53741b38a4f24f21d3c62593a82f55f079fc26b6b1e"
   },
   "uvlo-o3-rampdown-10vps-vfmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 106.7,
+   "elapsed_s": 107.1,
    "deck_sha256": "ca5d8b3ba54eeecc39d8a605673498301d1201ce568dd79a250c3ef91deeb875",
-   "log_sha256": "263be311b094816372e8f6ab5e68075909c66e1515e14299f06a23e0014c283a"
+   "log_sha256": "f2be9ccbc35ae8015411577e939cfd63571a2f92d1146b4914249652af93524a"
   },
   "uvlo-o3-rampdown-1vps-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 188.9,
+   "elapsed_s": 193.4,
    "deck_sha256": "61edbfeeb7d7118a46125d6cb329a9fa2deb8e45b5a1be7b21a199f146d6a8d5",
-   "log_sha256": "5aab96470a712e269cccfb6972c2e011331152c1b15e6683044a9dc03ae89395"
+   "log_sha256": "55489c94690653af85ae37c2b9012dc27a5daf60995897d2e69200bf5e76fa90"
   },
   "uvlo-o3-rampup-10vps-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 80.2,
+   "elapsed_s": 80.1,
    "deck_sha256": "02d9d2d63b1bbec3410967118caa02fd8f02ab2ec3e34dd29d3f1d8d74a4ac32",
-   "log_sha256": "d453b9357a03102023b6d494e9105590c3ff3aae0c5bac358710831062ca5596"
+   "log_sha256": "f3e875c2b5ec51c90c4bab3642d933e8ef0d413861a4b9ac4675326334bba2f3"
   },
   "uvlo-o3-rampup-10vps-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 87.8,
+   "elapsed_s": 88.9,
    "deck_sha256": "9f340bbf2a8fcbcd3f759063b277f2a3877fd957f1fb6f9f2d8a99f233755e1a",
-   "log_sha256": "6645545e7b8a1fa6e19d7ff51378e619c82453a98f04aa1f72a6d6ce7c04da6b"
+   "log_sha256": "2f00467076282e6207c63e8c14d9985098003b46abb4e55339844b150e6fe85a"
   },
   "uvlo-o3-rampup-10vps-vrmax-tmax": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 98.9,
+   "elapsed_s": 99.7,
    "deck_sha256": "0a7d59fe9a84c9e3d64215b87585d409d6d27ec465bc0631d1a4869fb5d6e2c8",
-   "log_sha256": "9344b8e072451b9d0f38c01e9a37476cfc85b2a23a8319851ce3ef80198797b9"
+   "log_sha256": "5cdd32cdb011f80953ce8b79bb765d8e0e204bd9a1de19658c994ed2b6a4dcc1"
   },
   "uvlo-o3-rampup-1vps-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 622.1,
+   "elapsed_s": 279.6,
    "deck_sha256": "3fff628b8da32c83eac8e7e3547fac1b8586856b6d925a375b3a97d02a175189",
-   "log_sha256": "17ab837f1fdaa3ef052688695bd6142e5a5bac994d8d6c3d7e577704f989cb80"
+   "log_sha256": "791d876af8954e451212c2e336c8e687077414eac506afa4d8c826d630f28715"
   },
   "uvlo-o3-reg-misset-rbu-5k23-vrmax": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 41.4,
+   "elapsed_s": 42.6,
    "deck_sha256": "89725a18214e9d2ce2233bdc61ed657d52bb97b893b1f8ceccc942ae8858bb19",
-   "log_sha256": "4e66032a4d8dc924f0900d57d53966a941ba5263aba6a1f491ae486ff123100a"
+   "log_sha256": "d5bee73209687f15fc13380ad3e94e78ed717a2e15ab4a77dbba37cf5b71b29c"
   },
   "uvlo-o3-start20-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 28.0,
+   "elapsed_s": 29.0,
    "deck_sha256": "8cafd9fc562e06ea5cd536768d3080b9c86c68c7c064dffd357d8dec5ce13509",
-   "log_sha256": "307a3366a4ab85e16e44ed74b701387363552c64a0184b16fc915c65623375bd"
+   "log_sha256": "50951065a1959f8721b5f9bbc2cccdff582f822e6daaa633fa24d502524568ac"
   },
   "uvlo-o3-start20-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 39.0,
+   "elapsed_s": 41.4,
    "deck_sha256": "a40175051e15ad2e2e088759e02f01e5342625e64fada4fdc5aa6c36708bbe56",
-   "log_sha256": "0d28c696ed1fcf5e80469cc2e7fa4807e66ee156b21ba733c4d7ed0b06b79240"
+   "log_sha256": "3b125c75855135a90e0e7d8208de3806bc721789b8fb7d9ed638bc684ee087cc"
   },
   "uvlo-o3-start20-vfmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 28.0,
+   "elapsed_s": 29.5,
    "deck_sha256": "f55ec335a792fc7898940f82a35667489a8a766fc31721c0f6c05279d7426604",
-   "log_sha256": "12d4edd6a4b8f95d1c2388d6b9f447e92a881362313d94eb73ef685afdb001fe"
+   "log_sha256": "474d52a199eb7ae298d8016c7cf46bd915bc48058ca2385fd2332a744b0de2d2"
   },
   "uvlo-o3-start20-vfmin-tmax": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 50.4,
+   "elapsed_s": 50.3,
    "deck_sha256": "751e34367e48aac4dffa9a4b7fca78094a2ac5968bf5a9ba0fd480780f739fea",
-   "log_sha256": "948770037a56478a4c74ab21b944df1e51eeadee5d263d25038d62d787660e1c"
+   "log_sha256": "92a50f90b9d86e29cba71401fb117e4a15bdddcf7f7289a9456d77ff56d1e222"
   },
   "uvlo-o3-start20-vrmax-tmax": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 48.0,
+   "elapsed_s": 49.2,
    "deck_sha256": "86674f6ad20ecc0120ff4649710d08ce688861ee3dc01b314a5b9c086ba17d33",
-   "log_sha256": "6ff8cd068986ddcc6a10b756902a274d380bacd2bad4196bffc37637cdc75c81"
+   "log_sha256": "df9f8d626e2f0d6067afb8cef21477183cb05af66c8b15ba01a1632763bb5ae0"
   },
   "uvlo-o3-start20-vrmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 28.4,
+   "elapsed_s": 28.7,
    "deck_sha256": "947331a8b798ec10bbf197a36552ae832b719cb54930f678d48502fb5861b3d8",
-   "log_sha256": "37f11378759d377707cbebd427cb38a9aa5895026071382e9037a6e1b7e15a23"
+   "log_sha256": "ef7f616e3a6e13f28ffea3b986dad7e74c983e5b52d84b4901b8cd724185153a"
   },
   "uvlo-rampdown-10vps-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 103.9,
+   "elapsed_s": 102.8,
    "deck_sha256": "22080b494f02658d48f99deffbea95ef2e9eb670a7c452f16cdd235245c3aedb",
-   "log_sha256": "2b396b76852a1ee3825a7273c2fc7bbea2617bd8edf674ba844c3cf048e1e0b2"
+   "log_sha256": "5b6e253fbea8b981aebc50d0225c6d3f19f73701cec9c9fec6204cceb86e4a5e"
   },
   "uvlo-rampdown-10vps-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 114.1,
+   "elapsed_s": 113.3,
    "deck_sha256": "2825e3531bc548c957d2cfc33e2691bcfa7faede0cf4a438bb75f7b7034c6b7f",
-   "log_sha256": "7afb93f39682f0373df2a3f835a535f2597f435255eca2dd1a6a5cc3c699a3b1"
+   "log_sha256": "f6ab6191b036a6744e720541f4697eca5902e4703f2832d5433188baf5cf4916"
   },
   "uvlo-rampdown-10vps-vfmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 105.9,
+   "elapsed_s": 102.9,
    "deck_sha256": "935a7f88f5e03d65e8e2e50beda7880e21a3cab3ff41c04a54e8a94aa916b2b0",
-   "log_sha256": "2a25c3e164df89d8984fe46be62b3778febcf83387b72fef662fe746badd6bfb"
+   "log_sha256": "8c5d8994aec3b00c16d676d2043da24f1e53460f289d95ef0f98955189b291af"
   },
   "uvlo-rampdown-1vps-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 535.6,
+   "elapsed_s": 192.8,
    "deck_sha256": "f9e3abbecd7f69a864f34b16dd45e9821c638f4e0866ed6e4463d35a6eb01a72",
-   "log_sha256": "7f617990fc510fec5843da85f2cf23c5a0b51672e8a9dccea5310bc6abb8c4c7"
+   "log_sha256": "3a1d3b3f4a4fbdf6ba122657f54377d2fd3170a64ae49dab3f0ad6b9ce4b6378"
   },
   "uvlo-rampup-10vps-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 78.7,
+   "elapsed_s": 77.5,
    "deck_sha256": "e04f773e87c3febb0e68a84cce9f63503d886035c22616e8be55a8ee3ed23a88",
-   "log_sha256": "5d42b5a21b92c6113e8a67b541eae2118646b5ea34efc462730793d17179fcbd"
+   "log_sha256": "a7125d0ca75f56cf8192f98cc2c138179299312780182d810f68b5802681cced"
   },
   "uvlo-rampup-10vps-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 85.5,
+   "elapsed_s": 83.3,
    "deck_sha256": "cfd88150ba2ef0fe0affb80614ecbc3b35f9389620bd5c8973d933d6343c9158",
-   "log_sha256": "29ef60644be7eaa912b53dd03dc75000cc534143ccf8105b47422d11f5f9b7eb"
+   "log_sha256": "4309ca77e89c5ea28f8363dadaa29b31d8f10c3f494a7ecab1ccdc418c0741e6"
   },
   "uvlo-rampup-10vps-vrmax-tmax": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 444.7,
+   "elapsed_s": 98.6,
    "deck_sha256": "6fede2aa7382716b309578ef8a8d64695ced6a8aecbee9396f8b885fa9eef686",
-   "log_sha256": "3eec52146b0898eb9b019d5e9516d84a9eeb71ea7ea58fec9619b3272532ba84"
+   "log_sha256": "255188270498f3e73a278f8ae7323f4c3233e4a7438e442a80fc6dfda255b90c"
   },
   "uvlo-rampup-1vps-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 630.7,
+   "elapsed_s": 269.9,
    "deck_sha256": "6bca230ce38c4c6329d67a09150051d56671d9aac95b91d92b1d79e2b4977ae3",
-   "log_sha256": "6198d4f927613d1e905444def75aeda842d28ee066cab22288c354118b007fe5"
+   "log_sha256": "103f8d298101ec1c2e926bf08494904b5c91e74bf1c7bfe1adf8350ae4f54f0a"
   },
   "uvlo-reg-baseline-180k10k-typ-rampdown": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 414.4,
+   "elapsed_s": 67.4,
    "deck_sha256": "557bc094ff8243acdee57e1c9916e582c7ec4d711f64564ba50095a6f8bec081",
-   "log_sha256": "cda2529455df29a0bf569fcf1e3ebb1643e7f1891f7d70dd59ddd818ebfc2342"
+   "log_sha256": "20745fbd414fc64cd838c39c237b385af01f9a2f61c14cff1a2995f5472a8d4f"
   },
   "uvlo-reg-baseline-180k10k-worst": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 24.3,
+   "elapsed_s": 26.3,
    "deck_sha256": "8ba1c71d8b9c45477ac61e97f86e4e823d9bd97f568bc43c44ba8665982ea0bc",
-   "log_sha256": "1022924b428f0b21523adb534c58f707c7458d7324bf678f72b5239a4cfd784c"
+   "log_sha256": "e593a2a851aad2642bef0c352c8b7f725a27583c2d84569b3293d6555ef636c3"
   },
   "uvlo-reg-misset-rbu-8k66-vrmax": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 389.0,
+   "elapsed_s": 41.3,
    "deck_sha256": "e30a736ecc14564a33cffd48911336e57e462b16483984f4fe9f68574233d23e",
-   "log_sha256": "34c9e3898ef7ca457c1bc8e6e1a80f3a580cf506904dd4c0b936c7b28e74eb60"
+   "log_sha256": "9e344360d8f0c99c5f3a14ee1d2cca19153aece14c4d998c0d60c7665f49a06a"
   },
   "uvlo-rsweep-r030": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 447.7,
+   "elapsed_s": 96.2,
    "deck_sha256": "d0b927b03396d49fd2bb8b8a7353d6f9a724e9de004a58e28f0ffed3af7111f2",
-   "log_sha256": "7a8f61cab818e39dfe4a497e0b5ea35e3c2c194cd369e131352917f4faea85bb"
+   "log_sha256": "83b34591e537fd7e09ba2ef273c5bb9478ed53ac42f725f593d9299a7a1ababe"
   },
   "uvlo-rsweep-r050": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 447.3,
+   "elapsed_s": 93.7,
    "deck_sha256": "92eec86b104a7c180525437186c0bd49d6e64d0d20954a7f5702766d0b5a8fc8",
-   "log_sha256": "92ee91f93ac9a435883183dd3702eaea42254d79884959fc33f4ad7a98af9e24"
+   "log_sha256": "741d195360a411b29937a7d25a134514e8dd076f326ce813ffb6d89f418e9b37"
   },
   "uvlo-rsweep-r100": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 99.2,
+   "elapsed_s": 91.1,
    "deck_sha256": "1fea19a33fa56201953e6a84e81c4835ee7971b9b1d613a3ee6fbb9cea096cb3",
-   "log_sha256": "3dfa926ff6eff66f5e0934ba1f56e934472e1c4951be0346fe50c480c98242ac"
+   "log_sha256": "7be3a2be882ea31c781545abd29a567c73ac7e19f0d61cc2fc15fbd29c8a8787"
   },
   "uvlo-rsweep-r150": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 98.5,
+   "elapsed_s": 91.1,
    "deck_sha256": "0b3a7c8b3299309b517cdea1fb4a564be6c718cb52d1fc28a0e081b45125b93e",
-   "log_sha256": "88d2d943086f3fb3b472fedcaf847af4aed82327790354346a0d7bcdc7dc49e9"
+   "log_sha256": "ef2b4aa3ae7697c8313763a49305e47587914118c6d02995fcfb50acc7b37d71"
   },
   "uvlo-rsweep-r200": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 96.9,
+   "elapsed_s": 90.6,
    "deck_sha256": "f475084a1347c1a6bfcfa9adb43e3257239e3a95e9526ac09ea524a7f800816f",
-   "log_sha256": "8bb33e677f70d94e6806bb9a869e4774989a80775e2507a06c9336efb11d2b26"
+   "log_sha256": "ebf22d79473f54f81775137f8f572b64ee70ada551dc378971f053d14964ea4b"
   },
   "uvlo-rsweep-r250": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 97.4,
+   "elapsed_s": 89.9,
    "deck_sha256": "ed70935cf3a1ca9fc8410db77290f2f491d1f6bc2257885bcfe05e6fe73d78f3",
-   "log_sha256": "4ee575e48faed4b2ceaffce6794d3585acce58779033c706aef1454a88421c8d"
+   "log_sha256": "eed83e7e4c3ccccef63838e6118c407da95a60c32f168d964ff795fdaecd81ce"
   },
   "uvlo-rsweep-r300": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 96.2,
+   "elapsed_s": 89.9,
    "deck_sha256": "9112e5633412a83a169ad2a157bd8676de774d73cde861d49fbd856f09c512ed",
-   "log_sha256": "b62af89f3bf9b4fc2d2608f5059039957db62527af8251efa86e9faf890aa27e"
+   "log_sha256": "892fe45f38292f801cc9d1bb0a0c358ed36c320de757c86e7212ceb26569b9d9"
   },
   "uvlo-rsweep-r350": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 90.2,
+   "elapsed_s": 82.8,
    "deck_sha256": "e4e09e124d043ce4ca3ff39d98e1e68416aaf5e54a34c193db9903ad574f2356",
-   "log_sha256": "7f697d88702703d64f79a13f9d2d274ab70209e144a4bb1325de7c4c28aee389"
+   "log_sha256": "6c78a7c41125b1e8a96a870e3dd39a2fef3873e6a502941df7cad4657b2f3357"
   },
   "uvlo-rsweep-r450": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 88.6,
+   "elapsed_s": 81.4,
    "deck_sha256": "2f0df2ffdd91167cc31753d52f02c429a633825fbe8ee12cd22184fc78582fa1",
-   "log_sha256": "a6bfbce9f9598becebecbbbac0ba621c62b246ad81e71e56e4e9418d728bea52"
+   "log_sha256": "ad7109190c78d85c06bc94422d57513cb04701613d25b256edb2c9e5c7a66b21"
   },
   "uvlo-seq-delay-tmin-typ-ibst100u": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 41.8,
+   "elapsed_s": 39.7,
    "deck_sha256": "0561c1b4a96e755414819273649d4ea31aedfc01a6087373bc7b498ddb5a8537",
-   "log_sha256": "031d78d4a8b1a4cb8ca84ea817e1365960fd205e4eae3dccd937cb06c024a960"
+   "log_sha256": "59ba1e164260e3431721b7fe14da2b9ca48fa7c7e7096073dfeb36c894dd4238"
   },
   "uvlo-seq-delay-tmin-wchi-ibst100u": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 42.1,
+   "elapsed_s": 38.8,
    "deck_sha256": "4098a43e06ec2701281bd98df2fa6c3d5e9010d4dd3af4943051964339b45dfa",
-   "log_sha256": "7ea4f19a5210cf4fa0ad1ace95f19499ee0a59dab8506ee1a13dcc5955ef0674"
+   "log_sha256": "629e1cfa8ae1864d03b0a50fcb6a1855eee8d9161b101ef97260d39a12930657"
   },
   "uvlo-seq-delay-tmin-wclo-ibst100u": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 41.6,
+   "elapsed_s": 38.5,
    "deck_sha256": "1715fee796d271eda71026081a81db84d0311391e1e0068a726ad369abdb1bb2",
-   "log_sha256": "8168ecddc7c35d30df926ae5248d0b91bf058a058a6f44f85f48e1a143fc42ce"
+   "log_sha256": "3f24b3fc44da33580264687133443cc9bd1ca7c01f6ca4c00d4262f3d376dd50"
   },
   "uvlo-seq-ref-nodelay-typ-ibst100u": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 11.6,
+   "elapsed_s": 10.7,
    "deck_sha256": "1e993c62cfb3f2ad17e56d1a4d73664a543c9fa177bf54bbd2a973c3ce307c91",
-   "log_sha256": "af4f37eeef9eae763ac6c82653e869907551db7ef6ce8111e93322ff70d9c8df"
+   "log_sha256": "35c6e3e2a943e267cf01e89dd2e3285c7685ceaf92ff40ab895757ac2ec1208f"
   },
   "uvlo-start20-mbmin-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 28.8,
+   "elapsed_s": 27.3,
    "deck_sha256": "c9703c2bf92343b2563763b0913b7c3bd52dbb0a92c24c8669e8942703e902e0",
-   "log_sha256": "638e9c5784f828409591bcfde2d237e442a29ff662d69378881834d8c9e96399"
+   "log_sha256": "cb285c16605e05cf489981c0b3f2388e062d6d04ef309ba596a234f352a24ee7"
   },
   "uvlo-start20-typ-ttyp": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 40.7,
+   "elapsed_s": 37.9,
    "deck_sha256": "604b5da48af84eebf12fab002efc7a6085f00a4d758d60b32dbc65c3f507c48d",
-   "log_sha256": "cc7049f3d7575879d8ce2dc4d5c16565f053b9e8e4015443220ab17a7d3e81cc"
+   "log_sha256": "ec05c081c930a7134ac95a0b5d85b5ac6fdc54715b701da729834b5de6534d27"
   },
   "uvlo-start20-vfmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 29.3,
+   "elapsed_s": 27.3,
    "deck_sha256": "ac911377f495be91c7e1bd57992dccb7b33b8c61d56c231a93e817def688fbd3",
-   "log_sha256": "687be2045586a03aa92508e09f5df25e97914f27a40a2fc2a2c097cba925adf5"
+   "log_sha256": "814a2b0599df83b7ea15644f7a05f50dc136c67bf7c9c70dcafbacbb125100f0"
   },
   "uvlo-start20-vfmin-tmax": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 51.4,
+   "elapsed_s": 48.6,
    "deck_sha256": "85f0b98668eb1d7369ebe35f9d5c9c28a373c49b8fec28a389f3f0553a56d552",
-   "log_sha256": "57ed263d71686cff3808a9e852b2e1e5ada10bf6e651be9668580655c3b27e68"
+   "log_sha256": "8891876eb166cf47b125a6c55cde22d8abafdaf1e408b7e1e1a68734727ef2d4"
   },
   "uvlo-start20-vrmax-tmax": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 49.7,
+   "elapsed_s": 47.3,
    "deck_sha256": "b76a9e2c99700f8b8f261b1865d85cff4bbc128d6733548d79aff9e3b9608e11",
-   "log_sha256": "f99cd129ee4ee0e7584188792e72ed4213173b096705244538e2d69c9a526ac5"
+   "log_sha256": "a4d8aba19ebdd9dd8f93ba8e421e71d99bf1d7d01f0a90d51aa20c4176e93e3c"
   },
   "uvlo-start20-vrmax-tmin": {
    "rc": 0,
    "completed": true,
-   "elapsed_s": 28.7,
+   "elapsed_s": 27.0,
    "deck_sha256": "ce1d0f08cd19a4a2e7cafc2b03e70fa66e95b821cf024083e391032212219b75",
-   "log_sha256": "b7828825daa603806d4487f8dfe808a66b38be5f4b9bbba31f9af8a3a7e40da3"
+   "log_sha256": "5b8054dabe8cbc89af2ac3710366786cba56c8bba5b65c12c614a691b3761bdc"
   }
  },
  "runner_exit_code": 0,
- "finished_utc": "2026-10-25T12:10:05+00:00"
+ "finished_utc": "2026-10-25T12:52:43+00:00"
 }
