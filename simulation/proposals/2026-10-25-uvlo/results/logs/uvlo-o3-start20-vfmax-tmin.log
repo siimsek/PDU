@@ -9,160 +9,163 @@ Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
 Using SPARSE 1.3 as Direct Linear Solver
 Operating point simulation skipped by 'uic',
   now using transient initial conditions.
- Reference value :  1.69853e-03
- Reference value :  4.00112e-03
- Reference value :  6.23812e-03
- Reference value :  8.42912e-03
- Reference value :  1.06161e-02
- Reference value :  1.28101e-02
- Reference value :  1.50581e-02
- Reference value :  1.73051e-02
- Reference value :  1.95181e-02
- Reference value :  2.17641e-02
- Reference value :  2.39461e-02
- Reference value :  2.61491e-02
- Reference value :  2.83991e-02
- Reference value :  3.06551e-02
- Reference value :  3.29331e-02
- Reference value :  3.51351e-02
- Reference value :  3.74351e-02
- Reference value :  3.96431e-02
- Reference value :  4.19191e-02
- Reference value :  4.38044e-02
- Reference value :  4.61194e-02
- Reference value :  4.84674e-02
- Reference value :  5.04764e-02
- Reference value :  5.24214e-02
- Reference value :  5.33344e-02
- Reference value :  5.51414e-02
- Reference value :  5.72244e-02
- Reference value :  5.93074e-02
- Reference value :  6.14294e-02
- Reference value :  6.35944e-02
- Reference value :  6.57844e-02
- Reference value :  6.79964e-02
- Reference value :  7.01664e-02
- Reference value :  7.23354e-02
- Reference value :  7.45444e-02
- Reference value :  7.67994e-02
- Reference value :  7.90264e-02
- Reference value :  8.12634e-02
- Reference value :  8.34954e-02
- Reference value :  8.57854e-02
- Reference value :  8.80314e-02
- Reference value :  9.01975e-02
- Reference value :  9.21658e-02
- Reference value :  9.38237e-02
- Reference value :  9.57537e-02
- Reference value :  9.77047e-02
- Reference value :  9.96697e-02
- Reference value :  1.01626e-01
- Reference value :  1.03570e-01
- Reference value :  1.05502e-01
- Reference value :  1.07427e-01
- Reference value :  1.09372e-01
- Reference value :  1.11299e-01
- Reference value :  1.13078e-01
- Reference value :  1.14964e-01
- Reference value :  1.16854e-01
- Reference value :  1.18733e-01
- Reference value :  1.20638e-01
- Reference value :  1.22541e-01
- Reference value :  1.24449e-01
- Reference value :  1.26348e-01
- Reference value :  1.28252e-01
- Reference value :  1.30201e-01
- Reference value :  1.32110e-01
- Reference value :  1.34090e-01
- Reference value :  1.36014e-01
- Reference value :  1.37906e-01
- Reference value :  1.39855e-01
- Reference value :  1.41789e-01
- Reference value :  1.43817e-01
- Reference value :  1.45844e-01
- Reference value :  1.47840e-01
- Reference value :  1.49911e-01
- Reference value :  1.51926e-01
- Reference value :  1.53897e-01
- Reference value :  1.55940e-01
- Reference value :  1.57955e-01
- Reference value :  1.59942e-01
- Reference value :  1.61988e-01
- Reference value :  1.64004e-01
- Reference value :  1.66023e-01
- Reference value :  1.67993e-01
- Reference value :  1.70007e-01
- Reference value :  1.72035e-01
- Reference value :  1.74037e-01
- Reference value :  1.76053e-01
- Reference value :  1.78061e-01
- Reference value :  1.80093e-01
- Reference value :  1.82036e-01
- Reference value :  1.83964e-01
- Reference value :  1.85971e-01
- Reference value :  1.87940e-01
- Reference value :  1.89932e-01
- Reference value :  1.91929e-01
- Reference value :  1.93891e-01
- Reference value :  1.95866e-01
- Reference value :  1.97872e-01
- Reference value :  1.99859e-01
- Reference value :  2.01774e-01
- Reference value :  2.03689e-01
- Reference value :  2.05495e-01
- Reference value :  2.07191e-01
- Reference value :  2.09028e-01
- Reference value :  2.10754e-01
- Reference value :  2.12705e-01
- Reference value :  2.14648e-01
- Reference value :  2.16538e-01
- Reference value :  2.18247e-01
- Reference value :  2.19846e-01
- Reference value :  2.21474e-01
- Reference value :  2.23148e-01
- Reference value :  2.24822e-01
- Reference value :  2.26375e-01
- Reference value :  2.28216e-01
- Reference value :  2.30166e-01
-No. of Data Rows : 232742
+ Reference value :  1.56387e-03
+ Reference value :  3.66545e-03
+ Reference value :  5.76445e-03
+ Reference value :  7.84245e-03
+ Reference value :  9.97745e-03
+ Reference value :  1.20475e-02
+ Reference value :  1.41525e-02
+ Reference value :  1.63085e-02
+ Reference value :  1.83875e-02
+ Reference value :  2.05035e-02
+ Reference value :  2.26405e-02
+ Reference value :  2.48005e-02
+ Reference value :  2.69405e-02
+ Reference value :  2.91115e-02
+ Reference value :  3.13335e-02
+ Reference value :  3.34955e-02
+ Reference value :  3.57285e-02
+ Reference value :  3.78895e-02
+ Reference value :  4.01195e-02
+ Reference value :  4.22435e-02
+ Reference value :  4.39667e-02
+ Reference value :  4.62397e-02
+ Reference value :  4.84187e-02
+ Reference value :  5.06407e-02
+ Reference value :  5.27967e-02
+ Reference value :  5.49807e-02
+ Reference value :  5.72027e-02
+ Reference value :  5.93827e-02
+ Reference value :  6.15527e-02
+ Reference value :  6.37247e-02
+ Reference value :  6.59437e-02
+ Reference value :  6.81047e-02
+ Reference value :  7.03237e-02
+ Reference value :  7.24887e-02
+ Reference value :  7.47317e-02
+ Reference value :  7.70067e-02
+ Reference value :  7.92347e-02
+ Reference value :  8.14607e-02
+ Reference value :  8.36447e-02
+ Reference value :  8.58467e-02
+ Reference value :  8.80097e-02
+ Reference value :  9.01629e-02
+ Reference value :  9.20701e-02
+ Reference value :  9.36890e-02
+ Reference value :  9.55850e-02
+ Reference value :  9.74460e-02
+ Reference value :  9.92910e-02
+ Reference value :  1.01121e-01
+ Reference value :  1.02962e-01
+ Reference value :  1.04786e-01
+ Reference value :  1.06632e-01
+ Reference value :  1.08503e-01
+ Reference value :  1.10385e-01
+ Reference value :  1.12318e-01
+ Reference value :  1.14217e-01
+ Reference value :  1.16159e-01
+ Reference value :  1.18028e-01
+ Reference value :  1.19898e-01
+ Reference value :  1.21823e-01
+ Reference value :  1.23724e-01
+ Reference value :  1.25622e-01
+ Reference value :  1.27510e-01
+ Reference value :  1.29429e-01
+ Reference value :  1.31317e-01
+ Reference value :  1.33263e-01
+ Reference value :  1.35167e-01
+ Reference value :  1.37078e-01
+ Reference value :  1.38987e-01
+ Reference value :  1.40881e-01
+ Reference value :  1.42766e-01
+ Reference value :  1.44639e-01
+ Reference value :  1.46458e-01
+ Reference value :  1.48267e-01
+ Reference value :  1.50014e-01
+ Reference value :  1.51924e-01
+ Reference value :  1.53757e-01
+ Reference value :  1.55610e-01
+ Reference value :  1.57417e-01
+ Reference value :  1.59279e-01
+ Reference value :  1.61210e-01
+ Reference value :  1.63047e-01
+ Reference value :  1.64884e-01
+ Reference value :  1.66792e-01
+ Reference value :  1.68671e-01
+ Reference value :  1.70541e-01
+ Reference value :  1.72424e-01
+ Reference value :  1.74282e-01
+ Reference value :  1.76158e-01
+ Reference value :  1.78037e-01
+ Reference value :  1.79912e-01
+ Reference value :  1.81758e-01
+ Reference value :  1.83612e-01
+ Reference value :  1.85426e-01
+ Reference value :  1.87288e-01
+ Reference value :  1.89111e-01
+ Reference value :  1.91004e-01
+ Reference value :  1.92868e-01
+ Reference value :  1.94719e-01
+ Reference value :  1.96566e-01
+ Reference value :  1.98422e-01
+ Reference value :  2.00268e-01
+ Reference value :  2.02152e-01
+ Reference value :  2.04041e-01
+ Reference value :  2.05957e-01
+ Reference value :  2.07860e-01
+ Reference value :  2.09759e-01
+ Reference value :  2.11649e-01
+ Reference value :  2.13489e-01
+ Reference value :  2.15323e-01
+ Reference value :  2.17165e-01
+ Reference value :  2.18993e-01
+ Reference value :  2.20833e-01
+ Reference value :  2.22733e-01
+ Reference value :  2.24531e-01
+ Reference value :  2.26381e-01
+ Reference value :  2.28195e-01
+ Reference value :  2.30049e-01
+ Reference value :  2.31952e-01
+No. of Data Rows : 232772
 
   Measurements for Transient Analysis
 
-en_r1               =   8.96045e-02
-outa_r1             =   2.23758e-03
-outa_rlast          =   2.23758e-03
-en_rlast            =   8.96045e-02
-fet_on1             =   4.23961e-02
-o1_global_peak      =  1.097811e+01 at=  9.356167e-02
-bus_global_max      =  1.102082e+01 at=  9.151878e-02
-raw_global_max      =  1.102907e+01 at=  9.151878e-02
-vin_global_max      =  2.016232e+01 at=  1.183057e-04
-s_uv_max            =  3.598672e+00 at=  8.960606e-02
-swd_minus_v5_max    =  2.029592e-03 at=  1.231879e-05
-s_minus_v5_max      =  2.029625e-03 at=  1.231879e-05
+en_r1               =   8.96038e-02
+outa_r1             =   2.23692e-03
+outa_rlast          =   2.23692e-03
+en_rlast            =   8.96038e-02
+fet_on1             =   4.23954e-02
+o1_global_peak      =  1.097811e+01 at=  9.356100e-02
+bus_global_max      =  1.102082e+01 at=  9.151811e-02
+raw_global_max      =  1.102907e+01 at=  9.151811e-02
+vin_global_max      =  2.016236e+01 at=  1.183057e-04
+s_uv_max            =  3.598672e+00 at=  8.960539e-02
+swd_minus_v5_max    =  2.016087e-03 at=  1.231879e-05
+s_minus_v5_max      =  2.016119e-03 at=  1.231879e-05
 run_bus_max         =  1.098248e+01 at=  2.320380e-01
 run_o1_max          =  1.097438e+01 at=  2.320380e-01
 run_raw_avg         =  1.099598e+01 from=  1.520380e-01 to=  2.320380e-01
 run_o1_avg          =  1.097438e+01 from=  1.520380e-01 to=  2.320380e-01
 run_vin_min         =  1.873312e+01 at=  2.320380e-01
-run_en_min          =  2.448483e+00 at=  1.520387e-01
+run_en_min          =  2.448471e+00 at=  1.520380e-01
 run_vgs_min         =  1.159926e+01 at=  2.320380e-01
-run_inp_min         =  4.899441e+00 at=  1.520817e-01
+run_inp_min         =  4.899440e+00 at=  1.522280e-01
 
 
-Total analysis time (seconds) = 29.4281
+Total analysis time (seconds) = 29.7255
 
-Total elapsed time (seconds) = 29.459 
+Total elapsed time (seconds) = 29.766 
 
 Total DRAM available = 16002.312 MB.
-DRAM currently available = 1002.000 MB.
-Maximum ngspice program size =   60.023 MB.
-Current ngspice program size =   51.086 MB.
+DRAM currently available =  847.645 MB.
+Maximum ngspice program size =   60.020 MB.
+Current ngspice program size =   51.055 MB.
 
-Shared ngspice pages =   10.828 MB.
+Shared ngspice pages =   10.785 MB.
 Text (code) pages =    6.543 MB.
 Stack = 0 bytes.
-Library pages =   40.344 MB.
+Library pages =   40.340 MB.
 
 
 Error: measure  en_f1  when(WHEN) : out of interval
