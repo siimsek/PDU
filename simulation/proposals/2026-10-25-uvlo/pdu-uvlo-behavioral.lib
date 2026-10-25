@@ -1,0 +1,107 @@
+* WP2 2026-10-25-uvlo behavioral models. Engineering approximations, NOT vendor (TI/Panasonic/Vishay) models.
+* Model class per element is listed in docs/proposals/2026-10-25-uvlo/MODELS.md.
+* ngspice-44.2 (-D ngbehavior=ltpsa). LTspice syntax-compatible intent, LTspice NOT run (bulut ortaminda calistirilmadi).
+
+* ---------------------------------------------------------------------------------------------
+* UVLO_BUCK: derivative of ../../pdu-behavioral.lib PDU_BUCK (same 30 pins, same averaged loop).
+* Changes vs PDU_BUCK (each needed for UVLO/restart studies):
+*  1) EN comparator: rising VENR / falling VENF parameters (LM70880 SNVSBX7A p6: VEN 0.95/1.0/1.05 V,
+*     hysteresis 0.1 V TYPICAL only) instead of the fixed 0.95 V SW model.
+*  2) VIN UVLO (VCC-path) latch 4.5 V rising / 4.0 V falling: ASSUMPTION (typical-class numbers;
+*     only relevant for the EN-high-at-low-VIN regression; the UVLO block keeps EN low below 18 V).
+*  3) Disabled = SW TRI-STATE (PDU_BUCK forced SW to 0 V = an always-on low-side switch, which would
+*     discharge RAW through the inductor and falsify brown-out/restart). Body diodes on both switches.
+*  4) Soft-start time parameter TSS (SNVSBX7A p8: tSS 1.9 / 2.8 / 4.4 ms).
+*  5) COMP voltage clamp 0 V .. 5 V (ASSUMPTION: a gm error-amplifier output cannot leave its own
+*     supply rails; LM70880 COMP clamp levels are not used from the datasheet). PDU_BUCK has only
+*     Roa 64 MOhm, so with the buck enabled while RAW is above set-point (restart after a brown-out
+*     with the bank still charged) COMP wound up to about -1 kV across CCOMP 4.7 nF; the recovery
+*     then produced a dead buck for ~12 ms followed by a 16.7 V RAW overshoot. That is a model
+*     artefact (found in WP2 dip0v-300us debug run), not silicon behaviour. Bench test B-U9 checks it.
+* Conversion loss is NOT inside this model (Binput stays lossless as in PDU_BUCK); the deck adds an
+* explicit loss source so that P_IN = P_OUT / 0.88 (ASSUMPTION eta = 0.88 at 7.5 A).
+.subckt UVLO_BUCK P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 P15 P16 P17 P18 P19 P20 P21 P22 P23 P24 P25 P26 P27 P28 P29 P30 MAIN=1 RSVAL=7.5m VENR=1.0 VENF=0.9 TSS=2.8m
+Bene P17 ene I=(if(V(ene,P17)>0.5, if(V(P9,P17)>{VENF},1,0), if(V(P9,P17)>{VENR},1,0))-V(ene,P17))/1k
+Cene ene P17 1p
+Rene ene P17 1T
+Bvuv P17 vuv I=(if(V(vuv,P17)>0.5, if(V(P1,P17)>4.0,1,0), if(V(P1,P17)>4.5,1,0))-V(vuv,P17))/1k
+Cvuv vuv P17 1p
+Rvuv vuv P17 1T
+Bena ena P17 V=min(max(V(ene,P17),0),1)*min(max(V(vuv,P17),0),1)
+* Nominal soft-start restarts on every enable; no absolute-time shortcut.
+Css ss P17 1n
+Rss ss P17 1T
+Bss P17 ss I=if(V(ena,P17)>0.5,min(0.8*1n/{TSS},(0.8-V(ss,P17))/100),-V(ss,P17)/100)
+Bgm P17 P15 I={MAIN}*if(V(ena,P17)>0.5,min(max(1200u*(V(ss,P17)-V(P16,P17)),-170u),170u),-V(P15,P17)/10k)
+Roa P15 P17 64Meg
+Bclamp P15 P17 I={MAIN}*(max(V(P15,P17)-5,0)+min(V(P15,P17),0))*10
+Cbw P15 P17 {MAIN*38p+1f}
+Bsw swi P17 V=min(max(V(P12,P17)+500*(min(max(V(P15,P17)/10,0),0.056)-V(P11,P12)),0),max(V(P1,P17),0))
+* tri-state output stage: 1 mOhm when enabled, 1 GOhm when disabled; body diodes of HS and LS FETs
+Ssw swi P20 ena P17 UVLO_SWON
+Dls P17 P20 UVLO_BODY
+Dhs P20 P1 UVLO_BODY
+Rsw4 P5 P20 1m
+Bvcc P17 P19 I=(if(V(ena,P17)>0.5,8,0)-V(P19,P17))/1
+Bvdda P17 P18 I=(if(V(ena,P17)>0.5,5,0)-V(P18,P17))/1
+Bboot P17 P4 I=(V(P5,P17)+V(P19,P17)-V(P4,P17))/100
+Rbootleak P4 P17 1T
+Rvccleak P19 P17 1T
+Rvddaleak P18 P17 1T
+* Input power (lossless, as PDU_BUCK); only while switching (disabled -> no forced transfer)
+Binput P1 P17 I=V(ena,P17)*max(V(P11,P12)/{RSVAL},0)*max(V(P20,P17),0)/max(V(P1,P17),1)
+Rcfg P13 P17 1T
+Rrt P14 P17 1T
+Rnc P10 P17 1T
+Ren9 P9 P17 1T
+.model UVLO_SWON SW(Ron=1m Roff=1G Vt=0.5 Vh=0.1)
+.model UVLO_BODY D(Is=1u N=1.3 Rs=20m Bv=100 Ibv=1m)
+.ends UVLO_BUCK
+
+* ---------------------------------------------------------------------------------------------
+* UVLO_CMP: one channel of TLV3202 (SBOS561C) push-pull comparator, datasheet-based behavioral.
+*  Rising trip at V(INP)-V(INM) = VIO + HINT/2, falling at VIO - HINT/2 (Hint 1.2 mV typ, p5;
+*  0..5 mV range is an ASSUMPTION used as corner). Output high = V(VCC)-VOHD, low = VOL
+*  (p5: VOH drop <= 170 mV, VOL <= 225 mV @ 4 mA over temperature), Rout 10 ohm (ASSUMPTION).
+*  Below VCC = 2.7 V the output is forced LOW: ASSUMPTION (VCC min 2.7 V p4; behaviour below is
+*  unspecified; bench test B-U4 checks it). Input bias currents IBP/IBN (p5 5 nA max) as sources.
+*  No propagation delay (40 ns typ << all time constants here).
+.subckt UVLO_CMP INP INM VCC GND OUT VIO=0 HINT=1.2m VOHD=0 VOL=0 IBP=0 IBN=0
+Bst GND st I=(if(V(st,GND)>0.5, if(V(INP,INM)>{VIO-HINT/2},1,0), if(V(INP,INM)>{VIO+HINT/2},1,0))-V(st,GND))/1k
+Cst st GND 1p
+Rst st GND 1T
+Bok GND ok I=(if(V(VCC,GND)>2.7,1,0)-V(ok,GND))/1k
+Cok ok GND 1p
+Rok ok GND 1T
+Bo oi GND V=min(max(V(ok,GND),0),1)*(min(max(V(st,GND),0),1)*max(V(VCC,GND)-{VOHD},0)+(1-min(max(V(st,GND),0),1))*{VOL})
+Ro oi OUT 10
+Ribp INP GND 1T
+Iibp INP GND {IBP}
+Iibn INM GND {IBN}
+* supply current 65 uA max per channel (p5) charged to VCC
+Riq VCC GND 77k
+.ends UVLO_CMP
+
+* ---------------------------------------------------------------------------------------------
+* UVLO_TMUX1102: TMUX1102 SPST, switch ON when SEL low (SCDS410D p1, Table 8-2 p19).
+*  RON parameter (p5: 1.8 typ / 4.9 ohm max over temperature at VDD 5 V), OFF leakage ILK from D
+*  (p5: +-0.9 nA). Logic threshold modelled at 1.18 V with a 0.1 V soft band (VIL 0.87 / VIH 1.49 V p5).
+*  Switch is OFF while VDD < 1.08 V (recommended min) : ASSUMPTION.
+.subckt UVLO_TMUX1102 D S GND SEL VDD RON=1.8 ILK=0
+Bsw D S I=V(D,S)*(1n+min(max((1.18-V(SEL,GND))/0.1+0.5,0),1)*min(max((V(VDD,GND)-1.08)/0.1,0),1)/{RON})
+Ilk D GND {ILK}
+Riq VDD GND 1Meg
+.ends UVLO_TMUX1102
+
+* ---------------------------------------------------------------------------------------------
+* UVLO_LIPO: 6S LiPo + harness Thevenin model (IDEAL/ASSUMPTION class). EMF from the control
+* node (V(EMF) set by the deck), R0 ohmic, R1||C1 polarisation (tau ACCELERATED to TAU so that the
+* full polarisation drop appears within the simulated window = conservative), cable L and R.
+.subckt UVLO_LIPO EMF OUT GND R0=0.1 R1=0.05 TAU=20m LCAB=1u RCAB=0.074
+Eemf e1 GND EMF GND 1
+R0 e1 e2 {R0}
+R1 e2 e3 {R1}
+C1 e2 e3 {TAU/R1}
+Lcab e3 e4 {LCAB}
+Rcab e4 OUT {RCAB}
+.ends UVLO_LIPO

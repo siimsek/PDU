@@ -1,0 +1,39 @@
+* DERIVED copy of ../2026-10-25-o1-ovp/pdu-o1ovp-block.inc; ONLY change: LDO VLDO=5 -> {V5_P} (TPS7A16 +-2 % corner)
+* WP1 2026-10-25-o1-ovp OVP block between RAW (buck output) and VOUT (bus). Proposal only.
+* U10 TPS48000-Q1: VS=VIN, EN/UVLO from VIN, OV backstop from RAW, INP from comparator.
+XU10 VIN 0 EN_OVP OV_OVP INP_OVP BST_OVP SRC_OVP PU_OVP PD_OVP O1OVP_TPS48000 TDON={TDON} TDOFF={TDOFF} TDOV={TDOV} IBST={IBST} IPU={IPU} IPD={IPD} VBSTR={VBSTR} VCPOFF={VCPOFF}
+REN10 VIN EN_OVP 100k
+REN11 EN_OVP 0 10k
+ROV10 RAW OV_OVP 90.9k
+ROV11 OV_OVP 0 10k
+CBST10 BST_OVP SRC_OVP 0.47u
+RPU10 PU_OVP G_OVP 10
+RPD10 PD_OVP G_OVP 0.01
+* QA1/QA2 block forward (RAW->VOUT) overvoltage, QB1/QB2 block VOUT->RAW backfeed; common source SRC_OVP.
+* NPAR parallel FETs per side are one model element (RON/NPAR, CGS*NPAR).
+XQ10 RAW G_OVP SRC_OVP O1OVP_NFET RON={RON_P/NPAR} VTH={VTH_P} CGS={CGS_P*NPAR}
+XQ11 VOUT G_OVP SRC_OVP O1OVP_NFET RON={RON_P/NPAR} VTH={VTH_P} CGS={CGS_P*NPAR}
+RSRC10 SRC_OVP 0 10Meg
+* U11 TPS7A1650 5 V for comparator and reference; bleed absorbs input-clamp injection.
+* rev2 P1-4: COUT11 10 uF (SBVS171F: >=2.2 uF EFFECTIVE required; 2.2 uF X7R 0805 nominal falls below it under DC bias)
+XU11 VIN V5_OVP 0 O1OVP_LDO VLDO={V5_P}
+CIN11 VIN 0 1u
+COUT11 V5_OVP 0 10u
+RBLD11 V5_OVP 0 499
+* U12 REF35409 4.096 V; rev2 P1-4: CREF12 1 uF (SNAS809C stable CL range 0.1-10 uF; 0.1 uF nominal -10 % tol fell below the min)
+XU12 V5_OVP VREF_OVP 0 O1OVP_REF35 VREF={VREF_P}
+CREF12 VREF_OVP 0 1u
+* RAW sense divider, filter, series input resistor. rev3 P0-01: upper leg split into two series 1206 parts
+* RSNS10A 1.0k (ERA-8ARB102V) + RSNS10B 1.05k (ERA-8ARB1051V) = 2050 ohm (ratio unchanged); RSNS11 ERA-8ARB1151V.
+* Both halves scale with RT_P (correlated tolerance = worst case for the ratio); see rsns_power.py.
+RSNS10A RAW SNS_MID {RT_P*1000/2050}
+RSNS10B SNS_MID SNS_OVP {RT_P*1050/2050}
+RSNS11 SNS_OVP 0 {RB_P}
+CSNS10 SNS_OVP 0 100p
+RIN10 SNS_OVP INM_OVP 1k
+* U13 TLV3601: IN+ = VREF, IN- = divided RAW; OUT high = FETs ON (default OFF without supply)
+XU13 INP_OVP 0 VREF_OVP INM_OVP V5_OVP O1OVP_TLV3601 VTRIP={CMP_VTRIP} VREL={CMP_VREL} IB={CMP_IB}
+Bvgs M_VGS 0 V=V(G_OVP)-V(SRC_OVP)
+Biin M_IINM 0 V=(V(SNS_OVP)-V(INM_OVP))/1k
+Bvdsa M_VDSA 0 V=V(RAW)-V(SRC_OVP)
+Bvdsb M_VDSB 0 V=V(VOUT)-V(SRC_OVP)

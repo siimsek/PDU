@@ -1,0 +1,259 @@
+{
+ "requirements": {
+  "E_START": 20.0,
+  "V_FALL_MIN": 18.0,
+  "P_OUT": 82.5,
+  "ETA": 0.88,
+  "P_HK": 0.3,
+  "R_TOTAL_MAX": 0.25,
+  "I_Q_PRESTART": 0.015,
+  "MARGIN_DYN": 0.1,
+  "T_SEQ_MIN": 0.06,
+  "T_SEQ_MAX": 0.3
+ },
+ "r_breakdown": {
+  "lipo_6s_ohmic_new_to_aged (6 x 16.7 mOhm)": 0.1,
+  "lipo_polarisation R1 (tau ~10 s, 6 x 8.3 mOhm)": 0.05,
+  "battery lead + harness 2 x 0.3 m 12 AWG": 0.02,
+  "battery-side connector (XT60 class)": 0.002,
+  "J1 Micro-Fit (+ and - path, 2 x 10 mOhm max per path, A)": 0.02,
+  "F1 10 A fuse cold resistance (A, <=10 mOhm; model R_F1)": 0.01,
+  "Q1 LM74700 FET at Tj hot (A, 30 mOhm vs 16 mOhm model)": 0.03,
+  "PCB copper VBAT->VIN": 0.005
+ },
+ "r_breakdown_sum": 0.23700000000000002,
+ "p_in": 94.05,
+ "i_in_at_18V": 5.225,
+ "iR_at_18V": 1.30625,
+ "ds": {
+  "LM70880_VEN_TH": [
+   0.95,
+   1.05,
+   "G SNVSBX7A p6 VEN-TH rising 0.95/1.0/1.05 V"
+  ],
+  "LM70880_VEN_HYS_TYP": [
+   0.1,
+   "T SNVSBX7A p6 (no min/max -> falling threshold NOT guaranteed)"
+  ],
+  "LM70880_EN_LOW_LOGIC": [
+   0.4,
+   "T/descr SNVSBX7A p13 section 7.3.3: <0.4 V disables (description, not EC table)"
+  ],
+  "LM70880_IEN": [
+   1e-06,
+   "A: EN/UVLO input current not specified in SNVSBX7A; +/-1 uA assumed"
+  ],
+  "TLV3202_VIO": [
+   0.004,
+   "G SBOS561C p5 VIO max -40..125 C, VCC=5 V, VCM=VCC/2"
+  ],
+  "TLV3202_CMRR_DB": [
+   60,
+   "G SBOS561C p5 CMRR min"
+  ],
+  "TLV3202_PSRR_DB": [
+   65,
+   "G SBOS561C p5 PSRR min"
+  ],
+  "TLV3202_HINT": [
+   0.0,
+   0.005,
+   "T SBOS561C p5 1.2 mV typ; A: 0..5 mV range"
+  ],
+  "TLV3202_IIB": [
+   5e-09,
+   "G SBOS561C p5 over temperature"
+  ],
+  "TLV3202_VOH_DROP": [
+   0.0,
+   0.17,
+   "G SBOS561C p5 VCC-VOH <=170 mV @4 mA over T (our load <=1 mA: conservative)"
+  ],
+  "TLV3202_VOL": [
+   0.0,
+   0.225,
+   "G SBOS561C p5 VOL <=225 mV @4 mA over T"
+  ],
+  "TPS7A1650_V5": [
+   4.9,
+   5.1,
+   "G SBVS171F p6 overall accuracy +/-2 %"
+  ],
+  "REF35409": [
+   4.096,
+   "G SNAS809C p5"
+  ],
+  "D_LEAK": [
+   3e-05,
+   "G DS30097 Rev.27 (Diodes 1N4148WSQ) IRM 30 uA @VR=25 V, TJ=150 C; I: bound for VR<=5.1 V, TJ<=125 C"
+  ],
+  "D_VF_RESID": [
+   0.85,
+   "I: 1N4148WS VFM 0.715 V max @1 mA, 25 C (DS30097) + ~0.13 V at -40 C (A)"
+  ]
+ },
+ "ref_terms": {
+  "initial +/-0.05 % (G)": 0.0005,
+  "TC 12 ppm/K box over -40..105 C = 145 K (G, box -> +/- full band)": 0.00174,
+  "TC extrapolated 105->125 C, 20 K x 12 ppm (I, outside spec range)": 0.00024,
+  "long-term 40 ppm/1000 h @35 C, x10 linear for 10 kh (A)": 0.0004,
+  "thermal hysteresis 70 ppm (T cycle 1, used as bound - A)": 7e-05,
+  "line regulation 120 ppm/V x 0.1 V (G)": 1.2e-05,
+  "solder shift: not specified (A: 0, bench B-U07)": 0.0
+ },
+ "e_ref": 0.0029620000000000002,
+ "res_terms": {
+  "tolerance +/-0.1 % (G)": 0.001,
+  "TCR +/-10 ppm/K x 100 K (25->125 C) (G)": 0.001,
+  "endurance 85 C 1000 h +/-0.1 % (G, test limit)": 0.001,
+  "resistance to soldering heat +/-0.1 % (G, test limit)": 0.001
+ },
+ "e_res": 0.004,
+ "vio_total": 0.005652234132519036,
+ "search_best": {
+  "Rt": 114999.99999999999,
+  "Rb": 32400.000000000004,
+  "Rh": 392000.0,
+  "vr_min": 19.558850548444656,
+  "vr_max": 20.06176576569926,
+  "vf_min": 18.125655793533884,
+  "vf_max": 18.652260601006766,
+  "h_min": 1.3110890621188673,
+  "h_max": 1.5325590045999107,
+  "vin_op_20V": 18.74571323563722,
+  "cross_corner_rmin_minus_fmax": 0.9065899474378902,
+  "margins": {
+   "a_start_margin": -0.06551576569925999,
+   "b_overdischarge_margin": 0.125655793533884,
+   "c_motorboat_margin": -0.07742514920614121,
+   "d_run_at_20V_margin": -0.006547365369547725
+  },
+  "ok": false,
+  "worst": -0.07742514920614121
+ },
+ "chosen_c": {
+  "Rt": 80600.0,
+  "Rb": 21500.0,
+  "Rh": 274000.0,
+  "vr_min": 20.368990986130168,
+  "vr_max": 20.892490419106597,
+  "vf_min": 18.931456909387663,
+  "vf_max": 19.478702392535112,
+  "h_min": 1.3146341204524923,
+  "h_max": 1.53764628808905,
+  "vin_op_20V": 18.74571323563722,
+  "cross_corner_rmin_minus_fmax": 0.8902885935950557,
+  "margins": {
+   "a_start_margin": -0.8962404191065971,
+   "b_overdischarge_margin": 0.9314569093876628,
+   "c_motorboat_margin": -0.0193356307046674,
+   "d_run_at_20V_margin": -0.8329891568978937
+  },
+  "ok": false,
+  "worst": -0.8962404191065971
+ },
+ "chosen_c_rss_info": {
+  "Rt": 80600.0,
+  "Rb": 21500.0,
+  "Rh": 274000.0,
+  "vr_min": 20.45675188817507,
+  "vr_max": 20.802909374520596,
+  "vf_min": 19.014679015411936,
+  "vf_max": 19.39403692273627,
+  "h_min": 1.3199032373209754,
+  "h_max": 1.5315278907841225,
+  "vin_op_20V": 18.74571323563722,
+  "cross_corner_rmin_minus_fmax": 1.0627149654388006,
+  "margins": {
+   "a_start_margin": -0.8066593745205957,
+   "b_overdischarge_margin": 1.0146790154119358,
+   "c_motorboat_margin": -0.008747332528758728,
+   "d_run_at_20V_margin": -0.748323687099051
+  },
+  "ok": false,
+  "worst": -0.8066593745205957
+ },
+ "misset_rb_21k0": {
+  "Rt": 80600.0,
+  "Rb": 21000.0,
+  "Rh": 274000.0,
+  "vr_min": 20.730103949237087,
+  "vr_max": 21.262852963184177,
+  "vf_min": 19.292348505470976,
+  "vf_max": 19.848839999210817,
+  "h_min": 1.3146341204524923,
+  "h_max": 1.5380961628927992,
+  "vin_op_20V": 18.74571323563722,
+  "cross_corner_rmin_minus_fmax": 0.8812639500262698,
+  "margins": {
+   "a_start_margin": -1.2666029631841766,
+   "b_overdischarge_margin": 1.2923485054709758,
+   "c_motorboat_margin": 0.0036152675818164892,
+   "d_run_at_20V_margin": -1.2031267635735987
+  },
+  "ok": false,
+  "worst": -1.2666029631841766
+ },
+ "timer": {
+  "RT": 10000.0,
+  "CT": 1e-05,
+  "RHB": 1000000.0,
+  "RK1": 10000.0,
+  "RK2": 40200.0,
+  "RD": 10000.0,
+  "RUV2": 10000.0,
+  "t_cold_min": 0.07158837266856817,
+  "t_cold_max": 0.23122512445769616,
+  "t_after_dip_min": 0.05983614029125168,
+  "t_after_dip_max": 0.198957335634329,
+  "timer_headroom_min": 0.7445010735088249,
+  "en_high_min": 2.3505400000000005,
+  "en_high_max": 2.5652,
+  "en_low_max": 0.11795,
+  "margins": {
+   "seq_min_margin_s": 0.011588372668568173,
+   "latency_margin_s": 0.06877487554230383,
+   "timer_headroom_margin_V": 0.5445010735088249,
+   "en_high_margin_V": 0.8005400000000005,
+   "en_low_margin_V": 0.28205
+  },
+  "ok": true
+ },
+ "alternatives": {
+  "A0_baseline_180k_10k": {
+   "desc": "LM70880 EN/UVLO native, RUV1 180k / RUV2 10.0k (1 %, A: 100 ppm/K)",
+   "rise_min": 17.05388349514563,
+   "rise_max": 21.119072164948456,
+   "fall": "NOT guaranteed (VEN-HYS typ only); typ ~0.9*rise",
+   "fall_typ_mid": 17.1,
+   "verdict": "FAIL: rise_max > 20.0 V (no guaranteed start at 20 V) and fall not guaranteed",
+   "pass_": false
+  },
+  "A1_divider_retune": {
+   "desc": "native EN, RUV1 = 169.6k (ideal, 1 %)",
+   "rise_min": 16.12084052983714,
+   "rise_max": 19.956290118653953,
+   "fall_typ_at_rise_min": 14.508756476853426,
+   "verdict": "FAIL: falling threshold typ ~14.51 V < 18.0 V and never guaranteed",
+   "pass_": false
+  },
+  "B_TPS3700": {
+   "desc": "TPS3700 (SBVS187G p6) + ERA-3ARB divider, native hysteresis",
+   "rise_max": 19.98625,
+   "rise_min": 19.27952263083451,
+   "fall_min": 18.841351661951908,
+   "fall_max": 19.788366336633665,
+   "hyst_typ": 0.26993059238959605,
+   "need_h": 1.40625,
+   "verdict": "FAIL: hysteresis typ 0.27 V (min not specified) << I*R + margin 1.41 V -> motorboating",
+   "pass_": false
+  },
+  "D_LM7480_EN_UVLO": {
+   "desc": "LM74800/LM74810 EN/UVLO comparator (SNOSD95C p5) replacing LM74700",
+   "rise_max": 19.98625,
+   "fall_min": 16.936770054246374,
+   "verdict": "FAIL: fall_min 16.94 V < 18.0 V (over-discharge)",
+   "pass_": false
+  }
+ }
+}
