@@ -31,9 +31,9 @@ PASS        dip19v-50ms-typ-ttyp
 PASS        dip19v-50ms-mbmin-tmin 
 PASS        dip0v-1ms-typ-ttyp 
 PASS        dip0v-1ms-mbmin-tmin 
-PASS        dip0v-300us-typ-ttyp 
-PASS        dip0v-300us-mbmin-tmin 
-PASS        dip0v-250us-typ-ttyp 
+FAIL        dip0v-300us-typ-ttyp dip restart delay 15.902 ms after VIN-OK < 60 ms
+FAIL        dip0v-300us-mbmin-tmin dip restart delay 1.391 ms after VIN-OK < 60 ms
+FAIL        dip0v-250us-typ-ttyp dip restart delay 0.000 ms after VIN-OK < 60 ms
 PASS        dip0v-250us-mbmin-tmin 
 PASS        dip0v-200us-typ-ttyp 
 PASS        dip0v-200us-mbmin-tmin 
@@ -49,21 +49,331 @@ PASS        hotplug-25p2v-typ-ttyp
 PASS        hotplug-25p2v-vrmax-tmin 
 PASS        hotplug-26p0v-typ-ttyp 
 PASS        hotplug-26p0v-vrmax-tmin 
-FAIL       (regression, reproduced) reg-baseline-180k10k-worst EN fell at 0.0001 s (shutdown/motorboat); buck enabled before the OVP FET was on (sequencing); RUN: EN low (0.994 V) -> not running; RUN: RAW avg 0.0000 V not regulated
+FAIL       (regression, reproduced) reg-baseline-180k10k-worst EN fell at 0.0001 s (shutdown/motorboat); VIN-OK (OUTA_R1) measurement missing/failed -> 60 ms restart-delay gate not provable; buck enabled before the OVP FET was on (sequencing); RUN: EN low (0.994 V) -> not running; RUN: RAW avg 0.0000 V not regulated
 FAIL       (regression, reproduced) reg-baseline-180k10k-typ-rampdown PRE: EN low (1.043 V) -> not running
 FAIL       (regression, reproduced) reg-misset-rbu-8k66-vrmax buck never enabled (no start); RUN: EN low (-0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated
 PASS        seq-delay-tmin-typ-ibst100u 
 PASS        seq-delay-tmin-wchi-ibst100u 
 PASS        seq-delay-tmin-wclo-ibst100u 
 FAIL       (regression, reproduced) seq-ref-nodelay-typ-ibst100u FET never on; RUN: FET/comparator not in normal state
+PASS        o3-start20-vrmax-tmax 
+PASS        o3-start20-vrmax-tmin 
+PASS        o3-start20-vfmax-tmin 
+PASS        o3-start20-mbmin-tmin 
+PASS        o3-start20-vfmin-tmax 
+PASS        o3-start20-typ-ttyp 
+PASS        o3-rampup-10vps-mbmin-tmin 
+PASS        o3-rampup-10vps-vrmax-tmax 
+PASS        o3-rampup-10vps-typ-ttyp 
+PASS        o3-rampup-1vps-mbmin-tmin 
+PASS        o3-rampdown-10vps-vfmin-tmin 
+PASS        o3-rampdown-10vps-mbmin-tmin 
+PASS        o3-rampdown-10vps-typ-ttyp 
+PASS        o3-rampdown-1vps-mbmin-tmin 
+PASS        o3-mbhold-mbmin-tmin-r250-m50mv 
+PASS        o3-mbhold-mbmin-tmin-r250-p50mv 
+PASS        o3-mbhold-typ-ttyp-r250-m50mv 
+PASS        o3-mbhold-typ-ttyp-r250-p50mv 
+PASS        o3-mbhold-vfmax-tmin-r250-m50mv 
+PASS        o3-mbhold-vfmax-tmin-r250-p50mv 
+PASS        o3-dip19v-50ms-typ-ttyp 
+PASS        o3-dip19v-50ms-mbmin-tmin 
+PASS        o3-dip0v-1ms-typ-ttyp 
+PASS        o3-dip0v-1ms-mbmin-tmin 
+PASS        o3-dip0v-300us-typ-ttyp 
+FAIL        o3-dip0v-300us-mbmin-tmin dip restart delay 37.558 ms after VIN-OK < 60 ms
+FAIL        o3-dip0v-250us-typ-ttyp dip restart delay 38.632 ms after VIN-OK < 60 ms
+FAIL        o3-dip0v-250us-mbmin-tmin dip restart delay 24.334 ms after VIN-OK < 60 ms
+FAIL        o3-dip0v-200us-typ-ttyp dip restart delay 0.000 ms after VIN-OK < 60 ms
+FAIL        o3-dip0v-200us-mbmin-tmin dip restart delay 0.000 ms after VIN-OK < 60 ms
+PASS        o3-dip0v-100us-typ-ttyp 
+PASS        o3-dip0v-100us-mbmin-tmin 
+PASS        o3-dip15v-20ms-typ-ttyp 
+PASS        o3-dip15v-20ms-mbmin-tmin 
+PASS        o3-deepdip0v-50ms-light-typ-ttyp 
+PASS        o3-deepdip0v-50ms-light-mbmin-tmin 
+PASS        o3-hotplug-20p0v-typ-ttyp 
+PASS        o3-hotplug-20p0v-vrmax-tmin 
+PASS        o3-hotplug-25p2v-typ-ttyp 
+PASS        o3-hotplug-25p2v-vrmax-tmin 
+PASS        o3-hotplug-26p0v-typ-ttyp 
+PASS        o3-hotplug-26p0v-vrmax-tmin 
+FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enabled (no start); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated
 {
- "exit_code": 0,
- "git_head": "a0dea9156cdfe1dd6c4c4edd6af1b2c2a3dc2163",
+ "exit_code": 1,
+ "git_head": "53495e2eaaf42d80fd3528fa5c70d92ac1d22388",
+ "provenance_errors": [],
+ "run_manifest": {
+  "run_id": "box-tur2-20261025T1230",
+  "git_head": "873a94a961b70985db19689efe7f0acce73ba45e",
+  "started_utc": "2026-10-25T09:30:57+00:00",
+  "ngspice": [
+   "** ngspice-44.2 : Circuit level simulation program",
+   "** Copyright 2001-2024, The ngspice team.",
+   "** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html",
+   "** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html"
+  ],
+  "n_runs": 101
+ },
+ "expected_run_id": null,
+ "provisional_rdip_screen": {
+  "note": "PROVISIONAL WP3 screen proposed in ChatGPT review 6395614957 (UVLO-06); report-only, NOT an acceptance limit and NOT a requirement change; simulation, not measurement",
+  "limits": {
+   "peak_max": 11.5,
+   "t_above_max": 0.001,
+   "return_after_dip_end_max": 0.005,
+   "threshold": 11.1605
+  },
+  "cases": {
+   "dip19v-50ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip19v-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00623,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-1ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-300us-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-300us-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-250us-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-250us-mbmin-tmin": {
+    "status": "FAIL",
+    "peak": 11.34552,
+    "t_above": 8.99129e-06,
+    "return_after_dip_end": 0.08152463971960217,
+    "reasons": [
+     "back below 11.1605 V 81.525 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-200us-typ-ttyp": {
+    "status": "FAIL",
+    "peak": 11.41426,
+    "t_above": 1.81217e-05,
+    "return_after_dip_end": 0.010318467447133106,
+    "reasons": [
+     "back below 11.1605 V 10.318 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-200us-mbmin-tmin": {
+    "status": "FAIL",
+    "peak": 11.35498,
+    "t_above": 8.41619e-06,
+    "return_after_dip_end": 0.042242639719602154,
+    "reasons": [
+     "back below 11.1605 V 42.243 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-100us-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.12123,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-100us-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.0076,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip15v-20ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip15v-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "deepdip0v-50ms-light-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.02296,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "deepdip0v-50ms-light-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.02297,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip19v-50ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip19v-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-1ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-300us-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-300us-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-250us-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-250us-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-200us-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-200us-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-100us-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.12314,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-100us-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00874,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip15v-20ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip15v-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-deepdip0v-50ms-light-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.02296,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-deepdip0v-50ms-light-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.02295,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   }
+  },
+  "counts": {
+   "PASS": 29,
+   "FAIL": 3,
+   "UNDETERMINED": 0
+  }
+ },
  "worktree_dirty_at_verify": true,
  "package_inputs_dirty": false,
- "n_cases": 58,
- "n_pass": 52,
- "acceptance_fail": [],
+ "n_cases": 101,
+ "n_pass": 86,
+ "acceptance_fail": [
+  "dip0v-300us-typ-ttyp",
+  "dip0v-300us-mbmin-tmin",
+  "dip0v-250us-typ-ttyp",
+  "o3-dip0v-300us-mbmin-tmin",
+  "o3-dip0v-250us-typ-ttyp",
+  "o3-dip0v-250us-mbmin-tmin"
+ ],
  "regression_not_reproduced": [],
  "incomplete": [],
  "info_cases": [
@@ -73,9 +383,41 @@ FAIL       (regression, reproduced) seq-ref-nodelay-typ-ibst100u FET never on; R
   "dip0v-200us-typ-ttyp",
   "dip0v-200us-mbmin-tmin",
   "dip0v-100us-typ-ttyp",
-  "dip0v-100us-mbmin-tmin"
+  "dip0v-100us-mbmin-tmin",
+  "o3-dip0v-200us-typ-ttyp",
+  "o3-dip0v-200us-mbmin-tmin",
+  "o3-dip0v-100us-typ-ttyp",
+  "o3-dip0v-100us-mbmin-tmin"
  ],
  "hard_limit_gate": "H1/H2 enforced for every non-regression case (PASS and INFO)",
+ "per_variant": {
+  "C3": {
+   "n": 56,
+   "n_pass": 49,
+   "acceptance_fail": [
+    "dip0v-300us-typ-ttyp",
+    "dip0v-300us-mbmin-tmin",
+    "dip0v-250us-typ-ttyp"
+   ],
+   "regression_not_reproduced": []
+  },
+  "O3": {
+   "n": 43,
+   "n_pass": 37,
+   "acceptance_fail": [
+    "o3-dip0v-300us-mbmin-tmin",
+    "o3-dip0v-250us-typ-ttyp",
+    "o3-dip0v-250us-mbmin-tmin"
+   ],
+   "regression_not_reproduced": []
+  },
+  "baseline": {
+   "n": 2,
+   "n_pass": 0,
+   "acceptance_fail": [],
+   "regression_not_reproduced": []
+  }
+ },
  "limits": {
   "O1_PEAK_MAX": 12.0,
   "BUS_NORMAL_MAX": 11.1605,
