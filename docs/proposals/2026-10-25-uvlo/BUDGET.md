@@ -91,6 +91,21 @@ c için açıklama: kapanma anında VIN = V_f iken EMF = V_f + I·R olur. Akım 
 | O3 O1 + O2 | +84,86 mV | 84,86 / 85,99 / 89,12 | |
 Ek seçenekler: (i) Hint bağımlılığını kaldırmak için garantili histerezis/ofset verisi olan karşılaştırıcı. Bunun için aday datasheet incelemesi gerekir (bu turda yapılmadı). (ii) B-U tezgâh ölçümüyle Hint, REF35 lehim kayması ve uzun dönem kaymanın sınırlanması. Bu ölçüm garantiyi ancak lot kapsamı için destekler, datasheet garantisinin yerini tutmaz. Seçim kullanıcı/donanım kararıdır.
 
+## 3b. O3 aday varyantı (WP2 Tur 2) – **aday, KiCad/ana BOM değişmedi; başlatma garantisi AÇIK**
+`uvlo_budget.py` → `results/uvlo-budget.json` → `o3_variant` (commit 873a94a). Parçalar: **U23 REF5040IDGKT** (TI SBOS410O; 4,096 V, %0,05 başlangıç, 3 ppm/°C maks, −40…125 °C), V5_OVP'den beslenir, yalnız VREF_UV → RR1U'yu sürer; WP1 REF35 (U12) yalnız OVP'yi besler (OVP köşesi VREF_P typ 4,096 / wchi 4,105424 / wclo 4,086576, değişmedi). Bölücüler: **N1** = Vishay ACAS 0606 AT, DF düzeni, grade U (Rt/Rb), **N2** = ACAS (RR1/RR2), Rx ayrık ERA-3ARB (0,1 %). Direnç modeli: eleman = nom·(1 + s_c·(e_abs − e_rel) + s_i·e_rel), e_rel %0,25 (oran), e_abs %0,4 (Vishay ACAS doc 28770, 15-Jun-2026). E_REF_O3 = 1321 ppm + 50 ppm/mA yük regülasyonu; I_Q_PRESTART_O3 = 16,2 mA (REF5040 dahil).
+
+| Değer | O3 seçimi |
+|---|---|
+| Rt / Rb / Rx / RR1 / RR2 | 24,3k / 5,36k / 53,6k / 10,0k / 41,2k |
+| V_r / V_f / H (köşe aralığı) | 19,560–19,922 V / 18,070–18,394 V / 1,476–1,542 V |
+| Marjlar a / b / c / d / e | **+73,91 / +70,28 / +75,54 / +251,37 / +182,14 mV** (C3: +6,73 / +12,64 / +27,87 / +145,22 / +71,04) |
+| 125 °C göreli kayma duyarlılığı | a +45,42, b +42,83 mV |
+| Durum | **`NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS`** – 3 sınırsız terim: REF5040 uzun dönem, REF5040 lehim kayması, TLV3202 Hint |
+| Terim etkileri a / b | uzun dönem +5,46 / +4,99; termal histerezis +0,99 / +0,91; Hint +11,43 / +10,47; ACAS DF varsayımı +37,88 / +36,73; I_Q +4,05 (yalnız a) mV |
+| Regresyon | Yanlış Rb 5,23k: en kötü −0,3013 V → beklenen FAIL (bütçe ve deck `o3-reg-misset-rbu-5k23-vrmax`) |
+
+Notlar: O3, C3 parametrik O3 tahminine (+84,86 mV) yakın ama altında; sebebi gerçek parça verisi (ACAS oran toleransı, REF5040 yük regülasyonu, I_Q artışı). ACAS DF grade U sipariş kodu **doğrulanmadı**; varsayım yanlışsa (ör. yalnız AE düzeni) a/b'den ~37 mV kaybolur. LT5400 (O3b) reddedildi: önerilen REF5050 ≥ 5,2 V besleme ister. TLV3602 önerilmedi: histerezis tablosu VCM = VEE + 0,3 V koşulunda; bu devrede ~3,37 V; ayrıca 7 mA/kanal. Stok: 2026-10-25 12:31 TSİ Mouser araması erişim engeli (captcha) → **doğrulanamadı**; önceki arama özeti (saat belirsiz) ACASN1001S2001P1AT 947, ACASN1002U1002P1AT 15 991 adet gösterdi, bunlar seçilen değerler değildir. Simülasyon fiziksel ölçüm değildir.
+
 ## 4. Zamanlayıcı ve EN (RTT 11,0k, CTT 10 µF, RHB 1 M, RK1/RK2 10,0k/40,2k, RDEN/RUV2 10k/10k)
 | Büyüklük | Sonuç | Marj |
 |---|---|---|

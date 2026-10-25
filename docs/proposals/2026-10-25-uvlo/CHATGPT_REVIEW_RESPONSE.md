@@ -23,3 +23,24 @@ Her bulgu önce eski kodda doğrulandı, sonra düzeltildi ya da gerekçeyle aç
 
 ### Karar (Tur 1 sonrası)
 WP2 **tamamlanmadı**. Açık bloklayıcı: 20 V başlatma garantisi (W2-P0-1, G dışı terimler). Açık: R-DIP (WP3), silikon/tezgâh doğrulaması, KiCad aktarımı. Tasarım değişikliği (O1–O3) kullanıcı onayı bekliyor.
+
+## Tur 2 (inceleme yorumu 6395614957, WP1 Tur 8 ile birleşik; HEAD `f923347`)
+Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok); her doğrulayıcı/CI bulgusu önce eski kodda testle yeniden üretildi (`f923347`: 4/31 test geçti, kayıt `results/tur2-tests-on-f923347.txt`). Hiçbir sınır gevşetilmedi, hiçbir test silinmedi, KiCad/ana BOM değişmedi. Simülasyon fiziksel ölçüm değildir.
+
+| ID | Önem | Bulgu (özet) | Doğrulama | Yanıt | Commit | Durum |
+|---|---|---|---|---|---|---|
+| UVLO-01 | P2 | Hint/IN+ bias ve TMUX kaçağı tek işaret değişkenini paylaşıyor | **Doğrulandı** | Bağımsız işaretler: 12 eksen, 2^12 = 4096 köşe. Marjlar değişmedi (a +6,73, b +12,64, c +27,87, d +145,22, e +71,04 mV) | 57af63b | **Düzeltildi** |
+| UVLO-02 | P0 | Başlatma garantisi hükmü doğru ama açık; O3 en güçlü yön; REF5040IDGKT aday; TLV3602 araştırılmalı | **Kabul** | O3 aday varyantı gerçek parçalarla yeniden bütçelendi (BUDGET.md §3b): U23 REF5040IDGKT + ACAS 0606 AT DF grade U (N1, N2), Rx ERA-3ARB; a **+73,91** / b **+70,28** / c +75,54 / d +251,37 / e +182,14 mV. Durum yine `NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS` (REF5040 uzun dönem + lehim kayması, TLV3202 Hint sınırsız). 43 `o3-` deck + regresyon (Rb 5,23k −0,3013 V FAIL). TLV3602 önerilmedi (VCM koşulu ~3,37 V'ta geçerli değil, 7 mA/kanal). Uygulama kullanıcı/donanım kararı | 873a94a, a2388d1 | **Açık P0 (garanti); O3 aday, uygulanmadı** |
+| UVLO-03 | P0 | V_f ve başlatma gecikmesi eksik ölçümde atlanıyor | **Doğrulandı** (eski kodda testler FAIL) | `judge()`: durum türüne göre zorunlu, sonlu ölçüm; OUTA_R1 / VIN_AT_SHUTDOWN eksik/NaN/Inf → FAIL. Yeni testler eksik/NaN/Inf yollarını kapsar | 5911cdb | **Düzeltildi** |
+| UVLO-04 | P0 | CI eski loglarla geçebilir | **Doğrulandı** | WP2 `uvlo` işinde kurulum hatası ölümcül (`|| true` ve `continue-on-error` kaldırıldı; WP1 `o1-ovp` işi değişmedi); `run_uvlo.py` koşu öncesi eski log/manifesti siler, ngspice yoksa hata manifesti yazar; manifest `run_id`, `git_head`, `cases_sha256`, deck/log hash'leri, `runner_exit_code` taşır; `verify_uvlo.py --run-id` CI'da manifest HEAD = checkout HEAD ister, aksi halde paket girdisi farkı yoksa kabul eder | 5911cdb | **Düzeltildi** (CI'da yeni koşu henüz gözlenmedi) |
+| UVLO-05 | P0 | 60 ms kuralı kısa dip yeniden başlatmada uygulanmıyor | **Doğrulandı** | Kapı eklendi (VIN-OK → EN ≥ 60 ms, kabul + INFO; FET-önce-EN ayrıca). Gerçek koşuda **FAIL**: C3 300 µs typ 15,90 / mbmin 1,39 ms, 250 µs typ 0,00 ms; O3 300 µs mbmin 37,56, 250 µs typ 38,63 / mbmin 24,33, 200 µs (INFO) 0,00 ms. Verify exit 1. Zamanlayıcı CTT kısa dipte sıfırlanmıyor → yeni tasarım P0 | 5911cdb (kapı), a2388d1 (koşu) | **Açık P0 (tasarım)** |
+| Kanıt denetimi | – | run-manifest HEAD kaydetmiyor | **Doğrulandı** | Manifest artık `git_head`, `run_id`, `started/finished_utc` taşır | 5911cdb | **Düzeltildi** |
+| UVLO-06 | P1 | R-DIP süresi bilinmiyor; geçici tarama önerisi | **Kabul** (öneri olarak) | Ölçümler deck'lere eklendi; **geçici, rapor amaçlı** tarama (≤ 11,50 V, ≤ 1 ms, ≤ 5 ms dönüş), gereksinim değişikliği değil. Sonuç: C3 3 FAIL (200 µs typ 11,41426 V / 18,1 µs üstte / dönüş 10,32 ms; 200 µs mbmin 11,35498 V / 42,24 ms; 250 µs mbmin 11,34552 V / 81,52 ms), O3 16/16 PASS (O3'te bu dipler yeniden başlatmaya düşüyor, R-DIP çözülmüş sayılmaz) | 5911cdb, a2388d1 | **Açık (WP3)** |
+
+### Yeni koşu (a2388d1; girdi HEAD 873a94a)
+- `box-tur2-20261025T1230`, 12:30:57–13:01:03 TSİ, ngspice-44.2, 101/101 rc 0. `verify_uvlo.py` **exit 1**: 86 PASS, kabul FAIL 6 (hepsi 60 ms dip kapısı), eksik 0, 5/5 regresyon beklenen FAIL.
+- O1 tepe maks: C3 11,16998 V, O3 10,99836 V (≤ 12,0). Kararlı bus maks: C3 11,03144 V, O3 10,99517 V (≤ 11,1605).
+- En kısa soğuk açılış: C3 77,74 ms, O3 77,81 ms. Rampdown kapanma VIN min: C3 18,012 V, O3 18,073 V.
+
+### Karar (Tur 2 sonrası)
+WP2 **tamamlanmadı**. Açık P0: 20 V başlatma garantisi (O3 ile marjlar ~10× arttı ama sınırsız terimler kaldı), kısa dip 60 ms kapısı (zamanlayıcı sıfırlama). Açık: R-DIP (WP3), silikon/tezgâh (B-U), KiCad aktarımı, ACAS sipariş kodu/stok doğrulaması.

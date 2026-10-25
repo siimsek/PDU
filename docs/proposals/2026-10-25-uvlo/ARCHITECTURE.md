@@ -44,6 +44,7 @@ Sıralama: U10 TPS48000, EN/UVLO'yu VIN'den alır (REN10/REN11, WP1). FET, TDRV_
 | D | LM74800/LM74810 EN/UVLO (LM74700 yerine) | V_f,min 16,94 V < 18 V | FAIL |
 | C2 | TLV3202 A + Rh geri besleme (itme-çekme) | En iyi E96 kombinasyonunda en kötü marj −0,102 V (VOH/VOL ve V5 yayılımı) | FAIL |
 | **C3** | TLV3202 A + TMUX1102 anahtarlı bölücü | Marjlar (VIO 6 mV, Tur 1 düzeltmesi): a +0,0067 / b +0,0126 / c +0,0279 / d +0,1452 / e +0,071 V; başlatma garantisi **kurulmadı** (BUDGET.md §3a, açık P0) | **SEÇİLDİ (koşullu)** |
+| O3 (aday, Tur 2) | C3 + U23 REF5040IDGKT (yalnız UV referansı) + ACAS 0606 AT oran-eşli diziler (N1 Rt/Rb, N2 RR1/RR2) | a +0,0739 / b +0,0703 / c +0,0755 / d +0,2514 / e +0,1821 V; başlatma garantisi yine **kurulmadı** (3 sınırsız terim; BUDGET.md §3b). Simülasyonda H1/H2 geçti, kısa dip 60 ms kapısı FAIL (RESULTS.md §10) | **Önerilen yön, uygulanmadı** (KiCad/ana BOM değişmedi; `hardware/proposals/2026-10-25-uvlo/candidate-bom.csv` aday satırları) |
 
 Müdahale ölçüsü: buck, kompanzasyon, WP1 OVP ve RAW bankı değişmez. RUV1 sökülür (DNP), RUV2 kalır. Yeni parçalar 3 IC (U20, U21, U22), 8 hassas direnç, 3 jenerik direnç, 1 diyot ve 7 kondansatördür. Mevcut V5_OVP ve VREF_OVP kullanılır, yeni bir regülatör ya da referans eklenmez.
 
@@ -53,3 +54,4 @@ Müdahale ölçüsü: buck, kompanzasyon, WP1 OVP ve RAW bankı değişmez. RUV1
 - R_total 0,25 Ω üstü (0,30–0,45 Ω) INFO olarak raporlanır, garanti dışıdır.
 - **Artık pencere (R-DIP):** UV algılama gecikmesinden (CFU filtresi, mbmin köşesinde ~0,26–0,29 ms) kısa dipler U22'yi tetiklemez. Bu dipler sonrasında buck COMP sarılmış olarak devam eder; RAW aşımı WP1 OVP'yi açtırabilir ve regülasyon RAW boşalana kadar (onlarca–yüzlerce ms) gelmez. O1 tepe sınırı bu durumda korunur. Sayısal sonuç `RESULTS.md` (dip0v-200us / 100us, INFO).
 - Kısa dip (< ~1 ms) sonrasında zamanlayıcı kısmen boşalır, yeniden başlatma gecikmesi 60 ms'nin altına düşebilir (RESULTS.md).
+- **Tur 2:** Kısa dip (≤ ~300 µs) sonrası yeniden başlatma artık 60 ms kapısıyla doğrulanıyor ve C3/O3'te FAIL veriyor (zamanlayıcı CTT tam sıfırlanmıyor). Açık tasarım P0'ı.

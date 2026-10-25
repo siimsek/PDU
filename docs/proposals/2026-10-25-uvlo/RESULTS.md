@@ -3,6 +3,8 @@
 **Durum: öneri. Tezgâh testi yapılmadı. "Üretime hazır" DEĞİLDİR.**
 
 ## 1. Koşu bilgisi
+> **WP2 Tur 2 notu:** Aşağıdaki §1 tablosu Tur 1 koşusudur (58 deck, HEAD a0dea91, verify exit 0) ve karşılaştırma için tutuldu. Commit'li `results/` artık Tur 2 koşusunu (`box-tur2-20261025T1230`, 101 deck, C3 + O3) içerir; Tur 2 doğrulaması daha sıkı kapılarla **exit 1** verir. Ayrıntılar §10.
+
 | Alan | Değer |
 |---|---|
 | Simülatör | ngspice-44.2 (`ngspice -b -D ngbehavior=ltpsa`), 8 CPU, `-j 7`. LTspice: bulut ortamında çalıştırılmadı |
@@ -127,3 +129,50 @@ Eski `seq-ref-nodelay-typ` deck'i ngspice'ta yarıda kesiliyordu ("Timestep too 
 - Davranışsal LM70880 / TPS48000 / LiPo modelleri (MODELS.md).
 - Parazitik L yok.
 - Simülasyon fiziksel doğrulamanın yerini tutmaz. BENCH-TEST.md'deki B-U1…B-U15 testlerinin **hiçbiri yapılmadı**.
+
+## 10. WP2 Tur 2 koşusu (C3 + O3 aday varyantı) – simülasyon, fiziksel ölçüm değil
+| Alan | Değer |
+|---|---|
+| Koşu | `python3 run_uvlo.py -j 8 --run-id box-tur2-20261025T1230`, 2026-10-25 12:30:57 – 13:01:03 TSİ, temiz HEAD `873a94a` (`package_inputs_dirty_at_run: false`), ngspice-44.2, 101/101 deck rc 0, `runner_exit_code` 0. Koşu öncesi eski log/manifest silindi |
+| Doğrulama | `python3 verify_uvlo.py` (HEAD `53495e2`; arada yalnız WP1 doküman commit'i, WP2 paket girdisi farkı yok → `provenance_errors: []`). **Çıkış kodu 1** |
+| Testler | `test_uvlo_gates.py` 13/13, `test_uvlo_tur2.py` 31/31, `test_uvlo_o3.py` 10/10 |
+| Sayım | 101 durum, 86 PASS; kabul FAIL 6 (C3 3, O3 3); eksik 0; regresyon 5/5 beklenen FAIL |
+
+**Sert sınırlar (H1/H2, regresyon dışı tüm durumlar, PASS ve INFO):**
+| Ölçüt | C3 | O3 | Sınır |
+|---|---|---|---|
+| O1 anlık tepe maks | 11,16998 V (seq-delay-tmin-typ-ibst100u) | 10,99836 V (o3-deepdip0v-50ms-light-typ) | ≤ 12,0 V |
+| Kararlı pencere bus maks | 11,03144 V (seq-delay, RUN) | 10,99517 V (o3-deepdip, PRE) | ≤ 11,1605 V |
+| Kararlı pencere O1 maks | 11,02334 V | 10,99463 V | ≤ 11,1605 V |
+| En kısa soğuk açılış gecikmesi (VIN-OK → EN) | 77,74 ms (hotplug-26p0v-vrmax-tmin) | 77,81 ms (o3-start20-vrmax-tmin) | ≥ 60 ms |
+| En dar FET ↑ → EN ↑ | 37,9 ms | 37,0 ms | FET önce |
+| En düşük kapanma VIN (rampdown) | 18,012 V | 18,073 V | ≥ 18,0 V |
+(O3 deck kümesinde seq-delay/ibst ve rsweep durumları yok; C3/O3 sütunları doğrudan aynı küme değildir.)
+
+**Kısa dip yeniden başlatma – 60 ms kapısı (UVLO-05, yeni):** VIN-OK (son OUTA ↑) → EN ↑.
+| Dip (0 V) | Köşe | C3 | O3 |
+|---|---|---|---|
+| 300 µs | typ | **15,90 ms FAIL** | 62,47 ms PASS |
+| 300 µs | mbmin | **1,39 ms FAIL** | **37,56 ms FAIL** |
+| 250 µs | typ | **0,00 ms FAIL** (21 µs EN darbesi) | **38,63 ms FAIL** |
+| 250 µs | mbmin | geçti (rode-through, EN düşmedi) | **24,33 ms FAIL** |
+| 200 µs | typ / mbmin (INFO) | rode-through | **0,00 / 0,00 ms FAIL** (INFO durumunda da kapı uygulanır) |
+| 100 µs | typ / mbmin (INFO) | rode-through | rode-through |
+| 1 ms | typ / mbmin | 140,06 / 67,37 ms | 134,37 / 66,18 ms |
+| 15 V 20 ms / 19 V 50 ms / 0 V 50 ms hafif | mbmin | 74,24 / 75,73 / 75,81 ms | 74,24 / 75,76 / 75,80 ms |
+
+Yorum: zamanlayıcı (RTT/CTT, değişmedi) ≲ 1 ms diplerde tam sıfırlanmıyor; bu nedenle iki varyantta da 60 ms kapısı kısa diplerde sağlanmıyor. O3'ün farklı UV eşik zamanlaması yalnız hangi dip süresinin rode-through/yeniden başlatma olacağını kaydırıyor. Bu **yeni, açık bir tasarım P0'ıdır** (zamanlayıcı sıfırlama / VIN-kaybında CTT hızlı deşarjı WP2 Tur 3 işi). Sınır gevşetilmedi. Davranışsal U10 TDRV_EN modellenmediği için silikon davranışı değildir (§6).
+
+**Geçici R-DIP taraması (rapor amaçlı, gereksinim DEĞİL; REQUIREMENTS.md):** ≤ 11,50 V tepe, ≤ 1 ms 11,1605 V üstü, dip sonundan ≤ 5 ms'de dönüş.
+| Durum | Tepe | 11,1605 V üstü süre | Dönüş (dip sonundan) | Sonuç |
+|---|---|---|---|---|
+| C3 dip0v-200us-typ (INFO) | 11,41426 V | 18,1 µs | **10,32 ms** | FAIL (dönüş > 5 ms) |
+| C3 dip0v-200us-mbmin (INFO) | 11,35498 V | 8,4 µs | **42,24 ms** | FAIL |
+| C3 dip0v-250us-mbmin | 11,34552 V | 9,0 µs | **81,52 ms** | FAIL |
+| C3 dip0v-100us-typ | 11,12123 V | 0 | – | PASS |
+| O3 tüm 16 dip durumu | maks 11,12314 V (o3-dip0v-100us-typ) | 0 | – | PASS |
+Toplam: 29 PASS, 3 FAIL, 0 UNDETERMINED. Not: "dönüş" ölçümü son 11,1605 V üstü anı dip sonuna göre alır; C3'te tepe süresi kısa (≤ 18 µs) ama geç ikincil aşımlar dönüş süresini uzatıyor. O3'te R-DIP'in görülmemesi, bu dip sürelerinde O3'ün yeniden başlatmaya geçmesinin (ve 60 ms kapısında FAIL vermesinin) sonucudur; R-DIP sorununun çözüldüğü anlamına gelmez.
+
+**Regresyonlar (beklenen FAIL, hepsi FAIL):** reg-baseline-180k10k-worst, reg-baseline-180k10k-typ-rampdown, reg-misset-rbu-8k66-vrmax, seq-ref-nodelay-typ-ibst100u, o3-reg-misset-rbu-5k23-vrmax.
+
+**Tur 1 ile karşılaştırma (C3, aynı deck'ler):** dip0v-200us-typ BUS_GLOBAL_MAX 11,41249 → 11,41426 V; mbmin 11,35757 → 11,35498 V (deck'lere R-DIP ölçümleri eklendi; küçük sayısal fark). Tur 1 verify exit 0 idi çünkü 60 ms kapısı dip yeniden başlatmalarına uygulanmıyordu; Tur 2'deki exit 1 sınırın sıkılaştırılmasının değil, eksik kapının eklenmesinin sonucudur.
