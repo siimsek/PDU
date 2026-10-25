@@ -150,3 +150,10 @@ Her FET (QA = giriş tarafı, QB = çıkış tarafı) için pencere başına tep
 - **Tasarım deck'leri (NPAR=2): tümü SOA dikdörtgeni içinde, en küçük marj 1,085×** (Tc 125 °C derate ve katı paylaşım ile). Pmax nokta kontrolü tümünde OK.
 - **Tek çift (par1, yalnız bilgi):** 7,5 A yük basamağı / bus-7p5a deck'lerinde QA 1207 W, 175 A, 5–7 µs → dikdörtgen **0,761×** (aşıyor) – iki paralel çiftin neden gerektiğini gösterir; tasarım NPAR=2.
 - Marj 1,085× küçüktür ve grafik okuma ±%25 belirsizliği içindedir → **P1-01 tezgâh B18 ve gerçek FET modeliyle (WP2) kapatılmalı; açık kalır.**
+
+### H4. N-01 U3/U4 davranışsal eFuse mandalı – `u3-latch-study/` (U3_EXIT=**1**; açık bulgu)
+Baseline davranışsal eFuse (ITRIP 4,96 A) mandallanınca O1 VOUT'u izlemeyi bırakır; ölçülen O1 bu durumda O1 OVP bloğuna değil eFuse modeline bağlıdır. Gerçek TPS259824O davranışı burada bilinmiyor (B13). En katı güvenli varsayım: **U3 açılmaz → O1 ≤ VOUT tepe (BUS_PEAK)**.
+- 89 kabul deck'i; 49'unda mandal şüphesi (BUS_PEAK − O1_PEAK > 20 mV). Sonda deck'lerinde mandal simülasyonla doğrulandı: s023-wchi U3 15,0006 ms / U4 15,0005 ms; c185-esr100m-wchi U3 30,001 ms; s017-wchi yalnız U4; c165-esr12m5-wchi mandal yok (O1 11,90318 V = global maks, VOUT 11,90669 V).
+- **Varsayım altında FAIL: `buck-short-c185-esr100m-wchi` (VOUT 13,03882 V; ölçülen O1 11,59151 V, fark 1,447 V) ve `buck-short-c185-esr100m-typ` (12,50435 V).** Yani −40 °C 100 mΩ stres köşesindeki O1 PASS'i yalnız davranışsal U3 mandalına dayanır.
+- 100 mΩ hariç en kötü sınır: efuse-ovp-s023-wchi 11,93557 V (PASS, 64,4 mV).
+- Kabul deck'leri/sınırları değiştirilmedi; ana sonuç tablosu (O1 global maks 11,90318 V) ölçülen O1'dir. **N-01 açık**; B10 (−40 °C ESR) + B13 (gerçek U3) gerekli.
