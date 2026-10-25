@@ -1,0 +1,376 @@
+{
+ "ngspice": [
+  "** ngspice-44.2 : Circuit level simulation program",
+  "** Copyright 2001-2024, The ngspice team.",
+  "** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html",
+  "** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html"
+ ],
+ "command": "ngspice -b -D ngbehavior=ltpsa <deck>",
+ "cpus": 8,
+ "runs": {
+  "uvlo-deepdip0v-50ms-light-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 470.0,
+   "deck_sha256": "4998bf1d0aa140f5d18ad3421b7939b125019bcd35583e713500169bdc02aa77",
+   "log_sha256": "0c145c4ae6d692eb8d052300bfa6019b7f838072cac115e67082ce717e163f81"
+  },
+  "uvlo-deepdip0v-50ms-light-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 531.2,
+   "deck_sha256": "a19b0bbab78678d1b09164cded41899a9418a90bb2093e3149c5c3d56a7356df",
+   "log_sha256": "48d8fadf81c600ef78d5661a04d09d3448f4b411df20a5fc6f62927a0ca0616e"
+  },
+  "uvlo-dip0v-1ms-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 85.8,
+   "deck_sha256": "dd115b1130b529308dfa30b42778635fa2fb2d2a627101bb95f4f1e967d5ed30",
+   "log_sha256": "df9d585ec8c44fca64e80fa97dc255c4b727c07a3ee30509e3d689c25ffa98ff"
+  },
+  "uvlo-dip0v-1ms-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 105.7,
+   "deck_sha256": "69546322c6c94527b3ccd3e563a775d921599b4fa59fcef653afab846fe623b8",
+   "log_sha256": "84368c93bbb2cd1ce539aeddea128edd73054a2223abad3b0e1014925330d79b"
+  },
+  "uvlo-dip0v-300us-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 75.7,
+   "deck_sha256": "6fd018de6070cda7453124ea2ad6f03095378c44e5bfad101f27f1128160f124",
+   "log_sha256": "9eb0338b1c8b1e0b1ff43bc2b67d99360070c00526ebd644a3882b4ef5708d8b"
+  },
+  "uvlo-dip0v-300us-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 92.6,
+   "deck_sha256": "f988634ff80db0f0137cee4f7a699bf8e524d75c00e2a9ba1ffa6e4f9544d151",
+   "log_sha256": "85396efacebd3e0548521b3d3003de0c75fdf104a1d0bb4da10c60f15473dde7"
+  },
+  "uvlo-dip15v-20ms-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 60.8,
+   "deck_sha256": "c53c9e819ba849c0fbed09bafa8e522b5caf474b2307ae5a2e413e369264f9e0",
+   "log_sha256": "4913e1481f45f0ca8e5bb8a6606e00d70d148f5d2f6355a7390d4b38699d73dd"
+  },
+  "uvlo-dip15v-20ms-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 84.5,
+   "deck_sha256": "9d22f0b33de79dfa7a51402674eadac990eab9d6d4fe2d80f06551173871ff05",
+   "log_sha256": "357f9a23bb79c65491ab805f5916b767cb40ed40b9260a87bc7ce439971044b4"
+  },
+  "uvlo-dip19v-50ms-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 78.2,
+   "deck_sha256": "e5676101d6abfa95e4cdb4454aa34abc863e8d3c5c74315df5dfb476c1030847",
+   "log_sha256": "0c52d494aee1cd80c70bbdc0768ed0a474fa78efd5533dc523d196f2c9922cc1"
+  },
+  "uvlo-dip19v-50ms-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 100.4,
+   "deck_sha256": "6b2ede0ffdc8aaec3f6cb39fa27b182b1c47c17f66d2168613bc029ca84ed490",
+   "log_sha256": "a6dd3093721529214728be78824b6101b1d6900f3c1e0866b6ebb4c9dd770a67"
+  },
+  "uvlo-hotplug-20p0v-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 250.2,
+   "deck_sha256": "f4ec2fa8cbbbd94cf6b5dfc2391b3a1dfffc6849ba1ae5717e94a8807975fad5",
+   "log_sha256": "4cbce80d5da28fad59a48a1c7ce06153c35337886781062e772deb90b46080d8"
+  },
+  "uvlo-hotplug-20p0v-vrmax-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 250.9,
+   "deck_sha256": "997f8e680190d654e40fb50ae7644f0ec858866ea6e8813633cff6d983192e99",
+   "log_sha256": "2b849b3833dbf3775e78cb1a717438c47637267d9e7bfa848c0b8d31d3721cee"
+  },
+  "uvlo-hotplug-25p2v-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 179.7,
+   "deck_sha256": "f701d3de701991e85f29fc953956bd6ae4f84a492b57138b5dadeeab5bbf7210",
+   "log_sha256": "885a519ce3f2632468b6154686582185de1c50c6a9f1dd825b753d8b73aa9076"
+  },
+  "uvlo-hotplug-25p2v-vrmax-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 163.1,
+   "deck_sha256": "dc91a3e2e7063d578c6bef8e8209d61670c9424e92fc13ce6b7eb70800b4a69a",
+   "log_sha256": "185e3d22fa86a655530a15acdd77e9a5b7ae7bb2f09c254d3c7438422c679ea1"
+  },
+  "uvlo-hotplug-26p0v-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 195.0,
+   "deck_sha256": "b5d79b21520584c29d467366a662cdf28832610a832af3495405a1a42b1154a1",
+   "log_sha256": "9768cfaabd7071949a65ac3b1d17939cb6a1091433389415d1cd6d04053a8023"
+  },
+  "uvlo-hotplug-26p0v-vrmax-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 149.2,
+   "deck_sha256": "2b84a4e57434b2bd40a186cc2ab55a0721ee2b65959b003ebe3d21774ff0af21",
+   "log_sha256": "af035697130335619413d82ff39430882d3752f9e164df661b6b159c38e8e057"
+  },
+  "uvlo-mbhold-mbmin-tmin-r250-m50mv": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 135.6,
+   "deck_sha256": "8ffe0fd9af93aa6e24e67eb0e28b1c5de985e43ca8cbf2d72f6c0d0908782241",
+   "log_sha256": "85fede819a7867693672040936b6a467ca3c8e9e6d9de49c5a4601b2cf10bbae"
+  },
+  "uvlo-mbhold-mbmin-tmin-r250-p50mv": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 144.9,
+   "deck_sha256": "d7d2832e30bc53d599c35fce0fddf6778f475ff85ae78a88a66f2a81f87ff037",
+   "log_sha256": "178bdcbd566cb2affdd282500c34646ecf6a530623d61e0756b03a49d108a73d"
+  },
+  "uvlo-mbhold-typ-ttyp-r250-m50mv": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 146.4,
+   "deck_sha256": "453fa6297b35cc68a9d683cd1b2e8807fe8133bb43cfa7519fa69c17d5e1bfe5",
+   "log_sha256": "5ad4f3df93e4d8cf57b69b833b5e243c4a92000de071ae0432bf5c0cd4e3ad2e"
+  },
+  "uvlo-mbhold-typ-ttyp-r250-p50mv": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 147.1,
+   "deck_sha256": "5a0a35ee79267f631c4d7739b82c86a451f3f868983ff3fd8d1d1f925fc6c81b",
+   "log_sha256": "f7a025a6dd30e7da0c5653c56cdbb767f8075753b9c86bdb97a93500a7d52565"
+  },
+  "uvlo-mbhold-vfmax-tmin-r250-m50mv": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 128.0,
+   "deck_sha256": "d146e48f11c82a5ff843670d83723ca21d4c99158a43c739afa038dba2c2cc95",
+   "log_sha256": "e920cc59f54974ae8dfbf26bc9c5f3c22b865a7ecb81d6f155cfb4a42c7dee21"
+  },
+  "uvlo-mbhold-vfmax-tmin-r250-p50mv": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 148.1,
+   "deck_sha256": "d9526d3ffbf4005ec1560b9b29df5115b8052e632f2ee2aa8ddf8b7e5e0b7cff",
+   "log_sha256": "7cd2535c98f604e8ceba634fbbf8a1bc1f91200e064756669eb0fadf77346329"
+  },
+  "uvlo-rampdown-10vps-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 163.9,
+   "deck_sha256": "6f8bbb2d6c7eeb6d98d79a8b68f3e58513022c71486838d95317e8a069c2cd9a",
+   "log_sha256": "03af5987b8d5afa89f68dddb4c040c2dc57fa16984b2d64788eda8f7968644a4"
+  },
+  "uvlo-rampdown-10vps-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 160.3,
+   "deck_sha256": "d46005d464aab8023c737bf5f5745649e44de49a49b15055274b2a4ea8858c3c",
+   "log_sha256": "fae5fc2e8ba92dd9940ba1d03b9986d7b224fcd3cb5362974c10c1a76ca27d52"
+  },
+  "uvlo-rampdown-10vps-vfmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 153.0,
+   "deck_sha256": "1dbea3195f29c8818fe79bfa8196a2467bbb39348ce3a16a69adfd215d291630",
+   "log_sha256": "86dcf53e393313d689100348a1e7d1ba91a180df3307421d89caf8bb76a183c3"
+  },
+  "uvlo-rampdown-1vps-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 213.3,
+   "deck_sha256": "4a9f6882e040c58d44159ada77a8e062601137cd585e925a5b948115c507f426",
+   "log_sha256": "e557eb6a05e4dcc720e8bafc270178d53549f1020f83f9c0e0e03f3c318f6a52"
+  },
+  "uvlo-rampup-10vps-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 111.7,
+   "deck_sha256": "3a1ddc411e6257c37eb40a422df6dbb6084b814e9308f57db52d549a54a04c13",
+   "log_sha256": "99d4f0c339d616e857373dc2b93e2829f725631e732df04195e72805ba069a74"
+  },
+  "uvlo-rampup-10vps-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 90.9,
+   "deck_sha256": "b4e2f3918737b8352b28a210b174fd969ade035db325c48b8b654340f3df90ba",
+   "log_sha256": "5f51ec46cffc2b6ef89cba169bdd0937350a44e53172e6a71e23339139930566"
+  },
+  "uvlo-rampup-10vps-vrmax-tmax": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 91.8,
+   "deck_sha256": "bd0299477105cd6180c5e1cffa76d1881c0f0adebbc1ed8cfcbf954944f6da16",
+   "log_sha256": "0242a087ad7d84d209911a799142b9a8d8bb93bef6e82515d40b76f975c41fb5"
+  },
+  "uvlo-rampup-1vps-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 273.1,
+   "deck_sha256": "605ae8a1ea2f682fd6d391bfe192c3ab3e494933693b6f430d73868de184839b",
+   "log_sha256": "3ab5e3326388f37c38c190042964901da6b4601fcb5142033d1624c6ff4974c5"
+  },
+  "uvlo-reg-baseline-180k10k-typ-rampdown": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 69.7,
+   "deck_sha256": "430e84b164553a715552aac1b0752374d30cf9b11381f4a3acc998b821ca33f9",
+   "log_sha256": "a5eb086500116fc874ed0db7eb9149424fce76e10f9108606546b8e51fa31eaa"
+  },
+  "uvlo-reg-baseline-180k10k-worst": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 26.0,
+   "deck_sha256": "b70038eddfd5e92b3dbff8a170d540c82e7a0134243723eda947ac1c78fe9b00",
+   "log_sha256": "befdf84b2b7e403071ce1ffeabaa4e9b4c1255d6288ca01d73cfb83b611a38e0"
+  },
+  "uvlo-reg-misset-rbu-8k66-vrmax": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 35.4,
+   "deck_sha256": "c1072a279d88433f430797c1e075b6435485f5f33101e5d3add8f048b8122ff0",
+   "log_sha256": "a4c1e0ea3a87112ddc32f126ba4ace94511e5db91e283a211e37a296cdc9c03d"
+  },
+  "uvlo-rsweep-r030": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 91.9,
+   "deck_sha256": "670631987658b8c787e3b40f2baa56324ee80c21ca74e54c3a524abc36bfc691",
+   "log_sha256": "1a2d2e62ce4203359ba199a451963774f9a4f34a9d1a74e6dda69138621b9ead"
+  },
+  "uvlo-rsweep-r050": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 90.5,
+   "deck_sha256": "8fc5b9101d70b12d80748efa56ee6f4c1c68bc05ee4eb94957b64bfa46a37bfe",
+   "log_sha256": "738264a6ed2171ab9070a69c1406ac125e45fccf4dbd9533951b042c23364d7f"
+  },
+  "uvlo-rsweep-r100": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 89.2,
+   "deck_sha256": "8bd1e1a6f7604de9c3804ef0723bece239773633a7741878bbbcfa504d8bdbdc",
+   "log_sha256": "8ed65c3825fd8b7e6ddbd3cd6e830d03337cdb8a7b308fabe53612749e5fb418"
+  },
+  "uvlo-rsweep-r150": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 88.8,
+   "deck_sha256": "2eb722720f11a802ca22330d9655bddc3e735b3de46f5fc35cb0540a34b6c119",
+   "log_sha256": "d8d20913aa58fef167aa92ea35928db9b03747472a794295b8e693ebf4da35c4"
+  },
+  "uvlo-rsweep-r200": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 88.8,
+   "deck_sha256": "634a5b85cf8e55ced76a784c25a6ed5a15ade007dd3acfa48f2eeb70adacd71a",
+   "log_sha256": "f91696a86c4c69fbf2ede99b8b18584e09f3ef378a31683deaeaaa548d4ab4d0"
+  },
+  "uvlo-rsweep-r250": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 88.2,
+   "deck_sha256": "d5d98fc5d708352343077cae1124ac7831f60574cb7a1ef89306368534ec6767",
+   "log_sha256": "dc1d86f932dd0ceb2c24582ce2ba4796c1fcbdfa13ca0eb5f827fa0b820f279e"
+  },
+  "uvlo-rsweep-r300": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 91.0,
+   "deck_sha256": "83bed27db97f64557d75a4a3e600fea0eb80bb836a8e71a72ccaf9280f9a67cf",
+   "log_sha256": "350340433e465d445facacf6e5c1493c7cfe198612c60eddbdc4ce88e9a74f8a"
+  },
+  "uvlo-rsweep-r350": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 83.5,
+   "deck_sha256": "6b06b2bb55fb9bcdc68356d4dd56105a7ccd6f9a91598df7117fc346445b0d6a",
+   "log_sha256": "0bf4f05e8c58648aaa341ce6e213d46d5bf540f7459d10331f3d41f2c7e1f1ca"
+  },
+  "uvlo-rsweep-r450": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 86.4,
+   "deck_sha256": "b80ce8a37f590924b9dd70cca5732ca1499c26a6718392a34cb6136d24b0201d",
+   "log_sha256": "24cdd6e0f225b5f8e95195a4b534745a3781261efd5f4e07d71e52166eedc905"
+  },
+  "uvlo-seq-delay-tmin-typ-ibst100u": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 43.0,
+   "deck_sha256": "8343d0092816f1fc9f549d569337dacb32a02c80962947a0eb7b4aad057c3e5c",
+   "log_sha256": "3d62c6df1b170a7cf23555221ca79efc0edd5caeedf37aaebc5aa6745df1755b"
+  },
+  "uvlo-seq-delay-tmin-wchi-ibst100u": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 44.6,
+   "deck_sha256": "48e138373755723650cb03409198c489c6ee32277dd400b909b28509c90ae025",
+   "log_sha256": "a26b9bec696109fa1ebefc6e516a105206720e8ccaa9ea35cfdfcd4be2c483a8"
+  },
+  "uvlo-seq-delay-tmin-wclo-ibst100u": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 51.7,
+   "deck_sha256": "7cdf3e62483ec83a8ec9d841279265ba48019dd9937828326b73a06ce14e3d65",
+   "log_sha256": "b6375f3e87e5e793ebe9154d3c7b7668807ce48d8846d0ea8708d41c3c748888"
+  },
+  "uvlo-seq-ref-nodelay-typ": {
+   "rc": 1,
+   "completed": true,
+   "elapsed_s": 5.2,
+   "deck_sha256": "914c7861d7afe7fef14069e0b727719f28099e9596c84469dade97bc1afff270",
+   "log_sha256": "ec7f4d662a746ea05204364b7a7a2897f20ae27b73e6a1ba6297356f67db749c"
+  },
+  "uvlo-start20-mbmin-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 34.9,
+   "deck_sha256": "5de083b1e6bae315015068451f2236538565b45e228232e59360cff931b37850",
+   "log_sha256": "12d718769c5b9ece452bfd9ef8a5bf812c965cb176c5e0fda8a8753541719346"
+  },
+  "uvlo-start20-typ-ttyp": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 40.5,
+   "deck_sha256": "02d67802a8b289d934ef7b76672073b3d6abc113da18bde8833dd419444733f6",
+   "log_sha256": "9149594559313df413064f91693b2a9cc389f1ae450e30cd98ec798a0616151c"
+  },
+  "uvlo-start20-vfmax-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 31.3,
+   "deck_sha256": "a9ade82c1cb08d9c829573f97ce29a33f4da2c3b93faba13ccb1d028883bc7e1",
+   "log_sha256": "f08e1b6a7e767360b1c29ade941cb7c437fce4216e89fe4ff1d65ce34a74efa7"
+  },
+  "uvlo-start20-vfmin-tmax": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 48.5,
+   "deck_sha256": "941996a92c1eeefe971cdbfba205de992be14f08ecf4cc44bee41594e2589e0d",
+   "log_sha256": "028312c4aef7729551ae333cdbddf54c719b97728f690d3a2d25f085ad9b3171"
+  },
+  "uvlo-start20-vrmax-tmax": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 46.1,
+   "deck_sha256": "68e845018d756552a8f99f57f3bd0e0baeeb942471a278ed6c649f8ad1f600e4",
+   "log_sha256": "f98cab2757e3634795b411af6cbe8d9ab8dc892f5eb259e6ed08a8b78bdc06a3"
+  },
+  "uvlo-start20-vrmax-tmin": {
+   "rc": 0,
+   "completed": true,
+   "elapsed_s": 27.0,
+   "deck_sha256": "4c8e7a3b63b6a7cdeecd7c6f467930e600f395c33c6bfde73d2c1c64ef53d3fd",
+   "log_sha256": "654eb039271b7629e89de48d12eb8bed619027d8752d084be858a2e255243e4d"
+  }
+ }
+}

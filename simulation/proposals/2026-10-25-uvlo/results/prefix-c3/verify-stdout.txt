@@ -1,0 +1,75 @@
+PASS        start20-vrmax-tmax 
+PASS        start20-vrmax-tmin 
+PASS        start20-vfmax-tmin 
+PASS        start20-mbmin-tmin 
+PASS        start20-vfmin-tmax 
+PASS        start20-typ-ttyp 
+PASS        rampup-10vps-mbmin-tmin 
+PASS        rampup-10vps-vrmax-tmax 
+PASS        rampup-10vps-typ-ttyp 
+PASS        rampup-1vps-mbmin-tmin 
+PASS        rampdown-10vps-vfmin-tmin 
+PASS        rampdown-10vps-mbmin-tmin 
+PASS        rampdown-10vps-typ-ttyp 
+PASS        rampdown-1vps-mbmin-tmin 
+PASS        mbhold-mbmin-tmin-r250-m50mv 
+PASS        mbhold-mbmin-tmin-r250-p50mv 
+PASS        mbhold-typ-ttyp-r250-m50mv 
+PASS        mbhold-typ-ttyp-r250-p50mv 
+PASS        mbhold-vfmax-tmin-r250-m50mv 
+PASS        mbhold-vfmax-tmin-r250-p50mv 
+PASS        rsweep-r030 
+PASS        rsweep-r050 
+PASS        rsweep-r100 
+PASS        rsweep-r150 
+PASS        rsweep-r200 
+PASS        rsweep-r250 
+PASS        rsweep-r300 
+FAIL        rsweep-r350 EN fell at 0.1127 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 3.3410 V not regulated; VIN under load 18.2553 <= V_f 18.2588
+FAIL        rsweep-r450 EN fell at 0.0843 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.9018 V not regulated; VIN under load 18.0024 <= V_f 18.2588
+PASS        dip19v-50ms-typ-ttyp 
+PASS        dip19v-50ms-mbmin-tmin 
+PASS        dip0v-1ms-typ-ttyp 
+PASS        dip0v-1ms-mbmin-tmin 
+PASS        dip0v-300us-typ-ttyp 
+FAIL        dip0v-300us-mbmin-tmin POST: OVP FET not enhanced (VGS min -0.000 V); POST: OVP comparator low; POST: RAW avg 11.2882 V not regulated; POST: bus max 11.25177 > 11.1605
+PASS        dip15v-20ms-typ-ttyp 
+PASS        dip15v-20ms-mbmin-tmin 
+PASS        deepdip0v-50ms-light-typ-ttyp 
+PASS        deepdip0v-50ms-light-mbmin-tmin 
+PASS        hotplug-20p0v-typ-ttyp 
+PASS        hotplug-20p0v-vrmax-tmin 
+PASS        hotplug-25p2v-typ-ttyp 
+PASS        hotplug-25p2v-vrmax-tmin 
+PASS        hotplug-26p0v-typ-ttyp 
+PASS        hotplug-26p0v-vrmax-tmin 
+FAIL       (regression, reproduced) reg-baseline-180k10k-worst EN fell at 0.0001 s (shutdown/motorboat); buck enabled before the OVP FET was on (sequencing); RUN: EN low (0.994 V) -> not running; RUN: RAW avg 0.0000 V not regulated
+FAIL       (regression, reproduced) reg-baseline-180k10k-typ-rampdown PRE: EN low (1.043 V) -> not running
+FAIL       (regression, reproduced) reg-misset-rbu-8k66-vrmax buck never enabled (no start); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated
+PASS        seq-delay-tmin-typ-ibst100u 
+PASS        seq-delay-tmin-wchi-ibst100u 
+PASS        seq-delay-tmin-wclo-ibst100u 
+FAIL       (regression, reproduced) seq-ref-nodelay-typ O1_GLOBAL_PEAK missing
+{
+ "exit_code": 1,
+ "git_head": "b6b4b1025372312f143d08cb74d481245d58215f",
+ "worktree_dirty_at_verify": true,
+ "n_cases": 52,
+ "n_pass": 45,
+ "acceptance_fail": [
+  "dip0v-300us-mbmin-tmin"
+ ],
+ "regression_not_reproduced": [],
+ "incomplete": [],
+ "info_cases": [
+  "rsweep-r300",
+  "rsweep-r350",
+  "rsweep-r450"
+ ],
+ "limits": {
+  "O1_PEAK_MAX": 12.0,
+  "BUS_NORMAL_MAX": 11.1605,
+  "V_FALL_MIN": 18.0,
+  "T_SEQ_MIN": 0.06
+ }
+}
