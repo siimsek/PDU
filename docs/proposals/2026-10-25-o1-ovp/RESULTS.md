@@ -44,7 +44,7 @@ rev2'de yalnız 2 typ deck duruyordu, wchi ESL deck'leri geçiyordu; **rev3 mode
 | c165-ESL-typ (stop 12,2644 ms) | 0 V | 12,2643 ms | 13,337 V | – | – |
 | c185-ESL-wchi (stop 12,2695 ms) | ≈5e-9 V | 12,2642 ms | 13,334 V | 8,61 V | 12,2644 ms |
 
-Sert FET açılışı RAW bankı + 2 nH ESL ile ≈7,8 MHz'de çınlıyor; RAW ≈13,33 V'a çıkınca komparatör (doğru şekilde) INP'yi düşürüyor, FET açılırken kapatılıyor ve davranışsal modelde sayısal durma oluşuyor. Bu, gerçek devrede **açılışta istenmeyen OVP tetiklemesi / hıçkırık** riski demektir → tezgâh B18 ve WP2 kontrollü açılış (slew) seçeneği. ESL'siz tamamlanan tüm deck'lerde doğrulayıcı "start-up OVP trip" bilgi bulgusu **0**. Sonuç: **P0-03 açık bloklayıcı**.
+Sert FET açılışı RAW bankı + 2 nH ESL ile ≈7,8 MHz'de çınlıyor; RAW ≈13,33 V'a çıkınca komparatör (doğru şekilde) INP'yi düşürüyor, FET açılırken kapatılıyor ve davranışsal modelde sayısal durma oluşuyor. Bu, gerçek devrede **açılışta istenmeyen OVP tetiklemesi / hıçkırık** riski demektir → tezgâh B19 ve WP2 kontrollü açılış (slew) seçeneği. ESL'siz tamamlanan tüm deck'lerde doğrulayıcı "start-up OVP trip" bilgi bulgusu **0**. Sonuç: **P0-03 açık bloklayıcı**.
 
 ## B. O1 anlık tepe – test grubu başına (kabul, sınır 12,0 V; rev3: O1_GLOBAL_PEAK 0…tran sonu)
 | Grup | En yüksek O1 | Case | 12 V marjı |
