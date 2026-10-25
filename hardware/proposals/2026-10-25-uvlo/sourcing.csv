@@ -1,0 +1,21 @@
+Group,Distributor,MPN,URL,Result,Quantity_in_stock,Unit_price,Currency,Price_break,Checked_at_Europe_Istanbul,Note
+TR,Özdisan,TLV3202AIDGKR,https://www.ozdisan.com/c?search=TLV3202AIDGKR,"ürün sayfası var; ""Stok: 0"", ""Fiyat ve Stok Talep Et""",0,doğrulanamadı (fiyat talep usulü),,,2026-10-25 ~09:40-09:45,"temin süresi 1-2 hafta olarak gösteriliyor (sayfa beyanı, doğrulanamadı); fiziksel TR stoku YOK"
+TR,direnc.net,TLV3202AIDGKR,https://www.direnc.net/arama?q=TLV3202AIDGKR,bulunamadı,,,,,2026-10-25 ~09:40-09:45,
+TR,Taşkın Teknik,TLV3202AQDGKRQ1 (FARKLI MPN),,"yalnız otomotiv sürümü TLV3202AQDGKRQ1 listeli, ""Stokta var""",doğrulanamadı (adet gösterilmiyor),66.13,TRY,,2026-10-25 ~09:40-09:45,"Q1 sürümü aynı DGK pin dizilimi beklenir ama BU ÇALIŞMADA DOĞRULANMADI; ikame kararı kullanıcıya ait; URL kaydı alınmadı"
+Importer/Int,TME,TLV3202AIDGKR,https://www.tme.com/,"listed, in stock",508,1.68,USD,1 pc,2026-10-25 ~09:40-09:45,"TR'ye ithalat (TR fiziksel stok değil); TME curl 403, WebFetch ile okundu"
+Importer/Int,LCSC,TLV3202AIDGKR,https://www.lcsc.com/,"listed, in stock",2267,1.92,USD,1 pc,2026-10-25 ~09:40-09:45,uluslararası
+Importer/Int,TI.com,TLV3202AIDGKR,https://www.ti.com/product/TLV3202,out of stock,0,,,,2026-10-25 ~09:40-09:45,
+TR,direnc.net,TMUX1102DBVR,https://www.direnc.net/arama?q=TMUX1102DBVR,bulunamadı,,,,,2026-10-25 ~09:40-09:45,
+TR,Özdisan,TMUX1102DBVR,https://www.ozdisan.com/c?search=TMUX1102DBVR,sonuç yok,,,,,2026-10-25 ~09:40-09:45,
+Importer/Int,TME,TMUX1102DBVR,https://www.tme.com/,"listed, in stock",843,1.68,USD,"1 pc (1.13 USD @500)",2026-10-25 ~09:40-09:45,TR'ye ithalat
+TR,direnc.net,ERA-3ARB (tüm değerler),https://www.direnc.net/arama?q=ERA-3ARB,bulunamadı (ERA sonucu yok),,,,,2026-10-25 ~09:40-09:45,
+TR,Özdisan,ERA-3ARB3922V,https://www.ozdisan.com/c?search=ERA-3ARB3922V,sonuç yok,,,,,2026-10-25 ~09:40-09:45,
+Importer/Int,TME,ERA-3ARB9092V,https://www.tme.com/,listed; stock 0,0,0.23,USD,MOQ 5000,2026-10-25 ~09:40-09:45,"RİSK: stok yok, MOQ 5000"
+Importer/Int,TME,ERA-3ARB4022V,https://www.tme.com/,listed; stock 0,0,0.27,USD,MOQ 5000,2026-10-25 ~09:40-09:45,"RİSK: stok yok, MOQ 5000"
+Importer/Int,TME,ERA-3ARB3922V / 8871V / 4642V / 1002V / 1102V,https://www.tme.com/,ürün sayfası 404,doğrulanamadı,,,,2026-10-25 ~09:40-09:45,stok doğrulanamadı
+Importer/Int,DigiKey,ERA-3ARB3922V,https://www.digikey.com/,arama sonucu yok,doğrulanamadı,,,,2026-10-25 ~09:40-09:45,"sitenin otomatik erişimi kısıtlı olabilir; ""yok"" kanıtı değildir"
+Importer/Int,Mouser,ERA-3ARB*,https://www.mouser.com/,erişim zaman aşımı,doğrulanamadı,,,,2026-10-25 ~09:40-09:45,
+Manufacturer,Panasonic,ERA-3ARB3922V,https://industrial.panasonic.com/,"üretici sayfası: 39.2 kOhm, 0.1 %, +/-10 ppm/K, 0603, 0.1 W (ürün mevcut)",,,,,2026-10-25 ~09:40-09:45,stok bilgisi değil
+TR,direnc.net,1N4148WS,https://www.direnc.net/1n4148ws-diyot-smd-150ma-75v,"""1N4148WS Diyot SMD - 150mA 75V"" listeli",405,doğrulanamadı,TRY,,2026-10-25 ~09:40-09:45,"üretici doğrulanamadı (Diodes 1N4148WS-7-F olduğu teyit edilmedi); ikinci bir listeleme adet 0"
+Manufacturer,Murata,GRM31CR71E106KA12L,https://www.murata.com/en-global/products/productdetail?partno=GRM31CR71E106KA12L,"üretici sayfası: 10 uF +/-10 % 25 V X7R 1206, 180 mm makara 2000 adet",kontrol edilmedi,,,,2026-10-25 ~09:40-09:45,stok kontrol edilmedi
+-,-,RC0603FR-071ML,https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L,yalnız datasheet doğrulandı (RC_L V.14 p5: 1 %; +/-100 ppm/K),kontrol edilmedi,,,,2026-10-25 ~09:55,"stok kontrol edilmedi; muadil herhangi bir 1 % / <=100 ppm/K 0603 1 M kabul edilebilir (bütçe 3 % strict)"
