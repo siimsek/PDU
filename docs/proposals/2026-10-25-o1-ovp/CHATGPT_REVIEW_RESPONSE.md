@@ -191,3 +191,20 @@ Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok). İnceleyic
 
 ## Karar (Tur 8 sonrası)
 **WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık bloklayıcılar: P0-03 (4 ESL deck), P0-05/N-01 (U3 maskeleme; B13), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı. Simülasyon fiziksel ölçüm değildir.
+
+# Tur 9 – ChatGPT birleşik incelemesi (PR yorumu 6396616875, HEAD `4548d44`; WP1 bölümü) yanıtı
+
+Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok). Bu turda WP1 deck'leri, modelleri, limitleri, toleransları, `run_o1ovp.py`, `verify_candidate.py` (sha256 `599b877b…`) ve WP1 sonuçları **değişmedi**; yeni WP1 ngspice kabul koşusu yapılmadı, yeni simülasyon kanıtı iddia edilmiyor.
+
+**CI durumu:** GitHub Actions iş akışı `proposal-ngspice` (id 395474051) kullanıcı tarafından 2026-10-25 ~13:32 TSİ'de elle devre dışı bırakıldı (çok yavaş olduğu için); koşular iptal edildi. YAML dosyası korunuyor ama **CI kapısı şu an etkin değildir**. Kanıt, kutu üzerinde (ngspice-44.2) kayıtlı run-id ve sha256 hash'leriyle yapılan yerel doğrulayıcı koşularıdır.
+
+**Kontrol amaçlı yeniden çalıştırma (2026-10-25 ~14:25 TSİ, commit'li `wp1-rev3-tur6` logları üzerinde, HEAD `5a81584`):** `verify_candidate.py` exit **2** (1766 kontrol, 0 sayısal FAIL, 4 MISSING – `buck-short-c185/c165-esr12m5-esl2n` × typ/wchi); `--baseline-regression` exit **1** (baseline O1 **16,89 V** > 12,0 V, beklenen FAIL); `guard_negative_test.py` **29/29**.
+
+| # | Bulgu (Tur 9) | Doğrulama | Durum | Commit / kanıt |
+|---|---|---|---|---|
+| **WP1-T9-01 / P0-03** | 4 ESL deck abort'u; exit 2 = eksik kanıt, kabul değil. Her aday kapı/sönümleme tasarımı için 4 ESL deck + ESL'siz eş kontroller + tam matris + s023 toparlanma + WP2 kontrollü-EN/dip varyantları; 10 Ω hızlı kapamayı koru, ayrı açılış yolu ya da RAW/giriş sönümleme / ESL azaltma; RPU10 = 330/1000 Ω yalnız ESL deck'lerine göre seçilmemeli; WP2 gecikmeli EN tamamlayıcıdır, birlikte test edilmeli | Doğru. Sayılar yukarıda yeniden üretildi. WP2 tarafında kısa dip zamanlayıcı reset adayı bu turda eklendi (WP2 Tur 3, UVLO-T3-02); WP1 ile birleşik matris henüz koşulmadı | **açık (ana bloklayıcı)** | değişiklik yok; sonraki iş kalemi: ayrı açılış eğim yolu ↔ RAW sönümleme adayları + birleşik WP1×WP2 matrisi |
+| **WP1-T9-02 / P0-05 / N-01** | O1 koruması davranışsal U3 mandalına dayanıyor (mandalsız VOUT 12,50435 / 13,03882 V). Eş mandallı / mandalsız / U3-yok varyantları; O1'i doğrudan korumalı konnektörde ölç; B10/B13 (−40 °C, 100 mΩ) | Doğru | **açık (kritik)** | simülasyonla kapatılamaz; U3-yok varyant deck'leri sonraki iş kalemi; tezgâh yapılmadı |
+| **P1** | SOA (B18), KiCad aktarımı, WP3 döngü kararlılığı | Doğru | **açık** | değişiklik yok |
+
+## Karar (Tur 9 sonrası)
+**WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık bloklayıcılar: P0-03 (4 ESL deck), P0-05/N-01 (U3 maskeleme; B10/B13), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı. CI kullanıcı tarafından devre dışı. Simülasyon fiziksel ölçüm değildir.
