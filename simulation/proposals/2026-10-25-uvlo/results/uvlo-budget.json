@@ -268,7 +268,108 @@
     "latency_incl_hold_margin_s": 0.018216387798935474
    },
    "ok": true
-  }
+  },
+  "rdsc_sweep": [
+   {
+    "RDSC": 100.0,
+    "i_peak_max": 0.05257731958762886,
+    "i_dc_rating_125C": 0.06,
+    "i_peak_vs_idc_margin": 0.007422680412371138,
+    "t_dsc_max": 0.0029058195913114404,
+    "v_rel_max": 0.05350464234615354,
+    "hold_min": 0.007930591368681395,
+    "hold_separation": 0.005024771777369955,
+    "t_after_reset_min": 0.08503722640727499,
+    "t_after_short_dip_min": 0.06775139389013216,
+    "t_vinok_to_en_max": 0.2817836122010645,
+    "reset_margins_ok": true,
+    "targets": {
+     "i_peak": false,
+     "t_dsc": true,
+     "hold_separation": true,
+     "v_rel": true
+    },
+    "meets_review_targets": false,
+    "e_per_event_J": 0.00016451325,
+    "p_peak_W": 0.2681443298969072
+   },
+   {
+    "RDSC": 150.0,
+    "i_peak_max": 0.03505154639175258,
+    "i_dc_rating_125C": 0.06,
+    "i_peak_vs_idc_margin": 0.02494845360824742,
+    "t_dsc_max": 0.004369030556136469,
+    "v_rel_max": 0.07867585724199118,
+    "hold_min": 0.007930591368681395,
+    "hold_separation": 0.0035615608125449264,
+    "t_after_reset_min": 0.08476543752479739,
+    "t_after_short_dip_min": 0.06775139389013216,
+    "t_vinok_to_en_max": 0.2817836122010645,
+    "reset_margins_ok": true,
+    "targets": {
+     "i_peak": false,
+     "t_dsc": true,
+     "hold_separation": true,
+     "v_rel": false
+    },
+    "meets_review_targets": false,
+    "e_per_event_J": 0.00016451325,
+    "p_peak_W": 0.17876288659793813
+   },
+   {
+    "RDSC": 180.0,
+    "i_peak_max": 0.029209621993127148,
+    "i_dc_rating_125C": 0.06,
+    "i_peak_vs_idc_margin": 0.03079037800687285,
+    "t_dsc_max": 0.005272350226473634,
+    "v_rel_max": 0.09366693793169403,
+    "hold_min": 0.007930591368681395,
+    "hold_separation": 0.0026582411422077607,
+    "t_after_reset_min": 0.08460293102046221,
+    "t_after_short_dip_min": 0.06775139389013216,
+    "t_vinok_to_en_max": 0.2817836122010645,
+    "reset_margins_ok": true,
+    "targets": {
+     "i_peak": true,
+     "t_dsc": true,
+     "hold_separation": true,
+     "v_rel": false
+    },
+    "meets_review_targets": false,
+    "e_per_event_J": 0.00016451325,
+    "p_peak_W": 0.14896907216494845
+   },
+   {
+    "RDSC": 220.0,
+    "i_peak_max": 0.02389878163074039,
+    "i_dc_rating_125C": 0.06,
+    "i_peak_vs_idc_margin": 0.036101218369259606,
+    "t_dsc_max": 0.006507874829690304,
+    "v_rel_max": 0.11352622830616826,
+    "hold_min": 0.007930591368681395,
+    "hold_separation": 0.0014227165389910914,
+    "t_after_reset_min": 0.0843869120784947,
+    "t_after_short_dip_min": 0.06775139389013216,
+    "t_vinok_to_en_max": 0.2817836122010645,
+    "reset_margins_ok": true,
+    "targets": {
+     "i_peak": true,
+     "t_dsc": false,
+     "hold_separation": false,
+     "v_rel": false
+    },
+    "meets_review_targets": false,
+    "e_per_event_J": 0.00016451325,
+    "p_peak_W": 0.12188378631677599
+   }
+  ],
+  "rdsc_review_targets": {
+   "i_peak_max": 0.03,
+   "t_dsc_max": 0.0055,
+   "hold_separation_min": 0.0024,
+   "v_rel_max": 0.0535
+  },
+  "rdsc_note": "Tur-4 T4-02: no RDSC value meets all four review targets at the frozen RT 11k / CT 10 uF: V_rel scales with RDSC/(RDSC+RTT) so only 100 ohm keeps V_rel <= 53.5 mV, while Ipk <= 30 mA needs >= ~170 ohm. Candidate stays 100 ohm (Ipk below the 60 mA IDC rating at Tj 125 C, G); 180 ohm is simulated as an INFO exploration. Part requirements (not an MPN choice): RDSC energy per event <= 0.5*CT_max*V5max^2, peak power V5max^2/RDSC_min."
  },
  "spice_corners_c3": {
   "vrmax": {
@@ -802,7 +903,7 @@
   "e_ref": 0.0013210000000000001,
   "net_rel_terms": {
    "relative tolerance +/-0.05 % (G)": 0.0005,
-   "relative TCR +/-5 ppm/K x 100 K, grade U (G; A: grade U orderable in 0606 DF, table p3 ambiguous)": 0.0005,
+   "relative TCR +/-5 ppm/K x 100 K, grade U (G: datasheet figure; open: grade-U 0606 DF distributor stock + pin-1/R1 marking confirmation)": 0.0005,
    "relative drift endurance 70 C 1000 h +/-0.05 % (A: AE-only figure, note (2); assumed for DF)": 0.0005,
    "soldering heat: NO relative limit -> absolute +/-0.1 % used as relative bound (A: AE-only figure, note (2); assumed for DF)": 0.001
   },
@@ -973,20 +1074,23 @@
      "unbounded": true
     },
     {
-     "term": "ACAS DF absolute endurance +/-0.1 % + soldering heat +/-0.1 % and relative endurance/solder bounds (A: AE-only figures, doc 28770 note (2); DF not specified)",
+     "term": "ACAS DF absolute (endurance +/-0.1 % + soldering heat +/-0.1 %) AND relative (endurance drift +/-0.05 % + soldering bound +/-0.1 %) permissible changes (A: AE-only figures, doc 28770 note (2); DF not specified)",
      "cls": "A",
-     "value": 0.002,
-     "a_mV": 40.83704968231672,
-     "b_mV": 36.83060872536714,
+     "value": {
+      "e_abs": 0.002,
+      "e_rel": 0.0015
+     },
+     "a_mV": 59.75881866848809,
+     "b_mV": 55.20955785154058,
      "unbounded": true,
      "note": "DF permissible changes are not given in the datasheet -> unbounded until supplier data/bench"
     },
     {
-     "term": "ACAS DF: relative drift + grade-U relative TCR (A: DF figures / grade-U availability not confirmed)",
-     "cls": "A",
-     "value": 0.001,
-     "a_mV": 37.88901367742881,
-     "b_mV": 36.720643101535444,
+     "term": "ACAS grade-U relative TCR +/-5 ppm/K x 100 K (G: datasheet figure; open: grade-U 0606 DF distributor stock + pin-1/R1 marking confirmation = procurement item, not an electrical unknown)",
+     "cls": "G",
+     "value": 0.0005,
+     "a_mV": 18.959398842177677,
+     "b_mV": 18.34190926378909,
      "unbounded": false
     },
     {
@@ -1002,7 +1106,7 @@
     "REF5040 long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh (A, typical values extrapolated)",
     "REF5040 solder shift: typical histograms only (A: 0, unbounded, bench B-U07)",
     "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max)",
-    "ACAS DF absolute endurance +/-0.1 % + soldering heat +/-0.1 % and relative endurance/solder bounds (A: AE-only figures, doc 28770 note (2); DF not specified)"
+    "ACAS DF absolute (endurance +/-0.1 % + soldering heat +/-0.1 %) AND relative (endurance drift +/-0.05 % + soldering bound +/-0.1 %) permissible changes (A: AE-only figures, doc 28770 note (2); DF not specified)"
    ],
    "note": "OPEN: positive only under A/T terms (REF5040 long-term/solder shift, TLV3202 Hint max, ACAS DF drift). Not GUARANTEED by simulation; requirements NOT loosened."
   },

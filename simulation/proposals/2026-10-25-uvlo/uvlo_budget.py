@@ -418,7 +418,9 @@ NON_G_REF_O3 = ('long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh 
 # therefore ASSUMPTIONS (A) - the AE figures are used as the assumed DF bound; values unchanged, classification corrected.
 NET_REL_TERMS = {
     'relative tolerance +/-0.05 % (G)': 5e-4,
-    'relative TCR +/-5 ppm/K x 100 K, grade U (G; A: grade U orderable in 0606 DF, table p3 ambiguous)': 5e-6 * 100,
+    # Tur-4 T4-03: the TCR figure itself is a datasheet value (G); what is open is procurement (distributor stock of grade U
+    # in 0606 DF) and the R1/pin-1 marking confirmation - a supply-chain item (B-list), not an unbounded electrical term
+    'relative TCR +/-5 ppm/K x 100 K, grade U (G: datasheet figure; open: grade-U 0606 DF distributor stock + pin-1/R1 marking confirmation)': 5e-6 * 100,
     'relative drift endurance 70 C 1000 h +/-0.05 % (A: AE-only figure, note (2); assumed for DF)': 5e-4,
     'soldering heat: NO relative limit -> absolute +/-0.1 % used as relative bound (A: AE-only figure, note (2); assumed for DF)': 1e-3,
 }
@@ -551,14 +553,18 @@ def o3_variant():
     r = eval_o3(**ch, hint_max=0.0012)
     terms.append(dict(term='TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max)', cls='A', value=DS['TLV3202_HINT'][1],
                       a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb), unbounded=True))
-    r = eval_o3(**ch, e_abs=E_NET_ABS - 2e-3, e_rel=E_NET_REL - 1e-3)
-    terms.append(dict(term='ACAS DF absolute endurance +/-0.1 % + soldering heat +/-0.1 % and relative endurance/solder bounds '
-                           '(A: AE-only figures, doc 28770 note (2); DF not specified)', cls='A', value=2e-3,
+    # Tur-4 T4-03 (review 6398375361): ALL AE-only DF figures (absolute AND relative endurance drift + soldering heat) form ONE
+    # consistently unbounded assumption group; the grade-U relative TCR (datasheet figure, G) is a separate bounded term
+    r = eval_o3(**ch, e_abs=E_NET_ABS - 2e-3, e_rel=E_NET_REL - 5e-4 - 1e-3)
+    terms.append(dict(term='ACAS DF absolute (endurance +/-0.1 % + soldering heat +/-0.1 %) AND relative (endurance drift +/-0.05 % '
+                           '+ soldering bound +/-0.1 %) permissible changes (A: AE-only figures, doc 28770 note (2); DF not specified)',
+                      cls='A', value=dict(e_abs=2e-3, e_rel=1.5e-3),
                       a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb),
                       unbounded=True, note='DF permissible changes are not given in the datasheet -> unbounded until supplier data/bench'))
-    r = eval_o3(**ch, e_rel=E_NET_REL - 5e-4 - 5e-4)
-    terms.append(dict(term='ACAS DF: relative drift + grade-U relative TCR (A: DF figures / grade-U availability not confirmed)', cls='A',
-                      value=1e-3, a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb),
+    r = eval_o3(**ch, e_rel=E_NET_REL - 5e-4)
+    terms.append(dict(term='ACAS grade-U relative TCR +/-5 ppm/K x 100 K (G: datasheet figure; open: grade-U 0606 DF distributor '
+                           'stock + pin-1/R1 marking confirmation = procurement item, not an electrical unknown)', cls='G',
+                      value=5e-4, a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb),
                       unbounded=False))
     terms.append(dict(term='I_Q_PRESTART 15 mA + REF5040 1.2 mA (G) x R_TOTAL_MAX 0.25 ohm (A)', cls='A', value=I_Q_PRESTART_O3 * REQ['R_TOTAL_MAX'],
                       a_mV=1e3 * I_Q_PRESTART_O3 * REQ['R_TOTAL_MAX'], b_mV=0.0, unbounded=False))
@@ -779,6 +785,30 @@ def main():
     out['n_vertices'] = dict(c3=len(c3_vertices(ch['Rt'], ch['Rb'], ch['Rx'], RR1=ch['RR1'], RR2=ch['RR2'])),
                              o3=len(o3_vertices(**CHOSEN_O3)), timer=tm.get('n_vertices'),
                              note='Tur-3 T3-07: exhaustive sign vertices; VIO/CMRR and REF load current evaluated per vertex')
+    # Tur-4 T4-02 (review 6398375361): RDSC sweep at the frozen RT/CT. Review targets are recorded unchanged; the candidate
+    # value is NOT changed automatically (V_rel <= 53.5 mV = the Tur-3 release level is only met by 100 ohm).
+    tgt = dict(i_peak_max=0.030, t_dsc_max=0.0055, hold_separation_min=0.0024, v_rel_max=0.0535)
+    sweep = []
+    for rd in (100.0, 150.0, 180.0, 220.0):
+        r = eval_timer(**dict(CHOSEN_TIMER, RDSC=rd))['reset']
+        sep = r['hold_min'] - r['t_dsc_max']
+        ok_t = dict(i_peak=r['i_peak_max'] <= tgt['i_peak_max'], t_dsc=r['t_dsc_max'] <= tgt['t_dsc_max'],
+                    hold_separation=sep >= tgt['hold_separation_min'], v_rel=r['v_rel_max'] <= tgt['v_rel_max'] + 5e-5)
+        v5hi = DS['TPS7A1650_V5'][1]
+        sweep.append(dict(RDSC=rd, i_peak_max=r['i_peak_max'], i_dc_rating_125C=DS['TMUX1102_IDC'][0],
+                          i_peak_vs_idc_margin=DS['TMUX1102_IDC'][0] - r['i_peak_max'], t_dsc_max=r['t_dsc_max'],
+                          v_rel_max=r['v_rel_max'], hold_min=r['hold_min'], hold_separation=sep,
+                          t_after_reset_min=r['t_after_reset_min'], t_after_short_dip_min=r['t_after_short_dip_min'],
+                          t_vinok_to_en_max=r['t_vinok_to_en_max'], reset_margins_ok=r['ok'], targets=ok_t,
+                          meets_review_targets=all(ok_t.values()),
+                          e_per_event_J=0.5 * CHOSEN_TIMER['CT'] * 1.10 * 1.15 * v5hi ** 2,
+                          p_peak_W=v5hi ** 2 / (rd * (1 - E_RES_1PCT))))
+    tm['rdsc_sweep'] = sweep
+    tm['rdsc_review_targets'] = tgt
+    tm['rdsc_note'] = ('Tur-4 T4-02: no RDSC value meets all four review targets at the frozen RT 11k / CT 10 uF: V_rel scales with '
+                       'RDSC/(RDSC+RTT) so only 100 ohm keeps V_rel <= 53.5 mV, while Ipk <= 30 mA needs >= ~170 ohm. Candidate stays '
+                       '100 ohm (Ipk below the 60 mA IDC rating at Tj 125 C, G); 180 ohm is simulated as an INFO exploration. '
+                       'Part requirements (not an MPN choice): RDSC energy per event <= 0.5*CT_max*V5max^2, peak power V5max^2/RDSC_min.')
     json.dump(out, open('results/uvlo-budget.json', 'w'), indent=1, default=str)
     checks = {'C3 chosen all margins >= 0': chosen['ok'], 'timer all margins >= 0': tm['ok'], 'timer reset all margins >= 0': tm['reset']['ok'],
               'regression A0 baseline fails': not alt['A0_baseline_180k_10k']['pass_'],
@@ -796,6 +826,13 @@ def main():
           rs_['v_l_min'], rs_['v_l_max'], rs_['v_rel_max'], rs_['hold_min'] * 1e3, rs_['hold_max'] * 1e3, rs_['t_dsc_max'] * 1e3,
           rs_['i_peak_max'] * 1e3, rs_['t_after_reset_min'] * 1e3, rs_['t_after_short_dip_min'] * 1e3, rs_['t_vinok_to_en_max'] * 1e3,
           {k: round(v, 5) for k, v in rs_['margins'].items()}))
+    for r in tm['rdsc_sweep']:
+        print('RDSC sweep %5.0f ohm: Ipk <= %.1f mA (IDC 60 mA), t_dsc <= %.2f ms, hold_min %.2f ms, separation %.2f ms, V_rel <= %.1f mV, '
+              'after full reset >= %.2f ms, short dip >= %.2f ms, VIN-OK->EN <= %.1f ms, E %.3f mJ, Ppk %.3f W, reset ok %s, review targets %s %s' % (
+              r['RDSC'], r['i_peak_max'] * 1e3, r['t_dsc_max'] * 1e3, r['hold_min'] * 1e3, r['hold_separation'] * 1e3, r['v_rel_max'] * 1e3,
+              r['t_after_reset_min'] * 1e3, r['t_after_short_dip_min'] * 1e3, r['t_vinok_to_en_max'] * 1e3, r['e_per_event_J'] * 1e3,
+              r['p_peak_W'], r['reset_margins_ok'], 'MET' if r['meets_review_targets'] else 'NOT MET',
+              {k: v for k, v in r['targets'].items() if not v}))
     print('C2 best worst margin %.4f V ; mis Rb worst %.4f ; mis Rx worst %.4f' % (c2_best['worst'], mis_rb['worst'], mis_rx['worst']))
     for k, v in alt.items():
         print(k, '->', v.get('verdict', v.get('desc')))
