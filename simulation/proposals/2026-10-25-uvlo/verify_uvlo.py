@@ -12,6 +12,15 @@ Tur-2 (ChatGPT review 6395614957): restart-delay (60 ms) and V_f (18.0 V) checks
 non-finite measurement is an error); dip restarts are gated with the same 60 ms after the last VIN-OK (OUTA) rise;
 the PROVISIONAL WP3 R-DIP screen (review proposal UVLO-06, not a requirement) is reported per dip case and does NOT
 change the exit code.
+Tur-3 (ChatGPT combined review 6396616875): MANDATORY gates apply to every non-regression case, PASS *and* INFO:
+  (M1) every EN rise EN_R1..EN_R4 / EN_RLAST must be >= 60 ms after the latest VIN-OK (OUTA) rise before it (after the
+       start of the dip that precedes it, for dip kinds) - not conditional on a measured EN_F1; missing / failed /
+       non-finite measurements, > 5 OUTA rises before an EN rise or > 4 EN rises are errors (fail-closed);
+  (M2) V_f: VIN_AT_SHUTDOWN >= 18.0 V whenever EN fell (ramp_down / mb_hold), fail-closed.
+The case kind is validated before the regression classification; runner_exit_code must be exactly 0; ngspice
+'nan' / 'inf' / '-inf' values are parsed and treated as non-finite (fail-closed), never crash the verifier.
+NOTE: GitHub Actions (workflow proposal-ngspice) is DISABLED by the user since 2026-10-25 13:3x TSI; CI gating is not active.
+The evidence is local runs (box ngspice) with the run manifest + SHA-256 recorded in results/.
 Usage: python3 verify_uvlo.py [--run-id ID]
 """
 import json, re, sys, hashlib, subprocess, math, os
@@ -31,8 +40,12 @@ REG_OK = dict(en=2.0, vgs=6.0, inp=2.5)
 def parse(log):
     t = log.read_text(errors='replace')
     m = {}
-    for k, v in re.findall(r'^([a-z0-9_]+)\s+=\s+([-+0-9.eE]+)', t, re.M):
-        m[k.upper()] = float(v)
+    # Tur-3 T3-06: accept nan / inf / -inf tokens (ngspice prints them); non-finite values are rejected by fin()
+    for k, v in re.findall(r'^([a-z0-9_]+)\s+=\s+([-+]?(?:nan|inf(?:inity)?|[0-9.]+(?:[eE][-+]?[0-9]+)?))', t, re.M | re.I):
+        try:
+            m[k.upper()] = float(v)
+        except ValueError:
+            m[k.upper()] = float('nan')
     failed = set(k.upper() for k in re.findall(r'\.meas tran (\S+) .* failed!', t))
     # an aborted transient (e.g. 'Timestep too small') still prints 'Total analysis time': treat it as NOT done
     done = 'Total analysis time' in t and 'simulation(s) aborted' not in t and 'Timestep too small' not in t
@@ -58,7 +71,10 @@ def regime(m, w, f):
 # Hard limits H1/H2 are enforced for EVERY non-regression case, independent of its PASS/INFO classification
 # (ChatGPT review 6395284882, WP2 Tur-1 P0). Stable (normal-regime) windows defined per case kind:
 HARD_WINDOWS = {'start': ('RUN',), 'ramp_up': ('RUN',), 'hotplug': ('RUN',), 'rsweep': ('RUN',), 'seq': ('RUN',),
-                'ramp_down': ('PRE',), 'mb_hold': ('PRE',), 'dip': ('PRE', 'POST')}
+                'ramp_down': ('PRE',), 'mb_hold': ('PRE',), 'dip': ('PRE', 'POST'), 'dip2': ('PRE', 'POST')}
+DIP_KINDS = ('dip', 'dip2')
+OUTA_RISES = ('OUTA_R1', 'OUTA_R2', 'OUTA_R3', 'OUTA_R4', 'OUTA_R5', 'OUTA_RLAST')
+EN_RISES = ('EN_R1', 'EN_R2', 'EN_R3', 'EN_R4', 'EN_RLAST')
 VALID_EXPECT = ('PASS', 'INFO', 'FAIL')
 
 def hard_limit_errors(c, m):
@@ -86,25 +102,77 @@ def fin(m, failed, k):
 
 def restoration(m, failed, t_en, after=None):
     """latest VIN-OK (OUTA rise) at or before the EN rise t_en (and after `after` if given), or None."""
-    ts = [fin(m, failed, k) for k in ('OUTA_R1', 'OUTA_R2', 'OUTA_R3', 'OUTA_RLAST')]
+    ts = [fin(m, failed, k) for k in OUTA_RISES]
     ts = [t for t in ts if t is not None and t <= t_en and (after is None or t > after)]
     return max(ts) if ts else None
+
+def dip_starts(c):
+    if c.get('kind') == 'dip2': return sorted(d[0] for d in c.get('dips') or [])
+    return [c['t0']] if 't0' in c else []
+
+def mandatory_errors(c, m, failed):
+    """Tur-3 UVLO-T3-01: gates that hold for EVERY non-regression case (PASS and INFO); fail-closed.
+    M1: each EN rise >= T_SEQ_MIN after the latest OUTA rise before it (after the latest dip start before it).
+    M2: V_f >= 18.0 V at shutdown (ramp_down / mb_hold)."""
+    e, det = [], {}
+    kind = c.get('kind')
+    if kind == 'seq' or kind not in HARD_WINDOWS:
+        return e, det
+    # ngspice 'failed' on a WHEN RISE=k measurement = the k-th event did not occur (absent); a printed but non-finite
+    # value (nan / inf) is an error
+    present = [k for k in EN_RISES if k in m and k not in failed]
+    for k in present:
+        t = fin(m, failed, k)
+        if t is None:
+            e.append(f'MANDATORY M1: {k} non-finite -> 60 ms VIN-OK->EN gate not provable'); continue
+        after = max([s for s in dip_starts(c) if s < t], default=None) if kind in DIP_KINDS else None
+        r5, rl = fin(m, failed, 'OUTA_R5'), fin(m, failed, 'OUTA_RLAST')
+        if r5 is not None and rl is not None and rl > r5 and t > r5 and t < rl:
+            e.append(f'MANDATORY M1: {k} at {t:.6g} s lies between OUTA_R5 and OUTA_RLAST (untracked VIN-OK rises)'); continue
+        bad = [x for x in OUTA_RISES if x in m and x not in failed and not math.isfinite(m[x])]
+        if bad:
+            e.append(f'MANDATORY M1: {bad} non-finite -> latest VIN-OK before {k} not determinable'); continue
+        rs = restoration(m, failed, t, after)
+        if rs is None:
+            e.append(f'MANDATORY M1: {k} at {t:.6g} s without a VIN-OK (OUTA) rise before it'
+                     + (f' after the dip start {after:.6g} s' if after is not None else '') + ' -> 60 ms gate not provable')
+            continue
+        det[k] = t - rs
+        if t - rs < T_SEQ_MIN:
+            e.append(f'MANDATORY M1: {k} {(t-rs)*1e3:.3f} ms after VIN-OK < {T_SEQ_MIN*1e3:.0f} ms')
+    r4, rl = fin(m, failed, 'EN_R4'), fin(m, failed, 'EN_RLAST')
+    if r4 is not None and rl is not None and rl > r4:
+        e.append('MANDATORY M1: more than 4 EN rises (EN_RLAST after EN_R4; intermediate rises untracked)')
+    if kind in ('start', 'ramp_up', 'hotplug', 'rsweep') and not present:
+        e.append('MANDATORY M1: EN_R1 missing/failed/non-finite -> start/gate not provable')
+    # M2: ramp_down must shut down (EN_F1 finite); mb_hold only when it shut down (EN_F1 'failed' = no shutdown event)
+    shut = 'EN_F1' in m and 'EN_F1' not in failed
+    if shut and not math.isfinite(m['EN_F1']):
+        e.append('MANDATORY M2: EN_F1 non-finite')
+    elif kind == 'ramp_down' and not shut:
+        e.append('MANDATORY M2: no shutdown (EN_F1 missing/failed) on a ramp-down to 16 V -> V_f not provable')
+    elif kind in ('ramp_down', 'mb_hold') and shut:
+        v = fin(m, failed, 'VIN_AT_SHUTDOWN')
+        if v is None: e.append('MANDATORY M2: VIN_AT_SHUTDOWN missing/failed/non-finite -> V_f >= 18.0 V not provable')
+        elif v < V_FALL_MIN: e.append(f'MANDATORY M2: shutdown at VIN {v:.4f} < {V_FALL_MIN}')
+    return e, det
 
 def rdip_screen(c, m, failed):
     """PROVISIONAL R-DIP screen (report-only). PASS / FAIL / UNDETERMINED; never PASS on a missing measurement."""
     pk = fin(m, failed, 'RD_PEAK')
     r = dict(peak=pk, t_above=fin(m, failed, 'RD_T_ABOVE'), first_above=fin(m, failed, 'RD_ABOVE_FIRST'),
-             last_above=fin(m, failed, 'RD_ABOVE_LAST'), peak_o1=fin(m, failed, 'RD_PEAK_O1'),
+             last_downward_crossing=fin(m, failed, 'RD_ABOVE_LAST'), peak_o1=fin(m, failed, 'RD_PEAK_O1'),
              t_above_o1=fin(m, failed, 'RD_T_ABOVE_O1'), reasons=[])
     if pk is None:
         r.update(status='UNDETERMINED', reasons=['RD_PEAK missing']); return r
     if pk <= BUS_NORMAL_MAX:
         r.update(status='PASS', t_above=r['t_above'] or 0.0, return_after_dip_end=None); return r
-    if r['t_above'] is None or r['last_above'] is None:
+    if r['t_above'] is None or r['last_downward_crossing'] is None:
         r.update(status='UNDETERMINED', reasons=['peak above 11.1605 V but time-above / last-crossing measurement missing'])
         return r
-    r['span_above'] = r['last_above'] - r['first_above'] if r['first_above'] is not None else None
-    r['return_after_dip_end'] = r['last_above'] - c['t1']
+    # Tur-3 T3-09: RD_ABOVE_LAST is the LAST DOWNWARD crossing of 11.1605 V (not the last exceedance instant)
+    r['span_above'] = r['last_downward_crossing'] - r['first_above'] if r['first_above'] is not None else None
+    r['return_after_dip_end'] = r['last_downward_crossing'] - c['t1']
     if pk > RDIP_PEAK_MAX: r['reasons'].append(f'peak {pk:.4f} > {RDIP_PEAK_MAX}')
     if r['t_above'] > RDIP_T_ABOVE_MAX: r['reasons'].append(f'time above {r["t_above"]*1e3:.3f} ms > 1.0 ms')
     if r['return_after_dip_end'] > RDIP_RETURN_MAX:
@@ -155,26 +223,30 @@ def judge(name, c, m, failed):
         for x in ('EMF_AT_SHUTDOWN', 'VIN_AT_OUTA_FALL', 'VIN_MAX_AFTER', 'VIN_MIN_HOLD'):
             if x in m: info[x] = m[x]
         if k == 'mb_hold': info['shut_down'] = has('EN_F1'); info['e_hold'] = c['e_hold']
-    elif k == 'dip':
+    elif k in DIP_KINDS:
         e += regime(m, 'PRE', failed) + regime(m, 'POST', failed)
-        if has('EN_F2'): e.append('second shutdown after the dip (chatter)')
-        if has('EN_R3'): e.append('third enable (chatter)')
+        nd = len(dip_starts(c))
+        if has(f'EN_F{nd+1}'): e.append(f'more shutdowns than dips (EN_F{nd+1}, chatter)')
+        if has(f'EN_R{nd+2}'): e.append(f'more enables than dips + 1 (EN_R{nd+2}, chatter)')
         if has('EN_F1') and not has('EN_R2'): e.append('no restart after the dip')
-        if has('EN_R2') and m['EN_R2'] - c['t1'] < 0: e.append('restart during the dip')
+        ends = sorted(d[1] for d in c['dips']) if k == 'dip2' else [c['t1']]
+        for x in ('EN_R2', 'EN_R3', 'EN_R4', 'EN_RLAST'):
+            if has(x) and any(s <= m[x] < t1 for s, t1 in zip(dip_starts(c), ends)): e.append(f'{x} restart during a dip')
         for x in ('BUS_RESTART_MAX', 'RAW_RESTART_MAX', 'INP_RESTART_MIN', 'RAW_AT_DIP_END', 'T_AT_DIP_END', 'O1_DIP_MAX'):
             if x in m: info[x] = m[x]
         info['rode_through'] = not has('EN_F1')
         info['provisional_rdip_screen'] = rdip_screen(c, m, failed)
+        for x in ('VT_AT_OUTA_R1', 'VT_AT_OUTA_R2', 'VT_AT_OUTA_R3', 'VT_AT_OUTA_RLAST', 'VT_AT_EN_R2', 'VT_AT_EN_R3', 'VT_AT_REL',
+                  'T_REL', 'VT_MIN_POST', 'V5_MIN_DIP', 'OUTA_R4', 'OUTA_R5', 'EN_R3', 'EN_F2'):
+            if has(x): info[x] = m[x]
         if has('EN_R2'):
-            info['restart_delay_after_dip_end'] = m['EN_R2'] - c['t1']
-            # Tur-2 UVLO-05: 60 ms restart gate also after short dips, from the last VIN-OK rise after the dip start
-            if has('EN_F1'):
-                rs = restoration(m, failed, m['EN_R2'], after=c['t0'])
-                if rs is None: e.append('dip restart without VIN-OK restoration measurement (OUTA_R2/RLAST) -> 60 ms gate not provable')
-                else:
-                    info['restart_delay_after_vin_ok'] = m['EN_R2'] - rs
-                    if m['EN_R2'] - rs < T_SEQ_MIN:
-                        e.append(f'dip restart delay {(m["EN_R2"]-rs)*1e3:.3f} ms after VIN-OK < {T_SEQ_MIN*1e3:.0f} ms')
+            info['restart_delay_after_dip_end'] = m['EN_R2'] - ends[-1]
+            # Tur-2 UVLO-05 / Tur-3 T3-01: the 60 ms gate on EVERY EN rise is enforced in mandatory_errors() (M1);
+            # report-only: Tur-3 design target 65 ms after the latest VIN-OK
+            rs = restoration(m, failed, m['EN_R2'], after=max([s for s in dip_starts(c) if s < m['EN_R2']], default=None))
+            if rs is not None:
+                info['restart_delay_after_vin_ok'] = m['EN_R2'] - rs
+                info['design_target_65ms_met'] = m['EN_R2'] - rs >= 0.065
             # P0-03 related INFO (open item, WP1-K): did the buck restart before the OVP FET was back on?
             if has('FET_OFF1'):
                 info['P0_03_buck_before_fet'] = (not has('FET_ON2')) or m['FET_ON2'] > m['EN_R2']
@@ -218,7 +290,9 @@ def provenance(cases, run_id):
         e.append(f'run id mismatch: manifest {mf.get("run_id")!r} != expected {run_id!r}')
     if mf.get('partial'): e.append('manifest is from a partial (filtered) run')
     if mf.get('error'): e.append(f'runner error: {mf["error"]}')
-    if mf.get('runner_exit_code') not in (0, None): e.append(f'runner exit code {mf.get("runner_exit_code")}')
+    # Tur-3 T3-06: must be present and exactly integer 0 (missing / null / non-zero / bool -> error)
+    rc = mf.get('runner_exit_code')
+    if type(rc) is not int or rc != 0: e.append(f'runner_exit_code must be exactly 0 (got {rc!r})')
     if mf.get('cases_sha256') != sha(HERE / 'test-cases-uvlo.json'): e.append('case table changed after the run (cases_sha256)')
     head, _ = git('rev-parse', 'HEAD')
     mh = mf.get('git_head')
@@ -263,19 +337,27 @@ def main():
             # strict (2026-10-25): an aborted/unfinished deck never counts as a reproduced regression
             incomplete.append(name)
             out[name] = res; continue
+        # Tur-3 T3-05: the kind is validated BEFORE the regression classification (an unknown kind never counts as a
+        # reproduced regression)
+        if c.get('kind') not in HARD_WINDOWS:
+            out[name] = dict(status='FAIL', errors=[f'invalid case kind {c.get("kind")!r} (known: {sorted(HARD_WINDOWS)})'],
+                             expect=c.get('expect')); acc_fail.append(name); continue
         errs, info = judge(name, c, m, failed)
         hard = hard_limit_errors(c, m)
-        errs = errs + [h for h in hard if h not in errs]
+        mand, mdet = mandatory_errors(c, m, failed)
+        info['vin_ok_to_en_delays'] = mdet
+        errs = errs + [h for h in hard + mand if h not in errs]
         st = 'PASS' if not errs else 'FAIL'
-        res = dict(status=st, errors=errs, info=info, expect=c.get('expect'), hard_limit_errors=hard)
+        res = dict(status=st, errors=errs, info=info, expect=c.get('expect'), hard_limit_errors=hard, mandatory_errors=mand)
         if c.get('expect') not in VALID_EXPECT or (c.get('expect') == 'FAIL') != bool(c.get('regression')):
             res['status'] = 'FAIL'; res['errors'] = errs + [f'invalid classification expect={c.get("expect")!r} regression={c.get("regression")!r}']
             acc_fail.append(name)
         elif c.get('regression'):
             res['regression_reproduced'] = st == 'FAIL'
             if st != 'FAIL': reg_bad.append(name)
-        elif hard:
-            # fail-closed (Tur-1 P0): PASS *and* INFO cases fail CI on any H1/H2 breach or missing hard-limit measurement
+        elif hard or mand:
+            # fail-closed (Tur-1 P0, Tur-3 T3-01): PASS *and* INFO cases fail on any H1/H2 breach, any mandatory gate (M1 60 ms
+            # VIN-OK->EN on every EN rise, M2 V_f) or a missing / failed / non-finite gate measurement
             acc_fail.append(name)
         elif c['expect'] == 'PASS' and st != 'PASS':
             acc_fail.append(name)
@@ -306,6 +388,8 @@ def main():
                    acceptance_fail=acc_fail, regression_not_reproduced=reg_bad, incomplete=incomplete,
                    info_cases=[n for n, c in cases.items() if c.get('expect') == 'INFO'],
                    hard_limit_gate='H1/H2 enforced for every non-regression case (PASS and INFO)',
+                   mandatory_gate='M1 (60 ms VIN-OK->EN on every EN rise) and M2 (V_f >= 18.0 V) enforced for every non-regression case (PASS and INFO)',
+                   ci_status='GitHub Actions workflow proposal-ngspice DISABLED by the user (2026-10-25); CI gating not active; evidence = local runs + run manifest SHA-256',
                    per_variant={v: dict(n=sum(1 for n, c in cases.items() if c.get('variant', 'C3') == v),
                                         n_pass=sum(1 for n, c in cases.items() if c.get('variant', 'C3') == v and out[n]['status'] == 'PASS'),
                                         acceptance_fail=[n for n in acc_fail if cases[n].get('variant', 'C3') == v],

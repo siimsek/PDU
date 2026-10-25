@@ -38,7 +38,9 @@ START_CASE = {'kind': 'start', 'expect': 'PASS', 'vf': 18.26}
 
 
 def dip_meas(**over):
-    m = {'O1_GLOBAL_PEAK': 10.978, 'BUS_GLOBAL_MAX': 11.0, 'EN_R1': 0.18, 'FET_ON1': 0.012}
+    # Tur-3 (T3-01): the 60 ms VIN-OK->EN gate is mandatory for INFO cases too -> a clean dip fixture must carry the
+    # VIN-OK rise (OUTA_R1) that every real dip deck measures; without it the verifier (correctly) fails closed
+    m = {'O1_GLOBAL_PEAK': 10.978, 'BUS_GLOBAL_MAX': 11.0, 'EN_R1': 0.18, 'OUTA_R1': 0.001, 'FET_ON1': 0.012}
     m.update(GOOD_WIN('PRE')); m.update(GOOD_WIN('POST')); m.update(over)
     return m
 

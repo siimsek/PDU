@@ -7,6 +7,9 @@
 #   regime_selftest.py   0 = both tools reject the mutated decks, 1 = a mutation was accepted, 2 = regime measures absent
 # rev3 status: run exits 2 (4 ESL decks abort at ~12.26 ms, P0-03 open blocker) -> 'Independent verification' is
 # EXPECTED to fail (exit 2) until P0-03 is resolved. Failing tests are not hidden or skipped.
+# STATUS 2026-10-25: this workflow is DISABLED by the repository owner in the GitHub UI (disabled_manually, ~13:32 TSI;
+# too slow). It is kept as the reference recipe only; CI gating is NOT active. Evidence = local ngspice runs (box) with
+# results/run-manifest.json (run id, git HEAD, deck/log SHA-256) committed. Do not re-enable from an agent.
 name: proposal-ngspice
 on:
   workflow_dispatch:
@@ -120,6 +123,7 @@ jobs:
           python3 tests/test_uvlo_gates.py
           python3 tests/test_uvlo_tur2.py
           python3 tests/test_uvlo_o3.py
+          python3 tests/test_uvlo_tur3.py
       - name: Analytic budget (must pass and match the committed JSON)
         run: |
           python3 uvlo_budget.py
