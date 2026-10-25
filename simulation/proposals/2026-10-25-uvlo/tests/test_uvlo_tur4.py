@@ -140,8 +140,8 @@ def verifier_tests():
     # ---- W05j-n (Tur-4 smoke finding): ngspice prints .meas results with 6 significant digits, i.e. 1 us resolution at
     # t ~ 0.27 s - M3 must use the direct TRIG/TARG lag EN_LAG_F<k> (OUTA fall k -> EN fall k) when it is consistent with
     # the absolute times within their print resolution; otherwise (missing / inconsistent) the absolute difference decides.
-    T.append(vt('W05j printed times 2 us apart (rounding), direct EN_LAG_F1 0.3 us consistent -> exit 0', {'d': DIPF},
-                {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275438, EN_LAG_F1=0.3e-6)}, 0))
+    T.append(vt('W05j printed times 1 us apart (rounding), direct EN_LAG_F1 0.3 us consistent -> exit 0', {'d': DIPF},
+                {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275437, EN_LAG_F1=0.3e-6)}, 0))
     T.append(vt('W05k direct EN_LAG_F1 2.5 us -> exit != 0', {'d': DIPF},
                 {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275438, EN_LAG_F1=2.5e-6)}, 'nonzero', check=in_acc_fail('d')))
     T.append(vt('W05l EN_LAG_F1 0.3 us inconsistent with 5 us absolute difference -> exit != 0', {'d': DIPF},

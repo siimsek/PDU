@@ -141,6 +141,10 @@ def num_field(c, k):
     v = c.get(k)
     return v if (not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(v) and v > 0) else None
 
+def half_ulp6(x):
+    """half of the last printed digit of an ngspice .meas value (%e, 6 significant digits)"""
+    return 0.5 * 10 ** (math.floor(math.log10(abs(x))) - 5) if x else 0.0
+
 def m3_m4_errors(c, m, failed):
     """Tur-4 T4-05 (opt-in per case, all candidate dip cases request it):
     M3 every OUTA fall (VIN-OK loss) while EN is high -> an EN fall within en_force_max after it;
@@ -171,6 +175,12 @@ def m3_m4_errors(c, m, failed):
             if not fl:
                 e.append(f'MANDATORY M3: {k} at {t:.6g} s with EN high but no EN fall after it'); continue
             d = min(fl) - t
+            # Tur-4 W05j-n: .meas prints 6 significant digits (1 us at 0.27 s). Use the direct TRIG/TARG lag EN_LAG_F<k> when it
+            # is finite, >= 0 and consistent with the absolute times within their print resolution; else keep the absolute d.
+            lk = 'EN_LAG_F' + k[-1]
+            lag = fin(m, failed, lk) if lk in m else None
+            if lag is not None and lag >= 0 and abs(lag - d) <= half_ulp6(t) + half_ulp6(min(fl)) + 1e-12:
+                d = lag
             if d > lim:
                 e.append(f'MANDATORY M3: EN fell {d*1e6:.3f} us after {k} > {lim*1e6:.3f} us')
     if 'vgs_at_en_min' in c:
