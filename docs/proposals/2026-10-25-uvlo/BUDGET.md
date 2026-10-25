@@ -73,6 +73,8 @@ c için açıklama: kapanma anında VIN = V_f iken EMF = V_f + I·R olur. Akım 
 | Zamanlayıcı headroom (V∞ − V_th) | ≥ 0,738 V | +0,538 V (gerekli 0,2 V) |
 | EN yüksek | ≥ 2,289 V | VEN-TH,max + 0,5 V üzerinde +0,739 V |
 | EN düşük | ≤ 0,121 V | < 0,4 V: +0,279 V |
+| EN düşük, U22 açık (OUTA düşük) | ≤ 2,6 mV = (V5,maks/(RDEN·0,97) + IEN)·RON,maks 4,9 Ω (G, SCDS410D s.5) | < 0,4 V: +0,397 V |
+| EN yüksek, U22 kapalı kaçağı | 2 nA × 5 kΩ = 10 µV (G, SCDS410D s.5) | EN yüksek sonucunu değiştirmez (≥ 2,289 V) |
 Not: EN bölücüsü (RDEN, RUV2) önceki sürümde yanlışlıkla ERA toleransıyla hesaplanmıştı. 2026-10-25'te katı %3'e düzeltildi (commit 6e6c063). Eski değerler 2,351 / 0,118 V idi.
 
 ## 5. Alternatifler ve regresyonlar
@@ -90,4 +92,5 @@ Not: EN bölücüsü (RDEN, RUV2) önceki sürümde yanlışlıkla ERA tolerans�
 - 2026-10-25: VIO CMRR terimi RR2 = 40,2k'da hesaplanıyordu (0,09 mV iyimser). `vio_c3(RR1, RR2)` ile düzeltildi.
 - 2026-10-25: RHB 1 M, ERA aralığı dışında kaldığı için %1 jenerik parça (katı %3) olarak hesaba katıldı.
 - 2026-10-25: RDEN/RUV2 katı %3 olarak hesaba katıldı (§4).
+- 2026-10-25: U22 EN kapısı eklendi (§4, `en_low_gated_margin_V`). Eşik bütçesi (V_r/V_f/H, marj a–e) değişmedi.
 Hiçbir sınır gevşetilmedi.

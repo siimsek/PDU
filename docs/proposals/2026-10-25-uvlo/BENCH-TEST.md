@@ -18,4 +18,5 @@ Geçme ölçütleri REQUIREMENTS.md ile aynıdır. **O1 anlık tepe ≤ 12,0 V; 
 | B-U11 | Kısa dip sonrası bus | 300 µs 0 V dip, 7,5 A | VOUT tepe değeri kaydedilir (simülasyon 11,43 V, anormal rejim INFO). O1 ≤ 12,0 V zorunlu |
 | B-U12 | Kahverengi düşüş (brown-out) | 19 V'a 50 ms ve 15 V'a 20 ms çökme | Kapanma/yeniden başlama temiz, O1 ≤ 12,0 V |
 | B-U13 | OVP etkileşimi | WP1 BENCH-TEST testleri UVLO bloğu takılıyken tekrarlanır | WP1 ölçütleri değişmez (U13 ve U10 davranışı) |
+| B-U15 | U22 EN kapısı ve artık kısa dip penceresi | 7,5 A, 0,25 Ω; 0 V dipler 50 / 100 / 150 / 200 / 250 / 300 / 500 µs (20 µs kenar). OUTA_UV, EN_BUCK, COMP, RAW, VGS izlenir. Ayrıca OUTA ↓ → EN_BUCK < 0,4 V gecikmesi | OUTA düşükken EN_BUCK < 0,4 V. Her dipte O1 ≤ 12,0 V. U22'nin tetiklemediği en uzun dip süresi ve RAW aşımı/OVP açması kaydedilir (simülasyon: R-DIP, RESULTS.md) |
 | B-U14 | Gerçek 6S LiPo | 3,40 V/hücreden 3,0 V'a kadar 7,5 A deşarj | Kapanma ≥ 3,0 V/hücre, kapanma sonrası salınım yok |

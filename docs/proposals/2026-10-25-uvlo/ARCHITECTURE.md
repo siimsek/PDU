@@ -18,8 +18,9 @@ U20A OUT(1) = OUTA_UV ─RTT 11,0k─┬─ T_UV ──► U20B IN+ (5)        V
                                   ├─DTT 1N4148WS (A=T_UV, K=DTK_UV) ─RDIS 100── OUTA_UV   (hızlı boşaltma)
                                   └─RHB 1M── OUTB_UV                                   (zamanlayıcı histerezisi)
 U20B OUT(7) = OUTB_UV ─RDEN 10k─┬─ EN_BUCK ──► U1/U2 LM70880 EN/UVLO
-                                └─RUV2 10,0k── GND   (RUV1 180k: DNP)
-U20 VCC(8) = U21 VDD(5) = V5_OVP (U11 TPS7A1650, WP1)
+                                ├─RUV2 10,0k── GND   (RUV1 180k: DNP)
+                                └─U22 TMUX1102 D(1) / S(2)=GND, SEL(4)=OUTA_UV  (EN kapısı: OUTA düşük = EN_BUCK → GND)
+U20 VCC(8) = U21 VDD(5) = U22 VDD(5) = V5_OVP (U11 TPS7A1650, WP1)
 ```
 **Çalışma:**
 - VIN düşükken OUTA düşüktür, U21 açıktır ve RXU, RBU'ya paraleldir. S_UV küçük kalır, bu da yükselen eşiği yüksek tutar:
@@ -27,7 +28,8 @@ U20 VCC(8) = U21 VDD(5) = V5_OVP (U11 TPS7A1650, WP1)
 - OUTA yükselince U21 açılır ve eşik V_f = REFD·(1 + RTU/RBU) = 18,26 V (tipik) değerine iner.
 - Histerezis yalnızca direnç oranlarına, REF35'e, VIO'ya, Hint'e ve RON'a bağlıdır. **VOH/VOL'a ve V5'e bağlı değildir.** C2'yi bozan şey bu bağımlılıktı (bkz. §3).
 - OUTA yüksekken CTT, RTT üzerinden dolar. T_UV > KTH = 0,8008·V5 olunca OUTB yükselir (RHB ile mandallanır) ve EN_BUCK = OUTB/2 ≥ 2,289 V olur.
-- OUTA düştüğünde CTT, DTT + RDIS üzerinden hızla boşalır, OUTB düşer ve EN ≤ 0,121 V olur.
+- OUTA düştüğünde **U22 EN_BUCK'ı anında GND'ye çeker (EN ≤ 2,6 mV)**. CTT, DTT + RDIS üzerinden boşalır, OUTB düşer ve U22 kapandıktan sonra da EN ≤ 0,121 V kalır.
+- U22 neden var (2026-10-25 düzeltmesi): U22 olmadan EN, OUTA düştükten sonra CTT KTH'nin altına inene kadar (~0,14 ms) yüksek kalıyordu. `dip0v-300us-mbmin-tmin` durumunda VIN bu arada geri geldi; COMP 3,9 V'a sarılmış buck RAW'ı 15,47 V'a çıkardı, OVP açtı ve RAW yalnız RSNS bölücüsünden boşaldığı için ~190 ms regülasyon olmadı (FAIL, `results/prefix-c3/`). U22 ile buck, UV algılandığı anda durur ve soft-start'tan yeniden başlar.
 - Gecikme oranla belirlenir (V5'ten bağımsız): t ≈ RTT·CTT·ln(1/(1−0,8)). Soğuk açılışta 77,8–255,0 ms, tam boşalmış dip sonrasında 65,0–219,5 ms.
 - **Besleme yokken** (V5 < 2,7 V) çıkışlar düşük kabul edildi (V; TLV3202 bu bölgede tanımsız). RUV2, EN'i GND'ye çeker. Tezgâh testi B-U4.
 
@@ -43,10 +45,11 @@ Sıralama: U10 TPS48000, EN/UVLO'yu VIN'den alır (REN10/REN11, WP1). FET, TDRV_
 | C2 | TLV3202 A + Rh geri besleme (itme-çekme) | En iyi E96 kombinasyonunda en kötü marj −0,102 V (VOH/VOL ve V5 yayılımı) | FAIL |
 | **C3** | TLV3202 A + TMUX1102 anahtarlı bölücü | Marjlar: a +0,0185 / b +0,0234 / c +0,0295 / d +0,1561 / e +0,071 V | **SEÇİLDİ** |
 
-Müdahale ölçüsü: buck, kompanzasyon, WP1 OVP ve RAW bankı değişmez. RUV1 sökülür (DNP), RUV2 kalır. Yeni parçalar 2 IC, 8 hassas direnç, 3 jenerik direnç, 1 diyot ve 6 kondansatördür. Mevcut V5_OVP ve VREF_OVP kullanılır, yeni bir regülatör ya da referans eklenmez.
+Müdahale ölçüsü: buck, kompanzasyon, WP1 OVP ve RAW bankı değişmez. RUV1 sökülür (DNP), RUV2 kalır. Yeni parçalar 3 IC (U20, U21, U22), 8 hassas direnç, 3 jenerik direnç, 1 diyot ve 7 kondansatördür. Mevcut V5_OVP ve VREF_OVP kullanılır, yeni bir regülatör ya da referans eklenmez.
 
 ## 4. Bilinen sınırlamalar
 - Marj a (+18,5 mV) dar. Sebebi ERA-3ARB'nin katı doğrusal toplamı (%0,4/parça) ve REF35'in %0,296 hatası. RSS bilgi amaçlıdır: a +0,121 V. Gevşek bir dirence geçmek bütçeyi bozar (`SOURCING.md` not 1).
 - 18,0 V eşiği V (hücre üretici verisi yok).
 - R_total 0,25 Ω üstü (0,30–0,45 Ω) INFO olarak raporlanır, garanti dışıdır.
+- **Artık pencere (R-DIP):** UV algılama gecikmesinden (CFU filtresi, mbmin köşesinde ~0,26–0,29 ms) kısa dipler U22'yi tetiklemez. Bu dipler sonrasında buck COMP sarılmış olarak devam eder; RAW aşımı WP1 OVP'yi açtırabilir ve regülasyon RAW boşalana kadar (onlarca–yüzlerce ms) gelmez. O1 tepe sınırı bu durumda korunur. Sayısal sonuç `RESULTS.md` (dip0v-200us / 100us, INFO).
 - Kısa dip (< ~1 ms) sonrasında zamanlayıcı kısmen boşalır, yeniden başlatma gecikmesi 60 ms'nin altına düşebilir (RESULTS.md).

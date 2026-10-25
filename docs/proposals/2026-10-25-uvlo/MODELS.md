@@ -24,6 +24,7 @@ Hiçbir model TI, Panasonic veya Diodes tarafından sağlanmış değildir.
 |---|---|---|---|
 | U1/U2 LM70880 | UVLO_BUCK (PDU_BUCK türevi, ortalama döngü) | K | EN yükselen VENR 0,95/1,0/1,05 V (G, SNVSBX7A s.6). Düşen eşik VENR − 0,1 V (T). VCC UVLO 4,5/4,0 V (V). tSS 1,9/2,8/4,4 ms (G, s.8). Devre dışıyken SW tri-state + gövde diyotları. COMP kenetleme 0–5 V (V, §3). Kayıp, deck'te ayrı bir kaynaktır (η = 0,88, V) |
 | U20 TLV3202 (A, B) | UVLO_CMP | B | VIO/Hint köşeleri, VOH düşümü ≤ 170 mV, VOL ≤ 225 mV, IIB (G, SBOS561C s.5). Rout 10 Ω (V). VCC < 2,7 V iken çıkış DÜŞÜK (V → B-U4). Yayılım gecikmesi yok (40 ns ≪ zaman sabitleri) |
+| U22 TMUX1102 (EN kapısı) | UVLO_TMUX1102 | B | U21 ile aynı model. **Anahtarlama gecikmesi (tON/tOFF) modellenmedi** (anlık, V); ns mertebesinde olduğu, CFU gecikmesinin (~0,26 ms) yanında ihmal edilebilir olduğu varsayıldı. Tezgâh B-U15 |
 | U21 TMUX1102 | UVLO_TMUX1102 | B | RON 1,8 tipik / 4,9 Ω maks (G, SCDS410D s.5). Mantık eşiği 1,18 V ± 0,1 V (VIL 0,87 / VIH 1,49 V, G). VDD < 1,08 V iken KAPALI (V). Kaçak, düğüm akımı köşesinde |
 | DTT 1N4148WS | jenerik diyot .model + Bilkd kaçak kaynağı | İ/B | Is/N/Rs jenerik (V). Kaçak ≤ 30 µA köşesi (G üst sınır, DS30097 Rev.27) |
 | CTT 10 µF X7R | ideal C, köşe değeri | İ + G/V | +%26,5 / −%49 (BUDGET §2) |

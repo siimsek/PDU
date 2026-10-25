@@ -9,7 +9,7 @@ Bu tablo bir anlık görüntüdür. Stok ve fiyatlar değişebilir. Doğrulanama
 |---|---|---|---|---|
 | TLV3202AIDGKR (U20) | 1 | **YOK**: Özdisan sayfası "Stok: 0" (talep üzerine, 1–2 hafta beyanı); direnc.net bulunamadı | TME 508 adet, 1.68 USD; LCSC 2267 adet, 1.92 USD; TI.com stok yok | Orta |
 | TLV3202AQDGKRQ1 (farklı MPN, Q1) | — | Taşkın Teknik "Stokta var", ₺66.13 (adet gösterilmiyor) | — | İkame **doğrulanmadı** |
-| TMUX1102DBVR (U21) | 1 | **YOK**: direnc.net ve Özdisan'da sonuç yok | TME 843 adet, 1.68 USD (500 adette 1.13 USD) | Orta |
+| TMUX1102DBVR (U21, U22) | 2 | **YOK**: direnc.net ve Özdisan'da sonuç yok | TME 843 adet, 1.68 USD (500 adette 1.13 USD) | Orta |
 | ERA-3ARB 0.1 % 10 ppm (RTU, RBU, RXU, RR1U, RR2U, RTT, RK1, RK2) | 8 | **YOK**: direnc.net ve Özdisan'da sonuç yok | TME 9092V ve 4022V: stok 0, MOQ 5000; diğer değerlerin sayfası 404; DigiKey sonuç yok; Mouser zaman aşımı | **YÜKSEK** (stok doğrulanamadı) |
 | 1N4148WS (DTT) | 1 | direnc.net 405 adet (üretici doğrulanamadı) | — | Düşük |
 | GRM31CR71E106KA12L (CTT) | 1 | kontrol edilmedi | kontrol edilmedi (üretici sayfası ürünü doğruluyor) | Düşük–orta |
@@ -22,4 +22,4 @@ Bu tablo bir anlık görüntüdür. Stok ve fiyatlar değişebilir. Doğrulanama
 2. **TLV3202AQDGKRQ1.** AEC-Q100 sürümü. Elektriksel tabloları ve pin dizilimi bu çalışmada karşılaştırılmadı, bu yüzden ikame kararı kullanıcıya aittir.
 3. **TME.** TME, Türkiye'ye gönderim yapan bir AB distribütörüdür. Listelenen stok onların deposundadır, Türkiye'de fiziksel stok değildir. TME sayfaları curl ile 403 döndürdü, WebFetch ile okundu.
 4. **DigiKey ve Mouser.** Otomatik erişim kısıtlı. "Sonuç yok" ya da zaman aşımı, ürünün olmadığını göstermez.
-5. Kart başı toplam yeni parça: 1 × TLV3202, 1 × TMUX1102, 8 × ERA-3ARB (7 farklı değer; 10.0 k iki adet: RR1U, RK1), 1 × 1N4148WS, 1 × 10 µF, 1 × 1 M, 5 × küçük kondansatör (CFU, CRU, CK, C20, C21), 2 × jenerik direnç (RDIS, RDEN). RUV1 sökülür (DNP).
+5. Kart başı toplam yeni parça: 1 × TLV3202, 2 × TMUX1102 (U21 histerezis, U22 EN kapısı; 2026-10-25), 8 × ERA-3ARB (7 farklı değer; 10.0 k iki adet: RR1U, RK1), 1 × 1N4148WS, 1 × 10 µF, 1 × 1 M, 6 × küçük kondansatör (CFU, CRU, CK, C20, C21, C22), 2 × jenerik direnç (RDIS, RDEN). RUV1 sökülür (DNP).
