@@ -100,13 +100,15 @@ Ek seçenekler: (i) Hint bağımlılığını kaldırmak için garantili histere
 | V_r / V_f / H (köşe aralığı) | 19,560–19,922 V / 18,070–18,394 V / 1,476–1,542 V |
 | Marjlar a / b / c / d / e | **+73,87 / +70,32 / +75,54 / +251,33 / +182,14 mV** (Tur 3 köşe başına hesap, 16384 köşe; Tur 2: +73,91 / +70,28 / +75,54 / +251,37 / +182,14). C3: +6,64 / +12,72 / +27,89 / +145,14 / +71,04 |
 | 125 °C göreli kayma duyarlılığı | a +45,37, b +42,88 mV |
-| Durum | **`NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS`** – Tur 3'te **4** sınırsız terim: REF5040 uzun dönem, REF5040 lehim kayması, TLV3202 Hint, ACAS DF dayanıklılık/lehim (AE-only veri, T3-04). C3: 3 sınırsız terim |
+| Durum | **`NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS`** – **4** sınırsız terim: REF5040 uzun dönem, REF5040 lehim kayması, TLV3202 Hint, **ACAS DF grubu** (mutlak + göreli dayanıklılık/lehim, AE-only veri; Tur 4'te tek grup: a +59,76 / b +55,21 mV). Grade-U göreli TCR ±5 ppm/K ayrı **G** terimi (datasheet; sınırlı): a +18,96 / b +18,34 mV. C3: 3 sınırsız terim (a +6,64 / b +12,72 mV) |
 | Terim etkileri a / b | uzun dönem +5,46 / +4,99; termal histerezis +0,99 / +0,91; Hint +11,43 / +10,47; ACAS DF varsayımı (Tur 2 değeri) +37,88 / +36,73; I_Q +4,05 (yalnız a) mV |
 | Regresyon | Yanlış Rb 5,23k: en kötü −0,3013 V → beklenen FAIL (bütçe ve deck `o3-reg-misset-rbu-5k23-vrmax`) |
 
 **Tur 3 (T3-04, T3-08):** Vishay 28770 dayanıklılık (70 °C 1000 h) ve lehim ısısı rakamları not (2) gereği yalnız **AE** (eşit değer) dizileri içindir; O3 DF düzenidir. Bu yüzden mutlak ve göreli dayanıklılık + lehim terimleri artık **V (varsayım, AE-only, DF için varsayıldı)** sınıfındadır (`net_rel_terms`, `net_abs_terms`). Duyarlılık (`sensitivity_ae_only_terms`): 85 °C/85 % RH nem-ısı yalnız-AE senaryosunda a 66,6 mV; 125 °C dayanıklılık senaryosunda a 44,3 / b 42,79 mV – hepsi pozitif ama **garanti değil**. Başabaş: göreli kaymada bütçe dışı **%0,187** ek kayma a/b'yi sıfırlar. Vishay'den DF sınırı teyidi ya da çevre/yaşlanma yeterlilik planı gerekir (BENCH-TEST B-U). Aday sipariş kodları (datasheet kod biçimine göre, **stok ve pin-1/eşleme doğrulanmadı**): N1 **ACASN5361U2432P1AT** (R1 5,36k / R2 24,3k), N2 **ACASN1002U4122P1AT** (R1 10,0k / R2 41,2k). Satın alma yapılmadı.
 
-Notlar: O3, C3 parametrik O3 tahminine (+84,86 mV) yakın ama altında; sebebi gerçek parça verisi (ACAS oran toleransı, REF5040 yük regülasyonu, I_Q artışı). ACAS DF grade U sipariş kodu **doğrulanmadı**; varsayım yanlışsa (ör. yalnız AE düzeni) a/b'den ~37 mV kaybolur. LT5400 (O3b) reddedildi: önerilen REF5050 ≥ 5,2 V besleme ister. TLV3602 önerilmedi: histerezis tablosu VCM = VEE + 0,3 V koşulunda; bu devrede ~3,37 V; ayrıca 7 mA/kanal. Stok: 2026-10-25 12:31 TSİ Mouser araması erişim engeli (captcha) → **doğrulanamadı**; önceki arama özeti (saat belirsiz) ACASN1001S2001P1AT 947, ACASN1002U1002P1AT 15 991 adet gösterdi, bunlar seçilen değerler değildir. Simülasyon fiziksel ölçüm değildir.
+**Tur 4 (T4-03) ifade düzeltmesi:** grade-U / DF kombinasyonu ve sipariş kodu biçimi Vishay 28770 datasheet'i tarafından **destekleniyor**; açık olan elektriksel bir bilinmeyen değil, **tedarikçi stoğu ve pin-1/R1 eşlemesi teyidi** (satın alma kalemi). Ayrı konu: DF için dayanıklılık/lehim değişim sınırı datasheet'te yok (AE-only) → ACAS DF grubu sınırsız kalır.
+
+Notlar: O3, C3 parametrik O3 tahminine (+84,86 mV) yakın ama altında; sebebi gerçek parça verisi (ACAS oran toleransı, REF5040 yük regülasyonu, I_Q artışı). ACAS DF grade U için tedarikçi stoğu ve pin-1 eşlemesi **doğrulanmadı**; varsayım yanlışsa (ör. yalnız AE düzeni) a/b'den ~37 mV kaybolur. LT5400 (O3b) reddedildi: önerilen REF5050 ≥ 5,2 V besleme ister. TLV3602 önerilmedi: histerezis tablosu VCM = VEE + 0,3 V koşulunda; bu devrede ~3,37 V; ayrıca 7 mA/kanal. Stok: 2026-10-25 12:31 TSİ Mouser araması erişim engeli (captcha) → **doğrulanamadı**; önceki arama özeti (saat belirsiz) ACASN1001S2001P1AT 947, ACASN1002U1002P1AT 15 991 adet gösterdi, bunlar seçilen değerler değildir. Simülasyon fiziksel ölçüm değildir.
 
 ## 4. Zamanlayıcı ve EN (RTT 11,0k, CTT 10 µF, RHB 1 M, RK1/RK2 10,0k/40,2k, RDEN/RUV2 10k/10k)
 | Büyüklük | Sonuç | Marj |
@@ -118,6 +120,7 @@ Notlar: O3, C3 parametrik O3 tahminine (+84,86 mV) yakın ama altında; sebebi g
 | EN düşük | ≤ 0,121 V | < 0,4 V: +0,279 V |
 | EN düşük, U22 açık (OUTA düşük) | ≤ 2,6 mV = (V5,maks/(RDEN·0,97) + IEN)·RON,maks 4,9 Ω (G, SCDS410D s.5) | < 0,4 V: +0,397 V |
 | EN yüksek, U22 kapalı kaçağı | 2 nA × 5 kΩ = 10 µV (G, SCDS410D s.5) | EN yüksek sonucunu değiştirmez (≥ 2,289 V) |
+| EN yüksek, U26 kapalı kaçağı (Tur 4) | ek 2 nA × 5 kΩ = 10 µV (G) | en_high_min 2,28904 → 2,28903 V |
 Not: EN bölücüsü (RDEN, RUV2) önceki sürümde yanlışlıkla ERA toleransıyla hesaplanmıştı. 2026-10-25'te katı %3'e düzeltildi (commit 6e6c063). Eski değerler 2,351 / 0,118 V idi.
 
 ## 4b. CTT hızlı reset + Schmitt zamanlayıcı (WP2 Tur 3 UVLO-T3-02) – **aday, KiCad/ana BOM değişmedi**
@@ -133,6 +136,19 @@ Not: EN bölücüsü (RDEN, RUV2) önceki sürümde yanlışlıkla ERA tolerans�
 | Tam reset sonrası VIN-OK → EN | ≥ 85,04 ms | |
 | Kısa dip sonrası VIN-OK → EN (en kötü) | ≥ 67,75 ms | 65 ms geçici hedefe +2,75 ms; 60 ms sınırına +7,75 ms |
 | VIN-OK → EN maks (tutma dahil) | ≤ 281,8 ms | ≤ 300 ms: +18,2 ms |
+
+**Tur 4 (T4-02) RDSC taraması** (`timer.rdsc_sweep`, inceleme hedefleri Ipk ≤ 30 mA, t_dsc ≤ 5,5 ms, ayrım ≥ 2,4 ms, V_rel ≤ 53,5 mV; tutma_min tüm değerlerde 7,93 ms, olay başına E 0,165 mJ):
+
+| RDSC | Ipk | t_dsc | ayrım | V_rel | Sağlanmayan hedef |
+|---|---|---|---|---|---|
+| 100 Ω (aday) | 52,6 mA | 2,91 ms | 5,02 ms | 53,5 mV | Ipk |
+| 150 Ω | 35,1 mA | 4,37 ms | 3,56 ms | 78,7 mV | Ipk, V_rel |
+| 180 Ω | 29,2 mA | 5,27 ms | 2,66 ms | 93,7 mV | V_rel |
+| 220 Ω | 23,9 mA | 6,51 ms | 1,42 ms | 113,5 mV | t_dsc, ayrım, V_rel |
+
+Hiçbir değer tüm hedefleri sağlamıyor; aday **100 Ω kalır** (Ppk 0,268 W; 180 Ω'da 0,149 W). 52,6 mA, TMUX1102 125 °C sürekli 60 mA değerinin altında ama bir akım sınırı değil (marj 7,4 mA); 180 mA darbe değeri (1 ms, %10 görev) yerine geçmez. RDSC/CST/DST kesin parçaları (darbe enerjisi, gerilim, sıcaklık, yaşlanma) seçilmedi → açık. Simülasyonda RDSC 180 Ω deck'leri INFO olarak koşuldu (RESULTS §12).
+
+**Tur 4 (T4-05):** U26 (üçüncü TMUX1102, SEL = OUTA_UV, gerdiricisiz) EN_BUCK'ı doğrudan düşürür; U22 (OUTA_D) tutmayı sağlar. Kapalı kaçağı yukarıdaki §4 tablosunda. Simülasyonda VIN-OK kaybı → EN gecikmesi 1,47–1,56 µs (> 1 µs M3) – bütçe dışı, RESULTS §12.
 
 Not: incelemenin geçici hedefi "her dip sonrası OUTA ↑ anında V_CTT ≤ 1,0 V" bu mimaride **harfiyen sağlanmaz**: reset OUTA döndükten sonraki tutma penceresinde tamamlanır (OUTA ↑ anında CTT simülasyonda 4,37 V'a kadar görülebilir), bırakma anında CTT ≤ 53,5 mV'tur ve gecikme son OUTA ↑'tan ölçülür. Asıl sınır (≥ 60 ms, son OUTA ↑'tan) ve 65 ms geçici hedef bütçede ve simülasyonda sağlanır (RESULTS.md §11). µs mertebesindeki darbeler (OUTA ~1,6 ms'den kısa düşük) Schmitt yeniden başlatmasını tetiklemeyebilir; reset-baskın mandal önerisi açık. Simülasyon fiziksel ölçüm değildir.
 
@@ -156,4 +172,5 @@ Not: incelemenin geçici hedefi "her dip sonrası OUTA ↑ anında V_CTT ≤ 1,0
 - 2026-10-25 (Tur 3 T3-07): VIO/CMRR ve REF yük akımı köşe başına; C3 a/b/c/d/e +6,64 / +12,72 / +27,89 / +145,14 / +71,04 mV; O3 +73,87 / +70,32 / +75,54 / +251,33 / +182,14 mV (f6482f0).
 - 2026-10-25 (Tur 3 T3-04): ACAS DF dayanıklılık/lehim terimleri G → V (AE-only) (f6482f0).
 - 2026-10-25 (Tur 3 T3-02): §4b CTT hızlı reset + Schmitt aday bütçesi (5a81584).
+- 2026-10-25 (Tur 4): ACAS DF mutlak+göreli tek sınırsız grup, grade-U TCR ayrı G terimi (5ac9f50); RDSC taraması (5ac9f50); U26 kaçağı (2392878). a/b marjları değişmedi.
 Hiçbir sınır gevşetilmedi.

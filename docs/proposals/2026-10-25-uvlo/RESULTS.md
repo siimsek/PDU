@@ -220,3 +220,32 @@ Toplam: 29 PASS, 3 FAIL, 0 UNDETERMINED. Not: "dönüş" ölçümü 11,1605 V e�
 **Açık – µs darbeler:** OUTA'nın ~1,6 ms'den kısa düşük kalması Schmitt alt eşiğine kadar deşarjı garanti etmez; 100/200 µs dipler bu yüzden rode-through. Reset-baskın mandal önerisi açık; TDRV_EN silikon davranışı modellenmedi (§6, tezgâh B-U10/B-U15).
 
 **Geçici R-DIP taraması (rapor amaçlı, gereksinim DEĞİL):** 49 PASS, 3 FAIL (C3): dip0v-200us-typ 11,41297 V / 18,1 µs üstte / son aşağı yönlü geçiş dip sonundan 9,69 ms; dip0v-200us-mbmin 11,35635 V / 8,2 µs / 41,26 ms; dip0v-250us-mbmin 11,34331 V / 8,2 µs / 79,46 ms. O3 dipleri PASS, ama bu diplerde O3 yeniden başlatır (yükü keser); R-DIP çözülmüş sayılmaz (WP3).
+
+## 12. WP2 Tur 4 koşusu (U26 doğrudan EN yolu, M3/M4, µs dipleri, TDRV_EN, RDSC 180) – simülasyon, fiziksel ölçüm değil
+| Alan | Değer |
+|---|---|
+| CI | GitHub Actions `proposal-ngspice` (id 395474051) kullanıcı tarafından **devre dışı**; yeniden etkinleştirilmedi, YAML tutuldu. **CI kapısı etkin değildir.** Kanıt: yerel koşu + `run-manifest.json` / `uvlo-verify.json` SHA-256 |
+| Koşu | `python3 run_uvlo.py -j 8 --run-id tur4-6f0ad2f`, 2026-10-25 18:10:53 – 19:18:48 TSİ, kutu (8 CPU), ngspice-44.2 `-b -D ngbehavior=ltpsa`, temiz HEAD **6f0ad2f** (`package_inputs_dirty_at_run: false`), koşu sırasında commit yok. 173 deck: 170 rc 0, **3 deck "Timestep too small" ile yarıda** (dip0v-50us-typ, o3-dip0v-50us-typ, o3-dip0v-50us-mbmin; düğüm `imon_o1`, dip bitişinden ~18 µs sonra) → `runner_exit_code` 2 |
+| Doğrulama | `python3 verify_uvlo.py --run-id tur4-6f0ad2f` (HEAD 6f0ad2f = manifest HEAD) → **çıkış 2** (yalnız runner exit 2 + 3 tamamlanmamış deck; run-id/HEAD/hash eşleşmesi tamam). Sonuçlar d538a8d'de commit'lendi |
+| Testler | gates 13/13, o3 10/10, tur2 31/31, tur3 45/45, **tur4 257/257** (önce 6f0ad2f öncesi 243/251 → tasarım testleri D41–D46 FAIL; W05j–n/D48 f75bcba'da önce FAIL) |
+| Sayım | 173 durum, **86 PASS**; kabul FAIL 75 (yalnız M3 65, M3+M4 6, yalnız M4 2, rsweep 2); eksik 3; regresyon **9/9** beklenen FAIL |
+
+**Kabul FAIL'lerinin dökümü (dürüst):**
+| Sebep | Durum sayısı | Ayrıntı |
+|---|---|---|
+| **M3** (VIN-OK kaybı → EN düşük ≤ 1 µs) | 71 (VIN-OK'u düşüren tüm reset'li dip / çift dip deck'leri, C3 + O3, TDRV ve RDSC180 dahil) | Doğrudan TRIG/TARG ölçümü `EN_LAG_F1` **1,468–1,559 µs** (> 1,000 µs). U26 (SEL = OUTA_UV) eklenmesine rağmen: OUTA_UV'nin 2,5 V'tan TMUX eşiğine (~1,2 V) inmesi, CST 150 nF'nin DST üzerinden ve CTT'nin DTT+RDIS üzerinden karşılaştırıcı çıkışına (model Ro 10 Ω) boşalmasıyla yavaşlıyor (τ ≈ 10 Ω·150 nF). Gerçek TLV3202 çıkış akım sınırı ile daha da yavaş olabilir. Tasarım bulgusu, sınır gevşetilmedi |
+| **M4** (EN ↑ anında VGS ≥ 6 V) | 8 (tdrv-*-mbmin-tmin, C3 + O3) | TDRV_EN 50,8 ms modeli (varsayım A) ile soğuk açılışta EN_R1 88,68 ms, FET_ON1 93,19 ms → VGS(EN_R1) = 0 V. Yeniden başlatmada (EN_R2 255,85 ms, FET_ON2 218,86 ms) sağlanıyor. typ köşesinde (EN_R1 196,8 ms) sağlanıyor. Zamanlayıcı başlangıcı FET-hazır sinyaline bağlı değil → açık tasarım bulgusu |
+| rsweep-r350 / r450 | 2 | Tur 3 ile aynı (R ≥ 0,35 Ω hiccup; kapsam R_total ≤ 0,25 Ω) |
+| Eksik (abort) | 3 | 0 V 50 µs dipleri; kazı (sonuç sayılmaz, depoda değil): aynı deck kenar 5 µs veya `.options gmin=1e-11` ile tamamlanıyor, 20 µs kenarla yine abort → sayısal hassasiyet (WP1 eFuse IMON düğümü); Tur 5 iş kalemi |
+
+**Sağlanan kapılar:** M1 (her EN ↑, son OUTA ↑'tan ≥ 60 ms) regresyon dışı tüm tamamlanmış deck'lerde sağlandı: en kısa C3 **85,99 ms** (dbldip0v-300us-20ms-mbmin), O3 **85,94 ms** (o3-dip0v-200us-mbmin), TDRV C3/O3 86,94 / 86,92 ms, RDSC180 C3/O3 85,55 / 86,04 ms (65 ms hedefi de sağlanıyor). H1 O1 maks **11,16998 V** (seq-delay-tmin-wclo-ibst100u) ≤ 12,0 V; H2 / M0 / M2 / seq şeması ihlali yok. Rampdown kapanma VIN ≥ 18,0 V (Tur 3 ile aynı deck'ler).
+
+**µs dipleri (0 V, typ + mbmin, C3 + O3):** 1 / 5 / 10 µs: VIN-OK düşmüyor (CFU 100 nF + karşılaştırıcı gecikmesi), EN hiç düşmüyor, rode-through PASS. 50 µs: C3 mbmin rode-through PASS, diğer 3 deck abort. 100 / 200 µs C3: rode-through PASS; O3 200 µs ve 225 µs (yeni, eşik yakını): VIN-OK düşüyor → yalnız M3 FAIL (M1 ≥ 85,9 ms). 20 ms: yeniden başlatma, M1 ≥ 87,17 ms, yalnız M3 FAIL. µs mertebesindeki kayıpta EN'in istenen ≤ 1 µs'de düşmesi bu modelde sağlanmıyor; incelemenin önerdiği asenkron reset-baskın mandal (VIN-OK kaybı ile kurulan, ≥ 65 ms + CTT ≤ 53,5 mV ile bırakılan) ya da OUTA_UV'nin CST/CTT yükünden ayrılması (DST/RDIS seri direnç + yakın-eşik M1 yeniden doğrulaması) Tur 5 adayıdır.
+
+**TDRV_EN (yeni, `pdu-tdrv-en.inc`, INFO):** TPS48000 EN → kapı sürüş gecikmesi 50,8 ms (varsayım A: maks kabul edildi, her VIN-EN kaybında yeniden başlar). M1 ve dip sonrası M4 sağlanıyor (typ ve mbmin); mbmin soğuk açılışta M4 FAIL (yukarıda). Datasheet TDRV_EN değeri ve davranışı birincil kaynaktan doğrulanmadı; silikon B-U10/B-U15.
+
+**RDSC 180 Ω keşfi (INFO, C3 + O3, 1 ms / 300 µs / 1 ms+30 ms+50 ms):** M1 ≥ 85,55 ms, bırakmada CTT davranışı beklenen; yalnız M3 FAIL (RDSC'den bağımsız). Bütçe: Ipk 29,2 mA, t_dsc 5,27 ms, ayrım 2,66 ms, V_rel 93,7 mV (> 53,5 mV hedefi) → aday 100 Ω kalır (BUDGET §4b).
+
+**R-DIP (rapor amaçlı, `event` sınıflandırmalı):** 96 PASS / 5 FAIL; `counts_by_event`: rode_through/PASS 21, rode_through/FAIL 5, restart/PASS 75, restart/FAIL 0. FAIL'ler: C3 200 µs typ 11,41582 V / 10,46 ms; 200 µs mbmin 11,34318 V / 41,18 ms; 250 µs mbmin 11,34395 V / 79,23 ms; 225 µs typ 11,42170 V / 22,36 ms; 225 µs mbmin 11,35237 V / 59,17 ms (tepe/son aşağı geçiş dip sonundan). Restart (yük kesilen) deck'leri artık ayrı sayılıyor; yük atma ride-through PASS sayılmıyor.
+
+**Regresyonlar (9/9 beklenen FAIL):** reg-baseline-180k10k-worst, reg-baseline-180k10k-typ-rampdown, reg-misset-rbu-8k66-vrmax, seq-ref-nodelay-typ-ibst100u, o3-reg-misset-rbu-5k23-vrmax, noreset C3 300 µs mbmin / 250 µs typ, O3 250 µs mbmin / 200 µs typ.
