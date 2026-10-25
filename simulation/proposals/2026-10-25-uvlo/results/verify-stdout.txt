@@ -25,37 +25,47 @@ PASS        rsweep-r150
 PASS        rsweep-r200 
 PASS        rsweep-r250 
 PASS        rsweep-r300 
-FAIL        rsweep-r350 EN fell at 0.1125 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 4.3208 V not regulated; VIN under load 18.2557 <= V_f 18.2588
-FAIL        rsweep-r450 EN fell at 0.0842 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 1.3313 V not regulated; VIN under load 17.9928 <= V_f 18.2588
+FAIL        rsweep-r350 EN fell at 0.1220 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 2.8457 V not regulated; VIN under load 18.2557 <= V_f 18.2588; MANDATORY M1: EN_RLAST at 0.685214 s lies between OUTA_R5 and OUTA_RLAST (untracked VIN-OK rises); MANDATORY M1: more than 4 EN rises (EN_RLAST after EN_R4; intermediate rises untracked)
+FAIL        rsweep-r450 EN fell at 0.0937 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.3584 V not regulated; VIN under load 18.0114 <= V_f 18.2588; MANDATORY M1: EN_RLAST at 0.718198 s lies between OUTA_R5 and OUTA_RLAST (untracked VIN-OK rises); MANDATORY M1: more than 4 EN rises (EN_RLAST after EN_R4; intermediate rises untracked)
 PASS        dip19v-50ms-typ-ttyp 
 PASS        dip19v-50ms-mbmin-tmin 
 PASS        dip0v-1ms-typ-ttyp 
 PASS        dip0v-1ms-mbmin-tmin 
-FAIL        dip0v-300us-typ-ttyp dip restart delay 15.902 ms after VIN-OK < 60 ms
-FAIL        dip0v-300us-mbmin-tmin dip restart delay 1.391 ms after VIN-OK < 60 ms
-FAIL        dip0v-250us-typ-ttyp dip restart delay 0.000 ms after VIN-OK < 60 ms
+PASS        dip0v-300us-typ-ttyp 
+PASS        dip0v-300us-mbmin-tmin 
+PASS        dip0v-250us-typ-ttyp 
 PASS        dip0v-250us-mbmin-tmin 
 PASS        dip0v-200us-typ-ttyp 
 PASS        dip0v-200us-mbmin-tmin 
 PASS        dip0v-100us-typ-ttyp 
 PASS        dip0v-100us-mbmin-tmin 
+PASS        dip0v-50ms-typ-ttyp 
+PASS        dip0v-50ms-mbmin-tmin 
 PASS        dip15v-20ms-typ-ttyp 
 PASS        dip15v-20ms-mbmin-tmin 
 PASS        deepdip0v-50ms-light-typ-ttyp 
 PASS        deepdip0v-50ms-light-mbmin-tmin 
+FAIL        dbldip0v-300us-20ms-typ-ttyp MANDATORY M1: EN_R2 at 0.469632 s without a VIN-OK (OUTA) rise before it after the dip start 0.295467 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.469632 s without a VIN-OK (OUTA) rise before it after the dip start 0.295467 s -> 60 ms gate not provable
+FAIL        dbldip0v-300us-20ms-mbmin-tmin MANDATORY M1: EN_R2 at 0.25346 s without a VIN-OK (OUTA) rise before it after the dip start 0.187338 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.25346 s without a VIN-OK (OUTA) rise before it after the dip start 0.187338 s -> 60 ms gate not provable
+FAIL        dbldip0v-1ms-40ms-typ-ttyp MANDATORY M1: EN_R2 at 0.471995 s without a VIN-OK (OUTA) rise before it after the dip start 0.316167 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.471995 s without a VIN-OK (OUTA) rise before it after the dip start 0.316167 s -> 60 ms gate not provable
+FAIL        dbldip0v-1ms-40ms-mbmin-tmin MANDATORY M1: EN_R2 at 0.255848 s without a VIN-OK (OUTA) rise before it after the dip start 0.208038 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.255848 s without a VIN-OK (OUTA) rise before it after the dip start 0.208038 s -> 60 ms gate not provable
+PASS        dbldip0v-1ms-30ms-50ms-typ-ttyp 
+PASS        dbldip0v-1ms-30ms-50ms-mbmin-tmin 
 PASS        hotplug-20p0v-typ-ttyp 
 PASS        hotplug-20p0v-vrmax-tmin 
 PASS        hotplug-25p2v-typ-ttyp 
 PASS        hotplug-25p2v-vrmax-tmin 
 PASS        hotplug-26p0v-typ-ttyp 
 PASS        hotplug-26p0v-vrmax-tmin 
-FAIL       (regression, reproduced) reg-baseline-180k10k-worst EN fell at 0.0001 s (shutdown/motorboat); VIN-OK (OUTA_R1) measurement missing/failed -> 60 ms restart-delay gate not provable; buck enabled before the OVP FET was on (sequencing); RUN: EN low (0.994 V) -> not running; RUN: RAW avg 0.0000 V not regulated
-FAIL       (regression, reproduced) reg-baseline-180k10k-typ-rampdown PRE: EN low (1.043 V) -> not running
-FAIL       (regression, reproduced) reg-misset-rbu-8k66-vrmax buck never enabled (no start); RUN: EN low (-0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated
+FAIL       (regression, reproduced) reg-baseline-180k10k-worst EN fell at 0.0001 s (shutdown/motorboat); VIN-OK (OUTA_R1) measurement missing/failed -> 60 ms restart-delay gate not provable; buck enabled before the OVP FET was on (sequencing); RUN: EN low (0.994 V) -> not running; RUN: RAW avg 0.0000 V not regulated; MANDATORY M1: EN_R1 at 0.000114376 s without a VIN-OK (OUTA) rise before it -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.000114376 s without a VIN-OK (OUTA) rise before it -> 60 ms gate not provable
+FAIL       (regression, reproduced) reg-baseline-180k10k-typ-rampdown PRE: EN low (1.043 V) -> not running; MANDATORY M1: EN_R1 at 9.85626e-05 s without a VIN-OK (OUTA) rise before it -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 9.85626e-05 s without a VIN-OK (OUTA) rise before it -> 60 ms gate not provable
+FAIL       (regression, reproduced) reg-misset-rbu-8k66-vrmax buck never enabled (no start); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated; MANDATORY M1: EN_R1 missing/failed/non-finite -> start/gate not provable
 PASS        seq-delay-tmin-typ-ibst100u 
 PASS        seq-delay-tmin-wchi-ibst100u 
 PASS        seq-delay-tmin-wclo-ibst100u 
 FAIL       (regression, reproduced) seq-ref-nodelay-typ-ibst100u FET never on; RUN: FET/comparator not in normal state
+FAIL       (regression, reproduced) noreset-dip0v-300us-mbmin-tmin MANDATORY M1: EN_R2 1.295 ms after VIN-OK < 60 ms; MANDATORY M1: EN_RLAST 1.295 ms after VIN-OK < 60 ms
+FAIL       (regression, reproduced) noreset-dip0v-250us-typ-ttyp MANDATORY M1: EN_R2 0.000 ms after VIN-OK < 60 ms; MANDATORY M1: EN_RLAST 0.000 ms after VIN-OK < 60 ms
 PASS        o3-start20-vrmax-tmax 
 PASS        o3-start20-vrmax-tmin 
 PASS        o3-start20-vfmax-tmin 
@@ -81,41 +91,54 @@ PASS        o3-dip19v-50ms-mbmin-tmin
 PASS        o3-dip0v-1ms-typ-ttyp 
 PASS        o3-dip0v-1ms-mbmin-tmin 
 PASS        o3-dip0v-300us-typ-ttyp 
-FAIL        o3-dip0v-300us-mbmin-tmin dip restart delay 37.558 ms after VIN-OK < 60 ms
-FAIL        o3-dip0v-250us-typ-ttyp dip restart delay 38.632 ms after VIN-OK < 60 ms
-FAIL        o3-dip0v-250us-mbmin-tmin dip restart delay 24.334 ms after VIN-OK < 60 ms
-FAIL        o3-dip0v-200us-typ-ttyp dip restart delay 0.000 ms after VIN-OK < 60 ms
-FAIL        o3-dip0v-200us-mbmin-tmin dip restart delay 0.000 ms after VIN-OK < 60 ms
+PASS        o3-dip0v-300us-mbmin-tmin 
+PASS        o3-dip0v-250us-typ-ttyp 
+PASS        o3-dip0v-250us-mbmin-tmin 
+PASS        o3-dip0v-200us-typ-ttyp 
+PASS        o3-dip0v-200us-mbmin-tmin 
 PASS        o3-dip0v-100us-typ-ttyp 
 PASS        o3-dip0v-100us-mbmin-tmin 
+PASS        o3-dip0v-50ms-typ-ttyp 
+PASS        o3-dip0v-50ms-mbmin-tmin 
 PASS        o3-dip15v-20ms-typ-ttyp 
 PASS        o3-dip15v-20ms-mbmin-tmin 
 PASS        o3-deepdip0v-50ms-light-typ-ttyp 
 PASS        o3-deepdip0v-50ms-light-mbmin-tmin 
+FAIL        o3-dbldip0v-300us-20ms-typ-ttyp MANDATORY M1: EN_R2 at 0.470094 s without a VIN-OK (OUTA) rise before it after the dip start 0.295467 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.470094 s without a VIN-OK (OUTA) rise before it after the dip start 0.295467 s -> 60 ms gate not provable
+FAIL        o3-dbldip0v-300us-20ms-mbmin-tmin MANDATORY M1: EN_R2 at 0.254165 s without a VIN-OK (OUTA) rise before it after the dip start 0.187338 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.254165 s without a VIN-OK (OUTA) rise before it after the dip start 0.187338 s -> 60 ms gate not provable
+FAIL        o3-dbldip0v-1ms-40ms-typ-ttyp MANDATORY M1: EN_R2 at 0.471673 s without a VIN-OK (OUTA) rise before it after the dip start 0.316167 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.471673 s without a VIN-OK (OUTA) rise before it after the dip start 0.316167 s -> 60 ms gate not provable
+FAIL        o3-dbldip0v-1ms-40ms-mbmin-tmin MANDATORY M1: EN_R2 at 0.255574 s without a VIN-OK (OUTA) rise before it after the dip start 0.208038 s -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.255574 s without a VIN-OK (OUTA) rise before it after the dip start 0.208038 s -> 60 ms gate not provable
+PASS        o3-dbldip0v-1ms-30ms-50ms-typ-ttyp 
+PASS        o3-dbldip0v-1ms-30ms-50ms-mbmin-tmin 
 PASS        o3-hotplug-20p0v-typ-ttyp 
 PASS        o3-hotplug-20p0v-vrmax-tmin 
 PASS        o3-hotplug-25p2v-typ-ttyp 
 PASS        o3-hotplug-25p2v-vrmax-tmin 
 PASS        o3-hotplug-26p0v-typ-ttyp 
 PASS        o3-hotplug-26p0v-vrmax-tmin 
-FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enabled (no start); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated
+FAIL       (regression, reproduced) o3-noreset-dip0v-250us-mbmin-tmin MANDATORY M1: EN_R2 24.296 ms after VIN-OK < 60 ms; MANDATORY M1: EN_RLAST 24.296 ms after VIN-OK < 60 ms
+FAIL       (regression, reproduced) o3-noreset-dip0v-200us-typ-ttyp MANDATORY M1: EN_R2 0.000 ms after VIN-OK < 60 ms; MANDATORY M1: EN_RLAST 0.000 ms after VIN-OK < 60 ms
+FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enabled (no start); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated; MANDATORY M1: EN_R1 missing/failed/non-finite -> start/gate not provable
+PROVENANCE manifest git_head '5574964ce734' != current HEAD 'a35893e42868' (CI run must verify its own checkout)
 {
- "exit_code": 1,
- "git_head": "53495e2eaaf42d80fd3528fa5c70d92ac1d22388",
- "provenance_errors": [],
+ "exit_code": 2,
+ "git_head": "a35893e42868b56e43497c172c1b3795298f670e",
+ "provenance_errors": [
+  "manifest git_head '5574964ce734' != current HEAD 'a35893e42868' (CI run must verify its own checkout)"
+ ],
  "run_manifest": {
-  "run_id": "box-tur2-20261025T1230",
-  "git_head": "873a94a961b70985db19689efe7f0acce73ba45e",
-  "started_utc": "2026-10-25T09:30:57+00:00",
+  "run_id": "box-tur3-20261025-1432",
+  "git_head": "5574964ce734d67688f06516d05c599b7f23d597",
+  "started_utc": "2026-10-25T11:32:28+00:00",
   "ngspice": [
    "** ngspice-44.2 : Circuit level simulation program",
    "** Copyright 2001-2024, The ngspice team.",
    "** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html",
    "** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html"
   ],
-  "n_runs": 101
+  "n_runs": 121
  },
- "expected_run_id": null,
+ "expected_run_id": "box-tur3-20261025-1432",
  "provisional_rdip_screen": {
   "note": "PROVISIONAL WP3 screen proposed in ChatGPT review 6395614957 (UVLO-06); report-only, NOT an acceptance limit and NOT a requirement change; simulation, not measurement",
   "limits": {
@@ -134,7 +157,7 @@ FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enab
    },
    "dip19v-50ms-mbmin-tmin": {
     "status": "PASS",
-    "peak": 11.00623,
+    "peak": 11.00622,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
@@ -148,7 +171,7 @@ FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enab
    },
    "dip0v-1ms-mbmin-tmin": {
     "status": "PASS",
-    "peak": 11.00621,
+    "peak": 11.00622,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
@@ -162,55 +185,69 @@ FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enab
    },
    "dip0v-300us-mbmin-tmin": {
     "status": "PASS",
-    "peak": 11.00621,
+    "peak": 11.00622,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
    },
    "dip0v-250us-typ-ttyp": {
     "status": "PASS",
-    "peak": 11.00622,
+    "peak": 11.00621,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
    },
    "dip0v-250us-mbmin-tmin": {
     "status": "FAIL",
-    "peak": 11.34552,
-    "t_above": 8.99129e-06,
-    "return_after_dip_end": 0.08152463971960217,
+    "peak": 11.34331,
+    "t_above": 8.17685e-06,
+    "return_after_dip_end": 0.07945573286810415,
     "reasons": [
-     "back below 11.1605 V 81.525 ms after dip end > 5 ms"
+     "back below 11.1605 V 79.456 ms after dip end > 5 ms"
     ]
    },
    "dip0v-200us-typ-ttyp": {
     "status": "FAIL",
-    "peak": 11.41426,
-    "t_above": 1.81217e-05,
-    "return_after_dip_end": 0.010318467447133106,
+    "peak": 11.41297,
+    "t_above": 1.81216e-05,
+    "return_after_dip_end": 0.009689248768952885,
     "reasons": [
-     "back below 11.1605 V 10.318 ms after dip end > 5 ms"
+     "back below 11.1605 V 9.689 ms after dip end > 5 ms"
     ]
    },
    "dip0v-200us-mbmin-tmin": {
     "status": "FAIL",
-    "peak": 11.35498,
-    "t_above": 8.41619e-06,
-    "return_after_dip_end": 0.042242639719602154,
+    "peak": 11.35635,
+    "t_above": 8.19921e-06,
+    "return_after_dip_end": 0.04126473286810414,
     "reasons": [
-     "back below 11.1605 V 42.243 ms after dip end > 5 ms"
+     "back below 11.1605 V 41.265 ms after dip end > 5 ms"
     ]
    },
    "dip0v-100us-typ-ttyp": {
     "status": "PASS",
-    "peak": 11.12123,
+    "peak": 11.12573,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
    },
    "dip0v-100us-mbmin-tmin": {
     "status": "PASS",
-    "peak": 11.0076,
+    "peak": 11.00729,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-50ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
@@ -238,7 +275,63 @@ FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enab
    },
    "deepdip0v-50ms-light-mbmin-tmin": {
     "status": "PASS",
-    "peak": 11.02297,
+    "peak": 11.02296,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-300us-20ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-300us-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-1ms-40ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-1ms-40ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "noreset-dip0v-300us-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "noreset-dip0v-250us-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00622,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
@@ -308,21 +401,35 @@ FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enab
    },
    "o3-dip0v-200us-mbmin-tmin": {
     "status": "PASS",
-    "peak": 11.00621,
+    "peak": 11.00622,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
    },
    "o3-dip0v-100us-typ-ttyp": {
     "status": "PASS",
-    "peak": 11.12314,
+    "peak": 11.12252,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
    },
    "o3-dip0v-100us-mbmin-tmin": {
     "status": "PASS",
-    "peak": 11.00874,
+    "peak": 11.00843,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-50ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
@@ -350,65 +457,135 @@ FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enab
    },
    "o3-deepdip0v-50ms-light-mbmin-tmin": {
     "status": "PASS",
-    "peak": 11.02295,
+    "peak": 11.02296,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-300us-20ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-300us-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-1ms-40ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-1ms-40ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00622,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-noreset-dip0v-250us-mbmin-tmin": {
+    "status": "PASS",
+    "peak": 11.00623,
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-noreset-dip0v-200us-typ-ttyp": {
+    "status": "PASS",
+    "peak": 11.00621,
     "t_above": 0.0,
     "return_after_dip_end": null,
     "reasons": []
    }
   },
   "counts": {
-   "PASS": 29,
+   "PASS": 49,
    "FAIL": 3,
    "UNDETERMINED": 0
   }
  },
  "worktree_dirty_at_verify": true,
  "package_inputs_dirty": false,
- "n_cases": 101,
- "n_pass": 86,
+ "n_cases": 121,
+ "n_pass": 102,
  "acceptance_fail": [
-  "dip0v-300us-typ-ttyp",
-  "dip0v-300us-mbmin-tmin",
-  "dip0v-250us-typ-ttyp",
-  "o3-dip0v-300us-mbmin-tmin",
-  "o3-dip0v-250us-typ-ttyp",
-  "o3-dip0v-250us-mbmin-tmin"
+  "rsweep-r350",
+  "rsweep-r450",
+  "dbldip0v-300us-20ms-typ-ttyp",
+  "dbldip0v-300us-20ms-mbmin-tmin",
+  "dbldip0v-1ms-40ms-typ-ttyp",
+  "dbldip0v-1ms-40ms-mbmin-tmin",
+  "o3-dbldip0v-300us-20ms-typ-ttyp",
+  "o3-dbldip0v-300us-20ms-mbmin-tmin",
+  "o3-dbldip0v-1ms-40ms-typ-ttyp",
+  "o3-dbldip0v-1ms-40ms-mbmin-tmin"
  ],
  "regression_not_reproduced": [],
  "incomplete": [],
  "info_cases": [
   "rsweep-r300",
   "rsweep-r350",
-  "rsweep-r450",
-  "dip0v-200us-typ-ttyp",
-  "dip0v-200us-mbmin-tmin",
-  "dip0v-100us-typ-ttyp",
-  "dip0v-100us-mbmin-tmin",
-  "o3-dip0v-200us-typ-ttyp",
-  "o3-dip0v-200us-mbmin-tmin",
-  "o3-dip0v-100us-typ-ttyp",
-  "o3-dip0v-100us-mbmin-tmin"
+  "rsweep-r450"
  ],
  "hard_limit_gate": "H1/H2 enforced for every non-regression case (PASS and INFO)",
+ "mandatory_gate": "M1 (60 ms VIN-OK->EN on every EN rise) and M2 (V_f >= 18.0 V) enforced for every non-regression case (PASS and INFO)",
+ "ci_status": "GitHub Actions workflow proposal-ngspice DISABLED by the user (2026-10-25); CI gating not active; evidence = local runs + run manifest SHA-256",
  "per_variant": {
   "C3": {
-   "n": 56,
-   "n_pass": 49,
+   "n": 64,
+   "n_pass": 56,
    "acceptance_fail": [
-    "dip0v-300us-typ-ttyp",
-    "dip0v-300us-mbmin-tmin",
-    "dip0v-250us-typ-ttyp"
+    "rsweep-r350",
+    "rsweep-r450",
+    "dbldip0v-300us-20ms-typ-ttyp",
+    "dbldip0v-300us-20ms-mbmin-tmin",
+    "dbldip0v-1ms-40ms-typ-ttyp",
+    "dbldip0v-1ms-40ms-mbmin-tmin"
    ],
    "regression_not_reproduced": []
   },
+  "C3-noreset-tur2": {
+   "n": 2,
+   "n_pass": 0,
+   "acceptance_fail": [],
+   "regression_not_reproduced": []
+  },
   "O3": {
-   "n": 43,
-   "n_pass": 37,
+   "n": 51,
+   "n_pass": 46,
    "acceptance_fail": [
-    "o3-dip0v-300us-mbmin-tmin",
-    "o3-dip0v-250us-typ-ttyp",
-    "o3-dip0v-250us-mbmin-tmin"
+    "o3-dbldip0v-300us-20ms-typ-ttyp",
+    "o3-dbldip0v-300us-20ms-mbmin-tmin",
+    "o3-dbldip0v-1ms-40ms-typ-ttyp",
+    "o3-dbldip0v-1ms-40ms-mbmin-tmin"
    ],
+   "regression_not_reproduced": []
+  },
+  "O3-noreset-tur2": {
+   "n": 2,
+   "n_pass": 0,
+   "acceptance_fail": [],
    "regression_not_reproduced": []
   },
   "baseline": {
