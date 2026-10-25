@@ -58,6 +58,9 @@ jobs:
         run: |
           python3 rsns_power.py --check > /dev/null
           git diff --exit-code -- rsns-power.json
+      - name: Guard negative test (Tur-4 P2-T4-01/02 - fail-closed coverage of regime self-test and rebind; committed results, no ngspice)
+        # runs BEFORE the deck run, which overwrites o1ovp-results.json with this CI run's paths/hashes
+        run: python3 regime-selftest/guard_negative_test.py
       - name: Run proposal decks (+ baseline regression, expected FAIL)
         id: run
         # continue-on-error so that the verifier and the baseline check still run; the verifier repeats every

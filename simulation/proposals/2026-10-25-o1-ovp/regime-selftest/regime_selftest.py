@@ -19,7 +19,8 @@ prove rejection of a run that COMPLETES with a wrong regime. Part B therefore ta
 measures of each CASE from ../o1ovp-results.json (completed=True, accepted as PASS by both tools) and injects ONLY the
 regime measures (synthetic, labelled as such, no ngspice): INP low / VGS low / both low, in the pre-fault window and - where
 the deck has one - in the recovery window. Both tools must FAIL exactly the injected regime check and reject the case;
-the unmodified control must pass. This is a synthetic unit test of the judging rules, not simulation evidence.
+the unmodified control must pass. Tur-4 P2-T4-01: the 2x6 matrix is mandatory (missing window or row -> exit 2), and
+each injection must fail ONLY its own regime check (other window PASS, no other failure). This is a synthetic unit test of the judging rules, not simulation evidence.
 
 Exit 0 = the self-test passed (FET stayed off AND both tools reported the regime check as FAIL and the case as not
 passing); 1 = a tool accepted the broken deck (self-test FAILED); 2 = a deck could not be prepared or its regime
@@ -75,15 +76,18 @@ SYN = {  # Part B: synthetic wrong-regime values injected into COMPLETED measure
     'pre-inp-low': {'inp_pre_min': 1.0}, 'pre-vgs-low': {'vgs_pre_min': 4.0}, 'pre-both-low': {'inp_pre_min': 1.0, 'vgs_pre_min': 4.0},
     'recov-inp-low': {'inp_recov_min': 1.0}, 'recov-vgs-low': {'vgs_recov_min': 4.0}}
 
-def synthetic():
-    res = json.loads((PKG/'o1ovp-results.json').read_text())
+def synthetic(res=None):  # res: optional pre-loaded results (guard_negative_test.py feeds mutated copies)
+    res = res if res is not None else json.loads((PKG/'o1ovp-results.json').read_text())
     runs = {r['case']: r for r in res['runs'] if r['engine'] == 'ng'}
     rows = []
     for name in CASES:
-        c = R.CASES[name]; base = runs[name]
+        c = R.CASES[name]; base = runs.get(name)
+        if base is None: return None  # Tur-4: every CASE must have a base run
         if not base['execution_pass']: return None  # base must be a completed run
+        if any(k not in base['measures'] for inj in SYN.values() for k in inj): return None  # Tur-4: both windows mandatory
         for lab, inj in SYN.items():
-            if any(k not in base['measures'] for k in inj): continue  # deck has no such window (e.g. no recovery)
+            # Tur-4 P2-T4-01: fail closed - every expected (case, injection) must be judgeable; no silent skip
+            if any(k not in base['measures'] for k in inj): return None
             m = dict(base['measures']); m.update(inj)
             run_chk = []; R.evaluate(name, c, m, lambda n, ok, dd: run_chk.append((n, bool(ok), dd)))
             ver = [(n, bool(ok), dd) for n, ok, dd in V.rules(c['kind'], m)]
@@ -92,17 +96,30 @@ def synthetic():
             run_acc_fail = [n for n, k, _ in run_chk if R.category(c, n) == 'acceptance' and not k]
             ver_fail = [n for n, k, _ in ver if not k]
             want = 'pre' if lab.startswith('pre') else 'recov' if lab.startswith('recov') else None
+            # Tur-4 P2-T4-01: both regime windows must be present in both tools; the injected window must FAIL and
+            # be the ONLY failing check (runner acceptance fails == [it], verifier fails == its regime checks), the
+            # other window must PASS; the control must have both windows PASS and no failure at all.
+            have = ('pre_fault_regime_normal' in run_reg and 'recovery_regime_normal' in run_reg
+                    and any(n.startswith('pre-fault') for n in ver_reg) and any(n.startswith('recovery') for n in ver_reg))
             if want is None:
-                ok = not run_acc_fail and not ver_fail
+                ok = (have and not run_acc_fail and not ver_fail and all(v is True for v in run_reg.values())
+                      and all(v is True for v in ver_reg.values()))
             else:
                 rk = 'pre_fault_regime_normal' if want == 'pre' else 'recovery_regime_normal'
+                ok_rk = 'recovery_regime_normal' if want == 'pre' else 'pre_fault_regime_normal'
                 vk = [n for n in ver_reg if n.startswith('pre-fault' if want == 'pre' else 'recovery')]
-                ok = (run_reg.get(rk) is False and bool(vk) and all(ver_reg[n] is False for n in vk)
-                      and rk in run_acc_fail and any(n in ver_fail for n in vk))
+                vother = [n for n in ver_reg if n not in vk]
+                ok = (have and run_reg[rk] is False and run_reg[ok_rk] is True and run_acc_fail == [rk]
+                      and bool(vk) and all(ver_reg[n] is False for n in vk) and sorted(ver_fail) == sorted(vk)
+                      and bool(vother) and all(ver_reg[n] is True for n in vother))
             rows.append(dict(case=name, injection=lab, injected=inj, base_completed=True, base_log_sha256=base.get('log_sha256'),
                              runner_regime=run_reg, verifier_regime=ver_reg, runner_acceptance_fails=run_acc_fail,
                              verifier_fails=ver_fail, selftest_pass=bool(ok)))
+    got = sorted((r['case'], r['injection']) for r in rows)
+    if got != sorted(EXPECTED_SYN): return None  # Tur-4 P2-T4-01: exact 2x6 matrix, no missing/extra rows
     return rows
+
+EXPECTED_SYN = [(n, lab) for n in CASES for lab in SYN]  # 2 cases x 6 injections = 12 rows, all mandatory
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
@@ -110,7 +127,7 @@ def main():
         rows = [one(n, mu, tmp) for n in CASES for mu in MUT]
     if any(x is None for x in rows): print('could not prepare a deck'); return 2
     syn = synthetic()
-    if syn is None: print('synthetic part: base run incomplete'); return 2
+    if syn is None: print('synthetic part: base run incomplete, injection window absent or row set != expected 2x6'); return 2
     for x in syn:
         print(f"SYN {x['case']:30s} {x['injection']:18s} runner={x['runner_regime']} verifier={x['verifier_regime']} selftest_pass={x['selftest_pass']}")
     for x in rows:
