@@ -66,7 +66,7 @@ SPICE sırası pin 1–5 ile birebir aynı. **Uyarı:** KiCad'deki genel SC-70-5
 | Pin | Ad | Bağlantı | SPICE XU12 (V5 VREF GND) |
 |---|---|---|---|
 | 1, 2 | GND | sinyal toprağı | GND |
-| 3 | EN | **VIN'e bağla** (SPICE'ta modellenmedi) | – |
+| 3 | EN | **V5_OVP** (= U12 pin 4 VIN ile aynı ağ; U10/sistem VIN'i DEĞİL; rev3 Tur-3 P1-05 netleştirme; SPICE'ta modellenmedi – KiCad netlist'inde doğrulanacak) | – |
 | 4 | VIN | V5_OVP | V5 |
 | 5 | NR | açık (izin verilir) | – |
 | 6 | VREF | VREF_OVP, CREF12 1 µF (CL 0,1–10 µF) | VREF |

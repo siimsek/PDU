@@ -96,7 +96,7 @@ Pre-fault rejim (104 deck): INP min 4,9995 V, VGS min 11,5998 V → hepsi geçer
 
 ## E. Bilgi / izleme (kabul kriteri değil; gevşetme yok, gizleme yok)
 - **INFO postfault bus/O1** (24 deck, kısa devre sonrası yeniden açılış 45–80 ms): bus 11,29486–11,47708 V. Bu pencere RAW kaynağı yeniden 26 V→normal'e dönerken ideal kaynakla ölçülür; normal rejim değildir ama gerçek tezgâhta **B17** ile ölçülmelidir (11,1605 V üzerinde!).
-- **INFO bench start-up bus** (0–24 ms, ideal LC tezgâh açılışı; 46 deck): 11,150–11,167 V; birçoğu 11,1605 V'u aşar → INFO-FAIL olarak raporlanır. Normal işletme penceresi değildir, ancak tezgâh açılışında **B18** ile ölçülmeli ve WP2/WP3'te değerlendirilmelidir.
+- **INFO bench start-up bus** (0–24 ms, ideal LC tezgâh açılışı; 46 deck): 11,150–11,167 V; birçoğu 11,1605 V'u aşar → INFO-FAIL olarak raporlanır. Normal işletme penceresi değildir, ancak tezgâh açılışında **B19** (açılış çınlaması / açılış bus tepesi; BENCH-TEST.md) ve normal işletme tavanı için **B14** ile ölçülmeli (rev3 Tur-3 P2-B: önceki metin yanlışlıkla SOA testi B18'i gösteriyordu) ve WP2/WP3'te değerlendirilmelidir.
 - **TRACKING 7,5 A** (5 deck): bus min 10,649–10,7584 V (10,78–11,22 penceresi dışında) → WP3.
 - `buck-short-rev1-c92-esr12m5-wchi` 12,03166 V (yalnız karşılaştırma).
 

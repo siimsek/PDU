@@ -53,6 +53,13 @@
   "startup_info_trip": {
    "rev2": [
     "buck-short-c165-esr12m5-esl2n-wchi",
+    "buck-short-c185-esr12m5-esl2n-wchi"
+   ],
+   "rev3": []
+  },
+  "bench_startup_bus_info": {
+   "rev2": [
+    "buck-short-c165-esr12m5-esl2n-wchi",
     "buck-short-c176-typ",
     "buck-short-c185-esr12m5-esl2n-wchi",
     "buck-short-c185-esr12m5-typ",
@@ -110,6 +117,18 @@
     "mc-short-c185-17",
     "mc-short-c185-18",
     "mc-short-c185-19"
+   ]
+  },
+  "incomplete_not_judged": {
+   "rev2": [
+    "buck-short-c165-esr12m5-esl2n-typ",
+    "buck-short-c185-esr12m5-esl2n-typ"
+   ],
+   "rev3": [
+    "buck-short-c165-esr12m5-esl2n-typ",
+    "buck-short-c165-esr12m5-esl2n-wchi",
+    "buck-short-c185-esr12m5-esl2n-typ",
+    "buck-short-c185-esr12m5-esl2n-wchi"
    ]
   }
  },
@@ -14513,5 +14532,11 @@
    },
    "delta": {}
   }
- ]
+ ],
+ "summary_recomputed": {
+  "by": "model_compare.py --resummarize",
+  "rule": "startup_info_trip = INFO:startup_no_ovp_trip only (Tur-3 P2-A)",
+  "rows_unchanged": true,
+  "script_sha256": "16ab7b13419f63f180a432d2b3b802d30357aec6d5b3a06d653bb2e03c45f7e6"
+ }
 }

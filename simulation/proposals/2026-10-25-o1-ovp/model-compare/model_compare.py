@@ -10,6 +10,7 @@ acceptance run, which must be from the same deck set: deck sha256 checked). Both
 rules (run_o1ovp.evaluate). Diagnostic/regression evidence only; acceptance is decided by run_o1ovp.py + verify_candidate.py.
 
 Usage: PDU_NGSPICE=/usr/bin/ngspice python3 model_compare.py [--jobs N]
+       python3 model_compare.py --resummarize   (summary only, from stored rows; verifies stored log sha256)
   -> ../results/model-compare/rev2/*.ng.log + ../results/model-compare/model-compare.json
 Exit 0 = comparison complete (differences are data, not errors), 2 = rev3 results missing / deck mismatch.
 """
@@ -48,8 +49,40 @@ def run_old(job):
     r['log'] = str(log.relative_to(PKG)); r.update(case=name, source_deck='decks/' + src.name, source_sha256=sha(src), tmp_deck_sha256=sha(d))
     return r
 
+def summarize(rows):
+    accs = [r for r in rows if r['acceptance'] and r['kind'] != 'reference' and not r.get('model_independent')]
+    def mx(ver, key):
+        v = [(r['delta'][key][ver], r['case']) for r in accs if r[ver]['completed'] and r['delta'].get(key, {}).get(ver) is not None]
+        return max(v) if v else None
+    return dict(cases=len(rows), acceptance_cases=len(accs),
+                verdicts={ver: {v: sum(r[ver]['verdict'] == v for r in accs) for v in ('PASS', 'FAIL', 'INCOMPLETE')} for ver in ('rev2', 'rev3')},
+                changed_verdict=[dict(case=r['case'], rev2=r['rev2']['verdict'], rev3=r['rev3']['verdict']) for r in rows if r['rev2']['verdict'] != r['rev3']['verdict']],
+                changed_values=sum(r['changed'] for r in rows),
+                o1_global_max={ver: mx(ver, 'o1_global_peak') for ver in ('rev2', 'rev3')},
+                # rev3 Tur-3 P2-A: count ONLY the comparator start-up trip check; the bench start-up bus INFO
+                # (INFO:info_bench_startup_bus_max, a bus-voltage observation) is counted separately, never as a trip.
+                # Incomplete decks cannot be judged and are listed apart (not silently 'no trip').
+                startup_info_trip={ver: sorted(r['case'] for r in accs if any(x.startswith('INFO:startup_no_ovp_trip:') for x in r[ver].get('info_fail', []))) for ver in ('rev2', 'rev3')},
+                bench_startup_bus_info={ver: sorted(r['case'] for r in accs if any(x.startswith('INFO:info_bench_startup_bus_max') for x in r[ver].get('info_fail', []))) for ver in ('rev2', 'rev3')},
+                incomplete_not_judged={ver: sorted(r['case'] for r in accs if not r[ver]['completed']) for ver in ('rev2', 'rev3')})
+
+def resummarize():
+    # rev3 Tur-3 P2-A: recompute ONLY the summary from the stored rows (no ngspice re-run, logs untouched, so no
+    # timestamp-only log diffs). The rows (per-deck measures/verdicts/log sha256) are left exactly as committed.
+    f = OUT/'model-compare.json'; d = json.loads(f.read_text())
+    for r in d['rows']:  # verify every stored log still matches its recorded sha256
+        for ver in ('rev2', 'rev3'):
+            lg = r[ver].get('log'); h = r[ver].get('log_sha256')
+            if lg and h and sha(PKG/lg) != h: print('log sha256 mismatch', lg); return 2
+    d['summary'] = summarize(d['rows'])
+    d['summary_recomputed'] = dict(by='model_compare.py --resummarize', rule='startup_info_trip = INFO:startup_no_ovp_trip only (Tur-3 P2-A)',
+                                   rows_unchanged=True, script_sha256=sha(Path(__file__)))
+    f.write_text(json.dumps(d, indent=1) + '\n'); print(json.dumps(d['summary'], indent=1)); return 0
+
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('--jobs', type=int, default=os.cpu_count() or 2); a = ap.parse_args()
+    ap = argparse.ArgumentParser(); ap.add_argument('--jobs', type=int, default=os.cpu_count() or 2)
+    ap.add_argument('--resummarize', action='store_true', help='recompute summary from stored rows only (no ngspice)'); a = ap.parse_args()
+    if a.resummarize: return resummarize()
     res = json.loads((PKG/'o1ovp-results.json').read_text())
     new = {r['case']: r for r in res['runs'] if r['engine'] == 'ng'}
     bad = [n for n, c in R.CASES.items() if n not in new or new[n]['deck_sha256'] != sha(R.DECKS/c['ng_file'])]
@@ -81,16 +114,7 @@ def main():
         row['changed'] = row['rev2']['verdict'] != row['rev3']['verdict'] or any(
             v['d'] is not None and abs(v['d']) > 1e-3 for v in row['delta'].values()) or row['rev2']['completed'] != row['rev3']['completed']
         rows.append(row)
-    accs = [r for r in rows if r['acceptance'] and r['kind'] != 'reference' and not r.get('model_independent')]
-    def mx(ver, key):
-        v = [(r['delta'][key][ver], r['case']) for r in accs if r[ver]['completed'] and r['delta'].get(key, {}).get(ver) is not None]
-        return max(v) if v else None
-    summ = dict(cases=len(rows), acceptance_cases=len(accs),
-                verdicts={ver: {v: sum(r[ver]['verdict'] == v for r in accs) for v in ('PASS', 'FAIL', 'INCOMPLETE')} for ver in ('rev2', 'rev3')},
-                changed_verdict=[dict(case=r['case'], rev2=r['rev2']['verdict'], rev3=r['rev3']['verdict']) for r in rows if r['rev2']['verdict'] != r['rev3']['verdict']],
-                changed_values=sum(r['changed'] for r in rows),
-                o1_global_max={ver: mx(ver, 'o1_global_peak') for ver in ('rev2', 'rev3')},
-                startup_info_trip={ver: sorted(r['case'] for r in accs if any('startup' in x for x in r[ver].get('info_fail', []))) for ver in ('rev2', 'rev3')})
+    summ = summarize(rows)
     head = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=PKG, capture_output=True, text=True).stdout.strip()
     out = dict(_status='MODEL-REVISION REGRESSION (rev2 vs rev3 behavioral model) - diagnostic; acceptance = run_o1ovp.py + verify_candidate.py',
                change='O1OVP_TPS48000 internal node ov -> ovs (case-insensitive collision with pin OV removed); nothing else',

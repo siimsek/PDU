@@ -14,6 +14,13 @@ source), so the INP mutation acts on the comparator input instead.  (Opening RPU
 DC path and ngspice aborts - not a meaningful regime test.)  A broken deck may also lose its WHEN measures; the runner
 then reports it INCOMPLETE (exit 2) and the verifier MISSING (exit 2) - both are non-pass, recorded per row.
 
+rev3 Tur-3 (ChatGPT "Ek P1"): every ngspice mutation above ends INCOMPLETE (a WHEN measure is lost), so it does not
+prove rejection of a run that COMPLETES with a wrong regime. Part B therefore takes the real, COMPLETED rev3 acceptance
+measures of each CASE from ../o1ovp-results.json (completed=True, accepted as PASS by both tools) and injects ONLY the
+regime measures (synthetic, labelled as such, no ngspice): INP low / VGS low / both low, in the pre-fault window and - where
+the deck has one - in the recovery window. Both tools must FAIL exactly the injected regime check and reject the case;
+the unmodified control must pass. This is a synthetic unit test of the judging rules, not simulation evidence.
+
 Exit 0 = the self-test passed (FET stayed off AND both tools reported the regime check as FAIL and the case as not
 passing); 1 = a tool accepted the broken deck (self-test FAILED); 2 = a deck could not be prepared or its regime
 measures are absent (cannot judge).
@@ -63,21 +70,61 @@ def one(name, mut, tmp):
                 verifier_regime_check=ver_regime, verifier_fails=sum(1 for _, k, _ in ver if not k),
                 runner_rejects=run_rej, verifier_rejects=ver_rej, regime_check_flagged=regime_flagged, selftest_pass=bool(ok))
 
+SYN = {  # Part B: synthetic wrong-regime values injected into COMPLETED measures (INVALID physically; tests the judges only)
+    'control-unmodified': {},
+    'pre-inp-low': {'inp_pre_min': 1.0}, 'pre-vgs-low': {'vgs_pre_min': 4.0}, 'pre-both-low': {'inp_pre_min': 1.0, 'vgs_pre_min': 4.0},
+    'recov-inp-low': {'inp_recov_min': 1.0}, 'recov-vgs-low': {'vgs_recov_min': 4.0}}
+
+def synthetic():
+    res = json.loads((PKG/'o1ovp-results.json').read_text())
+    runs = {r['case']: r for r in res['runs'] if r['engine'] == 'ng'}
+    rows = []
+    for name in CASES:
+        c = R.CASES[name]; base = runs[name]
+        if not base['execution_pass']: return None  # base must be a completed run
+        for lab, inj in SYN.items():
+            if any(k not in base['measures'] for k in inj): continue  # deck has no such window (e.g. no recovery)
+            m = dict(base['measures']); m.update(inj)
+            run_chk = []; R.evaluate(name, c, m, lambda n, ok, dd: run_chk.append((n, bool(ok), dd)))
+            ver = [(n, bool(ok), dd) for n, ok, dd in V.rules(c['kind'], m)]
+            run_reg = {n: k for n, k, _ in run_chk if n in ('pre_fault_regime_normal', 'recovery_regime_normal')}
+            ver_reg = {n: k for n, k, _ in ver if 'regime normal' in n}
+            run_acc_fail = [n for n, k, _ in run_chk if R.category(c, n) == 'acceptance' and not k]
+            ver_fail = [n for n, k, _ in ver if not k]
+            want = 'pre' if lab.startswith('pre') else 'recov' if lab.startswith('recov') else None
+            if want is None:
+                ok = not run_acc_fail and not ver_fail
+            else:
+                rk = 'pre_fault_regime_normal' if want == 'pre' else 'recovery_regime_normal'
+                vk = [n for n in ver_reg if n.startswith('pre-fault' if want == 'pre' else 'recovery')]
+                ok = (run_reg.get(rk) is False and bool(vk) and all(ver_reg[n] is False for n in vk)
+                      and rk in run_acc_fail and any(n in ver_fail for n in vk))
+            rows.append(dict(case=name, injection=lab, injected=inj, base_completed=True, base_log_sha256=base.get('log_sha256'),
+                             runner_regime=run_reg, verifier_regime=ver_reg, runner_acceptance_fails=run_acc_fail,
+                             verifier_fails=ver_fail, selftest_pass=bool(ok)))
+    return rows
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         rows = [one(n, mu, tmp) for n in CASES for mu in MUT]
     if any(x is None for x in rows): print('could not prepare a deck'); return 2
+    syn = synthetic()
+    if syn is None: print('synthetic part: base run incomplete'); return 2
+    for x in syn:
+        print(f"SYN {x['case']:30s} {x['injection']:18s} runner={x['runner_regime']} verifier={x['verifier_regime']} selftest_pass={x['selftest_pass']}")
     for x in rows:
         print(f"{x['case']:30s} {x['mutation']:14s} done={x['completed']} O1glob={x['o1_global_peak']} INPpre={x['inp_pre_min']} VGSpre={x['vgs_pre_min']} "
               f"runner={x['runner_regime_check']} verifier={x['verifier_regime_check']} selftest_pass={x['selftest_pass']}")
     (OUT/'regime-selftest.json').write_text(json.dumps(dict(
         _status='NEGATIVE SELF-TEST - temporary block mutations that keep the FET off; INVALID as design fixes; behavioral models',
         block_inc_sha256=sha(PKG/'pdu-o1ovp-block.inc'), lib_sha256=sha(PKG/'pdu-o1ovp-behavioral.lib'),
-        run_o1ovp_sha256=sha(PKG/'run_o1ovp.py'), verify_candidate_sha256=sha(PKG/'verify_candidate.py'), rows=rows), indent=1) + '\n')
+        run_o1ovp_sha256=sha(PKG/'run_o1ovp.py'), verify_candidate_sha256=sha(PKG/'verify_candidate.py'), rows=rows,
+        synthetic_status='PART B - SYNTHETIC: completed rev3 measures with ONLY regime values injected (no ngspice); tests judging rules',
+        o1ovp_results_sha256=sha(PKG/'o1ovp-results.json'), synthetic_rows=syn), indent=1) + '\n')
     # 2 only when the regime measures themselves are absent (cannot judge); an incomplete WHEN measure is an expected non-pass
     if any(x['inp_pre_min'] is None or x['vgs_pre_min'] is None for x in rows): return 2
-    return 0 if all(x['selftest_pass'] for x in rows) else 1
+    return 0 if all(x['selftest_pass'] for x in rows + syn) else 1
 
 if __name__ == '__main__':
     sys.exit(main())

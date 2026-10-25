@@ -149,5 +149,288 @@
    "regime_check_flagged": true,
    "selftest_pass": true
   }
- ]
+ ],
+ "synthetic_status": "PART B - SYNTHETIC: completed rev3 measures with ONLY regime values injected (no ngspice); tests judging rules",
+ "o1ovp_results_sha256": "76bb4b40e883cf6c69a211ce74caeb119bd64527f7e91a57da87cefc00363507",
+ "synthetic_rows": [
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "injection": "control-unmodified",
+   "injected": {},
+   "base_completed": true,
+   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "runner_regime": {
+    "pre_fault_regime_normal": true,
+    "recovery_regime_normal": true
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": true,
+    "recovery regime normal (INP>2.5, VGS>6)": true
+   },
+   "runner_acceptance_fails": [],
+   "verifier_fails": [],
+   "selftest_pass": true
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "injection": "pre-inp-low",
+   "injected": {
+    "inp_pre_min": 1.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "runner_regime": {
+    "pre_fault_regime_normal": false,
+    "recovery_regime_normal": true
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": false,
+    "recovery regime normal (INP>2.5, VGS>6)": true
+   },
+   "runner_acceptance_fails": [
+    "pre_fault_regime_normal"
+   ],
+   "verifier_fails": [
+    "pre-fault regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "injection": "pre-vgs-low",
+   "injected": {
+    "vgs_pre_min": 4.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "runner_regime": {
+    "pre_fault_regime_normal": false,
+    "recovery_regime_normal": true
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": false,
+    "recovery regime normal (INP>2.5, VGS>6)": true
+   },
+   "runner_acceptance_fails": [
+    "pre_fault_regime_normal"
+   ],
+   "verifier_fails": [
+    "pre-fault regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "injection": "pre-both-low",
+   "injected": {
+    "inp_pre_min": 1.0,
+    "vgs_pre_min": 4.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "runner_regime": {
+    "pre_fault_regime_normal": false,
+    "recovery_regime_normal": true
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": false,
+    "recovery regime normal (INP>2.5, VGS>6)": true
+   },
+   "runner_acceptance_fails": [
+    "pre_fault_regime_normal"
+   ],
+   "verifier_fails": [
+    "pre-fault regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "injection": "recov-inp-low",
+   "injected": {
+    "inp_recov_min": 1.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "runner_regime": {
+    "pre_fault_regime_normal": true,
+    "recovery_regime_normal": false
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": true,
+    "recovery regime normal (INP>2.5, VGS>6)": false
+   },
+   "runner_acceptance_fails": [
+    "recovery_regime_normal"
+   ],
+   "verifier_fails": [
+    "recovery regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "injection": "recov-vgs-low",
+   "injected": {
+    "vgs_recov_min": 4.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "e940863642b35b1288688e0b348271f0f212d5a74a0eb106a06c53632fb668ae",
+   "runner_regime": {
+    "pre_fault_regime_normal": true,
+    "recovery_regime_normal": false
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": true,
+    "recovery regime normal (INP>2.5, VGS>6)": false
+   },
+   "runner_acceptance_fails": [
+    "recovery_regime_normal"
+   ],
+   "verifier_fails": [
+    "recovery regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "injection": "control-unmodified",
+   "injected": {},
+   "base_completed": true,
+   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "runner_regime": {
+    "pre_fault_regime_normal": true,
+    "recovery_regime_normal": true
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": true,
+    "recovery regime normal (INP>2.5, VGS>6)": true
+   },
+   "runner_acceptance_fails": [],
+   "verifier_fails": [],
+   "selftest_pass": true
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "injection": "pre-inp-low",
+   "injected": {
+    "inp_pre_min": 1.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "runner_regime": {
+    "pre_fault_regime_normal": false,
+    "recovery_regime_normal": true
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": false,
+    "recovery regime normal (INP>2.5, VGS>6)": true
+   },
+   "runner_acceptance_fails": [
+    "pre_fault_regime_normal"
+   ],
+   "verifier_fails": [
+    "pre-fault regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "injection": "pre-vgs-low",
+   "injected": {
+    "vgs_pre_min": 4.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "runner_regime": {
+    "pre_fault_regime_normal": false,
+    "recovery_regime_normal": true
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": false,
+    "recovery regime normal (INP>2.5, VGS>6)": true
+   },
+   "runner_acceptance_fails": [
+    "pre_fault_regime_normal"
+   ],
+   "verifier_fails": [
+    "pre-fault regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "injection": "pre-both-low",
+   "injected": {
+    "inp_pre_min": 1.0,
+    "vgs_pre_min": 4.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "runner_regime": {
+    "pre_fault_regime_normal": false,
+    "recovery_regime_normal": true
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": false,
+    "recovery regime normal (INP>2.5, VGS>6)": true
+   },
+   "runner_acceptance_fails": [
+    "pre_fault_regime_normal"
+   ],
+   "verifier_fails": [
+    "pre-fault regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "injection": "recov-inp-low",
+   "injected": {
+    "inp_recov_min": 1.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "runner_regime": {
+    "pre_fault_regime_normal": true,
+    "recovery_regime_normal": false
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": true,
+    "recovery regime normal (INP>2.5, VGS>6)": false
+   },
+   "runner_acceptance_fails": [
+    "recovery_regime_normal"
+   ],
+   "verifier_fails": [
+    "recovery regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "injection": "recov-vgs-low",
+   "injected": {
+    "vgs_recov_min": 4.0
+   },
+   "base_completed": true,
+   "base_log_sha256": "24e4d12f0d31e89abfa147fb60bb464a39b0819cc79c97955e6950842b4bf970",
+   "runner_regime": {
+    "pre_fault_regime_normal": true,
+    "recovery_regime_normal": false
+   },
+   "verifier_regime": {
+    "pre-fault regime normal (INP>2.5, VGS>6)": true,
+    "recovery regime normal (INP>2.5, VGS>6)": false
+   },
+   "runner_acceptance_fails": [
+    "recovery_regime_normal"
+   ],
+   "verifier_fails": [
+    "recovery regime normal (INP>2.5, VGS>6)"
+   ],
+   "selftest_pass": true
+  }
+ ],
+ "logs_note": "Tur-3: ngspice re-run logs differed from the committed ones only in timing/memory statistics lines; committed logs kept (no timestamp-only diffs), log_sha256 refers to them"
 }
