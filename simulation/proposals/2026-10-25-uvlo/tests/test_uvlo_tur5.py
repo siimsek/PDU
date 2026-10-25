@@ -86,6 +86,14 @@ def verifier_tests():
     m = dipf(); [m.pop(k) for k in ('OUTA_F1', 'EN_F1', 'EN_LAG_F1', 'OUTA_R2', 'OUTA_RLAST', 'EN_R2', 'VGS_AT_EN_R2')]
     T.append(vt('V51g ride-through (OUTA never fell) -> no lag required, exit 0', {'d': DIPF}, {'d': m}, 0,
                 failed={'d': ['OUTA_F1', 'EN_F1', 'EN_R2', 'EN_LAG_F1']}))
+    # Tur-5 pilot finding (documented): with the latch the EN pull-down is instantaneous in the behavioural models, so OUTA
+    # and EN cross inside ONE solver time step and the interpolated TRIG/TARG lag can be a few ns negative (pilot5b: -0.38 ns
+    # forced pulse, -8 .. -40 ns slow VIN dips). A negative lag down to -M3_LAG_NUM_TOL (0.1 us = 10 % of the 1 us gate)
+    # is 'coincident within the step' and accepted; anything more negative stays FAIL (V51e -0.2 us, V51j -0.11 us).
+    T.append(vt('V51i EN_LAG_F1 -0.04 us (coincident within one solver step), printed times identical -> exit 0', {'d': DIPF},
+                {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275436, EN_LAG_F1=-0.04e-6)}, 0))
+    T.append(vt('V51j EN_LAG_F1 -0.11 us (beyond the 0.1 us step tolerance) -> exit != 0', {'d': DIPF},
+                {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275436, EN_LAG_F1=-0.11e-6)}, 'nonzero', check=in_acc_fail('d')))
     m = dipf(EN_F1=0.2600, OUTA_F1=0.26008); m.pop('EN_LAG_F1')
     T.append(vt('V51h EN already low before the OUTA fall -> M3 not applicable, no lag required, exit 0', {'d': DIPF}, {'d': m}, 0))
     # ---- V52 M1 print resolution (half_ulp6(0.26) = half_ulp6(0.32) = 0.5 us -> 1 us)
@@ -137,9 +145,13 @@ def design_tests():
         res.append((f'D52c {fn}: U22 (EN->GND) and U24 (CTT discharge) TMUX1101 follow the latch output', ok, (x22, x24)))
         ok = not any(e[0] in ('RST', 'CST', 'DST', 'DST2', 'DTT', 'RDIS', 'Bilkd') for e in els)
         res.append((f'D51b {fn}: Tur-3/4 stretcher + DTT/RDIS fast path removed from the candidate', ok, ''))
-        x28 = [e for e in els if e[0] == 'XU28']; g = [e for e in els if 'UVLO_GRDY' in e]
+        # Tur-5 pilot amendment (documented): the qualifier is instantiated as the LATCHED flag UVLO_GRDYL (wraps UVLO_GRDY)
+        # with RST = QINH_UV (6th node) - the property checked (EN low until GRDY) is unchanged; D53c checks the reset.
+        x28 = [e for e in els if e[0] == 'XU28']; g = [e for e in els if 'UVLO_GRDY' in e or 'UVLO_GRDYL' in e]
         ok = len(x28) == 1 and x28[0][1:5] == ['EN_BUCK', '0', '0', 'GRDY_UV'] and len(g) == 1 and g[0][3] == 'GRDY_UV'
         res.append((f'D53 {fn}: U28 gate-ready EN qualifier (EN low until GRDY)', ok, (x28, g)))
+        ok = len(g) == 1 and 'UVLO_GRDYL' in g[0] and g[0][1:3] == ['G_OVP', 'SRC_OVP'] and g[0][6] == 'QINH_UV'
+        res.append((f'D53c {fn}: gate-ready flag is latched and cleared by Q_INH (no EN edge from a VGS sag without VIN-OK loss)', ok, g))
         x26 = [e for e in els if e[0] == 'XU26']
         res.append((f'D53b {fn}: U26 direct OUTA_UV -> EN pull-down kept', len(x26) == 1 and x26[0][4] == 'OUTA_UV', x26))
     ok = all(s in lib for s in ('.subckt UVLO_LVC1G74', '.subckt UVLO_TMUX1101', '.subckt UVLO_GRDY'))
@@ -173,10 +185,35 @@ def design_tests():
     miss = [n for n in need if n not in C]
     bad = [n for n in need if n in C and not (C[n].get('regression') and C[n].get('expect') == 'FAIL')]
     res.append(('D57 no-reset forced-pulse regressions 1/5/10/50/100 us (C3 + O3, expect FAIL)', not miss and not bad, (miss[:4], bad)))
+    # Tur-5 pilot finding (documented, test RETARGETED, not deleted): a FORCED OUTA pulse bypasses the comparator load that
+    # caused the Tur-4 M3 lag (1.47-1.56 us), so tur4-fpulse-* did NOT reproduce a failure (pilot5/5b: PASS, regression not
+    # reproduced). The Tur-4 regression is therefore the VIN dip that failed M3 in run tur4-6f0ad2f (1.559 us); the forced
+    # pulses stay on the Tur-4 block as INFO (recorded, not expected to fail).
+    need = [f'{p}tur4-dip0v-{w}-typ-ttyp' for p in ('', 'o3-') for w in ('1ms', '300us')]
+    miss = [n for n in need if n not in C]
+    bad = [n for n in need if n in C and not (C[n].get('regression') and C[n].get('expect') == 'FAIL'
+                                              and C[n].get('en_force_max') == 1e-6)]
+    res.append(('D57b Tur-4 stretcher VIN-dip M3 regressions (C3 + O3, expect FAIL, M3 1 us gate)', not miss and not bad, (miss, bad)))
     need = [f'{p}tur4-fpulse-{w}-typ-ttyp' for p in ('', 'o3-') for w in ('1us', '50us')]
     miss = [n for n in need if n not in C]
-    bad = [n for n in need if n in C and not (C[n].get('regression') and C[n].get('expect') == 'FAIL')]
-    res.append(('D57b Tur-4 stretcher forced-pulse regressions (C3 + O3, expect FAIL)', not miss and not bad, (miss, bad)))
+    bad = [n for n in need if n in C and (C[n].get('regression') or C[n].get('expect') != 'INFO' or not C[n].get('forced_outa'))]
+    res.append(('D57c Tur-4 stretcher forced-pulse decks kept as INFO (forced pulse bypasses the Tur-4 load; not a regression)',
+                not miss and not bad, (miss, bad)))
+    # Tur-5 pilot finding: the cold-start window of the LATCH candidate must use the leak-free ramp (DTT / Bilkd removed),
+    # pilot5b start20-mbmin-tmin EN_R1 0.0931 s vs t_start_max 0.0867 s (analytic tmin ramp still had the 30 uA DTT leak).
+    import math as _m
+    def t_noleak(d):
+        rth = 1 / (1 / d['RTT'] + 1 / d['RHB']); vinf = (d['V5_P'] - d['VOHD']) / d['RTT'] * rth
+        vth = d['RK2'] / (d['RK1'] + d['RK2']) * d['V5_P'] + d['VIOB'] + d['HINTB'] / 2
+        return rth * d['CTT'] * _m.log(vinf / (vinf - vth))
+    TMJ = json.loads((PKG / 'test-cases-uvlo.json').read_text())['corners_timer']
+    bad = []
+    for n, c in C.items():
+        if n.replace('o3-', '').startswith('start20-') and not c.get('regression'):
+            want = t_noleak(TMJ[c['tm']]) + 0.009
+            if abs(c.get('t_start_max', 0) - want) > 1e-6:
+                bad.append((n, c.get('t_start_max'), round(want, 6)))
+    res.append(('D59 latch-candidate start windows use the leak-free timer ramp (no DTT on CTT any more)', not bad, bad[:4]))
     dk = PKG / 'decks' / 'uvlo-fpulse-1us-typ-ttyp.cir'
     t = dk.read_text() if dk.exists() else ''
     ok = 'Bfp OUTA_UV 0' in t and 'EN_LAG_F1' in t and 'QINH' in t.upper()
@@ -248,6 +285,22 @@ def unit_tests():
         tr, tf, gl = m.get('TR'), m.get('TF'), m.get('GMAX_LATE')
         ok = tr is not None and 0.00599 <= tr <= 0.0062 and tf is not None and 0.020 <= tf <= 0.020050 and gl is not None and gl < 0.5
         res.append(('L52 gate-ready: rises 5 ms after VGS >= 7 V, falls <= 50 us after VGS loss, 6.9 V never qualifies', ok, (tr, tf, gl)))
+    # L53 (Tur-5 pilot amendment): latched flag - qualifies 5 ms after VGS >= 7 V, IGNORES a VGS sag while RST is low,
+    # is cleared by RST and re-qualifies only 5 ms after RST release with VGS >= 7 V
+    b = (f'* latched gate-ready bench\n.include {lib}\nVCC VCC 0 5\nVS S 0 0\n'
+         'VG G 0 PWL(0 0 1m 0 1.01m 10 20m 10 20.001m 3 20.05m 3 20.051m 10 50m 10)\n'
+         'VR R 0 PWL(0 0 30m 0 30.001m 5 32m 5 32.001m 0 50m 0)\n'
+         'XG G S GRDY VCC 0 R UVLO_GRDYL\nRL GRDY 0 100k\n.tran 1u 50m 0 1u uic\n'
+         '.meas tran TR1 WHEN V(GRDY)=2.5 RISE=1\n.meas tran GMIN_SAG MIN V(GRDY) FROM=19.9m TO=29.9m\n'
+         '.meas tran TF1 WHEN V(GRDY)=2.5 FALL=1\n.meas tran TR2 WHEN V(GRDY)=2.5 RISE=2\n.end\n')
+    m, rc = run_bench(b)
+    if m is None:
+        res.append(('L53 latched gate-ready bench (ngspice)', False, rc))
+    else:
+        tr1, gs, tf1, tr2 = (m.get(k) for k in ('TR1', 'GMIN_SAG', 'TF1', 'TR2'))
+        ok = (tr1 is not None and 0.00599 <= tr1 <= 0.0062 and gs is not None and gs > 4.5 and tf1 is not None
+              and 0.030 <= tf1 <= 0.03005 and tr2 is not None and 0.03699 <= tr2 <= 0.0372)
+        res.append(('L53 latched gate-ready: set 5 ms after VGS >= 7 V, VGS sag ignored, cleared by RST, re-set 5 ms after RST release', ok, (tr1, gs, tf1, tr2)))
     return res
 
 

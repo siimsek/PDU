@@ -183,8 +183,13 @@ def design_tests():
     res.append(('D45 every candidate dip case requests M3 (EN low <= 1 us) and M4 (VGS >= 6 V at EN rise)', not bad, bad[:5]))
     dk = PKG / 'decks' / 'uvlo-dip0v-5us-typ-ttyp.cir'
     t = dk.read_text() if dk.exists() else ''
-    ok = all(f'VGS_AT_EN_R{i}' in t for i in (1, 2, 3)) and 'VGS_AT_EN_RLAST' in t and 'OUTA_F2' in t and 'OUTAD_MIN' in t
-    res.append(('D46 dip deck measures VGS at every EN rise, OUTA falls and OUTA_D min', ok, 'ok' if ok else 'missing'))
+    # Tur-5 RETARGET (UVLO-T5-01): OUTA_D only exists in the Tur-4 stretcher block. The candidate dip deck must carry the
+    # same VGS/OUTA measurements plus the latch-state equivalent (QINH_MAX); OUTAD_MIN is required in the Tur-4 regression deck.
+    t4 = PKG / 'decks' / 'uvlo-tur4-fpulse-1us-typ-ttyp.cir'
+    t4 = t4.read_text() if t4.exists() else ''
+    ok = (all(f'VGS_AT_EN_R{i}' in t for i in (1, 2, 3)) and 'VGS_AT_EN_RLAST' in t and 'OUTA_F2' in t and 'QINH_MAX' in t
+          and 'OUTAD_MIN' in t4)
+    res.append(('D46 dip deck measures VGS at every EN rise, OUTA falls and the latch state (Tur-4 regression deck: OUTA_D min)', ok, 'ok' if ok else 'missing'))
     reg = [n for n, c in C.items() if c.get('regression')]
     res.append(('D47 regressions kept (>= 9, all expect FAIL)', len(reg) >= 9 and all(C[n]['expect'] == 'FAIL' for n in reg), len(reg)))
     return res
