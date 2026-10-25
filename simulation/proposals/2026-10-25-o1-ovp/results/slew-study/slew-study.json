@@ -1,0 +1,680 @@
+{
+ "_status": "WP2 OPTION EXPLORATION - diagnostic only, NOT adopted (candidate RPU10 = 10 ohm); behavioral models; sim != silicon",
+ "variable": "RPU10 (PU_OVP -> G_OVP series resistor); PD path (RPD10) unchanged so turn-off/O1 budget unaffected",
+ "block_inc_sha256": "40c5d1702e5e3df57a7522da88f61c3188d99eb0bc5a2546e8375f5d15d455f0",
+ "lib_sha256": "1027d7d70e84284fe9baee8105a20499ff5ab13e91d5d4e3c3d56a0576124202",
+ "rows": [
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-typ",
+   "rpu10": "10",
+   "completed": false,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122645, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-typ.rpu10.ng.log",
+   "log_sha256": "aae79e3a7bac9302b8d6cc6095c892d0d3357c67f3238457435bc039424379b0",
+   "source_deck_sha256": "9df19208462d68caffe5264d39e2f946413f6a59fa4ba966e92a95d6101def68",
+   "measures": {},
+   "acceptance_fail": [],
+   "info_fail": []
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-typ",
+   "rpu10": "100",
+   "completed": false,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.012265, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-typ.rpu100.ng.log",
+   "log_sha256": "6a40195016e36fee6c5749ce6aa792f05e30ec92270973df5c21ad62c2ac41db",
+   "source_deck_sha256": "9df19208462d68caffe5264d39e2f946413f6a59fa4ba966e92a95d6101def68",
+   "measures": {},
+   "acceptance_fail": [],
+   "info_fail": []
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-typ",
+   "rpu10": "330",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-typ.rpu330.ng.log",
+   "log_sha256": "5f2c17f2b0043a88e80dbcc89f73997f2a1db6a3bb165ff56639a545f0d41927",
+   "source_deck_sha256": "9df19208462d68caffe5264d39e2f946413f6a59fa4ba966e92a95d6101def68",
+   "measures": {
+    "slew_vgs_1_6_t": 6.734845e-06,
+    "slew_fet_on_t": 0.0122716,
+    "slew_raw_max_startup": 11.66594,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300029,
+    "o1_global_peak": 11.48163,
+    "o1_peak": 11.48163,
+    "bus_peak": 11.48545,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59974,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_bench_startup_bus_max: 11.5686 V (ideal-LC bench start-up 0..24 ms, not a normal regime); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_bus_max: 11.3437 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3437 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-typ",
+   "rpu10": "1k",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-typ.rpu1k.ng.log",
+   "log_sha256": "de71978c14fe3048c544c3774c9023a1bf9956b11e0f07d4cfdb7a20bc7437bf",
+   "source_deck_sha256": "9df19208462d68caffe5264d39e2f946413f6a59fa4ba966e92a95d6101def68",
+   "measures": {
+    "slew_vgs_1_6_t": 2.037023e-05,
+    "slew_fet_on_t": 0.0122868,
+    "slew_raw_max_startup": 11.33944,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300028,
+    "o1_global_peak": 11.47488,
+    "o1_peak": 11.47488,
+    "bus_peak": 11.47868,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59965,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_bench_startup_bus_max: 11.1848 V (ideal-LC bench start-up 0..24 ms, not a normal regime); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_bus_max: 11.3406 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3406 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-wchi",
+   "rpu10": "10",
+   "completed": false,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122699, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-wchi.rpu10.ng.log",
+   "log_sha256": "de78a88380cbd35468581693012b2a4c07fd583331937184a86ae1ae3ec60dd9",
+   "source_deck_sha256": "484700ebe94ca73199170ece51da04d19073b6955c6133b05ab94f9cb294414a",
+   "measures": {},
+   "acceptance_fail": [],
+   "info_fail": []
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-wchi",
+   "rpu10": "100",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-wchi.rpu100.ng.log",
+   "log_sha256": "7b4a706db0343c2d1b3c4cb45f624215afbc758049ae60e41a16b2fc10eed821",
+   "source_deck_sha256": "484700ebe94ca73199170ece51da04d19073b6955c6133b05ab94f9cb294414a",
+   "measures": {
+    "slew_vgs_1_6_t": 2.043978e-06,
+    "slew_fet_on_t": 0.0122664,
+    "slew_raw_max_startup": 12.35253,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.030005,
+    "o1_global_peak": 11.89141,
+    "o1_peak": 11.89141,
+    "bus_peak": 11.89643,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59977,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_bench_startup_bus_max: 12.3257 V (ideal-LC bench start-up 0..24 ms, not a normal regime); vs 11.1605 V normal limit; > 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_bus_max: 11.3519 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3519 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-wchi",
+   "rpu10": "330",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-wchi.rpu330.ng.log",
+   "log_sha256": "70dc6b0604a67f1bf2505e1f47456dee9d2b8b0a3ea124cc9bf7aecaab9773c2",
+   "source_deck_sha256": "484700ebe94ca73199170ece51da04d19073b6955c6133b05ab94f9cb294414a",
+   "measures": {
+    "slew_vgs_1_6_t": 6.734792e-06,
+    "slew_fet_on_t": 0.0122716,
+    "slew_raw_max_startup": 11.66512,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.030005,
+    "o1_global_peak": 11.8854,
+    "o1_peak": 11.8854,
+    "bus_peak": 11.8904,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59974,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_bench_startup_bus_max: 11.5677 V (ideal-LC bench start-up 0..24 ms, not a normal regime); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_bus_max: 11.3516 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3516 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-wchi",
+   "rpu10": "1k",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-wchi.rpu1k.ng.log",
+   "log_sha256": "e1fa5a87822f16bc13423121884080d93a5757296ad96055fbc0cdee189bf2a4",
+   "source_deck_sha256": "484700ebe94ca73199170ece51da04d19073b6955c6133b05ab94f9cb294414a",
+   "measures": {
+    "slew_vgs_1_6_t": 2.037036e-05,
+    "slew_fet_on_t": 0.0122868,
+    "slew_raw_max_startup": 11.33556,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.030005,
+    "o1_global_peak": 11.88549,
+    "o1_peak": 11.88549,
+    "bus_peak": 11.89049,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59965,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_bench_startup_bus_max: 11.1845 V (ideal-LC bench start-up 0..24 ms, not a normal regime); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_bus_max: 11.3513 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3513 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-typ",
+   "rpu10": "10",
+   "completed": false,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122646, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "log": "results/slew-study/buck-short-c165-esr12m5-esl2n-typ.rpu10.ng.log",
+   "log_sha256": "843b5f2cd60977eff15a915e952bb5b4d27c73682fb4dc11334da8d67f27b9a7",
+   "source_deck_sha256": "fcff678f99707d76f0f42c37b994a5891826b519fb2c381b48beb47d5b543c1b",
+   "measures": {},
+   "acceptance_fail": [],
+   "info_fail": []
+  },
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-typ",
+   "rpu10": "100",
+   "completed": false,
+   "errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0122649, timestep = 1.25e-19: trouble with node \"imon_s2e\""
+   ],
+   "log": "results/slew-study/buck-short-c165-esr12m5-esl2n-typ.rpu100.ng.log",
+   "log_sha256": "7cdf55fcca2f2c4ccd6ccc8ae51571cfa8b8ffd8572e2011f3560b97a4601d4e",
+   "source_deck_sha256": "fcff678f99707d76f0f42c37b994a5891826b519fb2c381b48beb47d5b543c1b",
+   "measures": {},
+   "acceptance_fail": [],
+   "info_fail": []
+  },
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-typ",
+   "rpu10": "330",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c165-esr12m5-esl2n-typ.rpu330.ng.log",
+   "log_sha256": "eb398bb6349907eee4251a0a1ea70cfd1c0f54bb6eb7453a1c5ba7093b5ac0ef",
+   "source_deck_sha256": "fcff678f99707d76f0f42c37b994a5891826b519fb2c381b48beb47d5b543c1b",
+   "measures": {
+    "slew_vgs_1_6_t": 6.734699e-06,
+    "slew_fet_on_t": 0.0122717,
+    "slew_raw_max_startup": 11.66311,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300028,
+    "o1_global_peak": 11.48218,
+    "o1_peak": 11.48218,
+    "bus_peak": 11.48614,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59974,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_bench_startup_bus_max: 11.5654 V (ideal-LC bench start-up 0..24 ms, not a normal regime); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_bus_max: 11.3397 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3397 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-typ",
+   "rpu10": "1k",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c165-esr12m5-esl2n-typ.rpu1k.ng.log",
+   "log_sha256": "6ed1cfc47ada118bff5820a2ec010ecc69b56cbb9fd79fef86276f3fdab28647",
+   "source_deck_sha256": "fcff678f99707d76f0f42c37b994a5891826b519fb2c381b48beb47d5b543c1b",
+   "measures": {
+    "slew_vgs_1_6_t": 2.037037e-05,
+    "slew_fet_on_t": 0.0122868,
+    "slew_raw_max_startup": 11.33939,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300028,
+    "o1_global_peak": 11.48241,
+    "o1_peak": 11.48241,
+    "bus_peak": 11.48636,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59965,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_bench_startup_bus_max: 11.1844 V (ideal-LC bench start-up 0..24 ms, not a normal regime); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_bus_max: 11.3364 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3364 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "rpu10": "10",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-wchi.rpu10.ng.log",
+   "log_sha256": "bb73aaaf5a445cbbac220aeb8469f7cbe67de5d0c73c64590f1eb7ba2a1afdf3",
+   "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
+   "measures": {
+    "slew_vgs_1_6_t": 2.080883e-07,
+    "slew_fet_on_t": 0.0122643,
+    "slew_raw_max_startup": 11.20188,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300051,
+    "o1_global_peak": 11.89186,
+    "o1_peak": 11.89186,
+    "bus_peak": 11.89522,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59978,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_postfault_bus_max: 11.3519 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3519 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "rpu10": "100",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-wchi.rpu100.ng.log",
+   "log_sha256": "a1a4c4ea646a44a3df6727fae618177c5c3d7d9a2f77404dbaffe796d024c5b1",
+   "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
+   "measures": {
+    "slew_vgs_1_6_t": 2.04325e-06,
+    "slew_fet_on_t": 0.0122664,
+    "slew_raw_max_startup": 11.20188,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300051,
+    "o1_global_peak": 11.8891,
+    "o1_peak": 11.8891,
+    "bus_peak": 11.89247,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59977,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_postfault_bus_max: 11.3518 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3518 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "rpu10": "330",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-wchi.rpu330.ng.log",
+   "log_sha256": "5bd6dcb5c9c429b3f0f01e6b3811fda73dfc19e69f848defe39cad86ce172a23",
+   "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
+   "measures": {
+    "slew_vgs_1_6_t": 6.734831e-06,
+    "slew_fet_on_t": 0.0122716,
+    "slew_raw_max_startup": 11.20188,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300051,
+    "o1_global_peak": 11.89145,
+    "o1_peak": 11.89145,
+    "bus_peak": 11.89482,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59974,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_postfault_bus_max: 11.3518 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3518 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-c185-esr12m5-wchi",
+   "rpu10": "1k",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-wchi.rpu1k.ng.log",
+   "log_sha256": "2dd8abd7b87e5942512e17a3b7eaa2befb66f5f5dc1ec6c487846bc1148f43ab",
+   "source_deck_sha256": "a8f155652a2eddd233974995319096c84c304f33b847d7291349e321a5aea97d",
+   "measures": {
+    "slew_vgs_1_6_t": 2.037028e-05,
+    "slew_fet_on_t": 0.0122868,
+    "slew_raw_max_startup": 11.20188,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300051,
+    "o1_global_peak": 11.89203,
+    "o1_peak": 11.89203,
+    "bus_peak": 11.89541,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59965,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "INFO:info_postfault_bus_max: 11.3515 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3515 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-rev1-c92-esr12m5-wchi",
+   "rpu10": "10",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-rev1-c92-esr12m5-wchi.rpu10.ng.log",
+   "log_sha256": "05c0f55101a3f057233f43e5e63236f503046cfd6e8f0c8e1e6c45ad3cff7645",
+   "source_deck_sha256": "c63d42da7368ca70a88446a3a0917b1c809f166bf625c447833fe65f3ddc1a41",
+   "measures": {
+    "slew_vgs_1_6_t": 2.078884e-07,
+    "slew_fet_on_t": 0.0122643,
+    "slew_raw_max_startup": 11.19149,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300042,
+    "o1_global_peak": 12.03166,
+    "o1_peak": 12.03166,
+    "bus_peak": 12.03571,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59978,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "O1_input_rating: 12.0317 V peak vs 12.0 V instantaneous",
+    "O1_GLOBAL_PEAK: 12.0317 V max over the whole run vs 12.0 V instantaneous",
+    "INFO:info_postfault_bus_max: 11.321 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.321 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-rev1-c92-esr12m5-wchi",
+   "rpu10": "100",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-rev1-c92-esr12m5-wchi.rpu100.ng.log",
+   "log_sha256": "95d77ebd6fc92c9dc811203e3c7780a5c8d1dda3dcaa82f8e1fbdff2ed6f66dc",
+   "source_deck_sha256": "c63d42da7368ca70a88446a3a0917b1c809f166bf625c447833fe65f3ddc1a41",
+   "measures": {
+    "slew_vgs_1_6_t": 2.043491e-06,
+    "slew_fet_on_t": 0.0122664,
+    "slew_raw_max_startup": 11.19149,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300042,
+    "o1_global_peak": 12.03722,
+    "o1_peak": 12.03722,
+    "bus_peak": 12.0413,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59977,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "O1_input_rating: 12.0372 V peak vs 12.0 V instantaneous",
+    "O1_GLOBAL_PEAK: 12.0372 V max over the whole run vs 12.0 V instantaneous",
+    "INFO:info_postfault_bus_max: 11.3213 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3213 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-rev1-c92-esr12m5-wchi",
+   "rpu10": "330",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-rev1-c92-esr12m5-wchi.rpu330.ng.log",
+   "log_sha256": "38b391b388ceba306086c14a6b0dfc58d0c67f69f3844a439ae8aa5581a9ac25",
+   "source_deck_sha256": "c63d42da7368ca70a88446a3a0917b1c809f166bf625c447833fe65f3ddc1a41",
+   "measures": {
+    "slew_vgs_1_6_t": 6.734811e-06,
+    "slew_fet_on_t": 0.0122716,
+    "slew_raw_max_startup": 11.19149,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300042,
+    "o1_global_peak": 12.03864,
+    "o1_peak": 12.03864,
+    "bus_peak": 12.04272,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59974,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "O1_input_rating: 12.0386 V peak vs 12.0 V instantaneous",
+    "O1_GLOBAL_PEAK: 12.0386 V max over the whole run vs 12.0 V instantaneous",
+    "INFO:info_postfault_bus_max: 11.3214 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3214 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "buck-short-rev1-c92-esr12m5-wchi",
+   "rpu10": "1k",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-rev1-c92-esr12m5-wchi.rpu1k.ng.log",
+   "log_sha256": "0a1406d93f4f6a686c216adc98daf01ec14f72968d7fba71150d9319291900d4",
+   "source_deck_sha256": "c63d42da7368ca70a88446a3a0917b1c809f166bf625c447833fe65f3ddc1a41",
+   "measures": {
+    "slew_vgs_1_6_t": 2.037022e-05,
+    "slew_fet_on_t": 0.0122868,
+    "slew_raw_max_startup": 11.19149,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.0300042,
+    "o1_global_peak": 12.03906,
+    "o1_peak": 12.03906,
+    "bus_peak": 12.04314,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59965,
+    "bus_normal_max": 11.03144
+   },
+   "acceptance_fail": [],
+   "info_fail": [
+    "O1_input_rating: 12.0391 V peak vs 12.0 V instantaneous",
+    "O1_GLOBAL_PEAK: 12.0391 V max over the whole run vs 12.0 V instantaneous",
+    "INFO:info_postfault_bus_max: 11.3212 V (bus 46..50 ms: fault just removed, bench loads still off, OVP re-closing at its release level); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)",
+    "INFO:info_postfault_o1_max: 11.3212 V (O1 46..50 ms: same post-fault window); vs 11.1605 V normal limit; <= 12.0 V O1 limit (O1 limit is asserted by O1_GLOBAL_PEAK)"
+   ]
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "rpu10": "10",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/efuse-ovp-s023-wchi.rpu10.ng.log",
+   "log_sha256": "e058958895acd007c817d85f584d0d67e2f3cb0dd6f76daf9077de49e9213111",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "measures": {
+    "slew_vgs_1_6_t": 2.089118e-07,
+    "slew_fet_on_t": 0.00769173,
+    "slew_raw_max_startup": 11.0,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.015004,
+    "o1_global_peak": 11.1126,
+    "o1_peak": 11.1126,
+    "bus_peak": 11.93557,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59986,
+    "bus_pre_max": 10.99984
+   },
+   "acceptance_fail": [],
+   "info_fail": []
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "rpu10": "100",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/efuse-ovp-s023-wchi.rpu100.ng.log",
+   "log_sha256": "d4bab3691b8f44813ed053d68514b123822eac263c3bd48480b64319084d7cda",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "measures": {
+    "slew_vgs_1_6_t": 2.042449e-06,
+    "slew_fet_on_t": 0.0076938,
+    "slew_raw_max_startup": 11.0,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.015004,
+    "o1_global_peak": 11.64916,
+    "o1_peak": 11.64916,
+    "bus_peak": 11.93913,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59985,
+    "bus_pre_max": 10.99983
+   },
+   "acceptance_fail": [],
+   "info_fail": []
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "rpu10": "330",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/efuse-ovp-s023-wchi.rpu330.ng.log",
+   "log_sha256": "77e54f620862db2754197ad6d4867a02fb625836dd208ccbf631ba688a0ee0ef",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "measures": {
+    "slew_vgs_1_6_t": 6.73023e-06,
+    "slew_fet_on_t": 0.00769904,
+    "slew_raw_max_startup": 11.0,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.015004,
+    "o1_global_peak": 11.11278,
+    "o1_peak": 11.11278,
+    "bus_peak": 11.9393,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59982,
+    "bus_pre_max": 10.99981
+   },
+   "acceptance_fail": [
+    "recovery_regime_normal: 25.1..40 ms: INP min 4.999 V (>2.5), VGS min 2.563 V (>6)"
+   ],
+   "info_fail": []
+  },
+  {
+   "case": "efuse-ovp-s023-wchi",
+   "rpu10": "1k",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/efuse-ovp-s023-wchi.rpu1k.ng.log",
+   "log_sha256": "2316147e5dc014674dfb628860373665341931c68b67636aa2421c9f12b3cd88",
+   "source_deck_sha256": "06c47a4791b49097996aaba3af205f896ed971769956ab848dd04a9deddf6992",
+   "measures": {
+    "slew_vgs_1_6_t": 2.033785e-05,
+    "slew_fet_on_t": 0.00771419,
+    "slew_raw_max_startup": 11.0,
+    "info_startup_inp_min": 4.999499,
+    "info_startup_vgs_fall_t": 0.015004,
+    "o1_global_peak": 11.1118,
+    "o1_peak": 11.1118,
+    "bus_peak": 11.93552,
+    "inp_pre_min": 4.999499,
+    "vgs_pre_min": 11.59973,
+    "bus_pre_max": 10.99976
+   },
+   "acceptance_fail": [
+    "recovery_regime_normal: 25.1..40 ms: INP min 4.999 V (>2.5), VGS min 0.9313 V (>6)"
+   ],
+   "info_fail": []
+  }
+ ],
+ "startup_probes": [
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-typ",
+   "rpu10": "10",
+   "tran_stop": "12.2644m",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-typ.probe-startup.ng.log",
+   "log_sha256": "baf7bb7e67e5ca91c04a210d62ebebd75fb4953cd861f31c6c8676a0d7a9fd33",
+   "source_deck_sha256": "9df19208462d68caffe5264d39e2f946413f6a59fa4ba966e92a95d6101def68",
+   "measures": {
+    "probe_inp_min": 0.0,
+    "probe_inp_fall_t": 0.0122642,
+    "probe_raw_max": 13.33225,
+    "probe_vgs_max": 6.900543,
+    "probe_fet_on_t": 0.0122643,
+    "probe_o1_max": 0.007281078,
+    "probe_bus_max": 13.33414
+   },
+   "startup_comparator_fired": true
+  },
+  {
+   "case": "buck-short-c185-esr12m5-esl2n-wchi",
+   "rpu10": "10",
+   "tran_stop": "12.2695m",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c185-esr12m5-esl2n-wchi.probe-startup.ng.log",
+   "log_sha256": "edb37c91cc87531605684aec9cb2881d4710e9a20927f4180651477ea75974a5",
+   "source_deck_sha256": "484700ebe94ca73199170ece51da04d19073b6955c6133b05ab94f9cb294414a",
+   "measures": {
+    "probe_inp_min": 5.075505e-09,
+    "probe_inp_fall_t": 0.0122642,
+    "probe_raw_max": 13.33444,
+    "probe_vgs_max": 8.613234,
+    "probe_fet_on_t": 0.0122644,
+    "probe_o1_max": 0.02432488,
+    "probe_bus_max": 13.33648
+   },
+   "startup_comparator_fired": true
+  },
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-typ",
+   "rpu10": "10",
+   "tran_stop": "12.2644m",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c165-esr12m5-esl2n-typ.probe-startup.ng.log",
+   "log_sha256": "0734b639d625154005e92b3b3845c3090f8979e2d5f73f96911f4c3e9e0923c6",
+   "source_deck_sha256": "fcff678f99707d76f0f42c37b994a5891826b519fb2c381b48beb47d5b543c1b",
+   "measures": {
+    "probe_inp_min": 0.0,
+    "probe_inp_fall_t": 0.0122643,
+    "probe_raw_max": 13.33672,
+    "probe_vgs_max": 6.187438,
+    "probe_fet_on_t": 0.0122644,
+    "probe_o1_max": 0.007284573,
+    "probe_bus_max": 13.33379
+   },
+   "startup_comparator_fired": true
+  },
+  {
+   "case": "buck-short-c165-esr12m5-esl2n-wchi",
+   "rpu10": "10",
+   "tran_stop": "12.2695m",
+   "completed": true,
+   "errors": [],
+   "log": "results/slew-study/buck-short-c165-esr12m5-esl2n-wchi.probe-startup.ng.log",
+   "log_sha256": "8c46850c30a0d0e6c25d1f730edfed9fbf8b59139aebfdec3506833bd15d9783",
+   "source_deck_sha256": "02304a440248c4b76f0162ac4205d44a9d252be342ffa0d01449b35b8c47181b",
+   "measures": {
+    "probe_inp_min": 0.0,
+    "probe_inp_fall_t": 0.0122642,
+    "probe_raw_max": 13.33222,
+    "probe_vgs_max": 8.613214,
+    "probe_fet_on_t": 0.0122643,
+    "probe_o1_max": 0.02437738,
+    "probe_bus_max": 13.33389
+   },
+   "startup_comparator_fired": true
+  }
+ ]
+}
