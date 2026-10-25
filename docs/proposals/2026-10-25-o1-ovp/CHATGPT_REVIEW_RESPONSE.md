@@ -175,3 +175,19 @@ Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok). Tur 7'de W
 
 ## Karar (Tur 7 sonrası)
 **WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık bloklayıcılar değişmedi: P0-03 (4 ESL deck; WP2 bağlantılı), P0-05/N-01 (U3 maskeleme; B13), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı.
+
+# Tur 8 – ChatGPT birleşik incelemesi (PR yorumu 6395614957, HEAD `f923347`; WP1 bölümü) yanıtı
+
+Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok). İnceleyici Tur 7 kontrol sayılarını kayıtlı dosyalarla tutarlı buldu ve Tur 7'de ngspice'ın yeniden koşulmadığını (yalnız denetleyici/koruma durumunun doğrulandığını) doğru not etti. Bu turda WP1 deck'leri, modelleri, limitleri, toleransları, `run_o1ovp.py`, `verify_candidate.py` (sha256 `599b877b…60a2`) ve WP1 sonuçları **değişmedi**; bu yüzden yeni WP1 ngspice kabul koşusu yapılmadı ve yeni simülasyon kanıtı iddia edilmiyor. Ortak değişiklik: `.github/workflows/proposal-ngspice.yml` yalnız WP2 `uvlo` işinde değişti (kurulum hatası artık ölümcül, rc kontrolü, O3 testi); WP1 `o1-ovp` işi değişmedi. Dosya WP1 MANIFEST'inde izlendiği için MANIFEST güncellendi.
+
+**Kontrol amaçlı yeniden çalıştırma (2026-10-25 ~12:30 TSİ, commit'li `wp1-rev3-tur6` logları üzerinde, HEAD `873a94a`):** `verify_candidate.py` exit **2** (1766 kontrol, 0 sayısal FAIL, 4 MISSING – `buck-short-c185/c165-esr12m5-esl2n` × wchi/typ); `--baseline-regression` exit **1** (baseline O1 **16,89 V** > 12,0 V, beklenen FAIL); `guard_negative_test.py` **29/29**.
+
+| # | Bulgu (Tur 8) | Doğrulama | Durum | Commit / kanıt |
+|---|---|---|---|---|
+| **Tur 7 kontrolü** | Kayıtlı sayılar tutarlı; Tur 7 yeni simülasyon kanıtı değil | Doğru; bu turda da aynı sayılar yeniden üretildi | **tutarlı** | yukarıdaki kontrol |
+| **WP1-01 / P0-03** | 4 ESL deck ~12,264–12,270 ms'de duruyor (RAW ~13,33 V çınlama, komparatör tetik). Sabit RPU10 = 330/1000 Ω seçilmemeli (s023 toparlanma VGS 2,563/0,931 V < 6 V). Önerilen yol: 10 Ω hızlı kapamayı koru, ayrı açılış eğim sınırını RAW sönümleme ile karşılaştır, 4 ESL deck + tam kabul matrisi, sonra B19. Çözücü değişikliği tasarım çözümü değildir | Doğru; RPU10 değişikliği uygulanmadı, kriter/tolerans gevşetilmedi | **açık (ana bloklayıcı)** | değişiklik yok; sonraki tur için iş kalemi |
+| **WP1-02 / P0-05 / N-01** | U3 mandallamaz varsayımıyla VOUT 12,50435 / 13,03882 V > 12,0 V; düşük O1 tepe değeri davranışsal U3 mandalına dayanıyor. U3 yok/mandallamaz iken güvenli OVP ya da garantili silikon + B10/B13 (−40 °C, 100 mΩ) | Doğru | **açık (kritik)** | simülasyonla kapatılamaz; tezgâh yapılmadı |
+| **P1** | SOA (B18), KiCad aktarımı, WP3 döngü kararlılığı | Doğru | **açık** | değişiklik yok |
+
+## Karar (Tur 8 sonrası)
+**WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık bloklayıcılar: P0-03 (4 ESL deck), P0-05/N-01 (U3 maskeleme; B13), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı. Simülasyon fiziksel ölçüm değildir.
