@@ -412,6 +412,10 @@ def gen_scenarios():
     for name, dt, gap in (('dbldip0v-300us-20ms', 0.0003, 0.020), ('dbldip0v-1ms-40ms', 0.001, 0.040)):
         for uv, tm, ovp, ib in (('typ', 'ttyp', 'typ', '345u'), ('mbmin', 'tmin', 'wclo', '100u')):
             dip_deck(name, [(0.0, dt), (0.0, dt)], 1.0, 'PASS', uv, tm, ovp, ib, gap=gap)
+    # T3-02 review: a double dip whose second OUTA restoration occurs while the 60 ms count is running:
+    # 0 V 1 ms, gap 30 ms, then 0 V 50 ms (long enough that VIN-OK is lost again with the buck still off)
+    for uv, tm, ovp, ib in (('typ', 'ttyp', 'typ', '345u'), ('mbmin', 'tmin', 'wclo', '100u')):
+        dip_deck('dbldip0v-1ms-30ms-50ms', [(0.0, 0.001), (0.0, 0.050)], 1.0, 'PASS', uv, tm, ovp, ib, gap=0.030)
     # ---- G: hot-plug, stiff source (R_total 0.03 ohm, 1 uH), 1 us edge
     gen_hotplug()
 
