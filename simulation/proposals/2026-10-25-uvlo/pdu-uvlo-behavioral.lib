@@ -96,6 +96,69 @@ Riq VDD GND 1Meg
 .ends UVLO_TMUX1102
 
 * ---------------------------------------------------------------------------------------------
+* Tur-5 (2026-10-25, review 6400663804 UVLO-T5-01/02) latch candidate models.
+* UVLO_TMUX1101: TMUX1101 SPST, switch ON when SEL HIGH (SCDS410D: TMUX1101 = inverted-logic TMUX1102, same RON /
+*  leakage / VIH / VIL rows). Same soft-band threshold VTH as UVLO_TMUX1102 (corners 0.87 / 1.49 V).
+.subckt UVLO_TMUX1101 D S GND SEL VDD RON=1.8 ILK=0 VTH=1.18
+Bsw D S I=V(D,S)*(1n+min(max((V(SEL,GND)-{VTH})/0.1+0.5,0),1)*min(max((V(VDD,GND)-1.08)/0.1,0),1)/{RON})
+Ilk D GND {ILK}
+Riq VDD GND 1Meg
+.ends UVLO_TMUX1101
+
+* UVLO_LVC1G74: SN74LVC1G74 (SCES203) D flip-flop, ONLY the asynchronous inputs are modelled (D and CLK are tied
+*  to GND in the candidate). PRE# and CLR# active low, input threshold VTR*VCC (VIL max 0.3*VCC / VIH min 0.7*VCC
+*  -> VTR corners 0.3 / 0.7; 0.5 default). Function table: PRE=L CLR=H -> Q=H; PRE=H CLR=L -> Q=L;
+*  PRE=L CLR=L -> Q=H AND Q#=H (non-stable state, but defined); PRE=H CLR=H -> hold.
+*  Output resistance RO ~22 ohm (I: VOH 3.8 V @ -32 mA, VCC 4.5 V). No propagation delay (tpd < 10 ns << 1 us).
+.subckt UVLO_LVC1G74 PREN CLRN Q QN VCC GND VTR=0.5 RO=22
+Bst GND st I=(if(V(PREN,GND)<{VTR}*V(VCC,GND),1,if(V(CLRN,GND)<{VTR}*V(VCC,GND),0,if(V(st,GND)>0.5,1,0)))-V(st,GND))/1k
+Cst st GND 1p
+Rst st GND 1T
+Bq qi GND V=V(VCC,GND)*min(max(V(st,GND),0),1)
+Rq qi Q {RO}
+Bqn qni GND V=V(VCC,GND)*if(V(PREN,GND)<{VTR}*V(VCC,GND),if(V(CLRN,GND)<{VTR}*V(VCC,GND),1,0),1-min(max(V(st,GND),0),1))
+Rqn qni QN {RO}
+Riq VCC GND 1Meg
+.ends UVLO_LVC1G74
+
+* UVLO_GRDY: gate-ready qualifier (Tur-5 UVLO-T5-03). BEHAVIOURAL / ASSUMPTION class: the physical detector
+*  (level shift of VGS of the high-side FET + comparator + timer) and its part are NOT designed (open item).
+*  OUT goes high only after V(G,S) >= VRDY has been held continuously for TQ; any VGS loss below VRDY resets the
+*  qualification within ~0.1 us (tau 100 ns; first pilot used 10 us, which left a ~2 us blind sag and a partial
+*  OUT level after short sags - fixed before acceptance). OUT = VCC (25 ohm) when qualified, else 0.
+.subckt UVLO_GRDY G S OUT VCC GND VRDY=7.0 TQ=5m
+Bon on GND V=min(max((V(G,S)-{VRDY})/0.05+0.5,0),1)
+Ron on GND 1G
+Bqc GND qc I=V(on,GND)*1n/{TQ}*min(max((1.2-V(qc,GND))/0.01,0),1)-V(qc,GND)*(1-V(on,GND))*1e-2
+Cqc qc GND 1n
+Rqc qc GND 1G
+Bo oi GND V=V(VCC,GND)*min(max((V(qc,GND)-0.99)/0.02,0),1)
+Ro oi OUT 25
+Riq VCC GND 1Meg
+.ends UVLO_GRDY
+
+* UVLO_GRDYL: LATCHED gate-ready flag (Tur-5 UVLO-T5-03, pilot finding 2026-10-25): UVLO_GRDY-type qualifier + set/reset
+*  flag. The flag is CLEARED while RST (= latch Q_INH) is high and SET once the qualifier output is high with RST low;
+*  afterwards it stays set until the next RST. Reason: a non-latched qualifier pulled EN low on a brief VGS sag during
+*  an UNDETECTED 50 us 0 V dip (no VIN-OK loss) and EN rose again ~1.8 ms later without any timer ramp (pilot
+*  dbldip0v-50us-gap100us-typ-ttyp, M1 FAIL). With the flag, gate readiness gates every restart that follows a VIN-OK
+*  loss (M4) and never creates an EN edge of its own. BEHAVIOURAL / ASSUMPTION: physical part NOT designed (open item).
+.subckt UVLO_GRDYL G S OUT VCC GND RST VRDY=7.0 TQ=5m VTR=0.5
+* qualifier as in UVLO_GRDY, additionally held reset while RST is high (fresh TQ qualification after every RST release)
+Brs rs GND V=min(max((V(RST,GND)-{VTR}*V(VCC,GND))/0.05+0.5,0),1)
+Bon on GND V=min(max((V(G,S)-{VRDY})/0.05+0.5,0),1)*(1-V(rs,GND))
+Ron on GND 1G
+Bqc GND qc I=V(on,GND)*1n/{TQ}*min(max((1.2-V(qc,GND))/0.01,0),1)-V(qc,GND)*(1-V(on,GND))*1e-2
+Cqc qc GND 1n
+Rqc qc GND 1G
+Brd GND rd I=(if(V(rs,GND)>0.5,0,if(V(qc,GND)>1.0,1,if(V(rd,GND)>0.5,1,0)))-V(rd,GND))/1k
+Crd rd GND 1p
+Rrd rd GND 1T
+Bo oi GND V=V(VCC,GND)*min(max(V(rd,GND),0),1)
+Ro oi OUT 25
+.ends UVLO_GRDYL
+
+* ---------------------------------------------------------------------------------------------
 * UVLO_LIPO: 6S LiPo + harness Thevenin model (IDEAL/ASSUMPTION class). EMF from the control
 * node (V(EMF) set by the deck), R0 ohmic, R1||C1 polarisation (tau ACCELERATED to TAU so that the
 * full polarisation drop appears within the simulated window = conservative), cable L and R.

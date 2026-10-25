@@ -13,30 +13,28 @@ RR2U REFD_UV 0 {RR2U}
 CRU REFD_UV 0 10n
 XU20A S_UV REFD_UV V5_OVP 0 OUTA_UV UVLO_CMP VIO={VIOA} HINT={HINTA} VOHD={VOHD} VOL={VOL} IBP=0 IBN={-IM_U}
 C20 V5_OVP 0 100n
-* --- channel B: ratiometric restart timer. CT charges from OUTA via RTT, discharged fast by DTT+RDIS when OUTA drops.
+* --- channel B: ratiometric restart timer. CT charges from OUTA via RTT; discharged ONLY by U24 while the U27 latch is set (Tur-5).
 RTT OUTA_UV T_UV {RTT}
 CTT T_UV 0 {CTT}
-DTT T_UV DTK_UV UVLO_1N4148WS
-RDIS DTK_UV OUTA_UV 100
-Bilkd OUTA_UV T_UV I={ILKD}*min(max(V(OUTA_UV,T_UV)/0.5,0),1)
 RHB OUTB_UV T_UV {RHB}
-* --- Tur-3 UVLO-T3-02 (candidate): CTT fast reset + Schmitt timer comparator
-* OUTA_D = OUTA stretched: rises slowly via RST/CST, falls fast via DST (BAT54A common anode at OUTA_D; cathodes to OUTA_UV
-* and V5_OVP, the latter also discharges OUTA_D when V5 collapses). BAT54 parameters: generic (ASSUMPTION).
-RST OUTA_UV OUTA_D {RST}
-CST OUTA_D 0 {CST}
-DST OUTA_D OUTA_UV UVLO_BAT54
-DST2 OUTA_D V5_OVP UVLO_BAT54
-* U24 TMUX1102: CTT -> RDSC -> GND while SEL24 = OUTA_D*RSB/(RSA+RSB) is below the TMUX logic threshold (VTHS corner).
-* Holds CTT near 0 V until OUTA_D (and VIN-OK) has been stable for T_HOLD (>= 7.9 ms analytic), then the timer runs from ~0 V.
-RSA OUTA_D SEL24_UV {RSA}
-RSB SEL24_UV 0 {RSB}
-RDSC T_UV DSC_UV {RDSC}
-XU24 DSC_UV 0 0 SEL24_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0 VTH={VTHS}
+* --- Tur-5 UVLO-T5-01/02 (candidate): reset-dominant latch U27 instead of the Tur-3/4 RC stretcher.
+* U27 SN74LVC1G74 (only the asynchronous inputs are used; D and CLK tied to GND): PRE# = OUTA_UV -> ANY VIN-OK loss,
+* however short, sets Q_INH high. CLR# = U29 output, low only while CTT < V_CLR. PRE#=CLR#=L -> Q high (function table),
+* so the inhibit dominates while VIN is not OK. The latch clears only when VIN is OK AND CTT has been discharged below
+* V_CLR -> every restart ramps from <= V_CLR,max (no partial-reset path, no pulse-width dependence).
+XU27 OUTA_UV CLR_UV QINH_UV QNINH_UV V5_OVP 0 UVLO_LVC1G74 VTR={VTRL}
+C27 V5_OVP 0 100n
+* U29 TLV3201 (SBOS561C, TLV3202 rows used): CLR# = (CTT > REFC_UV); REFC_UV = VREF_OVP * RC2/(RC1+RC2)
+RC1 VREF_OVP REFC_UV {RC1}
+RC2 REFC_UV 0 {RC2}
+CRC REFC_UV 0 10n
+XU29 T_UV REFC_UV V5_OVP 0 CLR_UV UVLO_CMP VIO={VIOC} HINT={HINTC} VOHD={VOHD} VOL={VOL}
+C29 V5_OVP 0 100n
+* U24 TMUX1101 (ON while SEL high): CTT -> RDSC -> GND while Q_INH is high
+RDSC T_UV DSC_UV {RDSCL}
+XU24 DSC_UV 0 0 QINH_UV V5_OVP UVLO_TMUX1101 RON={RON_U} ILK=0 VTH={VTHS}
 C24 V5_OVP 0 100n
-* U25 TMUX1102: RK1A in the upper threshold leg only while OUTB is LOW (switch ON when SEL low):
-* OUTB low -> (RK1A+RON)||RK4 = RK1 eff 10.0k, threshold ~3.9 V (unchanged); OUTB high -> KTH = V5*RK2/(RK4+RK2) ~ 0.80 V,
-* so after a PARTIAL CTT discharge the timer output stays high (no restart) until CTT < V_L, then a full ramp >= 67.8 ms follows.
+* U25 TMUX1102: RK1A in the upper threshold leg only while OUTB is LOW (Tur-3 Schmitt, unchanged)
 RK1A V5_OVP K1_UV {RK1A}
 XU25 K1_UV KTH_UV 0 OUTB_UV V5_OVP UVLO_TMUX1102 RON={RON_K} ILK=0 VTH={VTHS}
 RK4 V5_OVP KTH_UV {RK4}
@@ -45,13 +43,15 @@ CK KTH_UV 0 10n
 XU20B T_UV KTH_UV V5_OVP 0 OUTB_UV UVLO_CMP VIO={VIOB} HINT={HINTB} VOHD={VOHD} VOL={VOL}
 RDEN OUTB_UV EN_BUCK 10k
 * U22 TMUX1102 (2026-10-25 fix, dip0v-300us-mbmin-tmin): EN_BUCK -> GND while OUTA_UV LOW (VIN not OK).
-* Tur-3: SEL = OUTA_D (stretched) so EN also stays low during the reset hold.
-* Stops the buck at once when UV is detected, instead of waiting for the timer comparator (CTT discharge, ~0.14 ms).
-XU22 EN_BUCK 0 0 OUTA_D V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0
+* Tur-5: U22 is a TMUX1101 driven by the latch Q_INH (EN held low until the latch clears).
+XU22 EN_BUCK 0 0 QINH_UV V5_OVP UVLO_TMUX1101 RON={RON_U} ILK=0 VTH={VTHS}
 C22 V5_OVP 0 100n
-* U26 TMUX1102 (Tur-4 T4-05): EN_BUCK -> GND directly while OUTA_UV LOW (no stretcher in the path; EN low <= 1 us gate M3).
+* U26 TMUX1102 (Tur-4 T4-05): EN_BUCK -> GND directly while OUTA_UV LOW (no latch/stretcher in the path; M3 gate).
 XU26 EN_BUCK 0 0 OUTA_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0
 C26 V5_OVP 0 100n
-* 1N4148WS: generic small-signal diode parameters (ASSUMPTION, typical-class; reverse leakage is Bilkd)
-.model UVLO_BAT54 D(Is=1e-7 N=1.05 Rs=2.4 Cjo=10p Bv=30 Ibv=2u)
-.model UVLO_1N4148WS D(Is=2.52n N=1.752 Rs=0.568 Cjo=4p Bv=100 Ibv=100u)
+* U28 TMUX1102 + gate-ready qualifier (Tur-5 UVLO-T5-03): EN_BUCK -> GND until VGS(Q OVP FET) >= VRDY for TQ_GRDY.
+* The qualifier is BEHAVIOURAL / ASSUMPTION (UVLO_GRDYL): its physical detector and part are NOT designed (open item).
+* Latched flag: cleared while Q_INH is high, set after VGS >= VRDY for TQ_GRDY, then held until the next Q_INH.
+XG28 G_OVP SRC_OVP GRDY_UV V5_OVP 0 QINH_UV UVLO_GRDYL VRDY={VRDY} TQ={TQ_GRDY}
+XU28 EN_BUCK 0 0 GRDY_UV V5_OVP UVLO_TMUX1102 RON={RON_U} ILK=0
+C28 V5_OVP 0 100n
