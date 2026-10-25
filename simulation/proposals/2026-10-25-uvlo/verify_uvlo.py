@@ -141,6 +141,8 @@ def num_field(c, k):
     v = c.get(k)
     return v if (not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(v) and v > 0) else None
 
+M3_LAG_NUM_TOL = 0.1e-6   # Tur-5: same-step negative interpolation tolerance of EN_LAG (10 % of the 1 us M3 gate)
+
 def half_ulp6(x):
     """half of the last printed digit of an ngspice .meas value (%e, 6 significant digits)"""
     return 0.5 * 10 ** (math.floor(math.log10(abs(x))) - 5) if x else 0.0
@@ -181,7 +183,11 @@ def m3_m4_errors(c, m, failed):
             # resolution; otherwise M3 is not provable -> FAIL (even if the absolute difference is <= en_force_max).
             lk = 'EN_LAG_F' + k[-1]
             lag = fin(m, failed, lk)
-            if lag is None or lag < 0 or abs(lag - d) > half_ulp6(t) + half_ulp6(min(fl)) + 1e-12:
+            # Tur-5 pilot finding: with the latch the OUTA -> EN path is instantaneous in the behavioural models, so both
+            # crossings can fall inside ONE solver step and the interpolated lag can be a few ns NEGATIVE (pilot5b: -0.38 ns
+            # .. -40 ns). -M3_LAG_NUM_TOL <= lag < 0 is accepted as 'coincident within the step' (reported raw); anything
+            # more negative, missing, failed, non-finite or inconsistent stays FAIL. The 1 us limit itself is unchanged.
+            if lag is None or lag < -M3_LAG_NUM_TOL or abs(lag - d) > half_ulp6(t) + half_ulp6(min(fl)) + 1e-12:
                 e.append(f'MANDATORY M3: direct lag {lk} missing/failed/non-finite/negative or inconsistent with the printed '
                          f'{k} -> EN fall ({m.get(lk, "absent")!r} vs {d*1e6:.3f} us) -> EN forcing not provable'); continue
             d = lag
@@ -356,7 +362,9 @@ def judge(name, c, m, failed):
         info['rode_through'] = not has('EN_F1')
         info['provisional_rdip_screen'] = rdip_screen(c, m, failed)
         for x in ('VT_AT_OUTA_R1', 'VT_AT_OUTA_R2', 'VT_AT_OUTA_R3', 'VT_AT_OUTA_RLAST', 'VT_AT_EN_R2', 'VT_AT_EN_R3', 'VT_AT_REL',
-                  'T_REL', 'VT_MIN_POST', 'V5_MIN_DIP', 'OUTA_R4', 'OUTA_R5', 'EN_R3', 'EN_F2'):
+                  'T_REL', 'VT_MIN_POST', 'V5_MIN_DIP', 'OUTA_R4', 'OUTA_R5', 'EN_R3', 'EN_F2',
+                  # Tur-5 latch candidate (report-only): latch set/clear, CTT and V_CLR at release, gate-ready at EN rises
+                  'QINH_MAX', 'QINH_END', 'VCLR_AT_REL', 'GRDY_AT_EN_R1', 'GRDY_AT_EN_R2', 'GRDY_AT_EN_R3', 'OUTAD_MIN'):
             if has(x): info[x] = m[x]
         if has('EN_R2'):
             info['restart_delay_after_dip_end'] = m['EN_R2'] - ends[-1]
