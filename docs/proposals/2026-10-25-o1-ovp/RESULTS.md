@@ -4,16 +4,19 @@
 
 **rev3 değişiklikleri:** ChatGPT Tur 2 (inceleme 6390966776) bulgularına yanıt – P0-01 RSNS10 üst kolu 2 × 1206 (1,0 k + 1,05 k) + RSNS11 1206; P0-02 her kabul deck'inde `O1_GLOBAL_PEAK` (0…tran sonu) ve toparlanma normal-bus pencereleri; **ayrı davranışsal model revizyonu rev3** (TPS48000 OV pin düğümü `ov`→`ovs`, rev1/rev2'de `.subckt` içindeki `ov` düğümü OV parametresiyle çakışıp OV yedeğini ölü bırakıyordu; rev2 kütüphanesi `model-compare/` altında korunur ve eski/yeni regresyonu tüm case'lerde koşulur); pre-fault/toparlanma rejim kontrolü (INP > 2,5 V, VGS > 6 V) runner ve doğrulayıcıda **kabul** kontrolü.
 
-**Koşu (temiz, tek):** etiket `wp1-rev3`, git `c285d52` (package_inputs_dirty=False), 2026-10-25 08:16:23 → 08:23:12 TSİ, **154 ngspice deck**. Şeffaflık: aynı girdilerle bir önceki koşu (07:49:05 → 07:55:48 TSİ, `a4025eb` üzerinde) `model_compare.py` girdi hash'i değiştiği için geçersiz sayıldı; `c285d52` commit'lenip zincir baştan koşuldu. İki koşunun tüm ölçüm değerleri birebir aynıdır; yalnız ikinci (temiz) koşu commit'lendi (`4bde43a`). Zaman damgası-yalnız fark veren 2 log HEAD sürümüne geri alındı, json'daki log_sha256 buna göre düzeltildi (değerler aynı).
+**Tur-3 yeniden koşu (geçerli kanıt):** etiket `wp1-rev3-tur3`, git `e8cce67` (package_inputs_dirty=False), 2026-10-25 09:48:34 → 10:03:24 TSİ, 154 ngspice deck, commit `1b72e0f`. Neden: Tur-3 P2-A düzeltmesi `model_compare.py`'yi (runner girdisi) değiştirdi; doğrulayıcı aksi halde 'input changed since run' verirdi. Sonuç: 3101 kontrolün **tümünde değer/hüküm birebir aynı** (yalnız `execution` süre metni farklı); o1ovp-results.json sha256 `974b0c5e…1dac`. `model-compare.json` rev3 tarafı `model-compare/rebind_rev3.py` ile yeni koşuya bağlandı (rev2 logları dokunulmadı; rev3 ölçüm/hüküm eşitliği zorunlu, fail-closed). `u3-latch-study.json` önceki `wp1-rev3` koşusuna (sha `76bb4b40…3507`, ölçümleri birebir aynı) bağlı teşhis anlık görüntüsü olarak bırakıldı.
+
+**Önceki koşu (temiz, tek):** etiket `wp1-rev3`, git `c285d52` (package_inputs_dirty=False), 2026-10-25 08:16:23 → 08:23:12 TSİ, **154 ngspice deck**. Şeffaflık: aynı girdilerle bir önceki koşu (07:49:05 → 07:55:48 TSİ, `a4025eb` üzerinde) `model_compare.py` girdi hash'i değiştiği için geçersiz sayıldı; `c285d52` commit'lenip zincir baştan koşuldu. İki koşunun tüm ölçüm değerleri birebir aynıdır; yalnız ikinci (temiz) koşu commit'lendi (`4bde43a`). Zaman damgası-yalnız fark veren 2 log HEAD sürümüne geri alındı, json'daki log_sha256 buna göre düzeltildi (değerler aynı).
 
 ```
 cd simulation/proposals/2026-10-25-o1-ovp
 python3 gen_o1ovp.py                                               # exit 0 (154 case, deterministik)
-PDU_NGSPICE=/usr/bin/ngspice python3 run_o1ovp.py --label wp1-rev3 --jobs 8   # exit 2 (4 eksik deck)
+PDU_NGSPICE=/usr/bin/ngspice python3 run_o1ovp.py --label wp1-rev3-tur3 --jobs 6   # exit 2 (4 eksik deck)
 python3 verify_candidate.py                                        # exit 2 (1766 kontrol, 0 FAIL, 4 MISSING)
 python3 verify_candidate.py --baseline-regression                  # exit 1 (beklenen: O1_PEAK 16,89 V)
 python3 rsns_power.py --check                                      # exit 0 (seçilen 2×1206: %79,4 @125 °C)
-PDU_NGSPICE=/usr/bin/ngspice python3 regime-selftest/regime_selftest.py   # exit 0 (negatif öz-test geçti)
+PDU_NGSPICE=/usr/bin/ngspice python3 regime-selftest/regime_selftest.py   # exit 0 (A: 4/4 mutasyon reddedildi; B: 12/12 tamamlanmış sentetik yanlış-rejim)
+python3 model-compare/rebind_rev3.py && python3 model-compare/model_compare.py --resummarize   # exit 0 / 0
 ```
 Çıkış kodları (P2-02): runner **0** PASS / **1** kabul FAIL / **2** eksik-yakınsamayan deck (öncelikli); doğrulayıcı **0** PASS / **1** FAIL / **2** eksik kanıt (öncelikli); `--baseline-regression` 0/1, log yoksa 2.
 
@@ -114,6 +117,8 @@ Pre-fault rejim (104 deck): INP min 4,9995 V, VGS min 11,5998 V → hepsi geçer
 
 Öz-test exit 0. Not: rev3 modelinde eski 100 pF PU-cap tanısı FET'i artık kapalı tutmuyor (O1 11,887 V), bu yüzden daha güçlü bozmalar kullanıldı. Böyle bir "düşük O1" artık PASS sayılamaz.
 
+**Part B (Tur-3 Ek-P1, tamamlanmış yanlış-rejim):** Part A'daki 4 bozmanın hepsi `completed=false` olduğundan reddin ölçüm eksikliğinden mi rejimden mi geldiği ayrışmıyordu. Part B, `wp1-rev3-tur3` koşusundan **tamamlanmış** iki rev3 deck'inin (buck-short-c185-esr12m5-wchi, efuse-ovp-s023-wchi) ölçümlerini alır ve yalnız rejim değerlerini enjekte eder (kontrol/değiştirilmemiş, pre INP düşük, pre VGS düşük, pre ikisi, toparlanma INP düşük, toparlanma VGS düşük; ngspice yok). Beklenti: kontrol PASS; her enjeksiyonda runner `evaluate` ve doğrulayıcı `rules` **yalnız** enjekte edilen rejim kontrolünü FAIL eder. Sonuç **12/12 geçti** (`synthetic_rows`, temel log sha256 kayıtlı). Bu yargılama kuralının testidir; FET'in fiziksel olarak kapalı kaldığı bir devre simülasyonu değildir.
+
 ## H. Teşhis çalışmaları (kabul kanıtı değil; davranışsal model; sim ≠ silikon)
 
 ### H1. P0-03 çözücü çalışması – `solver-study/` (SOLVER_EXIT=0)
@@ -159,9 +164,9 @@ Baseline davranışsal eFuse (ITRIP 4,96 A) mandallanınca O1 VOUT'u izlemeyi b�
 - Kabul deck'leri/sınırları değiştirilmedi; ana sonuç tablosu (O1 global maks 11,90318 V) ölçülen O1'dir. **N-01 açık**; B10 (−40 °C ESR) + B13 (gerçek U3) gerekli.
 
 ### H5. Model rev2 ↔ rev3 regresyonu – `model-compare/` (MC_EXIT=0; teşhis, kabul değil)
-Tek değişiklik: TPS48000 iç düğümü `ov`→`ovs`. rev2 lib sha256 `62d862b4…588b`, rev3 lib `1027d7d7…4202`; rev3 tarafı temiz koşu `wp1-rev3` (o1ovp-results.json sha256 `76bb4b40…3507`). Çıktı: `results/model-compare/model-compare.json` + `rev2/*.ng.log` (153 deck; `ref-baseline-load-step-7p5a` modelden bağımsız).
+Tek değişiklik: TPS48000 iç düğümü `ov`→`ovs`. rev2 lib sha256 `62d862b4…588b`, rev3 lib `1027d7d7…4202`; rev3 tarafı temiz koşu `wp1-rev3` (o1ovp-results.json sha256 `76bb4b40…3507`); Tur-3'te rev3 tarafı `rebind_rev3.py` ile `wp1-rev3-tur3` koşusuna (`974b0c5e…1dac`) yeniden bağlandı, ölçüm/hüküm değişmedi. Çıktı: `results/model-compare/model-compare.json` + `rev2/*.ng.log` (153 deck; `ref-baseline-load-step-7p5a` modelden bağımsız).
 - 154 case, 135 kabul. **Kabul FAIL: rev2 0 / rev3 0.** Tamamlanmadı: rev2 **2** (c185/c165-esr12m5-esl2n-typ, 12,2645–12,2646 ms, `pu_ovp`) / rev3 **4** (aynı ikisi + c185/c165-esr12m5-esl2n-wchi). Yani rev3 düzeltmesi iki ESL-wchi deck'ini PASS → tamamlanmadı'ya çevirdi (P0-03 kapsamı büyüdü; gizlenmedi). Bilgi deck'i rev1-c92-wchi: rev2 31,39 ms'de durur (`xu4.ena`), rev3 tamamlanır.
 - O1 global maks: rev2 11,90272 V → rev3 11,90318 V (aynı deck, c165-esr12m5-wchi; +0,46 mV).
 - 111 ölçümde değer farkı. |ΔO1| > 0,1 V olan 23 kabul deck'inin tümü s023 rampası (efuse-ovp-s023-typ, 2 tdoff taraması, mc-ramp-s023): O1 11,11 V ↔ 11,55–11,65 V arasında **iki yönde** sıçrar, bus tepe farkı ≤ 22,2 mV. Bu, O1 OVP'nin değil davranışsal U3 mandalının (N-01, §H4) ikili davranışıdır; bu deck'lerde en yüksek değer 11,64916 V (rev2). VDS maks farkı en çok 1,015 V (mc-ramp-s023-27: 14,24 → 15,26 V; 60 V sınırından uzak).
-- INFO açılış tetik (startup_no_ovp_trip ihlali): rev2 29 deck / rev3 27 deck.
+- INFO sayaçları (Tur-3 P2-A düzeltmesi, `e8cce67`; `model_compare.py --resummarize`, saklı satırlardan ve log sha256 doğrulamasıyla, ngspice yeniden koşulmadan): **gerçek açılış OVP tetiklemesi (`INFO:startup_no_ovp_trip`) rev2 2 deck** (c165/c185-esr12m5-esl2n-wchi) **/ rev3 0 tamamlanmış deck**; bench açılış bus INFO (`INFO:info_bench_startup_bus_max`, komparatör tetiği DEĞİL) rev2 29 / rev3 27 deck; tamamlanmadığı için değerlendirilemeyen: rev2 2 / rev3 4 deck (rev3'teki 4 ESL deck'inin açılış tetiği 'tamamlanmadı' kapsamında, P0-03/N-03 sondası RESULTS §H). Eski 'rev2 29 / rev3 27 açılış tetik' ifadesi yanlıştı: sayaç `startup` sözcüğü geçen her INFO'yu sayıyordu.
 - Sonuç: rev3 kabul sonuçlarını kötüleştirmez (0 FAIL), ancak P0-03 (tamamlanmayan deck) 2 → 4 oldu ve s023 O1 değerleri U3 mandal zamanlamasına duyarlıdır → N-01 açık kalır.

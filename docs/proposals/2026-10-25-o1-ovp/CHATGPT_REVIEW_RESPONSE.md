@@ -55,3 +55,38 @@ Sert kriterler değişmedi: O1 anlık ≤ 12,0 V; normal bus ≤ 11,1605 V; mima
 
 ## Karar (Tur 2 sonrası)
 **Koşullu – WP1 tamamlanmadı.** Açık bloklayıcılar: P0-03 (4 ESL deck yakınsamıyor + açılış yanlış tetiği), KiCad sembol/footprint (P1-02), WP3 döngü kararlılığı, tezgâh testleri B2/B5/B11/B13–B19 yapılmadı, LTspice çalıştırılmadı, TR stoğu doğrulanamadı.
+
+# Tur 3 – ChatGPT incelemesi (PR yorumu 6394334358, HEAD `35485d5`, karar RET) yanıtı
+
+Bulgular teknik olarak tek tek doğrulandı (otomatik kabul yok). Düzeltme commit'i **`e8cce67`**; temiz yeniden koşu **`1b72e0f`** (`wp1-rev3-tur3`, `e8cce67` girdileriyle, package_inputs_dirty=False). Kabul deck'leri, modeller, limitler, toleranslar değişmedi; 3101 kontrolün tümünde değer/hüküm önceki `wp1-rev3` koşusuyla **birebir aynı** (yalnız süre metni farklı).
+
+**Sayılar (wp1-rev3-tur3):** runner exit **2** – 2534 PASS / 4 yürütme FAIL / 4 tamamlanmadı; doğrulayıcı exit **2** – 1766 kontrol, 0 sayısal FAIL, 4 MISSING; baseline regresyonu exit 1 (O1 16,89 V, beklenen); O1 global maks **11,90318 V** (c165-esr12m5-wchi, 96,8 mV marj); normal bus maks **11,09192 V** (68,6 mV marj); 11,22 V yanlış tetik 22/22 tetik yok; rsns_power exit 0; gen exit 0 (deck farkı yok); regime_selftest exit 0 (A 4/4, B 12/12); rebind_rev3 0, model_compare --resummarize 0. o1ovp-results.json sha256 `974b0c5ebf77a26930ee9847887412a6b78b3828f02e2071fb9f690d66751dac`.
+
+| # | Bulgu | Doğrulama | Durum | Commit / kanıt |
+|---|---|---|---|---|
+| **P0-01** | RSNS10 derating, fiziksel kapanış | Doğru (tasarım hesabı kapalı, fiziksel değil) | **ertelendi (B16)** | değişiklik yok; 85,1 mW / 107,14 mW (%79,4); yalnız aday BOM |
+| **P0-02** | 4 ESL deck'inde global ölçüm yok | Doğru | **açık (P0-03'e bağlı)** | tamamlanan deck'lerde O1 global 11,90318 V; 4 deck MISSING, doğrulayıcı exit 2 – gizlenmedi |
+| **P0-03** | 4 ESL deck tamamlanmıyor, açılış yanlış tetiği | Doğru | **açık (ana bloklayıcı)** | yeniden koşuda da aynı: 12,2645/12,2646/12,2699/12,2699 ms, `imon_s2e` timestep too small; tolerans gevşetilmedi |
+| **WP2** | Sabit RPU10 çözüm değil | Doğru: 330/1000 Ω s023 toparlanma VGS min 2,563/0,931 V < 6 V | **kabul – ertelendi (WP2)** | öneri: 10 Ω hızlı kapatma korunur; ayrı açılış slew sınırlama ↔ RAW sönümleme sayısal karşılaştırma (tüm zorunlu deck, O1 global, normal bus, rejim, U3 açık/kapalı, SOA), sonra B19. Kalıcı 330 Ω seçilmedi, OVP körleştirilmedi |
+| **P0-04** | Garanti iddiası kurulamaz | Doğru | **ertelendi (B2/B5/B11/B13)** | terminoloji `b5ef5ca`; koşullu marj 72,0 / ömürle 57,2 mV |
+| **P0-05 / N-01** | U3 mandalı O1'i maskeliyor | Doğru | **açık (kritik bloklayıcı)** | U3 açılmaz varsayımıyla 12,50435 / 13,03882 V (> 12,0 V); 100 mΩ deck'leri INFO'ya taşınmadı; B10/B13, gerekirse OVP U3'süz ≤ 12 V sağlamalı (WP2 kapsamına eklendi) |
+| **P1-01** | SOA 1,08464×, ±%25 → ≈0,81× | Doğru | **açık (B18 + gerçek FET modeli)** | değişiklik yok |
+| **P1-02** | KiCad footprint/ERC | Doğru | **ertelendi** (kural: KiCad dosyaları düzenlenmez) | U10 DGX-19, Q10–Q13 footprint oluşturulmalı |
+| **P1-03** | BOM derating/efektif C | Doğru | **kısmen düzeltildi, ertelendi (B15)** | RBLD11 54,2/88,2 mW, eğri doğrulanmadı |
+| **P1-04** | Buck kompanzasyon 165–483 µF | Doğru | **ertelendi (WP3/B17)** | INFO postfault bus 11,29486–11,47708 V |
+| **P1-05** | KICAD-TRANSFER alt pin tablosu "VIN'e bağla" | Doğru | **düzeltildi** | `e8cce67`: U12 pin 3 EN = **V5_OVP** (= U12 pin 4 VIN ağı; U10/sistem VIN'i değil); KiCad netlist'inde doğrulanacak |
+| **N-02** | Model düzeltmesi kapalı, eksik 2→4 | Doğru | **kapalı (model)**; eksik deck'ler P0-03'te | değişiklik yok |
+| **Ek P1** | Rejim öz-testi yalnız tamamlanmamış örneklerde | Doğru | **düzeltildi** | `e8cce67`, `1b72e0f`: Part B, tamamlanmış 2 rev3 deck'ine yalnız rejim değeri enjeksiyonu × 6 varyant; runner ve doğrulayıcı yalnız enjekte edilen rejimi FAIL, kontrol PASS → **12/12**. Not: kural testi, devre simülasyonu değil |
+| **P2-01** | 7,5 A / tedarik | Doğru | **ertelendi (WP3)** | bus min 10,649–10,7584 V; TR stoğu doğrulanmadı |
+| **P2-02** | Exit kodları | Doğru | **kapalı** | runner 2 / verify 2 / baseline 1 |
+| **P2-A** | `startup` sayacı yanlış sınıflama | Doğru: `buck-short-c185-typ` vb. bench açılış bus INFO'su sayılıyordu | **düzeltildi** | `e8cce67` `summarize()`: yalnız `INFO:startup_no_ovp_trip` → **rev2 2** (c165/c185-esr12m5-esl2n-wchi) / **rev3 0** tamamlanmış deck; ayrıca `bench_startup_bus_info` rev2 29 / rev3 27, `incomplete_not_judged` rev2 2 / rev3 4. RESULTS §H5 düzeltildi. Ölçüm/hüküm satırları değişmedi |
+| **P2-B** | B18↔B19, Dbody ifadesi | Doğru | **düzeltildi** | `e8cce67`: RESULTS bench açılış → B19 (ve B14); MODELS: basitleştirilmiş `Dbody` (Is 1u, N 1,3, Rs 5m, Cjo 100p) var; reverse-recovery (TT/Qrr), sıcaklık ve avalanche modellenmedi |
+
+## Tur 3'te yeni bulunanlar
+| # | Bulgu | Durum |
+|---|---|---|
+| **N-06** | `model_compare.py` runner girdisi; her değişikliği koşuyu geçersiz kılar (doğrulayıcı "input changed since run") | **işlendi** – düzeltme commit'lenip temiz yeniden koşu yapıldı; rev2 logları yeniden koşulmadan rev3 tarafı fail-closed `rebind_rev3.py` ile bağlandı |
+| **N-07** | `u3-latch-study.json` önceki `wp1-rev3` koşusuna (`76bb4b40…3507`) bağlı | **bilinçli bırakıldı** – ölçümler iki koşuda birebir aynı; teşhis anlık görüntüsü |
+
+## Karar (Tur 3 sonrası)
+**WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık bloklayıcılar: P0-03 (4 ESL deck + açılış yanlış tetiği; WP2), P0-05/N-01 (U3 maskeleme, 12,50–13,04 V varsayımı), P1-01 SOA (B18), P1-02 KiCad footprint/ERC, P1-04 WP3 döngü kararlılığı; tezgâh testleri B2/B5/B10/B11/B13–B19 yapılmadı; LTspice çalıştırılmadı; TR stoğu doğrulanamadı.
