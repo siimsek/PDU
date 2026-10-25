@@ -38,6 +38,8 @@ def run_old(job):
     name, c, tmp = job
     src = R.DECKS/c['ng_file']; t = src.read_text()
     inc = '.include ../pdu-o1ovp-behavioral.lib\n'
+    if inc not in t:  # baseline-reference decks do not use the O1OVP model -> model-independent, not re-run
+        return dict(case=name, model_independent=True)
     assert t.count(inc) == 1, name
     new = t.replace(inc, f'.include {OLD}\n').replace('.include ../../../', f'.include {SIM}/').replace('.include ../', f'.include {PKG}/')
     d = Path(tmp)/c['ng_file']; d.write_text(new)
@@ -58,6 +60,10 @@ def main():
     rows = []
     for n, c in R.CASES.items():
         o, w = old[n], new[n]
+        if o.get('model_independent'):
+            rows.append(dict(case=n, kind=c['kind'], acceptance=c.get('acceptance', True), model_independent=True, changed=False,
+                             rev2=dict(verdict='MODEL-INDEPENDENT'), rev3=dict(verdict='MODEL-INDEPENDENT'), delta={}))
+            continue
         row = dict(case=n, kind=c['kind'], acceptance=c.get('acceptance', True),
                    rev2=dict(completed=o['execution_pass'], errors=o['errors'][:1], log=o['log'], log_sha256=o['log_sha256']),
                    rev3=dict(completed=w['execution_pass'], errors=w['errors'][:1], log=w['log'], log_sha256=w['log_sha256']))
@@ -75,7 +81,7 @@ def main():
         row['changed'] = row['rev2']['verdict'] != row['rev3']['verdict'] or any(
             v['d'] is not None and abs(v['d']) > 1e-3 for v in row['delta'].values()) or row['rev2']['completed'] != row['rev3']['completed']
         rows.append(row)
-    accs = [r for r in rows if r['acceptance'] and r['kind'] != 'reference']
+    accs = [r for r in rows if r['acceptance'] and r['kind'] != 'reference' and not r.get('model_independent')]
     def mx(ver, key):
         v = [(r['delta'][key][ver], r['case']) for r in accs if r[ver]['completed'] and r['delta'].get(key, {}).get(ver) is not None]
         return max(v) if v else None
