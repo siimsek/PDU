@@ -269,10 +269,13 @@ def gen():
         params('vrmax', 'tmax', 'wchi', RBU=f'{8660*(1-B["e_res"]):.6g}'), source(0.25, E_P.format(e=20.0)), loads(), stop, win('RUN', a, stop)),
         kind='start', expect='FAIL', regression=True, uv='vrmax', tm='tmax', win=[a, stop], t_start_max=ts + 0.004, vf=None, vr=None)
     # ---- I: P0-03 sequencing benches (WP1 ESL bench, buck replaced by ideal DRIVE + 2.72 uH + 15.4 mOhm, RAW 165 uF ESR 12.5 mOhm ESL 2 nH)
+    # 2026-10-25: reference = identical to the accepted benches except delay 0 (A/B on the delay only). The former
+    # 'seq-ref-nodelay-typ' (ramp 5 ms, IBST 345u) aborted (Timestep too small at 12.2646 ms with gear/trap/tmax 20n/
+    # reltol 1e-3/KLU) and was therefore never valid evidence; it is replaced, not hidden (see RESULTS.md).
     for name, delay, ramp, ovp, ib in (('seq-delay-tmin-typ-ibst100u', TM['tmin']['t'], 1.9e-3, 'typ', '100u'),
                                        ('seq-delay-tmin-wchi-ibst100u', TM['tmin']['t'], 1.9e-3, 'wchi', '100u'),
                                        ('seq-delay-tmin-wclo-ibst100u', TM['tmin']['t'], 1.9e-3, 'wclo', '100u'),
-                                       ('seq-ref-nodelay-typ', 0.0, 5e-3, 'typ', '345u')):
+                                       ('seq-ref-nodelay-typ-ibst100u', 0.0, 1.9e-3, 'typ', '100u')):
         add(name, seq_deck(name, delay, ramp, ovp, ib), kind='seq', expect='PASS' if delay > 0 else 'FAIL', regression=delay == 0,
             delay=delay, ramp=ramp)
     (HERE / 'test-cases-uvlo.json').write_text(json.dumps(dict(cases=CASES, corners_c3=C3, corners_timer=TM, p_in=P_IN), indent=1))
@@ -289,8 +292,8 @@ def seq_deck(name, delay, ramp, ovp, ib):
             '.include ../../../pdu-behavioral.lib\n.include ../../../pdu-inductor-ng.lib\n.include ../../2026-10-25-o1-ovp/pdu-o1ovp-behavioral.lib\n'
             '.include ../../2026-10-25-o1-ovp/pdu-efuse-block-o1ovp.inc\n.include ../pdu-o1ovp-block-uvlo.inc\n'
             '.param ' + ' '.join(f'{k}={v}' for k, v in p.items()) + '\n'
-            'Vaux VIN 0 26\n'
-            f'Vsource DRIVE 0 PWL(0 0 {d:.7g} 0 {d+ramp:.7g} {drive})\nLfault DRIVE LF 2.72u\nRfaultDCR LF RAW 0.0154\n'
+            'Vaux VIN 0 26\n' +
+            (f'Vsource DRIVE 0 PWL(0 0 {d:.7g} 0 {d+ramp:.7g} {drive})\n' if d > 0 else f'Vsource DRIVE 0 PWL(0 0 {ramp:.7g} {drive})\n') + 'Lfault DRIVE LF 2.72u\nRfaultDCR LF RAW 0.0154\n'
             'Craw RAW_C 0 {CRAW}\nResr RAW RAW_E {ESR}\nLesl RAW_E RAW_C 2n\n'
             + loads(1.0, on_at=f'{d+ramp+0.003:.7g}') +
             f'.tran 100n {stop:.7g} 0 100n uic\n' + OPT +

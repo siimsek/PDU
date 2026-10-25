@@ -693,12 +693,12 @@
    "delay": 0.07782371412614832,
    "ramp": 0.0019
   },
-  "seq-ref-nodelay-typ": {
+  "seq-ref-nodelay-typ-ibst100u": {
    "kind": "seq",
    "expect": "FAIL",
    "regression": true,
    "delay": 0.0,
-   "ramp": 0.005
+   "ramp": 0.0019
   }
  },
  "corners_c3": {

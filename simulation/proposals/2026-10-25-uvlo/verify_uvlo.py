@@ -20,7 +20,8 @@ def parse(log):
     for k, v in re.findall(r'^([a-z0-9_]+)\s+=\s+([-+0-9.eE]+)', t, re.M):
         m[k.upper()] = float(v)
     failed = set(k.upper() for k in re.findall(r'\.meas tran (\S+) .* failed!', t))
-    done = 'Total analysis time' in t
+    # an aborted transient (e.g. 'Timestep too small') still prints 'Total analysis time': treat it as NOT done
+    done = 'Total analysis time' in t and 'simulation(s) aborted' not in t and 'Timestep too small' not in t
     return m, failed, done, t
 
 def sha(p):
@@ -121,10 +122,8 @@ def main():
         if not done:
             st = 'INCOMPLETE'
             res = dict(status=st, reason='simulation did not complete', last_meas=m)
-            if c.get('regression'):
-                res['regression_reproduced'] = True   # a known-failing reference that stops is a reproduced failure
-            else:
-                incomplete.append(name)
+            # strict (2026-10-25): an aborted/unfinished deck never counts as a reproduced regression
+            incomplete.append(name)
             out[name] = res; continue
         errs, info = judge(name, c, m, failed)
         st = 'PASS' if not errs else 'FAIL'
