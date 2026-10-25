@@ -137,3 +137,16 @@ Yalnız RPU10 (PU_OVP→G_OVP) değişti; kapatma yolu (RPD10) aynı. **Benimsen
 - 330 Ω / 1 kΩ: ESL deck'leri tamamlanıyor, açılış RAW tepesi 11,34–11,67 V (100 Ω wchi: 12,353 V); açılışta INP min 4,9995 V → tetik yok (çınlama tepesi kısa; RAW tepesi trip bandına değse de INP düşmedi – davranışsal komparatör, sim ≠ silikon), O1 değişimi ≤ 6 mV. **Ancak** `efuse-ovp-s023-wchi` toparlanma rejim kontrolü FAIL: 25,1–40 ms penceresinde VGS min 2,563 V (330 Ω) / 0,931 V (1 kΩ) < 6 V. Yani yavaş açılış toparlanma süresini uzatıyor; kriter gevşetilmedi.
 - 100 Ω: yalnız wchi ESL deck'i tamamlanıyor; s023 O1 +0,54 V (11,6492 V) yükseliyor.
 - **Sonuç:** Tek bir RPU10 değeri tüm kabul koşullarını sağlamıyor. WP2'de kontrollü açılış + toparlanma zamanlaması (ör. RPU10 330 Ω + ayrı hızlı yeniden-açma yolu ya da açılış süresince OVP maskeleme yerine RAW snubber/ESL azaltımı) **sayısal karşılaştırmayla** değerlendirilmeli. Mimari değişikliği bu pakette yapılmadı.
+
+### H3. P1-01 FET SOA / enerji – `soa-study/` (SOA_EXIT=0; bilgi, kabul değil)
+Her FET (QA = giriş tarafı, QB = çıkış tarafı) için pencere başına tepe güç, enerji, eşdeğer darbe süresi; SLPS488B Fig. 10 grafik okuması (±%25 okuma varsayımı), **Tc 125 °C ×0,333 derate**, katı paylaşım (bir FET tüm taraf akımını taşır, kredi yok). Gövde diyotu, Cds akımı ve olaylar arası ısıl birikim modellenmedi.
+| Deck (NPAR=2 tasarım) | En kötü olay | Tepe P | Enerji | teq | SOA |
+|---|---|---|---|---|---|
+| efuse-ovp-s007-wchi | arıza, QA | 322,8 W (65,0 A, 15,35 V) | 1,94 µJ | 6 ns | dikdörtgen OK |
+| efuse-ovp-s023-wchi | arıza, QA | 235,9 W | 1,51 µJ | 6 ns | OK |
+| startup-20v-ibstmin | açılış, QA | 183,8 W (48,0 A) | 130,5 µJ | 0,71 µs | OK |
+| buck-short-c185-wchi | açılış, QA | 24,6 W | 170 µJ | 6,9 µs | OK |
+| buck-short-* | arıza 29–45 ms, QA | 12,7 mW (VDS 22,5–26,2 V, 1,875 A) | 12,7 µJ | 1 ms | OK (10 ms eğrisi) |
+- **Tasarım deck'leri (NPAR=2): tümü SOA dikdörtgeni içinde, en küçük marj 1,085×** (Tc 125 °C derate ve katı paylaşım ile). Pmax nokta kontrolü tümünde OK.
+- **Tek çift (par1, yalnız bilgi):** 7,5 A yük basamağı / bus-7p5a deck'lerinde QA 1207 W, 175 A, 5–7 µs → dikdörtgen **0,761×** (aşıyor) – iki paralel çiftin neden gerektiğini gösterir; tasarım NPAR=2.
+- Marj 1,085× küçüktür ve grafik okuma ±%25 belirsizliği içindedir → **P1-01 tezgâh B18 ve gerçek FET modeliyle (WP2) kapatılmalı; açık kalır.**
