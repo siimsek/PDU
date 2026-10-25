@@ -44,7 +44,8 @@ DS = dict(
     LM70880_VEN_HYS_TYP=(0.10, 'T SNVSBX7A p6 (no min/max -> falling threshold NOT guaranteed)'),
     LM70880_EN_LOW_LOGIC=(0.40, 'T/descr SNVSBX7A p13 section 7.3.3: <0.4 V disables (description, not EC table)'),
     LM70880_IEN=(1e-6, 'A: EN/UVLO input current not specified in SNVSBX7A; +/-1 uA assumed'),
-    TLV3202_VIO=(0.004, 'G SBOS561C p5 VIO max -40..125 C, VCC=5 V, VCM=VCC/2'),
+    # fixed 2026-10-25 (ChatGPT WP2 Tur 1 P0): 4 mV was the TLV3201 row; TLV3202 row is 5 mV max @25 C, 6 mV max -40..125 C
+    TLV3202_VIO=(0.006, 'G SBOS561C (Rev C, revised May 2024) p5 table 6.5 VIO TLV3202 max 6 mV TA=-40..125 C, VCC=5 V, VCM=VCC/2 (5 mV @25 C)'),
     TLV3202_CMRR_DB=(60, 'G SBOS561C p5 CMRR min'),
     TLV3202_PSRR_DB=(65, 'G SBOS561C p5 PSRR min'),
     TLV3202_HINT=(0.0, 0.005, 'T SBOS561C p5 1.2 mV typ; A: 0..5 mV range'),
@@ -251,8 +252,9 @@ def eval_c3(Rt, Rb, Rx, **kw):
                 margins=m, ok=all(x >= 0 for x in m.values()), worst=min(m.values()))
 
 
-def search_c3(max_eval=4000):
-    """E96, every precision resistor inside the ERA-3ARB range 1 k..100 k (AOA0000C307 p2 ratings table)."""
+def search_c3(max_eval=4000, **kw):
+    """E96, every precision resistor inside the ERA-3ARB range 1 k..100 k (AOA0000C307 p2 ratings table).
+    **kw (e_res, e_ref) only for the parametric design-option study in start_guarantee_status()."""
     dec = lambda lo, hi: [m * d for d in (1e3, 1e4, 1e5) for m in E96 if lo <= m * d <= hi]
     cands = []
     for rr2 in dec(20e3, 100e3):
@@ -273,10 +275,80 @@ def search_c3(max_eval=4000):
     cands.sort()
     best = None
     for _, rt, rb, rx, rr2 in cands[:max_eval]:
-        r = eval_c3(rt, rb, rx, RR2=rr2)
+        r = eval_c3(rt, rb, rx, RR2=rr2, **kw)
         if best is None or r['worst'] > best['worst']:
             best = r
     return best, len(cands)
+
+# ---------------- start-guarantee classification (ChatGPT WP2 Tur 1 P0) ----------------
+# Terms that enter V_r,max / V_f,min but are NOT a guaranteed (G) datasheet min/max. Each is listed with its class and with
+# how much margin it consumes in the strict budget. 'unbounded' = no datasheet bound exists at all (value used is an assumption).
+NON_G_REF = ('TC extrapolated 105->125 C, 20 K x 12 ppm (I, outside spec range)',
+             'long-term 40 ppm/1000 h @35 C, x10 linear for 10 kh (A)',
+             'thermal hysteresis 70 ppm (T cycle 1, used as bound - A)',
+             'solder shift: not specified (A: 0, bench B-U07)')
+
+
+def _with_ds(key, val, fn):
+    old = DS[key]
+    DS[key] = val
+    try:
+        return fn()
+    finally:
+        DS[key] = old
+
+
+def start_guarantee_status():
+    """Strict margins a (start) / b (over-discharge) are positive only under assumption (A), typical-used-as-bound (T)
+    and extrapolated (I) terms. This function separates them; status is never 'GUARANTEED' while any such term remains."""
+    ch = CHOSEN_C3
+    ev = lambda **kw: eval_c3(ch['Rt'], ch['Rb'], ch['Rx'], RR1=ch['RR1'], RR2=ch['RR2'], **kw)
+    base = ev()
+    ma, mb = base['margins']['a_start_margin'], base['margins']['b_overdischarge_margin']
+    terms = []
+    for k in NON_G_REF:
+        r = ev(e_ref=E_REF - REF_TERMS[k])
+        terms.append(dict(term='REF35 ' + k, cls={0: 'I', 1: 'A', 2: 'T', 3: 'A'}[NON_G_REF.index(k)], value=REF_TERMS[k],
+                          a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb),
+                          unbounded=k.startswith('solder') or k.startswith('long-term')))
+    r = _with_ds('REF35_LOADREG', (0.0, ''), ev)
+    terms.append(dict(term='REF35 load regulation 20 ppm/mA (T used as bound)', cls='T', value=DS['REF35_LOADREG'][0],
+                      a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb), unbounded=False))
+    r = _with_ds('TLV3202_HINT', (0.0, 0.0012, ''), ev)
+    terms.append(dict(term='TLV3202 internal hysteresis upper bound 5 mV (A; datasheet: 1.2 mV typ, NO max)', cls='A', value=DS['TLV3202_HINT'][1],
+                      a_mV=1e3 * (r['margins']['a_start_margin'] - ma), b_mV=1e3 * (r['margins']['b_overdischarge_margin'] - mb), unbounded=True,
+                      note='a_mV = margin gained if Hint were only its typical 1.2 mV'))
+    terms.append(dict(term='I_Q_PRESTART 15 mA x R_TOTAL_MAX 0.25 ohm (A, both values)', cls='A', value=REQ['I_Q_PRESTART'] * REQ['R_TOTAL_MAX'],
+                      a_mV=1e3 * REQ['I_Q_PRESTART'] * REQ['R_TOTAL_MAX'], b_mV=0.0, unbounded=False))
+    terms.append(dict(term='PSRR term uses a 0.1 V supply shift (A; PSRR 65 dB is G)', cls='A', value=0.1 * 10 ** (-DS['TLV3202_PSRR_DB'][0] / 20),
+                      a_mV=None, b_mV=None, unbounded=False, note='<0.06 mV at the comparator, ~0.3 mV at VIN'))
+
+    def bisect(f, lo, hi, n=50):
+        for _ in range(n):
+            mid = (lo + hi) / 2
+            lo, hi = (mid, hi) if f(mid) >= 0 else (lo, mid)
+        return lo
+    hint_be = bisect(lambda h: _with_ds('TLV3202_HINT', (0.0, h, ''), ev)['margins']['a_start_margin'], 0.0, 0.05)
+    xa = bisect(lambda x: ev(e_ref=E_REF + x)['margins']['a_start_margin'], 0.0, 0.01)
+    xb = bisect(lambda x: ev(e_ref=E_REF + x)['margins']['b_overdischarge_margin'], 0.0, 0.01)
+    # parametric design options (I: no part selected or verified; tolerance scaling only) - best E96 re-centred divider
+    opts = {}
+    for name, kw in (('O0_recentre_only (current parts)', {}),
+                     ('O1_reference_total_error_x0.5', dict(e_ref=E_REF * 0.5)),
+                     ('O2_divider_resistor_error_x0.5 (ratio-matched network class)', dict(e_res=E_RES * 0.5)),
+                     ('O3_both_x0.5', dict(e_ref=E_REF * 0.5, e_res=E_RES * 0.5))):
+        best, _n = search_c3(**kw)
+        opts[name] = dict(Rt=best['Rt'], Rb=best['Rb'], Rx=best['Rx'], RR2=best['RR2'],
+                          margins_mV={k: round(1e3 * v, 2) for k, v in best['margins'].items()}, worst_mV=round(1e3 * best['worst'], 2))
+    unbounded = [t['term'] for t in terms if t['unbounded']]
+    status = 'GUARANTEED' if (ma >= 0 and mb >= 0 and not terms) else ('NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS' if min(ma, mb) >= 0 else 'FAIL')
+    return dict(status=status, a_start_margin_mV=1e3 * ma, b_overdischarge_margin_mV=1e3 * mb,
+                vr_max=base['vr_max'], vf_min=base['vf_min'], non_guaranteed_terms=terms, unbounded_terms=unbounded,
+                break_even=dict(hint_max_V_for_a_eq_0=hint_be, extra_ref_error_ppm_for_a_eq_0=xa * 1e6, extra_ref_error_ppm_for_b_eq_0=xb * 1e6),
+                design_options_parametric=opts,
+                note='Status cannot become GUARANTEED by simulation: unbounded terms need datasheet max values or bench data (B-U), '
+                     'or a design change that leaves enough margin to cover them. Requirements are NOT loosened.')
+
 
 # ---------------- timer (TLV3202 B) + EN drive ----------------
 def timer_vertices(RT, CT, RHB, RK1, RK2, RD, RUV2, v0_list=(0.0,)):
@@ -377,6 +449,7 @@ def main():
     mis_rb = eval_c3(ch['Rt'], 8.66e3, ch['Rx'], RR1=ch['RR1'], RR2=ch['RR2'])      # Rb one E96 step low -> must FAIL
     mis_rx = eval_c3(ch['Rt'], ch['Rb'], 100e3, RR1=ch['RR1'], RR2=ch['RR2'])       # Rx one-two steps high -> must FAIL
     alt = alternatives()
+    sg = start_guarantee_status()
     alt['C2_TLV3202_pushpull_Rh'] = dict(desc='TLV3202 A with Rh from OUTA (hysteresis ~ VOH-VOL)', best=c2_best, n_candidates=n2,
                                           verdict=('PASS' if c2_best['ok'] else 'FAIL: best E96 worst margin %.3f V (VOH/VOL spread)' % c2_best['worst']),
                                           pass_=c2_best['ok'])
@@ -386,7 +459,7 @@ def main():
                ds=DS, ref_terms=REF_TERMS, e_ref=E_REF, res_terms=RES_TERMS, e_res=E_RES, vio_c2=VIO_TOT, vio_c3=VIO_C3,
                chosen_c3_values=CHOSEN_C3, chosen_c3=chosen, chosen_c3_rss_info=rss, timer_values=CHOSEN_TIMER, timer=tm,
                spice_corners_c3=c3_spice_corners(ch), spice_corners_timer=timer_spice_corners(CHOSEN_TIMER),
-               regression_misset_rb_8k66=mis_rb, regression_misset_rx_100k=mis_rx, alternatives=alt)
+               regression_misset_rb_8k66=mis_rb, regression_misset_rx_100k=mis_rx, alternatives=alt, start_guarantee=sg)
     json.dump(out, open('results/uvlo-budget.json', 'w'), indent=1, default=str)
     checks = {'C3 chosen all margins >= 0': chosen['ok'], 'timer all margins >= 0': tm['ok'],
               'regression A0 baseline fails': not alt['A0_baseline_180k_10k']['pass_'],
@@ -400,6 +473,14 @@ def main():
     print('C2 best worst margin %.4f V ; mis Rb worst %.4f ; mis Rx worst %.4f' % (c2_best['worst'], mis_rb['worst'], mis_rx['worst']))
     for k, v in alt.items():
         print(k, '->', v.get('verdict', v.get('desc')))
+    print('START GUARANTEE: %s  a=%+.2f mV b=%+.2f mV  unbounded terms: %d  break-even Hint_max=%.2f mV, extra REF error a=%.0f ppm b=%.0f ppm' % (
+        sg['status'], sg['a_start_margin_mV'], sg['b_overdischarge_margin_mV'], len(sg['unbounded_terms']),
+        sg['break_even']['hint_max_V_for_a_eq_0'] * 1e3, sg['break_even']['extra_ref_error_ppm_for_a_eq_0'], sg['break_even']['extra_ref_error_ppm_for_b_eq_0']))
+    for t in sg['non_guaranteed_terms']:
+        print('  [%s]%s %s: a %s mV, b %s mV' % (t['cls'], ' UNBOUNDED' if t['unbounded'] else '', t['term'],
+              'n/a' if t['a_mV'] is None else '%+.2f' % t['a_mV'], 'n/a' if t['b_mV'] is None else '%+.2f' % t['b_mV']))
+    for k, v in sg['design_options_parametric'].items():
+        print('  option', k, 'worst %+.2f mV' % v['worst_mV'], v['margins_mV'])
     sys.exit(0 if all(checks.values()) else 1)
 
 

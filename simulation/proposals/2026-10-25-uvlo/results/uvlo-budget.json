@@ -44,8 +44,8 @@
    "A: EN/UVLO input current not specified in SNVSBX7A; +/-1 uA assumed"
   ],
   "TLV3202_VIO": [
-   0.004,
-   "G SBOS561C p5 VIO max -40..125 C, VCC=5 V, VCM=VCC/2"
+   0.006,
+   "G SBOS561C (Rev C, revised May 2024) p5 table 6.5 VIO TLV3202 max 6 mV TA=-40..125 C, VCC=5 V, VCM=VCC/2 (5 mV @25 C)"
   ],
   "TLV3202_CMRR_DB": [
    60,
@@ -129,8 +129,8 @@
   "resistance to soldering heat +/-0.1 % (G, test limit)": 0.001
  },
  "e_res": 0.004,
- "vio_c2": 0.005652234132519036,
- "vio_c3": 0.004925992997767263,
+ "vio_c2": 0.007652234132519036,
+ "vio_c3": 0.006925992997767263,
  "chosen_c3_values": {
   "Rt": 39200.0,
   "Rb": 8870.0,
@@ -144,24 +144,24 @@
   "Rx": 90900.0,
   "RR1": 10000.0,
   "RR2": 46400.0,
-  "vr_min": 19.46995575000083,
-  "vr_max": 19.977745048651126,
-  "vf_min": 18.023407272734623,
-  "vf_max": 18.48958471022159,
-  "h_min": 1.4330880349318207,
-  "h_max": 1.5017975592406323,
+  "vr_min": 19.458331828221056,
+  "vr_max": 19.989524239149013,
+  "vf_min": 18.012638918867115,
+  "vf_max": 18.500494486870462,
+  "h_min": 1.4322324670195563,
+  "h_max": 1.5026669730896423,
   "vin_op_20V": 18.74571323563722,
   "s_at_26V_max": 4.828964634688589,
-  "cross_corner_rmin_minus_fmax": 0.9803710397792393,
+  "cross_corner_rmin_minus_fmax": 0.9578373413505936,
   "margins": {
-   "a_start_margin": 0.018504951348873533,
-   "b_overdischarge_margin": 0.023407272734623064,
-   "c_motorboat_margin": 0.02950803581942804,
-   "d_run_at_20V_margin": 0.15612852541562958,
+   "a_start_margin": 0.006725760850986973,
+   "b_overdischarge_margin": 0.012638918867114768,
+   "c_motorboat_margin": 0.027873740882322057,
+   "d_run_at_20V_margin": 0.14521874876675653,
    "e_sense_26V_cm_margin": 0.07103536531141152
   },
   "ok": true,
-  "worst": 0.018504951348873533
+  "worst": 0.006725760850986973
  },
  "chosen_c3_rss_info": {
   "Rt": 39200.0,
@@ -169,24 +169,24 @@
   "Rx": 90900.0,
   "RR1": 10000.0,
   "RR2": 46400.0,
-  "vr_min": 19.56993956325025,
-  "vr_max": 19.875920481362485,
-  "vf_min": 18.114997966776127,
-  "vf_max": 18.396317827344948,
-  "h_min": 1.4414372241589994,
-  "h_max": 1.4931954145103354,
+  "vr_min": 19.558277068420548,
+  "vr_max": 19.887660632864065,
+  "vf_min": 18.104194468924028,
+  "vf_max": 18.407192035739193,
+  "h_min": 1.4405782271813976,
+  "h_max": 1.4940613576176744,
   "vin_op_20V": 18.74571323563722,
   "s_at_26V_max": 4.828964634688589,
-  "cross_corner_rmin_minus_fmax": 1.1736217359053036,
+  "cross_corner_rmin_minus_fmax": 1.1510850326813546,
   "margins": {
-   "a_start_margin": 0.12032951863751506,
-   "b_overdischarge_margin": 0.1149979667761265,
-   "c_motorboat_margin": 0.04444646561746532,
-   "d_run_at_20V_margin": 0.24939540829227055,
+   "a_start_margin": 0.10858936713593437,
+   "b_overdischarge_margin": 0.10419446892402817,
+   "c_motorboat_margin": 0.04281407920465194,
+   "d_run_at_20V_margin": 0.2385211998980253,
    "e_sense_26V_cm_margin": 0.07103536531141152
   },
   "ok": true,
-  "worst": 0.04444646561746532
+  "worst": 0.04281407920465194
  },
  "timer_values": {
   "RT": 11000.0,
@@ -205,20 +205,20 @@
   "RK2": 40200.0,
   "RD": 10000.0,
   "RUV2": 10000.0,
-  "t_cold_min": 0.07782371412614832,
-  "t_cold_max": 0.25496686361614734,
-  "t_after_dip_min": 0.06497829302305962,
-  "t_after_dip_max": 0.2194588432612745,
-  "timer_headroom_min": 0.7384576816054378,
+  "t_cold_min": 0.07773636028039783,
+  "t_cold_max": 0.2553414856607876,
+  "t_after_dip_min": 0.06489093917730912,
+  "t_after_dip_max": 0.21981541355448198,
+  "timer_headroom_min": 0.736457681605438,
   "en_high_min": 2.2890400000000004,
   "en_high_max": 2.6315,
   "en_low_max": 0.12087500000000001,
   "en_low_gated_max": 0.0025811886597938145,
   "margins": {
-   "seq_min_margin_s": 0.01782371412614832,
-   "latency_margin_s": 0.045033136383852646,
-   "seq_after_full_dip_margin_s": 0.004978293023059618,
-   "timer_headroom_margin_V": 0.5384576816054378,
+   "seq_min_margin_s": 0.017736360280397837,
+   "latency_margin_s": 0.04465851433921236,
+   "seq_after_full_dip_margin_s": 0.004890939177309123,
+   "timer_headroom_margin_V": 0.536457681605438,
    "en_high_margin_V": 0.7390400000000004,
    "en_low_margin_V": 0.279125,
    "en_low_gated_margin_V": 0.39741881134020624
@@ -227,60 +227,60 @@
  },
  "spice_corners_c3": {
   "vrmax": {
-   "vr": 19.977745048651126,
-   "vf": 18.475947489410494,
+   "vr": 19.989524239149013,
+   "vf": 18.48685726605937,
    "RTU": 39356.8,
    "RBU": 8834.52,
    "RXU": 90536.4,
    "RR1U": 9960.0,
    "RR2U": 46585.6,
    "VREF_P": 4.108138301367376,
-   "VIOA": 0.004925992997767263,
+   "VIOA": 0.006925992997767263,
    "HINTA": 0.005,
    "IS_U": 7e-09,
    "IM_U": 5e-09,
    "RON_U": 0.001
   },
   "vfmin": {
-   "vr": 19.49608260883038,
-   "vf": 18.023407272734623,
+   "vr": 19.48445176871425,
+   "vf": 18.012638918867115,
    "RTU": 39043.2,
    "RBU": 8905.48,
    "RXU": 90536.4,
    "RR1U": 10040.0,
    "RR2U": 46214.4,
    "VREF_P": 4.083861698632624,
-   "VIOA": -0.004925992997767263,
+   "VIOA": -0.006925992997767263,
    "HINTA": 0.005,
    "IS_U": -7e-09,
    "IM_U": -5e-09,
    "RON_U": 0.001
   },
   "vfmax": {
-   "vr": 19.963021060528764,
-   "vf": 18.48958471022159,
+   "vr": 19.974800251026654,
+   "vf": 18.500494486870462,
    "RTU": 39356.8,
    "RBU": 8834.52,
    "RXU": 90536.4,
    "RR1U": 9960.0,
    "RR2U": 46585.6,
    "VREF_P": 4.108138301367376,
-   "VIOA": 0.004925992997767263,
+   "VIOA": 0.006925992997767263,
    "HINTA": 0.0,
    "IS_U": 7e-09,
    "IM_U": 5e-09,
    "RON_U": 0.001
   },
   "mbmin": {
-   "vr": 19.46995575000083,
-   "vf": 18.036867715069008,
+   "vr": 19.458331828221056,
+   "vf": 18.0260993612015,
    "RTU": 39043.2,
    "RBU": 8905.48,
    "RXU": 91263.6,
    "RR1U": 10040.0,
    "RR2U": 46214.4,
    "VREF_P": 4.083861698632624,
-   "VIOA": -0.004925992997767263,
+   "VIOA": -0.006925992997767263,
    "HINTA": 0.0,
    "IS_U": -7e-09,
    "IM_U": -5e-09,
@@ -304,7 +304,7 @@
  },
  "spice_corners_timer": {
   "tmin": {
-   "t": 0.07782371412614832,
+   "t": 0.07773636028039783,
    "RTT": 10956.0,
    "RHB": 1030000.0,
    "RK1": 10040.0,
@@ -313,11 +313,11 @@
    "V5_P": 4.9,
    "VOHD": 0.0,
    "ILKD": 3e-05,
-   "VIOB": -0.005652234132519036,
+   "VIOB": -0.007652234132519036,
    "HINTB": 0.0
   },
   "tmax": {
-   "t": 0.25496686361614734,
+   "t": 0.2553414856607876,
    "RTT": 11044.0,
    "RHB": 970000.0,
    "RK1": 9960.0,
@@ -326,7 +326,7 @@
    "V5_P": 4.9,
    "VOHD": 0.17,
    "ILKD": 0.0,
-   "VIOB": 0.005652234132519036,
+   "VIOB": 0.007652234132519036,
    "HINTB": 0.005
   }
  },
@@ -336,24 +336,24 @@
   "Rx": 90900.0,
   "RR1": 10000.0,
   "RR2": 46400.0,
-  "vr_min": 19.826109771930508,
-  "vr_max": 20.34417692963431,
-  "vf_min": 18.3792955102659,
-  "vf_max": 18.85574652003037,
-  "h_min": 1.4330880349318136,
-  "h_max": 1.5023377015894326,
+  "vr_min": 19.814273222632018,
+  "vr_max": 20.35617217707172,
+  "vf_min": 18.36831452887967,
+  "vf_max": 18.866872353618763,
+  "h_min": 1.4322324670195563,
+  "h_max": 1.5032071154384496,
   "vin_op_20V": 18.74571323563722,
   "s_at_26V_max": 4.735460171637427,
-  "cross_corner_rmin_minus_fmax": 0.9703632519001388,
+  "cross_corner_rmin_minus_fmax": 0.9474008690132543,
   "margins": {
-   "a_start_margin": -0.3479269296343084,
-   "b_overdischarge_margin": 0.37929551026590147,
-   "c_motorboat_margin": 0.05474995997031015,
-   "d_run_at_20V_margin": -0.21003328439315042,
+   "a_start_margin": -0.35992217707172003,
+   "b_overdischarge_margin": 0.36831452887966876,
+   "c_motorboat_margin": 0.053130744169712724,
+   "d_run_at_20V_margin": -0.221159117981545,
    "e_sense_26V_cm_margin": 0.16453982836257364
   },
   "ok": false,
-  "worst": -0.3479269296343084
+  "worst": -0.35992217707172003
  },
  "regression_misset_rx_100k": {
   "Rt": 39200.0,
@@ -361,24 +361,24 @@
   "Rx": 100000.0,
   "RR1": 10000.0,
   "RR2": 46400.0,
-  "vr_min": 19.33955110319224,
-  "vr_max": 19.843563444947847,
-  "vf_min": 18.023407272734623,
-  "vf_max": 18.48958471022159,
-  "h_min": 1.3026833881232314,
-  "h_max": 1.367615955537353,
+  "vr_min": 19.328005034292897,
+  "vr_max": 19.855263518785474,
+  "vf_min": 18.012638918867115,
+  "vf_max": 18.500494486870462,
+  "h_min": 1.3019056730913974,
+  "h_max": 1.3684062527261034,
   "vin_op_20V": 18.74571323563722,
   "s_at_26V_max": 4.828964634688589,
-  "cross_corner_rmin_minus_fmax": 0.84996639297065,
+  "cross_corner_rmin_minus_fmax": 0.8275105474224347,
   "margins": {
-   "a_start_margin": 0.15268655505215278,
-   "b_overdischarge_margin": 0.023407272734623064,
-   "c_motorboat_margin": -0.10089661098916128,
-   "d_run_at_20V_margin": 0.15612852541562958,
+   "a_start_margin": 0.14098648121452584,
+   "b_overdischarge_margin": 0.012638918867114768,
+   "c_motorboat_margin": -0.10245305304583688,
+   "d_run_at_20V_margin": 0.14521874876675653,
    "e_sense_26V_cm_margin": 0.07103536531141152
   },
   "ok": false,
-  "worst": -0.10089661098916128
+  "worst": -0.10245305304583688
  },
  "alternatives": {
   "A0_baseline_180k_10k": {
@@ -422,25 +422,25 @@
     "Rt": 28000.0,
     "Rb": 7870.0,
     "Rh": 95300.0,
-    "vr_min": 19.595084700140518,
-    "vr_max": 20.09814803545561,
-    "vf_min": 18.159728314024612,
-    "vf_max": 18.686516781735143,
+    "vr_min": 19.58544283357581,
+    "vr_max": 20.107913155944683,
+    "vf_min": 18.15008176524438,
+    "vf_max": 18.696277182400536,
     "h_min": 1.313062963257149,
     "h_max": 1.5348743746939135,
     "vin_op_20V": 18.74571323563722,
-    "cross_corner_rmin_minus_fmax": 0.9085679184053745,
+    "cross_corner_rmin_minus_fmax": 0.8891656511752757,
     "margins": {
-     "a_start_margin": -0.1018980354556085,
-     "b_overdischarge_margin": 0.15972831402461196,
-     "c_motorboat_margin": -0.07303659063214077,
-     "d_run_at_20V_margin": -0.04080354609792494
+     "a_start_margin": -0.11166315594468301,
+     "b_overdischarge_margin": 0.15008176524438,
+     "c_motorboat_margin": -0.0737152324059839,
+     "d_run_at_20V_margin": -0.05056394676331735
     },
     "ok": false,
-    "worst": -0.1018980354556085
+    "worst": -0.11166315594468301
    },
    "n_candidates": 205,
-   "verdict": "FAIL: best E96 worst margin -0.102 V (VOH/VOL spread)",
+   "verdict": "FAIL: best E96 worst margin -0.112 V (VOH/VOL spread)",
    "pass_": false
   },
   "C3_TLV3202_TMUX1102_switched_divider": {
@@ -451,24 +451,24 @@
     "Rx": 90900.0,
     "RR1": 10000.0,
     "RR2": 46400.0,
-    "vr_min": 19.46995575000083,
-    "vr_max": 19.977745048651126,
-    "vf_min": 18.023407272734623,
-    "vf_max": 18.48958471022159,
-    "h_min": 1.4330880349318207,
-    "h_max": 1.5017975592406323,
+    "vr_min": 19.458331828221056,
+    "vr_max": 19.989524239149013,
+    "vf_min": 18.012638918867115,
+    "vf_max": 18.500494486870462,
+    "h_min": 1.4322324670195563,
+    "h_max": 1.5026669730896423,
     "vin_op_20V": 18.74571323563722,
     "s_at_26V_max": 4.828964634688589,
-    "cross_corner_rmin_minus_fmax": 0.9803710397792393,
+    "cross_corner_rmin_minus_fmax": 0.9578373413505936,
     "margins": {
-     "a_start_margin": 0.018504951348873533,
-     "b_overdischarge_margin": 0.023407272734623064,
-     "c_motorboat_margin": 0.02950803581942804,
-     "d_run_at_20V_margin": 0.15612852541562958,
+     "a_start_margin": 0.006725760850986973,
+     "b_overdischarge_margin": 0.012638918867114768,
+     "c_motorboat_margin": 0.027873740882322057,
+     "d_run_at_20V_margin": 0.14521874876675653,
      "e_sense_26V_cm_margin": 0.07103536531141152
     },
     "ok": true,
-    "worst": 0.018504951348873533
+    "worst": 0.006725760850986973
    },
    "n_candidates": 3236,
    "chosen": {
@@ -477,26 +477,170 @@
     "Rx": 90900.0,
     "RR1": 10000.0,
     "RR2": 46400.0,
-    "vr_min": 19.46995575000083,
-    "vr_max": 19.977745048651126,
-    "vf_min": 18.023407272734623,
-    "vf_max": 18.48958471022159,
-    "h_min": 1.4330880349318207,
-    "h_max": 1.5017975592406323,
+    "vr_min": 19.458331828221056,
+    "vr_max": 19.989524239149013,
+    "vf_min": 18.012638918867115,
+    "vf_max": 18.500494486870462,
+    "h_min": 1.4322324670195563,
+    "h_max": 1.5026669730896423,
     "vin_op_20V": 18.74571323563722,
     "s_at_26V_max": 4.828964634688589,
-    "cross_corner_rmin_minus_fmax": 0.9803710397792393,
+    "cross_corner_rmin_minus_fmax": 0.9578373413505936,
     "margins": {
-     "a_start_margin": 0.018504951348873533,
-     "b_overdischarge_margin": 0.023407272734623064,
-     "c_motorboat_margin": 0.02950803581942804,
-     "d_run_at_20V_margin": 0.15612852541562958,
+     "a_start_margin": 0.006725760850986973,
+     "b_overdischarge_margin": 0.012638918867114768,
+     "c_motorboat_margin": 0.027873740882322057,
+     "d_run_at_20V_margin": 0.14521874876675653,
      "e_sense_26V_cm_margin": 0.07103536531141152
     },
     "ok": true,
-    "worst": 0.018504951348873533
+    "worst": 0.006725760850986973
    },
    "pass_": true
   }
+ },
+ "start_guarantee": {
+  "status": "NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS",
+  "a_start_margin_mV": 6.725760850986973,
+  "b_overdischarge_margin_mV": 12.638918867114768,
+  "vr_max": 19.989524239149013,
+  "vf_min": 18.012638918867115,
+  "non_guaranteed_terms": [
+   {
+    "term": "REF35 TC extrapolated 105->125 C, 20 K x 12 ppm (I, outside spec range)",
+    "cls": "I",
+    "value": 0.00024,
+    "a_mV": 4.769902656601488,
+    "b_mV": 4.348218253813485,
+    "unbounded": false
+   },
+   {
+    "term": "REF35 long-term 40 ppm/1000 h @35 C, x10 linear for 10 kh (A)",
+    "cls": "A",
+    "value": 0.0004,
+    "a_mV": 7.949837761003664,
+    "b_mV": 7.247030423020107,
+    "unbounded": true
+   },
+   {
+    "term": "REF35 thermal hysteresis 70 ppm (T cycle 1, used as bound - A)",
+    "cls": "T",
+    "value": 7e-05,
+    "a_mV": 1.3912216081770623,
+    "b_mV": 1.2682303240296733,
+    "unbounded": false
+   },
+   {
+    "term": "REF35 solder shift: not specified (A: 0, bench B-U07)",
+    "cls": "A",
+    "value": 0.0,
+    "a_mV": 0.0,
+    "b_mV": 0.0,
+    "unbounded": true
+   },
+   {
+    "term": "REF35 load regulation 20 ppm/mA (T used as bound)",
+    "cls": "T",
+    "value": 2e-05,
+    "a_mV": 0.02886749598118854,
+    "b_mV": 0.02631545798692514,
+    "unbounded": false
+   },
+   {
+    "term": "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet: 1.2 mV typ, NO max)",
+    "cls": "A",
+    "value": 0.005,
+    "a_mV": 11.190230972992765,
+    "b_mV": 10.229936174130927,
+    "unbounded": true,
+    "note": "a_mV = margin gained if Hint were only its typical 1.2 mV"
+   },
+   {
+    "term": "I_Q_PRESTART 15 mA x R_TOTAL_MAX 0.25 ohm (A, both values)",
+    "cls": "A",
+    "value": 0.00375,
+    "a_mV": 3.75,
+    "b_mV": 0.0,
+    "unbounded": false
+   },
+   {
+    "term": "PSRR term uses a 0.1 V supply shift (A; PSRR 65 dB is G)",
+    "cls": "A",
+    "value": 5.6234132519034914e-05,
+    "a_mV": null,
+    "b_mV": null,
+    "unbounded": false,
+    "note": "<0.06 mV at the comparator, ~0.3 mV at VIN"
+   }
+  ],
+  "unbounded_terms": [
+   "REF35 long-term 40 ppm/1000 h @35 C, x10 linear for 10 kh (A)",
+   "REF35 solder shift: not specified (A: 0, bench B-U07)",
+   "TLV3202 internal hysteresis upper bound 5 mV (A; datasheet: 1.2 mV typ, NO max)"
+  ],
+  "break_even": {
+   "hint_max_V_for_a_eq_0": 0.007283946711682976,
+   "extra_ref_error_ppm_for_a_eq_0": 338.4099677595473,
+   "extra_ref_error_ppm_for_b_eq_0": 697.6053985902286
+  },
+  "design_options_parametric": {
+   "O0_recentre_only (current parts)": {
+    "Rt": 39200.0,
+    "Rb": 8870.0,
+    "Rx": 90900.0,
+    "RR2": 46400.0,
+    "margins_mV": {
+     "a_start_margin": 6.73,
+     "b_overdischarge_margin": 12.64,
+     "c_motorboat_margin": 27.87,
+     "d_run_at_20V_margin": 145.22,
+     "e_sense_26V_cm_margin": 71.04
+    },
+    "worst_mV": 6.73
+   },
+   "O1_reference_total_error_x0.5": {
+    "Rt": 31600.0,
+    "Rb": 7150.0,
+    "Rx": 73200.0,
+    "RR2": 46400.0,
+    "margins_mV": {
+     "a_start_margin": 34.03,
+     "b_overdischarge_margin": 40.15,
+     "c_motorboat_margin": 33.47,
+     "d_run_at_20V_margin": 171.89,
+     "e_sense_26V_cm_margin": 71.2
+    },
+    "worst_mV": 33.47
+   },
+   "O2_divider_resistor_error_x0.5 (ratio-matched network class)": {
+    "Rt": 45300.0,
+    "Rb": 9310.0,
+    "Rx": 95300.0,
+    "RR2": 31600.0,
+    "margins_mV": {
+     "a_start_margin": 63.48,
+     "b_overdischarge_margin": 64.62,
+     "c_motorboat_margin": 63.51,
+     "d_run_at_20V_margin": 222.78,
+     "e_sense_26V_cm_margin": 437.99
+    },
+    "worst_mV": 63.48
+   },
+   "O3_both_x0.5": {
+    "Rt": 27400.000000000004,
+    "Rb": 5900.0,
+    "Rx": 59000.0,
+    "RR2": 37400.0,
+    "margins_mV": {
+     "a_start_margin": 84.86,
+     "b_overdischarge_margin": 85.99,
+     "c_motorboat_margin": 89.12,
+     "d_run_at_20V_margin": 263.25,
+     "e_sense_26V_cm_margin": 262.99
+    },
+    "worst_mV": 84.86
+   }
+  },
+  "note": "Status cannot become GUARANTEED by simulation: unbounded terms need datasheet max values or bench data (B-U), or a design change that leaves enough margin to cover them. Requirements are NOT loosened."
  }
 }
