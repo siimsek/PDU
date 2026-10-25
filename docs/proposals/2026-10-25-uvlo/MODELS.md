@@ -27,7 +27,7 @@ Hiçbir model TI, Panasonic veya Diodes tarafından sağlanmış değildir.
 | U21 TMUX1102 | UVLO_TMUX1102 | B | RON 1,8 tipik / 4,9 Ω maks (G, SCDS410D s.5). Mantık eşiği 1,18 V ± 0,1 V (VIL 0,87 / VIH 1,49 V, G). VDD < 1,08 V iken KAPALI (V). Kaçak, düğüm akımı köşesinde |
 | DTT 1N4148WS | jenerik diyot .model + Bilkd kaçak kaynağı | İ/B | Is/N/Rs jenerik (V). Kaçak ≤ 30 µA köşesi (G üst sınır, DS30097 Rev.27) |
 | CTT 10 µF X7R | ideal C, köşe değeri | İ + G/V | +%26,5 / −%49 (BUDGET §2) |
-| Pil 6S + kablo | UVLO_LIPO: R0 + R1‖C1 + Lcab + Rcab | İ/V | R0 0,100, R1 0,050 Ω, τ 20 ms (gerçek ~10 s; pencereye sığması için **hızlandırıldı**, bu muhafazakâr tarafta kalır). Lcab 1 µH. Rcab 0,074 Ω (= 0,237 − 0,150 − deck'teki diğer R'ler) |
+| Pil 6S + kablo | UVLO_LIPO: R0 + R1‖C1 + Lcab + Rcab | İ/V | R0 0,100, R1 0,050 Ω, τ 20 ms (gerçek ~10 s; pencereye sığması için **hızlandırıldı**, bu muhafazakâr tarafta kalır). Lcab 1 µH. Rcab 0,074 Ω (R_total 0,25 = R0 0,100 + R1 0,050 + Rcab 0,074 + kart 0,026 [R_F1 + Q1 modeli]) |
 | U10 TPS48000, U11 TPS7A1650, U12 REF35409, U13 TLV3601, Q FET'ler | WP1 modelleri (`../2026-10-25-o1-ovp/`) | B/K | WP1 MODELS.md. **TDRV_EN yeniden kurma gecikmesi modelde yok** (§4) |
 | Yükler, eFuse'lar (U3/U4) | baseline `pdu-behavioral.lib` | K | baseline ile aynı |
 
