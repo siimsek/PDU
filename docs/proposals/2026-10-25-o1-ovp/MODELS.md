@@ -4,10 +4,10 @@ Hiçbir üretici (vendor) modeli pakete/zip'e **eklenmemiştir**; yalnız yol + 
 
 | Model | Dosya | sha256 | Sınıf | Sürüm/Kaynak | Lisans | Bu pakette kullanım |
 |---|---|---|---|---|---|---|
-| O1OVP_TLV3601 | `simulation/proposals/2026-10-25-o1-ovp/pdu-o1ovp-behavioral.lib` | `62d862b4166c0348775510a72612f627d2157896d031922164fdb8bffe86588b` (tüm lib) | **Davranışsal** (ideal eşik + histerezis + gecikme, ESD diyotları) | 2026-10-25, bu paket | Repo ile aynı (öneri) | Tüm decks |
+| O1OVP_TLV3601 | `simulation/proposals/2026-10-25-o1-ovp/pdu-o1ovp-behavioral.lib` | rev3 `1027d7d70e84284fe9baee8105a20499ff5ab13e91d5d4e3c3d56a0576124202` (tüm lib; rev2 `62d862b4…588b` → `model-compare/pdu-o1ovp-behavioral-rev2.lib`) | **Davranışsal** (ideal eşik + histerezis + gecikme, ESD diyotları) | 2026-10-25, bu paket | Repo ile aynı (öneri) | Tüm decks |
 | O1OVP_REF35 | aynı lib | 〃 | **İdeal** kaynak (VREF parametresi, köşe değerleri) | 〃 | 〃 | 〃 |
 | O1OVP_LDO | aynı lib | 〃 | **Davranışsal**, yalnız kaynak; akım sınırı 150 mA (gerçek TPS7A1650 100 mA – yük < 15 mA olduğundan etkisiz, not) | 〃 | 〃 | 〃 |
-| O1OVP_TPS48000 | aynı lib | 〃 | **Davranışsal** (TDON/TDOFF/TDOV iletim hattı gecikmeleri, IPU/IPD, BST UVLO, CP off; INP lojik eşiği 1,35/1,45 V – veri sayfası 0,8/2 V sınırları içinde) | 〃 | 〃 | 〃 |
+| O1OVP_TPS48000 | aynı lib | 〃 | **Davranışsal** (TDON/TDOFF/TDOV iletim hattı gecikmeleri, IPU/IPD, BST UVLO, CP off; rev3: iç OV mandal düğümü `ovs`; INP lojik eşiği 1,35/1,45 V – veri sayfası 0,8/2 V sınırları içinde) | 〃 | 〃 | 〃 |
 | O1OVP_NFET | aynı lib | 〃 | **Davranışsal** anahtar (RON, VTH, CGS, CDS 1,24 nF tipikten türetildi; çığ/avalanche **modellenmedi**) | 〃 | 〃 | 〃 |
 | Baseline buck/eFuse | `simulation/pdu-behavioral.lib`, `pdu-protection.inc`, `pdu-circuit.inc` | `9fa5c122…74c0`/`0846d2f6…8a5f`/`e167560c…a826` (tam değerler `o1ovp-results.json` → `baseline_sha256`) | **Davranışsal** (repo baseline, değiştirilmedi) | repo `a1dbeeb` | Repo | Include ile |
 | RAW bankı (rev2: COUT1–8 + COUT21–28) | `pdu-circuit-o1ovp.inc` (16 × `{2.2e-05*CBIAS}`); kısa-devre decklerinde `Craw {CRAW}` + `Resr {ESR}` | `input_sha256` (o1ovp-results.json) | **İdeal** C + seri ESR (DC-bias/sıcaklık/yaşlanma köşe parametresiyle: CRAW 185,3 µF / 483 µF; CBIAS 0,5 / 1,372) | bu paket | Repo | Tüm decks |
@@ -27,3 +27,11 @@ Hiçbir üretici (vendor) modeli pakete/zip'e **eklenmemiştir**; yalnız yol + 
 - **LTspice bulut ortamında çalıştırılmadı.** Tüm koşular ngspice-44.2 (`/usr/bin/ngspice`, Debian 13) ile.
 - **Bağımlılıklar:** python3 (yalnız standart kütüphane) + ngspice. CI'da `ubuntu-latest` apt ngspice sürümü farklı olabilir (sürüm farkı → sayısal küçük farklar; doğrulayıcı aynı kriterleri uygular).
 - **C bankı modeli (P1-1):** kısa devre decklerinde `Craw {CRAW}` + `Resr {ESR}` (+ ESL köşesinde `Lesl 2n`, **V** varsayım). Değerler: 185,3 µF (ürün min.), 176 µF (CBIAS 0,5 kart deckleri), **165 µF (dürüst min.)**, 483 µF (maks.), 92,65 µF (rev1 bilgi). ESR 1 / 12,5 mΩ (+100 mΩ stres).
+
+## rev3 ekleri (Tur 2)
+- **Model rev3 – tek değişiklik:** TPS48000 alt devresindeki iç OV-mandal düğümü `ov`, SPICE'ın büyük/küçük harf duyarsızlığı nedeniyle `OV` pini ile **aynı düğümdü**. Bov/Cov/Rh2 ROV10/ROV11 bölücüsünü yüklüyordu (RAW 11,37 V'ta OV pini 1,127 V yerine 0,112 V) → rev1/rev2'de **OV yedeği hiç tetiklenemiyordu**; rev1/rev2 sonuçları yalnız komparatör yoluna aittir. rev3'te düğüm `ovs` oldu (4 satır). Eski dosya değiştirilmeden `simulation/proposals/2026-10-25-o1-ovp/model-compare/pdu-o1ovp-behavioral-rev2.lib` (sha256 `62d862b4166c0348775510a72612f627d2157896d031922164fdb8bffe86588b`) olarak saklandı; rev3 sha256 `1027d7d70e84284fe9baee8105a20499ff5ab13e91d5d4e3c3d56a0576124202`.
+- **Eski/yeni regresyon:** `model-compare/model_compare.py` tüm kabul case'lerini rev2 lib ile yeniden koşar ve rev3 `o1ovp-results.json` ile karşılaştırır → `results/model-compare/model-compare.json` (sonuç RESULTS.md §H5). `ref-baseline-load-step-7p5a` O1OVP lib'ini içermez → modelden bağımsız işaretlendi (`c285d52`).
+- **Rejim ölçümleri (rev3):** her kabul deck'inde `INP_PRE_MIN` (> 2,5 V) ve `VGS_PRE_MIN` (> 6 V) arıza öncesi ve toparlanma pencerelerinde; runner ve doğrulayıcı FET hiç açılmazsa veya INP/VGS rejimi yanlışsa FAIL verir (negatif öz-test `regime-selftest/`).
+- **Bilinen model sınırları (rev3'te değişmedi):** davranışsal NFET doyumsuz, gövde diyotu ve çığ yok; TLV3601 çıkışı ideal (Bout) → INP'ye harici düşük empedans etkisiz; ESL 2 nH **V** varsayımı; açılışta 2 nH ESL ile ≈7,8 MHz çınlama ve davranışsal komparatörün açılışta tetiklemesi (P0-03) gerçek silikonda doğrulanmadı (B19).
+- **Teşhis çalışmaları** (kabul kanıtı değil): `solver-study/`, `slew-study/`, `soa-study/` (SLPS488B Fig. 10 grafik okuması ±%25, Tc 125 °C ×0,333 derate, paylaşım kredisi yok), `u3-latch-study/` (U3 açılmaz varsayımı).
+- LTspice bulut ortamında çalıştırılmadı. Hiçbir üretici modeli pakete eklenmedi.
