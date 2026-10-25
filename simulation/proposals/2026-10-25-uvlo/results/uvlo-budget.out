@@ -1,27 +1,45 @@
 PASS C3 chosen all margins >= 0
 PASS timer all margins >= 0
+PASS timer reset all margins >= 0
 PASS regression A0 baseline fails
 PASS regression mis-set Rb 8.66k fails
 PASS regression mis-set Rx 100k fails
-C3 chosen: Vr 19.458..19.990  Vf 18.013..18.500  H 1.432..1.503  margins {'a_start_margin': 0.0067, 'b_overdischarge_margin': 0.0126, 'c_motorboat_margin': 0.0279, 'd_run_at_20V_margin': 0.1452, 'e_sense_26V_cm_margin': 0.071}
-timer cold 77.7..255.3 ms, after deep dip 64.9..219.8 ms, EN hi>=2.289 V lo<=0.121 V
-C2 best worst margin -0.1117 V ; mis Rb worst -0.3599 ; mis Rx worst -0.1025
+PASS O3 candidate all margins >= 0 (under A/T terms)
+PASS O3 regression mis-set Rb 5.23k fails
+C3 chosen: Vr 19.458..19.990  Vf 18.013..18.501  H 1.432..1.503  margins {'a_start_margin': 0.0066, 'b_overdischarge_margin': 0.0127, 'c_motorboat_margin': 0.0279, 'd_run_at_20V_margin': 0.1451, 'e_sense_26V_cm_margin': 0.071}
+timer cold 77.7..255.5 ms, after deep dip 64.8..220.0 ms, EN hi>=2.289 V lo<=0.121 V
+timer reset: V_L 0.754..0.852 V, CTT at release <= 0.0535 V, hold 7.93..26.26 ms, discharge <= 2.91 ms, Ipk <= 52.6 mA, after full reset >= 85.0 ms, after partial (Schmitt) reset >= 67.8 ms, VIN-OK->EN <= 281.8 ms; margins {'release_margin_V': 0.60037, 'short_dip_target_65ms_margin_s': 0.00275, 'short_dip_limit_60ms_margin_s': 0.00775, 'hold_vs_discharge_margin_s': 0.00502, 'i_peak_margin_A': 0.12742, 'i_continuous_IDC_margin_A': 0.00742, 'latency_incl_hold_margin_s': 0.01822}
+C2 best worst margin -0.1117 V ; mis Rb worst -0.3600 ; mis Rx worst -0.1024
 A0_baseline_180k_10k -> FAIL: rise_max > 20.0 V (no guaranteed start at 20 V) and fall not guaranteed
 A1_divider_retune -> FAIL: falling threshold typ (nominal) ~16.16 V < 18.0 V and never guaranteed
 B_TPS3700 -> FAIL: hysteresis typ 0.27 V (min not specified) << I*R + margin 1.41 V -> motorboating
 D_LM7480_EN_UVLO -> FAIL: fall_min 16.94 V < 18.0 V (over-discharge)
 C2_TLV3202_pushpull_Rh -> FAIL: best E96 worst margin -0.112 V (VOH/VOL spread)
 C3_TLV3202_TMUX1102_switched_divider -> CHOSEN
-START GUARANTEE: NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS  a=+6.73 mV b=+12.64 mV  unbounded terms: 3  break-even Hint_max=7.28 mV, extra REF error a=338 ppm b=698 ppm
-  [I] REF35 TC extrapolated 105->125 C, 20 K x 12 ppm (I, outside spec range): a +4.77 mV, b +4.35 mV
-  [A] UNBOUNDED REF35 long-term 40 ppm/1000 h @35 C, x10 linear for 10 kh (A): a +7.95 mV, b +7.25 mV
+START GUARANTEE: NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS  a=+6.64 mV b=+12.72 mV  unbounded terms: 3  break-even Hint_max=7.25 mV, extra REF error a=334 ppm b=703 ppm
+  [I] REF35 TC extrapolated 105->125 C, 20 K x 12 ppm (I, outside spec range): a +4.77 mV, b +4.34 mV
+  [A] UNBOUNDED REF35 long-term 40 ppm/1000 h @35 C, x10 linear for 10 kh (A): a +7.96 mV, b +7.24 mV
   [T] REF35 thermal hysteresis 70 ppm (T cycle 1, used as bound - A): a +1.39 mV, b +1.27 mV
   [A] UNBOUNDED REF35 solder shift: not specified (A: 0, bench B-U07): a +0.00 mV, b +0.00 mV
   [T] REF35 load regulation 20 ppm/mA (T used as bound): a +0.03 mV, b +0.03 mV
   [A] UNBOUNDED TLV3202 internal hysteresis upper bound 5 mV (A; datasheet: 1.2 mV typ, NO max): a +11.19 mV, b +10.23 mV
   [A] I_Q_PRESTART 15 mA x R_TOTAL_MAX 0.25 ohm (A, both values): a +3.75 mV, b +0.00 mV
   [A] PSRR term uses a 0.1 V supply shift (A; PSRR 65 dB is G): a n/a mV, b n/a mV
-  option O0_recentre_only (current parts) worst +6.73 mV {'a_start_margin': 6.73, 'b_overdischarge_margin': 12.64, 'c_motorboat_margin': 27.87, 'd_run_at_20V_margin': 145.22, 'e_sense_26V_cm_margin': 71.04}
-  option O1_reference_total_error_x0.5 worst +33.47 mV {'a_start_margin': 34.03, 'b_overdischarge_margin': 40.15, 'c_motorboat_margin': 33.47, 'd_run_at_20V_margin': 171.89, 'e_sense_26V_cm_margin': 71.2}
-  option O2_divider_resistor_error_x0.5 (ratio-matched network class) worst +63.48 mV {'a_start_margin': 63.48, 'b_overdischarge_margin': 64.62, 'c_motorboat_margin': 63.51, 'd_run_at_20V_margin': 222.78, 'e_sense_26V_cm_margin': 437.99}
-  option O3_both_x0.5 worst +84.86 mV {'a_start_margin': 84.86, 'b_overdischarge_margin': 85.99, 'c_motorboat_margin': 89.12, 'd_run_at_20V_margin': 263.25, 'e_sense_26V_cm_margin': 262.99}
+  option O0_recentre_only (current parts) worst +6.64 mV {'a_start_margin': 6.64, 'b_overdischarge_margin': 12.72, 'c_motorboat_margin': 27.89, 'd_run_at_20V_margin': 145.14, 'e_sense_26V_cm_margin': 71.04}
+  option O1_reference_total_error_x0.5 worst +33.48 mV {'a_start_margin': 33.97, 'b_overdischarge_margin': 40.21, 'c_motorboat_margin': 33.48, 'd_run_at_20V_margin': 171.83, 'e_sense_26V_cm_margin': 71.2}
+  option O2_divider_resistor_error_x0.5 (ratio-matched network class) worst +63.40 mV {'a_start_margin': 63.4, 'b_overdischarge_margin': 64.69, 'c_motorboat_margin': 63.52, 'd_run_at_20V_margin': 222.71, 'e_sense_26V_cm_margin': 437.99}
+  option O3_both_x0.5 worst +84.82 mV {'a_start_margin': 84.82, 'b_overdischarge_margin': 86.03, 'c_motorboat_margin': 89.13, 'd_run_at_20V_margin': 263.21, 'e_sense_26V_cm_margin': 262.99}
+O3 candidate {'Rt': 24300.0, 'Rb': 5360.0, 'Rx': 53600.0, 'RR1': 10000.0, 'RR2': 41200.0}: Vr 19.560..19.922 Vf 18.070..18.394 H 1.476..1.542 margins mV {'a_start_margin': 73.87, 'b_overdischarge_margin': 70.32, 'c_motorboat_margin': 75.54, 'd_run_at_20V_margin': 251.33, 'e_sense_26V_cm_margin': 182.14}
+O3 START GUARANTEE: NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS a=+73.87 mV b=+70.32 mV unbounded 4 ; C3 old {'a_start_margin': 6.64, 'b_overdischarge_margin': 12.72, 'c_motorboat_margin': 27.89, 'd_run_at_20V_margin': 145.14, 'e_sense_26V_cm_margin': 71.04} ; rel-drift 125C sensitivity {'a_start_margin': 45.37, 'b_overdischarge_margin': 42.88, 'c_motorboat_margin': 73.13, 'd_run_at_20V_margin': 223.37, 'e_sense_26V_cm_margin': 176.34} ; mis Rb 5.23k worst -0.3013
+  O3 [A] UNBOUNDED REF5040 long-term VSSOP 50 ppm (0-1000 h) + 25 ppm/1000 h x 9 to 10 kh (A, typical values extrapolated): a +5.46 mV, b +4.99 mV
+  O3 [T] REF5040 thermal hysteresis VSSOP 50 ppm (T used as bound - A): a +0.99 mV, b +0.91 mV
+  O3 [A] UNBOUNDED REF5040 solder shift: typical histograms only (A: 0, unbounded, bench B-U07): a +0.00 mV, b +0.00 mV
+  O3 [A] UNBOUNDED TLV3202 internal hysteresis upper bound 5 mV (A; datasheet 1.2 mV typ, NO max): a +11.43 mV, b +10.47 mV
+  O3 [A] UNBOUNDED ACAS DF absolute endurance +/-0.1 % + soldering heat +/-0.1 % and relative endurance/solder bounds (A: AE-only figures, doc 28770 note (2); DF not specified): a +40.84 mV, b +36.83 mV
+  O3 [A] ACAS DF: relative drift + grade-U relative TCR (A: DF figures / grade-U availability not confirmed): a +37.89 mV, b +36.72 mV
+  O3 [A] I_Q_PRESTART 15 mA + REF5040 1.2 mA (G) x R_TOTAL_MAX 0.25 ohm (A): a +4.05 mV, b +0.00 mV
+  O3 sensitivity damp heat 85 C / 85 % RH 1000 h: absolute +/-0.5 % (AE, A for DF): {'a_start_margin': 66.6, 'b_overdischarge_margin': 69.86, 'c_motorboat_margin': 68.09, 'd_run_at_20V_margin': 250.86, 'e_sense_26V_cm_margin': 182.14} ok=True
+  O3 sensitivity rapid temperature change: absolute +/-0.25 % (AE, A for DF): {'a_start_margin': 70.24, 'b_overdischarge_margin': 70.09, 'c_motorboat_margin': 71.82, 'd_run_at_20V_margin': 251.1, 'e_sense_26V_cm_margin': 182.14} ok=True
+  O3 sensitivity endurance 125 C 1000 h: relative +/-0.125 % instead of 70 C +/-0.05 % (AE, A for DF): {'a_start_margin': 44.3, 'b_overdischarge_margin': 42.79, 'c_motorboat_margin': 72.01, 'd_run_at_20V_margin': 223.28, 'e_sense_26V_cm_margin': 176.34} ok=True
+  O3 break-even extra DF drift (rel+abs): 0.1871 %
+n_vertices {'c3': 4096, 'o3': 16384, 'timer': 1024, 'note': 'Tur-3 T3-07: exhaustive sign vertices; VIO/CMRR and REF load current evaluated per vertex'}

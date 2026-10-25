@@ -1,7 +1,7 @@
 # WP2 2026-10-25-uvlo – Hata ve marj bütçesi
 
 Kaynak: `simulation/proposals/2026-10-25-uvlo/uvlo_budget.py`. Komut: `python3 uvlo_budget.py > results/uvlo-budget.out`, rc 0. Makine çıktısı `results/uvlo-budget.json`.
-Yöntem: her hata terimi ±1 köşelerine **katı doğrusal** toplamla girer (C3 için 2^10 köşe, zamanlayıcı için 2^10). RSS yalnızca bilgi amaçlı raporlanır. Sınıflar: **G** garanti (datasheet min/max), **T** tipik, **V** varsayım, **Ç** çıkarım.
+Yöntem: her hata terimi ±1 köşelerine **katı doğrusal** toplamla girer (Tur 3 T3-07: bağımsız işaret eksenleri, C3 için 2^12 = 4096 köşe, O3 için 2^14 = 16384, zamanlayıcı ve reset için 2^10 = 1024; VIO/CMRR ve REF yük akımı her köşede o köşenin RR1/RR2 değeriyle hesaplanır; `uvlo-budget.json` → `n_vertices`). RSS yalnızca bilgi amaçlı raporlanır. Sınıflar: **G** garanti (datasheet min/max), **T** tipik, **V** varsayım, **Ç** çıkarım.
 
 ## 1. Gereksinim girdileri
 | Sembol | Değer | Sınıf | Not |
@@ -56,18 +56,18 @@ Yöntem: her hata terimi ±1 köşelerine **katı doğrusal** toplamla girer (C3
 ## 3. Marj tanımları ve sonuçlar (C3: RTU 39,2k, RBU 8,87k, RXU 90,9k, RR1U 10,0k, RR2U 46,4k)
 | Marj | Tanım | Katı | RSS (bilgi) |
 |---|---|---|---|
-| a başlatma | 20 − I_Q·R − V_r,max | **+0,0067 V** | +0,109 V |
-| b aşırı deşarj | V_f,min − 18,0 | **+0,0126 V** | +0,104 V |
-| c motorboating | min_köşe(H − (P_IN/V_f)·R) − 0,10 | **+0,0279 V** | +0,043 V |
-| d 20 V'ta çalışma | VIN_op(20 V, 7,5 A) − V_f,max − 0,10 | **+0,1452 V** | +0,239 V |
-| e 26 V'ta ortak mod | 4,90 − S_UV,max(26 V) | **+0,071 V** | – |
+| a başlatma | 20 − I_Q·R − V_r,max | **+0,00664 V** | +0,109 V |
+| b aşırı deşarj | V_f,min − 18,0 | **+0,01272 V** | +0,104 V |
+| c motorboating | min_köşe(H − (P_IN/V_f)·R) − 0,10 | **+0,02789 V** | +0,043 V |
+| d 20 V'ta çalışma | VIN_op(20 V, 7,5 A) − V_f,max − 0,10 | **+0,14514 V** | +0,238 V |
+| e 26 V'ta ortak mod | 4,90 − S_UV,max(26 V) | **+0,07104 V** | – |
 
-Eşik aralıkları (VIO 6 mV): V_r 19,458–19,990 V; V_f 18,013–18,500 V; H 1,432–1,503 V. VIN_op(20 V) = 18,746 V. Köşeler arası V_r,min − V_f,max = 0,958 V.
+Tur 3 (T3-07, köşe başına VIO/CMRR + REF yükü) öncesi değerler: a +6,73, b +12,64, c +27,87, d +145,22, e +71,04 mV; fark ≤ 0,09 mV. Eşik aralıkları (VIO 6 mV): V_r 19,458–19,990 V; V_f 18,013–18,500 V; H 1,432–1,503 V. VIN_op(20 V) = 18,746 V. Köşeler arası V_r,min − V_f,max = 0,958 V.
 (Önceki 4 mV'lik hatalı VIO ile: a +0,0185, b +0,0234, c +0,0295, d +0,1561 V; V_r 19,470–19,978 V; V_f 18,023–18,490 V.)
 c için açıklama: kapanma anında VIN = V_f iken EMF = V_f + I·R olur. Akım kesilince VIN bu EMF'ye çıkar. EMF < V_r olmalıdır, yoksa salınım oluşur. Bu karşılaştırma aynı köşede (aynı kart, aynı sıcaklık) yapılır.
 
 ## 3a. 20 V başlatma garantisi durumu (ChatGPT WP2 Tur 1 P0) – **AÇIK BLOKLAYICI**
-`start_guarantee_status()` (`uvlo_budget.py`, `results/uvlo-budget.json` → `start_guarantee`). Durum: **`NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS`**. Katı marjlar pozitif (a +6,73 mV, b +12,64 mV) ama yalnızca aşağıdaki G-dışı terimlerin varsayılan sınırları doğruysa. Bu yüzden "20 V'ta garantili yeniden başlatma" **iddia edilmiyor**. Gereksinimler (E_START 20,0 V EMF, V_FALL_MIN 18,0 V, MARGIN_DYN 0,10 V) gevşetilmedi.
+`start_guarantee_status()` (`uvlo_budget.py`, `results/uvlo-budget.json` → `start_guarantee`). Durum: **`NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS`**. Katı marjlar pozitif (a +6,64 mV, b +12,72 mV; Tur 3 köşe başına hesap) ama yalnızca aşağıdaki G-dışı terimlerin varsayılan sınırları doğruysa. Bu yüzden "20 V'ta garantili yeniden başlatma" **iddia edilmiyor**. Gereksinimler (E_START 20,0 V EMF, V_FALL_MIN 18,0 V, MARGIN_DYN 0,10 V) gevşetilmedi.
 
 | G-dışı terim | Sınıf | Bütçedeki değer | a marjından yediği | b marjından yediği | Sınırı var mı? |
 |---|---|---|---|---|---|
@@ -80,12 +80,12 @@ c için açıklama: kapanma anında VIN = V_f iken EMF = V_f + I·R olur. Akım 
 | REF35 lehim kayması | V | 0 | 0 | 0 | **Hayır** (belirtilmemiş; B-U07) |
 | PSRR terimi için 0,1 V besleme kayması | V | 0,1 V × 65 dB | < 0,06 mV (karşılaştırıcıda) | – | varsayım |
 
-**Kırılma noktaları:** Hint_max = **7,28 mV** olursa a = 0. REF35'te bütçe dışı **+338 ppm** ek hata (ör. lehim kayması) a'yı, **+698 ppm** b'yi sıfırlar. Tek bir sınırsız terimin (Hint, lehim kayması, uzun dönem) bu düzeyleri aşmayacağına dair datasheet garantisi yok. Bu yüzden mevcut marj, garanti için **yetersiz** kabul edildi.
+**Kırılma noktaları (Tur 2 hesabı, Tur 3 düzeltmesi ≤ 0,09 mV):** Hint_max = **7,28 mV** olursa a = 0. REF35'te bütçe dışı **+338 ppm** ek hata (ör. lehim kayması) a'yı, **+698 ppm** b'yi sıfırlar. Tek bir sınırsız terimin (Hint, lehim kayması, uzun dönem) bu düzeyleri aşmayacağına dair datasheet garantisi yok. Bu yüzden mevcut marj, garanti için **yetersiz** kabul edildi.
 
 **Tasarım değişikliği önerileri (uygulanmadı; KiCad/BOM değişmedi; parametrik Ç, parça seçilmedi/doğrulanmadı).** `search_c3()` en iyi E96 yeniden merkezlemesi:
 | Seçenek | En kötü marj | a / b / c (mV) | Not |
 |---|---|---|---|
-| O0 yalnız bölücüyü yeniden merkezlemek (mevcut parçalar) | +6,73 mV | 6,73 / 12,64 / 27,87 | Seçili tasarım zaten optimum → **yalnız bölücü/histerezis ayarı yetmez** |
+| O0 yalnız bölücüyü yeniden merkezlemek (mevcut parçalar) | +6,73 mV (Tur 2; Tur 3 köşe başına +6,64) | 6,73 / 12,64 / 27,87 | Seçili tasarım zaten optimum → **yalnız bölücü/histerezis ayarı yetmez** |
 | O1 referans toplam hatası ×0,5 (daha düşük TC/kayma sınıfı referans) | +33,47 mV | 34,03 / 40,15 / 33,47 | Aday referansın garantili TC/uzun dönem verisi doğrulanmalı |
 | O2 bölücü direnç hatası ×0,5 (oran-eşlemeli ince film ağı sınıfı) | +63,48 mV | 63,48 / 64,62 / 63,51 | En etkili seçenek. Oran toleransı ve TCR izleme garantili olmalı |
 | O3 O1 + O2 | +84,86 mV | 84,86 / 85,99 / 89,12 | |
@@ -98,11 +98,13 @@ Ek seçenekler: (i) Hint bağımlılığını kaldırmak için garantili histere
 |---|---|
 | Rt / Rb / Rx / RR1 / RR2 | 24,3k / 5,36k / 53,6k / 10,0k / 41,2k |
 | V_r / V_f / H (köşe aralığı) | 19,560–19,922 V / 18,070–18,394 V / 1,476–1,542 V |
-| Marjlar a / b / c / d / e | **+73,91 / +70,28 / +75,54 / +251,37 / +182,14 mV** (C3: +6,73 / +12,64 / +27,87 / +145,22 / +71,04) |
-| 125 °C göreli kayma duyarlılığı | a +45,42, b +42,83 mV |
+| Marjlar a / b / c / d / e | **+73,87 / +70,32 / +75,54 / +251,33 / +182,14 mV** (Tur 3 köşe başına hesap, 16384 köşe; Tur 2: +73,91 / +70,28 / +75,54 / +251,37 / +182,14). C3: +6,64 / +12,72 / +27,89 / +145,14 / +71,04 |
+| 125 °C göreli kayma duyarlılığı | a +45,37, b +42,88 mV |
 | Durum | **`NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS`** – 3 sınırsız terim: REF5040 uzun dönem, REF5040 lehim kayması, TLV3202 Hint |
-| Terim etkileri a / b | uzun dönem +5,46 / +4,99; termal histerezis +0,99 / +0,91; Hint +11,43 / +10,47; ACAS DF varsayımı +37,88 / +36,73; I_Q +4,05 (yalnız a) mV |
+| Terim etkileri a / b | uzun dönem +5,46 / +4,99; termal histerezis +0,99 / +0,91; Hint +11,43 / +10,47; ACAS DF varsayımı (Tur 2 değeri) +37,88 / +36,73; I_Q +4,05 (yalnız a) mV |
 | Regresyon | Yanlış Rb 5,23k: en kötü −0,3013 V → beklenen FAIL (bütçe ve deck `o3-reg-misset-rbu-5k23-vrmax`) |
+
+**Tur 3 (T3-04, T3-08):** Vishay 28770 dayanıklılık (70 °C 1000 h) ve lehim ısısı rakamları not (2) gereği yalnız **AE** (eşit değer) dizileri içindir; O3 DF düzenidir. Bu yüzden mutlak ve göreli dayanıklılık + lehim terimleri artık **V (varsayım, AE-only, DF için varsayıldı)** sınıfındadır (`net_rel_terms`, `net_abs_terms`). Duyarlılık (`sensitivity_ae_only_terms`): 85 °C/85 % RH nem-ısı yalnız-AE senaryosunda a 66,6 mV; 125 °C dayanıklılık senaryosunda a 44,3 / b 42,79 mV – hepsi pozitif ama **garanti değil**. Başabaş: göreli kaymada bütçe dışı **%0,187** ek kayma a/b'yi sıfırlar. Vishay'den DF sınırı teyidi ya da çevre/yaşlanma yeterlilik planı gerekir (BENCH-TEST B-U). Aday sipariş kodları (datasheet kod biçimine göre, **stok ve pin-1/eşleme doğrulanmadı**): N1 **ACASN5361U2432P1AT** (R1 5,36k / R2 24,3k), N2 **ACASN1002U4122P1AT** (R1 10,0k / R2 41,2k). Satın alma yapılmadı.
 
 Notlar: O3, C3 parametrik O3 tahminine (+84,86 mV) yakın ama altında; sebebi gerçek parça verisi (ACAS oran toleransı, REF5040 yük regülasyonu, I_Q artışı). ACAS DF grade U sipariş kodu **doğrulanmadı**; varsayım yanlışsa (ör. yalnız AE düzeni) a/b'den ~37 mV kaybolur. LT5400 (O3b) reddedildi: önerilen REF5050 ≥ 5,2 V besleme ister. TLV3602 önerilmedi: histerezis tablosu VCM = VEE + 0,3 V koşulunda; bu devrede ~3,37 V; ayrıca 7 mA/kanal. Stok: 2026-10-25 12:31 TSİ Mouser araması erişim engeli (captcha) → **doğrulanamadı**; önceki arama özeti (saat belirsiz) ACASN1001S2001P1AT 947, ACASN1002U1002P1AT 15 991 adet gösterdi, bunlar seçilen değerler değildir. Simülasyon fiziksel ölçüm değildir.
 
@@ -117,6 +119,22 @@ Notlar: O3, C3 parametrik O3 tahminine (+84,86 mV) yakın ama altında; sebebi g
 | EN düşük, U22 açık (OUTA düşük) | ≤ 2,6 mV = (V5,maks/(RDEN·0,97) + IEN)·RON,maks 4,9 Ω (G, SCDS410D s.5) | < 0,4 V: +0,397 V |
 | EN yüksek, U22 kapalı kaçağı | 2 nA × 5 kΩ = 10 µV (G, SCDS410D s.5) | EN yüksek sonucunu değiştirmez (≥ 2,289 V) |
 Not: EN bölücüsü (RDEN, RUV2) önceki sürümde yanlışlıkla ERA toleransıyla hesaplanmıştı. 2026-10-25'te katı %3'e düzeltildi (commit 6e6c063). Eski değerler 2,351 / 0,118 V idi.
+
+## 4b. CTT hızlı reset + Schmitt zamanlayıcı (WP2 Tur 3 UVLO-T3-02) – **aday, KiCad/ana BOM değişmedi**
+`uvlo_budget.py` → `results/uvlo-budget.json` → `timer.reset` (5a81584; 2^10 = 1024 köşe). Devre: OUTA_UV, RST/CST gerdirici ve DST (BAT54A, jenerik model, V) ile OUTA_D'ye taşınır; OUTA_D düşünce SEL24 = OUTA_D·RSB/(RSA+RSB) U24 TMUX1102'yi (G: VIL ≤ 0,87 V / VIH ≥ 1,49 V, iki köşe) açar ve CTT, RDSC 100 Ω üzerinden boşalır. U25 TMUX1102 + RK1A 10,5k / RK4 210k zamanlayıcı karşılaştırıcısına Schmitt alt eşiği V_L ekler (yükselen eşik bacağı (RK1A+RON)‖RK4 = 10,0k, önceki ile aynı).
+
+| Büyüklük | Sonuç | Marj / not |
+|---|---|---|
+| V_L (Schmitt alt eşik) | 0,754–0,852 V | |
+| Bırakmada CTT (V_rel) | ≤ 53,5 mV | V_L'nin altında, +0,600 V |
+| Gerdirici tutma süresi (OUTA ↑ sonrası reset devam) | 7,93–26,26 ms | deşarjdan +5,02 ms uzun |
+| CTT deşarj süresi | ≤ 2,91 ms | |
+| Deşarj tepe akımı | ≤ 52,6 mA | TMUX1102 IDC 60 mA (G, Tj 125 °C) altında, +7,4 mA; darbe değeri varsayımı gerekmez |
+| Tam reset sonrası VIN-OK → EN | ≥ 85,04 ms | |
+| Kısa dip sonrası VIN-OK → EN (en kötü) | ≥ 67,75 ms | 65 ms geçici hedefe +2,75 ms; 60 ms sınırına +7,75 ms |
+| VIN-OK → EN maks (tutma dahil) | ≤ 281,8 ms | ≤ 300 ms: +18,2 ms |
+
+Not: incelemenin geçici hedefi "her dip sonrası OUTA ↑ anında V_CTT ≤ 1,0 V" bu mimaride **harfiyen sağlanmaz**: reset OUTA döndükten sonraki tutma penceresinde tamamlanır (OUTA ↑ anında CTT simülasyonda 4,37 V'a kadar görülebilir), bırakma anında CTT ≤ 53,5 mV'tur ve gecikme son OUTA ↑'tan ölçülür. Asıl sınır (≥ 60 ms, son OUTA ↑'tan) ve 65 ms geçici hedef bütçede ve simülasyonda sağlanır (RESULTS.md §11). µs mertebesindeki darbeler (OUTA ~1,6 ms'den kısa düşük) Schmitt yeniden başlatmasını tetiklemeyebilir; reset-baskın mandal önerisi açık. Simülasyon fiziksel ölçüm değildir.
 
 ## 5. Alternatifler ve regresyonlar
 | Durum | En kötü | Beklenen | Gerçekleşen |
@@ -135,4 +153,7 @@ Not: EN bölücüsü (RDEN, RUV2) önceki sürümde yanlışlıkla ERA tolerans�
 - 2026-10-25: RDEN/RUV2 katı %3 olarak hesaba katıldı (§4).
 - 2026-10-25 (Tur 1 P0): TLV3202 VIO 4 → 6 mV (SBOS561C Rev C s.5 tablo 6.5; 4 mV TLV3201 satırıydı). a +18,50 → +6,73 mV, b +23,41 → +12,64 mV. `start_guarantee_status()` eklendi (§3a); decks yeniden üretildi.
 - 2026-10-25: U22 EN kapısı eklendi (§4, `en_low_gated_margin_V`). Eşik bütçesi (V_r/V_f/H, marj a–e) değişmedi.
+- 2026-10-25 (Tur 3 T3-07): VIO/CMRR ve REF yük akımı köşe başına; C3 a/b/c/d/e +6,64 / +12,72 / +27,89 / +145,14 / +71,04 mV; O3 +73,87 / +70,32 / +75,54 / +251,33 / +182,14 mV (f6482f0).
+- 2026-10-25 (Tur 3 T3-04): ACAS DF dayanıklılık/lehim terimleri G → V (AE-only) (f6482f0).
+- 2026-10-25 (Tur 3 T3-02): §4b CTT hızlı reset + Schmitt aday bütçesi (5a81584).
 Hiçbir sınır gevşetilmedi.
