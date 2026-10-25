@@ -1,5 +1,12 @@
 # WP1 2026-10-25-o1-ovp: re-run the proposal ngspice decks and the independent verifier.
 # No secrets are used. Read-only token. Proposal-only: does not touch baseline results.
+# Exit codes (rev3 P2-02):
+#   run_o1ovp.py         0 = all acceptance PASS, 1 = acceptance FAIL, 2 = incomplete run (ngspice abort / missing measure)
+#   verify_candidate.py  0 = PASS, 1 = acceptance FAIL, 2 = missing measurement/run (e.g. aborted deck)
+#   verify_candidate.py --baseline-regression  1 = baseline FAILS as expected (O1 ~16.89 V), 0 = unexpected PASS, 2 = log missing
+#   regime_selftest.py   0 = both tools reject the mutated decks, 1 = a mutation was accepted, 2 = regime measures absent
+# rev3 status: run exits 2 (4 ESL decks abort at ~12.26 ms, P0-03 open blocker) -> 'Independent verification' is
+# EXPECTED to fail (exit 2) until P0-03 is resolved. Failing tests are not hidden or skipped.
 name: proposal-ngspice
 on:
   workflow_dispatch:
@@ -45,18 +52,26 @@ jobs:
           grep -q "FALSE_TRIP_TEST = 11.22" run_o1ovp.py
           grep -q "O1_GLOBAL_PEAK" run_o1ovp.py
           grep -q "o1_global_peak" verify_candidate.py
+          grep -q "pre_fault_regime_normal" run_o1ovp.py
+          grep -q "inp_pre_min" verify_candidate.py
       - name: RAW divider power/derating (rev3 P0-01; must match committed JSON)
         run: |
           python3 rsns_power.py --check > /dev/null
           git diff --exit-code -- rsns-power.json
       - name: Run proposal decks (+ baseline regression, expected FAIL)
         id: run
+        # continue-on-error so that the verifier and the baseline check still run; the verifier repeats every
+        # acceptance check and fails the job (exit 1/2) on its own.
         continue-on-error: true
         run: PDU_NGSPICE="$(command -v ngspice)" python3 run_o1ovp.py --jobs 4 --label "ci-${GITHUB_RUN_ID}"
       - name: Independent verification
         run: |
           python3 verify_candidate.py
+      - name: Regime negative self-test (rev3 - FET never on / wrong INP-VGS regime must FAIL)
+        if: always()
+        run: PDU_NGSPICE="$(command -v ngspice)" python3 regime-selftest/regime_selftest.py
       - name: Baseline regression must FAIL (exit 1)
+        if: always()
         run: |
           set +e; python3 verify_candidate.py --baseline-regression; rc=$?; set -e
           test "$rc" -eq 1
