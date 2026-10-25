@@ -4,7 +4,9 @@
 
 **rev3 değişiklikleri:** ChatGPT Tur 2 (inceleme 6390966776) bulgularına yanıt – P0-01 RSNS10 üst kolu 2 × 1206 (1,0 k + 1,05 k) + RSNS11 1206; P0-02 her kabul deck'inde `O1_GLOBAL_PEAK` (0…tran sonu) ve toparlanma normal-bus pencereleri; **ayrı davranışsal model revizyonu rev3** (TPS48000 OV pin düğümü `ov`→`ovs`, rev1/rev2'de `.subckt` içindeki `ov` düğümü OV parametresiyle çakışıp OV yedeğini ölü bırakıyordu; rev2 kütüphanesi `model-compare/` altında korunur ve eski/yeni regresyonu tüm case'lerde koşulur); pre-fault/toparlanma rejim kontrolü (INP > 2,5 V, VGS > 6 V) runner ve doğrulayıcıda **kabul** kontrolü.
 
-**Tur-3 yeniden koşu (geçerli kanıt):** etiket `wp1-rev3-tur3`, git `e8cce67` (package_inputs_dirty=False), 2026-10-25 09:48:34 → 10:03:24 TSİ, 154 ngspice deck, commit `1b72e0f`. Neden: Tur-3 P2-A düzeltmesi `model_compare.py`'yi (runner girdisi) değiştirdi; doğrulayıcı aksi halde 'input changed since run' verirdi. Sonuç: 3101 kontrolün **tümünde değer/hüküm birebir aynı** (yalnız `execution` süre metni farklı); o1ovp-results.json sha256 `974b0c5e…1dac`. `model-compare.json` rev3 tarafı `model-compare/rebind_rev3.py` ile yeni koşuya bağlandı (rev2 logları dokunulmadı; rev3 ölçüm/hüküm eşitliği zorunlu, fail-closed). `u3-latch-study.json` önceki `wp1-rev3` koşusuna (sha `76bb4b40…3507`, ölçümleri birebir aynı) bağlı teşhis anlık görüntüsü olarak bırakıldı.
+**Tur-6 yeniden koşu (geçerli kanıt):** etiket `wp1-rev3-tur6`, git `6aee4f7` (package_inputs_dirty=False), 2026-10-25 10:48:58 → 10:58:05 TSİ, 154 ngspice deck, commit `be24ab0`. Neden: Tur-6 P2-T6-03 düzeltmesi `model_compare.py`'yi (runner girdisi) değiştirdi. Sonuç: runner exit 2 (2534 PASS / 4 kabul FAIL / 4 tamamlanmadı), doğrulayıcı exit 2 (1766 / 0 FAIL / 4 MISSING); `wp1-rev3-tur3` ile 154/154 deck sha256 ve ölçüm birebir, 3101 kontrolün pass/category değerleri aynı (yalnız 149 `execution` süre metni farklı); o1ovp-results.json sha256 `0a55a89e…11e9`. `model-compare.json` rev3 tarafı ve `regime-selftest.json` yeni koşuya bağlandı (`rebind_rev3.py` exit 0, rev2 logları dokunulmadı); `guard_negative_test.py` 29/29.
+
+**Tur-3 yeniden koşu (önceki kanıt):** etiket `wp1-rev3-tur3`, git `e8cce67` (package_inputs_dirty=False), 2026-10-25 09:48:34 → 10:03:24 TSİ, 154 ngspice deck, commit `1b72e0f`. Neden: Tur-3 P2-A düzeltmesi `model_compare.py`'yi (runner girdisi) değiştirdi; doğrulayıcı aksi halde 'input changed since run' verirdi. Sonuç: 3101 kontrolün **tümünde değer/hüküm birebir aynı** (yalnız `execution` süre metni farklı); o1ovp-results.json sha256 `974b0c5e…1dac`. `model-compare.json` rev3 tarafı `model-compare/rebind_rev3.py` ile yeni koşuya bağlandı (rev2 logları dokunulmadı; rev3 ölçüm/hüküm eşitliği zorunlu, fail-closed). `u3-latch-study.json` önceki `wp1-rev3` koşusuna (sha `76bb4b40…3507`, ölçümleri birebir aynı) bağlı teşhis anlık görüntüsü olarak bırakıldı.
 
 **Tur-5 kontrol koşusu (commit'lenmedi):** etiket `wp1-rev3-tur5-check`, git `f480233` (ayrı worktree, package_inputs_dirty=False), 2026-10-25 10:29:05 → 10:36:23 TSİ, 154 ngspice deck. Runner exit 2 (2534 PASS / 4 kabul FAIL / 4 tamamlanmadı), doğrulayıcı exit 2 (1766 kontrol, 0 FAIL, 4 MISSING). Commit'li `wp1-rev3-tur3` ile karşılaştırma: 154/154 deck sha256 aynı, 154/154 ölçüm sözlüğü birebir aynı, 3101 kontrolün pass/category değerleri aynı (yalnız 149 `execution` süre metni farklı) → yalnız zaman farkı olduğu için commit'lenmedi; geçerli kanıt `wp1-rev3-tur3` (`974b0c5e…1dac`) olarak kaldı. Tur-5 `rebind_rev3.py` (türetilmiş alan + ham satır denetimi) bu yeni koşuya karşı da geçici kopyada exit 0.
 
@@ -13,13 +15,13 @@
 ```
 cd simulation/proposals/2026-10-25-o1-ovp
 python3 gen_o1ovp.py                                               # exit 0 (154 case, deterministik)
-PDU_NGSPICE=/usr/bin/ngspice python3 run_o1ovp.py --label wp1-rev3-tur3 --jobs 6   # exit 2 (4 eksik deck)
+PDU_NGSPICE=/usr/bin/ngspice python3 run_o1ovp.py --label wp1-rev3-tur6 --jobs 6   # exit 2 (4 eksik deck)
 python3 verify_candidate.py                                        # exit 2 (1766 kontrol, 0 FAIL, 4 MISSING)
 python3 verify_candidate.py --baseline-regression                  # exit 1 (beklenen: O1_PEAK 16,89 V)
 python3 rsns_power.py --check                                      # exit 0 (seçilen 2×1206: %79,4 @125 °C)
 PDU_NGSPICE=/usr/bin/ngspice python3 regime-selftest/regime_selftest.py   # exit 0 (A: 4/4 mutasyon reddedildi; B: 12/12 tamamlanmış sentetik yanlış-rejim)
 python3 model-compare/rebind_rev3.py && python3 model-compare/model_compare.py --resummarize   # exit 0 / 0
-python3 regime-selftest/guard_negative_test.py                     # exit 0 (Tur-5: 20/20 guard kontrolü)
+python3 regime-selftest/guard_negative_test.py                     # exit 0 (Tur-6: 29/29 guard kontrolü)
 ```
 Çıkış kodları (P2-02): runner **0** PASS / **1** kabul FAIL / **2** eksik-yakınsamayan deck (öncelikli); doğrulayıcı **0** PASS / **1** FAIL / **2** eksik kanıt (öncelikli); `--baseline-regression` 0/1, log yoksa 2.
 
