@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 """UVLO-T5-04 / WP1-T11-01 uniform numerical-sensitivity study (UVLO side) - diagnostic only, nothing adopted.
 
+Tur-6 (UVLO-T6-02): (1) measurement kinds come from the .meas SYNTAX (meas_kinds): WHEN / TRIG-TARG / INTEG of a 0/1
+indicator -> time (tol 0.1 us); FIND / MAX / MIN / AVG / PP -> voltage (tol 5 mV). The Tur-5 name-prefix rule misclassified
+e.g. T_AT_DIP_END (= FIND V(T_UV), a voltage) as a time. (2) --tmax (default 100n) replaces the deck .tran tmax UNIFORMLY for
+every deck and both methods (set_tmax); nothing else is changed. (3) provenance: runner SHA-256, git HEAD + package git
+status at start and end, full argv. (4) --reanalyse JSON: recompare an earlier run's stored measures with the new kinds
+(no simulation). Output dir: results/num-study-tmax<tmax>/ (the Tur-5 results/num-study/ run is kept unchanged).
+
 Predeclared set (not only the aborting decks): every 0 V dip of 10 / 50 / 100 us and the 50 us double dips
 (gap 100 us and 30 ms), C3 and O3, typ-ttyp and mbmin-tmin = 20 decks. Each deck is run twice from IDENTICAL copies that
 differ ONLY in `.options ... method=` (gear = acceptance setting, trap = trapezoidal); the deck `.tran 100n <stop> 0 1u`
@@ -29,16 +36,59 @@ NOEV_RE = re.compile(r'Error: measure\s+([a-z_][a-z0-9_]*)\s+.*out of interval',
 sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
 V_TOL, T_TOL = 5e-3, 0.1e-6
 
-def is_time(k):
-    return k.startswith(('en_r', 'en_f', 'outa_r', 'outa_f', 'en_lag', 'fet_on', 't_', 'ts_')) or k.endswith(('_t', '_time'))
+def meas_kinds(deck_text):
+    """{meas_name: 'time' | 'voltage'} from the .meas syntax (Tur-6): WHEN, TRIG..TARG and INTEG (of a 0/1 indicator node,
+    giving seconds) -> time; FIND / MAX / MIN / AVG / PP / RMS of V(...) -> voltage. Unknown forms raise (fail-closed)."""
+    k = {}
+    for l in deck_text.splitlines():
+        w = l.split()
+        if not w or not w[0].lower().startswith('.meas'): continue
+        name, op = w[2].lower(), w[3].upper()
+        if op in ('WHEN', 'TRIG', 'INTEG'): k[name] = 'time'
+        elif op in ('FIND', 'MAX', 'MIN', 'AVG', 'PP', 'RMS') and w[4].upper().startswith('V('): k[name] = 'voltage'
+        else: raise ValueError(f'unclassified .meas form: {l.strip()}')
+    return k
+
+TRAN_RE = re.compile(r'^(\.tran\s+\S+\s+\S+\s+\S+\s+)(\S+)', re.M | re.I)
+
+def set_tmax(deck_text, tmax):
+    """Replace the .tran tmax (4th argument) of the single .tran line by `tmax` (uniform for every deck and method)."""
+    assert len(TRAN_RE.findall(deck_text)) == 1, 'expected exactly one .tran line with an explicit tmax'
+    return TRAN_RE.sub(lambda m: m.group(1) + tmax, deck_text)
+
+def git(*a):
+    return subprocess.run(['git', *a], cwd=HERE, capture_output=True, text=True).stdout
+
+def provenance():
+    return dict(runner_sha256=sha(__file__), git_head=git('rev-parse', 'HEAD').strip(),
+                git_status_porcelain=git('status', '--porcelain', '--', '.'), argv=[sys.executable] + sys.argv,
+                time=time.strftime('%Y-%m-%d %H:%M:%S %z'))
+
+def compare(rows, kinds_of):
+    cmp_ = {}
+    for n in NAMES:
+        g, t = [next(r for r in rows if r['case'] == n and r['method'] == m) for m in ('gear', 'trap')]
+        kinds = kinds_of(n); diffs = []
+        for k in sorted(set(g['measures']) & set(t['measures'])):
+            dv = abs(g['measures'][k] - t['measures'][k]); tol = T_TOL if kinds[k] == 'time' else V_TOL
+            if dv > tol: diffs.append(dict(meas=k, kind=kinds[k], gear=g['measures'][k], trap=t['measures'][k], diff=dv, tol=tol))
+        asym = sorted(set(g['no_value']) ^ set(t['no_value']))  # measured in one method only = classification difference
+        ok = g['completed'] and t['completed'] and not g['missing'] and not t['missing'] and not asym and not diffs
+        cmp_[n] = dict(both_complete=g['completed'] and t['completed'], gear_complete=g['completed'], trap_complete=t['completed'],
+                       gear_missing=len(g['missing']), trap_missing=len(t['missing']), no_value_asymmetric=asym, n_out_of_tol=len(diffs),
+                       out_of_tol_by_kind={x: sum(1 for d in diffs if d['kind'] == x) for x in ('time', 'voltage')},
+                       out_of_tol=diffs[:12], gear_errors=g['errors'], trap_errors=t['errors'], protocol_pass=ok)
+        print(f"{n:42s} gear={g['completed']!s:5s} trap={t['completed']!s:5s} miss={len(g['missing'])}/{len(t['missing'])} asym={len(asym)} "
+              f"outtol={len(diffs)} {'PASS' if ok else 'NOT-PASS'} {(g['errors'] or t['errors'])[:1]}")
+    return cmp_
 
 def run(a):
-    name, method, tmp = a
+    name, method, tmp, tmax, out = a
     src = DECKS / f'uvlo-{name}.cir'; t = src.read_text()
     assert t.count('method=gear') == 1, name
-    t = t.replace('method=gear', f'method={method}').replace('.include ../', f'.include {HERE}/')
+    t = set_tmax(t, tmax).replace('method=gear', f'method={method}').replace('.include ../', f'.include {HERE}/')
     d = Path(tmp) / method; d.mkdir(parents=True, exist_ok=True); deck = d / src.name; deck.write_text(t)
-    log = OUT / f'{name}.{method}.log'; t0 = time.time()
+    log = out / f'{name}.{method}.log'; t0 = time.time()
     p = subprocess.run(['ngspice', '-b', '-D', 'ngbehavior=ltpsa', '-o', str(log), deck.name], cwd=d, capture_output=True, timeout=7200)
     txt = log.read_text(errors='replace') if log.exists() else ''
     want = [l.split()[2].lower() for l in t.splitlines() if l.lower().startswith('.meas')]
@@ -50,29 +100,33 @@ def run(a):
                 log=str(log.relative_to(HERE)), log_sha256=sha(log) if log.exists() else None)
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('-j', type=int, default=os.cpu_count() or 2); a = ap.parse_args()
-    OUT.mkdir(parents=True, exist_ok=True)
-    head = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=HERE, capture_output=True, text=True).stdout.strip()
+    ap = argparse.ArgumentParser(); ap.add_argument('-j', type=int, default=os.cpu_count() or 2)
+    ap.add_argument('--tmax', default='100n'); ap.add_argument('--reanalyse', default=None, help='earlier num-study JSON')
+    a = ap.parse_args()
+    kinds_of = lambda n: meas_kinds((DECKS / f'uvlo-{n}.cir').read_text())
+    tol = dict(voltage=V_TOL, time=T_TOL)
+    if a.reanalyse:
+        src = Path(a.reanalyse).absolute(); old = json.loads(src.read_text())
+        cmp_ = compare(old['rows'], kinds_of)
+        res = dict(_status='UVLO-T6-02 RE-ANALYSIS of stored measures with .meas-syntax kinds (no simulation); diagnostic only',
+                   source=str(src.relative_to(HERE)), source_sha256=sha(src), source_git_head=old.get('git_head'),
+                   provenance=provenance(), tolerances=tol, cases=NAMES, compare=cmp_,
+                   n_protocol_pass=sum(v['protocol_pass'] for v in cmp_.values()), n=len(NAMES))
+        dst = src.with_name(src.stem + '-reanalysed-t6.json'); dst.write_text(json.dumps(res, indent=1) + '\n')
+        print(f"re-analysis protocol pass {res['n_protocol_pass']}/{res['n']} -> {dst.relative_to(HERE)}"); return 0
+    out = HERE / 'results' / f'num-study-tmax{a.tmax}'; out.mkdir(parents=True, exist_ok=True)
+    p0 = provenance()
     with tempfile.TemporaryDirectory() as tmp, ThreadPoolExecutor(a.j) as ex:
-        rows = list(ex.map(run, [(n, m, tmp) for n in NAMES for m in ('gear', 'trap')]))
-    cmp_ = {}
-    for n in NAMES:
-        g, t = [next(r for r in rows if r['case'] == n and r['method'] == m) for m in ('gear', 'trap')]
-        diffs = []
-        for k in sorted(set(g['measures']) & set(t['measures'])):
-            dv = abs(g['measures'][k] - t['measures'][k]); tol = T_TOL if is_time(k) else V_TOL
-            if dv > tol: diffs.append(dict(meas=k, gear=g['measures'][k], trap=t['measures'][k], diff=dv, tol=tol))
-        asym = sorted(set(g['no_value']) ^ set(t['no_value']))  # measured in one method only = classification difference
-        ok = g['completed'] and t['completed'] and not g['missing'] and not t['missing'] and not asym and not diffs
-        cmp_[n] = dict(both_complete=g['completed'] and t['completed'], gear_complete=g['completed'], trap_complete=t['completed'],
-                       gear_missing=len(g['missing']), trap_missing=len(t['missing']), no_value_asymmetric=asym, n_out_of_tol=len(diffs), out_of_tol=diffs[:12],
-                       protocol_pass=ok)
-        print(f"{n:42s} gear={g['completed']!s:5s} trap={t['completed']!s:5s} miss={len(g['missing'])}/{len(t['missing'])} asym={len(asym)} "
-              f"outtol={len(diffs)} {'PASS' if ok else 'NOT-PASS'} {(g['errors'] or t['errors'])[:1]}")
-    res = dict(_status='UVLO-T5-04 numerical sensitivity (gear vs trap), diagnostic only; acceptance = verify_uvlo.py (gear)',
-               git_head=head, tolerances=dict(voltage=V_TOL, time=T_TOL), cases=NAMES, compare=cmp_, rows=rows,
+        rows = list(ex.map(run, [(n, m, tmp, a.tmax, out) for n in NAMES for m in ('gear', 'trap')]))
+    cmp_ = compare(rows, kinds_of)
+    p1 = provenance()
+    res = dict(_status=f'UVLO-T6-02 numerical sensitivity (gear vs trap, tmax {a.tmax} uniform), diagnostic only; acceptance = verify_uvlo.py (gear)',
+               git_head=p0['git_head'], provenance_start=p0, provenance_end=p1,
+               provenance_consistent=(p0['git_head'] == p1['git_head'] and p0['runner_sha256'] == p1['runner_sha256']
+                                      and not p0['git_status_porcelain'] and not p1['git_status_porcelain']),
+               tmax=a.tmax, tolerances=tol, cases=NAMES, compare=cmp_, rows=rows,
                n_protocol_pass=sum(v['protocol_pass'] for v in cmp_.values()), n=len(NAMES))
-    (OUT / 'num-study.json').write_text(json.dumps(res, indent=1) + '\n')
+    (out / 'num-study.json').write_text(json.dumps(res, indent=1) + '\n')
     print(f"protocol pass {res['n_protocol_pass']}/{res['n']}")
     return 0
 
