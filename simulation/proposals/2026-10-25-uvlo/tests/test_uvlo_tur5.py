@@ -90,8 +90,10 @@ def verifier_tests():
     # and EN cross inside ONE solver time step and the interpolated TRIG/TARG lag can be a few ns negative (pilot5b: -0.38 ns
     # forced pulse, -8 .. -40 ns slow VIN dips). A negative lag down to -M3_LAG_NUM_TOL (0.1 us = 10 % of the 1 us gate)
     # is 'coincident within the step' and accepted; anything more negative stays FAIL (V51e -0.2 us, V51j -0.11 us).
-    T.append(vt('V51i EN_LAG_F1 -0.04 us (coincident within one solver step), printed times identical -> exit 0', {'d': DIPF},
-                {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275436, EN_LAG_F1=-0.04e-6)}, 0))
+    # Tur-6 (UVLO-T6-01, review 6416795114) RETARGETED, not deleted: the -0.1 us acceptance band was withdrawn (stricter);
+    # a negative lag means causality is not proven -> FAIL. Same input, expected exit changed 0 -> nonzero.
+    T.append(vt('V51i EN_LAG_F1 -0.04 us (Tur-6: negative lag, causality unproven), printed times identical -> exit != 0', {'d': DIPF},
+                {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275436, EN_LAG_F1=-0.04e-6)}, 'nonzero', check=in_acc_fail('d')))
     T.append(vt('V51j EN_LAG_F1 -0.11 us (beyond the 0.1 us step tolerance) -> exit != 0', {'d': DIPF},
                 {'d': dipf(OUTA_F1=0.275436, EN_F1=0.275436, EN_LAG_F1=-0.11e-6)}, 'nonzero', check=in_acc_fail('d')))
     m = dipf(EN_F1=0.2600, OUTA_F1=0.26008); m.pop('EN_LAG_F1')

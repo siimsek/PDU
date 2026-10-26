@@ -141,7 +141,9 @@ def num_field(c, k):
     v = c.get(k)
     return v if (not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(v) and v > 0) else None
 
-M3_LAG_NUM_TOL = 0.1e-6   # Tur-5: same-step negative interpolation tolerance of EN_LAG (10 % of the 1 us M3 gate)
+# Tur-6 UVLO-T6-01: the Tur-5 negative-lag tolerance (-0.1 us <= lag < 0 accepted as 'coincident within one solver step')
+# is WITHDRAWN (stricter): a negative direct lag means EN fell BEFORE the VIN-OK loss, i.e. causality is not proven -> FAIL.
+M3_LAG_NUM_TOL = 0.0
 
 def half_ulp6(x):
     """half of the last printed digit of an ngspice .meas value (%e, 6 significant digits)"""
@@ -185,8 +187,9 @@ def m3_m4_errors(c, m, failed):
             lag = fin(m, failed, lk)
             # Tur-5 pilot finding: with the latch the OUTA -> EN path is instantaneous in the behavioural models, so both
             # crossings can fall inside ONE solver step and the interpolated lag can be a few ns NEGATIVE (pilot5b: -0.38 ns
-            # .. -40 ns). -M3_LAG_NUM_TOL <= lag < 0 is accepted as 'coincident within the step' (reported raw); anything
-            # more negative, missing, failed, non-finite or inconsistent stays FAIL. The 1 us limit itself is unchanged.
+            # .. -40 ns). Tur-6 (UVLO-T6-01): such a negative lag is NOT accepted any more - EN-before-VIN-OK-loss is not a
+            # proven causal order; missing, failed, non-finite, negative or inconsistent -> FAIL. 0 <= lag <= 1 us PASS
+            # (inclusive). The 1 us limit itself is unchanged.
             if lag is None or lag < -M3_LAG_NUM_TOL or abs(lag - d) > half_ulp6(t) + half_ulp6(min(fl)) + 1e-12:
                 e.append(f'MANDATORY M3: direct lag {lk} missing/failed/non-finite/negative or inconsistent with the printed '
                          f'{k} -> EN fall ({m.get(lk, "absent")!r} vs {d*1e6:.3f} us) -> EN forcing not provable'); continue
@@ -282,7 +285,12 @@ def rdip_screen(c, m, failed):
     pk = fin(m, failed, 'RD_PEAK')
     # Tur-4 T4-06: event classification (EN fell = the buck was shut down and restarted; else it rode through)
     ev = 'restart' if fin(m, failed, 'EN_F1') is not None else 'rode_through'
-    r = dict(event=ev, vin_ok_lost=fin(m, failed, 'OUTA_F1') is not None, peak=pk, t_above=fin(m, failed, 'RD_T_ABOVE'), first_above=fin(m, failed, 'RD_ABOVE_FIRST'),
+    # Tur-6 UVLO-T6-04: RD_PEAK = MAX V(VOUT) over the dip/recovery window is the BUS TRANSIENT peak; it is NOT the H2
+    # stable-window limit (PRE/RUN/POST <= 11.1605 V, judged in regime()). The O1 transient peak RD_PEAK_O1 is reported
+    # separately against the 12.0 V instantaneous O1 limit (the acceptance O1 gate stays O1_GLOBAL_PEAK in judge()).
+    po1 = fin(m, failed, 'RD_PEAK_O1')
+    o1s = 'UNDETERMINED' if po1 is None else ('PASS' if po1 <= O1_PEAK_MAX else 'FAIL')
+    r = dict(event=ev, vin_ok_lost=fin(m, failed, 'OUTA_F1') is not None, peak=pk, peak_bus=pk, o1_instant_status=o1s, t_above=fin(m, failed, 'RD_T_ABOVE'), first_above=fin(m, failed, 'RD_ABOVE_FIRST'),
              last_downward_crossing=fin(m, failed, 'RD_ABOVE_LAST'), peak_o1=fin(m, failed, 'RD_PEAK_O1'),
              t_above_o1=fin(m, failed, 'RD_T_ABOVE_O1'), reasons=[])
     if pk is None:
@@ -517,11 +525,16 @@ def main():
     rd = {n: r['info']['provisional_rdip_screen'] for n, r in out.items() if r.get('info', {}).get('provisional_rdip_screen')}
     rdip = dict(note='PROVISIONAL WP3 screen proposed in ChatGPT review 6395614957 (UVLO-06); report-only, NOT an acceptance '
                      'limit and NOT a requirement change; simulation, not measurement',
+                metric='peak_bus = RD_PEAK = MAX V(VOUT) in the dip/recovery window: bus TRANSIENT peak, NOT H2 (H2 = stable '
+                       'PRE/RUN/POST windows <= 11.1605 V, judged separately); peak_o1 = RD_PEAK_O1 = MAX V(O1_11V) transient, '
+                       'o1_instant_status vs the 12.0 V instantaneous O1 limit (Tur-6 UVLO-T6-04)',
                 limits=dict(peak_max=RDIP_PEAK_MAX, t_above_max=RDIP_T_ABOVE_MAX, return_after_dip_end_max=RDIP_RETURN_MAX,
                             threshold=BUS_NORMAL_MAX),
-                cases={n: dict(status=v['status'], event=v.get('event'), vin_ok_lost=v.get('vin_ok_lost'), peak=v['peak'], t_above=v.get('t_above'),
+                cases={n: dict(status=v['status'], event=v.get('event'), vin_ok_lost=v.get('vin_ok_lost'), peak=v['peak'], peak_bus=v.get('peak_bus'),
+                               peak_o1=v.get('peak_o1'), o1_instant_status=v.get('o1_instant_status'), t_above=v.get('t_above'),
                                return_after_dip_end=v.get('return_after_dip_end'), reasons=v['reasons']) for n, v in rd.items()},
                 counts={s: sum(1 for v in rd.values() if v['status'] == s) for s in ('PASS', 'FAIL', 'UNDETERMINED')},
+                o1_instant_counts={s: sum(1 for v in rd.values() if v.get('o1_instant_status') == s) for s in ('PASS', 'FAIL', 'UNDETERMINED')},
                 counts_by_event={f'{ev}/{s}': sum(1 for v in rd.values() if v.get('event') == ev and v['status'] == s)
                                  for ev in ('rode_through', 'restart') for s in ('PASS', 'FAIL', 'UNDETERMINED')})
     summary = dict(exit_code=code, mode=mode, git_head=head_now, provenance_errors=prov_err, run_manifest=prov, expected_run_id=run_id or None,
