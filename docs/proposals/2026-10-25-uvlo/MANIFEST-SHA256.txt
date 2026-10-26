@@ -1,17 +1,17 @@
-# WP2 2026-10-25-uvlo – SHA-256 manifest (35485d5..HEAD değişen tüm WP2 dosyaları + paylaşılan workflow/PLAN; o1-ovp hariç; bu dosya hariç). Oluşturma: 2026-10-26 TSİ, WP2 Tur 5 (koşu tur5-6e150c8, girdi HEAD 6e150c8, sonuç 28b6d41; num-study afa7fa1/c8e1cb6). CI devre dışı (kullanıcı); kanıt yerel koşu + bu hash'ler
+# WP2 2026-10-25-uvlo – SHA-256 manifest (35485d5..HEAD değişen tüm WP2 dosyaları + paylaşılan workflow/PLAN; o1-ovp hariç; bu dosya hariç). Oluşturma: 2026-10-26 16:49 TSİ, WP2 Tur 6 (inceleme 6416795114; yeni kabul koşusu yok; Tur-5 koşusu tur5-6e150c8/28b6d41 aynen; yeniden doğrulama 6721382, IMON tanısı 62bd337). CI devre dışı (kullanıcı); kanıt yerel koşu + bu hash'ler
 1dc293d64ae820dd2a00862963b5d03fff3306dbed98e9355a008a70af27cf44  .github/workflows/proposal-ngspice.yml
 1a35c9f8539f4d67e948f6521613cb5ea486617adacd7a8c548d3935b88fe933  docs/proposals/2026-10-25-uvlo/ARCHITECTURE.md
 70dbe2c85ba237d6ac6d7903421e12151031fecfb59ca22afe1501d2f1206348  docs/proposals/2026-10-25-uvlo/BENCH-TEST.md
-0bea05d9154d19c3a54efc9954f851ee7cb949d8ffc5791a9c408fde92b5c426  docs/proposals/2026-10-25-uvlo/BUDGET.md
+37cd021fd340503ff947813eb3277f617ed6c7fab737062c924c4f9430e948e7  docs/proposals/2026-10-25-uvlo/BUDGET.md
 d502f98921b0b46fa4a6e13a5dc2f22a52b73a9925b0708474e6521deafc268c  docs/proposals/2026-10-25-uvlo/CHATGPT_REVIEW.md
-c0cbdf97ceb043690ab8ecb34e0568763aeb0f9caa0bed848050df698105f863  docs/proposals/2026-10-25-uvlo/CHATGPT_REVIEW_RESPONSE.md
+f02595124a2cf2444582f8cde74c47567ddcbe527d83306b54a3c9033c0c15d2  docs/proposals/2026-10-25-uvlo/CHATGPT_REVIEW_RESPONSE.md
 0df99c4fa91e12247f9ea2934111a14cc16dbb1a5c2a3bad20ba6316725ccc8a  docs/proposals/2026-10-25-uvlo/KICAD-TRANSFER.md
 99ed3dd9c7016736a171b798ba57436f209d75187c519c92e9d0b95f13c691ff  docs/proposals/2026-10-25-uvlo/MODELS.md
 9692d57f88911c5d86d64fa7849eca5a56a5604bb932682ec5bd37edda4fa713  docs/proposals/2026-10-25-uvlo/REQUIREMENTS.md
-175888c8324aff78dd6cf5590bb4c0008244cbe844a12a9de1360469abcb6875  docs/proposals/2026-10-25-uvlo/RESULTS.md
+77461bf72e626a3d88a6b97062276060cdd6252a50c1bf8af575c5099e2fa34c  docs/proposals/2026-10-25-uvlo/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
 4bd03e1e738116fb9c5acf92602b8968d979be9bbe4c89fd73acb46b97cf4183  hardware/proposals/2026-10-25-uvlo/SOURCING.md
-ed10cf60d7dafe12c8777f7ab80d9ee6ba23c2745e09f90534b45279931cd973  hardware/proposals/2026-10-25-uvlo/candidate-bom.csv
+f8627c8373910034063ba174ac32652435f23a42c257ccd0006fbb06ae7b0781  hardware/proposals/2026-10-25-uvlo/candidate-bom.csv
 93b648cbc360132fad57728539596aca49efd2928d3e00ad0f247008a0e92279  hardware/proposals/2026-10-25-uvlo/sourcing.csv
 8081498494adcfd1e53f6648a15c9b0bf3ff1737cad9668a69da055191fa43f8  simulation/proposals/2026-10-25-uvlo/decks/uvlo-dbldip0v-1ms-30ms-50ms-mbmin-tmin.cir
 a296a132688b70ad055f1b81307521d976cf6c42c502a7d4f8985d9e30fa8b8b  simulation/proposals/2026-10-25-uvlo/decks/uvlo-dbldip0v-1ms-30ms-50ms-typ-ttyp.cir
@@ -273,7 +273,8 @@ ce4c69c9d9f3004178a18b0275958ca91435f31f833e13ebbe1de827db89797c  simulation/pro
 611ba4c45ba5b8d79dbfc08d316b1617b0e5fdc5cd502e772ab228c82f2ed432  simulation/proposals/2026-10-25-uvlo/decks/uvlo-tur4-fpulse-1us-typ-ttyp.cir
 96f912f4abeb331d8c3dff07823f9a1015094cd87e767272475b186b720a6019  simulation/proposals/2026-10-25-uvlo/decks/uvlo-tur4-fpulse-50us-typ-ttyp.cir
 9cca3b29c5f6c296fe94f5125f3817ca5db610ec1fb9f82761f759f37b5f8c1c  simulation/proposals/2026-10-25-uvlo/gen_uvlo.py
-1fa47a7aee1506385d19f05d783721a9f29a5ad31f4a29f5abaa038757860f4c  simulation/proposals/2026-10-25-uvlo/num_study.py
+ba67aa037b40f15370ff8cb9b28d60fc6e99707bf849583a2d10af98d8018465  simulation/proposals/2026-10-25-uvlo/imon_diag.py
+2f438b2622ebc00a6832cd8b29023159edcbdb64d01c840bc8a561e8e7b78db8  simulation/proposals/2026-10-25-uvlo/num_study.py
 0a7c27547b6af71498f202bed7284a7e823d79c9b3bde4fea3c45df8ad5eb08f  simulation/proposals/2026-10-25-uvlo/pdu-circuit-uvlo-baseline.inc
 d6e91ff8f3796f3cb6805f8ce60d87b546321b6de561fb9479e6315744233d6e  simulation/proposals/2026-10-25-uvlo/pdu-circuit-uvlo.inc
 25435b8d90cf337de2b0f80202207652b68a57571cb5949e106c24508f6e0132  simulation/proposals/2026-10-25-uvlo/pdu-o1ovp-block-uvlo.inc
@@ -285,6 +286,12 @@ d07c9988c4fcfe77334ff4704bf2cfe5a26d82c5e1ebaec5b8c92f238f256b4e  simulation/pro
 0cf2e828c1cefc097e925cd1bb3e7665f02ba1f1d72083cfd66dc55856be74ca  simulation/proposals/2026-10-25-uvlo/pdu-uvlo-block-tur4-o3.inc
 49a5592789766273af4293c3d47462f7e026b4c40d6df2b7781f913334d9554a  simulation/proposals/2026-10-25-uvlo/pdu-uvlo-block-tur4.inc
 a23f374ce415371fec4045f835239711a1a20c4c064fd81f36debf1205571316  simulation/proposals/2026-10-25-uvlo/pdu-uvlo-block.inc
+d8a2ce4f909f3ef2c970e2dbf1252e50bbb5692e908c1b1452a5733385eaee52  simulation/proposals/2026-10-25-uvlo/results/imon-diag-t6/README.md
+94c227d7dc27b29194001d00240f8110d9fd9a815566abdf330e0f5f45164f62  simulation/proposals/2026-10-25-uvlo/results/imon-diag-t6/imon-diag.json
+bb1cd73e94cbe9cc78a2bc386c16854b3dd72047685716dfff0e037594f8b3bc  simulation/proposals/2026-10-25-uvlo/results/imon-diag-t6/wp1-buck-short-c165-esr12m5-esl2n-typ.csv
+b05c68914483a1c497395a776d838bf77c941d59228bb6872f80755380fbba05  simulation/proposals/2026-10-25-uvlo/results/imon-diag-t6/wp1-buck-short-c165-esr12m5-esl2n-typ.log
+fbe76503b73ced93204bdb4e9a32c167129573ff1a4d71c913190f9b6f6d301e  simulation/proposals/2026-10-25-uvlo/results/imon-diag-t6/wp2-dip0v-50us-typ-ttyp.csv
+580ff8165e6c16ca8ed3ec535e0137497872344e1c132138175cf3e6b6facc9f  simulation/proposals/2026-10-25-uvlo/results/imon-diag-t6/wp2-dip0v-50us-typ-ttyp.log
 d32a6d78358e8ccfe478d7da26f50004b0af2434a1c8d4b0c973fdbcd482641f  simulation/proposals/2026-10-25-uvlo/results/logs/uvlo-dbldip0v-1ms-30ms-50ms-mbmin-tmin.log
 291af1b13e472b93241c3c9813101e9d4f61d35e2537080be14f0a425ccc7977  simulation/proposals/2026-10-25-uvlo/results/logs/uvlo-dbldip0v-1ms-30ms-50ms-typ-ttyp.log
 4685618fc4471583434e2320b41a060062099a2811a052d39da46c0492776de6  simulation/proposals/2026-10-25-uvlo/results/logs/uvlo-dbldip0v-1ms-40ms-mbmin-tmin.log
@@ -565,6 +572,7 @@ b9a19761cdde2c2f20c5faa49baeb1f9f10c4f9f02c31ac7fa7531a619a81bdf  simulation/pro
 8fb505334d0558ed2b9b2554954927d89e9724804811d7534671047eddfd2ec2  simulation/proposals/2026-10-25-uvlo/results/num-study/dip0v-50us-typ-ttyp.gear.log
 eb13a8981e00414c0dbe72a81b8e129a2d4488aa73d1662dd6360bbdd14a012a  simulation/proposals/2026-10-25-uvlo/results/num-study/dip0v-50us-typ-ttyp.trap.log
 53d3bd78fc8f8607f8c9422ef3ba400497210badab8d7337ba9a7afcc400f4dd  simulation/proposals/2026-10-25-uvlo/results/num-study/num-study-b072f63-misparsed.json
+514040e8e620b202f293908354d00d71dd0dfb7bc61bbd1b7d08ffdb41a0b896  simulation/proposals/2026-10-25-uvlo/results/num-study/num-study-reanalysed-t6.json
 9bac57d26346b31055aa712d9cf20445885bf96ce96f1d61f3dc52d655c4d528  simulation/proposals/2026-10-25-uvlo/results/num-study/num-study.json
 06299ee76d49dfb3cda747d86f899b188b480a4d2d26036f7360a7697e62c05d  simulation/proposals/2026-10-25-uvlo/results/num-study/o3-dbldip0v-50us-gap100us-mbmin-tmin.gear.log
 2d48a80b7420df3533b2f071c26c93536a4bd11f79a029050d72aee5f9a82f87  simulation/proposals/2026-10-25-uvlo/results/num-study/o3-dbldip0v-50us-gap100us-mbmin-tmin.trap.log
@@ -593,6 +601,9 @@ ff2bc55c4c1f45e74f928e30a3c933a045743b855dfdf418aa0d1bfab096127b  simulation/pro
 ec7f4d662a746ea05204364b7a7a2897f20ae27b73e6a1ba6297356f67db749c  simulation/proposals/2026-10-25-uvlo/results/prefix-c3/uvlo-seq-ref-nodelay-typ.log
 d559717ba76e76796ea2588d7c3e74d1249c4e64e41dca2ab947fe9fa196654a  simulation/proposals/2026-10-25-uvlo/results/prefix-c3/uvlo-verify.json
 dac1d5f0744b87bab101f7545a3f06b0c66044e164fe9260f71b85a76c700fe4  simulation/proposals/2026-10-25-uvlo/results/prefix-c3/verify-stdout.txt
+72cdcae66a5261114c6c0af170ed17b377dfcb2747e6f8d51171b728cf992022  simulation/proposals/2026-10-25-uvlo/results/reverify-t6-ebe56b2/reverify-summary.json
+c5f873e2bacf6b000ce99db69c2a96921201c320b1f2c4bb59ae1da9c7c4ae89  simulation/proposals/2026-10-25-uvlo/results/reverify-t6-ebe56b2/uvlo-verify.json
+75b4f4292d79c897978b6086f2a2921c4a044c2f47455a579af29de4059aa139  simulation/proposals/2026-10-25-uvlo/results/reverify-t6-ebe56b2/verify-stdout.txt
 23f3a7d0ff9ddb06f8174518a27e6eafebb1ea098561741acecd1178d5373cfc  simulation/proposals/2026-10-25-uvlo/results/run-all.out
 7c387a97136603c0dce098b9e8386a86f139c5698b5867f0e9e3e19dc1e788bc  simulation/proposals/2026-10-25-uvlo/results/run-manifest.json
 993b2116aeeb2b96131c1d2896014b02bc4249741031c0b9b3765a8458d5050b  simulation/proposals/2026-10-25-uvlo/results/tur2-tests-on-f923347.txt
@@ -607,6 +618,7 @@ b29efa699226860394fe8578174b1c5fce17e6510c9f6645a42cacf5055d121d  simulation/pro
 f6be9c6088ce0cb253088e6542883b9615921594eb568544c854236f77ea1a36  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur2.py
 9143421eaded7cdd73ef046393e5a6c9471362eb443aa743841633e214377142  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur3.py
 f88e5d6f31fe1e357045c34d59e4c4354723e9b9331967613b60850d5883016e  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur4.py
-eb64e4a812641df50c1451a7c53b15ddd60c2d5380849e2fdcd6838932501ed6  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur5.py
+30d955dad68201b5516a277250ed67c0ac1d4f11dec67d112df10811aab1a4d3  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur5.py
+dc3f776ee9d9871aadb6cd05d0efdc9b8ebffe510ec14d0b42de96fc0e2b4b96  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur6.py
 8ffecdb81e3a8b9068459b3e92ddb4c3c1203b46dbaf3a6227d455a074bf4d39  simulation/proposals/2026-10-25-uvlo/uvlo_budget.py
-b9b774a5e3f90965e960d7a79f32ddbfa35833e48a1600516d5e68b7e940ef74  simulation/proposals/2026-10-25-uvlo/verify_uvlo.py
+102ebd66d967ac8cdb7994264d7011a3dd7a733de40d1a472b05b98f1a519df6  simulation/proposals/2026-10-25-uvlo/verify_uvlo.py

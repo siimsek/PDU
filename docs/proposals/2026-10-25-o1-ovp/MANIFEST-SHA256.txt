@@ -3,10 +3,10 @@
 c5a1ef9cf7192af0494e2932ec05fb08de9525e9dd69890c40095c2c31384175  docs/proposals/2026-10-25-o1-ovp/BENCH-TEST.md
 614c2b8cccb5cc24340b6425e4680e5a86e6b2440444102175c400265be510f2  docs/proposals/2026-10-25-o1-ovp/BUDGET.md
 eb7e8e4479e40e9b0b97564a2a3000b909dbb0b062cfbe19ad978b728d56d3b1  docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW.md
-c2414b6e7731ad99582db289c97e86f8630371574a03e0286e31eb239309dcb2  docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW_RESPONSE.md
+88b09842bad859615038c122c1d3b6355c102febbcd2e3e475bb18132204ff48  docs/proposals/2026-10-25-o1-ovp/CHATGPT_REVIEW_RESPONSE.md
 4a036e7ef48feeda67dd5ae7a01e05db5274745ef240351b77b75b58bd56a4c1  docs/proposals/2026-10-25-o1-ovp/KICAD-TRANSFER.md
 03afa15afeeb40274d9258e369469fab8d57b05607c8c874837537c28c1130f2  docs/proposals/2026-10-25-o1-ovp/MODELS.md
-2441e2944129f2738bf98119b0b33193d27c55a18f39e403c8338f197e0930e7  docs/proposals/2026-10-25-o1-ovp/PR-BODY.md
+8cb3e70ddada5ad02bce20f1b794df25e214567efb3e076400bd7ef867340150  docs/proposals/2026-10-25-o1-ovp/PR-BODY.md
 6d721552c3618c4b009ed46edc6aea8797aa3d251683caffdc111a4cecdac066  docs/proposals/2026-10-25-o1-ovp/REQUIREMENTS.md
 bf93374c886b17b83616dc1ffa1f22d842fd8787fd3856476d59c647f49d71c5  docs/proposals/2026-10-25-o1-ovp/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
@@ -321,7 +321,8 @@ a8a3a53afcc234c394aeeebb0632142ec3d3c988306427e2466cbee76ea497ec  simulation/pro
 567cee8362029ec21bec0aaccdc2174b98d4292993289dd92d406843271ddc66  simulation/proposals/2026-10-25-o1-ovp/decks/o1ovp-sweep-tdoff1p5u-s023-wchi.ng.cir
 2da9fa3808e2916b53a9fa11fffc2b1d5ae7dd57994a25f419852ceef61ea49e  simulation/proposals/2026-10-25-o1-ovp/decks/o1ovp-sweep-tdoff2p0u-s023-wchi.cir
 d4c7620dd35b7d9f34c213b6667bed580c9f5195cbf5ba7a3a778f35ba3d56af  simulation/proposals/2026-10-25-o1-ovp/decks/o1ovp-sweep-tdoff2p0u-s023-wchi.ng.cir
-9ac4f7fe169850f6707dab21254a42389ea6bceee182ca36a9eecf702c732cbe  simulation/proposals/2026-10-25-o1-ovp/doe-study/doe_study.py
+235e9e29bc587b087ea4f923416f7ba1fa6f1ba55939b5b42763f592d81dcd87  simulation/proposals/2026-10-25-o1-ovp/doe-study/doe_study.py
+0098f50c568e1606e760b92f9fc2fefd3f5d2670aa50e96375e1f408a5c9c0e1  simulation/proposals/2026-10-25-o1-ovp/doe-study/test_doe_provenance.py
 5ad0bf7a3e05d379c6b12587c6d7595dd26194afdeacfa1c519e9f706b11f9be  simulation/proposals/2026-10-25-o1-ovp/gate-discharge-wc.json
 6feff95038eaa8b3ef68a9e3eb873050b82e5a2047472c67e647f96109558719  simulation/proposals/2026-10-25-o1-ovp/gate_discharge_wc.py
 d408cab9727b1e4014eeb53cdb2d4acf43c86be9b6bbdea40f456817f1e766bb  simulation/proposals/2026-10-25-o1-ovp/gen_o1ovp.py
