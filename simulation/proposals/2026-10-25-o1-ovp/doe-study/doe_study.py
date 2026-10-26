@@ -105,6 +105,23 @@ def job(a):
                 acceptance_fail=acc, startup_false_trip=(inp is not None and inp < 2.5))
 R_KEYS = {'info_startup_inp_min', 'info_startup_vgs_fall_t', 'o1_global_peak', 'o1_peak', 'bus_peak', 'raw_peak', 'bus_normal_max', 'vgs_rec_min', 'vgs_post_min', 'o1_stable_max'}
 
+def git(*a):
+    return subprocess.run(['git', *a], cwd=PKG, capture_output=True, text=True).stdout
+
+def provenance():
+    """WP1-T12-02: runner SHA-256, git HEAD, package git status, runner tracked?, full argv, time."""
+    me = Path(__file__).absolute()
+    return dict(runner_sha256=sha(me), git_head=git('rev-parse', 'HEAD').strip(),
+                git_status_porcelain=git('status', '--porcelain', '--', '.'),
+                runner_tracked=bool(git('ls-files', '--', str(me)).strip()), argv=[sys.executable] + sys.argv,
+                time=time.strftime('%Y-%m-%d %H:%M:%S %z'))
+
+def provenance_consistent(p0, p1):
+    """True only when HEAD and runner hash are unchanged between start and end, the runner is tracked and the package is
+    clean at both ends (otherwise the result is NOT attributable to a commit)."""
+    return (p0['git_head'] == p1['git_head'] and p0['runner_sha256'] == p1['runner_sha256'] and p0['runner_tracked']
+            and p1['runner_tracked'] and not p0['git_status_porcelain'] and not p1['git_status_porcelain'])
+
 def screen_ok(rows):
     return all(x['completed'] and not x['acceptance_fail'] and not x['startup_false_trip'] for x in rows)
 
@@ -113,7 +130,8 @@ def main():
     ap.add_argument('--only', default='A,B,C,U3,NUM'); a = ap.parse_args(); only = set(a.only.split(','))
     OUT.mkdir(parents=True, exist_ok=True)
     head = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=PKG, capture_output=True, text=True).stdout.strip()
-    res = dict(_status='WP1 Tur-11 EXPLORATION DOE - diagnostic only, NOT adopted; behavioural models; sim != silicon',
+    p0 = provenance()
+    res = dict(provenance_start=p0, _status='WP1 Tur-11 EXPLORATION DOE - diagnostic only, NOT adopted; behavioural models; sim != silicon',
                git_head=head, started=time.strftime('%Y-%m-%d %H:%M:%S %z'), screen_cases=SCREEN, u3_cases=U3CASES,
                block_inc_sha256=sha(PKG / 'pdu-o1ovp-block.inc'), efuse_inc_sha256=sha(PKG / 'pdu-efuse-block-o1ovp.inc'),
                baseline_lib_sha256=sha(SIM / 'pdu-behavioral.lib'), lib_sha256=sha(PKG / 'pdu-o1ovp-behavioral.lib'))
@@ -150,6 +168,7 @@ def main():
                                                        acceptance_fail=sum(bool(x['acceptance_fail']) for x in v),
                                                        startup_false_trip=sum(x['startup_false_trip'] for x in v))
     res['rows'] = rows; res['finished'] = time.strftime('%Y-%m-%d %H:%M:%S %z')
+    res['provenance_end'] = p1 = provenance(); res['provenance_consistent'] = provenance_consistent(p0, p1)
     for t, s in sorted(res['variants'].items()):
         print(f"{t:34s} pass={s['screen_pass']!s:5s} done={s['completed']}/{s['n']} accFAIL={s['acceptance_fail']} falsetrip={s['startup_false_trip']}")
     (OUT / f"doe-study-{'-'.join(sorted(only))}.json").write_text(json.dumps(res, indent=1) + '\n')
