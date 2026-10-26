@@ -173,6 +173,18 @@ Kaynak: `uvlo_budget.py` → `results/uvlo-budget.json` anahtarı `timer.latch` 
 
 Koşu kanıtı (`tur5-6e150c8`, RESULTS §13): M1 en kısa **90,51 ms** (hotplug-26p0v-vrmax-tmin), EN ↑ anında VGS en düşük **9,64 V** (TDRV mbmin), Tur-4'teki 71 M3 FAIL'i mandal adayında 2'ye indi (dip15v-20ms-mbmin C3/O3, negatif EN_LAG, fail-closed, açık). **O3 20 V başlatma garantisi hâlâ AÇIK** (NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS).
 
+## 4d. Tur 6 UVLO-T6-03 – t_dsc koşullu kabul (kriter değil, koşul listesi) – **aday; garanti değil**
+İnceleme 6416795114 itirazı **koşullu** kabul etti: mandal EN'i CTT ≤ V_CLR olana dek tuttuğu ve V_eq,max < V_CLR,min olduğu sürece t_dsc,max = 11,26 ms (RDSC 180 Ω) erken yeniden başlatma oluşturmaz; t_dsc ≤ 5,5 ms ve V_rel ≤ 53,5 mV **bağımsız sert kapı değildir**. Bu çıkarımın donanım garantisi sayılması için aşağıdaki dört koşulun **tüm** CTT/direnç/switch kaçağı/Ron, referans/komparatör, sıcaklık (−40…125 °C) ve yaşlanma köşelerinde, gerçek BOM parçalarının garanti sınırlarıyla gösterilmesi gerekir (henüz gösterilmedi – açık):
+
+| Koşul | Bugünkü kanıt | Durum |
+|---|---|---|
+| (a) Mandal yalnız VIN-OK iyi **ve** CTT ≤ V_CLR iken bırakır | Davranışsal U27/U29 modeli; PRE#/CLR# eşzamanlı düşük durumu SN74LVC1G74'te kararsız (Q = Q̅ = H) → CLR# = CLR_UV OR NOT OUTA_UV maskelemesi **uygulanmadı** | açık |
+| (b) Her dipte VIN-OK → EN ≥ 60 ms (65 ms hedef) | §4c t_after_release_min 75,98 ms (hesap); koşu M1 en kısa 90,51 ms (tmax 1 µs) | hesap/sim, köşe tamamlanmadı |
+| (c) En kötü toplam başlangıç ≤ 300 ms | t_vinok_to_en_max 266,8 ms (hesap) | hesap |
+| (d) V_eq,max < V_CLR,min | 88,1 mV < 134,7 mV (hesap, sızıntı modeli muhafazakâr) | hesap; parça kaçak/offset garantisiyle doğrulanmadı |
+
+Aday BOM (`hardware/proposals/2026-10-25-uvlo/candidate-bom.csv`, 7f6ea62/2bd1c9d) artık simüle edilen yapılandırmayla aynı MPN/değer/polariteyi gösteriyor (U22/U24 TMUX1101DBVR, RDSC 180 Ω, U26/U27/U28/U29 eklendi); fiziksel gate-ready dedektörü (G28) **tasarlanmadı**. Bu nedenle 75,98 ms donanım garantisi **değildir**.
+
 ## 5. Alternatifler ve regresyonlar
 | Durum | En kötü | Beklenen | Gerçekleşen |
 |---|---|---|---|

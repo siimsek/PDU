@@ -243,3 +243,19 @@ Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok). Bu turda W
 
 ## Karar (Tur 11 sonrası)
 **WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık: WP1-T11-01 (4 ESL deck her iki yöntemde de abort; A/B DOE noktalarının hiçbiri tüm tarama setini tamamlatmadı), WP1-T11-02 (U3 mandalsız ve U3-baypas varyantlarında c185-esr100m-wchi O1 > 12,0 V → bağımsız, sınırlı bir koruma yolu tasarlanmalı), P1-01 SOA (B18), P1-02 KiCad, P1-04 WP3 döngü kararlılığı; tezgâh testleri yapılmadı; CI kullanıcı tarafından devre dışı. Simülasyon fiziksel ölçüm değildir.
+
+# Tur 12 – ChatGPT birleşik incelemesi (PR yorumu 6416795114, HEAD `927d7cd`; WP1 bölümü) yanıtı
+
+Bulgular teknik olarak tek tek değerlendirildi (otomatik kabul yok). WP1 aday deck'leri, modelleri, limitleri, `run_o1ovp.py`, `verify_candidate.py` ve WP1 kabul sonuçları bu turda **değişmedi**; **yeni kabul koşusu yok**. Baseline `simulation/pdu-behavioral.lib` yalnız okundu.
+
+**CI durumu:** `proposal-ngspice` (id 395474051) kullanıcı tarafından devre dışı; yeniden etkinleştirilmedi. **CI kapısı etkin değildir.**
+
+| # | Bulgu (Tur 12) | Doğrulama | Durum | Commit / kanıt |
+|---|---|---|---|---|
+| **WP1-T12-01** (P0) | ESL deck'leri çözülmüyor; DOE daraltmadı; IMON `max(I,0)` köşesi hipotezi; önce akım/IMON/Btrip logu | Doğru | **Açık.** Adım 1 yapıldı (`imon_diag.py`, WP2 paketinde, iki pakette ortak; sonuç `simulation/proposals/2026-10-25-uvlo/results/imon-diag-t6/`): c165-esr12m5-esl2n-typ aynı anda (12,2646 ms) abort; düğüm etiketi bu koşuda `pu_ovp` (kabul logunda `imon_s2e`) → etiket nedeni güvenilir göstermiyor. XU4 ena 0→1'den sonra I(Vsense) 30 kez sıfırdan geçiyor (−1,197 … +0,046 A), VOUT ~0,2 µs içinde 8,26 → 13,33 → 9,67 → 12,37 V çınlıyor (2 nH ESL, tmax 100 ns'de çözülemez); abort anında I = +0,046 A (köşeden uzak). Sonuç: hipotez reddedilmedi ama bu deck'te köşe doğrudan neden olarak görünmüyor; ESL çınlaması + sert komparatör eşikleri daha olası (kanıtlanmadı). ε = 0/0,1/1/10 mA çalışması ve önceden sabitlenmiş A/B/C (RPU10/CGS10 × Rsn/Csn 3×3) DOE **koşulmadı** | 44c4b20, 62bd337 |
+| **WP1-T12-02** (P2) | DOE çalıştırıcısı koşu anında commit'li değildi | Doğru; testle yeniden üretildi (`test_doe_provenance.py` önce 0/2, sonra 2/2) | **Giderildi (kod)**: `provenance_start/end` (çalıştırıcı SHA-256, HEAD, `git status --porcelain`, izlenme, argv, zaman) + `provenance_consistent`. Önceki DOE sonuçları keşif ve kısmi provenanslı olarak tutuldu; DOE yeniden koşulmadı | ebe56b2, a717765 |
+| **WP1-T12-03** (P0) | O1 sınırı davranışsal U3 mandalına bağlı (mandalsız 12,41205 V, baypas 12,41832 V) | Doğru | **Açık.** U3'ten bağımsız Kelvin O1 komparatörü + asenkron hata mandalı + SOA hesaplı ayrı kesme/klemp yolu **tasarlanmadı**; başlangıç bütçesi (statik trip 11,55 ± 0,10 V, overshoot ≤ 0,25 V, tepe ≤ 11,90 V) not edildi. 12,0 V sınırı gevşetilmedi | – |
+| **WP1-T12-04** (P2) | Kontrol sayıları tutarlı, yeni kabul koşusu değil | Katılıyorum | **Kabul.** verify_candidate exit 2 (1766/0/4 MISSING), baseline regresyonu exit 1 (16,89 V beklenen FAIL), guard 29/29: "önceki HEAD'de (afa7fa1) kontrol; yeni kabul koşusu değil". P0-03 eksik vakalar tamamlanmadan kapanmaz | – |
+
+## Karar (Tur 12 sonrası)
+**WP1 tamamlanmadı; merge/üretim için uygun değil.** Açık: 4 ESL deck abort (P0-03), U3'ten bağımsız O1 koruması (T12-03), ε ve yeni DOE planı. Simülasyon fiziksel ölçüm değildir.
