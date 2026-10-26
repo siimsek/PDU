@@ -1,0 +1,2803 @@
+PASS        start20-vrmax-tmax 
+PASS        start20-vrmax-tmin 
+PASS        start20-vfmax-tmin 
+PASS        start20-mbmin-tmin 
+PASS        start20-vfmin-tmax 
+PASS        start20-typ-ttyp 
+PASS        rampup-10vps-mbmin-tmin 
+PASS        rampup-10vps-vrmax-tmax 
+PASS        rampup-10vps-typ-ttyp 
+PASS        rampup-1vps-mbmin-tmin 
+PASS        rampdown-10vps-vfmin-tmin 
+PASS        rampdown-10vps-mbmin-tmin 
+PASS        rampdown-10vps-typ-ttyp 
+PASS        rampdown-1vps-mbmin-tmin 
+PASS        mbhold-mbmin-tmin-r250-m50mv 
+PASS        mbhold-mbmin-tmin-r250-p50mv 
+PASS        mbhold-typ-ttyp-r250-m50mv 
+PASS        mbhold-typ-ttyp-r250-p50mv 
+PASS        mbhold-vfmax-tmin-r250-m50mv 
+PASS        mbhold-vfmax-tmin-r250-p50mv 
+PASS        rsweep-r030 
+PASS        rsweep-r050 
+PASS        rsweep-r100 
+PASS        rsweep-r150 
+PASS        rsweep-r200 
+PASS        rsweep-r250 
+PASS        rsweep-r300 
+FAIL        rsweep-r350 EN fell at 0.1253 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 2.8698 V not regulated; VIN under load 18.2555 <= V_f 18.2588; MANDATORY M1: EN_RLAST at 0.713303 s lies between OUTA_R5 and OUTA_RLAST (untracked VIN-OK rises); MANDATORY M1: more than 4 EN rises (EN_RLAST after EN_R4; intermediate rises untracked)
+FAIL        rsweep-r450 EN fell at 0.0969 s (shutdown/motorboat); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.3087 V not regulated; VIN under load 18.0115 <= V_f 18.2588; MANDATORY M1: EN_RLAST at 0.667218 s lies between OUTA_R5 and OUTA_RLAST (untracked VIN-OK rises); MANDATORY M1: more than 4 EN rises (EN_RLAST after EN_R4; intermediate rises untracked)
+PASS        dip19v-50ms-typ-ttyp 
+PASS        dip19v-50ms-mbmin-tmin 
+FAIL        dip0v-1ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.991605e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        dip0v-1ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.030809e-08 vs 0.000 us) -> EN forcing not provable
+FAIL        dip0v-300us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.991605e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        dip0v-300us-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.030809e-08 vs 0.000 us) -> EN forcing not provable
+FAIL        dip0v-250us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.573019e-10 vs 0.000 us) -> EN forcing not provable
+PASS        dip0v-250us-mbmin-tmin 
+PASS        dip0v-200us-typ-ttyp 
+PASS        dip0v-200us-mbmin-tmin 
+PASS        dip0v-100us-typ-ttyp 
+PASS        dip0v-100us-mbmin-tmin 
+FAIL        dip0v-50ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.991605e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        dip0v-50ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.030809e-08 vs 0.000 us) -> EN forcing not provable
+PASS        dip15v-20ms-typ-ttyp 
+FAIL        dip15v-20ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.161604e-07 vs 0.000 us) -> EN forcing not provable
+PASS        deepdip0v-50ms-light-typ-ttyp 
+PASS        deepdip0v-50ms-light-mbmin-tmin 
+PASS        dip0v-1us-typ-ttyp 
+PASS        dip0v-1us-mbmin-tmin 
+PASS        dip0v-5us-typ-ttyp 
+PASS        dip0v-5us-mbmin-tmin 
+PASS        dip0v-10us-typ-ttyp 
+PASS        dip0v-10us-mbmin-tmin 
+INCOMPLETE  dip0v-50us-typ-ttyp simulation did not complete
+PASS        dip0v-50us-mbmin-tmin 
+PASS        dip0v-225us-typ-ttyp 
+PASS        dip0v-225us-mbmin-tmin 
+FAIL        dip0v-20ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.991605e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        dip0v-20ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.030809e-08 vs 0.000 us) -> EN forcing not provable
+PASS        tdrv-dip0v-100us-typ-ttyp 
+PASS        tdrv-dip0v-100us-mbmin-tmin 
+FAIL        tdrv-dip0v-1ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.440814e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        tdrv-dip0v-1ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.049981e-08 vs 0.000 us) -> EN forcing not provable
+FAIL        tdrv-dip0v-20ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.440814e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        tdrv-dip0v-20ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.049981e-08 vs 0.000 us) -> EN forcing not provable
+FAIL        tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.440814e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        tdrv-dbldip0v-1ms-30ms-50ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.049981e-08 vs 0.000 us) -> EN forcing not provable
+FAIL        rdsc180-dip0v-1ms-typ-ttyp MANDATORY M3: EN fell 1.552 us after OUTA_F1 > 1.000 us
+FAIL        rdsc180-dip0v-1ms-mbmin-tmin MANDATORY M3: EN fell 1.499 us after OUTA_F1 > 1.000 us
+FAIL        rdsc180-dip0v-300us-typ-ttyp MANDATORY M3: EN fell 1.552 us after OUTA_F1 > 1.000 us
+FAIL        rdsc180-dip0v-300us-mbmin-tmin MANDATORY M3: EN fell 1.499 us after OUTA_F1 > 1.000 us
+FAIL        rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp MANDATORY M3: EN fell 1.552 us after OUTA_F1 > 1.000 us
+FAIL        rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin MANDATORY M3: EN fell 1.499 us after OUTA_F1 > 1.000 us
+FAIL        fpulse-1us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-1us-mbmin-tmin 
+FAIL        fpulse-5us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-5us-mbmin-tmin 
+FAIL        fpulse-10us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-10us-mbmin-tmin 
+FAIL        fpulse-50us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-50us-mbmin-tmin 
+FAIL        fpulse-100us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-100us-mbmin-tmin 
+FAIL        fpulse-200us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-200us-mbmin-tmin 
+FAIL        fpulse-225us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-225us-mbmin-tmin 
+FAIL        fpulse-250us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-250us-mbmin-tmin 
+FAIL        fpulse-300us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-300us-mbmin-tmin 
+FAIL        fpulse-20ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse-20ms-mbmin-tmin 
+FAIL        fpulse2-10us-gap50us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse2-10us-gap50us-mbmin-tmin 
+FAIL        fpulse2-10us-gap30ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse2-10us-gap30ms-mbmin-tmin 
+FAIL        fpulse2-300us-gap50us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse2-300us-gap50us-mbmin-tmin 
+FAIL        fpulse2-300us-gap30ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.6387e-10 vs 0.000 us) -> EN forcing not provable
+PASS        fpulse2-300us-gap30ms-mbmin-tmin 
+INCOMPLETE  dbldip0v-50us-gap100us-typ-ttyp simulation did not complete
+PASS        dbldip0v-50us-gap100us-mbmin-tmin 
+INCOMPLETE  dbldip0v-50us-gap30ms-typ-ttyp simulation did not complete
+PASS        dbldip0v-50us-gap30ms-mbmin-tmin 
+FAIL        dbldip0v-300us-gap100us-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.991605e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        dbldip0v-300us-gap100us-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.030809e-08 vs 0.000 us) -> EN forcing not provable
+FAIL        dbldip0v-300us-20ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.991605e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        dbldip0v-300us-20ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.030809e-08 vs 0.000 us) -> EN forcing not provable
+FAIL        dbldip0v-1ms-40ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.991605e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        dbldip0v-1ms-40ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.030809e-08 vs 0.000 us) -> EN forcing not provable
+FAIL        dbldip0v-1ms-30ms-50ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.991605e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        dbldip0v-1ms-30ms-50ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-2.030809e-08 vs 0.000 us) -> EN forcing not provable
+PASS        hotplug-20p0v-typ-ttyp 
+PASS        hotplug-20p0v-vrmax-tmin 
+PASS        hotplug-25p2v-typ-ttyp 
+PASS        hotplug-25p2v-vrmax-tmin 
+PASS        hotplug-26p0v-typ-ttyp 
+PASS        hotplug-26p0v-vrmax-tmin 
+FAIL       (regression, reproduced) reg-baseline-180k10k-worst EN fell at 0.0001 s (shutdown/motorboat); VIN-OK (OUTA_R1) measurement missing/failed -> 60 ms restart-delay gate not provable; buck enabled before the OVP FET was on (sequencing); RUN: EN low (0.994 V) -> not running; RUN: RAW avg 0.0000 V not regulated; MANDATORY M1: EN_R1 at 0.000114376 s without a VIN-OK (OUTA) rise before it -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 0.000114376 s without a VIN-OK (OUTA) rise before it -> 60 ms gate not provable
+FAIL       (regression, reproduced) reg-baseline-180k10k-typ-rampdown PRE: EN low (1.043 V) -> not running; MANDATORY M1: EN_R1 at 9.85626e-05 s without a VIN-OK (OUTA) rise before it -> 60 ms gate not provable; MANDATORY M1: EN_RLAST at 9.85626e-05 s without a VIN-OK (OUTA) rise before it -> 60 ms gate not provable
+FAIL       (regression, reproduced) reg-misset-rbu-8k66-vrmax buck never enabled (no start); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated; MANDATORY M1: EN_R1 missing/failed/non-finite -> start/gate not provable
+PASS        seq-delay-tmin-typ-ibst100u 
+PASS        seq-delay-tmin-wchi-ibst100u 
+PASS        seq-delay-tmin-wclo-ibst100u 
+FAIL       (regression, reproduced) seq-ref-nodelay-typ-ibst100u FET never on; RUN: FET/comparator not in normal state
+FAIL       (regression, reproduced) noreset-dip0v-300us-mbmin-tmin MANDATORY M1: EN_R2 1.3090 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 1.3090 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) noreset-dip0v-250us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) noreset-fpulse-1us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) noreset-fpulse-5us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) noreset-fpulse-10us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) noreset-fpulse-50us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) noreset-fpulse-100us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+PASS        tur4-fpulse-1us-typ-ttyp 
+PASS        tur4-fpulse-50us-typ-ttyp 
+FAIL       (regression, reproduced) tur4-dip0v-1ms-typ-ttyp MANDATORY M3: EN fell 1.551 us after OUTA_F1 > 1.000 us
+FAIL       (regression, reproduced) tur4-dip0v-300us-typ-ttyp MANDATORY M3: EN fell 1.551 us after OUTA_F1 > 1.000 us
+PASS        o3-start20-vrmax-tmax 
+PASS        o3-start20-vrmax-tmin 
+PASS        o3-start20-vfmax-tmin 
+PASS        o3-start20-mbmin-tmin 
+PASS        o3-start20-vfmin-tmax 
+PASS        o3-start20-typ-ttyp 
+PASS        o3-rampup-10vps-mbmin-tmin 
+PASS        o3-rampup-10vps-vrmax-tmax 
+PASS        o3-rampup-10vps-typ-ttyp 
+PASS        o3-rampup-1vps-mbmin-tmin 
+PASS        o3-rampdown-10vps-vfmin-tmin 
+PASS        o3-rampdown-10vps-mbmin-tmin 
+PASS        o3-rampdown-10vps-typ-ttyp 
+PASS        o3-rampdown-1vps-mbmin-tmin 
+PASS        o3-mbhold-mbmin-tmin-r250-m50mv 
+PASS        o3-mbhold-mbmin-tmin-r250-p50mv 
+PASS        o3-mbhold-typ-ttyp-r250-m50mv 
+PASS        o3-mbhold-typ-ttyp-r250-p50mv 
+PASS        o3-mbhold-vfmax-tmin-r250-m50mv 
+PASS        o3-mbhold-vfmax-tmin-r250-p50mv 
+PASS        o3-dip19v-50ms-typ-ttyp 
+PASS        o3-dip19v-50ms-mbmin-tmin 
+PASS        o3-dip0v-1ms-typ-ttyp 
+FAIL        o3-dip0v-1ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dip0v-300us-typ-ttyp 
+FAIL        o3-dip0v-300us-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dip0v-250us-typ-ttyp 
+FAIL        o3-dip0v-250us-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dip0v-200us-typ-ttyp 
+FAIL        o3-dip0v-200us-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dip0v-100us-typ-ttyp 
+PASS        o3-dip0v-100us-mbmin-tmin 
+PASS        o3-dip0v-50ms-typ-ttyp 
+FAIL        o3-dip0v-50ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dip15v-20ms-typ-ttyp 
+FAIL        o3-dip15v-20ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-4.301659e-07 vs 0.000 us) -> EN forcing not provable
+FAIL        o3-deepdip0v-50ms-light-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.329887e-10 vs 0.000 us) -> EN forcing not provable
+FAIL        o3-deepdip0v-50ms-light-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.099966e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dip0v-1us-typ-ttyp 
+PASS        o3-dip0v-1us-mbmin-tmin 
+PASS        o3-dip0v-5us-typ-ttyp 
+PASS        o3-dip0v-5us-mbmin-tmin 
+PASS        o3-dip0v-10us-typ-ttyp 
+PASS        o3-dip0v-10us-mbmin-tmin 
+INCOMPLETE  o3-dip0v-50us-typ-ttyp simulation did not complete
+PASS        o3-dip0v-50us-mbmin-tmin 
+PASS        o3-dip0v-225us-typ-ttyp 
+FAIL        o3-dip0v-225us-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dip0v-20ms-typ-ttyp 
+FAIL        o3-dip0v-20ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-tdrv-dip0v-100us-typ-ttyp 
+PASS        o3-tdrv-dip0v-100us-mbmin-tmin 
+FAIL        o3-tdrv-dip0v-1ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.868901e-10 vs 0.000 us) -> EN forcing not provable
+PASS        o3-tdrv-dip0v-1ms-mbmin-tmin 
+FAIL        o3-tdrv-dip0v-20ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.868901e-10 vs 0.000 us) -> EN forcing not provable
+PASS        o3-tdrv-dip0v-20ms-mbmin-tmin 
+FAIL        o3-tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-3.868901e-10 vs 0.000 us) -> EN forcing not provable
+PASS        o3-tdrv-dbldip0v-1ms-30ms-50ms-mbmin-tmin 
+FAIL        o3-rdsc180-dip0v-1ms-typ-ttyp MANDATORY M3: EN fell 1.552 us after OUTA_F1 > 1.000 us
+FAIL        o3-rdsc180-dip0v-1ms-mbmin-tmin MANDATORY M3: EN fell 1.499 us after OUTA_F1 > 1.000 us
+FAIL        o3-rdsc180-dip0v-300us-typ-ttyp MANDATORY M3: EN fell 1.552 us after OUTA_F1 > 1.000 us
+FAIL        o3-rdsc180-dip0v-300us-mbmin-tmin MANDATORY M3: EN fell 1.499 us after OUTA_F1 > 1.000 us
+FAIL        o3-rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp MANDATORY M3: EN fell 1.552 us after OUTA_F1 > 1.000 us
+FAIL        o3-rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin MANDATORY M3: EN fell 1.499 us after OUTA_F1 > 1.000 us
+PASS        o3-fpulse-1us-typ-ttyp 
+PASS        o3-fpulse-1us-mbmin-tmin 
+PASS        o3-fpulse-5us-typ-ttyp 
+PASS        o3-fpulse-5us-mbmin-tmin 
+PASS        o3-fpulse-10us-typ-ttyp 
+PASS        o3-fpulse-10us-mbmin-tmin 
+PASS        o3-fpulse-50us-typ-ttyp 
+PASS        o3-fpulse-50us-mbmin-tmin 
+PASS        o3-fpulse-100us-typ-ttyp 
+PASS        o3-fpulse-100us-mbmin-tmin 
+PASS        o3-fpulse-200us-typ-ttyp 
+PASS        o3-fpulse-200us-mbmin-tmin 
+PASS        o3-fpulse-225us-typ-ttyp 
+PASS        o3-fpulse-225us-mbmin-tmin 
+PASS        o3-fpulse-250us-typ-ttyp 
+PASS        o3-fpulse-250us-mbmin-tmin 
+PASS        o3-fpulse-300us-typ-ttyp 
+PASS        o3-fpulse-300us-mbmin-tmin 
+PASS        o3-fpulse-20ms-typ-ttyp 
+PASS        o3-fpulse-20ms-mbmin-tmin 
+PASS        o3-fpulse2-10us-gap50us-typ-ttyp 
+PASS        o3-fpulse2-10us-gap50us-mbmin-tmin 
+PASS        o3-fpulse2-10us-gap30ms-typ-ttyp 
+PASS        o3-fpulse2-10us-gap30ms-mbmin-tmin 
+PASS        o3-fpulse2-300us-gap50us-typ-ttyp 
+PASS        o3-fpulse2-300us-gap50us-mbmin-tmin 
+PASS        o3-fpulse2-300us-gap30ms-typ-ttyp 
+PASS        o3-fpulse2-300us-gap30ms-mbmin-tmin 
+INCOMPLETE  o3-dbldip0v-50us-gap100us-typ-ttyp simulation did not complete
+PASS        o3-dbldip0v-50us-gap100us-mbmin-tmin 
+INCOMPLETE  o3-dbldip0v-50us-gap30ms-typ-ttyp simulation did not complete
+PASS        o3-dbldip0v-50us-gap30ms-mbmin-tmin 
+PASS        o3-dbldip0v-300us-gap100us-typ-ttyp 
+FAIL        o3-dbldip0v-300us-gap100us-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dbldip0v-300us-20ms-typ-ttyp 
+FAIL        o3-dbldip0v-300us-20ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dbldip0v-1ms-40ms-typ-ttyp 
+FAIL        o3-dbldip0v-1ms-40ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-dbldip0v-1ms-30ms-50ms-typ-ttyp 
+FAIL        o3-dbldip0v-1ms-30ms-50ms-mbmin-tmin MANDATORY M3: direct lag EN_LAG_F1 missing/failed/non-finite/negative or inconsistent with the printed OUTA_F1 -> EN fall (-1.336325e-08 vs 0.000 us) -> EN forcing not provable
+PASS        o3-hotplug-20p0v-typ-ttyp 
+PASS        o3-hotplug-20p0v-vrmax-tmin 
+PASS        o3-hotplug-25p2v-typ-ttyp 
+PASS        o3-hotplug-25p2v-vrmax-tmin 
+PASS        o3-hotplug-26p0v-typ-ttyp 
+PASS        o3-hotplug-26p0v-vrmax-tmin 
+FAIL       (regression, reproduced) o3-noreset-dip0v-250us-mbmin-tmin MANDATORY M1: EN_R2 24.3080 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 24.3080 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) o3-noreset-dip0v-200us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) o3-noreset-fpulse-1us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) o3-noreset-fpulse-5us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) o3-noreset-fpulse-10us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) o3-noreset-fpulse-50us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+FAIL       (regression, reproduced) o3-noreset-fpulse-100us-typ-ttyp MANDATORY M1: EN_R2 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms; MANDATORY M1: EN_RLAST 0.0000 ms after VIN-OK (print resolution +-1.00 us) not provably >= 60 ms
+PASS        o3-tur4-fpulse-1us-typ-ttyp 
+PASS        o3-tur4-fpulse-50us-typ-ttyp 
+FAIL       (regression, reproduced) o3-tur4-dip0v-1ms-typ-ttyp MANDATORY M3: EN fell 1.552 us after OUTA_F1 > 1.000 us
+FAIL       (regression, reproduced) o3-tur4-dip0v-300us-typ-ttyp MANDATORY M3: EN fell 1.552 us after OUTA_F1 > 1.000 us
+FAIL       (regression, reproduced) o3-reg-misset-rbu-5k23-vrmax buck never enabled (no start); RUN: EN low (0.000 V) -> not running; RUN: RAW avg 0.0000 V not regulated; MANDATORY M1: EN_R1 missing/failed/non-finite -> start/gate not provable
+PROVENANCE runner_exit_code must be exactly 0 (got 2)
+PROVENANCE manifest git_head '6e150c839937' != current HEAD 'ebe56b233ba0' (CI run must verify its own checkout)
+PROVENANCE uvlo-dbldip0v-50us-gap100us-typ-ttyp: rc 1
+PROVENANCE uvlo-dbldip0v-50us-gap100us-typ-ttyp: not completed
+PROVENANCE uvlo-dbldip0v-50us-gap30ms-typ-ttyp: rc 1
+PROVENANCE uvlo-dbldip0v-50us-gap30ms-typ-ttyp: not completed
+PROVENANCE uvlo-dip0v-50us-typ-ttyp: rc 1
+PROVENANCE uvlo-dip0v-50us-typ-ttyp: not completed
+PROVENANCE uvlo-o3-dbldip0v-50us-gap100us-typ-ttyp: rc 1
+PROVENANCE uvlo-o3-dbldip0v-50us-gap100us-typ-ttyp: not completed
+PROVENANCE uvlo-o3-dbldip0v-50us-gap30ms-typ-ttyp: rc 1
+PROVENANCE uvlo-o3-dbldip0v-50us-gap30ms-typ-ttyp: not completed
+PROVENANCE uvlo-o3-dip0v-50us-typ-ttyp: rc 1
+PROVENANCE uvlo-o3-dip0v-50us-typ-ttyp: not completed
+{
+ "exit_code": 2,
+ "mode": "acceptance",
+ "git_head": "ebe56b233ba0a2aee40b056728965b181311937a",
+ "provenance_errors": [
+  "runner_exit_code must be exactly 0 (got 2)",
+  "manifest git_head '6e150c839937' != current HEAD 'ebe56b233ba0' (CI run must verify its own checkout)",
+  "uvlo-dbldip0v-50us-gap100us-typ-ttyp: rc 1",
+  "uvlo-dbldip0v-50us-gap100us-typ-ttyp: not completed",
+  "uvlo-dbldip0v-50us-gap30ms-typ-ttyp: rc 1",
+  "uvlo-dbldip0v-50us-gap30ms-typ-ttyp: not completed",
+  "uvlo-dip0v-50us-typ-ttyp: rc 1",
+  "uvlo-dip0v-50us-typ-ttyp: not completed",
+  "uvlo-o3-dbldip0v-50us-gap100us-typ-ttyp: rc 1",
+  "uvlo-o3-dbldip0v-50us-gap100us-typ-ttyp: not completed",
+  "uvlo-o3-dbldip0v-50us-gap30ms-typ-ttyp: rc 1",
+  "uvlo-o3-dbldip0v-50us-gap30ms-typ-ttyp: not completed",
+  "uvlo-o3-dip0v-50us-typ-ttyp: rc 1",
+  "uvlo-o3-dip0v-50us-typ-ttyp: not completed"
+ ],
+ "run_manifest": {
+  "run_id": "tur5-6e150c8",
+  "git_head": "6e150c839937925325b07c898da3f9691c2a7e8c",
+  "started_utc": "2026-10-25T18:58:36+00:00",
+  "ngspice": [
+   "** ngspice-44.2 : Circuit level simulation program",
+   "** Copyright 2001-2024, The ngspice team.",
+   "** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html",
+   "** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html"
+  ],
+  "n_runs": 259
+ },
+ "expected_run_id": "tur5-6e150c8",
+ "provisional_rdip_screen": {
+  "note": "PROVISIONAL WP3 screen proposed in ChatGPT review 6395614957 (UVLO-06); report-only, NOT an acceptance limit and NOT a requirement change; simulation, not measurement",
+  "metric": "peak_bus = RD_PEAK = MAX V(VOUT) in the dip/recovery window: bus TRANSIENT peak, NOT H2 (H2 = stable PRE/RUN/POST windows <= 11.1605 V, judged separately); peak_o1 = RD_PEAK_O1 = MAX V(O1_11V) transient, o1_instant_status vs the 12.0 V instantaneous O1 limit (Tur-6 UVLO-T6-04)",
+  "limits": {
+   "peak_max": 11.5,
+   "t_above_max": 0.001,
+   "return_after_dip_end_max": 0.005,
+   "threshold": 11.1605
+  },
+  "cases": {
+   "dip19v-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip19v-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-1ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-300us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-300us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-250us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-250us-mbmin-tmin": {
+    "status": "FAIL",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.34765,
+    "peak_bus": 11.34765,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 8.10329e-06,
+    "return_after_dip_end": 0.07973051937667683,
+    "reasons": [
+     "back below 11.1605 V 79.731 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-200us-typ-ttyp": {
+    "status": "FAIL",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.41315,
+    "peak_bus": 11.41315,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 1.87729e-05,
+    "return_after_dip_end": 0.009672522424102992,
+    "reasons": [
+     "back below 11.1605 V 9.673 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-200us-mbmin-tmin": {
+    "status": "FAIL",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.36368,
+    "peak_bus": 11.36368,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 7.66045e-06,
+    "return_after_dip_end": 0.0414035193766768,
+    "reasons": [
+     "back below 11.1605 V 41.404 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.12395,
+    "peak_bus": 11.12395,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.00485,
+    "peak_bus": 11.00485,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip15v-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip15v-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "deepdip0v-50ms-light-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.02296,
+    "peak_bus": 11.02296,
+    "peak_o1": 10.99836,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "deepdip0v-50ms-light-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.02296,
+    "peak_bus": 11.02296,
+    "peak_o1": 10.99836,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-1us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-1us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-5us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-5us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-10us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-10us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-50us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.15564,
+    "peak_bus": 11.15564,
+    "peak_o1": 10.97899,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-225us-typ-ttyp": {
+    "status": "FAIL",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.42765,
+    "peak_bus": 11.42765,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 1.57496e-05,
+    "return_after_dip_end": 0.02135252242410296,
+    "reasons": [
+     "back below 11.1605 V 21.353 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-225us-mbmin-tmin": {
+    "status": "FAIL",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.35566,
+    "peak_bus": 11.35566,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 7.6153e-06,
+    "return_after_dip_end": 0.05945951937667679,
+    "reasons": [
+     "back below 11.1605 V 59.460 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dip0v-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tdrv-dip0v-100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98621,
+    "peak_bus": 10.98621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tdrv-dip0v-100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98621,
+    "peak_bus": 10.98621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tdrv-dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tdrv-dip0v-1ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tdrv-dip0v-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tdrv-dip0v-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tdrv-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "rdsc180-dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "rdsc180-dip0v-1ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "rdsc180-dip0v-300us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "rdsc180-dip0v-300us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-1us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-1us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-5us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-5us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-10us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-10us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-50us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-200us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-200us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-225us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-225us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-250us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-250us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-300us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-300us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse2-10us-gap50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse2-10us-gap50us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse2-10us-gap30ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse2-10us-gap30ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse2-300us-gap50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse2-300us-gap50us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse2-300us-gap30ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "fpulse2-300us-gap30ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-50us-gap100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.15564,
+    "peak_bus": 11.15564,
+    "peak_o1": 11.03936,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-50us-gap30ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.15564,
+    "peak_bus": 11.15564,
+    "peak_o1": 11.03937,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-300us-gap100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-300us-gap100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-300us-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-300us-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-1ms-40ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-1ms-40ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "noreset-dip0v-300us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "noreset-dip0v-250us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "noreset-fpulse-1us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "noreset-fpulse-5us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "noreset-fpulse-10us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "noreset-fpulse-50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00623,
+    "peak_bus": 11.00623,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "noreset-fpulse-100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tur4-fpulse-1us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tur4-fpulse-50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tur4-dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "tur4-dip0v-300us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip19v-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip19v-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-1ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-300us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-300us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-250us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-250us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-200us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-200us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.12094,
+    "peak_bus": 11.12094,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.00667,
+    "peak_bus": 11.00667,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip15v-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip15v-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-deepdip0v-50ms-light-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.02296,
+    "peak_bus": 11.02296,
+    "peak_o1": 10.99836,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-deepdip0v-50ms-light-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.02296,
+    "peak_bus": 11.02296,
+    "peak_o1": 10.99836,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-1us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-1us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-5us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-5us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-10us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-10us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98248,
+    "peak_bus": 10.98248,
+    "peak_o1": 10.97438,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-50us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.15542,
+    "peak_bus": 11.15542,
+    "peak_o1": 11.03937,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-225us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-225us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dip0v-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tdrv-dip0v-100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98621,
+    "peak_bus": 10.98621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tdrv-dip0v-100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 10.98621,
+    "peak_bus": 10.98621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tdrv-dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tdrv-dip0v-1ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tdrv-dip0v-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tdrv-dip0v-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tdrv-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-rdsc180-dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-rdsc180-dip0v-1ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-rdsc180-dip0v-300us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-rdsc180-dip0v-300us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-1us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-1us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-5us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-5us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-10us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-10us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-50us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-200us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-200us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-225us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-225us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-250us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-250us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-300us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-300us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse2-10us-gap50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse2-10us-gap50us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse2-10us-gap30ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse2-10us-gap30ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse2-300us-gap50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse2-300us-gap50us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse2-300us-gap30ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-fpulse2-300us-gap30ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-50us-gap100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.15542,
+    "peak_bus": 11.15542,
+    "peak_o1": 11.03936,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-50us-gap30ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "rode_through",
+    "vin_ok_lost": false,
+    "peak": 11.15542,
+    "peak_bus": 11.15542,
+    "peak_o1": 11.03935,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-300us-gap100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-300us-gap100us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-300us-20ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-300us-20ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-1ms-40ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-1ms-40ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-noreset-dip0v-250us-mbmin-tmin": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-noreset-dip0v-200us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-noreset-fpulse-1us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-noreset-fpulse-5us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-noreset-fpulse-10us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-noreset-fpulse-50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-noreset-fpulse-100us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00622,
+    "peak_bus": 11.00622,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tur4-fpulse-1us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tur4-fpulse-50us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tur4-dip0v-1ms-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   },
+   "o3-tur4-dip0v-300us-typ-ttyp": {
+    "status": "PASS",
+    "event": "restart",
+    "vin_ok_lost": true,
+    "peak": 11.00621,
+    "peak_bus": 11.00621,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "t_above": 0.0,
+    "return_after_dip_end": null,
+    "reasons": []
+   }
+  },
+  "counts": {
+   "PASS": 179,
+   "FAIL": 5,
+   "UNDETERMINED": 0
+  },
+  "o1_instant_counts": {
+   "PASS": 184,
+   "FAIL": 0,
+   "UNDETERMINED": 0
+  },
+  "counts_by_event": {
+   "rode_through/PASS": 26,
+   "rode_through/FAIL": 5,
+   "rode_through/UNDETERMINED": 0,
+   "restart/PASS": 153,
+   "restart/FAIL": 0,
+   "restart/UNDETERMINED": 0
+  }
+ },
+ "worktree_dirty_at_verify": false,
+ "package_inputs_dirty": false,
+ "n_cases": 259,
+ "n_pass": 161,
+ "acceptance_fail": [
+  "rsweep-r350",
+  "rsweep-r450",
+  "dip0v-1ms-typ-ttyp",
+  "dip0v-1ms-mbmin-tmin",
+  "dip0v-300us-typ-ttyp",
+  "dip0v-300us-mbmin-tmin",
+  "dip0v-250us-typ-ttyp",
+  "dip0v-50ms-typ-ttyp",
+  "dip0v-50ms-mbmin-tmin",
+  "dip15v-20ms-mbmin-tmin",
+  "dip0v-20ms-typ-ttyp",
+  "dip0v-20ms-mbmin-tmin",
+  "tdrv-dip0v-1ms-typ-ttyp",
+  "tdrv-dip0v-1ms-mbmin-tmin",
+  "tdrv-dip0v-20ms-typ-ttyp",
+  "tdrv-dip0v-20ms-mbmin-tmin",
+  "tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+  "tdrv-dbldip0v-1ms-30ms-50ms-mbmin-tmin",
+  "rdsc180-dip0v-1ms-typ-ttyp",
+  "rdsc180-dip0v-1ms-mbmin-tmin",
+  "rdsc180-dip0v-300us-typ-ttyp",
+  "rdsc180-dip0v-300us-mbmin-tmin",
+  "rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+  "rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin",
+  "fpulse-1us-typ-ttyp",
+  "fpulse-5us-typ-ttyp",
+  "fpulse-10us-typ-ttyp",
+  "fpulse-50us-typ-ttyp",
+  "fpulse-100us-typ-ttyp",
+  "fpulse-200us-typ-ttyp",
+  "fpulse-225us-typ-ttyp",
+  "fpulse-250us-typ-ttyp",
+  "fpulse-300us-typ-ttyp",
+  "fpulse-20ms-typ-ttyp",
+  "fpulse2-10us-gap50us-typ-ttyp",
+  "fpulse2-10us-gap30ms-typ-ttyp",
+  "fpulse2-300us-gap50us-typ-ttyp",
+  "fpulse2-300us-gap30ms-typ-ttyp",
+  "dbldip0v-300us-gap100us-typ-ttyp",
+  "dbldip0v-300us-gap100us-mbmin-tmin",
+  "dbldip0v-300us-20ms-typ-ttyp",
+  "dbldip0v-300us-20ms-mbmin-tmin",
+  "dbldip0v-1ms-40ms-typ-ttyp",
+  "dbldip0v-1ms-40ms-mbmin-tmin",
+  "dbldip0v-1ms-30ms-50ms-typ-ttyp",
+  "dbldip0v-1ms-30ms-50ms-mbmin-tmin",
+  "o3-dip0v-1ms-mbmin-tmin",
+  "o3-dip0v-300us-mbmin-tmin",
+  "o3-dip0v-250us-mbmin-tmin",
+  "o3-dip0v-200us-mbmin-tmin",
+  "o3-dip0v-50ms-mbmin-tmin",
+  "o3-dip15v-20ms-mbmin-tmin",
+  "o3-deepdip0v-50ms-light-typ-ttyp",
+  "o3-deepdip0v-50ms-light-mbmin-tmin",
+  "o3-dip0v-225us-mbmin-tmin",
+  "o3-dip0v-20ms-mbmin-tmin",
+  "o3-tdrv-dip0v-1ms-typ-ttyp",
+  "o3-tdrv-dip0v-20ms-typ-ttyp",
+  "o3-tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+  "o3-rdsc180-dip0v-1ms-typ-ttyp",
+  "o3-rdsc180-dip0v-1ms-mbmin-tmin",
+  "o3-rdsc180-dip0v-300us-typ-ttyp",
+  "o3-rdsc180-dip0v-300us-mbmin-tmin",
+  "o3-rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+  "o3-rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin",
+  "o3-dbldip0v-300us-gap100us-mbmin-tmin",
+  "o3-dbldip0v-300us-20ms-mbmin-tmin",
+  "o3-dbldip0v-1ms-40ms-mbmin-tmin",
+  "o3-dbldip0v-1ms-30ms-50ms-mbmin-tmin"
+ ],
+ "regression_not_reproduced": [],
+ "incomplete": [
+  "dip0v-50us-typ-ttyp",
+  "dbldip0v-50us-gap100us-typ-ttyp",
+  "dbldip0v-50us-gap30ms-typ-ttyp",
+  "o3-dip0v-50us-typ-ttyp",
+  "o3-dbldip0v-50us-gap100us-typ-ttyp",
+  "o3-dbldip0v-50us-gap30ms-typ-ttyp"
+ ],
+ "info_cases": [
+  "rsweep-r300",
+  "rsweep-r350",
+  "rsweep-r450",
+  "tdrv-dip0v-100us-typ-ttyp",
+  "tdrv-dip0v-100us-mbmin-tmin",
+  "tdrv-dip0v-1ms-typ-ttyp",
+  "tdrv-dip0v-1ms-mbmin-tmin",
+  "tdrv-dip0v-20ms-typ-ttyp",
+  "tdrv-dip0v-20ms-mbmin-tmin",
+  "tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+  "tdrv-dbldip0v-1ms-30ms-50ms-mbmin-tmin",
+  "rdsc180-dip0v-1ms-typ-ttyp",
+  "rdsc180-dip0v-1ms-mbmin-tmin",
+  "rdsc180-dip0v-300us-typ-ttyp",
+  "rdsc180-dip0v-300us-mbmin-tmin",
+  "rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+  "rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin",
+  "tur4-fpulse-1us-typ-ttyp",
+  "tur4-fpulse-50us-typ-ttyp",
+  "o3-tdrv-dip0v-100us-typ-ttyp",
+  "o3-tdrv-dip0v-100us-mbmin-tmin",
+  "o3-tdrv-dip0v-1ms-typ-ttyp",
+  "o3-tdrv-dip0v-1ms-mbmin-tmin",
+  "o3-tdrv-dip0v-20ms-typ-ttyp",
+  "o3-tdrv-dip0v-20ms-mbmin-tmin",
+  "o3-tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+  "o3-tdrv-dbldip0v-1ms-30ms-50ms-mbmin-tmin",
+  "o3-rdsc180-dip0v-1ms-typ-ttyp",
+  "o3-rdsc180-dip0v-1ms-mbmin-tmin",
+  "o3-rdsc180-dip0v-300us-typ-ttyp",
+  "o3-rdsc180-dip0v-300us-mbmin-tmin",
+  "o3-rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+  "o3-rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin",
+  "o3-tur4-fpulse-1us-typ-ttyp",
+  "o3-tur4-fpulse-50us-typ-ttyp"
+ ],
+ "hard_limit_gate": "H1/H2 enforced for every non-regression case (PASS and INFO)",
+ "mandatory_gate": "M0 (regime measurement validity), M1 (60 ms VIN-OK->EN on every EN rise), M2 (V_f >= 18.0 V), M3 (EN low <= en_force_max after VIN-OK loss, direct EN_LAG required, opt-in), M4 (VGS >= vgs_at_en_min at every EN rise, opt-in) and the seq delay schema enforced for every non-regression case (PASS and INFO)",
+ "seq_evidence": "seq cases are stimulus-only benches (ideal DRIVE delay, configured delay schema-validated >= 60 ms); not a measured OUTA->EN edge",
+ "ci_status": "GitHub Actions workflow proposal-ngspice DISABLED by the user (2026-10-25); CI gating not active; evidence = local runs + run manifest SHA-256",
+ "per_variant": {
+  "C3": {
+   "n": 118,
+   "n_pass": 73,
+   "acceptance_fail": [
+    "rsweep-r350",
+    "rsweep-r450",
+    "dip0v-1ms-typ-ttyp",
+    "dip0v-1ms-mbmin-tmin",
+    "dip0v-300us-typ-ttyp",
+    "dip0v-300us-mbmin-tmin",
+    "dip0v-250us-typ-ttyp",
+    "dip0v-50ms-typ-ttyp",
+    "dip0v-50ms-mbmin-tmin",
+    "dip15v-20ms-mbmin-tmin",
+    "dip0v-20ms-typ-ttyp",
+    "dip0v-20ms-mbmin-tmin",
+    "tdrv-dip0v-1ms-typ-ttyp",
+    "tdrv-dip0v-1ms-mbmin-tmin",
+    "tdrv-dip0v-20ms-typ-ttyp",
+    "tdrv-dip0v-20ms-mbmin-tmin",
+    "tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+    "tdrv-dbldip0v-1ms-30ms-50ms-mbmin-tmin",
+    "fpulse-1us-typ-ttyp",
+    "fpulse-5us-typ-ttyp",
+    "fpulse-10us-typ-ttyp",
+    "fpulse-50us-typ-ttyp",
+    "fpulse-100us-typ-ttyp",
+    "fpulse-200us-typ-ttyp",
+    "fpulse-225us-typ-ttyp",
+    "fpulse-250us-typ-ttyp",
+    "fpulse-300us-typ-ttyp",
+    "fpulse-20ms-typ-ttyp",
+    "fpulse2-10us-gap50us-typ-ttyp",
+    "fpulse2-10us-gap30ms-typ-ttyp",
+    "fpulse2-300us-gap50us-typ-ttyp",
+    "fpulse2-300us-gap30ms-typ-ttyp",
+    "dbldip0v-300us-gap100us-typ-ttyp",
+    "dbldip0v-300us-gap100us-mbmin-tmin",
+    "dbldip0v-300us-20ms-typ-ttyp",
+    "dbldip0v-300us-20ms-mbmin-tmin",
+    "dbldip0v-1ms-40ms-typ-ttyp",
+    "dbldip0v-1ms-40ms-mbmin-tmin",
+    "dbldip0v-1ms-30ms-50ms-typ-ttyp",
+    "dbldip0v-1ms-30ms-50ms-mbmin-tmin"
+   ],
+   "regression_not_reproduced": []
+  },
+  "C3-noreset-tur2": {
+   "n": 7,
+   "n_pass": 0,
+   "acceptance_fail": [],
+   "regression_not_reproduced": []
+  },
+  "C3-tur4-stretcher": {
+   "n": 10,
+   "n_pass": 2,
+   "acceptance_fail": [
+    "rdsc180-dip0v-1ms-typ-ttyp",
+    "rdsc180-dip0v-1ms-mbmin-tmin",
+    "rdsc180-dip0v-300us-typ-ttyp",
+    "rdsc180-dip0v-300us-mbmin-tmin",
+    "rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+    "rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin"
+   ],
+   "regression_not_reproduced": []
+  },
+  "O3": {
+   "n": 105,
+   "n_pass": 84,
+   "acceptance_fail": [
+    "o3-dip0v-1ms-mbmin-tmin",
+    "o3-dip0v-300us-mbmin-tmin",
+    "o3-dip0v-250us-mbmin-tmin",
+    "o3-dip0v-200us-mbmin-tmin",
+    "o3-dip0v-50ms-mbmin-tmin",
+    "o3-dip15v-20ms-mbmin-tmin",
+    "o3-deepdip0v-50ms-light-typ-ttyp",
+    "o3-deepdip0v-50ms-light-mbmin-tmin",
+    "o3-dip0v-225us-mbmin-tmin",
+    "o3-dip0v-20ms-mbmin-tmin",
+    "o3-tdrv-dip0v-1ms-typ-ttyp",
+    "o3-tdrv-dip0v-20ms-typ-ttyp",
+    "o3-tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+    "o3-dbldip0v-300us-gap100us-mbmin-tmin",
+    "o3-dbldip0v-300us-20ms-mbmin-tmin",
+    "o3-dbldip0v-1ms-40ms-mbmin-tmin",
+    "o3-dbldip0v-1ms-30ms-50ms-mbmin-tmin"
+   ],
+   "regression_not_reproduced": []
+  },
+  "O3-noreset-tur2": {
+   "n": 7,
+   "n_pass": 0,
+   "acceptance_fail": [],
+   "regression_not_reproduced": []
+  },
+  "O3-tur4-stretcher": {
+   "n": 10,
+   "n_pass": 2,
+   "acceptance_fail": [
+    "o3-rdsc180-dip0v-1ms-typ-ttyp",
+    "o3-rdsc180-dip0v-1ms-mbmin-tmin",
+    "o3-rdsc180-dip0v-300us-typ-ttyp",
+    "o3-rdsc180-dip0v-300us-mbmin-tmin",
+    "o3-rdsc180-dbldip0v-1ms-30ms-50ms-typ-ttyp",
+    "o3-rdsc180-dbldip0v-1ms-30ms-50ms-mbmin-tmin"
+   ],
+   "regression_not_reproduced": []
+  },
+  "baseline": {
+   "n": 2,
+   "n_pass": 0,
+   "acceptance_fail": [],
+   "regression_not_reproduced": []
+  }
+ },
+ "limits": {
+  "O1_PEAK_MAX": 12.0,
+  "BUS_NORMAL_MAX": 11.1605,
+  "V_FALL_MIN": 18.0,
+  "T_SEQ_MIN": 0.06
+ }
+}

@@ -1,0 +1,1482 @@
+{
+ "_status": "UVLO-T6-02 RE-ANALYSIS of stored measures with .meas-syntax kinds (no simulation); diagnostic only",
+ "source": "results/num-study/num-study.json",
+ "source_sha256": "9bac57d26346b31055aa712d9cf20445885bf96ce96f1d61f3dc52d655c4d528",
+ "source_git_head": "afa7fa1226a347ac4d0ccb00f9c0459009546cdf",
+ "provenance": {
+  "runner_sha256": "2f438b2622ebc00a6832cd8b29023159edcbdb64d01c840bc8a561e8e7b78db8",
+  "git_head": "ebe56b233ba0a2aee40b056728965b181311937a",
+  "git_status_porcelain": "",
+  "argv": [
+   "/usr/bin/python3",
+   "num_study.py",
+   "--reanalyse",
+   "results/num-study/num-study.json"
+  ],
+  "time": "2026-10-26 16:36:12 +0300"
+ },
+ "tolerances": {
+  "voltage": 0.005,
+  "time": 1e-07
+ },
+ "cases": [
+  "dip0v-10us-typ-ttyp",
+  "dip0v-50us-typ-ttyp",
+  "dip0v-100us-typ-ttyp",
+  "dbldip0v-50us-gap100us-typ-ttyp",
+  "dbldip0v-50us-gap30ms-typ-ttyp",
+  "dip0v-10us-mbmin-tmin",
+  "dip0v-50us-mbmin-tmin",
+  "dip0v-100us-mbmin-tmin",
+  "dbldip0v-50us-gap100us-mbmin-tmin",
+  "dbldip0v-50us-gap30ms-mbmin-tmin",
+  "o3-dip0v-10us-typ-ttyp",
+  "o3-dip0v-50us-typ-ttyp",
+  "o3-dip0v-100us-typ-ttyp",
+  "o3-dbldip0v-50us-gap100us-typ-ttyp",
+  "o3-dbldip0v-50us-gap30ms-typ-ttyp",
+  "o3-dip0v-10us-mbmin-tmin",
+  "o3-dip0v-50us-mbmin-tmin",
+  "o3-dip0v-100us-mbmin-tmin",
+  "o3-dbldip0v-50us-gap100us-mbmin-tmin",
+  "o3-dbldip0v-50us-gap30ms-mbmin-tmin"
+ ],
+ "compare": {
+  "dip0v-10us-typ-ttyp": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 6,
+   "out_of_tol_by_kind": {
+    "time": 6,
+    "voltage": 0
+   },
+   "out_of_tol": [
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.18222,
+     "trap": 0.182221,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.18222,
+     "trap": 0.182221,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on1",
+     "kind": "time",
+     "gear": 0.0123319,
+     "trap": 0.0123331,
+     "diff": 1.1999999999998123e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "outa_r1",
+     "kind": "time",
+     "gear": 0.00152865,
+     "trap": 0.00152901,
+     "diff": 3.599999999998136e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "outa_rlast",
+     "kind": "time",
+     "gear": 0.00152865,
+     "trap": 0.00152901,
+     "diff": 3.599999999998136e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "t_rel",
+     "kind": "time",
+     "gear": 0.00152865,
+     "trap": 0.00152901,
+     "diff": 3.599999999998136e-07,
+     "tol": 1e-07
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "dip0v-50us-typ-ttyp": {
+   "both_complete": false,
+   "gear_complete": false,
+   "trap_complete": false,
+   "gear_missing": 80,
+   "trap_missing": 80,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 0,
+   "out_of_tol_by_kind": {
+    "time": 0,
+    "voltage": 0
+   },
+   "out_of_tol": [],
+   "gear_errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.26059, timestep = 1.25e-18: trouble with node \"imon_o1\"",
+    "run simulation(s) aborted"
+   ],
+   "trap_errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.26059, timestep = 1.25e-18: trouble with node \"imon_o1\"",
+    "run simulation(s) aborted"
+   ],
+   "protocol_pass": false
+  },
+  "dip0v-100us-typ-ttyp": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 10,
+   "out_of_tol_by_kind": {
+    "time": 7,
+    "voltage": 3
+   },
+   "out_of_tol": [
+    {
+     "meas": "bus_global_max",
+     "kind": "voltage",
+     "gear": 11.12395,
+     "trap": 11.13491,
+     "diff": 0.01095999999999897,
+     "tol": 0.005
+    },
+    {
+     "meas": "bus_restart_max",
+     "kind": "voltage",
+     "gear": 11.12395,
+     "trap": 11.13491,
+     "diff": 0.01095999999999897,
+     "tol": 0.005
+    },
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.18222,
+     "trap": 0.182221,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.18222,
+     "trap": 0.182221,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on1",
+     "kind": "time",
+     "gear": 0.0123319,
+     "trap": 0.0123331,
+     "diff": 1.1999999999998123e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on2",
+     "kind": "time",
+     "gear": 0.260642,
+     "trap": 0.260643,
+     "diff": 1.0000000000287557e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "outa_r1",
+     "kind": "time",
+     "gear": 0.00152865,
+     "trap": 0.00152901,
+     "diff": 3.599999999998136e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "outa_rlast",
+     "kind": "time",
+     "gear": 0.00152865,
+     "trap": 0.00152901,
+     "diff": 3.599999999998136e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "rd_peak",
+     "kind": "voltage",
+     "gear": 11.12395,
+     "trap": 11.13491,
+     "diff": 0.01095999999999897,
+     "tol": 0.005
+    },
+    {
+     "meas": "t_rel",
+     "kind": "time",
+     "gear": 0.00152865,
+     "trap": 0.00152901,
+     "diff": 3.599999999998136e-07,
+     "tol": 1e-07
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "dbldip0v-50us-gap100us-typ-ttyp": {
+   "both_complete": false,
+   "gear_complete": false,
+   "trap_complete": false,
+   "gear_missing": 80,
+   "trap_missing": 80,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 0,
+   "out_of_tol_by_kind": {
+    "time": 0,
+    "voltage": 0
+   },
+   "out_of_tol": [],
+   "gear_errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.26059, timestep = 1.25e-18: trouble with node \"imon_o1\"",
+    "run simulation(s) aborted"
+   ],
+   "trap_errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.26059, timestep = 1.25e-18: trouble with node \"imon_o1\"",
+    "run simulation(s) aborted"
+   ],
+   "protocol_pass": false
+  },
+  "dbldip0v-50us-gap30ms-typ-ttyp": {
+   "both_complete": false,
+   "gear_complete": false,
+   "trap_complete": false,
+   "gear_missing": 80,
+   "trap_missing": 80,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 0,
+   "out_of_tol_by_kind": {
+    "time": 0,
+    "voltage": 0
+   },
+   "out_of_tol": [],
+   "gear_errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.26059, timestep = 1.25e-18: trouble with node \"imon_o1\"",
+    "run simulation(s) aborted"
+   ],
+   "trap_errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.26059, timestep = 1.25e-18: trouble with node \"imon_o1\"",
+    "run simulation(s) aborted"
+   ],
+   "protocol_pass": false
+  },
+  "dip0v-10us-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 3,
+   "out_of_tol_by_kind": {
+    "time": 3,
+    "voltage": 0
+   },
+   "out_of_tol": [
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on1",
+     "kind": "time",
+     "gear": 0.0423888,
+     "trap": 0.0423895,
+     "diff": 6.999999999993123e-07,
+     "tol": 1e-07
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "dip0v-50us-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [
+    "rd_above_first",
+    "rd_above_last"
+   ],
+   "n_out_of_tol": 15,
+   "out_of_tol_by_kind": {
+    "time": 6,
+    "voltage": 9
+   },
+   "out_of_tol": [
+    {
+     "meas": "bus_global_max",
+     "kind": "voltage",
+     "gear": 11.15564,
+     "trap": 11.17604,
+     "diff": 0.020400000000000418,
+     "tol": 0.005
+    },
+    {
+     "meas": "bus_restart_max",
+     "kind": "voltage",
+     "gear": 11.15564,
+     "trap": 11.17604,
+     "diff": 0.020400000000000418,
+     "tol": 0.005
+    },
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_off1",
+     "kind": "time",
+     "gear": 0.170549,
+     "trap": 0.17055,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on1",
+     "kind": "time",
+     "gear": 0.0423888,
+     "trap": 0.0423895,
+     "diff": 6.999999999993123e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on2",
+     "kind": "time",
+     "gear": 0.170555,
+     "trap": 0.170556,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "post_o1_avg",
+     "kind": "voltage",
+     "gear": 10.07072,
+     "trap": 1.829582e-11,
+     "diff": 10.070719999981703,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_max",
+     "kind": "voltage",
+     "gear": 10.97899,
+     "trap": 1.83699e-11,
+     "diff": 10.97898999998163,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_vin_min",
+     "kind": "voltage",
+     "gear": 21.17441,
+     "trap": 21.57023,
+     "diff": 0.39581999999999695,
+     "tol": 0.005
+    },
+    {
+     "meas": "raw_global_max",
+     "kind": "voltage",
+     "gear": 11.19778,
+     "trap": 11.20906,
+     "diff": 0.01127999999999929,
+     "tol": 0.005
+    },
+    {
+     "meas": "raw_restart_max",
+     "kind": "voltage",
+     "gear": 11.19778,
+     "trap": 11.20906,
+     "diff": 0.01127999999999929,
+     "tol": 0.005
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "dip0v-100us-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 3,
+   "out_of_tol_by_kind": {
+    "time": 3,
+    "voltage": 0
+   },
+   "out_of_tol": [
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on1",
+     "kind": "time",
+     "gear": 0.0423888,
+     "trap": 0.0423895,
+     "diff": 6.999999999993123e-07,
+     "tol": 1e-07
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "dbldip0v-50us-gap100us-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [
+    "rd_above_first",
+    "rd_above_last"
+   ],
+   "n_out_of_tol": 17,
+   "out_of_tol_by_kind": {
+    "time": 6,
+    "voltage": 11
+   },
+   "out_of_tol": [
+    {
+     "meas": "bus_global_max",
+     "kind": "voltage",
+     "gear": 11.15564,
+     "trap": 11.17604,
+     "diff": 0.020400000000000418,
+     "tol": 0.005
+    },
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_off1",
+     "kind": "time",
+     "gear": 0.170549,
+     "trap": 0.17055,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on1",
+     "kind": "time",
+     "gear": 0.0423888,
+     "trap": 0.0423895,
+     "diff": 6.999999999993123e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on2",
+     "kind": "time",
+     "gear": 0.170555,
+     "trap": 0.170556,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "o1_dip_max",
+     "kind": "voltage",
+     "gear": 11.03936,
+     "trap": 10.97438,
+     "diff": 0.06498000000000026,
+     "tol": 0.005
+    },
+    {
+     "meas": "o1_global_peak",
+     "kind": "voltage",
+     "gear": 11.03936,
+     "trap": 10.9781,
+     "diff": 0.06126000000000076,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_bus_max",
+     "kind": "voltage",
+     "gear": 10.9852,
+     "trap": 11.05367,
+     "diff": 0.06846999999999959,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_avg",
+     "kind": "voltage",
+     "gear": 10.9771,
+     "trap": 1.829582e-11,
+     "diff": 10.977099999981704,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_max",
+     "kind": "voltage",
+     "gear": 10.9771,
+     "trap": 1.83699e-11,
+     "diff": 10.97709999998163,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_vin_min",
+     "kind": "voltage",
+     "gear": 21.31403,
+     "trap": 21.57018,
+     "diff": 0.25615000000000165,
+     "tol": 0.005
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "dbldip0v-50us-gap30ms-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [
+    "rd_above_first",
+    "rd_above_last"
+   ],
+   "n_out_of_tol": 17,
+   "out_of_tol_by_kind": {
+    "time": 6,
+    "voltage": 11
+   },
+   "out_of_tol": [
+    {
+     "meas": "bus_global_max",
+     "kind": "voltage",
+     "gear": 11.15564,
+     "trap": 11.17604,
+     "diff": 0.020400000000000418,
+     "tol": 0.005
+    },
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0920401,
+     "trap": 0.09204,
+     "diff": 1.0000000000287557e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_off1",
+     "kind": "time",
+     "gear": 0.170549,
+     "trap": 0.17055,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on1",
+     "kind": "time",
+     "gear": 0.0423888,
+     "trap": 0.0423895,
+     "diff": 6.999999999993123e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on2",
+     "kind": "time",
+     "gear": 0.170555,
+     "trap": 0.170556,
+     "diff": 1.000000000001e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "o1_dip_max",
+     "kind": "voltage",
+     "gear": 11.03937,
+     "trap": 10.97438,
+     "diff": 0.06498999999999988,
+     "tol": 0.005
+    },
+    {
+     "meas": "o1_global_peak",
+     "kind": "voltage",
+     "gear": 11.03937,
+     "trap": 10.9781,
+     "diff": 0.06127000000000038,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_bus_max",
+     "kind": "voltage",
+     "gear": 11.04746,
+     "trap": 11.11479,
+     "diff": 0.06733000000000011,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_avg",
+     "kind": "voltage",
+     "gear": 10.97699,
+     "trap": 0.2660323,
+     "diff": 10.710957700000002,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_max",
+     "kind": "voltage",
+     "gear": 11.03935,
+     "trap": 10.95933,
+     "diff": 0.08002000000000109,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_vin_min",
+     "kind": "voltage",
+     "gear": 21.10775,
+     "trap": 21.37922,
+     "diff": 0.27147000000000077,
+     "tol": 0.005
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dip0v-10us-typ-ttyp": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 1,
+   "out_of_tol_by_kind": {
+    "time": 1,
+    "voltage": 0
+   },
+   "out_of_tol": [
+    {
+     "meas": "fet_on1",
+     "kind": "time",
+     "gear": 0.0123322,
+     "trap": 0.0123331,
+     "diff": 8.999999999998592e-07,
+     "tol": 1e-07
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dip0v-50us-typ-ttyp": {
+   "both_complete": false,
+   "gear_complete": false,
+   "trap_complete": true,
+   "gear_missing": 80,
+   "trap_missing": 0,
+   "no_value_asymmetric": [
+    "bus_global_max",
+    "bus_restart_max",
+    "en_min_after_t0",
+    "en_r1",
+    "en_rlast",
+    "fet_off1",
+    "fet_on1",
+    "fet_on2",
+    "grdy_at_en_r1",
+    "inp_restart_min",
+    "o1_dip_max",
+    "o1_global_peak",
+    "outa_r1",
+    "outa_rlast",
+    "post_bus_max",
+    "post_en_min",
+    "post_inp_min",
+    "post_o1_avg",
+    "post_o1_max",
+    "post_raw_avg",
+    "post_vgs_min",
+    "post_vin_min",
+    "pre_bus_max",
+    "pre_en_min",
+    "pre_inp_min",
+    "pre_o1_avg",
+    "pre_o1_max",
+    "pre_raw_avg",
+    "pre_vgs_min",
+    "pre_vin_min",
+    "qinh_end",
+    "qinh_max",
+    "raw_at_dip_end",
+    "raw_global_max",
+    "raw_restart_max",
+    "rd_above_first",
+    "rd_above_last",
+    "rd_peak",
+    "rd_peak_o1",
+    "rd_t_above",
+    "rd_t_above_o1",
+    "s_minus_v5_max",
+    "s_uv_max",
+    "swd_minus_v5_max",
+    "t_at_dip_end",
+    "t_rel",
+    "v5_min_dip",
+    "vclr_at_rel",
+    "vgs_at_en_r1",
+    "vgs_at_en_rlast",
+    "vgs_min_after_t0",
+    "vin_global_max",
+    "vt_at_outa_r1",
+    "vt_at_outa_rlast",
+    "vt_at_rel",
+    "vt_min_post"
+   ],
+   "n_out_of_tol": 0,
+   "out_of_tol_by_kind": {
+    "time": 0,
+    "voltage": 0
+   },
+   "out_of_tol": [],
+   "gear_errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.26059, timestep = 1.25e-18: trouble with node \"imon_o1\"",
+    "run simulation(s) aborted"
+   ],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dip0v-100us-typ-ttyp": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 7,
+   "out_of_tol_by_kind": {
+    "time": 2,
+    "voltage": 5
+   },
+   "out_of_tol": [
+    {
+     "meas": "bus_global_max",
+     "kind": "voltage",
+     "gear": 11.12094,
+     "trap": 11.1371,
+     "diff": 0.016160000000001062,
+     "tol": 0.005
+    },
+    {
+     "meas": "bus_restart_max",
+     "kind": "voltage",
+     "gear": 11.12094,
+     "trap": 11.1371,
+     "diff": 0.016160000000001062,
+     "tol": 0.005
+    },
+    {
+     "meas": "fet_on1",
+     "kind": "time",
+     "gear": 0.0123322,
+     "trap": 0.0123331,
+     "diff": 8.999999999998592e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "fet_on2",
+     "kind": "time",
+     "gear": 0.260643,
+     "trap": 0.260642,
+     "diff": 1.0000000000287557e-06,
+     "tol": 1e-07
+    },
+    {
+     "meas": "raw_at_dip_end",
+     "kind": "voltage",
+     "gear": 11.21336,
+     "trap": 11.21989,
+     "diff": 0.006529999999999703,
+     "tol": 0.005
+    },
+    {
+     "meas": "raw_restart_max",
+     "kind": "voltage",
+     "gear": 11.21333,
+     "trap": 11.21986,
+     "diff": 0.006530000000001479,
+     "tol": 0.005
+    },
+    {
+     "meas": "rd_peak",
+     "kind": "voltage",
+     "gear": 11.12094,
+     "trap": 11.1371,
+     "diff": 0.016160000000001062,
+     "tol": 0.005
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dbldip0v-50us-gap100us-typ-ttyp": {
+   "both_complete": false,
+   "gear_complete": false,
+   "trap_complete": true,
+   "gear_missing": 80,
+   "trap_missing": 0,
+   "no_value_asymmetric": [
+    "bus_global_max",
+    "bus_restart_max",
+    "en_min_after_t0",
+    "en_r1",
+    "en_rlast",
+    "fet_off1",
+    "fet_on1",
+    "fet_on2",
+    "grdy_at_en_r1",
+    "inp_restart_min",
+    "o1_dip_max",
+    "o1_global_peak",
+    "outa_r1",
+    "outa_rlast",
+    "post_bus_max",
+    "post_en_min",
+    "post_inp_min",
+    "post_o1_avg",
+    "post_o1_max",
+    "post_raw_avg",
+    "post_vgs_min",
+    "post_vin_min",
+    "pre_bus_max",
+    "pre_en_min",
+    "pre_inp_min",
+    "pre_o1_avg",
+    "pre_o1_max",
+    "pre_raw_avg",
+    "pre_vgs_min",
+    "pre_vin_min",
+    "qinh_end",
+    "qinh_max",
+    "raw_at_dip_end",
+    "raw_global_max",
+    "raw_restart_max",
+    "rd_above_first",
+    "rd_above_last",
+    "rd_peak",
+    "rd_peak_o1",
+    "rd_t_above",
+    "rd_t_above_o1",
+    "s_minus_v5_max",
+    "s_uv_max",
+    "swd_minus_v5_max",
+    "t_at_dip_end",
+    "t_rel",
+    "v5_min_dip",
+    "vclr_at_rel",
+    "vgs_at_en_r1",
+    "vgs_at_en_rlast",
+    "vgs_min_after_t0",
+    "vin_global_max",
+    "vt_at_outa_r1",
+    "vt_at_outa_rlast",
+    "vt_at_rel",
+    "vt_min_post"
+   ],
+   "n_out_of_tol": 0,
+   "out_of_tol_by_kind": {
+    "time": 0,
+    "voltage": 0
+   },
+   "out_of_tol": [],
+   "gear_errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.26059, timestep = 1.25e-18: trouble with node \"imon_o1\"",
+    "run simulation(s) aborted"
+   ],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dbldip0v-50us-gap30ms-typ-ttyp": {
+   "both_complete": false,
+   "gear_complete": false,
+   "trap_complete": true,
+   "gear_missing": 80,
+   "trap_missing": 0,
+   "no_value_asymmetric": [
+    "bus_global_max",
+    "bus_restart_max",
+    "en_min_after_t0",
+    "en_r1",
+    "en_rlast",
+    "fet_off1",
+    "fet_on1",
+    "fet_on2",
+    "grdy_at_en_r1",
+    "inp_restart_min",
+    "o1_dip_max",
+    "o1_global_peak",
+    "outa_r1",
+    "outa_rlast",
+    "post_bus_max",
+    "post_en_min",
+    "post_inp_min",
+    "post_o1_avg",
+    "post_o1_max",
+    "post_raw_avg",
+    "post_vgs_min",
+    "post_vin_min",
+    "pre_bus_max",
+    "pre_en_min",
+    "pre_inp_min",
+    "pre_o1_avg",
+    "pre_o1_max",
+    "pre_raw_avg",
+    "pre_vgs_min",
+    "pre_vin_min",
+    "qinh_end",
+    "qinh_max",
+    "raw_at_dip_end",
+    "raw_global_max",
+    "raw_restart_max",
+    "rd_above_first",
+    "rd_above_last",
+    "rd_peak",
+    "rd_peak_o1",
+    "rd_t_above",
+    "rd_t_above_o1",
+    "s_minus_v5_max",
+    "s_uv_max",
+    "swd_minus_v5_max",
+    "t_at_dip_end",
+    "t_rel",
+    "v5_min_dip",
+    "vclr_at_rel",
+    "vgs_at_en_r1",
+    "vgs_at_en_rlast",
+    "vgs_min_after_t0",
+    "vin_global_max",
+    "vt_at_outa_r1",
+    "vt_at_outa_rlast",
+    "vt_at_rel",
+    "vt_min_post"
+   ],
+   "n_out_of_tol": 0,
+   "out_of_tol_by_kind": {
+    "time": 0,
+    "voltage": 0
+   },
+   "out_of_tol": [],
+   "gear_errors": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.26059, timestep = 1.25e-18: trouble with node \"imon_o1\"",
+    "run simulation(s) aborted"
+   ],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dip0v-10us-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 2,
+   "out_of_tol_by_kind": {
+    "time": 2,
+    "voltage": 0
+   },
+   "out_of_tol": [
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dip0v-50us-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [
+    "rd_above_first",
+    "rd_above_last"
+   ],
+   "n_out_of_tol": 16,
+   "out_of_tol_by_kind": {
+    "time": 3,
+    "voltage": 13
+   },
+   "out_of_tol": [
+    {
+     "meas": "bus_global_max",
+     "kind": "voltage",
+     "gear": 11.15542,
+     "trap": 11.17538,
+     "diff": 0.019960000000001088,
+     "tol": 0.005
+    },
+    {
+     "meas": "bus_restart_max",
+     "kind": "voltage",
+     "gear": 11.15542,
+     "trap": 11.17538,
+     "diff": 0.019960000000001088,
+     "tol": 0.005
+    },
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "o1_dip_max",
+     "kind": "voltage",
+     "gear": 11.03937,
+     "trap": 10.97438,
+     "diff": 0.06498999999999988,
+     "tol": 0.005
+    },
+    {
+     "meas": "o1_global_peak",
+     "kind": "voltage",
+     "gear": 11.03937,
+     "trap": 10.9781,
+     "diff": 0.06127000000000038,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_bus_max",
+     "kind": "voltage",
+     "gear": 11.04746,
+     "trap": 10.99064,
+     "diff": 0.056819999999998316,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_avg",
+     "kind": "voltage",
+     "gear": 10.97699,
+     "trap": 1.829599e-11,
+     "diff": 10.976989999981704,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_max",
+     "kind": "voltage",
+     "gear": 11.03936,
+     "trap": 1.829599e-11,
+     "diff": 11.039359999981704,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_vin_min",
+     "kind": "voltage",
+     "gear": 21.10751,
+     "trap": 21.7575,
+     "diff": 0.649989999999999,
+     "tol": 0.005
+    },
+    {
+     "meas": "raw_global_max",
+     "kind": "voltage",
+     "gear": 11.19753,
+     "trap": 11.20593,
+     "diff": 0.008399999999999963,
+     "tol": 0.005
+    },
+    {
+     "meas": "raw_restart_max",
+     "kind": "voltage",
+     "gear": 11.19753,
+     "trap": 11.20593,
+     "diff": 0.008399999999999963,
+     "tol": 0.005
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dip0v-100us-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [],
+   "n_out_of_tol": 4,
+   "out_of_tol_by_kind": {
+    "time": 2,
+    "voltage": 2
+   },
+   "out_of_tol": [
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "raw_at_dip_end",
+     "kind": "voltage",
+     "gear": 11.15315,
+     "trap": 11.15864,
+     "diff": 0.005489999999999995,
+     "tol": 0.005
+    },
+    {
+     "meas": "raw_restart_max",
+     "kind": "voltage",
+     "gear": 11.15307,
+     "trap": 11.15842,
+     "diff": 0.005349999999999966,
+     "tol": 0.005
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dbldip0v-50us-gap100us-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [
+    "rd_above_first",
+    "rd_above_last"
+   ],
+   "n_out_of_tol": 15,
+   "out_of_tol_by_kind": {
+    "time": 3,
+    "voltage": 12
+   },
+   "out_of_tol": [
+    {
+     "meas": "bus_global_max",
+     "kind": "voltage",
+     "gear": 11.15542,
+     "trap": 11.17538,
+     "diff": 0.019960000000001088,
+     "tol": 0.005
+    },
+    {
+     "meas": "bus_restart_max",
+     "kind": "voltage",
+     "gear": 11.04745,
+     "trap": 11.05368,
+     "diff": 0.006230000000000402,
+     "tol": 0.005
+    },
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "o1_dip_max",
+     "kind": "voltage",
+     "gear": 11.03936,
+     "trap": 10.97438,
+     "diff": 0.06498000000000026,
+     "tol": 0.005
+    },
+    {
+     "meas": "o1_global_peak",
+     "kind": "voltage",
+     "gear": 11.03936,
+     "trap": 10.9781,
+     "diff": 0.06126000000000076,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_bus_max",
+     "kind": "voltage",
+     "gear": 11.04746,
+     "trap": 11.05367,
+     "diff": 0.006210000000001159,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_avg",
+     "kind": "voltage",
+     "gear": 10.97699,
+     "trap": 1.829582e-11,
+     "diff": 10.976989999981704,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_max",
+     "kind": "voltage",
+     "gear": 11.03936,
+     "trap": 1.83699e-11,
+     "diff": 11.039359999981631,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_vin_min",
+     "kind": "voltage",
+     "gear": 21.10709,
+     "trap": 21.57018,
+     "diff": 0.4630900000000011,
+     "tol": 0.005
+    },
+    {
+     "meas": "raw_global_max",
+     "kind": "voltage",
+     "gear": 11.19753,
+     "trap": 11.20593,
+     "diff": 0.008399999999999963,
+     "tol": 0.005
+    },
+    {
+     "meas": "rd_peak",
+     "kind": "voltage",
+     "gear": 11.15542,
+     "trap": 11.17538,
+     "diff": 0.019960000000001088,
+     "tol": 0.005
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  },
+  "o3-dbldip0v-50us-gap30ms-mbmin-tmin": {
+   "both_complete": true,
+   "gear_complete": true,
+   "trap_complete": true,
+   "gear_missing": 0,
+   "trap_missing": 0,
+   "no_value_asymmetric": [
+    "rd_above_first",
+    "rd_above_last"
+   ],
+   "n_out_of_tol": 16,
+   "out_of_tol_by_kind": {
+    "time": 3,
+    "voltage": 13
+   },
+   "out_of_tol": [
+    {
+     "meas": "bus_global_max",
+     "kind": "voltage",
+     "gear": 11.15542,
+     "trap": 11.17538,
+     "diff": 0.019960000000001088,
+     "tol": 0.005
+    },
+    {
+     "meas": "bus_restart_max",
+     "kind": "voltage",
+     "gear": 11.11517,
+     "trap": 11.05367,
+     "diff": 0.061500000000000554,
+     "tol": 0.005
+    },
+    {
+     "meas": "en_r1",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "en_rlast",
+     "kind": "time",
+     "gear": 0.0914992,
+     "trap": 0.0914985,
+     "diff": 7.000000000062512e-07,
+     "tol": 1e-07
+    },
+    {
+     "meas": "o1_dip_max",
+     "kind": "voltage",
+     "gear": 11.03935,
+     "trap": 10.97438,
+     "diff": 0.06497000000000064,
+     "tol": 0.005
+    },
+    {
+     "meas": "o1_global_peak",
+     "kind": "voltage",
+     "gear": 11.03935,
+     "trap": 10.9781,
+     "diff": 0.06125000000000114,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_bus_max",
+     "kind": "voltage",
+     "gear": 11.04745,
+     "trap": 11.05368,
+     "diff": 0.006230000000000402,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_avg",
+     "kind": "voltage",
+     "gear": 10.97699,
+     "trap": 1.829582e-11,
+     "diff": 10.976989999981704,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_o1_max",
+     "kind": "voltage",
+     "gear": 11.03935,
+     "trap": 1.83699e-11,
+     "diff": 11.039349999981631,
+     "tol": 0.005
+    },
+    {
+     "meas": "post_vin_min",
+     "kind": "voltage",
+     "gear": 21.10779,
+     "trap": 21.57052,
+     "diff": 0.462729999999997,
+     "tol": 0.005
+    },
+    {
+     "meas": "raw_global_max",
+     "kind": "voltage",
+     "gear": 11.19753,
+     "trap": 11.20593,
+     "diff": 0.008399999999999963,
+     "tol": 0.005
+    },
+    {
+     "meas": "raw_restart_max",
+     "kind": "voltage",
+     "gear": 11.12057,
+     "trap": 11.05907,
+     "diff": 0.061500000000000554,
+     "tol": 0.005
+    }
+   ],
+   "gear_errors": [],
+   "trap_errors": [],
+   "protocol_pass": false
+  }
+ },
+ "n_protocol_pass": 0,
+ "n": 20
+}

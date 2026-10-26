@@ -1,0 +1,296 @@
+{
+ "_status": "Tur-6 VERIFY-ONLY re-check of the committed Tur-5 acceptance logs (run tur5-6e150c8, 259 decks, tmax 1 us) with the Tur-6 verifier at ebe56b2; NO new simulation, original results/uvlo-verify.json kept unchanged",
+ "verifier_commit": "ebe56b2",
+ "verifier_sha256": "102ebd66d967ac8cdb7994264d7011a3dd7a733de40d1a472b05b98f1a519df6",
+ "original": {
+  "exit": 2,
+  "n_pass": 214,
+  "acceptance_fail": 16,
+  "incomplete": 6
+ },
+ "reverify": {
+  "exit": 2,
+  "n_pass": 161,
+  "acceptance_fail": 69,
+  "incomplete": 6,
+  "provenance_errors_added": [
+   "manifest git_head '6e150c839937' != current HEAD 'ebe56b233ba0' (CI run must verify its own checkout)"
+  ]
+ },
+ "new_fail_only_m3_negative_lag": true,
+ "new_fail": {
+  "dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.030809e-08
+  },
+  "dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.991605e-10
+  },
+  "dbldip0v-1ms-40ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.030809e-08
+  },
+  "dbldip0v-1ms-40ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.991605e-10
+  },
+  "dbldip0v-300us-20ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.030809e-08
+  },
+  "dbldip0v-300us-20ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.991605e-10
+  },
+  "dbldip0v-300us-gap100us-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.030809e-08
+  },
+  "dbldip0v-300us-gap100us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.991605e-10
+  },
+  "dip0v-1ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.030809e-08
+  },
+  "dip0v-1ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.991605e-10
+  },
+  "dip0v-20ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.030809e-08
+  },
+  "dip0v-20ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.991605e-10
+  },
+  "dip0v-250us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.573019e-10
+  },
+  "dip0v-300us-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.030809e-08
+  },
+  "dip0v-300us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.991605e-10
+  },
+  "dip0v-50ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.030809e-08
+  },
+  "dip0v-50ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -2.991605e-10
+  },
+  "fpulse-100us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse-10us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse-1us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse-200us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse-20ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse-225us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse-250us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse-300us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse-50us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse-5us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse2-10us-gap30ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse2-10us-gap50us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse2-300us-gap30ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "fpulse2-300us-gap50us-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.6387e-10
+  },
+  "o3-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-dbldip0v-1ms-40ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-dbldip0v-300us-20ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-dbldip0v-300us-gap100us-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-deepdip0v-50ms-light-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.099966e-08
+  },
+  "o3-deepdip0v-50ms-light-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.329887e-10
+  },
+  "o3-dip0v-1ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-dip0v-200us-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-dip0v-20ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-dip0v-225us-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-dip0v-250us-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-dip0v-300us-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-dip0v-50ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -1.336325e-08
+  },
+  "o3-tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.868901e-10
+  },
+  "o3-tdrv-dip0v-1ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.868901e-10
+  },
+  "o3-tdrv-dip0v-20ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.868901e-10
+  },
+  "tdrv-dbldip0v-1ms-30ms-50ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.049981e-08
+  },
+  "tdrv-dbldip0v-1ms-30ms-50ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.440814e-10
+  },
+  "tdrv-dip0v-1ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.049981e-08
+  },
+  "tdrv-dip0v-1ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.440814e-10
+  },
+  "tdrv-dip0v-20ms-mbmin-tmin": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.049981e-08
+  },
+  "tdrv-dip0v-20ms-typ-ttyp": {
+   "meas": "EN_LAG_F1",
+   "lag_s": -3.440814e-10
+  }
+ },
+ "negative_lag_range_s": [
+  -3.049981e-08,
+  -2.573019e-10
+ ],
+ "rdip": {
+  "metric": "peak_bus = RD_PEAK = MAX V(VOUT) in the dip/recovery window: bus TRANSIENT peak, NOT H2 (H2 = stable PRE/RUN/POST windows <= 11.1605 V, judged separately); peak_o1 = RD_PEAK_O1 = MAX V(O1_11V) transient, o1_instant_status vs the 12.0 V instantaneous O1 limit (Tur-6 UVLO-T6-04)",
+  "counts": {
+   "PASS": 179,
+   "FAIL": 5,
+   "UNDETERMINED": 0
+  },
+  "o1_instant_counts": {
+   "PASS": 184,
+   "FAIL": 0,
+   "UNDETERMINED": 0
+  },
+  "peak_bus_max": 11.42765,
+  "peak_o1_max": 11.03937,
+  "fail_cases": {
+   "dip0v-250us-mbmin-tmin": {
+    "peak_bus": 11.34765,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "reasons": [
+     "back below 11.1605 V 79.731 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-200us-typ-ttyp": {
+    "peak_bus": 11.41315,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "reasons": [
+     "back below 11.1605 V 9.673 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-200us-mbmin-tmin": {
+    "peak_bus": 11.36368,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "reasons": [
+     "back below 11.1605 V 41.404 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-225us-typ-ttyp": {
+    "peak_bus": 11.42765,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "reasons": [
+     "back below 11.1605 V 21.353 ms after dip end > 5 ms"
+    ]
+   },
+   "dip0v-225us-mbmin-tmin": {
+    "peak_bus": 11.35566,
+    "peak_o1": 10.97811,
+    "o1_instant_status": "PASS",
+    "reasons": [
+     "back below 11.1605 V 59.460 ms after dip end > 5 ms"
+    ]
+   }
+  }
+ }
+}
