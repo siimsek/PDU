@@ -26,6 +26,7 @@ import argparse, hashlib, json, os, re, subprocess, sys, tempfile, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 HERE = Path(__file__).absolute().parent; DECKS = HERE / 'decks'; OUT = HERE / 'results' / 'num-study'
+sys.path.insert(0, str(HERE.parent)); import study_integrity as SI
 NAMES = [f'{p}{k}-{c}' for p in ('', 'o3-') for c in ('typ-ttyp', 'mbmin-tmin')
          for k in ('dip0v-10us', 'dip0v-50us', 'dip0v-100us', 'dbldip0v-50us-gap100us', 'dbldip0v-50us-gap30ms')]
 MEAS_RE = re.compile(r'^\s*([a-z_][a-z0-9_]*)\s*=\s*([-+0-9.eE]+)', re.M)
@@ -60,24 +61,32 @@ def git(*a):
     return subprocess.run(['git', *a], cwd=HERE, capture_output=True, text=True).stdout
 
 def provenance():
-    return dict(runner_sha256=sha(__file__), git_head=git('rev-parse', 'HEAD').strip(),
-                git_status_porcelain=git('status', '--porcelain', '--', '.'), argv=[sys.executable] + sys.argv,
-                time=time.strftime('%Y-%m-%d %H:%M:%S %z'))
+    return SI.snapshot(HERE, __file__)
 
 def compare(rows, kinds_of):
+    """Gear/Trap comparison uses SHA-verified raw .meas decimal strings (exact inclusive boundaries)."""
     cmp_ = {}
     for n in NAMES:
         g, t = [next(r for r in rows if r['case'] == n and r['method'] == m) for m in ('gear', 'trap')]
-        kinds = kinds_of(n); diffs = []
+        kinds = kinds_of(n); diffs = []; boundaries = []
+        gr, tr = SI.raw_measures(g, HERE, MEAS_RE), SI.raw_measures(t, HERE, MEAS_RE)
         for k in sorted(set(g['measures']) & set(t['measures'])):
-            dv = abs(g['measures'][k] - t['measures'][k]); tol = T_TOL if kinds[k] == 'time' else V_TOL
-            if dv > tol: diffs.append(dict(meas=k, kind=kinds[k], gear=g['measures'][k], trap=t['measures'][k], diff=dv, tol=tol))
-        asym = sorted(set(g['no_value']) ^ set(t['no_value']))  # measured in one method only = classification difference
+            if k not in kinds or k not in gr or k not in tr:
+                raise ValueError(f'missing kind/raw measurement for {n}:{k}')
+            dv, over, equal = SI.compare_printed(gr[k], tr[k], kinds[k])
+            tol = SI.LIMITS[kinds[k]]
+            if equal:
+                boundaries.append(k)  # equality is PASS but numerically resolution-sensitive
+            if over:
+                diffs.append(dict(meas=k, kind=kinds[k], gear=g['measures'][k], trap=t['measures'][k],
+                                  diff=float(dv), diff_exact=str(dv), tol=float(tol)))
+        asym = sorted(set(g['no_value']) ^ set(t['no_value']))
         ok = g['completed'] and t['completed'] and not g['missing'] and not t['missing'] and not asym and not diffs
         cmp_[n] = dict(both_complete=g['completed'] and t['completed'], gear_complete=g['completed'], trap_complete=t['completed'],
                        gear_missing=len(g['missing']), trap_missing=len(t['missing']), no_value_asymmetric=asym, n_out_of_tol=len(diffs),
                        out_of_tol_by_kind={x: sum(1 for d in diffs if d['kind'] == x) for x in ('time', 'voltage')},
-                       out_of_tol=diffs[:12], gear_errors=g['errors'], trap_errors=t['errors'], protocol_pass=ok)
+                       out_of_tol=diffs[:12], n_resolution_sensitive=len(boundaries), resolution_sensitive=boundaries,
+                       gear_errors=g['errors'], trap_errors=t['errors'], protocol_pass=ok)
         print(f"{n:42s} gear={g['completed']!s:5s} trap={t['completed']!s:5s} miss={len(g['missing'])}/{len(t['missing'])} asym={len(asym)} "
               f"outtol={len(diffs)} {'PASS' if ok else 'NOT-PASS'} {(g['errors'] or t['errors'])[:1]}")
     return cmp_
@@ -92,17 +101,21 @@ def run(a):
     p = subprocess.run(['ngspice', '-b', '-D', 'ngbehavior=ltpsa', '-o', str(log), deck.name], cwd=d, capture_output=True, timeout=7200)
     txt = log.read_text(errors='replace') if log.exists() else ''
     want = [l.split()[2].lower() for l in t.splitlines() if l.lower().startswith('.meas')]
-    m = {k.lower(): float(v) for k, v in MEAS_RE.findall(txt) if k.lower() in want}
+    mraw = {k.lower(): v for k, v in MEAS_RE.findall(txt) if k.lower() in want}
+    m = {k: float(v) for k, v in mraw.items()}
     errs = ERR_RE.findall(txt); noev = sorted({x.lower() for x in NOEV_RE.findall(txt)})
     return dict(case=name, method=method, rc=p.returncode, seconds=round(time.time() - t0, 1), completed=p.returncode == 0 and not errs,
                 errors=errs[:2], no_value=sorted(set(want) - m.keys()), no_event=noev,
-                missing=sorted(set(want) - m.keys() - set(noev)), measures=m, source_deck_sha256=sha(src), deck_sha256=sha(deck),
+                missing=sorted(set(want) - m.keys() - set(noev)), measures=m, measures_raw=mraw, source_deck_sha256=sha(src), deck_sha256=sha(deck),
                 log=str(log.relative_to(HERE)), log_sha256=sha(log) if log.exists() else None)
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('-j', type=int, default=os.cpu_count() or 2)
-    ap.add_argument('--tmax', default='100n'); ap.add_argument('--reanalyse', default=None, help='earlier num-study JSON')
+    ap.add_argument('--tmax', default='100n'); ap.add_argument('--run-id', default=None, help='unique immutable study run label')
+    ap.add_argument('--reanalyse', default=None, help='earlier num-study JSON')
     a = ap.parse_args()
+    if a.run_id is not None and not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,63}', a.run_id):
+        ap.error('--run-id must be 1..64 safe ASCII characters')
     kinds_of = lambda n: meas_kinds((DECKS / f'uvlo-{n}.cir').read_text())
     tol = dict(voltage=V_TOL, time=T_TOL)
     if a.reanalyse:
@@ -112,9 +125,15 @@ def main():
                    source=str(src.relative_to(HERE)), source_sha256=sha(src), source_git_head=old.get('git_head'),
                    provenance=provenance(), tolerances=tol, cases=NAMES, compare=cmp_,
                    n_protocol_pass=sum(v['protocol_pass'] for v in cmp_.values()), n=len(NAMES))
-        dst = src.with_name(src.stem + '-reanalysed-t6.json'); dst.write_text(json.dumps(res, indent=1) + '\n')
+        dst = src.with_name(src.stem + '-reanalysed-t7-decimal.json')
+        if dst.exists(): raise FileExistsError(f'refusing to overwrite historical re-analysis: {dst}')
+        dst.write_text(json.dumps(res, indent=1) + '\n')
         print(f"re-analysis protocol pass {res['n_protocol_pass']}/{res['n']} -> {dst.relative_to(HERE)}"); return 0
-    out = HERE / 'results' / f'num-study-tmax{a.tmax}'; out.mkdir(parents=True, exist_ok=True)
+    suffix = f'-{a.run_id}' if a.run_id else ''
+    out = HERE / 'results' / f'num-study-tmax{a.tmax}{suffix}'
+    if out.exists() and any(out.iterdir()):
+        raise FileExistsError(f'refusing to overwrite historical study outputs: {out}; pass a fresh --run-id')
+    out.mkdir(parents=True, exist_ok=True)
     p0 = provenance()
     with tempfile.TemporaryDirectory() as tmp, ThreadPoolExecutor(a.j) as ex:
         rows = list(ex.map(run, [(n, m, tmp, a.tmax, out) for n in NAMES for m in ('gear', 'trap')]))
@@ -122,8 +141,7 @@ def main():
     p1 = provenance()
     res = dict(_status=f'UVLO-T6-02 numerical sensitivity (gear vs trap, tmax {a.tmax} uniform), diagnostic only; acceptance = verify_uvlo.py (gear)',
                git_head=p0['git_head'], provenance_start=p0, provenance_end=p1,
-               provenance_consistent=(p0['git_head'] == p1['git_head'] and p0['runner_sha256'] == p1['runner_sha256']
-                                      and not p0['git_status_porcelain'] and not p1['git_status_porcelain']),
+               provenance_consistent=SI.consistent(p0, p1, rows, HERE, out),
                tmax=a.tmax, tolerances=tol, cases=NAMES, compare=cmp_, rows=rows,
                n_protocol_pass=sum(v['protocol_pass'] for v in cmp_.values()), n=len(NAMES))
     (out / 'num-study.json').write_text(json.dumps(res, indent=1) + '\n')
