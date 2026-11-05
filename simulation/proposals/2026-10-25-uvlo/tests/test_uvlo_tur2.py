@@ -241,7 +241,7 @@ def runner_test(name, fake, code=0, exists=True, want_nonzero=True):
             problems.append(f'complete synthetic run reported rc {result.returncode}')
         if obj.old.read_text() != 'historical preserved':
             problems.append('historical log changed')
-        if (obj.pkg / 'results/run-manifest.json').read_text() != '{"run_id":"history"}\\n':
+        if (obj.pkg / 'results/run-manifest.json').read_text() != '{"run_id":"history"}' + chr(10):
             problems.append('historical manifest changed')
         if not exists:
             if dst.exists():
