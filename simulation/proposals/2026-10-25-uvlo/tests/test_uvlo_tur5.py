@@ -40,7 +40,7 @@ T2 = load('t2_helpers_t5', PKG / 'tests' / 'test_uvlo_tur2.py')
 vt0, dip_meas, DIP = T2.vt, T2.dip_meas, T2.DIP
 T4 = load('t4_helpers_t5', PKG / 'tests' / 'test_uvlo_tur4.py')
 seq_meas, SEQ, in_acc_fail = T4.seq_meas, T4.SEQ, T4.in_acc_fail
-RID = ['--run-id', 'run-123']
+RID = ['--historical']  # tiny synthetic fixtures are not acceptance decks
 
 
 def vt(name, cases, logs, want, failed=None, argv=RID, check=None):
@@ -105,12 +105,13 @@ def verifier_tests():
     T.append(vt('V52s seq stimulus-only configured delay 60.000 ms stays inclusive -> exit 0', {'q': dict(SEQ, delay=0.060)},
                 {'q': seq_meas()}, 0))
     # ---- V53 acceptance mode requires a run id
-    T.append(vt('V53a no --run-id, no UVLO_RUN_ID -> exit 2 (acceptance needs a run id)', {'d': DIP}, {'d': dip_meas()}, 2, argv=[],
-                check=prov_has('--run-id')))
-    T.append(vt('V53b --historical -> exit 0, summary.mode = historical', {'d': DIP}, {'d': dip_meas()}, 0, argv=['--historical'],
-                check=summ('mode', 'historical')))
-    T.append(vt('V53c --run-id run-123 -> exit 0, summary.mode = acceptance', {'d': DIP}, {'d': dip_meas()}, 0,
-                check=summ('mode', 'acceptance')))
+    T.append(vt('V53a no --run-id -> exit 2 without historical output write', {'d': DIP}, {'d': dip_meas()}, 2, argv=[],
+                check=lambda out: ('VERIFY_OUTPUT_PRECHECK' in out.get('_stderr', ''), 'missing locked output rejected')))
+    T.append(vt('V53b --historical -> exit 0, summary.mode = historical via stdout', {'d': DIP}, {'d': dip_meas()}, 0,
+                argv=['--historical'], check=summ('mode', 'historical')))
+    T.append(vt('V53c legacy --run-id without 259-deck lock -> exit 2 (never acceptance)', {'d': DIP},
+                {'d': dip_meas()}, 2, argv=['--run-id', 'run-123'],
+                check=lambda out: ('LOCKED_RUN_PRECHECK' in out.get('_stderr', ''), 'missing locked run rejected')))
     T.append(vt('V53d --historical together with --run-id -> exit 2 (ambiguous mode)', {'d': DIP}, {'d': dip_meas()}, 2,
                 argv=['--historical', '--run-id', 'run-123']))
     return T
