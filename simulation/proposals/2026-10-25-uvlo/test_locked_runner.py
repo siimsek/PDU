@@ -152,6 +152,31 @@ class LockedRunnerTests(unittest.TestCase):
         self.assertFalse((runs/'safe-a').exists())
         self.preserve()
 
+    def test_symlinked_run_root_fails_before_outside_writes(self):
+        # The run root is intentionally excluded from git status; a symlink there
+        # must never direct 259 outputs outside the designated repository.
+        outside = Path(self.tmp.name) / 'outside-evidence'
+        outside.mkdir()
+        sentinel = outside / 'sentinel.txt'
+        sentinel.write_text('DO NOT MODIFY')
+        runs = self.pkg / 'results/runs'
+        runs.symlink_to(outside, target_is_directory=True)
+        p = self.execute()
+        self.assertEqual(p.returncode, 3, p.stderr + p.stdout[-1000:])
+        self.assertEqual(sorted(x.name for x in outside.iterdir()), ['sentinel.txt'])
+        self.assertEqual(sentinel.read_text(), 'DO NOT MODIFY')
+        self.preserve()
+
+    def test_dangling_run_id_symlink_fails_before_lock_or_writes(self):
+        runs = self.pkg / 'results/runs'
+        runs.mkdir(parents=True)
+        (runs / 'safe-a').symlink_to(Path(self.tmp.name) / 'missing-outside')
+        p = self.execute()
+        self.assertEqual(p.returncode, 3, p.stderr + p.stdout[-500:])
+        self.assertFalse((runs / '.active-acceptance.lock').exists())
+        self.assertTrue((runs / 'safe-a').is_symlink())
+        self.preserve()
+
     def test_run_id_traversal_and_filter_arguments_rejected(self):
         p=subprocess.run([sys.executable, str(self.runner), '--run-id','../../foo'],cwd=self.root,env=self.env,capture_output=True)
         self.assertNotEqual(p.returncode,0)
