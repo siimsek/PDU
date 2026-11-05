@@ -81,16 +81,21 @@ def run_verifier(cases, logs):
             cases_sha256=sh((here / 'test-cases-uvlo.json').read_text()), runs=runs)))
         v = load('verify_uvlo_under_test', here / 'verify_uvlo.py')
         code = None
-        # Tur-5 UVLO-T5-03 harness change (not an assertion change): acceptance mode requires the fixture run id
-        old_argv, sys.argv = sys.argv, ['verify_uvlo.py', '--run-id', 'fixture']
-        with contextlib.redirect_stdout(io.StringIO()):
+        # This small fixture is read-only historical gate testing, NOT a 259-deck acceptance run.
+        from fixture_summary import summary_from_stdout
+        old_argv, sys.argv = sys.argv, ['verify_uvlo.py', '--historical']
+        captured = io.StringIO()
+        with contextlib.redirect_stdout(captured):
             try:
                 v.main()
             except SystemExit as e:
                 code = e.code
             finally:
                 sys.argv = old_argv
-        summ = json.loads((here / 'results' / 'uvlo-verify.json').read_text())['summary']
+        parsed = summary_from_stdout(captured.getvalue())
+        if not parsed:
+            raise RuntimeError('historical fixture produced no valid terminal summary')
+        summ = parsed['summary']
         return code, summ
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
