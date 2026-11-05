@@ -24,13 +24,13 @@ class VerifierProvenanceTests(unittest.TestCase):
         # Stub content is intentionally NOT a real circuit or ngspice result.
         sim = self.f.root / 'simulation'
         for name in ('pdu-behavioral.lib', 'pdu-inductor-ng.lib'):
-            (sim / name).write_text('* fake model fixture\\n')
+            (sim / name).write_text('* fake model fixture' + chr(10))
         o1 = sim / 'proposals' / '2026-10-25-o1-ovp'
         o1.mkdir(parents=True, exist_ok=True)
         for name in ('pdu-o1ovp-behavioral.lib', 'pdu-o1ovp-block.inc',
                      'pdu-circuit-o1ovp.inc', 'pdu-efuse-block-o1ovp.inc'):
-            (o1 / name).write_text('* fake O1 model fixture\\n')
-        (self.f.pkg / 'results' / 'uvlo-budget.json').write_text('{}\\n')
+            (o1 / name).write_text('* fake O1 model fixture' + chr(10))
+        (self.f.pkg / 'results' / 'uvlo-budget.json').write_text('{}' + chr(10))
         fixtures.call('git', 'add', '.', cwd=self.f.root)
         commit = fixtures.call('git', 'commit', '-qm', 'synthetic fixture verifier', cwd=self.f.root)
         self.assertEqual(commit.returncode, 0, commit.stderr)
@@ -87,7 +87,7 @@ class VerifierProvenanceTests(unittest.TestCase):
     def test_full_verifier_cli_fails_closed_on_unmeasured_fake_decks(self):
         """All 259 fake deck logs are complete, but missing electrical metrics MUST fail."""
         historical = self.f.pkg / 'results/uvlo-verify.json'
-        historical.write_bytes(b'IMMUTABLE EVIDENCE\\n')
+        historical.write_bytes(b'IMMUTABLE EVIDENCE' + bytes([10]))
         run = subprocess.run(
             [sys.executable, str(self.f.pkg / 'verify_uvlo.py'), '--run-id', 'safe-a'],
             cwd=self.f.root, env=self.f.env, capture_output=True, text=True)
@@ -99,7 +99,7 @@ class VerifierProvenanceTests(unittest.TestCase):
         self.assertEqual(summary['n_cases'], 259)
         self.assertEqual(len(summary['acceptance_fail']), 259)
         self.assertEqual(summary['provenance_errors'], [])
-        self.assertEqual(historical.read_bytes(), b'IMMUTABLE EVIDENCE\\n')
+        self.assertEqual(historical.read_bytes(), b'IMMUTABLE EVIDENCE' + bytes([10]))
 
     def test_full_verifier_cli_rejects_incomplete_manifest(self):
         self.patch_manifest(status='INCOMPLETE', runner_exit_code=2)
