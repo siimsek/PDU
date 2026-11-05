@@ -11,7 +11,16 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 - H1 O1 peak ≤12.0 V; H2 normal PRE/RUN/POST bus/O1 ≤11.1605 V; Vf≥18.0 V; M1≥60 ms (65 ms hedef); M3 0…1.000 µs kapsayıcı (negatif/NaN/Inf/eksik FAIL); M4 EN ↑ anında VGS≥6 V. R-DIP yalnız report-only.
 - Yeni kabul koşusu yok; tarihsel sayılar mevcut dosyalara aittir. Fiziksel tezgâh ölçümü yok; WP1/WP2 açık, üretim/merge onayı yok.
 
-## Son tamamlanan iş paketi: PKG-02 — 259 + 20×2 protokol kilidi (yeni simülasyon yok)
+## Son tamamlanan iş paketi: PKG-03 — güvenli UVLO runner ve izole kanıt (yeni simülasyon yok)
+
+- Değişiklikler: `run_uvlo.py` önce temiz HEAD, 259/259 kilitli kaynak blob ve 25 kritik girdi SHA-1, ngspice -v kontrolü; yalnız `--run-id` ile ayrı ve **üzerine yazılamayan** `results/runs/<ID>` dizini, atomik `.active-acceptance.lock` ve kesintide saklanan durum. Tam 259 Gear deck'e aynı `.tran ... 100n`; kaynak deck/baseline/ana BOM değişmiyor. Her aşamada kaynak/staged/log SHA-256; eksik/abort/dirty/interruption fail-closed.
+- `verify_uvlo.py` eski `--historical` kaynaklarını korurken `--run-id` ile izole manifest/log/staged içeriğini denetler: `COMPLETE`, 259, 100n/Gear, runner+kilit SHA-256, kaynak/staged/çıktı SHA-256, staging dönüşümünün yalnız tmax ve include yoluyla sınırlı olması. Yeni `.gitignore` yalnız `results/runs/` çıktısını dışlar.
+- Runner doğrulaması: `test_locked_runner.py` **9/9 PASS**, yerel sentetik Git fixture ve **sahte ngspice**; test dosyası ve runner GitHub blob SHA'sı test edilen yerel kopyalarıyla eşleşti. Testler: tüm 259 yapay deck, tarihsel log korunumu, tmax dönüşümü, aynı run-id ret, abort, yok ngspice, dirty/untracked, tamper, eksik deck, tek-yazar lock ve geçersiz ID.
+- Doğrulayıcı provenance fonksiyonunun GitHub'dan alınan bölümüyle yerel sentetik fixture **7/7 PASS** (temiz, RUNNING, tamper staged/log, solver, eksik vaka, girdi değişikliği). Tam `verify_uvlo.py` koduyla depoya eklenen `test_locked_verifier.py` **henüz çalıştırılamadı**. Bu 7 sayısı tam dosyanın entegrasyon testi olarak sunulmamalı.
+- Kod/test commitleri: `bdde5c53` (önce test), `79d158d2` (runner), `cc1543cd` (verifier), `d907f5aa` (lock update), `539295e8` (output ignore), `efc3eb21` (verifier negatif testleri). Manifest/durum commitleri Git geçmişindedir.
+- **Önemli açık kapı:** gerçek özel depo klonu + ngspice çalıştırılabilir ortam bu oturumda yok. Gerçek 259 Gear/tmax100n koşusu, tam entegrasyon ve `provenance_consistent=true` henüz doğrulanmadı; 23/23 yeni regresyon tekrarı yok. Mevcut 161 PASS /69 FAIL /6 eksik ve 4/20 tanı tarihsel kaldı. Asıl WP1/WP2 P0 bloklayıcıları açık.
+
+## Önceki iş paketi: PKG-02 — 259 + 20×2 protokol kilidi (yeni simülasyon yok)
 
 - Kaynak HEAD: `1bb0b3a751828f444a54c20edd9155d116a2d985`; kilit commit'i: `1c06266751b276b9cc44a8b0b77f06c428284286`. Dosya: `docs/proposals/2026-10-25-uvlo/PKG02-PROTOCOL-LOCK.json`.
 - 259/259 UVLO .cir deck, 259/259 test-case kaydı ve tarihsel `tur5-6e150c8` manifestindeki 259/259 isim **birebir aynı**; 25 ek kaynak/girdi dosyasının Git blob SHA-1'i ve 259 deck'in Git blob SHA-1'i sabitlendi. Git blob SHA-1, simülasyon logunun SHA-256'sı değildir.
@@ -51,4 +60,4 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 
 ## Bir sonraki `devam` için tek iş
 
-**PKG-03 / güvenli kabul runner'ı:** Önce uzak HEAD, bu kayıt, aktif proses/çalışma klasörü/log denetimi. `run_uvlo.py` için geçmiş log/manifeste dokunmayan, yeni ve benzersiz `--run-id` altında izolasyonlu koşu; temiz giriş HEAD + 259 kilitli deck/hash kontrolü; bütün 259 Gear deck'e aynı `tmax<=100 ns` ve sabit seçenek; kesinti/partial koşunun PASS görünmemesi. Önce negatif testler, sonra düzeltme, test/commit/push. Tam entegrasyon ve ngspice ancak yetkili, tüm girdileri bulunan çalışma ortamında yapılacak; gerçek koşu yoksa simülasyon PASS yazma. Sonraki 20×2 yakınsama ve ham iz M3 nedeni ayrı iş paketidir. CI kapalı, hiçbir eski kanıt silinmez.
+**PKG-04 / izole doğrulayıcı entegrasyonu ve tarihsel kanıtın bağımsız denetimi:** İlk olarak HEAD, bu kayıt, başka aktif süreç ve izole çıktıları kontrol et. Tam `verify_uvlo.py` ile 7 negatif fixture testini ve 9 runner testini bütün halde çalıştır; legacy `--historical` ve 259-deck stage/include doğruluğunu kontrol et. Aynı zamanda `num-study-tmax100n` tarihsel ölçümlerini ham log hash'leriyle Decimal-inclusive yeniden değerlendir; 100ns eşitlik ve O3 POST süreklilik farkını açık raporla. **Gerçek ngspice mevcutsa** ancak tüm kilitli 259 girdi ve tek-yazar koşulları sağlandığında yalnız tek kabul koşusu yap. Aksi halde simülasyon uydurma; M3 nedensel ham iz/tmax yakınsama ve model tanısı sonraki P0 işidir. CI kapalı; tarihsel loglar, model, KiCad, main ve sert gereksinimler değişmez.
