@@ -32,9 +32,15 @@ NOTE: GitHub Actions (workflow proposal-ngspice) is DISABLED by the user since 2
 The evidence is local runs (box ngspice) with the run manifest + SHA-256 recorded in results/.
 Usage: python3 verify_uvlo.py [--run-id ID]
 """
-import json, re, sys, hashlib, subprocess, math, os
+import json, re, sys, hashlib, subprocess, math, os, runpy
 from pathlib import Path
 HERE = Path(__file__).absolute().parent
+# Default historical location. An explicit --run-id selects immutable results/runs/ID
+# if that directory exists; existing --historical behaviour is unchanged.
+LOGS = HERE / 'results' / 'logs'
+MANIFEST = HERE / 'results' / 'run-manifest.json'
+VERIFY_OUTPUT = HERE / 'results' / 'uvlo-verify.json'
+STAGED = None
 O1_PEAK_MAX = 12.0          # O1 instantaneous peak (hard)
 BUS_NORMAL_MAX = 11.1605    # normal-regime bus max (hard)
 V_FALL_MIN = 18.0           # over-discharge: buck must be off before VIN < 18.0 V (3.0 V/cell under load, see REQUIREMENTS)
@@ -421,7 +427,7 @@ def git(*a):
 def provenance(cases, run_id):
     """Tur-2 UVLO-04: bind the logs to one fresh, complete, successful run. Returns (errors, manifest summary)."""
     e = []
-    mfp = HERE / 'results' / 'run-manifest.json'
+    mfp = MANIFEST
     if not mfp.exists():
         return ['results/run-manifest.json missing (logs not bound to a run)'], {}
     try:
@@ -429,6 +435,27 @@ def provenance(cases, run_id):
     except ValueError as x:
         return [f'run-manifest.json unreadable: {x}'], {}
     runs = mf.get('runs') or {}
+    if STAGED is not None:
+        if mf.get('status') != 'COMPLETE':
+            e.append('locked-run manifest status must be COMPLETE')
+        if mf.get('expected_decks') != 259 or len(runs) != 259:
+            e.append('locked-run fixed 259-case coverage missing')
+        if mf.get('tmax') != '100n' or mf.get('method') != 'gear':
+            e.append('locked-run solver/tmax is not Gear/100n')
+        lock_path = HERE.parents[2] / 'docs/proposals/2026-10-25-uvlo/PKG02-PROTOCOL-LOCK.json'
+        if not lock_path.is_file() or mf.get('protocol_lock_sha256') != sha(lock_path):
+            e.append('protocol lock SHA-256 missing or changed')
+        if mf.get('runner_sha256') != sha(HERE / 'run_uvlo.py'):
+            e.append('runner SHA-256 missing or changed')
+        try:
+            module = runpy.run_path(str(HERE / 'run_uvlo.py'))
+            stage_func = module['stage_text']
+            module['locked_inputs'](json.loads(lock_path.read_text()))
+            if module['clean_status']():
+                e.append('repo has dirty/untracked inputs after the locked run')
+        except (ValueError, KeyError, OSError, RuntimeError) as ex:
+            e.append(f'locked source verification failed: {ex}')
+            stage_func = lambda _: (_ for _ in ()).throw(ValueError('source lock unavailable'))
     if run_id and mf.get('run_id') != run_id:
         e.append(f'run id mismatch: manifest {mf.get("run_id")!r} != expected {run_id!r}')
     if mf.get('partial'): e.append('manifest is from a partial (filtered) run')
@@ -452,30 +479,59 @@ def provenance(cases, run_id):
     if set(runs) != set(decks): e.append(f'manifest deck set != decks/ (missing {sorted(set(decks)-set(runs))[:5]}, extra {sorted(set(runs)-set(decks))[:5]})')
     if not want <= set(decks): e.append(f'cases without a deck: {sorted(want-set(decks))[:5]}')
     for n in sorted(set(runs) & set(decks)):
-        r = runs[n]; log = HERE / 'results' / 'logs' / f'{n}.log'
+        r = runs[n]; log = LOGS / f'{n}.log'
         if r.get('rc') != 0: e.append(f'{n}: rc {r.get("rc")!r}')
         if r.get('completed') is not True: e.append(f'{n}: not completed')
-        if r.get('deck_sha256') != sha(decks[n]): e.append(f'{n}: deck SHA-256 differs from the run')
+        if STAGED is None:
+            if r.get('deck_sha256') != sha(decks[n]):
+                e.append(f'{n}: deck SHA-256 differs from the run')
+        else:
+            staged = STAGED / (n + '.cir')
+            if r.get('source_deck_sha256') != sha(decks[n]):
+                e.append(f'{n}: source deck SHA-256 differs')
+            if r.get('method') != 'gear' or r.get('tmax') != '100n':
+                e.append(f'{n}: staged solver/tmax metadata mismatches the lock')
+            if not staged.is_file():
+                e.append(f'{n}: staged deck missing')
+            else:
+                if r.get('deck_sha256') != sha(staged):
+                    e.append(f'{n}: staged deck SHA-256 differs')
+                try:
+                    if staged.read_text() != stage_func(decks[n].read_text()):
+                        e.append(f'{n}: staged deck differs beyond uniform tmax/include paths')
+                except (OSError, ValueError) as ex:
+                    e.append(f'{n}: stage reconstruction failed: {ex}')
         if not log.exists() or r.get('log_sha256') != sha(log): e.append(f'{n}: log missing or SHA-256 differs from the run')
-    extra_logs = sorted(p.stem for p in (HERE / 'results' / 'logs').glob('*.log') if p.stem not in runs)
+    extra_logs = sorted(p.stem for p in (LOGS).glob('*.log') if p.stem not in runs)
     if extra_logs: e.append(f'logs not produced by this run: {extra_logs[:5]}')
     return e, dict(run_id=mf.get('run_id'), git_head=mh, started_utc=mf.get('started_utc'), ngspice=mf.get('ngspice'),
                    n_runs=len(runs))
 
 def main():
+    global LOGS, MANIFEST, VERIFY_OUTPUT, STAGED
     # Tur-5 UVLO-T5-03: acceptance mode REQUIRES a run id (--run-id ID or UVLO_RUN_ID) so the logs are bound to one run of
     # the current HEAD; --historical is the explicit, never-acceptance review mode (old manifest-HEAD diff comparison).
     argv = sys.argv[1:]; run_id = os.environ.get('UVLO_RUN_ID') or ''; mode = 'acceptance'
     if argv[:1] == ['--run-id'] and len(argv) == 2 and argv[1]: run_id = argv[1]
     elif argv == ['--historical']: mode = 'historical'; run_id = ''
     elif argv: print(f'usage: verify_uvlo.py --run-id ID | --historical  (got {argv})', file=sys.stderr); sys.exit(2)
+    if run_id and not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,63}', run_id):
+        print('invalid run-id', file=sys.stderr)
+        sys.exit(2)
+    if mode == 'acceptance' and run_id:
+        output = HERE / 'results' / 'runs' / run_id
+        if output.is_dir():
+            LOGS = output / 'logs'
+            MANIFEST = output / 'run-manifest.json'
+            VERIFY_OUTPUT = output / 'uvlo-verify.json'
+            STAGED = output / 'staged'
     cases = json.loads((HERE / 'test-cases-uvlo.json').read_text())['cases']
     prov_err, prov = provenance(cases, run_id)
     if mode == 'acceptance' and not run_id:
         prov_err = ['acceptance mode requires --run-id ID (or UVLO_RUN_ID); use --historical for a non-acceptance review'] + prov_err
     out, acc_fail, reg_bad, incomplete = {}, [], [], []
     for name, c in cases.items():
-        log = HERE / 'results' / 'logs' / f'uvlo-{name}.log'
+        log = LOGS / f'uvlo-{name}.log'
         if not log.exists():
             out[name] = dict(status='INCOMPLETE', reason='log missing'); incomplete.append(name); continue
         m, failed, done, _ = parse(log)
@@ -520,7 +576,7 @@ def main():
                    + [HERE.parent.parent / 'pdu-behavioral.lib', HERE.parent.parent / 'pdu-inductor-ng.lib',
                       HERE.parent / '2026-10-25-o1-ovp' / 'pdu-o1ovp-behavioral.lib', HERE.parent / '2026-10-25-o1-ovp' / 'pdu-o1ovp-block.inc',
                       HERE.parent / '2026-10-25-o1-ovp' / 'pdu-circuit-o1ovp.inc', HERE.parent / '2026-10-25-o1-ovp' / 'pdu-efuse-block-o1ovp.inc'])
-    logs = sorted((HERE / 'results' / 'logs').glob('*.log'))
+    logs = sorted((LOGS).glob('*.log'))
     code = 2 if (incomplete or prov_err) else (1 if acc_fail or reg_bad else 0)
     rd = {n: r['info']['provisional_rdip_screen'] for n, r in out.items() if r.get('info', {}).get('provisional_rdip_screen')}
     rdip = dict(note='PROVISIONAL WP3 screen proposed in ChatGPT review 6395614957 (UVLO-06); report-only, NOT an acceptance '
@@ -552,7 +608,7 @@ def main():
                                         regression_not_reproduced=[n for n in reg_bad if cases[n].get('variant', 'C3') == v])
                                 for v in sorted({c.get('variant', 'C3') for c in cases.values()})},
                    limits=dict(O1_PEAK_MAX=O1_PEAK_MAX, BUS_NORMAL_MAX=BUS_NORMAL_MAX, V_FALL_MIN=V_FALL_MIN, T_SEQ_MIN=T_SEQ_MIN))
-    (HERE / 'results' / 'uvlo-verify.json').write_text(json.dumps(dict(summary=summary, cases=out,
+    VERIFY_OUTPUT.write_text(json.dumps(dict(summary=summary, cases=out,
         input_sha256={str(p.relative_to(HERE.parent.parent)): sha(p) for p in files},
         log_sha256={p.name: sha(p) for p in logs}), indent=1, default=str))
     for n, r in out.items():
