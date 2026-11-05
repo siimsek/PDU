@@ -31,7 +31,7 @@ T2 = load('t2_helpers_t6', PKG / 'tests' / 'test_uvlo_tur2.py')
 vt0, dip_meas, DIP = T2.vt, T2.dip_meas, T2.DIP
 T4 = load('t4_helpers_t6', PKG / 'tests' / 'test_uvlo_tur4.py')
 in_acc_fail = T4.in_acc_fail
-RID = ['--run-id', 'run-123']
+RID = ['--historical']  # evaluate numerical gates, not a fake acceptance run
 
 
 def vt(name, cases, logs, want, failed=None, check=None):
