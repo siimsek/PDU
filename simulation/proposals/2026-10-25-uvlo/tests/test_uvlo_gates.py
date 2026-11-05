@@ -79,6 +79,9 @@ def run_verifier(cases, logs):
         (here / 'results' / 'run-manifest.json').write_text(json.dumps(dict(
             run_id='fixture', git_head='', package_inputs_dirty_at_run=False, runner_exit_code=0,
             cases_sha256=sh((here / 'test-cases-uvlo.json').read_text()), runs=runs)))
+        # Historical gate checks need a real manifest commit anchor, not empty HEAD.
+        from fixture_historical import bind_historical_fixture_git
+        bind_historical_fixture_git(here)
         v = load('verify_uvlo_under_test', here / 'verify_uvlo.py')
         code = None
         # This small fixture is read-only historical gate testing, NOT a 259-deck acceptance run.
