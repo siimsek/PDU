@@ -1,3 +1,5 @@
+
+# PKG-01 (2026-11-05): provenance/Decimal kodu ve durum kaydi; yeni kabul simulasyonu yok.
 1dc293d64ae820dd2a00862963b5d03fff3306dbed98e9355a008a70af27cf44  .github/workflows/proposal-ngspice.yml
 20b0117f1180d4e36b10b6f6f0e6800a72390e9d3cc923355719ae0b309f3920  docs/proposals/2026-10-25-o1-ovp/ARCHITECTURE.md
 c5a1ef9cf7192af0494e2932ec05fb08de9525e9dd69890c40095c2c31384175  docs/proposals/2026-10-25-o1-ovp/BENCH-TEST.md
@@ -10,6 +12,7 @@ eb7e8e4479e40e9b0b97564a2a3000b909dbb0b062cfbe19ad978b728d56d3b1  docs/proposals
 6d721552c3618c4b009ed46edc6aea8797aa3d251683caffdc111a4cecdac066  docs/proposals/2026-10-25-o1-ovp/REQUIREMENTS.md
 bf93374c886b17b83616dc1ffa1f22d842fd8787fd3856476d59c647f49d71c5  docs/proposals/2026-10-25-o1-ovp/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
+310e2e123ea5a0f684f3288eb80a654f00d2c2c90f3b144909a546a033e17f3f  docs/proposals/REVIEW-WORK-STATUS.md
 3fc22a1c2d676faa40e073dd322ec2adeb1417c4004863cefb7d1d5f12142a59  hardware/proposals/2026-10-25-o1-ovp/SOURCING.md
 06a83e77c650037f34ffc984633bb6f714fb8ba6c414a3fa866a07138cf17cfe  hardware/proposals/2026-10-25-o1-ovp/candidate-bom.csv
 eb08dbde5b96452420bee0a5addf821964ce5d8fc6e147937825d6d2b497af3c  hardware/proposals/2026-10-25-o1-ovp/sourcing.csv
@@ -321,7 +324,7 @@ a8a3a53afcc234c394aeeebb0632142ec3d3c988306427e2466cbee76ea497ec  simulation/pro
 567cee8362029ec21bec0aaccdc2174b98d4292993289dd92d406843271ddc66  simulation/proposals/2026-10-25-o1-ovp/decks/o1ovp-sweep-tdoff1p5u-s023-wchi.ng.cir
 2da9fa3808e2916b53a9fa11fffc2b1d5ae7dd57994a25f419852ceef61ea49e  simulation/proposals/2026-10-25-o1-ovp/decks/o1ovp-sweep-tdoff2p0u-s023-wchi.cir
 d4c7620dd35b7d9f34c213b6667bed580c9f5195cbf5ba7a3a778f35ba3d56af  simulation/proposals/2026-10-25-o1-ovp/decks/o1ovp-sweep-tdoff2p0u-s023-wchi.ng.cir
-235e9e29bc587b087ea4f923416f7ba1fa6f1ba55939b5b42763f592d81dcd87  simulation/proposals/2026-10-25-o1-ovp/doe-study/doe_study.py
+414d8265d706244140a09d750cdf1c4de1f50884628e614692dfff502292f120  simulation/proposals/2026-10-25-o1-ovp/doe-study/doe_study.py
 0098f50c568e1606e760b92f9fc2fefd3f5d2670aa50e96375e1f408a5c9c0e1  simulation/proposals/2026-10-25-o1-ovp/doe-study/test_doe_provenance.py
 5ad0bf7a3e05d379c6b12587c6d7595dd26194afdeacfa1c519e9f706b11f9be  simulation/proposals/2026-10-25-o1-ovp/gate-discharge-wc.json
 6feff95038eaa8b3ef68a9e3eb873050b82e5a2047472c67e647f96109558719  simulation/proposals/2026-10-25-o1-ovp/gate_discharge_wc.py
@@ -1239,3 +1242,5 @@ ccf7d77877363aae73aa69a26edfeb27bb9336d4ce58f676bae0e1e58312631a  simulation/pro
 599b877bf8b15ef619aa830cf90942b3cd2b1890e56d59b7ef553398a35460a2  simulation/proposals/2026-10-25-o1-ovp/verify_candidate.py
 1384fb56443c05a22d78ae6e434e6ad3cc164a372c15ce8dc9ed84916dcdb991  simulation/proposals/2026-10-25-o1-ovp/window-budget.json
 607c5e5f2f3e675c98543cd8a3a992a2c592a572acc622e940357abae863b7b3  simulation/proposals/2026-10-25-o1-ovp/window_budget.py
+75b83f4ff3c167f20f424b836b174c35a89aca0f3637fdec6812ae6b8ac8e784  simulation/proposals/study_integrity.py
+1aaee9ac7d2e1bb36ef075e3c9623aec2105fcb7ce67cfd56a01ab5fafb7889a  simulation/proposals/test_study_integrity.py
