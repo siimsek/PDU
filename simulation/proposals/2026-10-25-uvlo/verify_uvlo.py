@@ -60,6 +60,18 @@ def select_locked_run(run_id):
         raise FileNotFoundError('locked run manifest, logs or staged decks missing')
     return logs, manifest, verify, staged
 
+def write_verification(mode, artifact):
+    """Never write tracked historical evidence; create only one new locked-run report."""
+    if mode == 'historical':
+        return False
+    if mode != 'acceptance' or STAGED is None:
+        raise ValueError('verification output requires an explicitly selected locked acceptance run')
+    with VERIFY_OUTPUT.open('x', encoding='utf-8') as dest:
+        json.dump(artifact, dest, indent=1, default=str)
+        dest.write('\\n')
+    return True
+
+
 O1_PEAK_MAX = 12.0          # O1 instantaneous peak (hard)
 BUS_NORMAL_MAX = 11.1605    # normal-regime bus max (hard)
 V_FALL_MIN = 18.0           # over-discharge: buck must be off before VIN < 18.0 V (3.0 V/cell under load, see REQUIREMENTS)
@@ -627,9 +639,13 @@ def main():
                                         regression_not_reproduced=[n for n in reg_bad if cases[n].get('variant', 'C3') == v])
                                 for v in sorted({c.get('variant', 'C3') for c in cases.values()})},
                    limits=dict(O1_PEAK_MAX=O1_PEAK_MAX, BUS_NORMAL_MAX=BUS_NORMAL_MAX, V_FALL_MIN=V_FALL_MIN, T_SEQ_MIN=T_SEQ_MIN))
-    VERIFY_OUTPUT.write_text(json.dumps(dict(summary=summary, cases=out,
-        input_sha256={str(p.relative_to(HERE.parent.parent)): sha(p) for p in files},
-        log_sha256={p.name: sha(p) for p in logs}), indent=1, default=str))
+    try:
+        write_verification(mode, dict(summary=summary, cases=out,
+            input_sha256={str(p.relative_to(HERE.parent.parent)): sha(p) for p in files},
+            log_sha256={p.name: sha(p) for p in logs}))
+    except (OSError, ValueError) as exc:
+        print(f'VERIFY_OUTPUT_PRECHECK: {exc}', file=sys.stderr)
+        sys.exit(2)
     for n, r in out.items():
         print(f'{r["status"]:10s} {"(regression, reproduced)" if r.get("regression_reproduced") else ""} {n} {"; ".join(r.get("errors", [])) or r.get("reason", "")}')
     for x in prov_err:
