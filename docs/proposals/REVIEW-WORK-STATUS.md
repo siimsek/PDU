@@ -11,7 +11,16 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 - H1 O1 peak ≤12.0 V; H2 normal PRE/RUN/POST bus/O1 ≤11.1605 V; Vf≥18.0 V; M1≥60 ms (65 ms hedef); M3 0…1.000 µs kapsayıcı (negatif/NaN/Inf/eksik FAIL); M4 EN ↑ anında VGS≥6 V. R-DIP yalnız report-only.
 - Yeni kabul koşusu yok; tarihsel sayılar mevcut dosyalara aittir. Fiziksel tezgâh ölçümü yok; WP1/WP2 açık, üretim/merge onayı yok.
 
-## Son tamamlanan iş paketi: PKG-04 — SHA-256 kaynaklı 20×2 Decimal yeniden analiz (yeni simülasyon yok)
+## Son uygulanan alt paket: PKG-05A — locked verifier fail-closed (tam entegrasyon açık)
+
+- Kaynak HEAD `3963f5973490e45d4d3e99c425cd20249a8c0a15`. Rapor: `docs/proposals/2026-10-25-uvlo/PKG05-VERIFIER-SAFETY.md`.
+- **Bulgu:** `verify_uvlo.py --run-id ID` mevcut olmayan izole dizin için sessizce eski `results/logs/` ve depodaki `uvlo-verify.json` hedeflerine düşüyordu. Bu yazma/kanıt bütünlüğü riski test-önce düzeltildi.
+- Test commit'i `25c59f5a`; kod `53aeddff`; tam verifier CLI negatif testi `66c39e68`; kaynak kilidi `2c1dcffd`. Artık olmayan/eksik/symlink'li koşu dizini **exit 2 / LOCKED_RUN_PRECHECK**, eski dosyaya geçiş/yazım yok.
+- **Çalışan yerel test:** yeni izole seçim işlevi **9/9**, PKG-01 integrity **27/27**, sahte ngspice locked runner **9/9**, çıkarılmış provenance **7/7** PASS. Bunlardan **hiçbiri tam `verify_uvlo.py` entegrasyon koşusu değildir**; repo içindeki `test_locked_verifier.py` 8 test ve yeni testin birebir GitHub dosyası henüz tam depoda çalıştırılamadı.
+- GitHub statik: **25/25 girdi ve 259/259 deck kilit SHA-1 eşleşmesi**. Yeni ngspice simülasyonu / regresyon koşusu / fiziksel test yok. Tarihsel WP2 **161 PASS / 69 kabul FAIL / 6 eksik**; sayısal yeni yorum **6/20**, 9 abort açık; WP1 4 ESL açık.
+- **Açık:** `--historical` varsayılan yazma hedefi tarihsel `uvlo-verify.json`; salt-okunur moda geçiş için ayrı negatif test/düzeltme. Tam verifier entegrasyon kapısı ve bütün ürün P0'ları açık. CI kapalı, main/merge yok.
+
+## Önceki iş paketi: PKG-04 — SHA-256 kaynaklı 20×2 Decimal yeniden analiz (yeni simülasyon yok)
 
 - Kaynak HEAD `db6237a955f4314bc91a4f274f91491b7de9b4e3`; rapor commit'i `80bd8cff5c22ecae7322da776e74b27254167733`. Rapor: `docs/proposals/2026-10-25-uvlo/PKG04-DECIMAL-REANALYSIS.md`.
 - Eski `num-study-tmax100n` **40/40 ngspice log SHA-256**, **20/20 kaynak deck SHA-256**, ölçüm/metrik, `missing/no_event` bütünlük denetimi başarılı; hiçbir eski log/girdi/sonuç değiştirilmedi. Ham basılı ondalık ve `.meas` türü ile tam ondalık kapsayıcı karşılaştırma: **4/20 → 6/20** (yeniden analiz, yeni simülasyon değil).
@@ -69,4 +78,4 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 
 ## Bir sonraki `devam` için tek iş
 
-**PKG-05 / tam verifier entegrasyon kapısı:** Önce gerçek uzak HEAD, durum kaydı ve çalışan süreç/log denetimi. Tam `verify_uvlo.py` kaynak ağacını temin edip `tests/test_locked_verifier.py` ve diğer ilgili negatif testleri gerçekten çalıştır; sentetik kaynak/fake solver ile gerçek 259-deck kabul koşusunu açıkça ayır. Tam entegrasyon kusuru bulunursa önce negatif test, sonra kod düzeltmesi; eski `--historical` sonuçları ve `--run-id` izolasyonu korunacak. Olası modül/depo/solver erişim eksiklikleri açıkça kaydedilecek. Başarılı tam entegrasyon olmadan 259 Gear/tmax100n koşusunu kabul diye başlatma; tamamlanan M3 nedensellik/20×2 50ns/25ns ancak sonraki bağımlı pakete geçsin. CI kapalı, merge yok.
+**PKG-05B / tarihsel kanıtı koruyan verifier entegrasyon kapanışı:** Uzak HEAD/durum/proses ön kontrolünden sonra `--historical` modunun eski takip edilen `results/uvlo-verify.json` dosyasını yeniden yazmasını negatif testle göster; varsayılan salt-okunur davranışla düzelt. Güncel tam `verify_uvlo.py` ve `test_locked_verifier.py` kodunun bir arada çalıştırılabildiği ortamda 8/8 + 9/9 ve önceki test regresyonlarını kontrol et; erişim engeli varsa açıkça kaydet ve yeni kabul PASS üretme. `--run-id` mevcut olmayan/yarım koşu için fail-closed kalacak. Tam entegrasyon doğrulanmadan 259 Gear/100ns koşusu başlatılmayacak; 23/23 eski regresyon ancak yeni gerçek simülasyonda raporlanır. Devamda M3 ham nedensellik ve 20×2 yakınsama.
