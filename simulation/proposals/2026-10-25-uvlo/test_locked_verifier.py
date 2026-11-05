@@ -20,6 +20,17 @@ class VerifierProvenanceTests(unittest.TestCase):
         self.f.setUp()
         self.addCleanup(self.f.doCleanups)
         shutil.copyfile(HERE / 'verify_uvlo.py', self.f.pkg / 'verify_uvlo.py')
+        # Full verifier serializes SHA-256 for these tracked model/budget fixtures.
+        # Stub content is intentionally NOT a real circuit or ngspice result.
+        sim = self.f.root / 'simulation'
+        for name in ('pdu-behavioral.lib', 'pdu-inductor-ng.lib'):
+            (sim / name).write_text('* fake model fixture\\n')
+        o1 = sim / 'proposals' / '2026-10-25-o1-ovp'
+        o1.mkdir(parents=True, exist_ok=True)
+        for name in ('pdu-o1ovp-behavioral.lib', 'pdu-o1ovp-block.inc',
+                     'pdu-circuit-o1ovp.inc', 'pdu-efuse-block-o1ovp.inc'):
+            (o1 / name).write_text('* fake O1 model fixture\\n')
+        (self.f.pkg / 'results' / 'uvlo-budget.json').write_text('{}\\n')
         fixtures.call('git', 'add', '.', cwd=self.f.root)
         commit = fixtures.call('git', 'commit', '-qm', 'synthetic fixture verifier', cwd=self.f.root)
         self.assertEqual(commit.returncode, 0, commit.stderr)
@@ -72,6 +83,33 @@ class VerifierProvenanceTests(unittest.TestCase):
         (self.f.pkg / 'pdu-uvlo-block.inc').write_text('modified during run')
         self.assertTrue(any('source verification failed' in x or 'dirty/untracked' in x
                             for x in self.errors()))
+
+    def test_full_verifier_cli_fails_closed_on_unmeasured_fake_decks(self):
+        """All 259 fake deck logs are complete, but missing electrical metrics MUST fail."""
+        historical = self.f.pkg / 'results/uvlo-verify.json'
+        historical.write_bytes(b'IMMUTABLE EVIDENCE\\n')
+        run = subprocess.run(
+            [sys.executable, str(self.f.pkg / 'verify_uvlo.py'), '--run-id', 'safe-a'],
+            cwd=self.f.root, env=self.f.env, capture_output=True, text=True)
+        self.assertEqual(run.returncode, 1, run.stdout[-1000:] + run.stderr)
+        artifact = self.f.pkg / 'results/runs/safe-a/uvlo-verify.json'
+        self.assertTrue(artifact.is_file(), run.stderr)
+        summary = json.loads(artifact.read_text())['summary']
+        self.assertEqual(summary['mode'], 'acceptance')
+        self.assertEqual(summary['n_cases'], 259)
+        self.assertEqual(len(summary['acceptance_fail']), 259)
+        self.assertEqual(summary['provenance_errors'], [])
+        self.assertEqual(historical.read_bytes(), b'IMMUTABLE EVIDENCE\\n')
+
+    def test_full_verifier_cli_rejects_incomplete_manifest(self):
+        self.patch_manifest(status='INCOMPLETE', runner_exit_code=2)
+        run = subprocess.run(
+            [sys.executable, str(self.f.pkg / 'verify_uvlo.py'), '--run-id', 'safe-a'],
+            cwd=self.f.root, env=self.f.env, capture_output=True, text=True)
+        self.assertEqual(run.returncode, 2, run.stdout[-1000:] + run.stderr)
+        summary = json.loads((self.f.pkg / 'results/runs/safe-a/uvlo-verify.json').read_text())['summary']
+        self.assertTrue(summary['provenance_errors'])
+        self.assertEqual(summary['exit_code'], 2)
 
     def test_unknown_run_id_returns_2_without_overwriting_legacy_evidence(self):
         historical = self.f.pkg / 'results/uvlo-verify.json'
