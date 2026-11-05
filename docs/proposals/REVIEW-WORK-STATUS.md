@@ -11,7 +11,16 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 - H1 O1 peak ≤12.0 V; H2 normal PRE/RUN/POST bus/O1 ≤11.1605 V; Vf≥18.0 V; M1≥60 ms (65 ms hedef); M3 0…1.000 µs kapsayıcı (negatif/NaN/Inf/eksik FAIL); M4 EN ↑ anında VGS≥6 V. R-DIP yalnız report-only.
 - Yeni kabul koşusu yok; tarihsel sayılar mevcut dosyalara aittir. Fiziksel tezgâh ölçümü yok; WP1/WP2 açık, üretim/merge onayı yok.
 
-## Son uygulanan alt paket: PKG-06 — sentetik fixture geçişi (tam verifier entegrasyonu AÇIK)
+## Son uygulanan alt paket: PKG-07 — runner symlink izolasyonu (gerçek RED→GREEN)
+
+- İlk uzak HEAD `8c633d06b8805e6bc86505fa8bf1441189188f18`. Rapor: `docs/proposals/2026-10-25-uvlo/PKG07-RUNNER-PATH-SAFETY.md`.
+- GitHub `run_uvlo.py` blob'u `8a43e3cb5801ac9625e6e420a97733224b86e2ed` yerel dosyayla birebir doğrulandı. `results/runs` dış klasöre symlink iken, 259 **sentetik** deck'i dışarı yazıp yanlış `exit 0` dönmesi gerçek testle yeniden üretildi: **RED 1 FAIL**. Dangling run-id symlink de açık ön koşul riski.
+- İki negatif test commit `c3ee27f2`; fix `09379a31`: `results`, `results/runs`, hedef ID symlink ve bozuk dizin ön kontrolü, **exit 3**, kilit öncesi ikinci symlink doğrulaması. Test edilen dosyaların Git blob'ları GitHub'da birebir eş; **11/11 runner sentetik test PASS**.
+- Runner blob'u `f324db9e2e66909a9b79b1116a4b1765f782a682`; kaynak lock commit `62f62561`. GitHub 259/259 deck ve 25/25 girdi SHA eşleşmesi. Eski log, BOM, KiCad, solver/gate/kabul sonuçları değiştirilmedi.
+- Bu tur container'da çalışan yerel paketler: runner **11/11**, çıktı parser **6/6**, integrity **27/27**, ayrılmış provenance **7/7**, ayrılmış run-selector **9/9**, ayrılmış history-output **8/8** → **68/68 yerel birim/sentetik PASS**. Ayrılmış helper testleri tam `verify_uvlo.py` entegrasyonu değildir.
+- **Tam GitHub depo checkout'u ve ngspice yok** (github.com DNS erişimi başarısız). Güncellenmiş `test_uvlo_tur2..6`, Gates ve tam `test_locked_verifier.py` **çalıştırılmadı**. Elektriksel kabul hâlâ AÇIK. WP2 eski 161 PASS/69 FAIL/6 eksik; 20×2 yeniden analiz 6/20 (9 abort); WP1 4 ESL tamamlanmadı. CI kapalı, PR draft, main/merge yok.
+
+## Önceki alt paket: PKG-06 — sentetik fixture geçişi (tam verifier entegrasyonu AÇIK)
 
 - Kaynak uzak HEAD: `1c51c28ff4bb28ba25a92fe44f42789eb9640ae3`, PR #1 draft; rapor `docs/proposals/2026-10-25-uvlo/PKG06-FIXTURE-MIGRATION.md`.
 - Mevcut `test_uvlo_tur2.py`, `test_uvlo_gates.py`, `test_uvlo_tur5.py`, `test_uvlo_tur6.py` küçük elektrik ölçüm fikstürleri gerçek kilitli 259 kabul koşusu yerine **salt-okunur `--historical` stdout JSON** üzerinden sınayacak şekilde taşındı. Eksik/kısmi stdout özetinde yanlış PASS üretmeyen ortak `tests/fixture_summary.py` ve 6 testi eklendi. M4/V53: sahte mini-run için açık `exit 2 / LOCKED_RUN_PRECHECK`; fiziksel limit/test kırpılması yok.
@@ -96,4 +105,4 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 
 ## Bir sonraki `devam` için tek iş
 
-**PKG-07 / tam test entegrasyonunu kanıtlama:** Önce uzak HEAD/durum ve aktif süreç/çıktı kontrolü. Tam `verify_uvlo.py` ile güncellenmiş `tests/test_uvlo_gates.py`, `test_uvlo_tur2..6.py`, `test_locked_verifier.py` dosyalarının **aynı temiz Git checkout** içinde Python ile gerçek koşusu; fake ngspice fixture vs elektriksel kabul ayrılmalı. Başarısız test varsa tekil kök nedeni/çıktı kaydedilip test kapısı gevşetilmeden düzeltilmeli. Repo/solver erişimi yoksa tek tek engelleri not et, geçmeyen veya koşulmayanı PASS raporlama. Ancak bütün entegrasyon kapıları geçer ve gerçek ngspice sağlanırsa kilitli 259 Gear/100ns kabul koşusu yapılabilir; geçmiş loglar salt-okunur. Sonra M3 ham nedensellik, 20×2 yakınsama, WP1 A/B/C/ESL.
+**PKG-08 / tam verifier entegrasyonunun kesin kanıtı:** Önce uzak HEAD/status/aktif proses denetimi; Github kaynak blobları ile tamamen eşleşen temiz bir çalışma ağacında `verify_uvlo.py`, `test_locked_verifier.py`, `tests/test_uvlo_gates.py`, `tests/test_uvlo_tur2..6.py` ve `test_pkg05_*py` gerçekte çalıştırılıp *tam sayı ve hata logları* kaydedilmeli. Entegrasyon FAIL'i bulunursa önce negatif test, sonra en az riskli fix ve yeniden test. Önceki PKG-07 symlink/red-green testi ve 259-deck kilidi korunacak. Gerçek ngspice erişimi yoksa 259 Gear/100n kabulü veya M3 20×2 yakınsama yapılmış gibi gösterme. Kullanıcıdan komut isteme; erişebildiğin araçlarla devam et. CI'yi izinsiz açma, merge yok.
