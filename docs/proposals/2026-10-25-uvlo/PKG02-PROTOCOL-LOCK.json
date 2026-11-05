@@ -89,7 +89,7 @@
     },
     {
       "path": "simulation/proposals/2026-10-25-uvlo/run_uvlo.py",
-      "git_blob_sha1": "8a43e3cb5801ac9625e6e420a97733224b86e2ed"
+      "git_blob_sha1": "f324db9e2e66909a9b79b1116a4b1765f782a682"
     },
     {
       "path": "simulation/proposals/2026-10-25-uvlo/test-cases-uvlo.json",
@@ -509,5 +509,14 @@
     "verifier_git_blob_sha1": "e0e3d7270209f0aed58c938ed813745806a5fae2",
     "source_head": "7d864fbef2833a9af7989b4dd6b31bab9d1f28a1",
     "old_verifier_sha1": "4a246f2ac3cf001293f8f18e3560f456bbc306ec"
+  },
+  "pkg07_runner_symlink_safety": {
+    "date": "2026-11-05",
+    "source_head": "09379a3146290e200f3bcdcd311ec379dcece4a4",
+    "prev_git_blob_sha1": "8a43e3cb5801ac9625e6e420a97733224b86e2ed",
+    "current_git_blob_sha1": "f324db9e2e66909a9b79b1116a4b1765f782a682",
+    "regression_test_blob_sha1": "02e68ca35fe830089b408cd9a39cdc26da81fc4a",
+    "locally_executed_runner_tests": "11/11",
+    "kind": "preflight evidence path safety only; no ngspice simulation"
   }
 }
