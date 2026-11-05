@@ -8,8 +8,8 @@ U03  fail-closed missing measurements: a start/ramp/hotplug/rsweep case without 
 U05  dip restarts: EN re-rise after a dip must come >= T_SEQ_MIN = 60 ms after the last valid-VIN (OUTA) rise;
      a restart without the OUTA restoration measurement must not pass.
 M/W  (UVLO-04) stale-log / failed-run protection: the verifier must refuse logs that are not bound to a fresh
-     run-manifest (run id, deck/case set, deck and log SHA-256, rc == 0); the runner must delete old outputs before
-     a run, record git HEAD + run id and return non-zero on any failed deck; the CI job must not swallow failures.
+     run-manifest (run id, deck/case set, deck and log SHA-256, rc == 0); the runner must preserve old outputs before
+     a new isolated run, record git HEAD + run id and return non-zero on any failed deck; the CI job must not swallow failures.
 R    provisional R-DIP screen (UVLO-06, review proposal, NOT a requirement change): reported per dip case, does not
      change the exit code; missing measurement -> UNDETERMINED (never PASS).
 B3   (UVLO-01) the budget enumerates the IN+ bias, IN- bias and TMUX leakage signs independently.
@@ -98,23 +98,29 @@ def build_tree(cases, logs, failed=None, manifest='fresh', run_id='run-123'):
 
 
 def run_verifier(here, argv=None):
-    # Tur-5 UVLO-T5-03 harness change (not an assertion change): acceptance mode now requires a run id, the default call
-    # therefore uses the fixture manifest's run id 'run-123'; an explicit argv (incl. []) is passed unchanged.
+    # Small synthetic fixtures exercise the ELECTRICAL JUDGEMENT in read-only
+    # historical mode. They are not a 259-deck locked acceptance run.
+    # Locked acceptance is tested separately in test_locked_verifier.py.
     if argv is None:
-        argv = ['--run-id', 'run-123']
+        argv = ['--historical']
+    from fixture_summary import summary_from_stdout
     v = load('verify_uvlo_t2', here / 'verify_uvlo.py')
     code, old = None, sys.argv
+    stdout, stderr = io.StringIO(), io.StringIO()
     sys.argv = ['verify_uvlo.py'] + list(argv)
     try:
-        with contextlib.redirect_stdout(io.StringIO()):
+        with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
             try:
                 v.main()
             except SystemExit as e:
                 code = e.code
     finally:
         sys.argv = old
-    p = here / 'results' / 'uvlo-verify.json'
-    return code, (json.loads(p.read_text()) if p.exists() else {})
+    out = summary_from_stdout(stdout.getvalue())
+    out['_stderr'] = stderr.getvalue()
+    if argv == ['--historical'] and not out.get('summary'):
+        return 'missing historical stdout summary', out
+    return code, out
 
 
 def vt(name, cases, logs, want, failed=None, manifest='fresh', argv=None, check=None):
@@ -168,7 +174,10 @@ def verifier_tests():
                 'nonzero', manifest=bad_deck))
     T.append(vt('M4 --run-id other than the manifest run_id -> exit != 0', {'s': START}, {'s': start_meas()}, 'nonzero',
                 argv=['--run-id', 'run-999']))
-    T.append(vt('M4b --run-id equal to the manifest run_id -> exit 0', {'s': START}, {'s': start_meas()}, 0, argv=['--run-id', 'run-123']))
+    T.append(vt('M4b legacy manifest run id is NOT a locked 259-deck run -> exit 2',
+                {'s': START}, {'s': start_meas()}, 2, argv=['--run-id', 'run-123'],
+                check=lambda out: ('LOCKED_RUN_PRECHECK' in out.get('_stderr', ''),
+                                   'missing locked run must be rejected before any historical output write')))
 
     def bad_rc(mf):
         mf['runs']['uvlo-s']['rc'] = 1; return mf
@@ -212,45 +221,61 @@ exit %d
 
 
 def runner_test(name, fake, code=0, exists=True, want_nonzero=True):
-    tmp = Path(tempfile.mkdtemp(prefix='uvlo-run-'))
+    """Re-use the fixed 259-deck synthetic runner fixture; historical outputs are immutable."""
+    fixture = load('uvlo_locked_runner_fixture_t2', PKG / 'test_locked_runner.py')
+    obj = fixture.LockedRunnerTests('test_acceptance_runner_isolated_and_uniform')
+    obj.setUp()
     try:
-        here = tmp / 'pkg'; (here / 'decks').mkdir(parents=True); (here / 'results' / 'logs').mkdir(parents=True)
-        shutil.copy(PKG / 'run_uvlo.py', here / 'run_uvlo.py')
-        (here / 'decks' / 'uvlo-a.cir').write_text('* a\n.end\n')
-        (here / 'results' / 'logs' / 'uvlo-a.log').write_text('STALE\nTotal analysis time (seconds) = 1\n')
-        (here / 'results' / 'logs' / 'uvlo-gone.log').write_text('STALE deck that no longer exists\n')
-        (here / 'results' / 'run-manifest.json').write_text(json.dumps({'runs': {'uvlo-a': {'rc': 0, 'completed': True}}}))
-        ng = tmp / 'ngspice-fake'
-        if exists:
-            ng.write_text(FAKE_NG % (fake, code)); ng.chmod(0o755)
-        env = dict(os.environ, PDU_NGSPICE=str(ng))
-        r = subprocess.run([sys.executable, 'run_uvlo.py', '-j', '1', '--run-id', 'rid-1'], cwd=here, env=env,
-                           capture_output=True, text=True, timeout=120)
-        logs = {p.name: p.read_text() for p in (here / 'results' / 'logs').glob('*.log')}
-        mf = here / 'results' / 'run-manifest.json'
-        mfd = json.loads(mf.read_text()) if mf.exists() else None
-        probs = []
-        if want_nonzero and r.returncode == 0: probs.append('runner exit 0')
-        if not want_nonzero and r.returncode != 0: probs.append(f'runner exit {r.returncode}')
-        if any('STALE' in t for t in logs.values()): probs.append('stale log survived')
-        if mfd is None: probs.append('no manifest written')
+        if not exists:
+            result = obj.execute(ident='rid-1', PDU_NGSPICE='/nonexistent/runner')
+        elif code:
+            result = obj.execute(ident='rid-1', FAKE_ABORT='1')
         else:
-            if mfd.get('run_id') != 'rid-1': probs.append('run_id not recorded')
-            if 'git_head' not in mfd: probs.append('git_head not recorded')
-            if any(k not in ('uvlo-a',) for k in mfd.get('runs', {})): probs.append('manifest keeps entries from an old run')
-        return (name, not probs, f'rc {r.returncode}; ' + ('; '.join(probs) or 'ok'))
-    except Exception as e:
-        return (name, False, f'crash {type(e).__name__}: {e}')
+            result = obj.execute(ident='rid-1')
+        dst = obj.pkg / 'results/runs/rid-1'
+        mf = dst / 'run-manifest.json'
+        problems = []
+        if want_nonzero and result.returncode == 0:
+            problems.append('failed/absent solver reported rc 0')
+        if not want_nonzero and result.returncode != 0:
+            problems.append(f'complete synthetic run reported rc {result.returncode}')
+        if obj.old.read_text() != 'historical preserved':
+            problems.append('historical log changed')
+        if (obj.pkg / 'results/run-manifest.json').read_text() != '{"run_id":"history"}\\n':
+            problems.append('historical manifest changed')
+        if not exists:
+            if dst.exists():
+                problems.append('failed preflight created a run')
+        else:
+            if not mf.is_file():
+                problems.append('isolated run manifest missing')
+            else:
+                data = json.loads(mf.read_text())
+                if data.get('run_id') != 'rid-1' or len(data.get('runs', {})) != 259:
+                    problems.append('wrong locked run id/deck count')
+                expected_status = 'INCOMPLETE' if code else 'COMPLETE'
+                if data.get('status') != expected_status:
+                    problems.append('wrong incomplete/complete status')
+                if code and data.get('runner_exit_code') != 2:
+                    problems.append('incomplete run not flagged rc 2')
+                if not code and not all(r.get('tmax') == '100n' and r.get('method') == 'gear'
+                                        for r in data['runs'].values()):
+                    problems.append('unlocked solver/tmax')
+        return name, not problems, f'rc {result.returncode}; ' + ('; '.join(problems) or 'ok')
+    except Exception as exc:
+        return name, False, f'crash {type(exc).__name__}: {exc}'
     finally:
-        shutil.rmtree(tmp, ignore_errors=True)
+        obj.doCleanups()
 
 
 def runner_tests():
-    return [runner_test('M7a runner: ngspice binary missing -> non-zero, old logs/manifest removed', '', 0, exists=False),
-            runner_test('M7b runner: ngspice exits 1 (even if it printed Total analysis time) -> non-zero, fresh manifest',
-                        'echo "Total analysis time (seconds) = 1"', 1),
-            runner_test('M8 runner: success -> exit 0, manifest has run_id + git_head, no stale entries',
-                        'echo "Total analysis time (seconds) = 1"', 0, want_nonzero=False)]
+    return [
+        runner_test('M7a runner: missing ngspice -> no new run, historical files preserved', '', exists=False),
+        runner_test('M7b runner: aborted fake solver -> isolated INCOMPLETE, history preserved',
+                    'fake abort', 1),
+        runner_test('M8 runner: 259 fixed synthetic decks -> isolated COMPLETE, history preserved',
+                    'fake completion', 0, want_nonzero=False),
+    ]
 
 
 def workflow_tests():
