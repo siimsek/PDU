@@ -6,6 +6,10 @@
 # PKG-05B (2026-11-05): historical readonly / locked-run exclusive verifier; focused tests only, no ngspice simulation.
 # PKG-06 (2026-11-05): historical stdout fixture migration, immutable 259-deck fake runner tests, full verifier integration still OPEN; no real ngspice run.
 # PKG-07 (2026-11-05): symlink path escape RED->GREEN, 11/11 fake-runner tests; real ngspice and full verifier pending.
+# PKG-08 (2026-11-06): real-Git historical fixture bind 13/13 + prior synthetic runner 11/11; full verifier remains unrun.
+2cd505458868d93c228b640aa27343d99db799b327d110ac68d09b25a25365e4  simulation/proposals/2026-10-25-uvlo/tests/fixture_historical.py
+ff134a59d601f82b256948b81bdd7f7268044bbb3d80875c23a1799c4fbbf1b5  simulation/proposals/2026-10-25-uvlo/tests/test_fixture_historical.py
+4bad34a787c8354e4e33103d12a04d770cfa6ad26808b79c7539c804252a7a74  docs/proposals/2026-10-25-uvlo/PKG08-HISTORICAL-FIXTURE-PROVENANCE.md
 cdee1169a5864ccb82d565a854f3ca36cc88a610a92cbe95b389bc6ba1e58e4b  docs/proposals/2026-10-25-uvlo/PKG07-RUNNER-PATH-SAFETY.md
 271f29244f5f94377d69640d78a940f6cf6777fb496e4de59b1ba330249dbf45  docs/proposals/2026-10-25-uvlo/PKG06-FIXTURE-MIGRATION.md
 26e5a04d9ebb65394c81872d2b22e1c2f68fa2daf1146277531f877484368b8b  simulation/proposals/2026-10-25-uvlo/tests/fixture_summary.py
@@ -28,7 +32,7 @@ ccfc60987913247094c25db74d8bb11e8c13811178c9ceee047cc682733e650c  docs/proposals
 9692d57f88911c5d86d64fa7849eca5a56a5604bb932682ec5bd37edda4fa713  docs/proposals/2026-10-25-uvlo/REQUIREMENTS.md
 4f73fadbd0d8f911f493ed2bf38a761278888ab78379ae715aa241316846322c  docs/proposals/2026-10-25-uvlo/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
-1b95ff305eca294fcbe97de50d7aa72623a8b758a38330942a5afc601a12ffab  docs/proposals/REVIEW-WORK-STATUS.md
+2690e1e0187d3f6c190ea89a144932c223025960eb572c7ec3f376117758b4e7  docs/proposals/REVIEW-WORK-STATUS.md
 4bd03e1e738116fb9c5acf92602b8968d979be9bbe4c89fd73acb46b97cf4183  hardware/proposals/2026-10-25-uvlo/SOURCING.md
 f8627c8373910034063ba174ac32652435f23a42c257ccd0006fbb06ae7b0781  hardware/proposals/2026-10-25-uvlo/candidate-bom.csv
 93b648cbc360132fad57728539596aca49efd2928d3e00ad0f247008a0e92279  hardware/proposals/2026-10-25-uvlo/sourcing.csv
@@ -676,9 +680,9 @@ f25b8637038345f88b02b44d9bce88aa292c912a18cb1a5f52e941f1d0fa50c5  simulation/pro
 c295fd8ffefe5fa19fee6005e4c697903ecc9e4abc2cccaa25478a5470646d32  simulation/proposals/2026-10-25-uvlo/test_locked_runner.py
 7be7a5fbbff1f8d5b1d615ea5e305aa0ef8c9ae636a9290c12957ffd6921d027  simulation/proposals/2026-10-25-uvlo/test_locked_verifier.py
 7165171d522b74dda0502d5d44c36dda508f3c43dfe072c595e932bcc2de1545  simulation/proposals/2026-10-25-uvlo/test-cases-uvlo.json
-e00ebda55681fa1fef977e9904fc4337311c3db205245cb017b3ffdb7684a257  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_gates.py
+68c411236d0b51dbb921b53ca3401375915c8b42a02b28689d163a05c7b31ec9  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_gates.py
 47eec0949eb69c7607d526b393c1acb7816559707b560631bfa2fd3edbce8265  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_o3.py
-bdffc28ca3d5e42d626adcaf49f6adb6147c2e57b1871986a6d37fd33c7ae2ad  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur2.py
+8c1f93c9aeff2af474590c563fcba330482b5e998ce5b72002f7f39c72a9e04b  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur2.py
 9143421eaded7cdd73ef046393e5a6c9471362eb443aa743841633e214377142  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur3.py
 f88e5d6f31fe1e357045c34d59e4c4354723e9b9331967613b60850d5883016e  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur4.py
 827c22e05cb51990bfe29dddca2e1148671f88bb5aaf160b719ee86d719f1b42  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur5.py
