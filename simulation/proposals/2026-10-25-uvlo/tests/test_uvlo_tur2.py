@@ -172,8 +172,10 @@ def verifier_tests():
         mf['runs']['uvlo-s']['deck_sha256'] = '1' * 64; return mf
     T.append(vt('M3 deck SHA-256 differs from the manifest (log from an older deck) -> exit != 0', {'s': START}, {'s': start_meas()},
                 'nonzero', manifest=bad_deck))
-    T.append(vt('M4 --run-id other than the manifest run_id -> exit != 0', {'s': START}, {'s': start_meas()}, 'nonzero',
-                argv=['--run-id', 'run-999']))
+    T.append(vt('M4 unknown locked run id -> exit 2 with precheck error', {'s': START},
+                {'s': start_meas()}, 2, argv=['--run-id', 'run-999'],
+                check=lambda out: ('LOCKED_RUN_PRECHECK' in out.get('_stderr', ''),
+                                   'unknown locked run must be rejected before legacy input is parsed')))
     T.append(vt('M4b legacy manifest run id is NOT a locked 259-deck run -> exit 2',
                 {'s': START}, {'s': start_meas()}, 2, argv=['--run-id', 'run-123'],
                 check=lambda out: ('LOCKED_RUN_PRECHECK' in out.get('_stderr', ''),
