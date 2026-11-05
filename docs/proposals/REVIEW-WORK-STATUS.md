@@ -11,7 +11,16 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 - H1 O1 peak ≤12.0 V; H2 normal PRE/RUN/POST bus/O1 ≤11.1605 V; Vf≥18.0 V; M1≥60 ms (65 ms hedef); M3 0…1.000 µs kapsayıcı (negatif/NaN/Inf/eksik FAIL); M4 EN ↑ anında VGS≥6 V. R-DIP yalnız report-only.
 - Yeni kabul koşusu yok; tarihsel sayılar mevcut dosyalara aittir. Fiziksel tezgâh ölçümü yok; WP1/WP2 açık, üretim/merge onayı yok.
 
-## Son tamamlanan iş paketi: PKG-01 — test altyapısı ve provenance koruması
+## Son tamamlanan iş paketi: PKG-02 — 259 + 20×2 protokol kilidi (yeni simülasyon yok)
+
+- Kaynak HEAD: `1bb0b3a751828f444a54c20edd9155d116a2d985`; kilit commit'i: `1c06266751b276b9cc44a8b0b77f06c428284286`. Dosya: `docs/proposals/2026-10-25-uvlo/PKG02-PROTOCOL-LOCK.json`.
+- 259/259 UVLO .cir deck, 259/259 test-case kaydı ve tarihsel `tur5-6e150c8` manifestindeki 259/259 isim **birebir aynı**; 25 ek kaynak/girdi dosyasının Git blob SHA-1'i ve 259 deck'in Git blob SHA-1'i sabitlendi. Git blob SHA-1, simülasyon logunun SHA-256'sı değildir.
+- Sayısal 20 sabit vaka × Gear/Trap (40 yöntem koşusu/stage), tüm 20 deck'te tek `.tran`, tek `method=gear` ve 80 `.meas` **statik** doğrulandı. 100 ns → 50 ns → (önceden belirtilen gereksinim oluşursa) 25 ns aynı matris, tekdüze; time Decimal kapsayıcı 100 ns, voltage 5 mV, no-event/missing/abort fail-closed.
+- GitHub connector ile kilidin güncel kod/deck girdilerine karşı 8/8 statik kontrolü PASS (kilit commit'i `1c062667` üzerinde); `test_study_integrity.py` yerel tekrar 27/27 PASS. `test_uvlo_tur6.py`, `test_doe_provenance.py` ve tam depo entegrasyonu çalıştırılamadı: erişilebilen ortamda özel depo klonu ve ngspice bulunmuyor.
+- Mevcut `run_uvlo.py` eski `results/logs/*.log` ve `run-manifest.json` dosyalarını başlangıçta **siliyor** ve .tran tmax'i tekdüze 100 ns'ye indirmiyor. Bu iki koşul kapanmadan 259-deck çalıştırmak YASAK; tarihsel kayıtlar korunacak. Çalışan ngspice süreci bu container ortamında yok; kullanıcının PC'si erişilebilir değil.
+- **Yeni 259, 20×2 veya WP1 13-deck koşusu yok.** Eski 161/69/6 ve 4/20 tarihsel; 23/23 regresyonun yeni koşusu yok. CI kapalı; main/PR draft ve sert kapılar değişmedi.
+
+## Önceki iş paketi: PKG-01 — test altyapısı ve provenance koruması
 
 - `simulation/proposals/study_integrity.py`: Decimal ile ham basılı .meas kıyaslama; tam 100 ns kapsayıcı PASS ve resolution-sensitive işareti; log SHA doğrulamalı tarihsel yeniden çözüm; tüm repoda başlangıç/bitiş HEAD + runner/helper hash + tracked/dirty denetimi; yalnız önceden bilinen, hash'i doğrulanmış **yeni ve izlenmeyen** çıktı loglarına izin.
 - `simulation/proposals/2026-10-25-uvlo/num_study.py`: ham ölçümler korunur, eski ölçümler yalnız hash-doğrulanmış logdan yeniden okunur; float sınır kararına son; eski çalışma klasörü üzerine yazma yasağı, yeni `--run-id`; provenance true yalnız gerçek temiz koşuda.
@@ -42,4 +51,4 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 
 ## Bir sonraki `devam` için tek iş
 
-**PKG-02 / sabit sayısal protokol ve ön koşu denetimi:** İlk olarak uzak HEAD, bu kayıt, yeni süreç/çıktı durumu; sonra 259-deck vakalarını ve 20×2 Gear/Trap giriş listesini kaynak dosyaların hash'leriyle dondur. Yeni temiz bir çalışma kökü üzerinde `test_uvlo_tur6.py`, `test_doe_provenance.py`, `test_study_integrity.py` ve mevcut ilgili testleri doğrula; `--run-id` ile geçmiş kanıtı koru. Ancak **gerçek ngspice ve tüm girdiler mevcutsa** tek koşu başlat; değilse simülasyon sonucu uydurma. Model fiziksel güç akışı tasarımına/deck seçimine henüz geçme. Bütün açık FAIL ve abort'ları koru.
+**PKG-03 / güvenli kabul runner'ı:** Önce uzak HEAD, bu kayıt, aktif proses/çalışma klasörü/log denetimi. `run_uvlo.py` için geçmiş log/manifeste dokunmayan, yeni ve benzersiz `--run-id` altında izolasyonlu koşu; temiz giriş HEAD + 259 kilitli deck/hash kontrolü; bütün 259 Gear deck'e aynı `tmax<=100 ns` ve sabit seçenek; kesinti/partial koşunun PASS görünmemesi. Önce negatif testler, sonra düzeltme, test/commit/push. Tam entegrasyon ve ngspice ancak yetkili, tüm girdileri bulunan çalışma ortamında yapılacak; gerçek koşu yoksa simülasyon PASS yazma. Sonraki 20×2 yakınsama ve ham iz M3 nedeni ayrı iş paketidir. CI kapalı, hiçbir eski kanıt silinmez.
