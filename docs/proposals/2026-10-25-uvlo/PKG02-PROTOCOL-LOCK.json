@@ -101,7 +101,7 @@
     },
     {
       "path": "simulation/proposals/2026-10-25-uvlo/verify_uvlo.py",
-      "git_blob_sha1": "4a246f2ac3cf001293f8f18e3560f456bbc306ec"
+      "git_blob_sha1": "e0e3d7270209f0aed58c938ed813745806a5fae2"
     },
     {
       "path": "simulation/proposals/study_integrity.py",
@@ -502,5 +502,12 @@
     "reason": "PKG-05 safety patch: reject nonexistent or symlinked run id; no deck or acceptance gate changed",
     "test_before_fix_commit": "25c59f5a6bfc05574a3289660a10858af4f1b40f",
     "fix_commit": "53aeddff7549c685d4b0396c0dd140783265e33a"
+  },
+  "pkg05b_historical_readonly": {
+    "description": "historical mode never writes tracked results/uvlo-verify.json; acceptance report opens x exclusively",
+    "test_sha1": "9e6126870eb4f998000f7486739f8a25123eadba",
+    "verifier_git_blob_sha1": "e0e3d7270209f0aed58c938ed813745806a5fae2",
+    "source_head": "7d864fbef2833a9af7989b4dd6b31bab9d1f28a1",
+    "old_verifier_sha1": "4a246f2ac3cf001293f8f18e3560f456bbc306ec"
   }
 }
