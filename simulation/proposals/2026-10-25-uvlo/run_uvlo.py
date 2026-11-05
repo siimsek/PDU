@@ -147,6 +147,15 @@ def main(argv=None):
     if not RUN_ID.fullmatch(args.run_id) or args.j < 1 or args.j > 32:
         ap.error('invalid run-id or workers (must be 1..32)')
     dst = RUN_ROOT / args.run_id
+    # PKG-07: the run root is excluded from Git's dirty-input scan. Reject
+    # symbolic links before preflight so 259 decks cannot write elsewhere.
+    # is_symlink() also catches dangling links, unlike exists().
+    if ((HERE / 'results').is_symlink() or RUN_ROOT.is_symlink() or dst.is_symlink()):
+        print('PRECONDITION FAILED: symlinked run evidence path', file=sys.stderr)
+        return 3
+    if RUN_ROOT.exists() and not RUN_ROOT.is_dir():
+        print('PRECONDITION FAILED: run root is not a directory', file=sys.stderr)
+        return 3
     if dst.exists():
         print('run-id already exists; refusing any overwrite: ' + str(dst), file=sys.stderr)
         return 3
@@ -171,6 +180,9 @@ def main(argv=None):
     # Atomic single-writer guard. Interrupted runs retain this guard for inspection;
     # never infer that an interrupted acceptance run is complete.
     RUN_ROOT.mkdir(parents=True, exist_ok=True)
+    if RUN_ROOT.is_symlink() or dst.is_symlink():
+        print('PRECONDITION FAILED: symlinked run evidence path', file=sys.stderr)
+        return 3
     active = RUN_ROOT / '.active-acceptance.lock'
     try:
         with active.open('x') as file:
