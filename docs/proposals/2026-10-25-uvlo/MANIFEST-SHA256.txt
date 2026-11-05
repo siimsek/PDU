@@ -5,6 +5,8 @@
 # PKG-05A (2026-11-05): verifier missing-run/symlink fail-closed, 9 helper tests; full verifier integration OPEN; no ngspice run.
 # PKG-05B (2026-11-05): historical readonly / locked-run exclusive verifier; focused tests only, no ngspice simulation.
 # PKG-06 (2026-11-05): historical stdout fixture migration, immutable 259-deck fake runner tests, full verifier integration still OPEN; no real ngspice run.
+# PKG-07 (2026-11-05): symlink path escape RED->GREEN, 11/11 fake-runner tests; real ngspice and full verifier pending.
+cdee1169a5864ccb82d565a854f3ca36cc88a610a92cbe95b389bc6ba1e58e4b  docs/proposals/2026-10-25-uvlo/PKG07-RUNNER-PATH-SAFETY.md
 271f29244f5f94377d69640d78a940f6cf6777fb496e4de59b1ba330249dbf45  docs/proposals/2026-10-25-uvlo/PKG06-FIXTURE-MIGRATION.md
 26e5a04d9ebb65394c81872d2b22e1c2f68fa2daf1146277531f877484368b8b  simulation/proposals/2026-10-25-uvlo/tests/fixture_summary.py
 e035f41d265ee3d83bacf9f4ceee87ba87004b2092f8b7f363520ce7433c2a1d  simulation/proposals/2026-10-25-uvlo/tests/test_fixture_summary.py
@@ -21,12 +23,12 @@ d502f98921b0b46fa4a6e13a5dc2f22a52b73a9925b0708474e6521deafc268c  docs/proposals
 f97614daebff76c4d4b8664f859404c8e08f651513556fa3a778b8f35e9c86ad  docs/proposals/2026-10-25-uvlo/CHATGPT_REVIEW_RESPONSE.md
 0df99c4fa91e12247f9ea2934111a14cc16dbb1a5c2a3bad20ba6316725ccc8a  docs/proposals/2026-10-25-uvlo/KICAD-TRANSFER.md
 99ed3dd9c7016736a171b798ba57436f209d75187c519c92e9d0b95f13c691ff  docs/proposals/2026-10-25-uvlo/MODELS.md
-1446ebafc131674b1ddf1dbc687b8091e23ab39591045f09f4bc00bd09b0634b  docs/proposals/2026-10-25-uvlo/PKG02-PROTOCOL-LOCK.json
+13698855551ab56b3dc94dcb67d37cced3eecf8752852bf51d7c7efae75685e6  docs/proposals/2026-10-25-uvlo/PKG02-PROTOCOL-LOCK.json
 ccfc60987913247094c25db74d8bb11e8c13811178c9ceee047cc682733e650c  docs/proposals/2026-10-25-uvlo/PKG04-DECIMAL-REANALYSIS.md
 9692d57f88911c5d86d64fa7849eca5a56a5604bb932682ec5bd37edda4fa713  docs/proposals/2026-10-25-uvlo/REQUIREMENTS.md
 4f73fadbd0d8f911f493ed2bf38a761278888ab78379ae715aa241316846322c  docs/proposals/2026-10-25-uvlo/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
-c48bb59bee29645cc60140c6892f00af01b0f9fa8424c7ad1702ae417d77f46e  docs/proposals/REVIEW-WORK-STATUS.md
+1b95ff305eca294fcbe97de50d7aa72623a8b758a38330942a5afc601a12ffab  docs/proposals/REVIEW-WORK-STATUS.md
 4bd03e1e738116fb9c5acf92602b8968d979be9bbe4c89fd73acb46b97cf4183  hardware/proposals/2026-10-25-uvlo/SOURCING.md
 f8627c8373910034063ba174ac32652435f23a42c257ccd0006fbb06ae7b0781  hardware/proposals/2026-10-25-uvlo/candidate-bom.csv
 93b648cbc360132fad57728539596aca49efd2928d3e00ad0f247008a0e92279  hardware/proposals/2026-10-25-uvlo/sourcing.csv
@@ -670,8 +672,8 @@ c5f873e2bacf6b000ce99db69c2a96921201c320b1f2c4bb59ae1da9c7c4ae89  simulation/pro
 cecaf4559a0a7c223130a6db6d51e1abfcb27522cea56bd5ce5ac85748f25299  simulation/proposals/2026-10-25-uvlo/results/uvlo-budget.out
 20b47834ce8b76488c6bec1a5c77691b6c96250b46813247fe6f51e3c9dcb5c1  simulation/proposals/2026-10-25-uvlo/results/uvlo-verify.json
 f25b8637038345f88b02b44d9bce88aa292c912a18cb1a5f52e941f1d0fa50c5  simulation/proposals/2026-10-25-uvlo/results/verify-stdout.txt
-5784891dc5d3448ceaf16877a042b23a6a6b05c45831a832a361f9579019ccb5  simulation/proposals/2026-10-25-uvlo/run_uvlo.py
-54ce7b275c2f8e4f8e9d6ed92b3af98b2e776850e3bc3260adf85f378e2cfb45  simulation/proposals/2026-10-25-uvlo/test_locked_runner.py
+676d41ef1b72e95771e34ed26f54e23ecdf803fcdd432ad0df3cdbaf099cd5f6  simulation/proposals/2026-10-25-uvlo/run_uvlo.py
+c295fd8ffefe5fa19fee6005e4c697903ecc9e4abc2cccaa25478a5470646d32  simulation/proposals/2026-10-25-uvlo/test_locked_runner.py
 7be7a5fbbff1f8d5b1d615ea5e305aa0ef8c9ae636a9290c12957ffd6921d027  simulation/proposals/2026-10-25-uvlo/test_locked_verifier.py
 7165171d522b74dda0502d5d44c36dda508f3c43dfe072c595e932bcc2de1545  simulation/proposals/2026-10-25-uvlo/test-cases-uvlo.json
 e00ebda55681fa1fef977e9904fc4337311c3db205245cb017b3ffdb7684a257  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_gates.py
