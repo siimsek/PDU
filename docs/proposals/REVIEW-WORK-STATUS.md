@@ -11,7 +11,16 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 - H1 O1 peak ≤12.0 V; H2 normal PRE/RUN/POST bus/O1 ≤11.1605 V; Vf≥18.0 V; M1≥60 ms (65 ms hedef); M3 0…1.000 µs kapsayıcı (negatif/NaN/Inf/eksik FAIL); M4 EN ↑ anında VGS≥6 V. R-DIP yalnız report-only.
 - Yeni kabul koşusu yok; tarihsel sayılar mevcut dosyalara aittir. Fiziksel tezgâh ölçümü yok; WP1/WP2 açık, üretim/merge onayı yok.
 
-## Son tamamlanan iş paketi: PKG-03 — güvenli UVLO runner ve izole kanıt (yeni simülasyon yok)
+## Son tamamlanan iş paketi: PKG-04 — SHA-256 kaynaklı 20×2 Decimal yeniden analiz (yeni simülasyon yok)
+
+- Kaynak HEAD `db6237a955f4314bc91a4f274f91491b7de9b4e3`; rapor commit'i `80bd8cff5c22ecae7322da776e74b27254167733`. Rapor: `docs/proposals/2026-10-25-uvlo/PKG04-DECIMAL-REANALYSIS.md`.
+- Eski `num-study-tmax100n` **40/40 ngspice log SHA-256**, **20/20 kaynak deck SHA-256**, ölçüm/metrik, `missing/no_event` bütünlük denetimi başarılı; hiçbir eski log/girdi/sonuç değiştirilmedi. Ham basılı ondalık ve `.meas` türü ile tam ondalık kapsayıcı karşılaştırma: **4/20 → 6/20** (yeniden analiz, yeni simülasyon değil).
+- Yalnız `dip0v-10us-mbmin-tmin` ve `dip0v-100us-mbmin-tmin` için `EN_R1/EN_RLAST` farkı tam `1e-7 s` olduğundan eski float FAIL, Decimal **PASS**; `resolution-sensitive` olarak açık.
+- **6 farklı vakada 9 gerçek yöntem abort'u**, diğer yöntem tolerans farkları ve O3 50 µs mbmin `POST_O1_AVG` Gear 2.769516 V / Trap 0.2660205 V (2.5034955 V) değişmedi. Sonuç **6 PASS / 14 NOT-PASS**; protokol kabulü yok.
+- Yerel tekrar testleri: `test_study_integrity.py` **27/27**, sahte solver `test_locked_runner.py` **9/9**, ayrılmış provenance `test_verifier_provenance.py` **7/7** PASS. **Tam `verify_uvlo.py` entegrasyonu çalıştırılamadı**: özel repo klonu/gerçek ngspice erişimi yok. 259 Gear kabul ve 23/23 regresyonun yeni koşusu yok.
+- Tarihsel UVLO 161 PASS/69 kabul FAIL/6 incomplete; WP1 4 ESL incomplete değişmedi. WP1/WP2 P0 bloklayıcıları, R-DIP politikası, fiziksel test ve üretim kapıları açık.
+
+## Önceki iş paketi: PKG-03 — güvenli UVLO runner ve izole kanıt (yeni simülasyon yok)
 
 - Değişiklikler: `run_uvlo.py` önce temiz HEAD, 259/259 kilitli kaynak blob ve 25 kritik girdi SHA-1, ngspice -v kontrolü; yalnız `--run-id` ile ayrı ve **üzerine yazılamayan** `results/runs/<ID>` dizini, atomik `.active-acceptance.lock` ve kesintide saklanan durum. Tam 259 Gear deck'e aynı `.tran ... 100n`; kaynak deck/baseline/ana BOM değişmiyor. Her aşamada kaynak/staged/log SHA-256; eksik/abort/dirty/interruption fail-closed.
 - `verify_uvlo.py` eski `--historical` kaynaklarını korurken `--run-id` ile izole manifest/log/staged içeriğini denetler: `COMPLETE`, 259, 100n/Gear, runner+kilit SHA-256, kaynak/staged/çıktı SHA-256, staging dönüşümünün yalnız tmax ve include yoluyla sınırlı olması. Yeni `.gitignore` yalnız `results/runs/` çıktısını dışlar.
@@ -60,4 +69,4 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 
 ## Bir sonraki `devam` için tek iş
 
-**PKG-04 / izole doğrulayıcı entegrasyonu ve tarihsel kanıtın bağımsız denetimi:** İlk olarak HEAD, bu kayıt, başka aktif süreç ve izole çıktıları kontrol et. Tam `verify_uvlo.py` ile 7 negatif fixture testini ve 9 runner testini bütün halde çalıştır; legacy `--historical` ve 259-deck stage/include doğruluğunu kontrol et. Aynı zamanda `num-study-tmax100n` tarihsel ölçümlerini ham log hash'leriyle Decimal-inclusive yeniden değerlendir; 100ns eşitlik ve O3 POST süreklilik farkını açık raporla. **Gerçek ngspice mevcutsa** ancak tüm kilitli 259 girdi ve tek-yazar koşulları sağlandığında yalnız tek kabul koşusu yap. Aksi halde simülasyon uydurma; M3 nedensel ham iz/tmax yakınsama ve model tanısı sonraki P0 işidir. CI kapalı; tarihsel loglar, model, KiCad, main ve sert gereksinimler değişmez.
+**PKG-05 / tam verifier entegrasyon kapısı:** Önce gerçek uzak HEAD, durum kaydı ve çalışan süreç/log denetimi. Tam `verify_uvlo.py` kaynak ağacını temin edip `tests/test_locked_verifier.py` ve diğer ilgili negatif testleri gerçekten çalıştır; sentetik kaynak/fake solver ile gerçek 259-deck kabul koşusunu açıkça ayır. Tam entegrasyon kusuru bulunursa önce negatif test, sonra kod düzeltmesi; eski `--historical` sonuçları ve `--run-id` izolasyonu korunacak. Olası modül/depo/solver erişim eksiklikleri açıkça kaydedilecek. Başarılı tam entegrasyon olmadan 259 Gear/tmax100n koşusunu kabul diye başlatma; tamamlanan M3 nedensellik/20×2 50ns/25ns ancak sonraki bağımlı pakete geçsin. CI kapalı, merge yok.
