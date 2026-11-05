@@ -89,7 +89,7 @@
     },
     {
       "path": "simulation/proposals/2026-10-25-uvlo/run_uvlo.py",
-      "git_blob_sha1": "a21b0e8ae7b3d2afb8044d0368da83780b7d37bb"
+      "git_blob_sha1": "8a43e3cb5801ac9625e6e420a97733224b86e2ed"
     },
     {
       "path": "simulation/proposals/2026-10-25-uvlo/test-cases-uvlo.json",
@@ -101,7 +101,7 @@
     },
     {
       "path": "simulation/proposals/2026-10-25-uvlo/verify_uvlo.py",
-      "git_blob_sha1": "478e55b2321aafc7389f2504e403c5ee2ea99ba9"
+      "git_blob_sha1": "62a59d50d45d9e2c680e1ff8ac21901afe6f6722"
     },
     {
       "path": "simulation/proposals/study_integrity.py",
@@ -487,5 +487,12 @@
     "No commit or input mutation during a run; hash outputs; abort/missing/FAIL must stay visible.",
     "Do not enable disabled CI, change baseline lib, KiCad, main, limits or prior evidence.",
     "Numerical study requires complete 20x2 at each defined stage; no per-deck solver retuning."
-  ]
+  ],
+  "lock_update": {
+    "package": "PKG-03",
+    "revision": "safe-runner+isolated-verifier",
+    "date": "2026-11-05",
+    "source_deck_blobs_unchanged": true,
+    "note": "Source_head remains the original 259-deck freeze; only runner and verifier Git blobs updated. No simulation carried out."
+  }
 }
