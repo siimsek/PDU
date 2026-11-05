@@ -5,6 +5,8 @@ NO real PDU simulation is performed; full electrical acceptance is not asserted.
 import importlib.util
 import json
 import shutil
+import subprocess
+import sys
 import unittest
 from pathlib import Path
 import test_locked_runner as fixtures
@@ -70,6 +72,16 @@ class VerifierProvenanceTests(unittest.TestCase):
         (self.f.pkg / 'pdu-uvlo-block.inc').write_text('modified during run')
         self.assertTrue(any('source verification failed' in x or 'dirty/untracked' in x
                             for x in self.errors()))
+
+    def test_unknown_run_id_returns_2_without_overwriting_legacy_evidence(self):
+        historical = self.f.pkg / 'results/uvlo-verify.json'
+        historical.write_text('IMMUTABLE HISTORICAL SUMMARY\\n')
+        result = subprocess.run(
+            [sys.executable, str(self.f.pkg / 'verify_uvlo.py'), '--run-id', 'absent-pkg05'],
+            cwd=self.f.root, env=self.f.env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIn('LOCKED_RUN_PRECHECK', result.stderr)
+        self.assertEqual(historical.read_text(), 'IMMUTABLE HISTORICAL SUMMARY\\n')
 
 
 if __name__ == '__main__':
