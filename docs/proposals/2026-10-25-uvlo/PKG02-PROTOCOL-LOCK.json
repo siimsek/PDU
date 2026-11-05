@@ -101,7 +101,7 @@
     },
     {
       "path": "simulation/proposals/2026-10-25-uvlo/verify_uvlo.py",
-      "git_blob_sha1": "62a59d50d45d9e2c680e1ff8ac21901afe6f6722"
+      "git_blob_sha1": "4a246f2ac3cf001293f8f18e3560f456bbc306ec"
     },
     {
       "path": "simulation/proposals/study_integrity.py",
@@ -494,5 +494,13 @@
     "date": "2026-11-05",
     "source_deck_blobs_unchanged": true,
     "note": "Source_head remains the original 259-deck freeze; only runner and verifier Git blobs updated. No simulation carried out."
+  },
+  "pkg05_verifier_update": {
+    "source_head": "66c39e6887e4a1fab034f0169d4319cfa99bb689",
+    "old_git_blob_sha1": "62a59d50d45d9e2c680e1ff8ac21901afe6f6722",
+    "new_git_blob_sha1": "4a246f2ac3cf001293f8f18e3560f456bbc306ec",
+    "reason": "PKG-05 safety patch: reject nonexistent or symlinked run id; no deck or acceptance gate changed",
+    "test_before_fix_commit": "25c59f5a6bfc05574a3289660a10858af4f1b40f",
+    "fix_commit": "53aeddff7549c685d4b0396c0dd140783265e33a"
   }
 }
