@@ -31,6 +31,8 @@ class VerifierProvenanceTests(unittest.TestCase):
                      'pdu-circuit-o1ovp.inc', 'pdu-efuse-block-o1ovp.inc'):
             (o1 / name).write_text('* fake O1 model fixture' + chr(10))
         (self.f.pkg / 'results' / 'uvlo-budget.json').write_text('{}' + chr(10))
+        # Historical sentinel is tracked BEFORE runner manifest captures the clean HEAD.
+        (self.f.pkg / 'results' / 'uvlo-verify.json').write_bytes(b'IMMUTABLE EVIDENCE' + bytes([10]))
         fixtures.call('git', 'add', '.', cwd=self.f.root)
         commit = fixtures.call('git', 'commit', '-qm', 'synthetic fixture verifier', cwd=self.f.root)
         self.assertEqual(commit.returncode, 0, commit.stderr)
