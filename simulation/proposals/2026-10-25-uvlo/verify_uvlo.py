@@ -41,6 +41,25 @@ LOGS = HERE / 'results' / 'logs'
 MANIFEST = HERE / 'results' / 'run-manifest.json'
 VERIFY_OUTPUT = HERE / 'results' / 'uvlo-verify.json'
 STAGED = None
+
+
+def select_locked_run(run_id):
+    """Select only an existing, non-symlinked immutable run; never fall back to historical outputs."""
+    if not isinstance(run_id, str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,63}', run_id):
+        raise ValueError('invalid locked run id')
+    results = HERE / 'results'
+    runs = results / 'runs'
+    root = runs / run_id
+    logs, manifest, verify, staged = (root / 'logs', root / 'run-manifest.json',
+                                     root / 'uvlo-verify.json', root / 'staged')
+    if any(p.is_symlink() for p in (results, runs, root, logs, manifest, verify, staged)):
+        raise ValueError('symlink in locked run evidence path')
+    if not root.is_dir():
+        raise FileNotFoundError(f'locked run directory not found: {root}')
+    if not manifest.is_file() or not logs.is_dir() or not staged.is_dir():
+        raise FileNotFoundError('locked run manifest, logs or staged decks missing')
+    return logs, manifest, verify, staged
+
 O1_PEAK_MAX = 12.0          # O1 instantaneous peak (hard)
 BUS_NORMAL_MAX = 11.1605    # normal-regime bus max (hard)
 V_FALL_MIN = 18.0           # over-discharge: buck must be off before VIN < 18.0 V (3.0 V/cell under load, see REQUIREMENTS)
@@ -519,12 +538,12 @@ def main():
         print('invalid run-id', file=sys.stderr)
         sys.exit(2)
     if mode == 'acceptance' and run_id:
-        output = HERE / 'results' / 'runs' / run_id
-        if output.is_dir():
-            LOGS = output / 'logs'
-            MANIFEST = output / 'run-manifest.json'
-            VERIFY_OUTPUT = output / 'uvlo-verify.json'
-            STAGED = output / 'staged'
+        try:
+            LOGS, MANIFEST, VERIFY_OUTPUT, STAGED = select_locked_run(run_id)
+        except (FileNotFoundError, ValueError) as exc:
+            # Never run verification against or write into legacy evidence for an unknown run-id.
+            print(f'LOCKED_RUN_PRECHECK: {exc}', file=sys.stderr)
+            sys.exit(2)
     cases = json.loads((HERE / 'test-cases-uvlo.json').read_text())['cases']
     prov_err, prov = provenance(cases, run_id)
     if mode == 'acceptance' and not run_id:
