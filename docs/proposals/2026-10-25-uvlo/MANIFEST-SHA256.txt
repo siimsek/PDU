@@ -3,6 +3,8 @@
 # PKG-02 (2026-11-05): 259/259 deck ve 20×2 kaynak kilidi; yeni ngspice kosusu yok.
 # PKG-04 (2026-11-05): loglarin SHA-256 kontrollu eski 20x2 Decimal yeniden analizi 4/20 -> 6/20, yeni sim yok.
 # PKG-05A (2026-11-05): verifier missing-run/symlink fail-closed, 9 helper tests; full verifier integration OPEN; no ngspice run.
+# PKG-05B (2026-11-05): historical readonly / locked-run exclusive verifier; focused tests only, no ngspice simulation.
+6c7fe2b51daf62fc88cc5bb49e7094b069bbe2ca89c1097ade970c2487376d16  simulation/proposals/2026-10-25-uvlo/test_pkg05_historical_readonly.py
 e5a7295970de6620f79b295056fca07e5d8be61fb12130a754156ca75a6675f3  simulation/proposals/2026-10-25-uvlo/test_pkg05_run_selection.py
 091662cf2183bff4048daf9eb4a02594a9479ac1db8aae235a96e26f747177c7  docs/proposals/2026-10-25-uvlo/PKG05-VERIFIER-SAFETY.md
 # PKG-03 (2026-11-05): kilitli 259 Gear/tmax100n runner+izole verifier; yalniz sentetik fixture testleri, YENI NGSPICE KABUL KOSUSU YOK.
@@ -15,12 +17,12 @@ d502f98921b0b46fa4a6e13a5dc2f22a52b73a9925b0708474e6521deafc268c  docs/proposals
 f97614daebff76c4d4b8664f859404c8e08f651513556fa3a778b8f35e9c86ad  docs/proposals/2026-10-25-uvlo/CHATGPT_REVIEW_RESPONSE.md
 0df99c4fa91e12247f9ea2934111a14cc16dbb1a5c2a3bad20ba6316725ccc8a  docs/proposals/2026-10-25-uvlo/KICAD-TRANSFER.md
 99ed3dd9c7016736a171b798ba57436f209d75187c519c92e9d0b95f13c691ff  docs/proposals/2026-10-25-uvlo/MODELS.md
-8e3b7e52197198376348ae136ab80b05b2df92a31381bd749a5e1f3d7dd7e19c  docs/proposals/2026-10-25-uvlo/PKG02-PROTOCOL-LOCK.json
+1446ebafc131674b1ddf1dbc687b8091e23ab39591045f09f4bc00bd09b0634b  docs/proposals/2026-10-25-uvlo/PKG02-PROTOCOL-LOCK.json
 ccfc60987913247094c25db74d8bb11e8c13811178c9ceee047cc682733e650c  docs/proposals/2026-10-25-uvlo/PKG04-DECIMAL-REANALYSIS.md
 9692d57f88911c5d86d64fa7849eca5a56a5604bb932682ec5bd37edda4fa713  docs/proposals/2026-10-25-uvlo/REQUIREMENTS.md
 4f73fadbd0d8f911f493ed2bf38a761278888ab78379ae715aa241316846322c  docs/proposals/2026-10-25-uvlo/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
-7ff1588854d6d110a546c7d22d319828313af7af11fa21574e96203747eb9da5  docs/proposals/REVIEW-WORK-STATUS.md
+ac96bcdbc3915d18fd7e34c78a7c46366fed0d6cd73674a837184f7cad0dab2e  docs/proposals/REVIEW-WORK-STATUS.md
 4bd03e1e738116fb9c5acf92602b8968d979be9bbe4c89fd73acb46b97cf4183  hardware/proposals/2026-10-25-uvlo/SOURCING.md
 f8627c8373910034063ba174ac32652435f23a42c257ccd0006fbb06ae7b0781  hardware/proposals/2026-10-25-uvlo/candidate-bom.csv
 93b648cbc360132fad57728539596aca49efd2928d3e00ad0f247008a0e92279  hardware/proposals/2026-10-25-uvlo/sourcing.csv
@@ -676,6 +678,6 @@ f88e5d6f31fe1e357045c34d59e4c4354723e9b9331967613b60850d5883016e  simulation/pro
 30d955dad68201b5516a277250ed67c0ac1d4f11dec67d112df10811aab1a4d3  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur5.py
 dc3f776ee9d9871aadb6cd05d0efdc9b8ebffe510ec14d0b42de96fc0e2b4b96  simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur6.py
 8ffecdb81e3a8b9068459b3e92ddb4c3c1203b46dbaf3a6227d455a074bf4d39  simulation/proposals/2026-10-25-uvlo/uvlo_budget.py
-1f110179cf0125021bef66885d39f742e78f9e91341263afb1e70ce6bc118f42  simulation/proposals/2026-10-25-uvlo/verify_uvlo.py
+4f0498a64234b607da6687215e0e134462deba903e9eb5980ef56c472b33d673  simulation/proposals/2026-10-25-uvlo/verify_uvlo.py
 75b83f4ff3c167f20f424b836b174c35a89aca0f3637fdec6812ae6b8ac8e784  simulation/proposals/study_integrity.py
 1aaee9ac7d2e1bb36ef075e3c9623aec2105fcb7ce67cfd56a01ab5fafb7889a  simulation/proposals/test_study_integrity.py
