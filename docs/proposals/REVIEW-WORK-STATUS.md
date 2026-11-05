@@ -11,7 +11,17 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 - H1 O1 peak ≤12.0 V; H2 normal PRE/RUN/POST bus/O1 ≤11.1605 V; Vf≥18.0 V; M1≥60 ms (65 ms hedef); M3 0…1.000 µs kapsayıcı (negatif/NaN/Inf/eksik FAIL); M4 EN ↑ anında VGS≥6 V. R-DIP yalnız report-only.
 - Yeni kabul koşusu yok; tarihsel sayılar mevcut dosyalara aittir. Fiziksel tezgâh ölçümü yok; WP1/WP2 açık, üretim/merge onayı yok.
 
-## Son uygulanan alt paket: PKG-05A — locked verifier fail-closed (tam entegrasyon açık)
+## Son uygulanan alt paket: PKG-05B — historical salt-okunur doğrulama (tam entegrasyon AÇIK)
+
+- Başlangıç uzak HEAD: `646b914801883d916bb5461405bdaed195737c6f` (PR #1 draft; main değişmedi).
+- Somut hata: `verify_uvlo.py --historical`, normal akışın sonunda `VERIFY_OUTPUT.write_text(...)` üzerinden repo tarafından izlenen `results/uvlo-verify.json` dosyasını yeniden yazıyordu. `--run-id` için ayrı klasör seçimi bundan farklıdır.
+- Önce test: `test_pkg05_historical_readonly.py` eklendi (commit `b0dac61d`); yerel eski çıkarılmış modülde **8/8 beklenen ERROR** (eksik `write_verification` işlevi). Düzeltme: `verify_uvlo.py` `write_verification(mode, artifact)`; historical modunda **hiçbir çıktı dosyasına yazma yok** (özet stdout), yalnız doğrulanmış izole kabul modunda `open('x')` ile ilk kez yazma var; mevcut rapor/symlink üzerine yazılamaz. Kod commitleri: `18dec5f5`, newline düzeltmesi `7d864fbe`.
+- **Bu turda gerçekten çalıştırılan yerel testler:** yeni artifact-helper 8/8 PASS; eski izole run-id seçici 9/9; PKG-01 integrity 27/27; PKG-03 sentetik runner 9/9 ve ayrılmış provenance 7/7. Toplam **60/60 yerel birim/sentetik PASS**. Yeni testin Github Git blob SHA-1'i **9e6126870eb4f998000f7486739f8a25123eadba** ile yerel test dosyası birebir aynı. **Tam `verify_uvlo.py` doğrudan import/CLI testleri çalıştırılamadı**: container'da tam özel depo klonu yok, GitHub ağına doğrudan DNS erişimi yok. Yeni helper'ın yerel kopyası tam verifier değil; 60/60 tam entegrasyon olarak ifade edilmeyecek.
+- Kilit yenilendi: `PKG02-PROTOCOL-LOCK.json` içindeki verifier Git blob **e0e3d7270209f0aed58c938ed813745806a5fae2**; **25/25 kaynak girdisi ve 259/259 deck** GitHub kaynak blob eşleşmesi. Hiçbir eski ngspice logu, ana model/baseline/BOM veya KiCad dosyası değişmedi.
+- **Açık entegrasyon sorunu:** `tests/test_uvlo_tur2.py` ve `tests/test_uvlo_gates.py` gibi tarihsel sentetik fikstürler `--run-id` ile eski `results/logs` şemasını ve eski `uvlo-verify.json` çıktısını bekliyor; `tests/test_uvlo_tur5.py` V53b tarihi modu JSON çıktısından okuyor. Bu test altyapısı güvenli izole koşu ve yeni historical stdout davranışına güncellenmeli; mevcut eski testlerin PASS olduğu **iddia edilmiyor**.
+- **Yeni simülasyon yok**; WP2 gerçek tarihsel 161 PASS / 69 FAIL / 6 incomplete, önceki yeniden analiz 6/20; 9 yöntem abort ve O3 farkı açık. WP1 4 ESL eksik. CI kapalı, merge yok, fiziksel kabul yok.
+
+## Önceki alt paket: PKG-05A — locked verifier fail-closed (tam entegrasyon açık)
 
 - Kaynak HEAD `3963f5973490e45d4d3e99c425cd20249a8c0a15`. Rapor: `docs/proposals/2026-10-25-uvlo/PKG05-VERIFIER-SAFETY.md`.
 - **Bulgu:** `verify_uvlo.py --run-id ID` mevcut olmayan izole dizin için sessizce eski `results/logs/` ve depodaki `uvlo-verify.json` hedeflerine düşüyordu. Bu yazma/kanıt bütünlüğü riski test-önce düzeltildi.
@@ -78,4 +88,4 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 
 ## Bir sonraki `devam` için tek iş
 
-**PKG-05B / tarihsel kanıtı koruyan verifier entegrasyon kapanışı:** Uzak HEAD/durum/proses ön kontrolünden sonra `--historical` modunun eski takip edilen `results/uvlo-verify.json` dosyasını yeniden yazmasını negatif testle göster; varsayılan salt-okunur davranışla düzelt. Güncel tam `verify_uvlo.py` ve `test_locked_verifier.py` kodunun bir arada çalıştırılabildiği ortamda 8/8 + 9/9 ve önceki test regresyonlarını kontrol et; erişim engeli varsa açıkça kaydet ve yeni kabul PASS üretme. `--run-id` mevcut olmayan/yarım koşu için fail-closed kalacak. Tam entegrasyon doğrulanmadan 259 Gear/100ns koşusu başlatılmayacak; 23/23 eski regresyon ancak yeni gerçek simülasyonda raporlanır. Devamda M3 ham nedensellik ve 20×2 yakınsama.
+**PKG-06 / fixture uyumluluğu ve tam verifier kapısı:** GitHub HEAD/durum/proses kontrolü; eski `test_uvlo_tur2.py`, `test_uvlo_gates.py` ve V53b'nin izole `--run-id` / salt-okunur historical stdout ile uyumsuz beklentilerini önce failing testle gösterip sonra yalnız test fikstürlerinde düzelt. Ürün sınırını, regresyon beklenen FAIL'lerini veya doğrulayıcıyı testleri geçiriyor görünmek için gevşetme. Özel repo tam dosya ağacı ve ngspice varsa gerçek 8+9+mevcut testleri çalıştır; yoksa açıkça sınırlı doğrulama olarak kaydet. Tam entegre doğrulayıcı kanıtı olmadan yeni 259 Gear koşusunu kabul olarak duyurma. Sonrasında M3 ham nedensellik ve 20×2 yakınsama aynı sabit matrisle yürütülecek.
