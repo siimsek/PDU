@@ -11,7 +11,15 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 - H1 O1 peak ≤12.0 V; H2 normal PRE/RUN/POST bus/O1 ≤11.1605 V; Vf≥18.0 V; M1≥60 ms (65 ms hedef); M3 0…1.000 µs kapsayıcı (negatif/NaN/Inf/eksik FAIL); M4 EN ↑ anında VGS≥6 V. R-DIP yalnız report-only.
 - Yeni kabul koşusu yok; tarihsel sayılar mevcut dosyalara aittir. Fiziksel tezgâh ölçümü yok; WP1/WP2 açık, üretim/merge onayı yok.
 
-## Son uygulanan alt paket: PKG-05B — historical salt-okunur doğrulama (tam entegrasyon AÇIK)
+## Son uygulanan alt paket: PKG-06 — sentetik fixture geçişi (tam verifier entegrasyonu AÇIK)
+
+- Kaynak uzak HEAD: `1c51c28ff4bb28ba25a92fe44f42789eb9640ae3`, PR #1 draft; rapor `docs/proposals/2026-10-25-uvlo/PKG06-FIXTURE-MIGRATION.md`.
+- Mevcut `test_uvlo_tur2.py`, `test_uvlo_gates.py`, `test_uvlo_tur5.py`, `test_uvlo_tur6.py` küçük elektrik ölçüm fikstürleri gerçek kilitli 259 kabul koşusu yerine **salt-okunur `--historical` stdout JSON** üzerinden sınayacak şekilde taşındı. Eksik/kısmi stdout özetinde yanlış PASS üretmeyen ortak `tests/fixture_summary.py` ve 6 testi eklendi. M4/V53: sahte mini-run için açık `exit 2 / LOCKED_RUN_PRECHECK`; fiziksel limit/test kırpılması yok.
+- Eski Tur-2 runner testleri artık silinen tarihsel logu beklemek yerine sabit 259 sentetik deck, korunmuş geçmiş log/manifest, Gear/100ns, eksik ngspice, `INCOMPLETE` abort ve izole `COMPLETE` sınar. `test_locked_verifier.py` tam 259-deck sahte CLI'de ölçüm yokken elektriksel FAIL ve eksik manifestte exit2 bekleyen **iki ek test içeriyor, fakat bu ek testler çalıştırılmadı**.
+- Bu tur container'da **gerçek çalıştırılan** yerel birim/sentetik testler: yeni `test_fixture_summary.py` **6/6 PASS** (GitHub blob SHA dosyalarıyla eşleşti); eski `test_locked_runner.py` **9/9**, `test_study_integrity.py` **27/27**, ayrılmış `test_verifier_provenance.py` **7/7**, `test_pkg05_run_selection.py` **9/9**, `test_pkg05_historical_readonly.py` **8/8**. **Toplam 66/66 yerel test**, fakat *değiştirilmiş bütün GitHub testlerini veya tam verifier'ı içermiyor*. GitHub'dan okunmuş kaynaklarda 16/16 statik uyumluluk şartı kontrol edildi.
+- **AÇIK:** değiştirilmiş Tur-2/Gates/Tur-5/Tur-6 ve `test_locked_verifier.py` tam Python test koşusu yok; özel repo klonu ve gerçek ngspice bu container'da mevcut değil. 259 Gear kabul, 23 regresyon, M3 nedensellik, 20×2 50/25ns çalıştırılmadı. Eski WP2 **161 PASS/69 kabul FAIL/6 eksik**, Decimal tarihsel **6/20** (9 yöntem abort), WP1 dört ESL eksik. CI kapalı, main/merge yok.
+
+## Önceki alt paket: PKG-05B — historical salt-okunur doğrulama (tam entegrasyon AÇIK)
 
 - Başlangıç uzak HEAD: `646b914801883d916bb5461405bdaed195737c6f` (PR #1 draft; main değişmedi).
 - Somut hata: `verify_uvlo.py --historical`, normal akışın sonunda `VERIFY_OUTPUT.write_text(...)` üzerinden repo tarafından izlenen `results/uvlo-verify.json` dosyasını yeniden yazıyordu. `--run-id` için ayrı klasör seçimi bundan farklıdır.
@@ -88,4 +96,4 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 
 ## Bir sonraki `devam` için tek iş
 
-**PKG-06 / fixture uyumluluğu ve tam verifier kapısı:** GitHub HEAD/durum/proses kontrolü; eski `test_uvlo_tur2.py`, `test_uvlo_gates.py` ve V53b'nin izole `--run-id` / salt-okunur historical stdout ile uyumsuz beklentilerini önce failing testle gösterip sonra yalnız test fikstürlerinde düzelt. Ürün sınırını, regresyon beklenen FAIL'lerini veya doğrulayıcıyı testleri geçiriyor görünmek için gevşetme. Özel repo tam dosya ağacı ve ngspice varsa gerçek 8+9+mevcut testleri çalıştır; yoksa açıkça sınırlı doğrulama olarak kaydet. Tam entegre doğrulayıcı kanıtı olmadan yeni 259 Gear koşusunu kabul olarak duyurma. Sonrasında M3 ham nedensellik ve 20×2 yakınsama aynı sabit matrisle yürütülecek.
+**PKG-07 / tam test entegrasyonunu kanıtlama:** Önce uzak HEAD/durum ve aktif süreç/çıktı kontrolü. Tam `verify_uvlo.py` ile güncellenmiş `tests/test_uvlo_gates.py`, `test_uvlo_tur2..6.py`, `test_locked_verifier.py` dosyalarının **aynı temiz Git checkout** içinde Python ile gerçek koşusu; fake ngspice fixture vs elektriksel kabul ayrılmalı. Başarısız test varsa tekil kök nedeni/çıktı kaydedilip test kapısı gevşetilmeden düzeltilmeli. Repo/solver erişimi yoksa tek tek engelleri not et, geçmeyen veya koşulmayanı PASS raporlama. Ancak bütün entegrasyon kapıları geçer ve gerçek ngspice sağlanırsa kilitli 259 Gear/100ns kabul koşusu yapılabilir; geçmiş loglar salt-okunur. Sonra M3 ham nedensellik, 20×2 yakınsama, WP1 A/B/C/ESL.
