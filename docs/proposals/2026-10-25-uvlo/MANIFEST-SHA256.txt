@@ -1,6 +1,7 @@
 # WP2 2026-10-25-uvlo – SHA-256 manifest (35485d5..HEAD değişen tüm WP2 dosyaları + paylaşılan workflow/PLAN; o1-ovp hariç; bu dosya hariç). Oluşturma: 2026-10-26 18:39 TSİ, WP2 Tur 6 (inceleme 6416795114; yeni kabul koşusu yok; Tur-5 koşusu tur5-6e150c8/28b6d41 aynen; yeniden doğrulama 6721382, IMON tanısı 62bd337, tmax 100n num-study c84b3e3 (4/20)). CI devre dışı (kullanıcı); kanıt yerel koşu + bu hash'ler
 # PKG-01 (2026-11-05): provenance/Decimal kodu ve durum kaydi; yeni kabul simulasyonu yok.
 # PKG-02 (2026-11-05): 259/259 deck ve 20×2 kaynak kilidi; yeni ngspice kosusu yok.
+# PKG-04 (2026-11-05): loglarin SHA-256 kontrollu eski 20x2 Decimal yeniden analizi 4/20 -> 6/20, yeni sim yok.
 # PKG-03 (2026-11-05): kilitli 259 Gear/tmax100n runner+izole verifier; yalniz sentetik fixture testleri, YENI NGSPICE KABUL KOSUSU YOK.
 1dc293d64ae820dd2a00862963b5d03fff3306dbed98e9355a008a70af27cf44  .github/workflows/proposal-ngspice.yml
 96866b86b767d216f0452a2e6652544b3a67b7a1fbfa07517dc1b23eeff3c698  .gitignore
@@ -12,10 +13,11 @@ f97614daebff76c4d4b8664f859404c8e08f651513556fa3a778b8f35e9c86ad  docs/proposals
 0df99c4fa91e12247f9ea2934111a14cc16dbb1a5c2a3bad20ba6316725ccc8a  docs/proposals/2026-10-25-uvlo/KICAD-TRANSFER.md
 99ed3dd9c7016736a171b798ba57436f209d75187c519c92e9d0b95f13c691ff  docs/proposals/2026-10-25-uvlo/MODELS.md
 3ae7491954fcf6053b3ddea61180b986552449f9bf9a1c19aa0e5bdffe1a96e2  docs/proposals/2026-10-25-uvlo/PKG02-PROTOCOL-LOCK.json
+ccfc60987913247094c25db74d8bb11e8c13811178c9ceee047cc682733e650c  docs/proposals/2026-10-25-uvlo/PKG04-DECIMAL-REANALYSIS.md
 9692d57f88911c5d86d64fa7849eca5a56a5604bb932682ec5bd37edda4fa713  docs/proposals/2026-10-25-uvlo/REQUIREMENTS.md
 4f73fadbd0d8f911f493ed2bf38a761278888ab78379ae715aa241316846322c  docs/proposals/2026-10-25-uvlo/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
-5b520673cd67aade7c84f25f35816c6d92329c1a4d8f789ea2b10e6eeb7d9ec9  docs/proposals/REVIEW-WORK-STATUS.md
+53e0175e2e93323bb1a7e044d69d4d2b8bb4988844aaa613b04105749751630a  docs/proposals/REVIEW-WORK-STATUS.md
 4bd03e1e738116fb9c5acf92602b8968d979be9bbe4c89fd73acb46b97cf4183  hardware/proposals/2026-10-25-uvlo/SOURCING.md
 f8627c8373910034063ba174ac32652435f23a42c257ccd0006fbb06ae7b0781  hardware/proposals/2026-10-25-uvlo/candidate-bom.csv
 93b648cbc360132fad57728539596aca49efd2928d3e00ad0f247008a0e92279  hardware/proposals/2026-10-25-uvlo/sourcing.csv
