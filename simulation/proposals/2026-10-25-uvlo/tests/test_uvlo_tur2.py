@@ -94,6 +94,10 @@ def build_tree(cases, logs, failed=None, manifest='fresh', run_id='run-123'):
         if callable(manifest):
             mf = manifest(mf)
         (here / 'results' / 'run-manifest.json').write_text(json.dumps(mf))
+    # Historical mode compares manifest HEAD to the real checkout. Empty git_head
+    # would make even healthy gate-control tests fail at provenance preflight.
+    from fixture_historical import bind_historical_fixture_git
+    bind_historical_fixture_git(here)
     return tmp, here
 
 
