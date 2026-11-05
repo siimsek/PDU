@@ -68,7 +68,7 @@ def write_verification(mode, artifact):
         raise ValueError('verification output requires an explicitly selected locked acceptance run')
     with VERIFY_OUTPUT.open('x', encoding='utf-8') as dest:
         json.dump(artifact, dest, indent=1, default=str)
-        dest.write('\\n')
+        dest.write(chr(10))
     return True
 
 
