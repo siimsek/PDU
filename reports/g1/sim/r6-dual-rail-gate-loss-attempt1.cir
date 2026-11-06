@@ -1,0 +1,57 @@
+* R6 targeted dual-rail loss: all gate voltages are measured relative to TS.
+* Behavioral charge proxy: Ceff=Qg,max/Vtest=153nC/10V per CSD19536KTT.
+* Active path: idealized 4ohm TGDN resistance, valid only at VCC=VBST-TS=12V.
+* Passive path: no driver sink after abrupt simultaneous 5V/12V rail loss.
+VTS_A TSA 0 26
+VTS_P TSP 0 26
+VLOGIC_A LOGA 0 PWL(0 5 10u 5 20u 0 1m 0)
+VDRV_A VDA 0 PWL(0 12 10u 12 20u 0 1m 0)
+VBST_A BSTA TSA PWL(0 12 10u 12 20u 0 1m 0)
+VLOGIC_P LOGP 0 PWL(0 5 10u 5 10.001u 0 1m 0)
+VDRV_P VDP 0 PWL(0 12 10u 12 10.001u 0 1m 0)
+VBST_P BSTP TSP PWL(0 12 10u 12 10.001u 0 1m 0)
+* Gate charge is initially held at 10V above the floating TS reference.
+VHOLD_A HN_A TSA 10
+SHOLD_A HN_A GA HOLD_A 0 FASTSW
+VCHOLD_A HOLD_A 0 PWL(0 5 9.999u 5 10u 0 1m 0)
+VHOLD_P HN_P TSP 10
+SHOLD_P HN_P GP HOLD_P 0 FASTSW
+VCHOLD_P HOLD_P 0 PWL(0 5 9.999u 5 10u 0 1m 0)
+* Two CSD19536KTT devices share the common gate node and common-source TS.
+CG_A1 GA TSA 15.3n IC=10
+CG_A2 GA TSA 15.3n IC=10
+CG_P1 GP TSP 15.3n IC=10
+CG_P2 GP TSP 15.3n IC=10
+VRGSA1 GA NGA1 0
+RGSA1 NGA1 TSA 10k
+VRGSA2 GA NGA2 0
+RGSA2 NGA2 TSA 10k
+VRGSP1 GP NGP1 0
+RGSP1 NGP1 TSP 10k
+VRGSP2 GP NGP2 0
+RGSP2 NGP2 TSP 10k
+* This arm assumes an OVP command at 10us, then sink remains active only
+* while the falling driver rail is above the 3.4V upper UVLO screen.
+VIA GA NPD_A 0
+RPD_A NPD_A NPD_SW_A 4
+SDN_A NPD_SW_A TSA CTRL_A 0 FASTSW
+BDRV_EN CTRL_A 0 V=if(time<10u,0,if(V(VDA)>3.4,5,0))
+* The abrupt-loss arm deliberately credits no active driver action after 10us.
+.model FASTSW SW(Ron=0.001 Roff=1T Vt=2.5 Vh=0.1)
+.tran 20n 1m 0 20n uic
+.options reltol=0.0001 abstol=1n method=gear
+.meas tran VGS1_ACTIVE_0P5US FIND V(GA,TSA) AT=10.5u
+.meas tran VGS2_ACTIVE_0P5US FIND V(GA,TSA) AT=10.5u
+.meas tran VGS1_ACTIVE_1US FIND V(GA,TSA) AT=11u
+.meas tran VGS2_ACTIVE_1US FIND V(GA,TSA) AT=11u
+.meas tran VGS1_ACTIVE_100US FIND V(GA,TSA) AT=100u
+.meas tran IACTIVE_MAX MAX I(VIA) FROM=10u TO=18u
+.meas tran TACTIVE_TO_2P1 WHEN V(GA,TSA)=2.1 FALL=1
+.meas tran VGS1_PASSIVE_0P5US FIND V(GP,TSP) AT=10.5u
+.meas tran VGS2_PASSIVE_0P5US FIND V(GP,TSP) AT=10.5u
+.meas tran VGS1_PASSIVE_100US FIND V(GP,TSP) AT=110u
+.meas tran VGS2_PASSIVE_100US FIND V(GP,TSP) AT=110u
+.meas tran IGS1_PASSIVE_0P5US FIND I(VRGSP1) AT=10.5u
+.meas tran IGS2_PASSIVE_0P5US FIND I(VRGSP2) AT=10.5u
+.meas tran TPASSIVE_TO_2P1 WHEN V(GP,TSP)=2.1 FALL=1
+.end
