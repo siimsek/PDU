@@ -16,7 +16,7 @@ Context sıfırlanırsa: bu dosyadaki son aşamanın "açık işler" listesinden
 | Aşama | Durum | Ana çıktı |
 |---|---|---|
 | 1 Tasarım kural kataloğu | tamam | `DESIGN-RULES.md` |
-| 2 Koruma mimarisi | bkz. aşağı | `PROTECTION-DECISION.md` |
+| 2 Koruma mimarisi | tamam (COUT sayısı Aşama 4'te) | `PROTECTION-DECISION.md` |
 | 3 Güç katı hesabı | bkz. aşağı | `POWER-STAGE.md` |
 | 4 Döngü kararlılığı | bkz. aşağı | `LOOP-STABILITY.md` |
 | 5 Tam sistem SPICE | bkz. aşağı | `SIM-RESULTS.md`, `design/pdu_v2.cir` |
@@ -25,6 +25,8 @@ Context sıfırlanırsa: bu dosyadaki son aşamanın "açık işler" listesinden
 ## Kararlar günlüğü
 
 - K1 (Aşama 2 girdisi): Varsayılanlar — O1 ≤12.0 V sert; O1 hatasında S2E birlikte kapanır; hata sonrası mandallı, yalnız güç döngüsü/manuel reset; ILIM zarfı (O1+S2E garantili-min ≥7.5 A); batarya+kablo direnci 20–200 mΩ taraması.
+
+- K2 (Aşama 2): Seçim A = TLV3601DCKR + REF5025AQDRQ1 + SN74LVC1G74DCUR → LM74502HDDFR OV pini → CSD19531Q5A; kaba OV bölücüsü 64.9k/24.9k aynı OV pinine. Yedek B = G1 LTC7001 zinciri (gecikme garanti edilemez). C (yalnız LM74502H OV) eşik penceresi nedeniyle elendi. Hassas bölücü 8.25k/2.32k TNPW1206 0.1 % 10 ppm/K → trip 11.2737–11.5219 V. O1 bütçesi 16× COUT ile 11.926 V.
 
 ## Açık işler
 

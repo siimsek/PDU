@@ -1,0 +1,339 @@
+{
+  "classification": "HESAP with DATASHEET inputs; no physical measurement",
+  "precision_divider": {
+    "rt_ohm": 8250.0,
+    "rb_ohm": 2320.0,
+    "tolerance": 0.001,
+    "tcr_per_K": 1e-05,
+    "k": 4.556034482758621,
+    "trip_min_target_V": 11.25
+  },
+  "trip_threshold": {
+    "path_a_enumerated": [
+      11.273697329580386,
+      11.521902906401806
+    ],
+    "path_b_interval": [
+      11.27338744612069,
+      11.521592079741382
+    ],
+    "diff_V": [
+      0.0003098834596961808,
+      0.00031082666042436813
+    ],
+    "contributions_V": {
+      "ref": 0.020502155172413793,
+      "ratio": 0.035583459051724144,
+      "offset": 0.022780172413793105,
+      "hyst": 0.003986530172413794,
+      "bias": 0.04125000000000001
+    },
+    "margin_above_transient_band_V": 0.053697329580385755,
+    "comparator_vcm_at_trip_V": 2.5289323313956658
+  },
+  "clamp_current": {
+    "vcc0_vraw_clamp_A_pathA": 0.006294932079414838,
+    "vcc0_vraw_clamp_A_pathB_worst": 0.006467073133739801,
+    "vcc5_vraw_clamp_A": 0.003533699059561129,
+    "limit_A": 0.01,
+    "vcm_out_of_range_above_vraw_V": 23.23577586206897
+  },
+  "rail_backpower_ldo_absent": {
+    "26V": 1.9235610905419052,
+    "40.709V": 3.072160215415685,
+    "53.3V": 4.055368562773476
+  },
+  "divider_power_W": {
+    "26V": {
+      "rt_W": 0.049917252107632225,
+      "rb_W": 0.014037336350267486
+    },
+    "53.3V": {
+      "rt_W": 0.2097772519823244,
+      "rb_W": 0.0589919060119991
+    },
+    "coarse_26V_rt2_W": 0.005440498807049568
+  },
+  "coarse_ov": {
+    "path_a": [
+      11.552487707264701,
+      13.703495774207942
+    ],
+    "path_b": [
+      11.5503892248996,
+      13.701046171084338
+    ],
+    "diff_V": [
+      0.0020984823651009066,
+      0.00244960312360476
+    ],
+    "above_transient_band": true,
+    "below_efuse_in_recommended": true,
+    "latched_ov_pin_min_V": 2.7761544829986278,
+    "latched_margin_over_ovr_max_V": 1.4431544829986278
+  },
+  "en_gating": {
+    "ratio": 0.4,
+    "rail_on_max_V": 3.375,
+    "rail_off_min_V": 2.5674999999999994,
+    "rail_off_max_V": 3.1625,
+    "latch_vcc_min_V": 1.65,
+    "comparator_por_V": 2.1,
+    "gate_off_before_latch_undefined": true,
+    "gate_off_before_comparator_por": true,
+    "rail_on_below_5V_min": true
+  },
+  "timing": {
+    "total_max_s": 1.0472622088383022e-06,
+    "parts_s": {
+      "comparator_tpd_max": 4.5e-09,
+      "latch_pre_to_q_max": 6.4e-09,
+      "ov_node_rc": 3.636220883830229e-08,
+      "lm74502h_tovp_off_max": 1e-06
+    },
+    "ov_node_tau_s": 6.428017390543395e-08,
+    "status": "comparator max valid only at 50 mV OD and VCM=VEE+0.3 V; driver max valid at 4.7 nF lumped load"
+  },
+  "gate_equivalence": {
+    "vgs_max_V": 13.9,
+    "fet_qg_at_vgs_max_C": 6.3093e-08,
+    "test_load_charge_C": 6.533e-08,
+    "ratio": 0.9657584570641358,
+    "ciss_max_F": 3.87e-09,
+    "status": "conditional: lumped 4.7 nF test load vs real FET charge ratio near 1; bench measurement required"
+  },
+  "bus_c_min_F": 0.00014707710000000002,
+  "c_safe_min_F": 8.100000000000002e-06,
+  "n_cout": 12,
+  "o1_peak_cases": [
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.2755878654321087e-05,
+      "dvdt_at_guarantee_V_per_s": 141240.18469520364,
+      "peak_closed_form_V": 11.903240360378323,
+      "peak_numeric_V": 11.896668916976537,
+      "diff_V": 0.006571443401785615,
+      "vin": 20.0,
+      "v0": 10.8333,
+      "r_src": 0.02,
+      "l_factor": 0.8
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.4261505891900246e-05,
+      "dvdt_at_guarantee_V_per_s": 126329.06165324035,
+      "peak_closed_form_V": 11.88650341724711,
+      "peak_numeric_V": 11.881432403167265,
+      "diff_V": 0.005071014079844005,
+      "vin": 20.0,
+      "v0": 10.8333,
+      "r_src": 0.02,
+      "l_factor": 1.0
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.2755878654321087e-05,
+      "dvdt_at_guarantee_V_per_s": 141240.18469520364,
+      "peak_closed_form_V": 11.903240360378323,
+      "peak_numeric_V": 11.874473232854955,
+      "diff_V": 0.028767127523368075,
+      "vin": 20.0,
+      "v0": 10.8333,
+      "r_src": 0.2,
+      "l_factor": 0.8
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.4261505891900246e-05,
+      "dvdt_at_guarantee_V_per_s": 126329.06165324035,
+      "peak_closed_form_V": 11.88650341724711,
+      "peak_numeric_V": 11.863628801754986,
+      "diff_V": 0.022874615492122885,
+      "vin": 20.0,
+      "v0": 10.8333,
+      "r_src": 0.2,
+      "l_factor": 1.0
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.0386006550884357e-05,
+      "dvdt_at_guarantee_V_per_s": 112183.64017765463,
+      "peak_closed_form_V": 11.872817490993873,
+      "peak_numeric_V": 11.868586014648317,
+      "diff_V": 0.0042314763455557625,
+      "vin": 20.0,
+      "v0": 11.1605,
+      "r_src": 0.02,
+      "l_factor": 0.8
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.1611908331267774e-05,
+      "dvdt_at_guarantee_V_per_s": 100340.09816024493,
+      "peak_closed_form_V": 11.859291132168122,
+      "peak_numeric_V": 11.855904000822271,
+      "diff_V": 0.0033871313458515573,
+      "vin": 20.0,
+      "v0": 11.1605,
+      "r_src": 0.02,
+      "l_factor": 1.0
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.0386006550884357e-05,
+      "dvdt_at_guarantee_V_per_s": 112183.64017765463,
+      "peak_closed_form_V": 11.872817490993873,
+      "peak_numeric_V": 11.853732930288555,
+      "diff_V": 0.019084560705318054,
+      "vin": 20.0,
+      "v0": 11.1605,
+      "r_src": 0.2,
+      "l_factor": 0.8
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.1611908331267774e-05,
+      "dvdt_at_guarantee_V_per_s": 100340.09816024493,
+      "peak_closed_form_V": 11.859291132168122,
+      "peak_numeric_V": 11.84413028079907,
+      "diff_V": 0.015160851369053319,
+      "vin": 20.0,
+      "v0": 11.1605,
+      "r_src": 0.2,
+      "l_factor": 1.0
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 9.883174229682048e-06,
+      "dvdt_at_guarantee_V_per_s": 183556.9423410834,
+      "peak_closed_form_V": 11.951658839610808,
+      "peak_numeric_V": 11.944923270522425,
+      "diff_V": 0.006735569088382576,
+      "vin": 26.0,
+      "v0": 10.8333,
+      "r_src": 0.02,
+      "l_factor": 0.8
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.1049724705521588e-05,
+      "dvdt_at_guarantee_V_per_s": 164178.3203266688,
+      "peak_closed_form_V": 11.929423836121963,
+      "peak_numeric_V": 11.924248098466842,
+      "diff_V": 0.0051757376551204715,
+      "vin": 26.0,
+      "v0": 10.8333,
+      "r_src": 0.02,
+      "l_factor": 1.0
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 9.883174229682048e-06,
+      "dvdt_at_guarantee_V_per_s": 183556.9423410834,
+      "peak_closed_form_V": 11.951658839610808,
+      "peak_numeric_V": 11.921713954684575,
+      "diff_V": 0.029944884926232263,
+      "vin": 26.0,
+      "v0": 10.8333,
+      "r_src": 0.2,
+      "l_factor": 0.8
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 1.1049724705521588e-05,
+      "dvdt_at_guarantee_V_per_s": 164178.3203266688,
+      "peak_closed_form_V": 11.929423836121963,
+      "peak_numeric_V": 11.905712182498297,
+      "diff_V": 0.023711653623665896,
+      "vin": 26.0,
+      "v0": 10.8333,
+      "r_src": 0.2,
+      "l_factor": 1.0
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 7.997568560922508e-06,
+      "dvdt_at_guarantee_V_per_s": 146363.04288591733,
+      "peak_closed_form_V": 11.91271597273483,
+      "peak_numeric_V": 11.908254284148935,
+      "diff_V": 0.004461688585895018,
+      "vin": 26.0,
+      "v0": 11.1605,
+      "r_src": 0.02,
+      "l_factor": 0.8
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 8.941553478468946e-06,
+      "dvdt_at_guarantee_V_per_s": 130911.08531465124,
+      "peak_closed_form_V": 11.894590685381626,
+      "peak_numeric_V": 11.891116677837896,
+      "diff_V": 0.00347400754372984,
+      "vin": 26.0,
+      "v0": 11.1605,
+      "r_src": 0.02,
+      "l_factor": 1.0
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 7.997568560922508e-06,
+      "dvdt_at_guarantee_V_per_s": 146363.04288591733,
+      "peak_closed_form_V": 11.91271597273483,
+      "peak_numeric_V": 11.892765260017153,
+      "diff_V": 0.019950712717676566,
+      "vin": 26.0,
+      "v0": 11.1605,
+      "r_src": 0.2,
+      "l_factor": 0.8
+    },
+    {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 8.941553478468946e-06,
+      "dvdt_at_guarantee_V_per_s": 130911.08531465124,
+      "peak_closed_form_V": 11.894590685381626,
+      "peak_numeric_V": 11.87884351481566,
+      "diff_V": 0.015747170565965973,
+      "vin": 26.0,
+      "v0": 11.1605,
+      "r_src": 0.2,
+      "l_factor": 1.0
+    }
+  ],
+  "o1_peak_worst": {
+    "case": {
+      "v_guarantee_V": 11.749704630539737,
+      "t_to_guarantee_s": 9.883174229682048e-06,
+      "dvdt_at_guarantee_V_per_s": 183556.9423410834,
+      "peak_closed_form_V": 11.951658839610808,
+      "peak_numeric_V": 11.944923270522425,
+      "diff_V": 0.006735569088382576,
+      "vin": 26.0,
+      "v0": 10.8333,
+      "r_src": 0.02,
+      "l_factor": 0.8
+    },
+    "peak_V": 11.951658839610808,
+    "limit_V": 12.0,
+    "margin_V": 0.04834116038919234,
+    "pass_hesap": true
+  },
+  "fet": {
+    "rds_hot_ohm": 0.01152,
+    "p_cond_W": 0.648,
+    "tj_est_C": 117.4,
+    "vds_max_V": 53.3,
+    "vds_margin_V": 46.7,
+    "vgs_max_V": 13.9,
+    "vgs_rating_ok": true,
+    "turnoff_energy_bound_J": 0.00039975,
+    "eas_J": 0.18,
+    "energy_ratio": 0.0022208333333333333,
+    "soa_graph": "AÇIK: SOA graph not numerically extractable; energy bound vs EAS only"
+  },
+  "por_clear": {
+    "r_ohm": 100000.0,
+    "c_F": 1e-06,
+    "t_release_s": 0.12039728043259358,
+    "note": "VIH=0.7*VCC used as LVC screen; capacitor tolerance +/-10% -> +/-10% time (HESAP)"
+  }
+}
