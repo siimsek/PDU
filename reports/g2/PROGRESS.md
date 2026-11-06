@@ -18,7 +18,7 @@ Context sıfırlanırsa: bu dosyadaki son aşamanın "açık işler" listesinden
 | 1 Tasarım kural kataloğu | tamam | `DESIGN-RULES.md` |
 | 2 Koruma mimarisi | tamam (COUT sayısı Aşama 4'te) | `PROTECTION-DECISION.md` |
 | 3 Güç katı hesabı | tamam | `POWER-STAGE.md` |
-| 4 Döngü kararlılığı | bkz. aşağı | `LOOP-STABILITY.md` |
+| 4 Döngü kararlılığı | tamam (yük adımı Aile 3'te) | `LOOP-STABILITY.md` |
 | 5 Tam sistem SPICE | bkz. aşağı | `SIM-RESULTS.md`, `design/pdu_v2.cir` |
 | 6 BOM + PCB devri | bkz. aşağı | `design/bom-v2.csv`, `PCB-HANDOFF.md`, `VERIFY.md` |
 
@@ -29,6 +29,8 @@ Context sıfırlanırsa: bu dosyadaki son aşamanın "açık işler" listesinden
 - K2 (Aşama 2): Seçim A = TLV3601DCKR + REF5025AQDRQ1 + SN74LVC1G74DCUR → LM74502HDDFR OV pini → CSD19531Q5A; kaba OV bölücüsü 64.9k/24.9k aynı OV pinine. Yedek B = G1 LTC7001 zinciri (gecikme garanti edilemez). C (yalnız LM74502H OV) eşik penceresi nedeniyle elendi. Hassas bölücü 8.25k/2.32k TNPW1206 0.1 % 10 ppm/K → trip 11.2737–11.5219 V. O1 bütçesi 16× COUT ile 11.926 V.
 
 - K3 (Aşama 3): COUT 16× C5750 (Aşama 4'te teyit), RILIM 182/300 Ω (garantili-min toplam 11.59 A), RUV1 174k TNPW 0.1 % (17.365–19.623 V), RS WSL25127L500FEA, L IHLP4040DZER6R8M01. LM70880 Tj 85 °C ortamda 137.7 °C (VARSAYIM %92 verim) → AÇIK. F1/TVS/CIN/konnektör MPN AÇIK (datasheet erişimi yok).
+
+- K4 (Aşama 4): RCOMP 16.9k / CCOMP 10 nF / CHF 22 pF; 432 köşede PM min 66.9° (−10° pay → 56.9°), GM min 11.7 dB, fc 9.8–40.9 kHz; ngspice AC ile <0.001° uyum.
 
 ## Açık işler
 

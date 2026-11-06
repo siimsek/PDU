@@ -14,7 +14,7 @@ RPG_TOP = 100e3
 RPG_BOT = 18e3
 CDVDT = 1.0e-9
 # loop compensation (Stage 4 may overwrite via loop.py results; keep in sync with tests)
-RCOMP = 20.0e3
-CCOMP = 6.8e-9
-CHF = 47e-12
+RCOMP = 16.9e3         # Stage 4 selection (loop.py)
+CCOMP = 10e-9
+CHF = 22e-12
 R_INJ = 0.0            # FRA injection resistor footprint in RFB1 leg (default 0 ohm; 49.9 ohm for FRA)
