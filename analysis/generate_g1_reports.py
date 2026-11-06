@@ -303,6 +303,7 @@ def summary():
       ("O1 OVP", "Existing 16.89 V FAIL; ideal candidate sim11.974 V PASS model only", "SİM/FAIL", "sim-results.json; OVP-UVLO-DECISION.md", "physical injection required"),
       ("eFuse/protection", "ILIM nominal4.96/2.53 A; sum7.4877 A <7.5 A FAIL; F1/I²t and Q1 SOA open", "HESAP/FAIL/AÇIK", "calc-results.json", "source/cable/MPN evidence needed"),
       ("Targeted sim", f"{done}/5 families complete; {model_pass} model gates pass; model FAIL: {model_fail}; no physical proof", "SİM", "SIMULATION-RESULTS.md", "family2/4 FAIL retained"),
+      ("Tests", "python -m pytest -q: 7/7 passed, exit 0", "HESAP", "TEST-RESULTS.md; analysis/test_pdu_calc.py", "analysis only; no hardware acceptance"),
       ("Prior WP1/WP2", "WP1 4 ESL incomplete + N-01; WP2 historical 161/69/6, no new electrical run", "SİM/FAIL/AÇIK", "PREVIOUS-WP-COMPARISON.md", "all open findings retained"),
       ("BOM", "73/73 rows reviewed; exact MPN/stock/package gaps listed", "DATASHEET/AÇIK", "bom-verification.csv; BOM-OPEN-ITEMS.md", "procurement open"),
       ("Next phase", "T0–T6 and schematic/PCB change list ready", "HESAP/VARSAYIM", "BENCH-ACCEPTANCE.md; KICAD-CHANGE-LIST.md", "transfer input"),
