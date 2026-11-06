@@ -9,3 +9,7 @@
 | 2026-11-06 | `python -m pytest -q` | **exit 0; 10 passed** | Güncel tam suite: 7 hesap + 3 PR #2 kanıt kapsamı testi. |
 
 Testler ripple/tepe akımı iki-yol hesabını, FB/UVLO köşelerini, çift-yol farklarını, koruma açıklarını, güncel 2L/4L yönlendirme zarfını ve PR #2 yorumundaki kanıt kapsamı/FAIL korumasını denetler. İki-yol sayısal fark testi aynı modeldeki hesap çapraz kontrolüdür; bağımsız fiziksel model geçerliliği raporda sıfırdır. Test geçişi elektriksel veya fiziksel donanım kabulü değildir.
+
+| 2026-11-06 | `python analysis/ovp_component_analysis.py` | **exit 0** | MPN-köşe, Ceff ekranı ve datasheet koşullu gecikme hesap JSON/Markdown çıktıları üretildi. Ceff kapalı-formu aynı eşitsizliğin sayısal bisection'ı ile çapraz kontrol edildi; fiziksel kanıt değildir. |
+| 2026-11-06 | `python analysis/run_ovp_component_checks.py` | **exit 0; 3/3 targeted SPICE cases completed** | Family 1 seri akım kapanma ölçümü ve Family 2 high-side-short + aday OVP, 10 µF/7 A ile 4 µF/yüksüz köşeleri. Family 2/4 tarihsel FAIL sonuçları korunuyor; tüm OVP koşuları behavioral modeldir. |
+| 2026-11-06 | `python -m pytest -q` | **exit 0; 14 passed** | 7 hesap + 3 PR #2 evidence scope + 4 OVP component/timing/case evidence testleri. Bu sonuç elektriksel veya fiziksel kabul değildir. |

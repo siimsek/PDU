@@ -1,0 +1,36 @@
+Note: gnd in a subcircuit is not set to 0 automatically
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * family-2 buck high-side short plus o1 branch ovp candidate timing screen.
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 100027
+
+  Measurements for Transient Analysis
+
+bus_peak            =  3.98410e+01 at=  1.07093e-03
+o1_peak             =  1.16857e+01 at=  1.00819e-03
+s2e_peak            =  1.88274e+01 at=  1.02673e-03
+phase_current       =  6.37992e+01 at=  1.03407e-03
+ovp_i_peak          =  7.98427e-01 at=  1.00775e-03
+ovp_trip            =   1.00744e-03
+ctrl_open           =   1.00777e-03
+ovp_toff            =  3.25262e-07 targ=  1.00777e-03 trig=  1.00744e-03
+ovp_to_current_off  =  -1.00725e-03 targ=  1.93196e-07 trig=  1.00744e-03
+
+
+Total analysis time (seconds) = 0.301666
+
+Total elapsed time (seconds) = 0.309
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 10049.680 MB.
+Maximum ngspice program size =   15.547 MB.
+Current ngspice program size =   15.547 MB.

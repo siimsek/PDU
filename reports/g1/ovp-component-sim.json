@@ -1,0 +1,109 @@
+{
+  "classification": "SİM behavioral screen; not component-transistor model and not physical measurement",
+  "budget": "targeted rerun of existing Family 1 and Family 2; no sixth G1 condition family",
+  "prior_uncalibrated_run_preserved": [
+    "reports/g1/sim/family2-buck-short-independent-ovp-10uF.cir/.log",
+    "reports/g1/sim/family2-buck-short-independent-ovp-4uF.cir/.log"
+  ],
+  "prior_run_note": "The first two combined decks used the old 1.1x control-slope equation and are retained as superseded calibration runs, not counted as final model results.",
+  "prior_calibrated_loaded_sensitivity_preserved": "reports/g1/sim/family2-buck-short-independent-ovp-calibrated-4uF.cir/.log; not treated as a worst-case no-load corner",
+  "component_corner_inputs": {
+    "threshold_high_V": 11.623168833598632,
+    "summed_delay_estimate_ns_not_guaranteed": 325.40000000000003,
+    "mosfet_pair_ron_ohm": 0.0056,
+    "mosfet_model": "ideal switch with datasheet-screened on-resistance and calculated delay; SOA/gate waveform are absent",
+    "efuse_model": "ideal 16.32 V OVP switch; current-limit/fast-trip current dynamics excluded",
+    "capacitor_corners_uF": [
+      10.0,
+      4.0
+    ],
+    "capacitor_esr_esl": "zero in deck as optimistic bound; actual values are open"
+  },
+  "cases": [
+    {
+      "deck": "family1-switch-off-measurement.cir",
+      "log": "reports\\g1\\sim\\family1-switch-off-measurement.log",
+      "completed": true,
+      "exit_code": 0,
+      "error": null,
+      "measures": {
+        "o1_peak": 11.9741,
+        "ovp_trip": 0.00499995,
+        "ctrl_open": 0.00500051,
+        "ovp_toff": 5.55847e-07,
+        "ovp_to_current_off": 5.57183e-07,
+        "i_before_off": 4.48628,
+        "i_after_off": 4.92761e-12
+      },
+      "reused_existing_log": true,
+      "measured_trip_to_control_threshold_s": 5.55847e-07,
+      "measured_trip_to_series_current_below_1mA_s": 5.57183e-07,
+      "separate_crossing_measurement_delta_s": 5.599999999992764e-07,
+      "analytical_expected_off_s": 5.5e-07,
+      "measurement_minus_analytic_ns": 7.182999999999966,
+      "measurement_minus_analytic_percent": 1.305999999999985,
+      "physical_measurement": false
+    },
+    {
+      "deck": "family2-buck-short-independent-ovp-final-10uF-7A.cir",
+      "log": "reports\\g1\\sim\\family2-buck-short-independent-ovp-final-10uF-7A.log",
+      "completed": true,
+      "exit_code": 0,
+      "error": null,
+      "measures": {
+        "bus_peak": 40.709,
+        "o1_peak": 11.69,
+        "s2e_peak": 19.0809,
+        "phase_current": 67.7984,
+        "ovp_i_peak": 9.65747,
+        "ovp_trip": 0.00100946,
+        "ctrl_open": 0.00100979,
+        "ovp_toff": 3.22959e-07,
+        "ovp_to_current_off": 3.26123e-07
+      },
+      "reused_existing_log": true,
+      "scenario": "10uF-7A",
+      "ceff_uF": 10.0,
+      "O1_load_ohm": 1.57,
+      "criterion_O1_le_12V": true,
+      "current_margin_to_provisional_fast_trip_screen_A": 2.307145221987316,
+      "current_margin_is_guaranteed": false,
+      "series_current_off_measurement_valid": true,
+      "switch_open_time_source": "series current below 1 mA after trip",
+      "ceff_vs_ideal_charge_balance_screen": "below provisional Ceff minimum; model result is not worst-case evidence",
+      "status": "within 12.0 V in this behavioral screen only; design acceptance BLOCKED"
+    },
+    {
+      "deck": "family2-buck-short-independent-ovp-final-4uF-no-load.cir",
+      "log": "reports\\g1\\sim\\family2-buck-short-independent-ovp-final-4uF-no-load.log",
+      "completed": true,
+      "exit_code": 0,
+      "error": null,
+      "measures": {
+        "bus_peak": 39.841,
+        "o1_peak": 11.6857,
+        "s2e_peak": 18.8274,
+        "phase_current": 63.7992,
+        "ovp_i_peak": 0.798427,
+        "ovp_trip": 0.00100744,
+        "ctrl_open": 0.00100777,
+        "ovp_toff": 3.25262e-07,
+        "ovp_to_current_off": -0.00100725
+      },
+      "reused_existing_log": true,
+      "scenario": "4uF-no-load",
+      "ceff_uF": 4.0,
+      "O1_load_ohm": 1000000000000.0,
+      "criterion_O1_le_12V": true,
+      "current_margin_to_provisional_fast_trip_screen_A": 11.166188221987316,
+      "current_margin_is_guaranteed": false,
+      "series_current_off_measurement_valid": false,
+      "switch_open_time_source": "control-threshold timing only; series current was already below 1 mA in the selected window",
+      "ceff_vs_ideal_charge_balance_screen": "below provisional Ceff minimum; model result is not worst-case evidence",
+      "status": "within 12.0 V in this behavioral screen only; design acceptance BLOCKED"
+    }
+  ],
+  "physical_measurement": "NOT PERFORMED: no assembled board or oscilloscope acquisition exists in workspace",
+  "family2_original_18p8039V_fail_preserved": true,
+  "family4_10p7109V_fail_preserved": true
+}

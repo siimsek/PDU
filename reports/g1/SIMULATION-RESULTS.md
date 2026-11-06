@@ -19,3 +19,15 @@
 Baseline parity: Linux ngspice-44.2 recorded O1 peak **16.89 V**; Windows ngspice-47 measured **16.89 V**; displayed difference **0.0 V**. Both preserve the expected ~16.89 V failure.
 
 Interpretation: all decks use behavioral approximations, not TI silicon; any SİM criterion pass is not physical acceptance. Family 1 is an ideal source-pulse/latch case; it does not include the proposed independent OVP in Family 2's high-side-short case. Family 1's 11.9741 V remains a narrow model-only result. Family 2's first draft failed setup because REN1 was duplicated; the next detailed topology hit timestep-too-small at xu3.ena. Both logs are retained. A simplified behavioral topology completed and still FAILs the O1 ≤12 V gate at 18.8039 V; no further solver convergence tweaking was done. Family 4 low-Ceff/low-RCOMP minimum remains 10.7109 V, 69.1 mV below the 10.78 V floor; the behavioral model does not validate silicon loop gain or phase margin.
+
+## Targeted real-component OVP screen (existing families rerun)
+
+These are targeted Family 1 timing and Family 2 combined buck-high-side-short + O1-branch OVP reruns. They do not create a sixth G1 condition family. See [OVP engineering result](OVP-ENGINEERING-RESULT.md), [calculation JSON](ovp-component-calculation.json), [simulation JSON](ovp-component-sim.json), and the named decks/logs under `sim/`.
+
+| Condition | Completed / exit | Measurement | Classification |
+|---|---|---|---|
+| Family 1 ideal switch-off measurement | yes / 0 | Trip-to-series-current-below-1mA = 557.183 ns; analytic ideal-switch edge = 550 ns; O1 peak 11.9741 V | **SİM only.** Ideal B source + switch, not the selected component chain and not a physical measurement. |
+| Family 2 short + candidate OVP, 10 µF / 7 A | yes / 0 | O1 11.6900 V; shared bus 40.709 V; S2E 19.0809 V; branch current peak 9.6575 A; series-current turnoff 326.123 ns | O1 is within 12 V in this behavioral case only; design acceptance **BLOCKED**. |
+| Family 2 short + candidate OVP, 4 µF / no load | yes / 0 | O1 11.6857 V; shared bus 39.841 V; S2E 18.8274 V. Current-threshold timing is invalid because current is below 1 mA before trip; control-threshold interval is 325.262 ns. | O1 is within 12 V in this behavioral case only; design acceptance **BLOCKED**. |
+
+The 10 µF case is below the provisional 10.332 µF charge-balance screen (11.965 A fast-trip *threshold screen*, 325.4 ns estimated delay, 11.6232 V threshold corner). Its lower SPICE peak does not override that result: the netlist has an ideal eFuse switch, omits the eFuse current-limiter/fast-trip waveform, uses zero ESR/ESL and an ideal controlled FET switch. That current screen is not a guaranteed maximum, so no finite physical Ceff PASS can be issued. The new candidate runs do not replace the retained Family 2 original 18.8039 V **FAIL**, Family 4 10.7109 V **FAIL**, WP1 ESL/N-01 findings, or WP2 69 FAIL / 6 incomplete.
