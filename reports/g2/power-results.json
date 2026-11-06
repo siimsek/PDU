@@ -1,0 +1,268 @@
+{
+  "classification": "HESAP with DATASHEET inputs; no measurement",
+  "inductor": {
+    "vin_V": 26.0,
+    "l_min_H": 5.4400000000000004e-06,
+    "fsw_min_Hz": 400000.0,
+    "ripple_pp_A": 2.916430995475113,
+    "phase_avg_A": 4.125,
+    "peak_A_pathA": 5.583215497737557,
+    "peak_A_pathB": 5.583098840497739,
+    "peak_diff_A": 0.00011665723981835185,
+    "irms_A_pathA": 4.210038299027773,
+    "irms_A_pathB": 4.210038295829682,
+    "irms_diff_A": 3.1980915693452516e-09,
+    "isat_typ_A": 13.5,
+    "ilim_peak_max_A": 8.974254987072241,
+    "isat_margin_at_ilim_A": 4.525745012927759,
+    "iheat_typ_A": 8.0,
+    "irms_margin_A": 3.789961700972227,
+    "ocp_avg_min_total_A": 10.186616281957345,
+    "ocp_above_capacity": true,
+    "slope_comp_check": {
+      "l_for_1x_downslope_H": 7.901100062978949e-06,
+      "se_over_sn": 1.1619264798498454,
+      "se_over_sn_l_min": 1.4524080998123068
+    },
+    "status": "Isat/Iheat are TYPICAL datasheet values (Vishay doc 34509); core loss AÇIK"
+  },
+  "inductor_vin_nom": {
+    "vin_V": 22.2,
+    "l_min_H": 5.4400000000000004e-06,
+    "fsw_min_Hz": 400000.0,
+    "ripple_pp_A": 2.5503444621091678,
+    "phase_avg_A": 4.125,
+    "peak_A_pathA": 5.400172231054584,
+    "peak_A_pathB": 5.400149460121887,
+    "peak_diff_A": 2.277093269675845e-05,
+    "irms_A_pathA": 4.190184531292655,
+    "irms_A_pathB": 4.1901845312390416,
+    "irms_diff_A": 5.361311394835866e-11,
+    "isat_typ_A": 13.5,
+    "ilim_peak_max_A": 8.974254987072241,
+    "isat_margin_at_ilim_A": 4.525745012927759,
+    "iheat_typ_A": 8.0,
+    "irms_margin_A": 3.8098154687073453,
+    "ocp_avg_min_total_A": 10.55270281532329,
+    "ocp_above_capacity": true,
+    "slope_comp_check": {
+      "l_for_1x_downslope_H": 7.901100062978949e-06,
+      "se_over_sn": 1.1619264798498454,
+      "se_over_sn_l_min": 1.4524080998123068
+    },
+    "status": "Isat/Iheat are TYPICAL datasheet values (Vishay doc 34509); core loss AÇIK"
+  },
+  "sense": {
+    "mpn": "WSL25127L500FEA",
+    "p_W": 0.13426250028055103,
+    "p70_W": 1.0,
+    "derating": 0.13426250028055103,
+    "v_sense_full_load_V": 0.0309375,
+    "kelvin": "4-terminal not required; Kelvin escape from pad inner edges (LM70880 p.16)"
+  },
+  "cout": {
+    "n": 16,
+    "ceff_min_F": 0.0001853028,
+    "ceff_typ_F": 0.000329952,
+    "ceff_max_F": 0.000515328,
+    "esr_ohm": 0.000120025,
+    "ripple_current_pp_A_pathA": 0.777714932126697,
+    "ripple_current_pp_A_pathB": 0.7776654411764712,
+    "diff_A": 4.949095022577232e-05,
+    "ripple_voltage_pp_V": 0.0007491257094153242,
+    "voltage_derating": 0.11,
+    "dc_bias": "Ceff per part from TDK model at 11 V (G1); 100 V rating -> 11 % of rating"
+  },
+  "cout_old_8": {
+    "n": 8,
+    "ceff_min_F": 9.26514e-05,
+    "ceff_typ_F": 0.000164976,
+    "ceff_max_F": 0.000257664,
+    "esr_ohm": 0.00024005,
+    "ripple_current_pp_A_pathA": 0.777714932126697,
+    "ripple_current_pp_A_pathB": 0.7776654411764712,
+    "diff_A": 4.949095022577232e-05,
+    "ripple_voltage_pp_V": 0.0014982514188306485,
+    "voltage_derating": 0.11,
+    "dc_bias": "Ceff per part from TDK model at 11 V (G1); 100 V rating -> 11 % of rating"
+  },
+  "cin": {
+    "irms_A_pathA": 1.1250000000000004,
+    "irms_A_pathB_incl_ripple": 1.196990788014025,
+    "diff_A": -0.07199078801402448,
+    "irms_worst_over_vin_A": 1.3530045461029123,
+    "per_cap_A": 0.14962384850175312,
+    "ceff_assumed_F": 1.88e-05,
+    "retained_fraction_VARSAYIM": 0.5,
+    "ripple_V_est": 0.06171043882978723,
+    "status": "CIN MPN/DC-bias doğrulanamadı (TDK/Murata datasheet erişimi 403) -> BOM-OPEN"
+  },
+  "losses": {
+    "p_out_W": 82.5,
+    "eta_assumed": 0.92,
+    "p_conv_loss_W": 7.173913043478251,
+    "parts_W": {
+      "inductor_dcr_2x": 0.9468052124350093,
+      "inductor_core_2x_VARSAYIM": 0.3,
+      "shunt_2x": 0.26336469609426366,
+      "q1_reverse_fet": 0.5789815689981094,
+      "q_iso": 0.6480000000000001,
+      "efuse_o1": 0.2352,
+      "efuse_s2e": 0.0012000000000000001,
+      "ldo5": 0.336
+    },
+    "ic_loss_each_W": 2.831871567474489,
+    "tj_ic_C": {
+      "jedec_33p5": 179.86769751039537,
+      "evm_18p6": 137.6728111550255
+    },
+    "ta_max_for_tj125_C": {
+      "jedec": 30.132302489604612,
+      "evm": 72.3271888449745
+    },
+    "eta_pathB": 0.9200000000000002,
+    "eta_diff": -1.1102230246251565e-16,
+    "board_total_W": 8.97329461247636,
+    "board_dT_K_VARSAYIM": 57.95264361086371,
+    "status": "LM70880 RDS(on)/switching loss not tabulated in datasheet text; IC loss derived from assumed efficiency -> VARSAYIM/AÇIK"
+  },
+  "efuse": {
+    "rilim_o1": 182.0,
+    "ilim_o1_A": [
+      7.23,
+      8.13,
+      9.07
+    ],
+    "rilim_s2e": 300.0,
+    "ilim_s2e_A": [
+      4.36,
+      4.98,
+      5.66
+    ],
+    "sum_min_A": 11.59,
+    "sum_min_ge_7p5": true,
+    "sum_typ_A_pathA": 13.110000000000001,
+    "sum_typ_A_pathB_fit": 13.18879120879121,
+    "sum_max_A": 14.73,
+    "o1_margin_over_load_envelope_A": 0.4500000000000002,
+    "o1_load_envelope_VARSAYIM_A": 6.78,
+    "s2e_margin_over_start_A": 2.8600000000000003,
+    "imon_max_V": 1.8524604279999999,
+    "en_on_V": [
+      8.820523600000001,
+      9.2376154
+    ],
+    "slew_V_per_ms": 4.6,
+    "inrush_A": {
+      "10uF": 0.046,
+      "100uF": 0.45999999999999996,
+      "470uF": 2.162
+    },
+    "fast_trip_pct": 210,
+    "connector_check": "Micro-Fit W-W 7 A / W-B 8.5 A (G1 record); Molex PS not readable this round -> AÇIK",
+    "status": "ILIM only at datasheet table points (no interpolation credit)"
+  },
+  "uvlo_174k": {
+    "rtop": 174000.0,
+    "rbot": 10000.0,
+    "rising_pathA": [
+      17.36469385975621,
+      19.62294830018097
+    ],
+    "rising_pathB": [
+      17.364289999999997,
+      19.622499
+    ],
+    "diff_V": [
+      0.00040385975621148873,
+      0.0004493001809677821
+    ],
+    "restart_at_20V": true,
+    "per_cell_rising_V": [
+      2.8941156432927015,
+      3.270491383363495
+    ],
+    "falling_typ_V": 16.56,
+    "falling_typ_per_cell_V": 2.76,
+    "falling_note": "VEN-HYS 0.1 V is typical only (LM70880 p.6) -> falling threshold range AÇIK",
+    "leakage_note": "EN leakage max not published; 1 uA screen (VARSAYIM) -> 0.174 V shift included",
+    "old_180k": null
+  },
+  "uvlo_180k_old": {
+    "rtop": 180000.0,
+    "rbot": 10000.0,
+    "rising_pathA": [
+      17.9307177859547,
+      20.263394793290654
+    ],
+    "rising_pathB": [
+      17.9303,
+      20.262930000000004
+    ],
+    "diff_V": [
+      0.0004177859546992124,
+      0.00046479329065007846
+    ],
+    "restart_at_20V": false,
+    "per_cell_rising_V": [
+      2.988452964325783,
+      3.3772324655484423
+    ],
+    "falling_typ_V": 17.1,
+    "falling_typ_per_cell_V": 2.85,
+    "falling_note": "VEN-HYS 0.1 V is typical only (LM70880 p.6) -> falling threshold range AÇIK",
+    "leakage_note": "EN leakage max not published; 1 uA screen (VARSAYIM) -> 0.174 V shift included",
+    "old_180k": null
+  },
+  "input": {
+    "short_current_sweep": [
+      {
+        "r_src_ohm": 0.02,
+        "i_short_A": 1040.0
+      },
+      {
+        "r_src_ohm": 0.05,
+        "i_short_A": 472.72727272727275
+      },
+      {
+        "r_src_ohm": 0.1,
+        "i_short_A": 247.6190476190476
+      },
+      {
+        "r_src_ohm": 0.2,
+        "i_short_A": 126.82926829268291
+      }
+    ],
+    "fuse_requirement": {
+      "i_in_max_A": 4.483695652173912,
+      "rated_current_min_A": 5.978260869565216,
+      "voltage_rating_min_VDC": 53.3,
+      "breaking_capacity_min_A": 1040.0,
+      "selection": "AÇIK: fuse vendor datasheets not reachable (Littelfuse 403/DNS); requirement only"
+    },
+    "q1": {
+      "mpn": "BSC160N10NS3G",
+      "vds_V": 100.0,
+      "vds_margin_to_clamp_V": 46.7,
+      "p_cond_W": 0.5789815689981094,
+      "lm74700_anode_abs_V": 65.0,
+      "lm74700_margin_V": 11.700000000000003,
+      "reverse_polarity": "LM74700 blocks; Q1 body diode reverse-biased at -26 V (VDS 100 V)",
+      "soa": "hot-plug inrush flows through Q1 body diode/channel into CIN; SOA graph not extracted -> AÇIK"
+    },
+    "tvs": {
+      "family": "SMCJ33A",
+      "vrwm_V": 33.0,
+      "vrwm_margin_V": 7.0,
+      "vc_V": 53.3,
+      "status": "TVS datasheet not reachable this round -> doğrulanamadı; G1 values used as VARSAYIM"
+    },
+    "hotplug_cin_energy_J": 0.0063544,
+    "connector": {
+      "j1_current_A": 4.483695652173912,
+      "j2_current_A": 7.0,
+      "j3_current_A": 1.5,
+      "status": "Molex PS-43045 not readable (connection reset) -> AÇIK; G1 record W-W 7 A, W-B 8.5 A (18 AWG)"
+    }
+  }
+}
