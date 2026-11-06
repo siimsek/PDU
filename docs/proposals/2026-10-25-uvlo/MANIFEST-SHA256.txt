@@ -34,7 +34,7 @@ ccfc60987913247094c25db74d8bb11e8c13811178c9ceee047cc682733e650c  docs/proposals
 9692d57f88911c5d86d64fa7849eca5a56a5604bb932682ec5bd37edda4fa713  docs/proposals/2026-10-25-uvlo/REQUIREMENTS.md
 4f73fadbd0d8f911f493ed2bf38a761278888ab78379ae715aa241316846322c  docs/proposals/2026-10-25-uvlo/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
-fe4bf3e13615393d7818981f5852093dc4f2cdea37a29d743b7cac9ca4abce06  docs/proposals/REVIEW-WORK-STATUS.md
+7b6ae770320a04269ac2624f6a9fca119754bbba483801e4a3eb66006d28ae1a  docs/proposals/REVIEW-WORK-STATUS.md
 4bd03e1e738116fb9c5acf92602b8968d979be9bbe4c89fd73acb46b97cf4183  hardware/proposals/2026-10-25-uvlo/SOURCING.md
 f8627c8373910034063ba174ac32652435f23a42c257ccd0006fbb06ae7b0781  hardware/proposals/2026-10-25-uvlo/candidate-bom.csv
 93b648cbc360132fad57728539596aca49efd2928d3e00ad0f247008a0e92279  hardware/proposals/2026-10-25-uvlo/sourcing.csv
@@ -713,8 +713,9 @@ ef63766f749ca5621f16335373c8edb6ac26b0ccd597043142c2563d3a9b5b35  docs/proposals
 2b22f74116216cb35fcbbefb8b00e8f30a056d142a9a4e3f2ff33a2b21724915  docs/proposals/2026-10-25-uvlo/evidence/pkg10-20261106/tur6-after.log
 0eba13c6f9c6a3f0ad3ae139096958fc573d5cf40e2dd61ef50b1179f69dd419  docs/proposals/2026-10-25-uvlo/evidence/pkg10-20261106/unit.log
 ae285e49e691716265275b75b6975bb4b24e1d555f92747bb993260747029c94  docs/proposals/2026-10-25-uvlo/PKG10-VERIFIER-INTEGRATION.md
-5a88581d626192d8c648ce685629f35a234cfbfbbe9b33407cd2289929108182  docs/proposals/2026-10-25-uvlo/PKG11-FULL-SNAPSHOT-INTEGRATION.md
-2a053d65ccb6a4cb711009cdf1e973eb33e67aafe2490d3033cd7b1e7138a1af  docs/proposals/2026-10-25-uvlo/evidence/pkg11-20261106/MANIFEST-SHA256.txt
+c2e6b2b1e6733bc408e6d1de0c0ed3d674041cf41db59e6dc0495951fc2bb780  docs/proposals/2026-10-25-uvlo/PKG11-FULL-SNAPSHOT-INTEGRATION.md
+5fa85cf355d19712ee18b111269fdca7fd5e4926c699207da54f6d655d1b8a84  docs/proposals/2026-10-25-uvlo/evidence/pkg11-20261106/.gitattributes
+0252dba46743e25aa294575e1c68b4924a205681a688981ead06ed3cb3af6b67  docs/proposals/2026-10-25-uvlo/evidence/pkg11-20261106/MANIFEST-SHA256.txt
 026d578f9a17dfe574b04af794c28dacf30734c74ecc6a3fc1a4aa8e61408b5b  docs/proposals/2026-10-25-uvlo/evidence/pkg11-20261106/benches/gate-ready-bench.cir
 f3e28aaf3112d6f10af99c821187a685031cd181fcf3bf2101dad161f90c640f  docs/proposals/2026-10-25-uvlo/evidence/pkg11-20261106/benches/gate-ready-bench.log
 8180fc034dc9aed929655e050694f203c32ef9a6ad6a849190397e84925df92d  docs/proposals/2026-10-25-uvlo/evidence/pkg11-20261106/benches/latch-truth-table.cir

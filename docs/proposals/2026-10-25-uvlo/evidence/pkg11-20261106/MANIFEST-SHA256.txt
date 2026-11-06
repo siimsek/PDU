@@ -1,3 +1,4 @@
+5fa85cf355d19712ee18b111269fdca7fd5e4926c699207da54f6d655d1b8a84  ./.gitattributes
 026d578f9a17dfe574b04af794c28dacf30734c74ecc6a3fc1a4aa8e61408b5b  ./benches/gate-ready-bench.cir
 f3e28aaf3112d6f10af99c821187a685031cd181fcf3bf2101dad161f90c640f  ./benches/gate-ready-bench.log
 8180fc034dc9aed929655e050694f203c32ef9a6ad6a849190397e84925df92d  ./benches/latch-truth-table.cir

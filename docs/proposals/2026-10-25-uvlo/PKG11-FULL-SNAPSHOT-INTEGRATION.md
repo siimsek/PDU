@@ -37,4 +37,6 @@ Consequently new 259-deck acceptance, expected 23 regressions, 20×2 numerical c
 
 Next: provide a genuine verified ngspice CLI executable in the local environment; confirm its provenance/version and perform Tur-5 without the adapter, then run the fixed 259-deck Gear/100 ns protocol on a fresh clean source HEAD with unique run ID, followed by independent verifier. Before running, verify current HEAD, no active process, all lock inputs and manifest/output isolation; account for the shallow Git history if historical comparisons are required. Do not substitute the shared-library adapter for an unvalidated acceptance runner.
 
-Evidence manifest `evidence/pkg11-20261106/MANIFEST-SHA256.txt`, SHA-256 `2a053d65ccb6a4cb711009cdf1e973eb33e67aafe2490d3033cd7b1e7138a1af`, `sha256sum -c` exit 0. Git, Python and KiCad versions are in `start.txt`; ngspice CLI was unavailable. The three behavioral benches are simulations, not physical measurements.
+Evidence manifest `evidence/pkg11-20261106/MANIFEST-SHA256.txt`, SHA-256 `0252dba46743e25aa294575e1c68b4924a205681a688981ead06ed3cb3af6b67`, `sha256sum -c` exit 0. Git, Python and KiCad versions are in `start.txt`; ngspice CLI was unavailable. The three behavioral benches are simulations, not physical measurements.
+
+The evidence directory `.gitattributes` marks `*.log -text` so Git preserves the exact recorded solver-output bytes, including mixed CRLF/LF.
