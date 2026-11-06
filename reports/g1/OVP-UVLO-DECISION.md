@@ -1,10 +1,38 @@
 # O1 OVP ve UVLO mimari kararı
 
-## Karar
+## G1 kapanış kararı (2026-11-07) — geçerli karar
 
-**Öneri (aday mimari):** O1 çıkışında, TPS259824O'dan sonra çalışan bağımsız hızlı comparator + referans + set-dominant latch + seri back-to-back MOSFET disconnect. OVP eşiği nominal 11.35 V, tüm toleranslarda en çok 11.46 V hedefi; toplam algılama/gate kapanma gecikmesi ≤0.5 µs hedefi; O1 kapasitans en az mevcut 10 µF kabulü. Bu eşik ve gecikme henüz **tasarım girdisi/varsayım** düzeyindedir; tam MPN seçilmedi, kanıtlanmış OVP değildir.
+**Bu bölüm, aşağıdaki "Karar (SUPERSEDED)" bölümünün yerini alır.** Eski metin geçmiş kaydı olarak silinmedi.
 
-**Yedek:** PR #1 hibrit mimarisini ancak bağımsız çözüm comparator/latch/MOSFET sıcaklık, gecikme veya hata enjeksiyonu kabulünü geçemezse tekrar değerlendir. Çok bileşenli yedek doğrudan öneri değildir.
+**Neden değişti:** Eski karar ayırıcıyı O1 dalına, **U3 çıkışından sonra** koyuyordu. [`shared-bus-ovp-results.json`](shared-bus-ovp-results.json) ve [`G1-SUMMARY.md`](G1-SUMMARY.md) ise buck high-side short (ortak bara hatası) sırasında ortak `VOUT`'un **U3/U4 IN pinlerinde 40.709 V** gördüğünü gösteriyor (SİM; >24 V süresi 731.759 µs, >30 V süresi 161.124 µs). TPS25982 IN için 30 V abs-max ve 24 V önerilen max var (DATASHEET, TI Rev D p.7). U3'ten sonra konan ayırıcı U3/U4'ün kendi IN pinini korumaz. Bu nedenle "U3 sonrası O1 ayırıcı" tek başına geçersizdir.
+
+### Üç mimari, tek tablo
+
+| Ölçüt | (a) Ortak bara seri ayırıcı (OVP kontrolcülü), COUT ile U3/U4 IN ayrımı arasında | (b) Giriş tarafında kenetleme / surge-stopper tipi tek IC | (c) O1'e özel ayırıcı + U3/U4 için ayrı koruma |
+|---|---|---|---|
+| U3/U4 IN ≤30 V (ortak bara hatası) | **SİM:** IN tepesi 11.6217–11.6273 V; >24 V ve >30 V süresi 0 ([family2-common-bus-isolator-*](sim/)). | **Doğrulanamadı.** Repo'da yalnız TPS1686x okunmuş, o da port başına HV eFuse olarak; ortak barada tek surge-stopper IC için üretici datasheet'i bu turda okunmadı, MPN önerilmez. TPS1686x ekranında ham IN 39.389 V'u 92 V abs-max içinde taşır (SİM/DATASHEET). | O1 dalındaki ayırıcı U3'ten sonra ise **FAIL**: aynı model 40.709 V. Koruma ancak ayrı bir ön-eFuse anahtarı eklenirse sağlanır; bu durumda U3/U4 önündeki kısım fiilen (a) ya da port başına (a) kopyası olur. |
+| O1 ≤12.0 V | **SİM:** 11.5550–11.5606 V (ideal anahtar, ESR/ESL yok). Eşik köşesi 11.3281–11.6232 V (HESAP). | **Uyumsuz:** TPS1686 OVLO toleransı 11.1605–12.0 V penceresine sığmaz; alt köşe ≥11.1605 V iken üst köşe en az 12.0654 V (HESAP). tOVP min 3 µs, max yok (DATASHEET). Doğrusal kenetleme tipi için doğrulanamadı. | **SİM:** O1 dalı ayırıcısı ile O1 11.6900 / 11.6857 V. U3/U4 IN sorunu çözülmeden anlamı yok. |
+| S2E | Ortak trip'te S2E de kapanır (fail-off). SİM S2E tepesi 11.5896–11.6080 V. | TPS1686 ekranında S2E 25.6365 V (S2E 9–28 V çalışma aralığında). | O1 trip'inde S2E çalışmaya devam edebilir; S2E için ayrı eşik/zincir gerekir. |
+| Tezgâhta test edilebilirlik | **İyi.** Tek enjeksiyon noktası (`TP_VOUT_RAW` → `VOUT_PROT`) iki portu birlikte doğrular; tek eşik, tek latch/reset, tek gecikme ölçümü. | Basit (tek IC). Ancak 12 V penceresi datasheet toleransıyla kapanmadığı için tezgâhta geçen bir örnek parça tasarım kabulü sayılmaz. | **Zayıf.** İki ayrı zincir, iki eşik, iki reset; hem U3 öncesi hem O1 sonrası enjeksiyon ve birleşik hata testleri gerekir. |
+| Parça sayısı (kontrol zinciri) | **1 takım:** TLV3601DCKR + REF5025AQDRQ1 + SN74LVC1G74DCUR + LTC7001EMSE#PBF + 2×CSD19536KTTT + TPS7A1601QDGNRQ1/TPS7A1650QDGNRQ1 + bölücü (aday MPN'ler [`OVP-ENGINEERING-RESULT.md`](OVP-ENGINEERING-RESULT.md); stok doğrulanmadı). | En az (1 IC + FET/pasif) — ama ortak bara için MPN doğrulanamadı. TPS1686x ×2 seçilirse 6×5 mm VQFN, mevcut TPS25982 footprint'ine uymaz. | **2 takım** (yaklaşık iki kat comparator/referans/latch/sürücü/FET). |
+| Mevcut hesaplarla çelişki | Yok. Eşik 11.3281–11.6232 V aynı bölücü/referans hesabı; ideal Ceff ekranı 6.48 µF (7.5 A) / 8.56 µF (9.91 A model branch peak). 11.46 V eski hedefin 163.2 mV aşıldığı bilgisi aynen geçerli (12.0 V sert sınır değişmez). | **Çelişir:** OVLO pencere hesabı ve tOVP max'ın yokluğu. | U3 sonrası yerleşim, 40.709 V sonucu ile çelişir. |
+| Açık kalanlar | Gerçek kapanma süresi, FET SOA (100 µs'den kısa eğri yok), ortak dal akımı (model 9.91 A, ILIM toplamından %32 yüksek), VOUT_PROT Ceff, harici O1 backfeed yolu, latch/LDO fail-safe — hepsi AÇIK. | Datasheet okunmadan değerlendirilemez. | (a)'nın tüm açıkları ×2. |
+
+### Öneri
+
+**(a) Ortak bara seri ayırıcı.** Buck çıkış kapasitörleri (`VOUT_RAW`) ile U3/U4 IN ayrımı (`VOUT_PROT`) arasına tek latch-off, back-to-back seri MOSFET ayırıcı; algılama `VOUT_RAW` üzerinde (model deck'teki gibi); aday kontrol zinciri yukarıdaki tek takım. Bu, ortak bara hatasında hem U3/U4 IN abs-max'ını hem O1 ≤12 V'u modelde aynı anda karşılayan tek adaydır. **Tasarım PASS'i değildir.** Fiziksel kapanma süresi, SOA ve Ceff tezgâhta ölçülmeden O1 ≤12.0 V kabul edilmez.
+
+**Yedek: (c)'nin port başına varyantı.** Ayırıcılar her eFuse'un **önüne** konur: O1 için aynı zincir U3 IN öncesinde, S2E için ayrı eşikli ikinci zincir U4 IN öncesinde. Yedeğe yalnız şu durumlarda geçilir: (1) O1 hatasında S2E'nin kapanması kabul edilmezse (kullanıcı kararı), ya da (2) ortak anahtar tezgâhta ortak dal akımında SOA/ısıl sınırı geçemezse. U3 sonrası O1 ayırıcı hiçbir varyantta tek koruma olarak kullanılmaz.
+
+**(b) elendi:** TPS1686x için OVLO penceresi ve tOVP max eksikliği sayısal olarak uyumsuz; ortak bara surge-stopper IC'si için datasheet doğrulanamadı.
+
+UVLO kararı değişmedi: **RUV1 180 kΩ → 174 kΩ**, RUV2 10 kΩ (aşağıdaki UVLO bölümü).
+
+## Karar (SUPERSEDED — G1 kapanış kararıyla geçersiz; U3/U4 IN 40.709 V bulgusundan önce yazıldı)
+
+**SUPERSEDED öneri (aday mimari):** O1 çıkışında, TPS259824O'dan sonra çalışan bağımsız hızlı comparator + referans + set-dominant latch + seri back-to-back MOSFET disconnect. OVP eşiği nominal 11.35 V, tüm toleranslarda en çok 11.46 V hedefi; toplam algılama/gate kapanma gecikmesi ≤0.5 µs hedefi; O1 kapasitans en az mevcut 10 µF kabulü. Bu eşik ve gecikme henüz **tasarım girdisi/varsayım** düzeyindedir; tam MPN seçilmedi, kanıtlanmış OVP değildir.
+
+**SUPERSEDED yedek:** PR #1 hibrit mimarisini ancak bağımsız çözüm comparator/latch/MOSFET sıcaklık, gecikme veya hata enjeksiyonu kabulünü geçemezse tekrar değerlendir. Çok bileşenli yedek doğrudan öneri değildir.
 
 Kararı fiziksel hata enjeksiyonunun kolaylığı ve ana güç katından bağımsız izolasyon belirledi. Crowbar+F1 seçeneği, F1'in DC kesme/I²t/arıza akımı bilinmediği için yedek bile olamayacak kadar koordinasyonsuzdur. Mevcut 16.9 V eFuse OVP'si ana şartı sağlamaz.
 

@@ -4,6 +4,7 @@ Dal `wp/g1-ai-analysis`; 6S LiPo PDU için hesap/simülasyon/karar ve sonraki fa
 
 | Madde | Sonuç | Etiket | Kanıt dosyası | Durum |
 |---|---|---|---|---|
+| **G1 kapanış mimarisi** | Ortak bara seri ayırıcı (a) önerildi: COUT (`VOUT_RAW`) ile U3/U4 IN (`VOUT_PROT`) arasında tek latch-off back-to-back ayırıcı. Yedek: her eFuse önüne ayrı ayırıcı. Eski "U3 sonrası O1 ayırıcı" SUPERSEDED (U3/U4 IN 40.709 V'tan korumaz). Surge-stopper/HV eFuse (b) elendi. | SİM/HESAP/AÇIK | `OVP-UVLO-DECISION.md` (G1 kapanış kararı); `KICAD-CHANGE-LIST.md`; `USER-DECISIONS.md` | fiziksel kabul yok; kullanıcı girdileri bekleniyor |
 | Gereksinimler | 20–26 V; 11 V/7 A; capacity7.5 A; O1≤12.0 V; ports not measured | REPO/AÇIK | `REQUIREMENTS.md` | frozen |
 | Buck/FB | ΔIL2.916 A; phase peak5.583 A assumption; FB10.8333–11.1605 V; Vishay Isat13.5 A | HESAP/DATASHEET/VARSAYIM | `calc-results.json/.md` | phase share and exact L BOM approval open |
 | Loop/UVLO | RCOMP sensitivity10.0–26.1k; 174k/10k UVLO upper19.69 V before leakage/TCR | VARSAYIM/AÇIK | `calc-results.json; OVP-UVLO-DECISION.md` | FRA and battery cutoff policy open |
@@ -14,7 +15,7 @@ Dal `wp/g1-ai-analysis`; 6S LiPo PDU için hesap/simülasyon/karar ve sonraki fa
 | eFuse input loss | TPS259824O OUT max is VIN+0.3V (abs max min(30V, VIN+0.3V)); 11V precharge at VIN=0 would exceed the stated limit by 10.7V if retained. Reverse blocking is not specified; -44.547uC is an ideal bilateral-SW artifact | DATASHEET/OPEN | `PR2-REVIEW-6692825552.md; fail-safe-audit-results.json` | real output decay/reverse path requires vendor confirmation or hardware test |
 | eFuse/protection | ILIM nominal4.9605/2.5272 A; sum7.487717 A <7.5 A by12.283 mA FAIL; legacy 12.006 A combined load reclassified overload; F1/I²t and Q1 SOA open | HESAP/SİM/FAIL/AÇIK | `calc-results.json; PR2-REVIEW-6683120653.md` | measured port split and source/cable/MPN evidence needed |
 | Targeted sim | 5/5 families complete; 3 model gates pass; model FAIL: family2_buck_highside_short, family4_load_step_comp_corners; no physical proof | SİM | `SIMULATION-RESULTS.md` | family2/4 FAIL retained |
-| Tests | `python -m pytest -q`: 42/42 passed, exit 0; includes fail-safe state, rail source, eFuse input-loss and fixture checks | HESAP | `TEST-RESULTS.md; analysis/test_ovp_fail_safe_audit.py` | behavioral and logic tests only; no hardware acceptance |
+| Tests | G1 kapanışında `python -m pytest -q`: 63 passed, exit 0 (önceki kayıt: 42/42); includes fail-safe state, rail source, eFuse input-loss and fixture checks | HESAP | `TEST-RESULTS.md; analysis/test_ovp_fail_safe_audit.py` | behavioral and logic tests only; no hardware acceptance |
 | Prior WP1/WP2 | WP1 4 ESL incomplete + N-01; WP2 historical 161/69/6, no new electrical run | SİM/FAIL/AÇIK | `PREVIOUS-WP-COMPARISON.md` | all open findings retained |
 | BOM | 73/73 rows reviewed; exact MPN/stock/package gaps listed | DATASHEET/AÇIK | `bom-verification.csv; BOM-OPEN-ITEMS.md` | procurement open |
 | Next phase | T0–T6 and schematic/PCB change list ready | HESAP/VARSAYIM | `BENCH-ACCEPTANCE.md; KICAD-CHANGE-LIST.md` | transfer input |
@@ -31,6 +32,8 @@ Dal `wp/g1-ai-analysis`; 6S LiPo PDU için hesap/simülasyon/karar ve sonraki fa
 - MPN/stok ve tasarım ortam sıcaklığı.
 
 ## Benden gereken girdiler/PDF'ler
+
+**G1 kapanış:** Öncelikli en çok 6 karar/girdi [`USER-DECISIONS.md`](USER-DECISIONS.md) içindedir; aşağıdaki liste geçmiş kaydı olarak korunur.
 
 1. O1 ve S2E ölçülmüş startup/continuous/peak akım dalga şekilleri ve yük bölüşümü.
 2. Batarya iç direnci/kısa devre akımı, hücre üretici cutoff'u, kablo uzunluğu/kesiti/konnektör mating seti.
