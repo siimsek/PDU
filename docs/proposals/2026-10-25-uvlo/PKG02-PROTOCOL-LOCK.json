@@ -101,7 +101,7 @@
     },
     {
       "path": "simulation/proposals/2026-10-25-uvlo/verify_uvlo.py",
-      "git_blob_sha1": "e0e3d7270209f0aed58c938ed813745806a5fae2"
+      "git_blob_sha1": "589f4a5c2a80322631868a7a7fc083773ee4a6c0"
     },
     {
       "path": "simulation/proposals/study_integrity.py",
@@ -518,5 +518,12 @@
     "regression_test_blob_sha1": "02e68ca35fe830089b408cd9a39cdc26da81fc4a",
     "locally_executed_runner_tests": "11/11",
     "kind": "preflight evidence path safety only; no ngspice simulation"
+  },
+  "pkg09_verifier_update": {
+    "prior_verifier_sha1": "e0e3d7270209f0aed58c938ed813745806a5fae2",
+    "new_verifier_sha1": "589f4a5c2a80322631868a7a7fc083773ee4a6c0",
+    "test_commit": "257590a176eb3a59aa30526683a3d4c71a51fee0",
+    "fix_commit": "96cea00891c467ae369b2ca4c61467b445351a3a",
+    "scope": "per-deck rc integer type"
   }
 }
