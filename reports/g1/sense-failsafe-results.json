@@ -20,7 +20,7 @@
     "LVC1G74": "TI SN74LVC1G74 Rev G pp.1,4,7: VCC 1.65..5.5V; active-low asynchronous CLR; Ioff only ensures powered-down output backflow protection, no power-up latch state.",
     "LTC7001": "ADI LTC7001 Rev G pp.2-4: INP internal 1Mohm pulldown; VCCUV=0 sets minimum rising gate UVLO 3.1..3.7V and falling 2.8..3.4V; UVLO pulls TGDN to TS; 4ohm max pull-down at VCC=VBST=12V.",
     "CSD19536": "TI CSD19536KTT Rev C pp.1-2,5-6: 100V VDS, ±20V VGS, 2.8mohm max at VGS=6V; shortest SOA plotted pulse is 100us; sub-us SOA not verified.",
-    "TPS7A16 thermal rule": "TI recommends limiting junction temperature to 125C for reliable operation; package thetaJA is board dependent and the 66.2C/W table value is only the stated test-board metric."
+    "TPS7A16 thermal screen": "125C is a conservative engineering screen, not a TI absolute or recommended limit. TI Rev E lists operating TJ -40..150C and rising thermal shutdown 170C; thetaJA 66.2C/W is a JEDEC test-board metric, not this PCB."
   },
   "legacy_clamp_reproduction": {
     "raw_40p709_V_vcc0_injection_mA": 10.95598885793872,
@@ -240,7 +240,9 @@
     "spice_VCC_at_fault_V": 4.99821,
     "spice_VCC_max_after_loss_V": 0.994554,
     "spice_VCC_end_after_loss_V": 0.91916,
-    "spice_input_clamp_peak_A": 0.00195566
+    "spice_input_clamp_peak_A": 0.00195566,
+    "latch_state_below_1p65V": "UNSPECIFIED; below-minimum VCC is not safe-state proof",
+    "rail_result_safety_classification": "bounded modeled back-power rail only; does not prove FF Q/CLR/PRE, LTC7001 INP, or MOSFET gates OFF"
   },
   "threshold": {
     "TLV3601_enumerated_V": [
@@ -280,8 +282,11 @@
     "estimated_deltaT_C": 45.445144226961965,
     "estimated_Tj_at_25C_ambient_C": 70.44514422696196,
     "estimated_Tj_at_85C_ambient_C": 130.44514422696196,
-    "reliable_Tj_limit_C": 125,
-    "at_85C_ambient_status": "FAIL screening estimate; thermal path/layout must be redesigned or ambient constrained"
+    "at_85C_ambient_status": "FAIL against conservative 125C screen; below datasheet 150C maximum only under JEDEC theta estimate; actual PCB and pulse Tj open",
+    "conservative_Tj_screen_C": 125,
+    "datasheet_Tj_operating_max_C": 150,
+    "datasheet_TSD_rising_C": 170,
+    "125C_screen_is_TI_limit": false
   },
   "timing_and_driver": {
     "fast_path_TLV3601_max_ns": 4.5,

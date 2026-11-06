@@ -1,0 +1,46 @@
+* NEGATIVE FIXTURE: high-side INP command vs independent fault clamp.
+* Not a silicon model: forced high command represents an unknown/out-of-range
+* latch output. Ideal monitor threshold and ideal LTC7001 switching are used.
+* Cg=Qg/VGS=118nC/10V per CSD19536 typical charge; not a worst-case gate model.
+VLOGIC VLOGIC 0 PWL(0 5 900u 5 901u 0 1.5m 0)
+VDRIVER VDRIVER 0 12
+VQFORCE QFORCE 0 5
+* A=missing independent clamp; B=ideal driver-rail-powered fail-low clamp.
+RQA QFORCE INP_A 1k
+RPA INP_A 0 10k
+RINTA INP_A 0 1Meg
+RQB QFORCE INP_B_PRE 1k
+RPREB INP_B_PRE INP_B 0.2
+RPB INP_B 0 10k
+RINTB INP_B 0 1Meg
+* Monitor is intentionally ideal and has no MPN/timing proof.
+BMON MON_BAD 0 V=if(V(VLOGIC)>4.05,0,5)
+SMON INP_B 0 MON_BAD 0 IDEALCLAMP
+.model IDEALCLAMP SW(Ron=0.2 Roff=1T Vt=2.5 Vh=0.1)
+* LTC7001 input stage: falling input below 1.6V commands TGDN; 4ohm max
+* pull-down at VCC=VBST=12V. Use effective VGS drive=10V for this screen.
+BDRVA GDRA 0 V=if(V(INP_A)<1.6,0,10)
+BDRVB GDRB 0 V=if(V(INP_B)<1.6,0,10)
+RG1A GDRA G1A 4
+RG2A GDRA G2A 4
+RG1B GDRB G1B 4
+RG2B GDRB G2B 4
+CG1A G1A 0 11.8n IC=10
+CG2A G2A 0 11.8n IC=10
+CG1B G1B 0 11.8n IC=10
+CG2B G2B 0 11.8n IC=10
+RGS1A G1A 0 10k
+RGS2A G2A 0 10k
+RGS1B G1B 0 10k
+RGS2B G2B 0 10k
+.tran 10n 1.5m 0 20n uic
+.options reltol=0.0001 abstol=1n method=gear
+.meas tran INP_A_AFTER_LOSS FIND V(INP_A) AT=1.1m
+.meas tran G1A_AFTER_LOSS FIND V(G1A) AT=1.1m
+.meas tran G2A_AFTER_LOSS FIND V(G2A) AT=1.1m
+.meas tran INP_B_AFTER_LOSS FIND V(INP_B) AT=1.1m
+.meas tran G1B_AFTER_LOSS FIND V(G1B) AT=1.1m
+.meas tran G2B_AFTER_LOSS FIND V(G2B) AT=1.1m
+.meas tran G1B_MAX_AFTER_MON MAX V(G1B) FROM=902u TO=1.5m
+.meas tran G2B_MAX_AFTER_MON MAX V(G2B) FROM=902u TO=1.5m
+.end
