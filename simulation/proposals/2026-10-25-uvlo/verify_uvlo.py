@@ -511,7 +511,7 @@ def provenance(cases, run_id):
     if not want <= set(decks): e.append(f'cases without a deck: {sorted(want-set(decks))[:5]}')
     for n in sorted(set(runs) & set(decks)):
         r = runs[n]; log = LOGS / f'{n}.log'
-        if r.get('rc') != 0: e.append(f'{n}: rc {r.get("rc")!r}')
+        if type(r.get('rc')) is not int or r.get('rc') != 0: e.append(f'{n}: rc {r.get("rc")!r}')
         if r.get('completed') is not True: e.append(f'{n}: not completed')
         if STAGED is None:
             if r.get('deck_sha256') != sha(decks[n]):
