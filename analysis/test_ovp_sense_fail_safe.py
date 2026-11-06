@@ -48,14 +48,16 @@ def test_divider_clamp_kcl_matches_independent_nodal_solution():
                 clamp_current_nodal_a(raw, vcc, RTOP, RBOT), rel=1e-8, abs=1e-10)
 
 
-def test_unpowered_rail_bleeder_holds_rail_below_logic_and_por_thresholds():
+def test_unpowered_rail_result_bounds_rail_only_not_latch_safety():
     calc = rail_equilibrium_v(40.709, RTOP, RBOT, R_BLEED * (1 + R_BLEED_TOL), 0.0)
     bisect = rail_equilibrium_bisect_v(40.709, RTOP, RBOT,
                                        R_BLEED * (1 + R_BLEED_TOL), 0.0)
     assert calc == pytest.approx(bisect, abs=1e-10)
     assert calc < 1.2
     assert calc < TLV3601_POR_V
-    assert calc < 1.65  # SN74LVC1G74 minimum operating VCC
+    # Below 1.65 V, SN74LVC1G74 behavior is unspecified; this bound proves
+    # only that modeled back-power keeps the rail low, not that Q/CLR/gates are safe.
+    assert calc < 1.65
     assert max_unpowered_rail_equilibrium_corner_v(40.709) < 1.2
 
 
@@ -110,5 +112,7 @@ def test_ldo_thermal_screen_is_not_silently_called_pass_at_85c():
     from analysis.ovp_sense_fail_safe import build_results
 
     rail = build_results()["rail_and_thermal"]
-    assert rail["estimated_Tj_at_85C_ambient_C"] > rail["reliable_Tj_limit_C"]
+    assert rail["estimated_Tj_at_85C_ambient_C"] > rail["conservative_Tj_screen_C"]
+    assert rail["estimated_Tj_at_85C_ambient_C"] < rail["datasheet_Tj_operating_max_C"]
+    assert rail["125C_screen_is_TI_limit"] is False
     assert "FAIL" in rail["at_85C_ambient_status"]
