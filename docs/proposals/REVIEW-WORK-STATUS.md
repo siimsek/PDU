@@ -11,7 +11,16 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 - H1 O1 peak ≤12.0 V; H2 normal PRE/RUN/POST bus/O1 ≤11.1605 V; Vf≥18.0 V; M1≥60 ms (65 ms hedef); M3 0…1.000 µs kapsayıcı (negatif/NaN/Inf/eksik FAIL); M4 EN ↑ anında VGS≥6 V. R-DIP yalnız report-only.
 - Yeni kabul koşusu yok; tarihsel sayılar mevcut dosyalara aittir. Fiziksel tezgâh ölçümü yok; WP1/WP2 açık, üretim/merge onayı yok.
 
-## Son uygulanan alt paket: PKG-08 — historical fixture Git provenansı (tam verifier AÇIK)
+## Son uygulanan alt paket: PKG-09 — manifest per-deck RC katı tür kontrolü (tam verifier AÇIK)
+
+- Kaynak uzak HEAD `3637d2abd2d4ab7f7653a5f07f553b1287a53c3d`, PR #1 draft. Rapor `docs/proposals/2026-10-25-uvlo/PKG09-STRICT-DECK-RC.md`.
+- Kod kaynaklı P1 provenans kusuru: `provenance()` içindeki `if r.get('rc') != 0` Python'da `False` ve `0.0` değerlerini tamsayı `0` gibi kabul ediyordu. Üst seviye `runner_exit_code` zaten katı tür denetimi uyguluyordu.
+- Önce `test_locked_verifier.py` için `False`/`0.0`/`"0"`/`None` negatif testi commit `257590a1`; **bu gerçek tam verifier testi bu ortamda ÇALIŞTIRILMADI**. Ardından `verify_uvlo.py` deck RC denetimi `type(rc) is int and rc == 0` koşuluna yükseltildi, commit `96cea008`, blob `589f4a5c2a80322631868a7a7fc083773ee4a6c0`. Kaynak lock commit `6f0c6d6c`, **25/25 girdi ve 259/259 deck SHA eşleşmesi**.
+- Bu turda gerçekten yürütülen: Python dönüş-kodu doğruluk tablosu **4/4**, eski PKG-08 gerçek-Git fikstürü **7/7**, eski sentetik 259-deck fake runner **11/11**: toplam **22/22 izole/sentetik PASS**. Bunlar `verify_uvlo.py` tam import/CLI ve yeni `test_locked_verifier.py` testinin çalıştırıldığı anlamına gelmiyor.
+- Tam özel repo klonu mevcut değil; container'da github.com DNS ve `ngspice` erişimi yok. Tam verifier ile Tur-2..6/Gates aynı kaynak ağacında **çalıştırılamadı**; yeni 259 Gear kabul, 23 regresyon, 20×2 50/25ns ve fiziksel kanıt YOK. WP2 tarihsel **161 PASS / 69 FAIL / 6 eksik**, 20×2 eski Decimal **6/20** (9 abort), WP1 4 ESL açık.
+- Sadece verifier kodu, verifier test, protokol lock, bu rapor, iş kaydı ve manifest değişecek; kullanıcı CI kapalı durumunu, draft PR ve main/merge yasağını koru.
+
+## Önceki alt paket: PKG-08 — historical fixture Git provenansı (tam verifier AÇIK)
 
 - Başlangıç uzak HEAD `41d88eb115182c5e784404aa7dcc15678f2205f6`, PR #1 draft. Rapor: `docs/proposals/2026-10-25-uvlo/PKG08-HISTORICAL-FIXTURE-PROVENANCE.md`.
 - **Gerçek hata:** eski `test_uvlo_tur2.py` / `test_uvlo_gates.py` mini-fikstürleri `--historical` modundayken `run-manifest.json.git_head = ""` bırakıyordu. Verifier, boş Git referansını diff ile doğrulayamıyor: yerel gerçek Git negatif deneyinde `git diff --name-only '' HEAD ...` → **exit 128, fatal: bad revision ''**. Bu yüzden elektriksel testin PASS/FAIL'i yanlış provenans sonucu tarafından maskelenebilirdi.
@@ -114,4 +123,4 @@ Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: ht
 
 ## Bir sonraki `devam` için tek iş
 
-**PKG-09 / tam doğrulayıcı testini gerçekten çalıştırma:** GitHub HEAD/durum/aktif süreç kontrolü. Tam `verify_uvlo.py` (blob `e0e3d7270209f0aed58c938ed813745806a5fae2`) ve `test_locked_verifier.py`, Gates/Tur-2..6 ile bağımlı dosyaları, GitHub blob SHA eşleşen gerçek Python çalışma ağacına getirip tüm testleri **gerçekten** çalıştır. Özellikle PKG-08'in `git_head` mini-fixture düzeltmesinin Tur-2/Gates kontrol vakalarını geçirdiğini kanıtla; hataları negatif test→minimal düzeltme→yeniden koşu şeklinde kapat. Eğer bu araç ortamında özel repo aktarılamıyorsa, bunu yeni kabul sonucu gibi raporlama; test edilebilir kaynak/kanıtları biriktir ve açık bloklayıcıları net olarak sakla. Real ngspice olmadan 259 Gear koşusu/M3 yakınsama yapılmış gibi gösterme. CI kapalı; merge/main yok.
+**PKG-10 / gerçek tam verifier entegrasyonu:** Başta uzak HEAD/status, bekleyen süreçler ve çalışma kanıtı kontrolü. Github `verify_uvlo.py` blob `589f4a5c2a80322631868a7a7fc083773ee4a6c0` ile testleri, gerçek SHA-doğrulanmış yerel temiz checkout'a **eksiksiz** taşı; özellikle `test_locked_verifier.py` bool/float RC negatifini ve tamamını, `tests/test_uvlo_tur2..6.py`/Gates testlerini gerçekten çalıştır. Erişim kısıtı sürerse açıkça belirt; örnek/stub testlerini tam entegrasyon gibi sunma. Gerçek başarısızlıkları kod ve kanıtla kapat. Erişim ve ngspice yokken 259 Gear/100ns kabul veya M3 20×2 yakınsama sonucu üretme. CI açma, PR yorumu/merge yok.
