@@ -12,7 +12,7 @@ eb7e8e4479e40e9b0b97564a2a3000b909dbb0b062cfbe19ad978b728d56d3b1  docs/proposals
 6d721552c3618c4b009ed46edc6aea8797aa3d251683caffdc111a4cecdac066  docs/proposals/2026-10-25-o1-ovp/REQUIREMENTS.md
 bf93374c886b17b83616dc1ffa1f22d842fd8787fd3856476d59c647f49d71c5  docs/proposals/2026-10-25-o1-ovp/RESULTS.md
 f25d50858bde299f9936903b0ec8c61d19c99e75a6adce5ddf0d2bff9571b191  docs/proposals/PLAN.md
-310e2e123ea5a0f684f3288eb80a654f00d2c2c90f3b144909a546a033e17f3f  docs/proposals/REVIEW-WORK-STATUS.md
+b68de9ca20e2850beb0adb0472176c7429834682e5c58941c6a209cdde1cebf5  docs/proposals/REVIEW-WORK-STATUS.md
 3fc22a1c2d676faa40e073dd322ec2adeb1417c4004863cefb7d1d5f12142a59  hardware/proposals/2026-10-25-o1-ovp/SOURCING.md
 06a83e77c650037f34ffc984633bb6f714fb8ba6c414a3fa866a07138cf17cfe  hardware/proposals/2026-10-25-o1-ovp/candidate-bom.csv
 eb08dbde5b96452420bee0a5addf821964ce5d8fc6e147937825d6d2b497af3c  hardware/proposals/2026-10-25-o1-ovp/sourcing.csv
