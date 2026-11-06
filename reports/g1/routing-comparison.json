@@ -1,0 +1,391 @@
+{
+  "plan": {
+    "date": "G1 calculation input; derived from canonical BOM/netlist and explicit assumptions",
+    "nominal_copper_um": 35,
+    "calculation_copper_um": 31.5,
+    "trace_deltaT_C": 20,
+    "ambient_assumption_C": 50,
+    "resistivity_temperature_C": 70,
+    "drop_budget_mV_per_trunk": 50,
+    "classes": [
+      {
+        "name": "Default",
+        "trace_width": 0.25,
+        "clearance": 0.2,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "nets": [],
+        "purpose": "Unclassified signal fallback; must not carry a power trunk."
+      },
+      {
+        "name": "INPUT_POWER",
+        "trace_width": 4.5,
+        "clearance": 0.3,
+        "via_diameter": 1.2,
+        "via_drill": 0.6,
+        "nets": [
+          "/VBAT",
+          "/ANODE",
+          "/VIN"
+        ],
+        "current_A": 5.15625,
+        "length_mm": 50,
+        "purpose": "Input continuous routing envelope; not fuse clearing/fault approval.",
+        "g1_current_basis": "82.5 W / (20 V × 80% assumed efficiency)"
+      },
+      {
+        "name": "BUS_POWER",
+        "trace_width": 6,
+        "clearance": 0.2,
+        "via_diameter": 1.2,
+        "via_drill": 0.6,
+        "nets": [
+          "/VOUT",
+          "/GND"
+        ],
+        "current_A": 7.5,
+        "length_mm": 50,
+        "purpose": "Common 11V trunk and power-return equivalent cross-section. GND plane preferred; analog taps are exceptions.",
+        "g1_current_basis": "7.5 A total capacity target; measured load not available"
+      },
+      {
+        "name": "PHASE_POWER",
+        "trace_width": 3.5,
+        "clearance": 0.2,
+        "via_diameter": 1.2,
+        "via_drill": 0.6,
+        "nets": [
+          "/SW_PH1",
+          "/SW_PH2",
+          "/ISNS1",
+          "/ISNS2"
+        ],
+        "current_A": 5.583215497737557,
+        "length_mm": 50,
+        "purpose": "Per-phase routing envelope; switch copper localized. ISNS IC branch is Kelvin, not a 3.5mm sense trace.",
+        "g1_current_basis": "calculated phase peak; conservative continuous routing screen"
+      },
+      {
+        "name": "O1_POWER",
+        "trace_width": 4.5,
+        "clearance": 0.2,
+        "via_diameter": 1.2,
+        "via_drill": 0.6,
+        "nets": [
+          "/O1_11V"
+        ],
+        "current_A": 7.5,
+        "length_mm": 50,
+        "purpose": "Routing envelope only. Does not assign O1 load, change RILIM, or guarantee current limit.",
+        "g1_current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with S2E"
+      },
+      {
+        "name": "S2E_POWER",
+        "trace_width": 2.5,
+        "clearance": 0.2,
+        "via_diameter": 1.2,
+        "via_drill": 0.6,
+        "nets": [
+          "/S2E_11V"
+        ],
+        "current_A": 7.5,
+        "length_mm": 50,
+        "purpose": "S2E routing envelope; current limit and real start load require validation.",
+        "g1_current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with O1"
+      },
+      {
+        "name": "AUX_LOCAL",
+        "trace_width": 0.5,
+        "clearance": 0.2,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "nets": [
+          "/CBOOT1",
+          "/CBOOT2",
+          "Net-(CBOOT1-Pad1)",
+          "Net-(CBOOT2-Pad1)",
+          "/SW4_PH1",
+          "/SW4_PH2",
+          "/VCAP",
+          "/GATE",
+          "/VCC1",
+          "/VCC2",
+          "/VDDA1",
+          "/VDDA2"
+        ],
+        "current_A": 0.6,
+        "length_mm": 10,
+        "purpose": "Local bypass/bootstrap/gate branches; selected RMS routing envelope, peak pulse behavior not certified. Keep bootstrap and charge-pump loops very short.",
+        "g1_current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1."
+      },
+      {
+        "name": "CONTROL_SENSE",
+        "trace_width": 0.25,
+        "clearance": 0.2,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "nets": [
+          "/CFG_PRI",
+          "/CFG_SEC",
+          "/COMP",
+          "/COMP_MID",
+          "/DVDT_O1",
+          "/DVDT_S2E",
+          "/EN_BUCK",
+          "/EN_EFUSE",
+          "/FB",
+          "/ILIM_O1",
+          "/ILIM_S2E",
+          "/IMON_O1",
+          "/IMON_S2E",
+          "/PG_O1",
+          "/PG_S2E",
+          "/RT_PH1",
+          "/RT_PH2",
+          "/SYNC"
+        ],
+        "current_A": 0.05,
+        "length_mm": 50,
+        "purpose": "Low-current analog/control traces; Kelvin branches from power nets must use manual narrow escape and documented connection point.",
+        "g1_current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1."
+      },
+      {
+        "name": "NC_DO_NOT_ROUTE",
+        "trace_width": 0.2,
+        "clearance": 0.2,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "nets": [
+          "unconnected-(U1-NC-Pad10)",
+          "unconnected-(U2-NC-Pad10)",
+          "unconnected-(U2-PG{slash}SYNCOUT-Pad7)",
+          "unconnected-(U3-ITIMER-Pad7)",
+          "unconnected-(U4-ITIMER-Pad7)"
+        ],
+        "purpose": "Intentionally NC; class name is guidance, not a routing prohibition enforced by KiCad."
+      }
+    ],
+    "assumed_via_current_A": 0.5,
+    "assumed_via_plating_um": 25
+  },
+  "method": "Existing calculate_routing_rules.py method: IPC-2221 external empirical fit k=.048,b=.44,c=.725 plus copper Ohm-law IR drop.",
+  "scope": "4-layer equal-path result uses the external-layer fit as sensitivity only; internal-plane thermal/current sharing, layout and fabrication require confirmation.",
+  "via_assumption": "0.5 A/via and 25 µm assumed plating; counts per transition cluster.",
+  "sources": [
+    "https://www.ti.com/lit/an/snva766/snva766.pdf",
+    "https://jlcpcb.com/capabilities/pcb-capabilities/",
+    "https://docs.kicad.org/10.0/en/pcbnew/pcbnew.html"
+  ],
+  "rows": [
+    {
+      "name": "INPUT_POWER",
+      "current_A_screen": 5.15625,
+      "current_basis": "82.5 W / (20 V × 80% assumed efficiency)",
+      "length_mm": 50.0,
+      "existing_profile_width_mm": 4.5,
+      "2_layer": {
+        "min_width_mm": 3.3765514880952376,
+        "thermal_width_mm": 2.1051035960868933,
+        "drop_width_mm": 3.3765514880952376,
+        "drop_mV": 50.00000000000001,
+        "loss_W": 0.25781250000000006,
+        "existing_profile_meets_screen": true,
+        "via_count_per_transition_at_assumed_limit": 11,
+        "via_bank_drop_mV_per_transition": 0.6565988106837933
+      },
+      "4_layer_two_equal_paths": {
+        "current_per_path_A": 2.578125,
+        "min_width_per_path_mm": 1.6882757440476188,
+        "thermal_width_per_path_mm": 0.8092071025985089,
+        "drop_width_per_path_mm": 1.6882757440476188,
+        "drop_mV": 50.00000000000001,
+        "loss_W": 0.25781250000000006,
+        "via_count_per_path_per_transition_at_assumed_limit": 6,
+        "total_via_count_per_transition": 12,
+        "via_bank_drop_mV_per_transition": 0.6018822431268106
+      },
+      "single_via_resistance_mohm_assumed": 1.400744129458759,
+      "tag": "HESAP/VARSAYIM"
+    },
+    {
+      "name": "BUS_POWER",
+      "current_A_screen": 7.5,
+      "current_basis": "7.5 A total capacity target; measured load not available",
+      "length_mm": 50.0,
+      "existing_profile_width_mm": 6,
+      "2_layer": {
+        "min_width_mm": 4.911347619047618,
+        "thermal_width_mm": 3.529595344789084,
+        "drop_width_mm": 4.911347619047618,
+        "drop_mV": 50.000000000000014,
+        "loss_W": 0.3750000000000001,
+        "existing_profile_meets_screen": true,
+        "via_count_per_transition_at_assumed_limit": 15,
+        "via_bank_drop_mV_per_transition": 0.7003720647293795
+      },
+      "4_layer_two_equal_paths": {
+        "current_per_path_A": 3.75,
+        "min_width_per_path_mm": 2.455673809523809,
+        "thermal_width_per_path_mm": 1.3567853038735032,
+        "drop_width_per_path_mm": 2.455673809523809,
+        "drop_mV": 50.000000000000014,
+        "loss_W": 0.3750000000000001,
+        "via_count_per_path_per_transition_at_assumed_limit": 8,
+        "total_via_count_per_transition": 16,
+        "via_bank_drop_mV_per_transition": 0.6565988106837933
+      },
+      "single_via_resistance_mohm_assumed": 1.400744129458759,
+      "tag": "HESAP/VARSAYIM"
+    },
+    {
+      "name": "PHASE_POWER",
+      "current_A_screen": 5.583215497737557,
+      "current_basis": "calculated phase peak; conservative continuous routing screen",
+      "length_mm": 50.0,
+      "existing_profile_width_mm": 3.5,
+      "2_layer": {
+        "min_width_mm": 3.6561482855257483,
+        "thermal_width_mm": 2.349249979098897,
+        "drop_width_mm": 3.6561482855257483,
+        "drop_mV": 50.00000000000001,
+        "loss_W": 0.2791607748868779,
+        "existing_profile_meets_screen": false,
+        "via_count_per_transition_at_assumed_limit": 12,
+        "via_bank_drop_mV_per_transition": 0.6517213609965872
+      },
+      "4_layer_two_equal_paths": {
+        "current_per_path_A": 2.7916077488687785,
+        "min_width_per_path_mm": 1.8280741427628742,
+        "thermal_width_per_path_mm": 0.9030575846243325,
+        "drop_width_per_path_mm": 1.8280741427628742,
+        "drop_mV": 50.00000000000001,
+        "loss_W": 0.2791607748868779,
+        "via_count_per_path_per_transition_at_assumed_limit": 6,
+        "total_via_count_per_transition": 12,
+        "via_bank_drop_mV_per_transition": 0.6517213609965872
+      },
+      "single_via_resistance_mohm_assumed": 1.400744129458759,
+      "tag": "HESAP/VARSAYIM"
+    },
+    {
+      "name": "O1_POWER",
+      "current_A_screen": 7.5,
+      "current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with S2E",
+      "length_mm": 50.0,
+      "existing_profile_width_mm": 4.5,
+      "2_layer": {
+        "min_width_mm": 4.911347619047618,
+        "thermal_width_mm": 3.529595344789084,
+        "drop_width_mm": 4.911347619047618,
+        "drop_mV": 50.000000000000014,
+        "loss_W": 0.3750000000000001,
+        "existing_profile_meets_screen": false,
+        "via_count_per_transition_at_assumed_limit": 15,
+        "via_bank_drop_mV_per_transition": 0.7003720647293795
+      },
+      "4_layer_two_equal_paths": {
+        "current_per_path_A": 3.75,
+        "min_width_per_path_mm": 2.455673809523809,
+        "thermal_width_per_path_mm": 1.3567853038735032,
+        "drop_width_per_path_mm": 2.455673809523809,
+        "drop_mV": 50.000000000000014,
+        "loss_W": 0.3750000000000001,
+        "via_count_per_path_per_transition_at_assumed_limit": 8,
+        "total_via_count_per_transition": 16,
+        "via_bank_drop_mV_per_transition": 0.6565988106837933
+      },
+      "single_via_resistance_mohm_assumed": 1.400744129458759,
+      "tag": "HESAP/VARSAYIM"
+    },
+    {
+      "name": "S2E_POWER",
+      "current_A_screen": 7.5,
+      "current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with O1",
+      "length_mm": 50.0,
+      "existing_profile_width_mm": 2.5,
+      "2_layer": {
+        "min_width_mm": 4.911347619047618,
+        "thermal_width_mm": 3.529595344789084,
+        "drop_width_mm": 4.911347619047618,
+        "drop_mV": 50.000000000000014,
+        "loss_W": 0.3750000000000001,
+        "existing_profile_meets_screen": false,
+        "via_count_per_transition_at_assumed_limit": 15,
+        "via_bank_drop_mV_per_transition": 0.7003720647293795
+      },
+      "4_layer_two_equal_paths": {
+        "current_per_path_A": 3.75,
+        "min_width_per_path_mm": 2.455673809523809,
+        "thermal_width_per_path_mm": 1.3567853038735032,
+        "drop_width_per_path_mm": 2.455673809523809,
+        "drop_mV": 50.000000000000014,
+        "loss_W": 0.3750000000000001,
+        "via_count_per_path_per_transition_at_assumed_limit": 8,
+        "total_via_count_per_transition": 16,
+        "via_bank_drop_mV_per_transition": 0.6565988106837933
+      },
+      "single_via_resistance_mohm_assumed": 1.400744129458759,
+      "tag": "HESAP/VARSAYIM"
+    },
+    {
+      "name": "AUX_LOCAL",
+      "current_A_screen": 0.6,
+      "current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1.",
+      "length_mm": 10.0,
+      "existing_profile_width_mm": 0.5,
+      "2_layer": {
+        "min_width_mm": 0.10832921340497016,
+        "thermal_width_mm": 0.10832921340497016,
+        "drop_width_mm": 0.0785815619047619,
+        "drop_mV": 36.2697925309391,
+        "loss_W": 0.02176187551856346,
+        "existing_profile_meets_screen": true,
+        "via_count_per_transition_at_assumed_limit": 2,
+        "via_bank_drop_mV_per_transition": 0.4202232388376277
+      },
+      "4_layer_two_equal_paths": {
+        "current_per_path_A": 0.3,
+        "min_width_per_path_mm": 0.041642021356650155,
+        "thermal_width_per_path_mm": 0.041642021356650155,
+        "drop_width_per_path_mm": 0.03929078095238095,
+        "drop_mV": 47.17684165217196,
+        "loss_W": 0.028306104991303177,
+        "via_count_per_path_per_transition_at_assumed_limit": 1,
+        "total_via_count_per_transition": 2,
+        "via_bank_drop_mV_per_transition": 0.4202232388376277
+      },
+      "single_via_resistance_mohm_assumed": 1.400744129458759,
+      "tag": "HESAP/VARSAYIM"
+    },
+    {
+      "name": "CONTROL_SENSE",
+      "current_A_screen": 0.05,
+      "current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1.",
+      "length_mm": 50.0,
+      "existing_profile_width_mm": 0.25,
+      "2_layer": {
+        "min_width_mm": 0.03274231746031745,
+        "thermal_width_mm": 0.003517383589703275,
+        "drop_width_mm": 0.03274231746031745,
+        "drop_mV": 50.000000000000014,
+        "loss_W": 0.002500000000000001,
+        "existing_profile_meets_screen": true,
+        "via_count_per_transition_at_assumed_limit": 1,
+        "via_bank_drop_mV_per_transition": 0.07003720647293796
+      },
+      "4_layer_two_equal_paths": {
+        "current_per_path_A": 0.025,
+        "min_width_per_path_mm": 0.016371158730158725,
+        "thermal_width_per_path_mm": 0.001352091074587591,
+        "drop_width_per_path_mm": 0.016371158730158725,
+        "drop_mV": 50.000000000000014,
+        "loss_W": 0.002500000000000001,
+        "via_count_per_path_per_transition_at_assumed_limit": 1,
+        "total_via_count_per_transition": 2,
+        "via_bank_drop_mV_per_transition": 0.03501860323646898
+      },
+      "single_via_resistance_mohm_assumed": 1.400744129458759,
+      "tag": "HESAP/VARSAYIM"
+    }
+  ]
+}
