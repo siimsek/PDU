@@ -1,5 +1,15 @@
 # PDU PR #1 — bağımsız çalışma/durum kaydı
 
+## PKG-10 — 2026-11-06: tam verifier fikstür entegrasyonu, kısmi kaynak anlık görüntüsü
+
+- Başlangıç uzak HEAD `31aec96124adcfc57111528c792849bf6ac4f932`; kod düzeltme commit'i `53b097bc67bffeb76d4a82a53e0afe40ef126ca8`. Bu durum/kanıt commit'i bunun üzerindedir; gerçek son HEAD için `git rev-parse HEAD` veya PR API kullan.
+- **Tam özel checkout yok:** GitHub doğrudan erişimi ağ proxy'since HTTP 403; yerel git ağacı temizliği veya 259 deck bütünlüğü doğrulanmadı. GitHub kaynak anlık görüntüsündeki 42 seçilmiş dosyanın 41'i başlangıç blob'larıyla, değiştirilen Tur-2 fikstürü kod commit'i blob'uyla eşleşti. `verify_uvlo.py` blob `589f4a5c2a80322631868a7a7fc083773ee4a6c0`, SHA-256 `383e73ab716f42c47866442393cec510864b60aaab62835c6837e06ccef70626`.
+- Gerçek doğrulayıcı ve sentetik fikstür: locked verifier + PKG05 **28/28**, Gates **13/13**, Tur-2 **31/31**, Tur-3 **45/45**, Tur-4 önce **254/257**, fikstürün gerçek vaka çıktısını yakalama düzeltmesi sonrası **257/257**, Tur-6 **17/17**. Tur-5 ngspice yürütücüsü yokken **57/60**, exit 1; üç gerçek model bench'i **NOT RUN**. Yerel gerçek **libngspice-44.2** + sınırlı ctypes adaptör ile Tur-5 **60/60**, exit 0; üçü davranışsal model simülasyonu. Bu adaptör kabul runner'ı için doğrulanmadı, gerçek ngspice CLI değildir.
+- Rapor ve komutlar: `docs/proposals/2026-10-25-uvlo/PKG10-VERIFIER-INTEGRATION.md`; ham log/deck/kaynak envanteri `docs/proposals/2026-10-25-uvlo/evidence/pkg10-20261106/`; manifest SHA-256 `70425643bb5460977dfaa094195c804d28510d4e1bea80b738f7be8c532653cd`. Tur-4 düzeltmesi güvenlik kapılarını ve geçmiş kayıtları değiştirmedi.
+- **AÇIK:** gerçek tam checkout, standart ngspice yürütücüsü, 259 Gear/100ns yeni koşu, 23 tarihsel regresyonun yeni tekrarı, 20×2 yakınsama ve WP1/WP2 elektriksel P0 sorunları, PCB/BOM ve fiziksel test. Tarihsel 161/69/6 yeni koşu değildir. CI kapalı; PR draft; merge yok.
+- **Sonraki kesin adım:** yetkilendirilmiş gerçek checkout ve ngspice CLI sağla; tüm ağacı/lock girdilerini doğrula, yukarıdaki testleri temiz HEAD'de tekrarla; ön koşullar sağlanınca izole 259-deck koşusu başlat. Eski loglara yazma.
+
+
 Son kontrol: 2026-11-05 (Europe/Istanbul). Dal: `wp/baseline-2026-10-24`. PR: https://github.com/siimsek/PDU/pull/1 (draft). Ana inceleme: https://github.com/siimsek/PDU/pull/1#issuecomment-6666773349. Önceki yanıt: #issuecomment-6420218157.
 
 ## Değişmez çalışma kuralları

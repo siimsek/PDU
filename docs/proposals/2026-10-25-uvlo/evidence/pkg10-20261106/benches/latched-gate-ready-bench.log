@@ -1,0 +1,22 @@
+stderr Warning: can't find the initialization file spinit.
+stdout ******
+stdout ** ngspice-44.2 shared library
+stdout ** Creation Date: Sun Jan 12 08:19:15 UTC 2025
+stdout ******
+stdout Note: Compatibility modes selected: ps lt a
+stdout Circuit: * latched gate-ready bench
+stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+stdout Using SPARSE 1.3 as Direct Linear Solver
+stdout Operating point simulation skipped by 'uic',
+stdout now using transient initial conditions.
+tran: 31.5%
+ Reference value :  2.17597e-02
+tran: 65.0%
+tran: 99.7%
+--ready--
+stdout No. of Data Rows : 50093
+stdout Measurements for Transient Analysis
+stdout tr1                 =   6.01900e-03
+stdout gmin_sag            =  4.998750e+00 at=  2.000166e-02
+stdout tf1                 =   3.00006e-02
+stdout tr2                 =   3.70128e-02

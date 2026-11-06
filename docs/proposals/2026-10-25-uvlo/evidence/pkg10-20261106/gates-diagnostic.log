@@ -1,0 +1,25 @@
+Timeout (0:00:12)!
+Thread 0x00007f0634142740 (most recent call first):
+  File "/workspace/scratch/65c1df51a3f8/simulation/proposals/2026-10-25-uvlo/uvlo_budget.py", line 287 in eval_c3
+  File "/workspace/scratch/65c1df51a3f8/simulation/proposals/2026-10-25-uvlo/uvlo_budget.py", line 326 in search_c3
+  File "/workspace/scratch/65c1df51a3f8/simulation/proposals/2026-10-25-uvlo/uvlo_budget.py", line 388 in start_guarantee_status
+  File "tests/test_uvlo_gates.py", line 162 in budget_tests
+  File "tests/test_uvlo_gates.py", line 169 in main
+  File "tests/test_uvlo_gates.py", line 178 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "<string>", line 1 in <module>
+Timeout (0:00:12)!
+Thread 0x00007f0634142740 (most recent call first):
+  File "/workspace/scratch/65c1df51a3f8/simulation/proposals/2026-10-25-uvlo/uvlo_budget.py", line 192 in c3_vertices
+  File "/workspace/scratch/65c1df51a3f8/simulation/proposals/2026-10-25-uvlo/uvlo_budget.py", line 284 in eval_c3
+  File "/workspace/scratch/65c1df51a3f8/simulation/proposals/2026-10-25-uvlo/uvlo_budget.py", line 326 in search_c3
+  File "/workspace/scratch/65c1df51a3f8/simulation/proposals/2026-10-25-uvlo/uvlo_budget.py", line 388 in start_guarantee_status
+  File "tests/test_uvlo_gates.py", line 162 in budget_tests
+  File "tests/test_uvlo_gates.py", line 169 in main
+  File "tests/test_uvlo_gates.py", line 178 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "<string>", line 1 in <module>

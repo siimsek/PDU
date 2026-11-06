@@ -1,0 +1,296 @@
+[
+  {
+    "path": ".github/workflows/proposal-ngspice.yml",
+    "github_blob": "ad2bde62b147ad89cb67a86e90e9aadb62aeb3fd",
+    "local_blob": "ad2bde62b147ad89cb67a86e90e9aadb62aeb3fd",
+    "sha256": "1dc293d64ae820dd2a00862963b5d03fff3306dbed98e9355a008a70af27cf44",
+    "matches": true
+  },
+  {
+    "path": "docs/proposals/2026-10-25-uvlo/PKG02-PROTOCOL-LOCK.json",
+    "github_blob": "31748cb2356f6fbfc8c6d4a279dc1599558bbbd3",
+    "local_blob": "31748cb2356f6fbfc8c6d4a279dc1599558bbbd3",
+    "sha256": "4dc24528b26ba92e9f1a7c5cc238524e8d67da0826bef6c3aee9069a3010127d",
+    "matches": true
+  },
+  {
+    "path": "hardware/proposals/2026-10-25-uvlo/candidate-bom.csv",
+    "github_blob": "696faafdb60cc2cefccd17ec81d648c1037f00cc",
+    "local_blob": "696faafdb60cc2cefccd17ec81d648c1037f00cc",
+    "sha256": "f8627c8373910034063ba174ac32652435f23a42c257ccd0006fbb06ae7b0781",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/decks/uvlo-dip0v-300us-mbmin-tmin.cir",
+    "github_blob": "c0878c1df05d57cc25bc8f9d8e1746531f24b41b",
+    "local_blob": "c0878c1df05d57cc25bc8f9d8e1746531f24b41b",
+    "sha256": "405b33cacda7016b53e81b07b95c9fffac4b92b1e7600e671172a05c234e157f",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/decks/uvlo-dip0v-5us-typ-ttyp.cir",
+    "github_blob": "18be494a4ce427bb6d5da2df20ae509907908cbc",
+    "local_blob": "18be494a4ce427bb6d5da2df20ae509907908cbc",
+    "sha256": "16dc6f74c853b6f63f63cdcbb32a3542550fc779825c06ce745be6eab559839d",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/decks/uvlo-fpulse-1us-typ-ttyp.cir",
+    "github_blob": "e9d5a03c08c4bb99daa28e01e58c78376ce33438",
+    "local_blob": "e9d5a03c08c4bb99daa28e01e58c78376ce33438",
+    "sha256": "fd61c1fc428d85929345ace05f713c960142fdabf4998f4673ddd7b3a69c2dee",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/decks/uvlo-tur4-fpulse-1us-typ-ttyp.cir",
+    "github_blob": "10a7e19c575b9e6094a54bc8b30a5776a681c648",
+    "local_blob": "10a7e19c575b9e6094a54bc8b30a5776a681c648",
+    "sha256": "611ba4c45ba5b8d79dbfc08d316b1617b0e5fdc5cd502e772ab228c82f2ed432",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/gen_uvlo.py",
+    "github_blob": "4f97f9c63c2c820a7a89193815c255144b56ac5e",
+    "local_blob": "4f97f9c63c2c820a7a89193815c255144b56ac5e",
+    "sha256": "9cca3b29c5f6c296fe94f5125f3817ca5db610ec1fb9f82761f759f37b5f8c1c",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/imon_diag.py",
+    "github_blob": "2758fc41774735e82113430c51a3d5e885d3863a",
+    "local_blob": "2758fc41774735e82113430c51a3d5e885d3863a",
+    "sha256": "ba67aa037b40f15370ff8cb9b28d60fc6e99707bf849583a2d10af98d8018465",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/num_study.py",
+    "github_blob": "685705daf9abc1a0469dc5adb678a7e507e076fb",
+    "local_blob": "685705daf9abc1a0469dc5adb678a7e507e076fb",
+    "sha256": "a490074754af4ab7e7b9bb7f14bdf89a02e5948c95963a0aaaa776900edf2f41",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-circuit-uvlo-baseline.inc",
+    "github_blob": "80aac05f30bb2fe9a577da8e430817bc5b5e73ac",
+    "local_blob": "80aac05f30bb2fe9a577da8e430817bc5b5e73ac",
+    "sha256": "0a7c27547b6af71498f202bed7284a7e823d79c9b3bde4fea3c45df8ad5eb08f",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-circuit-uvlo.inc",
+    "github_blob": "123e1f1dc878bcf3542c7ce76f6a1f6d7146be95",
+    "local_blob": "123e1f1dc878bcf3542c7ce76f6a1f6d7146be95",
+    "sha256": "d6e91ff8f3796f3cb6805f8ce60d87b546321b6de561fb9479e6315744233d6e",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-o1ovp-block-uvlo.inc",
+    "github_blob": "12acc398b7087952d9e86eb7305793b35887751d",
+    "local_blob": "12acc398b7087952d9e86eb7305793b35887751d",
+    "sha256": "25435b8d90cf337de2b0f80202207652b68a57571cb5949e106c24508f6e0132",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-tdrv-en.inc",
+    "github_blob": "2554d18afe04cca3d5a66940794622b4560240ff",
+    "local_blob": "2554d18afe04cca3d5a66940794622b4560240ff",
+    "sha256": "c3533a17785c0bb23b9ebb525a28386ffd9410bd893f81a1e2a62b69c1c22355",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-uvlo-behavioral.lib",
+    "github_blob": "fc15c29c3e94ff8c2b77774170944bcd388738e9",
+    "local_blob": "fc15c29c3e94ff8c2b77774170944bcd388738e9",
+    "sha256": "cc54576b00a7843769af71bd125208c1ced1c6141cfe46a17d453305a63a55b4",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-uvlo-block-noreset-o3.inc",
+    "github_blob": "077820ad678181ac34886f499a83a42dff5908ed",
+    "local_blob": "077820ad678181ac34886f499a83a42dff5908ed",
+    "sha256": "89c7d7503a63f6347c924a2f780e6d040621cfb0911a45c3abd36adbe8e47848",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-uvlo-block-noreset.inc",
+    "github_blob": "73d4aca0b5bde0c4ec7ad35e9f848a696c0752fe",
+    "local_blob": "73d4aca0b5bde0c4ec7ad35e9f848a696c0752fe",
+    "sha256": "ef076795066b1182a0cfe63eee045f052fd8763857b99d88042195b3f8ba150b",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-uvlo-block-o3.inc",
+    "github_blob": "b52eadce4556a5e26e86c4b5382c2af22ef3d455",
+    "local_blob": "b52eadce4556a5e26e86c4b5382c2af22ef3d455",
+    "sha256": "d07c9988c4fcfe77334ff4704bf2cfe5a26d82c5e1ebaec5b8c92f238f256b4e",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-uvlo-block-tur4-o3.inc",
+    "github_blob": "bce0d95e93b295e131d53b7e285f5ada00feb0a4",
+    "local_blob": "bce0d95e93b295e131d53b7e285f5ada00feb0a4",
+    "sha256": "0cf2e828c1cefc097e925cd1bb3e7665f02ba1f1d72083cfd66dc55856be74ca",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-uvlo-block-tur4.inc",
+    "github_blob": "abc41f56d006892cce4219cbff9208d5a4bb38b9",
+    "local_blob": "abc41f56d006892cce4219cbff9208d5a4bb38b9",
+    "sha256": "49a5592789766273af4293c3d47462f7e026b4c40d6df2b7781f913334d9554a",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/pdu-uvlo-block.inc",
+    "github_blob": "70144316001fec3960ad7351d26e6ebcbfdf9826",
+    "local_blob": "70144316001fec3960ad7351d26e6ebcbfdf9826",
+    "sha256": "a23f374ce415371fec4045f835239711a1a20c4c064fd81f36debf1205571316",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/results/uvlo-budget.json",
+    "github_blob": "5be2f9e8fa25fbd8e33e2ee2534980594e8f97d2",
+    "local_blob": "5be2f9e8fa25fbd8e33e2ee2534980594e8f97d2",
+    "sha256": "14b57d4ffe247e87a6959b1d72ccd98b2f30b0e88b70a486094a465548f782d1",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/run_uvlo.py",
+    "github_blob": "f324db9e2e66909a9b79b1116a4b1765f782a682",
+    "local_blob": "f324db9e2e66909a9b79b1116a4b1765f782a682",
+    "sha256": "676d41ef1b72e95771e34ed26f54e23ecdf803fcdd432ad0df3cdbaf099cd5f6",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/test-cases-uvlo.json",
+    "github_blob": "009f5dcc5df3ef726138f8861b8761475d3d1bee",
+    "local_blob": "009f5dcc5df3ef726138f8861b8761475d3d1bee",
+    "sha256": "7165171d522b74dda0502d5d44c36dda508f3c43dfe072c595e932bcc2de1545",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/test_locked_runner.py",
+    "github_blob": "02e68ca35fe830089b408cd9a39cdc26da81fc4a",
+    "local_blob": "02e68ca35fe830089b408cd9a39cdc26da81fc4a",
+    "sha256": "c295fd8ffefe5fa19fee6005e4c697903ecc9e4abc2cccaa25478a5470646d32",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/test_locked_verifier.py",
+    "github_blob": "84ee5e8e5ebcd59cd93afaa92832d2bedfa3cd6a",
+    "local_blob": "84ee5e8e5ebcd59cd93afaa92832d2bedfa3cd6a",
+    "sha256": "03053187a8261fab80d70ff018e57f76d058f54205fd330193eefb1977312e0e",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/test_pkg05_historical_readonly.py",
+    "github_blob": "9e6126870eb4f998000f7486739f8a25123eadba",
+    "local_blob": "9e6126870eb4f998000f7486739f8a25123eadba",
+    "sha256": "6c7fe2b51daf62fc88cc5bb49e7094b069bbe2ca89c1097ade970c2487376d16",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/test_pkg05_run_selection.py",
+    "github_blob": "d06c8531e92ac8dab6757768a52b63d40097de55",
+    "local_blob": "d06c8531e92ac8dab6757768a52b63d40097de55",
+    "sha256": "e5a7295970de6620f79b295056fca07e5d8be61fb12130a754156ca75a6675f3",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/fixture_historical.py",
+    "github_blob": "9e01b467d9d4bc1c478c9d93c3bc40e36f0a0bed",
+    "local_blob": "9e01b467d9d4bc1c478c9d93c3bc40e36f0a0bed",
+    "sha256": "2cd505458868d93c228b640aa27343d99db799b327d110ac68d09b25a25365e4",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/fixture_summary.py",
+    "github_blob": "e587a9914b0ff9a42080704c5b30319f407c6cab",
+    "local_blob": "e587a9914b0ff9a42080704c5b30319f407c6cab",
+    "sha256": "26e5a04d9ebb65394c81872d2b22e1c2f68fa2daf1146277531f877484368b8b",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/test_fixture_historical.py",
+    "github_blob": "0bc6e90e16bc14b76691f091225bb5aefb0ca9fe",
+    "local_blob": "0bc6e90e16bc14b76691f091225bb5aefb0ca9fe",
+    "sha256": "ff134a59d601f82b256948b81bdd7f7268044bbb3d80875c23a1799c4fbbf1b5",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/test_fixture_summary.py",
+    "github_blob": "6e556594130badde87f30bfd721c27756ff6e9d3",
+    "local_blob": "6e556594130badde87f30bfd721c27756ff6e9d3",
+    "sha256": "e035f41d265ee3d83bacf9f4ceee87ba87004b2092f8b7f363520ce7433c2a1d",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_gates.py",
+    "github_blob": "a66c94182f15c7cd80394f11961158827ee605ec",
+    "local_blob": "a66c94182f15c7cd80394f11961158827ee605ec",
+    "sha256": "68c411236d0b51dbb921b53ca3401375915c8b42a02b28689d163a05c7b31ec9",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_o3.py",
+    "github_blob": "450021f8e3a62280f8193389a9aa753caae3f79c",
+    "local_blob": "450021f8e3a62280f8193389a9aa753caae3f79c",
+    "sha256": "47eec0949eb69c7607d526b393c1acb7816559707b560631bfa2fd3edbce8265",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur2.py",
+    "github_blob": "60762b95a6a3744f86d39aa515925da7fdda1321",
+    "local_blob": "ae2239cba47d1e41da230321f09b4f5ec9433212",
+    "sha256": "16c4d9218e05ea10b65c6b2400cd29bf5dcb19d784c4fa4fcc30bf1d322ec81e",
+    "matches": false
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur3.py",
+    "github_blob": "4a247f97d5cb9ba0a4dd91362bb873d902277c28",
+    "local_blob": "4a247f97d5cb9ba0a4dd91362bb873d902277c28",
+    "sha256": "9143421eaded7cdd73ef046393e5a6c9471362eb443aa743841633e214377142",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur4.py",
+    "github_blob": "e0ad0cf2595337e5385e269795dc353ff5d37bba",
+    "local_blob": "e0ad0cf2595337e5385e269795dc353ff5d37bba",
+    "sha256": "f88e5d6f31fe1e357045c34d59e4c4354723e9b9331967613b60850d5883016e",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur5.py",
+    "github_blob": "cb3a6c8608c1db19987ca14a4fc4cfa3359ae625",
+    "local_blob": "cb3a6c8608c1db19987ca14a4fc4cfa3359ae625",
+    "sha256": "827c22e05cb51990bfe29dddca2e1148671f88bb5aaf160b719ee86d719f1b42",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/tests/test_uvlo_tur6.py",
+    "github_blob": "1b0705e3208a610998d579a410527a92729ba7c6",
+    "local_blob": "1b0705e3208a610998d579a410527a92729ba7c6",
+    "sha256": "0b26c503b124aa1d0e3f2e458caa1d6d20e5a7030be87b820a84840b08e4491f",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/uvlo_budget.py",
+    "github_blob": "ec710ed507b9463a5b2150e87b37a34923c7863f",
+    "local_blob": "ec710ed507b9463a5b2150e87b37a34923c7863f",
+    "sha256": "8ffecdb81e3a8b9068459b3e92ddb4c3c1203b46dbaf3a6227d455a074bf4d39",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/2026-10-25-uvlo/verify_uvlo.py",
+    "github_blob": "589f4a5c2a80322631868a7a7fc083773ee4a6c0",
+    "local_blob": "589f4a5c2a80322631868a7a7fc083773ee4a6c0",
+    "sha256": "383e73ab716f42c47866442393cec510864b60aaab62835c6837e06ccef70626",
+    "matches": true
+  },
+  {
+    "path": "simulation/proposals/study_integrity.py",
+    "github_blob": "49adc2e8fc82c9f26f758a84949162bbcf991c91",
+    "local_blob": "49adc2e8fc82c9f26f758a84949162bbcf991c91",
+    "sha256": "75b83f4ff3c167f20f424b836b174c35a89aca0f3637fdec6812ae6b8ac8e784",
+    "matches": true
+  }
+]

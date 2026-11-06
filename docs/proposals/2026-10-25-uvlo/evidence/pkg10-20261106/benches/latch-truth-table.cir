@@ -1,0 +1,24 @@
+* latch truth table
+.include /workspace/scratch/65c1df51a3f8/simulation/proposals/2026-10-25-uvlo/pdu-uvlo-behavioral.lib
+VCC VCC 0 5
+VP P 0 PWL(0 0 1u 0 1.01u 5 2u 5 2.01u 5 3u 5 3.01u 5 4u 5 4.01u 0 5u 0 5.01u 0 6u 0 6.01u 5)
+VC C 0 PWL(0 5 1u 5 1.01u 5 2u 5 2.01u 0 3u 0 3.01u 5 4u 5 4.01u 5 5u 5 5.01u 0 6u 0 6.01u 0)
+XL P C Q QN VCC 0 UVLO_LVC1G74
+RLQ Q 0 100k
+RLN QN 0 100k
+.tran 1n 7u 0 5n uic
+.meas tran Q0 FIND V(Q) AT=0.9u
+.meas tran QN0 FIND V(QN) AT=0.9u
+.meas tran Q1 FIND V(Q) AT=1.9u
+.meas tran QN1 FIND V(QN) AT=1.9u
+.meas tran Q2 FIND V(Q) AT=2.9u
+.meas tran QN2 FIND V(QN) AT=2.9u
+.meas tran Q3 FIND V(Q) AT=3.9u
+.meas tran QN3 FIND V(QN) AT=3.9u
+.meas tran Q4 FIND V(Q) AT=4.9u
+.meas tran QN4 FIND V(QN) AT=4.9u
+.meas tran Q5 FIND V(Q) AT=5.9u
+.meas tran QN5 FIND V(QN) AT=5.9u
+.meas tran Q6 FIND V(Q) AT=6.9u
+.meas tran QN6 FIND V(QN) AT=6.9u
+.end

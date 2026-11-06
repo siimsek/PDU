@@ -1,0 +1,64 @@
+2026-11-06T08:53:22+03:00
+OK  V51a control: EN_LAG_F1 0.4 us, consistent with the printed times -> exit 0  -> exit 0 (want 0)
+OK  V51b EN_LAG_F1 missing, printed |EN_F1-OUTA_F1| 0.4 us -> exit != 0 (direct lag required)  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51c EN_LAG_F1 missing, printed times identical (0 us) -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51d EN_LAG_F1 ngspice failed -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51e EN_LAG_F1 NaN, printed times identical -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51e EN_LAG_F1 +Inf, printed times identical -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51e EN_LAG_F1 -Inf, printed times identical -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51e EN_LAG_F1 negative, printed times identical -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51f EN_LAG_F1 0.3 us inconsistent with 5 us printed difference -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51g ride-through (OUTA never fell) -> no lag required, exit 0  -> exit 0 (want 0)
+OK  V51i EN_LAG_F1 -0.04 us (Tur-6: negative lag, causality unproven), printed times identical -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51j EN_LAG_F1 -0.11 us (beyond the 0.1 us step tolerance) -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V51h EN already low before the OUTA fall -> M3 not applicable, no lag required, exit 0  -> exit 0 (want 0)
+OK  V52 dip restart 60.0005 ms after OUTA_R2 (printed, +-1 us) -> exit nonzero  -> exit 1 (want nonzero)
+OK  V52 dip restart 60.0009 ms after OUTA_R2 (printed, +-1 us) -> exit nonzero  -> exit 1 (want nonzero)
+OK  V52 dip restart 60.0020 ms after OUTA_R2 (printed, +-1 us) -> exit 0  -> exit 0 (want 0)
+OK  V52 dip restart 60.5000 ms after OUTA_R2 (printed, +-1 us) -> exit 0  -> exit 0 (want 0)
+OK  V52s seq stimulus-only configured delay 60.000 ms stays inclusive -> exit 0  -> exit 0 (want 0)
+OK  V53a no --run-id -> exit 2 without historical output write  -> exit 2 (want 2); missing locked output rejected
+OK  V53b --historical -> exit 0, summary.mode = historical via stdout  -> exit 0 (want 0); mode='historical'
+OK  V53c legacy --run-id without 259-deck lock -> exit 2 (never acceptance)  -> exit 2 (want 2); missing locked run rejected
+OK  V53d --historical together with --run-id -> exit 2 (ambiguous mode)  -> exit 2 (want 2)
+OK  D51 pdu-uvlo-block.inc: OUTA_UV drives only U20A out, U21/U26 SEL, U27 PRE and RTT (no diode/RDIS/stretcher load)  -> ['RTT', 'XU20A', 'XU21', 'XU26', 'XU27']
+OK  D52 pdu-uvlo-block.inc: U27 SN74LVC1G74 reset-dominant latch, PRE = OUTA_UV  -> [['XU27', 'OUTA_UV', 'CLR_UV', 'QINH_UV', 'QNINH_UV', 'V5_OVP', '0', 'UVLO_LVC1G74', 'VTR={VTRL}']]
+OK  D52b pdu-uvlo-block.inc: U29 release comparator (CTT < V_CLR) drives the latch CLR  -> [['XU29', 'T_UV', 'REFC_UV', 'V5_OVP', '0', 'CLR_UV', 'UVLO_CMP', 'VIO={VIOC}', 'HINT={HINTC}', 'VOHD={VOHD}', 'VOL={VOL}']]
+OK  D52c pdu-uvlo-block.inc: U22 (EN->GND) and U24 (CTT discharge) TMUX1101 follow the latch output  -> ([['XU22', 'EN_BUCK', '0', '0', 'QINH_UV', 'V5_OVP', 'UVLO_TMUX1101', 'RON={RON_U}', 'ILK=0', 'VTH={VTHS}']], [['XU24', 'DSC_UV', '0', '0', 'QINH_UV', 'V5_OVP', 'UVLO_TMUX1101', 'RON={RON_U}', 'ILK=0', 'VTH={VTHS}']])
+OK  D51b pdu-uvlo-block.inc: Tur-3/4 stretcher + DTT/RDIS fast path removed from the candidate  -> 
+OK  D53 pdu-uvlo-block.inc: U28 gate-ready EN qualifier (EN low until GRDY)  -> ([['XU28', 'EN_BUCK', '0', '0', 'GRDY_UV', 'V5_OVP', 'UVLO_TMUX1102', 'RON={RON_U}', 'ILK=0']], [['XG28', 'G_OVP', 'SRC_OVP', 'GRDY_UV', 'V5_OVP', '0', 'QINH_UV', 'UVLO_GRDYL', 'VRDY={VRDY}', 'TQ={TQ_GRDY}']])
+OK  D53c pdu-uvlo-block.inc: gate-ready flag is latched and cleared by Q_INH (no EN edge from a VGS sag without VIN-OK loss)  -> [['XG28', 'G_OVP', 'SRC_OVP', 'GRDY_UV', 'V5_OVP', '0', 'QINH_UV', 'UVLO_GRDYL', 'VRDY={VRDY}', 'TQ={TQ_GRDY}']]
+OK  D53b pdu-uvlo-block.inc: U26 direct OUTA_UV -> EN pull-down kept  -> [['XU26', 'EN_BUCK', '0', '0', 'OUTA_UV', 'V5_OVP', 'UVLO_TMUX1102', 'RON={RON_U}', 'ILK=0']]
+OK  D51 pdu-uvlo-block-o3.inc: OUTA_UV drives only U20A out, U21/U26 SEL, U27 PRE and RTT (no diode/RDIS/stretcher load)  -> ['RTT', 'XU20A', 'XU21', 'XU26', 'XU27']
+OK  D52 pdu-uvlo-block-o3.inc: U27 SN74LVC1G74 reset-dominant latch, PRE = OUTA_UV  -> [['XU27', 'OUTA_UV', 'CLR_UV', 'QINH_UV', 'QNINH_UV', 'V5_OVP', '0', 'UVLO_LVC1G74', 'VTR={VTRL}']]
+OK  D52b pdu-uvlo-block-o3.inc: U29 release comparator (CTT < V_CLR) drives the latch CLR  -> [['XU29', 'T_UV', 'REFC_UV', 'V5_OVP', '0', 'CLR_UV', 'UVLO_CMP', 'VIO={VIOC}', 'HINT={HINTC}', 'VOHD={VOHD}', 'VOL={VOL}']]
+OK  D52c pdu-uvlo-block-o3.inc: U22 (EN->GND) and U24 (CTT discharge) TMUX1101 follow the latch output  -> ([['XU22', 'EN_BUCK', '0', '0', 'QINH_UV', 'V5_OVP', 'UVLO_TMUX1101', 'RON={RON_U}', 'ILK=0', 'VTH={VTHS}']], [['XU24', 'DSC_UV', '0', '0', 'QINH_UV', 'V5_OVP', 'UVLO_TMUX1101', 'RON={RON_U}', 'ILK=0', 'VTH={VTHS}']])
+OK  D51b pdu-uvlo-block-o3.inc: Tur-3/4 stretcher + DTT/RDIS fast path removed from the candidate  -> 
+OK  D53 pdu-uvlo-block-o3.inc: U28 gate-ready EN qualifier (EN low until GRDY)  -> ([['XU28', 'EN_BUCK', '0', '0', 'GRDY_UV', 'V5_OVP', 'UVLO_TMUX1102', 'RON={RON_U}', 'ILK=0']], [['XG28', 'G_OVP', 'SRC_OVP', 'GRDY_UV', 'V5_OVP', '0', 'QINH_UV', 'UVLO_GRDYL', 'VRDY={VRDY}', 'TQ={TQ_GRDY}']])
+OK  D53c pdu-uvlo-block-o3.inc: gate-ready flag is latched and cleared by Q_INH (no EN edge from a VGS sag without VIN-OK loss)  -> [['XG28', 'G_OVP', 'SRC_OVP', 'GRDY_UV', 'V5_OVP', '0', 'QINH_UV', 'UVLO_GRDYL', 'VRDY={VRDY}', 'TQ={TQ_GRDY}']]
+OK  D53b pdu-uvlo-block-o3.inc: U26 direct OUTA_UV -> EN pull-down kept  -> [['XU26', 'EN_BUCK', '0', '0', 'OUTA_UV', 'V5_OVP', 'UVLO_TMUX1102', 'RON={RON_U}', 'ILK=0']]
+OK  D54 lib: UVLO_LVC1G74 / UVLO_TMUX1101 / UVLO_GRDY models present  -> 
+OK  D54b gate-ready default VGS >= 7.0 V qualified for 5 ms  -> .subckt UVLO_GRDY G S OUT VCC GND VRDY=7.0 TQ=5m
+OK  D55 pdu-uvlo-block-noreset.inc: Tur-2 regression block unchanged (no latch / gate-ready)  -> 
+OK  D55 pdu-uvlo-block-noreset-o3.inc: Tur-2 regression block unchanged (no latch / gate-ready)  -> 
+OK  D55b pdu-uvlo-block-tur4.inc: Tur-4 stretcher block kept as regression  -> 
+OK  D55b pdu-uvlo-block-tur4-o3.inc: Tur-4 stretcher block kept as regression  -> 
+OK  D56 forced OUTA pulse matrix 1 us .. 20 ms, C3 + O3, typ + mbmin, PASS + M3/M4  -> ([], [])
+OK  D56b double forced OUTA pulses (10/300 us, gap 50 us / 30 ms), C3 + O3  -> []
+OK  D56c double VIN us dips (50 us gap 100 us / 30 ms, 300 us gap 100 us), C3 + O3  -> []
+OK  D57 no-reset forced-pulse regressions 1/5/10/50/100 us (C3 + O3, expect FAIL)  -> ([], [])
+OK  D57b Tur-4 stretcher VIN-dip M3 regressions (C3 + O3, expect FAIL, M3 1 us gate)  -> ([], [])
+OK  D57c Tur-4 stretcher forced-pulse decks kept as INFO (forced pulse bypasses the Tur-4 load; not a regression)  -> ([], [])
+OK  D59 latch-candidate start windows use the leak-free timer ramp (no DTT on CTT any more)  -> []
+OK  D58 forced-pulse deck: OUTA_UV pull-down injection, EN_LAG and latch instrumentation  -> 
+OK  V54 workflow YAML (disabled) runs tests/test_uvlo_tur4.py and tests/test_uvlo_tur5.py  -> 
+BAD L51 latch truth table (ngspice)  -> ngspice not found
+BAD L52 gate-ready bench (ngspice)  -> ngspice not found
+BAD L53 latched gate-ready bench (ngspice)  -> ngspice not found
+OK  B51 latch release level V_CLR,min above the CTT equilibrium while U24 holds it (no deadlock)  -> {'v_eq_max': 0.08805634254434577, 'v_clr_min': 0.13470947102907868, 'v_clr_max': 0.15748195610275004, 'release_margin_V': 0.04665312848473291}
+OK  B52 ramp after latch release >= 60 ms (65 ms target margin reported)  -> (0.07597516285653437, 0.010975162856534368)
+OK  B53 VIN-OK -> EN max (discharge + ramp + gate-ready) <= 300 ms  -> 0.2667861841574479
+OK  B54 discharge peak current vs the unchanged 30 mA review target recorded  -> (0.029209621993127148, True)
+57/60 OK
+exit=1
+2026-11-06T08:53:23+03:00

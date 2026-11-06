@@ -1,0 +1,17 @@
+2026-11-06T08:54:32+03:00
+OK  G0 control: clean INFO/PASS cases -> exit 0  -> exit 0 (want 0)
+OK  G1 INFO dip: O1_GLOBAL_PEAK 12.01 V -> exit 1  -> exit 1 (want 1)
+OK  G2 INFO dip: POST_BUS_MAX 11.17 V -> exit 1  -> exit 1 (want 1)
+OK  G3 INFO rsweep: RUN_BUS_MAX 11.17 V -> exit 1  -> exit 1 (want 1)
+OK  G4 INFO rsweep: RUN_O1_MAX 11.17 V -> exit 1  -> exit 1 (want 1)
+OK  G5 INFO dip: O1_GLOBAL_PEAK missing -> exit != 0  -> exit 1 (want nonzero)
+OK  G6 INFO dip: POST_BUS_MAX missing -> exit != 0  -> exit 1 (want nonzero)
+OK  G7 expect="MAYBE" -> exit != 0  -> exit 1 (want nonzero)
+OK  G8 INFO rsweep: shutdown only (EN_F1 present, no hard-limit breach) -> exit 0  -> exit 0 (want 0)
+OK  G9 PASS start: O1 12.01 V -> exit 1  -> exit 1 (want 1)
+OK  G10 INFO dip: BUS_GLOBAL_MAX 11.41 V outside stable windows -> exit 0 (reported, not H2)  -> exit 0 (want 0)
+OK  B1 TLV3202 VIO max over temp = 6 mV (SBOS561C p.5)  -> VIO=6.000 mV
+OK  B2 start-guarantee status != GUARANTEED while A/T terms in start budget  -> NOT_GUARANTEED_POSITIVE_UNDER_ASSUMPTIONS
+13/13 OK
+exit=0
+2026-11-06T08:55:59+03:00

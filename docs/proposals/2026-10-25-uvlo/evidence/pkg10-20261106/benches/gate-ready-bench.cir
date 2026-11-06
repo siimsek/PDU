@@ -1,0 +1,12 @@
+* gate-ready bench
+.include /workspace/scratch/65c1df51a3f8/simulation/proposals/2026-10-25-uvlo/pdu-uvlo-behavioral.lib
+VCC VCC 0 5
+VS S 0 0
+VG G 0 PWL(0 0 1m 0 1.01m 10 20m 10 20.001m 5 30m 5 30.01m 6.9 50m 6.9)
+XG G S GRDY VCC 0 UVLO_GRDY
+RL GRDY 0 100k
+.tran 1u 50m 0 1u uic
+.meas tran TR WHEN V(GRDY)=2.5 RISE=1
+.meas tran TF WHEN V(GRDY)=2.5 FALL=1
+.meas tran GMAX_LATE MAX V(GRDY) FROM=30.5m TO=50m
+.end
