@@ -109,6 +109,17 @@ def run_verifier(here, argv=None):
         argv = ['--historical']
     from fixture_summary import summary_from_stdout
     v = load('verify_uvlo_t2', here / 'verify_uvlo.py')
+    captured = []
+    real_write = v.write_verification
+
+    def capture_historical(mode, artifact):
+        # Call the real writer first: historical must remain read-only and locked
+        # acceptance must retain its exclusive-create safety checks.
+        real_write(mode, artifact)
+        if mode == 'historical':
+            captured.append(artifact)
+
+    v.write_verification = capture_historical
     code, old = None, sys.argv
     stdout, stderr = io.StringIO(), io.StringIO()
     sys.argv = ['verify_uvlo.py'] + list(argv)
@@ -121,6 +132,10 @@ def run_verifier(here, argv=None):
     finally:
         sys.argv = old
     out = summary_from_stdout(stdout.getvalue())
+    if argv == ['--historical'] and out.get('summary'):
+        if len(captured) != 1 or captured[0].get('summary') != out['summary']:
+            return 'historical artifact/summary mismatch', {'_stderr': stderr.getvalue()}
+        out['cases'] = captured[0]['cases']
     out['_stderr'] = stderr.getvalue()
     if argv == ['--historical'] and not out.get('summary'):
         return 'missing historical stdout summary', out
