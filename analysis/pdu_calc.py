@@ -1,8 +1,8 @@
 """G1 reproducible PDU calculations. SI units internally; no KiCad reads.
 
-Every reported numeric result carries two independent arithmetic paths. Where a
-silicon or parasitic parameter is unavailable, the result is explicitly a
-screen/assumption and is not promoted to a component guarantee.
+Reported checks carry two numerical paths and a declaration of their
+validation scope. Most paths are same-equation arithmetic cross-checks, not
+independent physical models. Unavailable silicon/parasitic data remain open.
 """
 from __future__ import annotations
 
@@ -20,10 +20,12 @@ sys.path.insert(0,str(ROOT/"simulation"))
 from project_inputs import load_inputs, number, tolerance
 
 def dual(name: str, unit: str, first: float, second: float,
-         method1: str, method2: str, tag: str = "HESAP") -> dict:
+         method1: str, method2: str, tag: str = "HESAP",
+         validation_scope: str = "same_equation_arithmetic_crosscheck") -> dict:
     diff = abs(first-second)
     return {"name": name, "unit": unit, "value": first, "second_value": second,
             "method_1": method1, "method_2": method2,
+            "validation_scope": validation_scope,
             "absolute_difference": diff,
             "relative_difference_percent": 0.0 if first == second else 100*diff/max(abs(first), abs(second)),
             "tag": tag}
@@ -212,14 +214,18 @@ def build_results() -> dict:
         vendor["C_11V_typ_uF"]*1e-6*8*1.2*1.22,
         "vendor-summary upper bank sensitivity","per-part Ceff × 8 × tolerance × X7S temperature","VARSAYIM")
     fb_low_dual=dual("FB lower static corner","V",vfb["min_V"],vfb["second_min_V"],
-        "16-corner vertex enumeration","monotonic closed-form corner")
+        "16-corner vertex enumeration","monotonic closed-form corner",
+        validation_scope="independent_algorithm_same_equation")
     fb_high_dual=dual("FB upper static corner","V",vfb["max_V"],vfb["second_max_V"],
-        "16-corner vertex enumeration","monotonic closed-form corner")
+        "16-corner vertex enumeration","monotonic closed-form corner",
+        validation_scope="independent_algorithm_same_equation")
     uv_duals=[]
     for name,c in (("existing 180k/10k",uv_old),("candidate 174k/10k",uv_new)):
         uv_duals.extend([
-          dual(name+" lower UVLO","V",c["min_V"],c["second_min_V"],"corner vertex enumeration","monotonic closed form"),
-          dual(name+" upper UVLO","V",c["max_V"],c["second_max_V"],"corner vertex enumeration","monotonic closed form")])
+          dual(name+" lower UVLO","V",c["min_V"],c["second_min_V"],"corner vertex enumeration","monotonic closed form",
+               validation_scope="independent_algorithm_same_equation"),
+          dual(name+" upper UVLO","V",c["max_V"],c["second_max_V"],"corner vertex enumeration","monotonic closed form",
+               validation_scope="independent_algorithm_same_equation")])
     efuse_duals=[]
     for idx,name in ((1,"O1"),(2,"S2E")):
         rlim=val(f"RILIM{idx}"); cdvdt=val(f"CDVDT{idx}")
@@ -315,6 +321,13 @@ def build_results() -> dict:
           "TDK_C5750":{"PDF_page_1":"22uF±20%,100V,X7S±22%,2220; DC-bias chart is typical only; vendor model AC numbers in hardware/validation/c5750/vendor-ac-summary.json"},
           "Molex_43045":{"PDF_page_8":"PS-43045-001 Rev P5 current-derating table; exact assembly wire/circuit configuration matters"},
           "Infineon_BSC160N10NS3G":{"PDF_page_1":"Product summary 100V/16mOhm/PG-TDSON-8; SOA page/operating waveform still requires exact package datasheet review"}},
+        "dual_path_validation_summary":{
+            "total_checks":len(dual_checks),
+            "same_equation_arithmetic_crosschecks":sum(x["validation_scope"]=="same_equation_arithmetic_crosscheck" for x in dual_checks),
+            "independent_algorithm_same_equation":sum(x["validation_scope"]=="independent_algorithm_same_equation" for x in dual_checks),
+            "independent_physical_model_validations":0,
+            "interpretation":"A second arithmetic path or algorithm is not independent model evidence. No calculation is independently validated against a production-silicon or measured physical model.",
+        },
         "dual_path_checks":dual_checks,
         "status":"Calculations are screens; no physical acceptance."
     }
@@ -422,7 +435,10 @@ def save_results() -> dict:
     (OUT/"calc-results.json").write_text(json.dumps(data,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     (OUT/"routing-input.json").write_text(json.dumps(data["routing"]["input_plan"],indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     (OUT/"routing-comparison.json").write_text(json.dumps(data["routing"]["calculation"],indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
-    lines=["# G1 hesap sonuçları","","Birimli ve parametreli hesap kodu: `analysis/pdu_calc.py`. Her çift yolda mutlak ve yüzde fark raporlanır. Hesaplar fiziksel doğrulama değildir.","",
+    lines=["# G1 hesap sonuçları","","Birimli ve parametreli hesap kodu: `analysis/pdu_calc.py`. Her çift yolda mutlak ve yüzde fark raporlanır. Bu yolların çoğu aynı bağıntının aritmetik çapraz kontrolüdür; bağımsız fiziksel model doğrulaması değildir. Köşe enumerasyonu ile kapalı form yalnız algoritma çapraz kontrolüdür. Üretici silikonu veya ölçülmüş kartla bağımsız doğrulama sayısı sıfırdır; hesaplar fiziksel doğrulama değildir.","",
+      "## İki yol doğrulama kapsamı","",
+      f"{data['dual_path_validation_summary']['total_checks']} sayısal çift yol kaydı: {data['dual_path_validation_summary']['same_equation_arithmetic_crosschecks']} aynı denklem aritmetik çapraz kontrolü, {data['dual_path_validation_summary']['independent_algorithm_same_equation']} aynı denklem üzerinde farklı algoritma karşılaştırması, {data['dual_path_validation_summary']['independent_physical_model_validations']} bağımsız fiziksel model doğrulaması.",
+      "Bu sınıflandırma `calc-results.json` içindeki `validation_scope` alanında her satır için ayrıca bulunur.","",
       "## Güç katı","",
       f"- 26 V, 400 kHz, Lmin=5.44 µH: bobin ripple {data['buck']['ripple']['value']:.4f} A p-p (iki yol farkı {data['buck']['ripple']['absolute_difference']:.3g} A).",
       f"- 7.5 A toplam ve varsayılan +10% faz paylaşım sapmasında tepe {data['buck']['phase_peak']['value']:.4f} A; Vishay tabloda Isat 13.5 A ile marj {data['buck']['IHLP_family_screen']['peak_headroom_to_Isat_A']:.3f} A. Exact aday var, BOM/stock onayı açık.",
@@ -452,9 +468,9 @@ def save_results() -> dict:
       "31.5 µm bakır, ΔT=20°C, 50 mm ve 50 mV varsayımı; 0.5 A/via ve 25 µm kaplama doğrulanmış fab değerleri değildir. 4L iç katman için dış iz fit'i yalnız duyarlılık taramasıdır.",
       "",
       "## Çift yol kayıtları","",
-      "| Hesap | Yöntem 1 | Yöntem 2 | Mutlak fark | % fark |","|---|---|---|---:|---:|"]
+      "| Hesap | Yöntem 1 | Yöntem 2 | Doğrulama kapsamı | Mutlak fark | % fark |","|---|---|---|---|---:|---:|"]
     for x in data["dual_path_checks"]:
-        lines.append(f"| {x['name']} | {x['method_1']} | {x['method_2']} | {x['absolute_difference']:.6g} {x['unit']} | {x['relative_difference_percent']:.6g}% |")
+        lines.append(f"| {x['name']} | {x['method_1']} | {x['method_2']} | {x['validation_scope']} | {x['absolute_difference']:.6g} {x['unit']} | {x['relative_difference_percent']:.6g}% |")
     lines += ["","Tüm sayısal sınırlar `AÇIK` maddeler çözülmeden bileşen seçimi veya üretim onayı oluşturmaz."]
     (OUT/"calc-results.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
     return data

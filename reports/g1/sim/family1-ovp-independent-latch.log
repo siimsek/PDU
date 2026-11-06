@@ -20,12 +20,12 @@ o1_steady           =  1.10000e+01 from=  4.00000e-03 to=  4.90001e-03
 latch_max           =  9.99995e-01 at=  4.90001e-03
 
 
-Total analysis time (seconds) = 0.626474
+Total analysis time (seconds) = 0.563377
 
-Total elapsed time (seconds) = 0.632 
+Total elapsed time (seconds) = 0.568 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 10014.328 MB.
-Maximum ngspice program size =   16.969 MB.
-Current ngspice program size =   16.969 MB.
+DRAM currently available = 10124.422 MB.
+Maximum ngspice program size =   16.984 MB.
+Current ngspice program size =   16.984 MB.
 

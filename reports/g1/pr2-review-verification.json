@@ -1,0 +1,69 @@
+{
+  "review_comment_id": 6681813880,
+  "reviewed_head": "adf727f244092b3628ba759b1dee5cd48909a19c",
+  "audit_worktree_head": "adf727f244092b3628ba759b1dee5cd48909a19c",
+  "working_tree_dirty_at_audit": true,
+  "audit_scope": "Static checks of saved ngspice decks/logs and report/calculation metadata. No new SPICE run and no physical acceptance.",
+  "checks": {
+    "family1_tdelay_is_used_after_correction": true,
+    "family1_peak_matches_spice_log": true,
+    "family1_model_gate_pass_is_preserved": true,
+    "family2_ovp_candidate_absent_and_fail_preserved": true,
+    "family4_transient_fail_preserved": true,
+    "wp2_historical_fail_and_incomplete_counts_present": true,
+    "uvlo_dynamic_gates_marked_open": true,
+    "independent_physical_validation_count_is_zero": true
+  },
+  "family1_ovp": {
+    "original_deck": "adf727f244092b3628ba759b1dee5cd48909a19c:reports/g1/sim/family1-ovp-independent-latch.cir",
+    "original_tdelay_uses_outside_param": 0,
+    "corrected_deck": "sim/family1-ovp-independent-latch.cir",
+    "corrected_tdelay_uses_outside_param": 1,
+    "o1_peak_V": 11.9741,
+    "limit_V": 12.0,
+    "model_margin_mV": 25.900000000000034,
+    "candidate_high_side_short_proof": "OPEN: family 1 is not the family 2 buck-short topology; no selected component models/corners."
+  },
+  "family2_buck_highside_short": {
+    "o1_peak_V": 18.8039,
+    "bus_peak_V": 39.812,
+    "phase_current_peak_A": 63.6654,
+    "criterion": "FAIL: O1 peak exceeds 12.0 V; independent candidate OVP absent."
+  },
+  "family4_load_step": {
+    "deck": "sim/family4-load-step-minc_lowcomp.cir",
+    "load_step_A": [
+      0.75,
+      7.0
+    ],
+    "measurement_window_ms": [
+      10.0,
+      12.0
+    ],
+    "bus_min_V": 10.7109,
+    "bus_min_time_ms": 10.0093,
+    "minimum_after_step_us": 9.30000000000028,
+    "bus_recover_V": 10.9961,
+    "minimum_below_10p78V_mV": 69.09999999999883,
+    "criterion": "FAIL retained; time is inside the measurement window. Silicon loop cause remains OPEN."
+  },
+  "wp2_uvlo": {
+    "historical_re_evaluation": "161 PASS / 69 FAIL / 6 incomplete; unchanged",
+    "g1_static_174k_10k_candidate": "Not evidence for dynamic WP2 timing/restart gates.",
+    "dynamic_gates": "OPEN"
+  },
+  "calculation_two_path_review": {
+    "total_checks": 65,
+    "same_equation_arithmetic_crosschecks": 59,
+    "independent_algorithm_same_equation": 6,
+    "independent_physical_model_validations": 0,
+    "interpretation": "A second arithmetic path or algorithm is not independent model evidence. No calculation is independently validated against a production-silicon or measured physical model."
+  },
+  "existing_efuse_capacity_screen": {
+    "nominal_ILIM_sum_A": 7.48771688191679,
+    "7p5A_capacity_shortfall_A": 0.01228311808320992,
+    "screen_result": "FAIL by nominal arithmetic only: summed nominal channel limits are slightly below 7.5A; actual distribution and guaranteed min/max at 301Ω/604Ω are not established.",
+    "required_action": "Measure O1/S2E loads and select RILIM values whose datasheet guaranteed minimum current limits cover the actual split with margin; do not claim 7.5A until then."
+  },
+  "physical_acceptance": "NOT PERFORMED"
+}

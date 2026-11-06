@@ -15,15 +15,16 @@
       "family": "family1_ovp",
       "completed": true,
       "criterion_pass": true,
-      "status": "candidate model PASS; baseline regression FAIL preserved; physical OVP open",
-      "result": "baseline parity 16.89 vs 16.89 V; ideal candidate O1 peak 11.9741 V",
+      "status": "ideal latch source-pulse model PASS; baseline regression FAIL preserved; buck-short candidate proof OPEN",
+      "result": "baseline parity 16.89 vs 16.89 V; ideal source-pulse latch O1 peak 11.9741 V; not the buck high-side-short topology",
+      "scope": "Ideal source-pulse + behavioral latch + ideal series switch. TDELAY is an ideal parameter. Not connected to family 2 buck high-side-short case and not a selected component topology.",
       "cases": [
         {
           "deck": "family1-ovp-independent-latch.cir",
           "log": "sim\\family1-ovp-independent-latch.log",
           "completed": true,
           "exit_code": 0,
-          "initial_attempt_log": "sim\\family1-ovp-independent-latch-attempt2.log",
+          "initial_attempt_log": "sim\\family1-ovp-independent-latch-attempt3.log",
           "initial_attempt_note": "initial run preserved",
           "error": null,
           "measures": {
@@ -56,19 +57,35 @@
             "phase_current": 63.6654
           },
           "attempt_history": [
-            {"log": "sim/family2-buck-highside-short-attempt1.log", "deck": "family2-buck-highside-short-attempt1.cir", "status": "setup failure", "detail": "duplicate REN1 device name"},
-            {"log": "sim/family2-buck-highside-short-attempt2.log", "deck": "family2-buck-highside-short-attempt2.cir", "status": "solver abort", "detail": "timestep too small at xu3.ena; one such solver failure, no repeated convergence tweaking"},
-            {"log": "sim/family2-buck-highside-short.log", "deck": "family2-buck-highside-short.cir", "status": "completed simplified behavioral topology", "criterion": "FAIL: O1 peak 18.8039 V > 12.0 V"}
+            {
+              "log": "sim/family2-buck-highside-short-attempt1.log",
+              "deck": "family2-buck-highside-short-attempt1.cir",
+              "status": "setup failure",
+              "detail": "duplicate REN1 device name"
+            },
+            {
+              "log": "sim/family2-buck-highside-short-attempt2.log",
+              "deck": "family2-buck-highside-short-attempt2.cir",
+              "status": "solver abort",
+              "detail": "timestep too small at xu3.ena; one such solver failure, no repeated convergence tweaking"
+            },
+            {
+              "log": "sim/family2-buck-highside-short.log",
+              "deck": "family2-buck-highside-short.cir",
+              "status": "completed simplified behavioral topology",
+              "criterion": "FAIL: O1 peak 18.8039 V > 12.0 V"
+            }
           ]
         }
       ],
-      "log": "reports/g1/sim/*.log"
+      "log": "reports/g1/sim/*.log",
+      "scope": "High-side-short sensitivity with an idealized 16.32 V eFuse switch only. No independent comparator/latch/disconnect candidate is present."
     },
     {
       "family": "family3_startup_uvlo",
       "completed": true,
       "criterion_pass": true,
-      "status": "completed",
+      "status": "behavioral model criterion PASS only; WP2 dynamic UVLO gates OPEN",
       "result": "20→26 V, 18 V fall and 20 V restart; bus/O1 extrema measured in behavioral model",
       "cases": [
         {
@@ -85,13 +102,14 @@
           }
         }
       ],
-      "log": "reports/g1/sim/*.log"
+      "log": "reports/g1/sim/*.log",
+      "scope": "Average behavioral buck model over input startup/fall/restart. Does not exercise WP2 VIN-OK delay, M1-per-EN-rise, dip, or double-pulse gates."
     },
     {
       "family": "family4_load_step_comp_corners",
       "completed": true,
       "criterion_pass": false,
-      "status": "completed",
+      "status": "FAIL preserved: low-Ceff/low-RCOMP bus minimum 10.7109 V < 10.78 V; silicon loop response OPEN",
       "result": "0.75→7.0→0.75 A, low/typ/high Ceff and corresponding RCOMP; bus extrema logged",
       "cases": [
         {
@@ -140,13 +158,14 @@
           }
         }
       ],
-      "log": "reports/g1/sim/*.log"
+      "log": "reports/g1/sim/*.log",
+      "scope": "Average behavioral controller model with Ceff 92.6514 µF, RCOMP 10.01 kΩ, CCOMP 4.7 nF and CHF 47 pF in the low corner; BUS_MIN is measured 10–12 ms. Internal phase currents/COMP error are not logged; loop gain, phase margin and silicon transient are not validated."
     },
     {
       "family": "family5_efuse_short_hotplug",
       "completed": true,
       "criterion_pass": true,
-      "status": "completed",
+      "status": "behavioral eFuse model criterion PASS only; silicon timing/SOA OPEN",
       "result": "port hot-plug plus O1 short/healthy S2E checks; model-only",
       "cases": [
         {
@@ -179,7 +198,8 @@
           }
         }
       ],
-      "log": "reports/g1/sim/*.log"
+      "log": "reports/g1/sim/*.log",
+      "scope": "Behavioral eFuse switch/latch topology only; no production device timing, MOSFET SOA, thermal, or fixture validation."
     }
   ],
   "global_limit": "No aborted/uncompleted case is counted as passing. Any numeric model pass is not physical evidence.",

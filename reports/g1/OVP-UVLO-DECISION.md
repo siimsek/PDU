@@ -14,7 +14,7 @@ Kararı fiziksel hata enjeksiyonunun kolaylığı ve ana güç katından bağım
 |---|---|---|---|---|
 | PR #1 hibrit (TPS48000-Q1, 4×CSD18540Q5B, TLV3601, REF35409, TPS7A1650, pasifler) | PR#1 raporunda seçilmiş model köşesi 11.90318 V (12 V'a 96.8 mV marj). Dört ESL deck abort etti; latch bypass/bağımsız köşelerde 12.412–12.418 V FAIL. Fiziksel pass yok. | En az 5 IC + 4 güç MOSFET'i + bias ve çok sayıda pasif; yüksek karmaşıklık. | Hata enjeksiyonu mümkün; çoklu latch/enable dalları ayrı ayrı test edilmeli. | PR modeli tamamlanmamış; ESL abortları kanıt değildir, silikon/transient/SOA yok. |
 | LTC4365 adayı (repo geçmişi) | Yerel native-LTspice yüksek eşik kaydı 11.8302 V; buck high-side short kaydı **12.3818 V FAIL**; `PROJECT-STATE.md` başka corner 12.4055 V raporlar. Başarısız köşe korunur. | Tek kontrolcü + harici MOSFET/pasifler; PR#1'den basit, ama ek analog kontrol. | Gate/OVP trip ve buck kısa devre testleri yapılabilir. | Yerel LTspice macro-model + yaklaşık MOSFET; ana devrede yok, kayıtlar farklı köşeler. |
-| Bağımsız comparator + latch + seri disconnect (öneri) | İdeal gecikme/akım modeli bu raporun hedefli family-1 SİM'inde; bu bir komponent sonucu değildir. Hedef üst köşe 11.46 V, 10 A/10 µF/0.5 µs basit üst sınır ≈11.96 V (HESAP, parazitik/turnoff akımı hariç). | 1 comparator + 1 referans + latch (tek/iki kapı) + 2 FET + bölücü/pasif; makul ve test edilebilir. Exact MPN/stok yok. | O1 ucuna akım sınırlı 11.5–16.9 V pulse uygula; trip, latch, reset ve kalan tepeyi aynı anda ölç. | SPICE yalnız ideal eşik/gecikme/FET temsil eder; comparator offset/overdrive, gate charge, FET SOA ve kablo endüktansı dahil değil. |
+| Bağımsız comparator + latch + seri disconnect (öneri) | Family 1 ideal source-pulse/latch modeli 11.9741 V gösterir; O1≤12.0 V'a yalnız 25.9 mV model marjı var. Bu sonuç Family 2 buck high-side-short topolojisine uygulanamaz; orada O1=18.8039 V **FAIL** ve bağımsız aday devre yok. Hesap ekranı 11.9635 V, parazitik/turnoff hariç; model/hypothesis agreement değil. | 1 comparator + 1 referans + latch (tek/iki kapı) + 2 FET + bölücü/pasif; makul ve test edilebilir. Exact MPN/stok yok. | O1 ucuna akım sınırlı 11.5–16.9 V pulse uygula; ayrıca buck high-side short ve bağımsız OVP birlikte hata enjeksiyonuyla denenmeli. | SPICE ideal eşik/gecikme/FET temsilidir; comparator offset/overdrive, gate charge, FET SOA, kablo/PCB L ve Ceff corner yoktur. İki senaryo tek aday güvenlik kanıtı değildir. |
 | O1 crowbar + F1 | Tepe crowbar tepki anında ≤12 V olabilir, fakat hata akımı/fuse açma davranışı bilinmediği için sayısal maksimum hesaplanamadı: AÇIK. | Crowbar anahtarı + sürüş + koordineli DC fuse; mevcut F1 seçimsiz. | Test edilebilir, ancak tek kullanımlık fuse, ark/enerji ve tekrar kurulumu gerekir. | Fuse açma eğrisi, batarya/kablo empedansı ve crowbar SOA yok; geçme iddiası mümkün değil. |
 
 ### OVP eşik/gecikme hesabı
@@ -28,6 +28,22 @@ Kararı fiziksel hata enjeksiyonunun kolaylığı ve ana güç katından bağım
 
 Bu senaryoda mevcut CEFOUT=10 µF yalnız nominal değer; DC-bias/derating ve FET turnoff akımı doğrulanmadı. 10 A arıza akımının gerçek sınırı bilinmiyor. Dolayısıyla öneri hesapta çok az marjla koşullu olarak mümkün görünür, **tasarım kanıtı değildir**. Kart için en az 100 MHz osiloskopla gerçek pulse ve hata enjeksiyonu zorunludur.
 
+### PR #2 bağımsız incelemesi — OVP kanıt kapsamı
+
+İnceleme HEAD'indeki [`family1-ovp-independent-latch.cir`](https://github.com/siimsek/PDU/blob/adf727f244092b3628ba759b1dee5cd48909a19c/reports/g1/sim/family1-ovp-independent-latch.cir) içinde `.param TDELAY=0.5u` tanımlı, fakat devre ifadesinde kullanılmıyordu. Gözlenen ideal gecikme Clatch, Btrip sink akımı ve 0.5 V switch eşiğinden doğuyordu. Düzeltme koşusunda TDELAY artık Btrip akımını belirleyen ideal parametredir; eski deck ve log [`family1-ovp-independent-latch-attempt3.cir`](sim/family1-ovp-independent-latch-attempt3.cir) / [`.log`](sim/family1-ovp-independent-latch-attempt3.log) altında korunur. Yeni 11.9741 V ölçümü bu ideal model için tekrarlanabilir; gerçek comparator/gate gecikmesi ölçümü değildir.
+
+Family 1 yüksek giriş pulse'ı ile ideal seri anahtarı yalıtır. Family 2'nin buck high-side short kaynağı ve O1 eFuse yükü ayrıdır; family 2 deck'inde bağımsız comparator/latch/series-disconnect yoktur. Bu nedenle **buck short + önerilen aday OVP birleşik testi yapılmadı ve kanıt yoktur**. Aday MPN ve datasheet garantili gecikme/offset mevcut olmadığından bir bileşen köşesi/pass değeri üretilemez.
+
+| Sonraki birleşik hata testi için köşe ekseni | Gerekli veri | Durum |
+|---|---|---|
+| Trip threshold | Referans initial accuracy/TCR, comparator offset vs overdrive/temp, divider tolerance/TCR | MPN yok; sayısal worst-case AÇIK |
+| Fault-to-off delay | Comparator propagation vs overdrive/temp, latch/gate delay, gate-source/sink current, FET Qg and driver impedance | MPN yok; 0.5 µs varsayımı kanıt değil |
+| O1 overshoot | Minimum Ceff after DC-bias/tolerance/aging, ESL/ESR, harness/PCB inductance/resistance, fault/load current envelope | Ceff/ESL and physical fault current AÇIK |
+| Disconnect survival | MOSFET VDS/SOA and turnoff waveform, reverse/backfeed path, repeated pulse/thermal limits | Exact FET and SOA waveform AÇIK |
+| Buck short response | Shorted high-side switch, independent OVP connected at O1, actual eFuse state, fault current and source impedance | Family 2 has no candidate OVP; combined case AÇIK |
+
+Measured or guaranteed inputs must be selected before this matrix can produce a valid component-corner simulation. Until then the 12.0 V O1 criterion remains unproven.
+
 ## UVLO politikası ve basit bölücü
 
 20 V yeniden kalkış, dondurulmuş 20–26 V giriş zarfının alt ucuna ulaşabilmek için gereklidir. 6S için 20/6=3.333 V/hücre. Ancak batarya koruması tek başına bu UVLO'ya bırakılmamalıdır; yaklaşık 16.5 V tipik falling (0.9× rising varsayımı) 2.75 V/hücre olur ve batarya üretici kesim politikası bilinmiyor.
@@ -36,6 +52,8 @@ Bu senaryoda mevcut CEFOUT=10 µF yalnız nominal değer; DC-bias/derating ve FE
 - **En basit değişiklik:** RUV1 180 kΩ → 174 kΩ (RUV2=10 kΩ kalır). Aynı varsayımlarla açma yaklaşık17.14–19.69 V; nominal yaklaşık18.4 V; üst corner 3.28 V/hücre. EN leakage ve TCR dahil değil.
 - EN leakage değişimi yaklaşık `I_EN × Rtop`; 174k için her 1 µA, açma eşiğinde 0.174 V değişim yapar. Garantili EN leakage sınırı doğrulanmadı.
 - RUV1 için exact MPN/tolerans/TCR ve RUV2 matching seçimi açık; tasarım değişikliği öneridir, uygulanmış değildir.
+
+G1 family 3'ün behavioral-model açılış/UVLO kriter PASS'i, WP2 dinamik kriterlerini doğrulamaz. 174 kΩ/10 kΩ yalnız statik yükselen eşik aday hesabıdır; VIN-OK→EN ≥60 ms, her EN yükselişinde M1, V_f≥18 V, dip ve çift darbe kapıları için G1'de devre modeli/koşusu/ölçüm yoktur. PR #1 WP2'deki 161 PASS / 69 FAIL / 6 eksik tarihsel yeniden değerlendirme olduğu gibi AÇIK kalır.
 
 PR#1 WP2'deki comparator/mux/reference'lı çok-IC UVLO ancak batarya histerezisi/pack-state işlevi 174k/10k pasif bölücüyle sağlanamazsa gerekçelendirilebilir; bugünkü G1 statik eşik hesabı bu karmaşıklığı tek başına gerektirmiyor. Bununla birlikte WP2'nin M1 ≥60 ms gecikme, V_f ≥18 V ve dip sonrası yeniden başlama kapıları pasif bölücü/modelle kanıtlanmıyor; bunlar bu kararla kapanmış sayılmaz.
 

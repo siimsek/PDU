@@ -7,9 +7,31 @@ from pdu_calc import ROOT, OUT
 SIM=ROOT/"simulation"
 DEST=OUT/"sim"
 NGSPICE=Path(r"F:\Spice64\bin\ngspice_con.exe")
+ARCHIVED_RUNS={}
+FAMILY_SCOPES={
+    "family1_ovp":"Ideal source-pulse + behavioral latch + ideal series switch. TDELAY is an ideal parameter. Not connected to family 2 buck high-side-short case and not a selected component topology.",
+    "family2_buck_highside_short":"High-side-short sensitivity with an idealized 16.32 V eFuse switch only. No independent comparator/latch/disconnect candidate is present.",
+    "family3_startup_uvlo":"Average behavioral buck model over input startup/fall/restart. Does not exercise WP2 VIN-OK delay, M1-per-EN-rise, dip, or double-pulse gates.",
+    "family4_load_step_comp_corners":"Average behavioral controller model with Ceff 92.6514 µF, RCOMP 10.01 kΩ, CCOMP 4.7 nF and CHF 47 pF in the low corner; BUS_MIN is measured 10–12 ms. Internal phase currents/COMP error are not logged; loop gain, phase margin and silicon transient are not validated.",
+    "family5_efuse_short_hotplug":"Behavioral eFuse switch/latch topology only; no production device timing, MOSFET SOA, thermal, or fixture validation."
+}
+
+def next_attempt(path):
+    index=1
+    while (path.with_name(path.stem+f"-attempt{index}.cir").exists()
+           or path.with_name(path.stem+f"-attempt{index}.log").exists()):
+        index+=1
+    return index
 
 def emit(name, deck):
     path=DEST/(name+".cir")
+    prior_log=path.with_suffix(".log")
+    if path.exists() and prior_log.exists():
+        index=next_attempt(path)
+        archived_deck=path.with_name(path.stem+f"-attempt{index}.cir")
+        archived_log=path.with_name(path.stem+f"-attempt{index}.log")
+        archived_deck.write_bytes(path.read_bytes())
+        ARCHIVED_RUNS[path]=archived_log
     path.write_text(deck,encoding="ascii")
     return path
 
@@ -37,15 +59,15 @@ def decks():
     DEST.mkdir(parents=True,exist_ok=True)
     result={}
     result["family1_ovp"]=[emit("family1-ovp-independent-latch", """* Ideal comparator/latch/series switch sensitivity only; not a vendor part.
-.param VTRIP=11.46 COUT=10u TDELAY=0.5u
+.param VTRIP=11.46 COUT=10u TDELAY=0.5u CLATCH=1n VSWITCH=0.5
 Vfault SOURCE 0 PWL(0 11 4.999m 11 5m 16.9 5.2m 16.9 5.201m 11 6m 11)
 Rsource SOURCE PRE 0.54
 Sdisconnect PRE O1 CTRL 0 IDEALSW
-Clatch CTRL 0 1n IC=1
+Clatch CTRL 0 {CLATCH} IC=1
 Rlatch CTRL 0 1T
-Btrip CTRL 0 I=if(V(O1)>VTRIP,1m,0)
-* The initial latch voltage holds the series switch on; 1mA discharges 1nF
-* through 0.5V in 0.5us after threshold crossing, then remains latched off.
+Btrip CTRL 0 I=if(V(O1)>VTRIP,CLATCH*VSWITCH/TDELAY,0)
+* TDELAY sets the ideal comparator-to-switch delay: constant sink current
+* discharges CLATCH from 1V to VSWITCH over TDELAY after threshold crossing.
 .model IDEALSW SW(Ron=10m Roff=1T Vt=0.5 Vh=0.05)
 CEFOUT O1 0 {COUT}
 Rload O1 0 1Meg
@@ -136,12 +158,13 @@ def run_one(path):
     log=path.with_suffix(".log")
     prior_log=None
     if log.exists():
-        index=1
-        while log.with_name(log.stem+f"-attempt{index}.log").exists(): index+=1
-        prior_log=log.with_name(log.stem+f"-attempt{index}.log")
+        prior_log=ARCHIVED_RUNS.get(path)
+        if prior_log is None:
+            index=next_attempt(path)
+            prior_log=log.with_name(log.stem+f"-attempt{index}.log")
+            prior_deck=path.with_name(path.stem+f"-attempt{index}.cir")
+            if path.exists(): prior_deck.write_bytes(path.read_bytes())
         prior_log.write_bytes(log.read_bytes())
-        prior_deck=path.with_name(path.stem+f"-attempt{index}.cir")
-        if path.exists(): prior_deck.write_bytes(path.read_bytes())
     try:
         p=subprocess.run([str(NGSPICE),"-D","ngbehavior=ltpsa","-b","-o",str(log),str(path)],
                          cwd=SIM,timeout=120,check=False,capture_output=True,text=True)
@@ -169,11 +192,48 @@ def parse_existing_baseline():
             "difference_V":abs(float(l.group(1))-float(w.group(1))) if l and w else None,
             "criterion_O1_le_12V":"FAIL in both; baseline is regression/parity fixture, not accepted design"}
 
+def enrich_families(fam):
+    for item in fam:
+        item["scope"]=FAMILY_SCOPES[item["family"]]
+        name=item["family"]
+        if name=="family1_ovp":
+            item["status"]=("ideal latch source-pulse model PASS; baseline regression FAIL preserved; buck-short candidate proof OPEN"
+                            if item["criterion_pass"] else "ideal latch source-pulse model FAIL; baseline regression FAIL preserved")
+        elif name=="family2_buck_highside_short" and item["completed"] and not item["criterion_pass"]:
+            item["status"]="completed; O1 ≤12 V gate FAIL"
+        elif name=="family3_startup_uvlo" and item["criterion_pass"]:
+            item["status"]="behavioral model criterion PASS only; WP2 dynamic UVLO gates OPEN"
+        elif name=="family4_load_step_comp_corners" and item["completed"] and not item["criterion_pass"]:
+            low=min(case["measures"].get("bus_min",99) for case in item["cases"])
+            item["status"]=f"FAIL preserved: low-Ceff/low-RCOMP bus minimum {low:.4f} V < 10.78 V; silicon loop response OPEN"
+        elif name=="family5_efuse_short_hotplug" and item["criterion_pass"]:
+            item["status"]="behavioral eFuse model criterion PASS only; silicon timing/SOA OPEN"
+    return fam
+
+def write_results(data):
+    fam=data["families"]
+    baseline=data["baseline_parity"]
+    (OUT/"sim-results.json").write_text(json.dumps(data,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+    lines=["# G1 targeted ngspice runs","","| Family | Completed? | Criterion | Result | Model scope | Log |","|---|---|---|---|---|---|"]
+    for f in fam:
+        lines.append(f"| {f['family']} | {'yes' if f['completed'] else 'no'} | {'PASS model criterion' if f['criterion_pass'] else 'FAIL/OPEN'} | {f['result']} | {f['scope']} | `{f['log']}` |")
+        for c in f["cases"]:
+            lines.append(f"| ↳ `{c['deck']}` | {'yes' if c['completed'] else 'no'} | — | `{json.dumps(c['measures'],sort_keys=True)}` | — | `{c['log']}` |")
+    lines += ["","Baseline parity: Linux ngspice-44.2 recorded O1 peak **%s V**; Windows ngspice-47 measured **%s V**; displayed difference **%s V**. Both preserve the expected ~16.89 V failure."%(baseline['linux_o1_peak_V'],baseline['windows_o1_peak_V'],baseline['difference_V']),
+              "","Interpretation: all decks use behavioral approximations, not TI silicon; any SİM criterion pass is not physical acceptance. Family 1 is an ideal source-pulse/latch case; it does not include the proposed independent OVP in Family 2's high-side-short case. Family 1's 11.9741 V remains a narrow model-only result. Family 2's first draft failed setup because REN1 was duplicated; the next detailed topology hit timestep-too-small at xu3.ena. Both logs are retained. A simplified behavioral topology completed and still FAILs the O1 ≤12 V gate at 18.8039 V; no further solver convergence tweaking was done. Family 4 low-Ceff/low-RCOMP minimum remains 10.7109 V, 69.1 mV below the 10.78 V floor; the behavioral model does not validate silicon loop gain or phase margin."]
+    (OUT/"SIMULATION-RESULTS.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
+
 def main():
+    previous_path=OUT/"sim-results.json"
+    if sys.argv[1:]==["--metadata-only"]:
+        data=json.loads(previous_path.read_text(encoding="utf-8"))
+        data["families"]=enrich_families(data.get("families",[]))
+        write_results(data)
+        print(json.dumps({"mode":"metadata-only","family_count":len(data["families"]),"ngspice_runs":0},ensure_ascii=True))
+        return
     groups=decks()
     fam=[]
     baseline=parse_existing_baseline()
-    previous_path=OUT/"sim-results.json"
     previous=json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.exists() else {"families":[]}
     previous_by_name={f["family"]:f for f in previous.get("families",[])}
     selected=set(sys.argv[1:]) if len(sys.argv)>1 else set(groups)
@@ -188,7 +248,7 @@ def main():
         result="Completed model cases; interpretation remains model-only"
         if key=="family1_ovp":
             peak=cases[0]["measures"].get("o1_peak") if cases[0]["completed"] else None
-            result=f"baseline parity {baseline['linux_o1_peak_V']} vs {baseline['windows_o1_peak_V']} V; ideal candidate O1 peak {peak} V"
+            result=f"baseline parity {baseline['linux_o1_peak_V']} vs {baseline['windows_o1_peak_V']} V; ideal source-pulse latch O1 peak {peak} V; not the buck high-side-short topology"
         elif key=="family2_buck_highside_short":
             result=f"O1 peak {cases[0]['measures'].get('o1_peak')} V; limit 12.0 V"
         elif key=="family3_startup_uvlo":
@@ -203,33 +263,31 @@ def main():
             # The historical baseline is expected to FAIL; criterion applies
             # to the idealized candidate run only and never erases that FAIL.
             criteria=cases[0]["measures"].get("o1_peak",99)<=12
-            status="candidate model PASS; baseline regression FAIL preserved; physical OVP open" if criteria else "candidate model FAIL; baseline regression FAIL preserved"
+            status="ideal latch source-pulse model PASS; baseline regression FAIL preserved; buck-short candidate proof OPEN" if criteria else "ideal latch source-pulse model FAIL; baseline regression FAIL preserved"
         if completed and key=="family2_buck_highside_short":
             criteria=cases[0]["measures"].get("o1_peak",99)<=12
             status="completed; O1 ≤12 V gate FAIL" if not criteria else "candidate model PASS only; physical gate open"
         if completed and key=="family3_startup_uvlo":
             m=cases[0]["measures"]; criteria=m.get("bus_after_restart",0)>=10.78 and m.get("o1_peak",99)<=12
+            status="behavioral model criterion PASS only; WP2 dynamic UVLO gates OPEN"
         if completed and key=="family4_load_step_comp_corners":
             criteria=all(c["measures"].get("o1_peak",99)<=12 and 10.78<=c["measures"].get("bus_min",0)
                          and c["measures"].get("bus_max",99)<=11.22 for c in cases)
+            low=min(c["measures"].get("bus_min",99) for c in cases)
+            if not criteria:
+                status=f"FAIL preserved: low-Ceff/low-RCOMP bus minimum {low:.4f} V < 10.78 V; silicon loop response OPEN"
         if completed and key=="family5_efuse_short_hotplug":
             m=cases[1]["measures"]; criteria=m.get("o1_short_avg",99)<=1 and m.get("s2e_healthy",0)>=10.78
+            status="behavioral eFuse model criterion PASS only; silicon timing/SOA OPEN"
         fam.append({"family":key,"completed":completed,"criterion_pass":bool(criteria),"status":status,
-                    "result":result,"cases":cases,"log":"reports/g1/sim/*.log"})
+                    "result":result,"scope":FAMILY_SCOPES[key],"cases":cases,"log":"reports/g1/sim/*.log"})
+    fam=enrich_families(fam)
     data={"tool":"ngspice 47 Windows for new runs; pdu-behavioral.lib non-silicon engineering model",
           "baseline_parity":baseline,"family_count":len(fam),"budget_limit":5,"families":fam,
           "global_limit":"No aborted/uncompleted case is counted as passing. Any numeric model pass is not physical evidence.",
           "solver_retry_policy":"Five named families total. Failed setup/solver logs are preserved. Family 2: duplicate-device setup failure, then one timestep failure at xu3.ena in the detailed topology; the final simplified behavioral topology completed with the failure criterion preserved. No repeated same-error convergence tweaking.",
           "source_decks":"Generated under reports/g1/sim from exported pdu-circuit.inc or pdu-protection.inc; no source netlist, model, or KiCad files changed."}
-    (OUT/"sim-results.json").write_text(json.dumps(data,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
-    lines=["# G1 targeted ngspice runs","","| Family | Completed? | Criterion | Result | Log |","|---|---|---|---|---|"]
-    for f in fam:
-        lines.append(f"| {f['family']} | {'yes' if f['completed'] else 'no'} | {'PASS model criterion' if f['criterion_pass'] else 'FAIL/OPEN'} | {f['result']} | `{f['log']}` |")
-        for c in f["cases"]:
-            lines.append(f"| ↳ `{c['deck']}` | {'yes' if c['completed'] else 'no'} | — | `{json.dumps(c['measures'],sort_keys=True)}` | `{c['log']}` |")
-    lines += ["","Baseline parity: Linux ngspice-44.2 recorded O1 peak **%s V**; Windows ngspice-47 measured **%s V**; displayed difference **%s V**. Both preserve the expected ~16.89 V failure."%(baseline['linux_o1_peak_V'],baseline['windows_o1_peak_V'],baseline['difference_V']),
-              "","Interpretation: all decks use behavioral approximations, not TI silicon; any SİM criterion pass is not physical acceptance. Family 2's first draft failed setup because REN1 was duplicated; the next detailed topology hit timestep-too-small at xu3.ena. Both logs are retained. A simplified behavioral topology completed and still FAILs the O1 ≤12 V gate at 18.8039 V; no further solver convergence tweaking was done."]
-    (OUT/"SIMULATION-RESULTS.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
+    write_results(data)
     print(json.dumps({"family_count":len(fam),"families":[(f['family'],f['completed'],f['criterion_pass']) for f in fam]},ensure_ascii=True))
 
 if __name__=="__main__": main()

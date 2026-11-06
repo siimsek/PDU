@@ -28,9 +28,15 @@ def test_uvlo_174k_candidate_restarts_within_20v_before_leakage():
 
 
 def test_all_reported_dual_paths_have_difference_fields():
-    for entry in build_results()["dual_path_checks"]:
+    data = build_results()
+    assert data["dual_path_validation_summary"]["independent_physical_model_validations"] == 0
+    for entry in data["dual_path_checks"]:
         assert "absolute_difference" in entry
         assert "relative_difference_percent" in entry
+        assert entry["validation_scope"] in {
+            "same_equation_arithmetic_crosscheck",
+            "independent_algorithm_same_equation",
+        }
         assert entry["absolute_difference"] < 1e-8
 
 
