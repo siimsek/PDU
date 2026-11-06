@@ -1,5 +1,16 @@
 # PDU PR #1 — bağımsız çalışma/durum kaydı
 
+## PKG-11 — 2026-11-06: tam sığ checkout ve temiz HEAD testleri
+
+- Başlangıç HEAD `0d0667511ad66683150c97fd8693b73b314ca02e`, tree `a0321ad8f291c56ad76df178efcba3211b258ba3`. Bu durum kaydını içeren commit daha yenidir; devamda PR HEAD'i yeniden sorgula.
+- GitHub connector ile gerçek commit, 61 ağaç ve dosya nesneleri doğrulanarak **2420 izlenen dosyanın tamamı** yerel Git çalışma ağacına getirildi. Geçmiş **sığdır**; önceki commitler mevcut değil. Test başında/sonunda HEAD ve tree eş, durum temiz, `git fsck` exit 0; her iki mevcut WP manifesti exit 0. Git filtreleri sonrası 2420/2420 çalışma dosyası blob eşleşti. Bir KiCad dosyasının ham baytı `.gitattributes` CRLF dönüşümü nedeniyle farklıdır; kanıt iki hash'i de içerir.
+- Gerçek runner ile 259/259 kilitli deck, 25/25 kaynak girdisi, 259 staging/include dönüşümü ve temiz status doğrulandı. Bu kontrol simülasyon değildir.
+- Temiz HEAD'de: locked runner/verifier/PKG05 **39/39**, Gates **13/13**, Tur-2 **31/31**, Tur-3 **45/45**, Tur-4 **257/257**, Tur-6 **17/17**, fikstür yardımcıları **13/13**, integrity **27/27**. Tur-5 standart ngspice yokken **57/60 exit 1** (üç bench engelli); gerçek paylaşımlı libngspice 44.2 ve sınırlı adaptörle **60/60 exit 0**. Standalone integrity testini önce `unittest discover` ile çalıştırma denemesi import/SystemExit ERROR verdi; doğrudan betik komutu 27/27 geçti. İki sonuç da saklandı.
+- **Gerçek ngspice CLI yok.** Runner eksik yürütücü negatif preflight'ı exit 3, yeni run klasörü yok. Adaptör tam runner/kabul için doğrulanmadı. Yeni 259-deck, 23 regresyon, yakınsama, OVP/UVLO elektriksel kabul ve fiziksel test yapılmadı; tüm tasarım P0'ları açık.
+- Kanıt/komutlar: `docs/proposals/2026-10-25-uvlo/PKG11-FULL-SNAPSHOT-INTEGRATION.md` ve `docs/proposals/2026-10-25-uvlo/evidence/pkg11-20261106/`; kanıt manifest SHA-256 `2a053d65ccb6a4cb711009cdf1e973eb33e67aafe2490d3033cd7b1e7138a1af`. Kendi kaynak checkout'u GitHub içeriğinden üretildi; ağ üzerinden Git clone değildir.
+- **Sonraki adım:** doğrulanmış gerçek ngspice CLI'yi ortama getir; Tur-5'i adaptörsüz çalıştır, güncel HEAD ve lock/temiz status kontrollerinden sonra yalnız ön koşullar sağlanırsa benzersiz izole 259-deck Gear/100ns koşusunu başlat. Geçmiş commit karşılaştırmaları için sığ geçmişin eksik olduğunu hesaba kat. CI kapalı; main/merge yok.
+
+
 ## PKG-10 — 2026-11-06: tam verifier fikstür entegrasyonu, kısmi kaynak anlık görüntüsü
 
 - Başlangıç uzak HEAD `31aec96124adcfc57111528c792849bf6ac4f932`; kod düzeltme commit'i `53b097bc67bffeb76d4a82a53e0afe40ef126ca8`. Bu durum/kanıt commit'i bunun üzerindedir; gerçek son HEAD için `git rev-parse HEAD` veya PR API kullan.

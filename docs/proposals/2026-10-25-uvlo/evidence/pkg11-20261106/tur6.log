@@ -1,0 +1,22 @@
+2026-11-06T09:57:27+03:00
+OK   V61 direct EN_LAG_F1 0.999 us -> exit 0
+OK   V61 direct EN_LAG_F1 1.000 us -> exit 0
+OK   V61 direct EN_LAG_F1 1.001 us -> exit nonzero
+OK   V61z EN_LAG_F1 0 us (coincident), printed times identical -> exit 0
+OK   V61n EN_LAG_F1 -0.000001 us (EN before VIN-OK loss, causality unproven) -> exit != 0
+OK   V61n EN_LAG_F1 -0.040000 us (EN before VIN-OK loss, causality unproven) -> exit != 0
+OK   V61n EN_LAG_F1 -0.030500 us (EN before VIN-OK loss, causality unproven) -> exit != 0
+OK   V61f EN_LAG_F1 NaN -> exit != 0
+OK   V61f EN_LAG_F1 +Inf -> exit != 0
+OK   V61f EN_LAG_F1 -Inf -> exit != 0
+OK   V62a R-DIP summary labels the metric as bus transient peak, not H2
+OK   V62b R-DIP case publishes peak_bus and peak_o1, O1 11.2 V <= 12.0 -> o1_instant_status PASS
+OK   V62c R-DIP O1 transient 12.05 V > 12.0 -> o1_instant_status FAIL (acceptance also FAILs on O1_GLOBAL_PEAK)
+OK   V62d R-DIP RD_PEAK_O1 missing -> o1_instant_status UNDETERMINED (never PASS)
+OK   N61 num_study.meas_kinds() classifies from .meas syntax (T_AT_DIP_END = FIND V -> voltage)
+OK   N62 num_study.set_tmax() replaces the .tran tmax uniformly (1u -> 100n)
+OK   N62b set_tmax independent of the original tmax value
+17/17 OK
+
+exit=0
+2026-11-06T09:57:28+03:00

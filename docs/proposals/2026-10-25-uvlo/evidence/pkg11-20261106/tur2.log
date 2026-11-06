@@ -1,0 +1,36 @@
+2026-11-06T09:57:27+03:00
+OK  U00 control: clean start + ramp_down + dip restart 60.5 ms with fresh manifest -> exit 0  -> exit 0 (want 0)
+OK  U03a start: OUTA_R1 missing -> exit != 0 (60 ms check must not be skipped)  -> exit 1 (want nonzero)
+OK  U03b start: OUTA_R1 failed! -> exit != 0  -> exit 1 (want nonzero)
+OK  U03c start: EN_R1 - OUTA_R1 = 59 ms -> exit != 0 (control of the gate itself)  -> exit 1 (want nonzero)
+OK  U03d ramp_down: EN_F1 present, VIN_AT_SHUTDOWN missing -> exit != 0  -> exit 1 (want nonzero)
+OK  U03e ramp_down: VIN_AT_SHUTDOWN failed! -> exit != 0  -> exit 1 (want nonzero)
+OK  U03f mb_hold: EN_F1 present, VIN_AT_SHUTDOWN missing -> exit != 0  -> exit 1 (want nonzero)
+OK  U05a dip: restart 16.1 ms after VIN restoration -> exit != 0  -> exit 1 (want nonzero)
+OK  U05b dip: restart 21 us (EN pulse) after VIN restoration -> exit != 0  -> exit 1 (want nonzero)
+OK  U05c dip: restart without OUTA restoration measurement -> exit != 0  -> exit 1 (want nonzero)
+OK  U05d dip: ride-through (no EN fall) -> no restart gate, exit 0  -> exit 0 (want 0)
+OK  M1 no run-manifest.json -> exit != 0  -> exit 2 (want nonzero)
+OK  M2 log SHA-256 differs from the manifest (stale/replaced log) -> exit != 0  -> exit 2 (want nonzero)
+OK  M3 deck SHA-256 differs from the manifest (log from an older deck) -> exit != 0  -> exit 2 (want nonzero)
+OK  M4 unknown locked run id -> exit 2 with precheck error  -> exit 2 (want 2); unknown locked run must be rejected before legacy input is parsed
+OK  M4b legacy manifest run id is NOT a locked 259-deck run -> exit 2  -> exit 2 (want 2); missing locked run must be rejected before any historical output write
+OK  M5 manifest rc = 1 for a deck (ngspice failed) -> exit != 0  -> exit 2 (want nonzero)
+OK  M6 deck/case missing from the manifest (partial run) -> exit != 0  -> exit 2 (want nonzero)
+OK  M6b case table changed after the run -> exit != 0  -> exit 2 (want nonzero)
+OK  R1 R-DIP screen: peak 11.41 V, 0.5 ms above, back in 3 ms -> PASS, exit 0  -> exit 0 (want 0); screen=PASS (want PASS)
+OK  R2 R-DIP screen: 1.5 ms above 11.1605 V -> FAIL (report-only, exit 0)  -> exit 0 (want 0); screen=FAIL (want FAIL)
+OK  R3 R-DIP screen: peak 11.6 V -> FAIL (report-only, exit 0)  -> exit 0 (want 0); screen=FAIL (want FAIL)
+OK  R4 R-DIP screen: above-threshold timing missing while peak > 11.1605 V -> UNDETERMINED  -> exit 0 (want 0); screen=UNDETERMINED (want UNDETERMINED)
+OK  M7a runner: missing ngspice -> no new run, historical files preserved  -> rc 3; ok
+OK  M7b runner: aborted fake solver -> isolated INCOMPLETE, history preserved  -> rc 2; ok
+OK  M8 runner: 259 fixed synthetic decks -> isolated COMPLETE, history preserved  -> rc 0; ok
+OK  W1 CI uvlo job: no "|| true" (install failure must fail the job)  -> absent
+OK  W2 CI uvlo job: no continue-on-error (failed ngspice run must fail the job)  -> absent
+OK  W3 CI uvlo job: verifier bound to this run (--run-id)  -> ok
+OK  W4 CI uvlo job: runner gets the same run id  -> ok
+OK  B3 UVLO-01: IN+ / IN- bias and leakage signs independent (opposite-sign vertices exist)  -> 4096 vertices, opposite-sign vertex present=True
+31/31 OK
+
+exit=0
+2026-11-06T09:57:36+03:00

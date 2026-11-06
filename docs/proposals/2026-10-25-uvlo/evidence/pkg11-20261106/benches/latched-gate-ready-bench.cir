@@ -1,0 +1,14 @@
+* latched gate-ready bench
+.include /workspace/scratch/pdu-pkg11/simulation/proposals/2026-10-25-uvlo/pdu-uvlo-behavioral.lib
+VCC VCC 0 5
+VS S 0 0
+VG G 0 PWL(0 0 1m 0 1.01m 10 20m 10 20.001m 3 20.05m 3 20.051m 10 50m 10)
+VR R 0 PWL(0 0 30m 0 30.001m 5 32m 5 32.001m 0 50m 0)
+XG G S GRDY VCC 0 R UVLO_GRDYL
+RL GRDY 0 100k
+.tran 1u 50m 0 1u uic
+.meas tran TR1 WHEN V(GRDY)=2.5 RISE=1
+.meas tran GMIN_SAG MIN V(GRDY) FROM=19.9m TO=29.9m
+.meas tran TF1 WHEN V(GRDY)=2.5 FALL=1
+.meas tran TR2 WHEN V(GRDY)=2.5 RISE=2
+.end

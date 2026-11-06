@@ -1,0 +1,50 @@
+2026-11-06T09:57:27+03:00
+OK  V00 control: INFO rsweep start 89 ms after VIN-OK + PASS start -> exit 0  -> exit 0 (want 0)
+OK  V01a INFO rsweep: cold start 59 ms after VIN-OK -> exit != 0, in acceptance_fail  -> exit 1 (want nonzero); acceptance_fail=['i']
+OK  V01b INFO dip: restart 0 ms after VIN-OK -> exit != 0, in acceptance_fail  -> exit 1 (want nonzero); acceptance_fail=['i']
+OK  V01c INFO ramp_down: shutdown at VIN 17.9 V -> exit != 0, in acceptance_fail  -> exit 1 (want nonzero); acceptance_fail=['i']
+OK  V01d INFO rsweep: OUTA_R1 missing -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['i']
+OK  V01e INFO rsweep: OUTA_R1 failed! -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['i']
+OK  V01f INFO ramp_down: VIN_AT_SHUTDOWN NaN -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['i']
+OK  V01g PASS dip: EN_R2 10 ms after VIN-OK but EN_F1 missing -> exit != 0 (gate not conditional on EN_F1)  -> exit 1 (want nonzero)
+OK  V01h INFO dip: EN_R2 without EN_F1, 10 ms after VIN-OK -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['i']
+OK  V01i control double dip (kind dip2): final EN rise 60.5 ms after the 2nd VIN-OK -> exit 0  -> exit 0 (want 0)
+OK  V01j double dip: final EN rise 30 ms after the 2nd VIN-OK (39.7 ms after the 1st) -> exit != 0  -> exit 1 (want nonzero)
+OK  V01k double dip: EN re-rises 20 ms after the 1st VIN-OK, before the 2nd dip -> exit != 0  -> exit 1 (want nonzero)
+OK  V01l > 5 OUTA rises, EN rise between OUTA_R5 and OUTA_RLAST (untracked rises) -> exit != 0  -> exit 1 (want nonzero)
+OK  V01m > 4 EN rises (EN_RLAST after EN_R4, untracked) -> exit != 0  -> exit 1 (want nonzero)
+OK  V01n double dip, 2nd dip without VIN-OK loss (OUTA_F2/R3 failed), EN 60.5 ms after the only restoration -> exit 0  -> exit 0 (want 0)
+OK  V01o same, EN 50 ms after the only restoration -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V01p same, but OUTA_F2 measured (VIN-OK lost again, no later rise) -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V01q same, but OUTA_F2 simply missing from the log (not proven absent) -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['d']
+OK  V01r same, but OUTA_RLAST != OUTA_R2 -> exit != 0  -> exit 1 (want nonzero)
+OK  V05a unknown kind with regression=true/expect=FAIL -> exit != 0 (kind validated first)  -> exit 1 (want nonzero); acceptance_fail=['x']
+OK  V05b missing kind with regression=true/expect=FAIL -> exit != 0  -> exit 1 (want nonzero); acceptance_fail=['x']
+OK  V06 VIN_AT_SHUTDOWN = NaN -> exit != 0 (no crash)  -> exit 1 (want nonzero)
+OK  V06 VIN_AT_SHUTDOWN = +Inf -> exit != 0 (no crash)  -> exit 1 (want nonzero)
+OK  V06 VIN_AT_SHUTDOWN = -Inf -> exit != 0 (no crash)  -> exit 1 (want nonzero)
+OK  V06 OUTA_R1 = NaN -> exit != 0 (no crash)  -> exit 1 (want nonzero)
+OK  V06 OUTA_R1 = +Inf -> exit != 0 (no crash)  -> exit 1 (want nonzero)
+OK  V06 OUTA_R1 = -Inf -> exit != 0 (no crash)  -> exit 1 (want nonzero)
+OK  V06 EN_R1 = NaN -> exit != 0 (no crash)  -> exit 1 (want nonzero)
+OK  V06 EN_R1 = +Inf -> exit != 0 (no crash)  -> exit 1 (want nonzero)
+OK  V06 EN_R1 = -Inf -> exit != 0 (no crash)  -> exit 1 (want nonzero)
+OK  V06j manifest without runner_exit_code -> exit != 0  -> exit 2 (want nonzero)
+OK  V06k manifest runner_exit_code null -> exit != 0  -> exit 2 (want nonzero)
+OK  D1 C3 Tur-4 regression block: CTT reset switch U24 (SEL = scaled stretched OUTA_D) + RDSC, U22 gated by OUTA_D, Schmitt threshold switch U25 (SEL = OUTB)  -> present
+OK  D1b O3 Tur-4 regression block carries the same reset/Schmitt topology  -> present
+OK  D2 budget: CTT at reset release <= V_L,min - 0.1 V, delay after any reset >= 65 ms target, TMUX peak <= 180 mA  -> {'v_rel_max': 0.05350464234615354, 'v_l_min': 0.7538723747656908, 't_after_short_dip_min': 0.06775139389013216, 'i_peak_max': 0.05257731958762886}
+OK  D5 cold-start delay range within [65 ms target, 300 ms latency]  -> (0.07767994558160285, 0.255527652808786)
+OK  D3 dip set incl. 0 V 100/200/250/300 us, 1 ms, 50 ms (full load), 15 V/20 ms, 19 V/50 ms, double dips; C3 + O3  -> 40 present
+OK  D3b no-reset (Tur-2 timer) regressions for C3 and O3, expect FAIL  -> ['noreset-dip0v-250us-typ-ttyp', 'noreset-dip0v-300us-mbmin-tmin', 'noreset-fpulse-100us-typ-ttyp', 'noreset-fpulse-10us-typ-ttyp', 'noreset-fpulse-1us-typ-ttyp', 'noreset-fpulse-50us-typ-ttyp', 'noreset-fpulse-5us-typ-ttyp', 'o3-noreset-dip0v-200us-typ-ttyp', 'o3-noreset-dip0v-250us-mbmin-tmin', 'o3-noreset-fpulse-100us-typ-ttyp', 'o3-noreset-fpulse-10us-typ-ttyp', 'o3-noreset-fpulse-1us-typ-ttyp', 'o3-noreset-fpulse-50us-typ-ttyp', 'o3-noreset-fpulse-5us-typ-ttyp']
+OK  D4 dip deck measures V(T_UV) at every OUTA / EN rise and at reset release, OUTA_R5/EN_RLAST, V5 min  -> ok
+OK  B7a C3: VIO/CMRR evaluated per corner (|VIO| varies with RR1/RR2 vertex)  -> 8 distinct |VIO|
+OK  B7b vertex counts recorded: C3 4096, O3 16384  -> {'c3': 4096, 'o3': 16384, 'timer': 1024, 'note': 'Tur-3 T3-07: exhaustive sign vertices; VIO/CMRR and REF load current evaluated per vertex'}
+OK  B4a ACAS DF endurance / soldering-heat terms (abs + rel) labelled assumption (AE-only figures)  -> []
+OK  B4b O3 start-guarantee lists the DF absolute endurance/solder term as non-guaranteed  -> ['ACAS DF absolute (endurance +/-0.1 % + soldering heat +/-0.1 %) AND relative (endurance drift +/-0.05 % + soldering bound +/-0.1 %) permissible changes (A: AE-only figures, doc 28770 note (2); DF not specified)', 'ACAS grade-U relative TCR +/-5 ppm/K x 100 K (G: datasheet figure; open: grade-U 0606 DF distributor stock + pin-1/R1 marking confirmation = procurement item, not an electrical unknown)', 'I_Q_PRESTART 15 mA + REF5040 1.2 mA (G) x R_TOTAL_MAX 0.25 ohm (A)']
+OK  BOM1 candidate MPNs ACASN5361U2432P1AT (5.36k/24.3k) and ACASN1002U4122P1AT (10.0k/41.2k) present  -> 
+OK  R9 R-DIP screen reports the last downward threshold crossing (renamed)  -> 
+45/45 OK
+
+exit=0
+2026-11-06T09:57:30+03:00

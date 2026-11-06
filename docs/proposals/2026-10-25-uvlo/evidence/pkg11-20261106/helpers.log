@@ -1,0 +1,70 @@
+2026-11-06T10:00:13+03:00
+test_bound_head_is_real_first_commit (test_fixture_historical.HistoricalGitFixtureTests.test_bound_head_is_real_first_commit) ... ok
+test_cannot_rebind_existing_test_repo (test_fixture_historical.HistoricalGitFixtureTests.test_cannot_rebind_existing_test_repo) ... ok
+test_malformed_manifest_rejected (test_fixture_historical.HistoricalGitFixtureTests.test_malformed_manifest_rejected) ... ok
+test_missing_manifest_stays_missing (test_fixture_historical.HistoricalGitFixtureTests.test_missing_manifest_stays_missing) ... ok
+test_no_dirty_or_untracked_inputs (test_fixture_historical.HistoricalGitFixtureTests.test_no_dirty_or_untracked_inputs) ... ok
+test_only_historical_result_manifest_committed_after_base (test_fixture_historical.HistoricalGitFixtureTests.test_only_historical_result_manifest_committed_after_base) ... ok
+test_wrong_directory_rejected (test_fixture_historical.HistoricalGitFixtureTests.test_wrong_directory_rejected) ... ok
+test_diagnostic_before_final_summary (test_fixture_summary.SummaryFixtureTests.test_diagnostic_before_final_summary) ... ok
+test_invalid_or_partial_json_never_passes (test_fixture_summary.SummaryFixtureTests.test_invalid_or_partial_json_never_passes) ... ok
+test_no_summary_never_passes (test_fixture_summary.SummaryFixtureTests.test_no_summary_never_passes) ... ok
+test_summary_requires_provenance_fields (test_fixture_summary.SummaryFixtureTests.test_summary_requires_provenance_fields) ... ok
+test_unrelated_json_never_passes (test_fixture_summary.SummaryFixtureTests.test_unrelated_json_never_passes) ... ok
+test_valid_terminal_summary (test_fixture_summary.SummaryFixtureTests.test_valid_terminal_summary) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.249s
+
+OK
+test_study_integrity (unittest.loader._FailedTest.test_study_integrity) ... ERROR
+
+======================================================================
+ERROR: test_study_integrity (unittest.loader._FailedTest.test_study_integrity)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_study_integrity
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "/workspace/scratch/pdu-pkg11/simulation/proposals/test_study_integrity.py", line 70, in <module>
+    sys.exit(bool(bad))
+SystemExit: False
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=1)
+OK   N01 exactly 100 ns is inclusive
+OK   N02 99 ns PASS
+OK   N03 101 ns FAIL
+OK   N04 negative printed values work as signed times
+OK   N05 voltage 5 mV inclusive
+OK   N06 voltage >5 mV FAIL
+OK   N07 NaN rejected
+OK   N08 Inf rejected
+OK   N09 malformed rejected
+OK   N10 missing raw string rejected
+OK   N11 unknown measurement kind rejected
+OK   P01 new output with matching log SHA allowed
+OK   P02 changed HEAD rejected
+OK   P03 changed runner rejected
+OK   P04 changed helper rejected
+OK   P05 untracked input rejected at start
+OK   P06 untracked extra output rejected
+OK   P07 modified tracked log rejected
+OK   P08 untracked input at end rejected
+OK   P09 untracked runner rejected
+OK   P10 hash mismatch rejected
+OK   P11 missing output rejected
+OK   P12 duplicate rows rejected
+OK   P13 path traversal rejected
+OK   P14 no rows rejected
+OK   N12 older run raw readings reconstructed from hash-verified log
+OK   N13 altered historical log rejected
+27/27 PASS
+fixture_exit=0 integrity_exit=1
+2026-11-06T10:00:15+03:00
