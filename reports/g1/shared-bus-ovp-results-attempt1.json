@@ -1,0 +1,146 @@
+{
+  "classification": "behavioral SPICE and calculation screens only; no physical measurement",
+  "sources": {
+    "TPS25982": "TI TPS25982 Rev D (May 2026) p.7: 24 V recommended max, 30 V absolute max",
+    "S2E": "SLAMTEC RPLIDAR S2E v1.5 p.12: 9-28 V, 0.22 A working max and 1.5 A start max at 12 V",
+    "TPS1686": "TI TPS1686 Rev A (Nov 2025) p.7/p.9: 9-80 V operating, 92 V abs max; external OVP tOVP minimum 3 us, no maximum"
+  },
+  "load_classification": {
+    "original_deck_O1_at_11V_A": 7.006369426751592,
+    "original_deck_S2E_at_11V_A": 5.0,
+    "original_deck_total_A": 12.006369426751592,
+    "legacy_classification": "overload stress / outside configured operating envelope; original deck and log preserved",
+    "configured_eFuse_nominal_total_A": 7.487,
+    "nominal_gap_to_7p5A_A": 0.0129999999999999,
+    "S2E_actual_load_current_not_measured": true,
+    "O1_actual_load_current_not_measured": true,
+    "startup_duration": "not specified by cited S2E datasheet; constant 1.5 A deck is sensitivity screen only"
+  },
+  "calculated_ceff_bounds": [
+    {
+      "fault_current_A": 7.5,
+      "existing_common_trip_high_V": 11.623168833598632,
+      "allowed_peak_for_O1_V": 12.0,
+      "ceff_min_for_O1_uF": 6.476375145150779,
+      "ceff_min_for_TPS25982_IN_absmax_uF": 0.13280309199673132,
+      "ceff_min_for_TPS25982_IN_recommended_uF": 0.19718294345204262
+    },
+    {
+      "fault_current_A": 12.0063694268,
+      "existing_common_trip_high_V": 11.623168833598632,
+      "allowed_peak_for_O1_V": 12.0,
+      "ceff_min_for_O1_uF": 10.367700338563433,
+      "ceff_min_for_TPS25982_IN_absmax_uF": 0.212597731137875,
+      "ceff_min_for_TPS25982_IN_recommended_uF": 0.3156601684998717
+    },
+    {
+      "fault_current_A": 67.7984,
+      "existing_common_trip_high_V": 11.623168833598632,
+      "allowed_peak_for_O1_V": 12.0,
+      "ceff_min_for_O1_uF": 58.54504968546542,
+      "ceff_min_for_TPS25982_IN_absmax_uF": 1.2005116203241584,
+      "ceff_min_for_TPS25982_IN_recommended_uF": 1.7824917431118625
+    }
+  ],
+  "cases": [
+    {
+      "deck": "reports/g1/sim/family2-shared-bus-duration-legacy-overload.cir",
+      "log": "reports/g1/sim/family2-shared-bus-duration-legacy-overload.log",
+      "exit_code": 0,
+      "completed": true,
+      "stdout": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at https://ngspice.sourceforge.io/bugrep.html\n** Creation Date: Aug 11 2026   13:55:25\n******\n\nBatch mode\n\nComments and warnings go to log-file: C:\\Users\\SK\\Desktop\\Masa\u00fcst\u00fc\\PDU\\reports\\g1\\sim\\family2-shared-bus-duration-legacy-overload.log\n\n",
+      "stderr": "",
+      "measures": {
+        "u3_gt24_duration_s": 0.000731759,
+        "u4_gt24_duration_s": 0.000731759,
+        "u3_gt30_duration_s": 0.000161124,
+        "u4_gt30_duration_s": 0.000161124,
+        "u3_in_peak": 40.709,
+        "u4_in_peak": 40.709,
+        "bus_peak": 40.709,
+        "o1_peak": 11.69,
+        "s2e_peak": 19.0809,
+        "phase_current": 67.7984,
+        "ovp_i_peak": 9.65747,
+        "ovp_trip": 0.00100946,
+        "ctrl_open": 0.00100979,
+        "ovp_toff": 3.22959e-07,
+        "ovp_to_current_off": 3.26123e-07
+      },
+      "raw_log": "Note: gnd in a subcircuit is not set to 0 automatically\n\nNote: Compatibility modes selected: ps lt a\n\n\nCircuit: * derived measurement copy: historical overload stress; source deck preserved.\n\nDoing analysis at TEMP = 27.000000 and TNOM = 27.000000\n\nUsing SPARSE 1.3 as Direct Linear Solver\nOperating point simulation skipped by 'uic',\n  now using transient initial conditions.\n\nNo. of Data Rows : 100032\n\n  Measurements for Transient Analysis\n\nu3_gt24_duration_s  =  7.31759e-04\nu4_gt24_duration_s  =  7.31759e-04\nu3_gt30_duration_s  =  1.61124e-04\nu4_gt30_duration_s  =  1.61124e-04\nu3_in_peak          =  4.07090e+01 at=  1.06913e-03\nu4_in_peak          =  4.07090e+01 at=  1.06913e-03\nbus_peak            =  4.07090e+01 at=  1.06913e-03\no1_peak             =  1.16900e+01 at=  1.00977e-03\ns2e_peak            =  1.90809e+01 at=  1.02594e-03\nphase_current       =  6.77984e+01 at=  1.03228e-03\novp_i_peak          =  9.65747e+00 at=  1.00977e-03\novp_trip            =   1.00946e-03\nctrl_open           =   1.00979e-03\novp_toff            =  3.22959e-07 targ=  1.00979e-03 trig=  1.00946e-03\novp_to_current_off  =  3.26123e-07 targ=  1.00979e-03 trig=  1.00946e-03\n\n\nTotal analysis time (seconds) = 0.388826\n\nTotal elapsed time (seconds) = 0.400 \n\nTotal DRAM available = 16306.379 MB.\nDRAM currently available = 10070.527 MB.\nMaximum ngspice program size =   18.605 MB.\nCurrent ngspice program size =   18.605 MB.\n\n"
+    },
+    {
+      "deck": "reports/g1/sim/family2-common-bus-isolator-s2e-steady.cir",
+      "log": "reports/g1/sim/family2-common-bus-isolator-s2e-steady.log",
+      "exit_code": 0,
+      "completed": true,
+      "stdout": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at https://ngspice.sourceforge.io/bugrep.html\n** Creation Date: Aug 11 2026   13:55:25\n******\n\nBatch mode\n\nComments and warnings go to log-file: C:\\Users\\SK\\Desktop\\Masa\u00fcst\u00fc\\PDU\\reports\\g1\\sim\\family2-common-bus-isolator-s2e-steady.log\n\n",
+      "stderr": "",
+      "measures": {
+        "raw_peak": 38.1201,
+        "u3_in_peak": 11.6372,
+        "u4_in_peak": 11.6372,
+        "o1_peak": -485.1,
+        "s2e_peak": -11.1,
+        "phase_current_peak": 55.8707,
+        "bus_trip": 1.2198e-05,
+        "bus_open": 1.2525e-05,
+        "bus_t_off": 3.2698e-07,
+        "cand_u3_gt24_duration_s": 0.0,
+        "cand_u4_gt24_duration_s": 0.0,
+        "cand_u3_gt30_duration_s": 0.0,
+        "cand_u4_gt30_duration_s": 0.0
+      },
+      "raw_log": "Note: gnd in a subcircuit is not set to 0 automatically\n\nNote: Compatibility modes selected: ps lt a\n\n\nCircuit: * g1 shared bus ovp: common disconnect ahead of both tps25982 in groups.\n\nDoing analysis at TEMP = 27.000000 and TNOM = 27.000000\n\nUsing SPARSE 1.3 as Direct Linear Solver\nOperating point simulation skipped by 'uic',\n  now using transient initial conditions.\n\nNo. of Data Rows : 100018\n\n  Measurements for Transient Analysis\n\nraw_peak            =  3.81201e+01 at=  1.07011e-03\nu3_in_peak          =  1.16372e+01 at=  2.00000e-03\nu4_in_peak          =  1.16372e+01 at=  2.00000e-03\no1_peak             =  -4.85100e+02 at=  1.00000e-03\ns2e_peak            =  -1.11000e+01 at=  1.00000e-03\nphase_current_peak  =  5.58707e+01 at=  1.03325e-03\nbus_trip            =   1.21980e-05\nbus_open            =   1.25250e-05\nbus_t_off           =  3.26980e-07 targ=  1.25250e-05 trig=  1.21980e-05\ncand_u3_gt24_duration_s=  0.00000e+00\ncand_u4_gt24_duration_s=  0.00000e+00\ncand_u3_gt30_duration_s=  0.00000e+00\ncand_u4_gt30_duration_s=  0.00000e+00\n\n\nTotal analysis time (seconds) = 0.379032\n\nTotal elapsed time (seconds) = 0.385 \n\nTotal DRAM available = 16306.379 MB.\nDRAM currently available = 10073.457 MB.\nMaximum ngspice program size =   18.598 MB.\nCurrent ngspice program size =   18.598 MB.\n\n"
+    },
+    {
+      "deck": "reports/g1/sim/family2-common-bus-isolator-s2e-startup-screen.cir",
+      "log": "reports/g1/sim/family2-common-bus-isolator-s2e-startup-screen.log",
+      "exit_code": 0,
+      "completed": true,
+      "stdout": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at https://ngspice.sourceforge.io/bugrep.html\n** Creation Date: Aug 11 2026   13:55:25\n******\n\nBatch mode\n\nComments and warnings go to log-file: C:\\Users\\SK\\Desktop\\Masa\u00fcst\u00fc\\PDU\\reports\\g1\\sim\\family2-common-bus-isolator-s2e-startup-screen.log\n\n",
+      "stderr": "",
+      "measures": {
+        "raw_peak": 38.1148,
+        "u3_in_peak": 11.6425,
+        "u4_in_peak": 11.6425,
+        "o1_peak": -485.1,
+        "s2e_peak": -139.1,
+        "phase_current_peak": 55.846,
+        "bus_trip": 9.51151e-06,
+        "bus_open": 9.84499e-06,
+        "bus_t_off": 3.33478e-07,
+        "cand_u3_gt24_duration_s": 0.0,
+        "cand_u4_gt24_duration_s": 0.0,
+        "cand_u3_gt30_duration_s": 0.0,
+        "cand_u4_gt30_duration_s": 0.0
+      },
+      "raw_log": "Note: gnd in a subcircuit is not set to 0 automatically\n\nNote: Compatibility modes selected: ps lt a\n\n\nCircuit: * g1 shared bus ovp: common disconnect ahead of both tps25982 in groups.\n\nDoing analysis at TEMP = 27.000000 and TNOM = 27.000000\n\nUsing SPARSE 1.3 as Direct Linear Solver\nOperating point simulation skipped by 'uic',\n  now using transient initial conditions.\n\nNo. of Data Rows : 100018\n\n  Measurements for Transient Analysis\n\nraw_peak            =  3.81148e+01 at=  1.07009e-03\nu3_in_peak          =  1.16425e+01 at=  2.00000e-03\nu4_in_peak          =  1.16425e+01 at=  2.00000e-03\no1_peak             =  -4.85100e+02 at=  1.00000e-03\ns2e_peak            =  -1.39100e+02 at=  1.00000e-03\nphase_current_peak  =  5.58460e+01 at=  1.03323e-03\nbus_trip            =   9.51151e-06\nbus_open            =   9.84499e-06\nbus_t_off           =  3.33478e-07 targ=  9.84499e-06 trig=  9.51151e-06\ncand_u3_gt24_duration_s=  0.00000e+00\ncand_u4_gt24_duration_s=  0.00000e+00\ncand_u3_gt30_duration_s=  0.00000e+00\ncand_u4_gt30_duration_s=  0.00000e+00\n\n\nTotal analysis time (seconds) = 0.391427\n\nTotal elapsed time (seconds) = 0.401 \n\nTotal DRAM available = 16306.379 MB.\nDRAM currently available = 10073.574 MB.\nMaximum ngspice program size =   18.609 MB.\nCurrent ngspice program size =   18.609 MB.\n\n"
+    },
+    {
+      "deck": "reports/g1/sim/family2-tps1686-hv-efuse-screen-s2e-startup.cir",
+      "log": "reports/g1/sim/family2-tps1686-hv-efuse-screen-s2e-startup.log",
+      "exit_code": 0,
+      "completed": true,
+      "stdout": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at https://ngspice.sourceforge.io/bugrep.html\n** Creation Date: Aug 11 2026   13:55:25\n******\n\nBatch mode\n\nComments and warnings go to log-file: C:\\Users\\SK\\Desktop\\Masa\u00fcst\u00fc\\PDU\\reports\\g1\\sim\\family2-tps1686-hv-efuse-screen-s2e-startup.log\n\n",
+      "stderr": "",
+      "measures": {
+        "raw_peak": 39.5354,
+        "o1_peak": 11.7507,
+        "s2e_peak": 29.5726,
+        "phase_current_peak": 63.0093,
+        "o1_trip": 0.00100604,
+        "s2e_trip": 0.00104035,
+        "hv_u3_gt24_duration_s": 0.000749427,
+        "hv_u3_gt30_duration_s": 0.000143164
+      },
+      "raw_log": "Note: gnd in a subcircuit is not set to 0 automatically\n\nNote: Compatibility modes selected: ps lt a\n\n\nCircuit: * tps1686 high-voltage efuse concept: input withstand plus port ovlo.\n\nDoing analysis at TEMP = 27.000000 and TNOM = 27.000000\n\nUsing SPARSE 1.3 as Direct Linear Solver\nOperating point simulation skipped by 'uic',\n  now using transient initial conditions.\n\nNo. of Data Rows : 100022\n\n  Measurements for Transient Analysis\n\nraw_peak            =  3.95354e+01 at=  1.07150e-03\no1_peak             =  1.17507e+01 at=  1.00903e-03\ns2e_peak            =  2.95726e+01 at=  1.04337e-03\nphase_current_peak  =  6.30093e+01 at=  1.03351e-03\no1_trip             =   1.00604e-03\ns2e_trip            =   1.04035e-03\nhv_u3_gt24_duration_s=  7.49427e-04\nhv_u3_gt30_duration_s=  1.43164e-04\n\n\nTotal analysis time (seconds) = 0.317371\n\nTotal elapsed time (seconds) = 0.326 \n\nTotal DRAM available = 16306.379 MB.\nDRAM currently available = 10060.207 MB.\nMaximum ngspice program size =   15.543 MB.\nCurrent ngspice program size =   15.543 MB.\n\n"
+    }
+  ],
+  "physical_test": "NOT PERFORMED",
+  "preserved_failures": {
+    "family2_original_O1_18p8039V_FAIL": true,
+    "family4_bus_10p7109V_FAIL": true,
+    "WP1_WP2_open_failures_preserved": true
+  }
+}

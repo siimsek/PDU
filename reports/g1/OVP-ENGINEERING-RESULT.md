@@ -92,3 +92,7 @@ Kanıtlar: [ölçüm JSON'u](ovp-component-sim.json), [validation record](OVP-VA
 4. FET açma sırasında VDS/I paylaşımı, clamp/snubber/harness indüktansı ve üretici SOA doğrulaması; 100 µs altındaki SOA'yı eğriden ekstrapole etmeyin.
 5. S2E cihazının izin verilen giriş aralığı ve OVP/bus clamp politikası.
 6. Üretici datasheet limitlerine göre tezgâh hata enjeksiyonu ve fiziksel ölçüm. Şu ana kadar fiziksel ölçüm **yapılmadı**.
+
+## 2026-11-06 addendum — PR #2 comment 6683120653
+
+The older sentence above that S2E's numeric input range was unverified is historical. The manufacturer's RPLIDAR S2E v1.5 table now verifies a **9–28 V powered input range**, **0.22 A maximum working current**, and **1.5 A maximum start current at 12 V** (p.12). The prior model result S2E=19.0809 V is inside that published powered range; the table does not specify transient absolute maximum or startup duration. The corrected S2E current screens and shared U3/U4 input fault results are in [PR2-REVIEW-6683120653.md](PR2-REVIEW-6683120653.md). Physical acceptance remains open.

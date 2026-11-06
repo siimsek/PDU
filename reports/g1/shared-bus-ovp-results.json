@@ -1,0 +1,197 @@
+{
+  "classification": "behavioral SPICE and calculation screens only; no physical measurement",
+  "sources": {
+    "TPS25982": "TI TPS25982 Rev D (May 2026) p.7: 24 V recommended max, 30 V absolute max",
+    "S2E": "SLAMTEC RPLIDAR S2E v1.5 p.12: 9-28 V, 0.22 A working max and 1.5 A start max at 12 V",
+    "TPS1686": "TI TPS1686 Rev A (Nov 2025) p.7/p.9: 9-80 V operating, 92 V abs max; external OVP tOVP minimum 3 us, no maximum"
+  },
+  "load_classification": {
+    "original_deck_O1_at_11V_A": 7.006369426751592,
+    "original_deck_S2E_at_11V_A": 5.0,
+    "original_deck_total_A": 12.006369426751592,
+    "legacy_classification": "overload stress / outside configured operating envelope; original deck and log preserved",
+    "configured_eFuse_nominal_total_A": 7.48771688191679,
+    "nominal_gap_to_7p5A_A": 0.01228311808320992,
+    "S2E_actual_load_current_not_measured": true,
+    "O1_actual_load_current_not_measured": true,
+    "startup_duration": "not specified by cited S2E datasheet; constant 1.5 A deck is sensitivity screen only",
+    "load_model": "current sink scales from zero at 0 V to the requested current at 11 V; it is a behavioral load, not a measured S2E load waveform"
+  },
+  "calculated_ceff_bounds": [
+    {
+      "label": "7.5A total capacity target",
+      "fault_current_A": 7.5,
+      "existing_common_trip_high_V": 11.623168833598632,
+      "allowed_peak_for_O1_V": 12.0,
+      "ceff_min_for_O1_uF": 6.476375145150779,
+      "ceff_min_for_TPS25982_IN_absmax_uF": 0.13280309199673132,
+      "ceff_min_for_TPS25982_IN_recommended_uF": 0.19718294345204262
+    },
+    {
+      "label": "legacy combined overload stress",
+      "fault_current_A": 12.0063694268,
+      "existing_common_trip_high_V": 11.623168833598632,
+      "allowed_peak_for_O1_V": 12.0,
+      "ceff_min_for_O1_uF": 10.367700338563433,
+      "ceff_min_for_TPS25982_IN_absmax_uF": 0.212597731137875,
+      "ceff_min_for_TPS25982_IN_recommended_uF": 0.3156601684998717
+    },
+    {
+      "label": "legacy inductor/phase-current screen, not port current",
+      "fault_current_A": 67.7984,
+      "existing_common_trip_high_V": 11.623168833598632,
+      "allowed_peak_for_O1_V": 12.0,
+      "ceff_min_for_O1_uF": 58.54504968546542,
+      "ceff_min_for_TPS25982_IN_absmax_uF": 1.2005116203241584,
+      "ceff_min_for_TPS25982_IN_recommended_uF": 1.7824917431118625
+    },
+    {
+      "label": "corrected common-isolator startup deck branch peak",
+      "fault_current_A": 9.91064,
+      "existing_common_trip_high_V": 11.623168833598632,
+      "allowed_peak_for_O1_V": 12.0,
+      "ceff_min_for_O1_uF": 8.558003009138284,
+      "ceff_min_for_TPS25982_IN_absmax_uF": 0.17548848475553136,
+      "ceff_min_for_TPS25982_IN_recommended_uF": 0.26056122222580697
+    }
+  ],
+  "branch_peak_vs_efuse_limit_screen": {
+    "model_branch_peak_A": 9.91064,
+    "configured_nominal_ILIM_sum_A": 7.48771688191679,
+    "model_peak_excess_A": 2.4229231180832107,
+    "model_peak_excess_percent": 32.35863690218699,
+    "interpretation": "diagnostic only: behavioral eFuse switches do not implement current limiting; not a hardware fault-current margin"
+  },
+  "tps1686_high_voltage_efuse_screen": {
+    "candidate_orderable_mpn": "TPS16861NLMR (candidate only; latch-off selection must be confirmed)",
+    "operating_input_range_V": [
+      9.0,
+      80.0
+    ],
+    "absolute_max_input_V": 92.0,
+    "ovlo_threshold_nominal_V": 11.3,
+    "assumed_divider_tolerance": 0.01,
+    "ovlo_corner_low_V": 10.50822543792841,
+    "ovlo_corner_high_V": 11.823879823879825,
+    "min_high_corner_if_low_corner_exceeds_steady_bus_V": 12.065405405405404,
+    "required_trip_window_V": [
+      11.1605,
+      12.0
+    ],
+    "threshold_window_feasible_before_dynamic_overshoot": false,
+    "published_external_ovp_response": "minimum 3 us; maximum not specified",
+    "variant_mapping_note": "TI datasheet comparison table \u00a74 p.3 maps TPS16861 to latch-off; \u00a77.3.4.2 p.22 prose reverses TPS16860/61 for circuit-breaker behavior. Confirm exact variant with TI before selection.",
+    "stock": "not verified"
+  },
+  "cases": [
+    {
+      "deck": "reports/g1/sim/family2-shared-bus-duration-legacy-overload-final-measures.cir",
+      "log": "reports/g1/sim/family2-shared-bus-duration-legacy-overload-final-measures.log",
+      "exit_code": 0,
+      "completed": true,
+      "stdout": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at https://ngspice.sourceforge.io/bugrep.html\n** Creation Date: Aug 11 2026   13:55:25\n******\n\nBatch mode\n\nComments and warnings go to log-file: C:\\Users\\SK\\Desktop\\Masa\u00fcst\u00fc\\PDU\\reports\\g1\\sim\\family2-shared-bus-duration-legacy-overload-final-measures.log\n\n",
+      "stderr": "",
+      "measures": {
+        "u3_gt24_duration_s": 0.000731759,
+        "u4_gt24_duration_s": 0.000731759,
+        "u3_gt30_duration_s": 0.000161124,
+        "u4_gt30_duration_s": 0.000161124,
+        "u3_in_peak": 40.709,
+        "u4_in_peak": 40.709,
+        "bus_peak": 40.709,
+        "o1_peak": 11.69,
+        "s2e_peak": 19.0809,
+        "phase_current": 67.7984,
+        "ovp_i_peak": 9.65747,
+        "ovp_trip": 0.00100946,
+        "ctrl_open": 0.00100979,
+        "ovp_toff": 3.22959e-07,
+        "ovp_to_current_off": 3.26123e-07
+      },
+      "raw_log": "Note: gnd in a subcircuit is not set to 0 automatically\n\nNote: Compatibility modes selected: ps lt a\n\n\nCircuit: * derived measurement copy: historical overload stress; source deck preserved.\n\nDoing analysis at TEMP = 27.000000 and TNOM = 27.000000\n\nUsing SPARSE 1.3 as Direct Linear Solver\nOperating point simulation skipped by 'uic',\n  now using transient initial conditions.\n\nNo. of Data Rows : 100032\n\n  Measurements for Transient Analysis\n\nu3_gt24_duration_s  =  7.31759e-04\nu4_gt24_duration_s  =  7.31759e-04\nu3_gt30_duration_s  =  1.61124e-04\nu4_gt30_duration_s  =  1.61124e-04\nu3_in_peak          =  4.07090e+01 at=  1.06913e-03\nu4_in_peak          =  4.07090e+01 at=  1.06913e-03\nbus_peak            =  4.07090e+01 at=  1.06913e-03\no1_peak             =  1.16900e+01 at=  1.00977e-03\ns2e_peak            =  1.90809e+01 at=  1.02594e-03\nphase_current       =  6.77984e+01 at=  1.03228e-03\novp_i_peak          =  9.65747e+00 at=  1.00977e-03\novp_trip            =   1.00946e-03\nctrl_open           =   1.00979e-03\novp_toff            =  3.22959e-07 targ=  1.00979e-03 trig=  1.00946e-03\novp_to_current_off  =  3.26123e-07 targ=  1.00979e-03 trig=  1.00946e-03\n\n\nTotal analysis time (seconds) = 0.383763\n\nTotal elapsed time (seconds) = 0.391 \n\nTotal DRAM available = 16306.379 MB.\nDRAM currently available = 10016.789 MB.\nMaximum ngspice program size =   18.609 MB.\nCurrent ngspice program size =   18.609 MB.\n\n"
+    },
+    {
+      "deck": "reports/g1/sim/family2-common-bus-isolator-s2e-steady-branch-current-meas.cir",
+      "log": "reports/g1/sim/family2-common-bus-isolator-s2e-steady-branch-current-meas.log",
+      "exit_code": 0,
+      "completed": true,
+      "stdout": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at https://ngspice.sourceforge.io/bugrep.html\n** Creation Date: Aug 11 2026   13:55:25\n******\n\nBatch mode\n\nComments and warnings go to log-file: C:\\Users\\SK\\Desktop\\Masa\u00fcst\u00fc\\PDU\\reports\\g1\\sim\\family2-common-bus-isolator-s2e-steady-branch-current-meas.log\n\n",
+      "stderr": "",
+      "measures": {
+        "raw_peak": 38.6191,
+        "u3_in_peak": 11.6273,
+        "u4_in_peak": 11.6273,
+        "o1_peak": 11.5606,
+        "s2e_peak": 11.608,
+        "phase_current_peak": 58.1696,
+        "common_switch_branch_i_peak": 8.63304,
+        "common_switch_i_at_trip": 8.49666,
+        "common_switch_i_at_open": 1.36648,
+        "o1_min": 1.12428e-09,
+        "s2e_min": 1.12913e-09,
+        "bus_trip": 0.00100672,
+        "bus_open": 0.00100705,
+        "bus_t_off": 3.2166e-07,
+        "cand_u3_gt24_duration_s": 0.0,
+        "cand_u4_gt24_duration_s": 0.0,
+        "cand_u3_gt30_duration_s": 0.0,
+        "cand_u4_gt30_duration_s": 0.0
+      },
+      "raw_log": "Note: gnd in a subcircuit is not set to 0 automatically\n\nNote: Compatibility modes selected: ps lt a\n\n\nCircuit: * g1 shared bus ovp: common disconnect ahead of both tps25982 in groups.\n\nDoing analysis at TEMP = 27.000000 and TNOM = 27.000000\n\nUsing SPARSE 1.3 as Direct Linear Solver\nOperating point simulation skipped by 'uic',\n  now using transient initial conditions.\n\nNo. of Data Rows : 100018\n\n  Measurements for Transient Analysis\n\nraw_peak            =  3.86191e+01 at=  1.06853e-03\nu3_in_peak          =  1.16273e+01 at=  1.00703e-03\nu4_in_peak          =  1.16273e+01 at=  1.00703e-03\no1_peak             =  1.15606e+01 at=  1.00703e-03\ns2e_peak            =  1.16080e+01 at=  1.00703e-03\nphase_current_peak  =  5.81696e+01 at=  1.03169e-03\ncommon_switch_branch_i_peak=  8.63304e+00 at=  1.00703e-03\ncommon_switch_i_at_trip=  8.49666e+00\ncommon_switch_i_at_open=  1.36648e+00\no1_min              =  1.12428e-09 at=  2.00000e-03\ns2e_min             =  1.12913e-09 at=  2.00000e-03\nbus_trip            =   1.00672e-03\nbus_open            =   1.00705e-03\nbus_t_off           =  3.21660e-07 targ=  1.00705e-03 trig=  1.00672e-03\ncand_u3_gt24_duration_s=  0.00000e+00\ncand_u4_gt24_duration_s=  0.00000e+00\ncand_u3_gt30_duration_s=  0.00000e+00\ncand_u4_gt30_duration_s=  0.00000e+00\n\n\nTotal analysis time (seconds) = 0.465662\n\nTotal elapsed time (seconds) = 0.474 \n\nTotal DRAM available = 16306.379 MB.\nDRAM currently available = 10017.055 MB.\nMaximum ngspice program size =   19.344 MB.\nCurrent ngspice program size =   19.344 MB.\n\n"
+    },
+    {
+      "deck": "reports/g1/sim/family2-common-bus-isolator-s2e-startup-branch-current-meas.cir",
+      "log": "reports/g1/sim/family2-common-bus-isolator-s2e-startup-branch-current-meas.log",
+      "exit_code": 0,
+      "completed": true,
+      "stdout": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at https://ngspice.sourceforge.io/bugrep.html\n** Creation Date: Aug 11 2026   13:55:25\n******\n\nBatch mode\n\nComments and warnings go to log-file: C:\\Users\\SK\\Desktop\\Masa\u00fcst\u00fc\\PDU\\reports\\g1\\sim\\family2-common-bus-isolator-s2e-startup-branch-current-meas.log\n\n",
+      "stderr": "",
+      "measures": {
+        "raw_peak": 38.7219,
+        "u3_in_peak": 11.6217,
+        "u4_in_peak": 11.6217,
+        "o1_peak": 11.555,
+        "s2e_peak": 11.5896,
+        "phase_current_peak": 58.6433,
+        "common_switch_branch_i_peak": 9.91064,
+        "common_switch_i_at_trip": 9.77066,
+        "common_switch_i_at_open": 1.56871,
+        "o1_min": 4.70192e-11,
+        "s2e_min": 4.7167e-11,
+        "bus_trip": 0.00100673,
+        "bus_open": 0.00100707,
+        "bus_t_off": 3.30669e-07,
+        "cand_u3_gt24_duration_s": 0.0,
+        "cand_u4_gt24_duration_s": 0.0,
+        "cand_u3_gt30_duration_s": 0.0,
+        "cand_u4_gt30_duration_s": 0.0
+      },
+      "raw_log": "Note: gnd in a subcircuit is not set to 0 automatically\n\nNote: Compatibility modes selected: ps lt a\n\n\nCircuit: * g1 shared bus ovp: common disconnect ahead of both tps25982 in groups.\n\nDoing analysis at TEMP = 27.000000 and TNOM = 27.000000\n\nUsing SPARSE 1.3 as Direct Linear Solver\nOperating point simulation skipped by 'uic',\n  now using transient initial conditions.\n\nNo. of Data Rows : 100018\n\n  Measurements for Transient Analysis\n\nraw_peak            =  3.87219e+01 at=  1.06813e-03\nu3_in_peak          =  1.16217e+01 at=  1.00705e-03\nu4_in_peak          =  1.16217e+01 at=  1.00705e-03\no1_peak             =  1.15550e+01 at=  1.00705e-03\ns2e_peak            =  1.15896e+01 at=  1.00705e-03\nphase_current_peak  =  5.86433e+01 at=  1.03127e-03\ncommon_switch_branch_i_peak=  9.91064e+00 at=  1.00705e-03\ncommon_switch_i_at_trip=  9.77066e+00\ncommon_switch_i_at_open=  1.56871e+00\no1_min              =  4.70192e-11 at=  2.00000e-03\ns2e_min             =  4.71670e-11 at=  2.00000e-03\nbus_trip            =   1.00673e-03\nbus_open            =   1.00707e-03\nbus_t_off           =  3.30669e-07 targ=  1.00707e-03 trig=  1.00673e-03\ncand_u3_gt24_duration_s=  0.00000e+00\ncand_u4_gt24_duration_s=  0.00000e+00\ncand_u3_gt30_duration_s=  0.00000e+00\ncand_u4_gt30_duration_s=  0.00000e+00\n\n\nTotal analysis time (seconds) = 0.465785\n\nTotal elapsed time (seconds) = 0.473 \n\nTotal DRAM available = 16306.379 MB.\nDRAM currently available = 10000.609 MB.\nMaximum ngspice program size =   19.434 MB.\nCurrent ngspice program size =   19.434 MB.\n\n"
+    },
+    {
+      "deck": "reports/g1/sim/family2-tps1686-hv-efuse-screen-s2e-startup-ovlo24-final-measures.cir",
+      "log": "reports/g1/sim/family2-tps1686-hv-efuse-screen-s2e-startup-ovlo24-final-measures.log",
+      "exit_code": 0,
+      "completed": true,
+      "stdout": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at https://ngspice.sourceforge.io/bugrep.html\n** Creation Date: Aug 11 2026   13:55:25\n******\n\nBatch mode\n\nComments and warnings go to log-file: C:\\Users\\SK\\Desktop\\Masa\u00fcst\u00fc\\PDU\\reports\\g1\\sim\\family2-tps1686-hv-efuse-screen-s2e-startup-ovlo24-final-measures.log\n\n",
+      "stderr": "",
+      "measures": {
+        "raw_peak": 39.389,
+        "o1_peak": 11.6444,
+        "s2e_peak": 25.6365,
+        "phase_current_peak": 61.7752,
+        "o1_trip": 0.00100449,
+        "s2e_trip": 0.00103342,
+        "hv_u3_gt24_duration_s": 0.000755477,
+        "hv_u3_gt30_duration_s": 0.000142324
+      },
+      "raw_log": "Note: gnd in a subcircuit is not set to 0 automatically\n\nNote: Compatibility modes selected: ps lt a\n\n\nCircuit: * tps1686 high-voltage efuse concept: input withstand plus port ovlo.\n\nDoing analysis at TEMP = 27.000000 and TNOM = 27.000000\n\nUsing SPARSE 1.3 as Direct Linear Solver\nOperating point simulation skipped by 'uic',\n  now using transient initial conditions.\n\nNo. of Data Rows : 100024\n\n  Measurements for Transient Analysis\n\nraw_peak            =  3.93890e+01 at=  1.07063e-03\no1_peak             =  1.16444e+01 at=  1.00747e-03\ns2e_peak            =  2.56365e+01 at=  1.03644e-03\nphase_current_peak  =  6.17752e+01 at=  1.03342e-03\no1_trip             =   1.00449e-03\ns2e_trip            =   1.03342e-03\nhv_u3_gt24_duration_s=  7.55477e-04\nhv_u3_gt30_duration_s=  1.42324e-04\n\n\nTotal analysis time (seconds) = 0.380026\n\nTotal elapsed time (seconds) = 0.385 \n\nTotal DRAM available = 16306.379 MB.\nDRAM currently available = 10004.461 MB.\nMaximum ngspice program size =   15.477 MB.\nCurrent ngspice program size =   15.477 MB.\n\n"
+    }
+  ],
+  "physical_test": "NOT PERFORMED",
+  "preserved_failures": {
+    "family2_original_O1_18p8039V_FAIL": true,
+    "family4_bus_10p7109V_FAIL": true,
+    "WP1_WP2_open_failures_preserved": true
+  }
+}

@@ -1,0 +1,40 @@
+Note: gnd in a subcircuit is not set to 0 automatically
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * g1 shared bus ovp: common disconnect ahead of both tps25982 in groups.
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 100018
+
+  Measurements for Transient Analysis
+
+raw_peak            =  3.81148e+01 at=  1.07009e-03
+u3_in_peak          =  1.16425e+01 at=  2.00000e-03
+u4_in_peak          =  1.16425e+01 at=  2.00000e-03
+o1_peak             =  -4.85100e+02 at=  1.00000e-03
+s2e_peak            =  -1.39100e+02 at=  1.00000e-03
+phase_current_peak  =  5.58460e+01 at=  1.03323e-03
+bus_trip            =   9.51151e-06
+bus_open            =   9.84499e-06
+bus_t_off           =  3.33478e-07 targ=  9.84499e-06 trig=  9.51151e-06
+cand_u3_gt24_duration_s=  0.00000e+00
+cand_u4_gt24_duration_s=  0.00000e+00
+cand_u3_gt30_duration_s=  0.00000e+00
+cand_u4_gt30_duration_s=  0.00000e+00
+
+
+Total analysis time (seconds) = 0.391427
+
+Total elapsed time (seconds) = 0.401
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 10073.574 MB.
+Maximum ngspice program size =   18.609 MB.
+Current ngspice program size =   18.609 MB.
