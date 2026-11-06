@@ -1,0 +1,27 @@
+* Behavioral screen: TLV3601 clamp-current path and 5-V rail loss.
+* Comparator silicon is not modeled. Vpin clamp is a fixed 0.3-V diode approximation.
+VRAW RAW 0 PWL(0 0 50u 0 100u 11 900u 11 1m 40.709 20m 40.709)
+RTOP RAW SDIV 17950.0
+RBOT SDIV 0 5000.0
+VSENSE SDIV PIN 0
+* Datasheet-guided clamp screen: positive diode current into VCC when PIN>VCC+0.3.
+BCLAMP PIN VCC I=if(V(PIN,VCC)>0.3,(V(PIN,VCC)-0.3)/1,0)
+V5SRC V5SRC_NODE 0 5
+VLDOCONTROL LDOCONTROL 0 PWL(0 0 49u 0 50u 1 2m 1 2.001m 0 20m 0)
+SLDO V5SRC_NODE VCC LDOCONTROL 0 LDO_SWITCH
+.model LDO_SWITCH SW(Ron=0.1 Roff=1T Vt=0.5 Vh=0.05)
+C5 VCC 0 2.2u IC=0
+RBLEED VCC 0 470.0
+* Maximum steady loads used only while the comparator rail is valid.
+B_TLV_IQ VCC 0 I=if(V(VCC)>2.1,7m,0)
+B_REF_IQ VCC 0 I=if(V(VCC)>2.7,1.2m,0)
+.tran 1u 20m 0 2u uic
+.options reltol=0.0001 abstol=1n method=gear
+.meas tran VDIV_AT_FAULT FIND V(SDIV) AT=1.5m
+.meas tran VPIN_AT_FAULT FIND V(PIN) AT=1.5m
+.meas tran VCC_AT_FAULT FIND V(VCC) AT=1.5m
+.meas tran ICLAMP_FAULT FIND I(BCLAMP) AT=1.5m
+.meas tran VCC_AFTER_LOSS_MAX MAX V(VCC) FROM=5m TO=20m
+.meas tran VCC_AFTER_LOSS_END FIND V(VCC) AT=20m
+.meas tran ICLAMP_MAX MAX I(BCLAMP) FROM=2m TO=20m
+.end
