@@ -72,6 +72,17 @@ class VerifierProvenanceTests(unittest.TestCase):
         (self.v.LOGS / 'uvlo-case000.log').write_text('bad log')
         self.assertTrue(any('log missing' in x for x in self.errors()))
 
+    def test_deck_rc_must_be_exact_integer_zero(self):
+        """Bool False and float 0.0 must never be accepted as a successful solver RC."""
+        for fake_rc in (False, 0.0, "0", None):
+            with self.subTest(rc=repr(fake_rc)):
+                self.manifest['runs']['uvlo-case000']['rc'] = fake_rc
+                self.v.MANIFEST.write_text(json.dumps(self.manifest))
+                self.assertTrue(
+                    any('uvlo-case000: rc ' in err for err in self.errors()),
+                    f'noninteger deck return code accepted as 0: {fake_rc!r}')
+        self.assertEqual(self.manifest['runner_exit_code'], 0)
+
     def test_wrong_solver_rejected(self):
         self.patch_manifest(method='trap')
         self.assertTrue(any('solver/tmax' in x for x in self.errors()))
