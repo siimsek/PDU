@@ -31,16 +31,19 @@ fb                                         0.8
 comp                                   0.19575
 cmid                                   0.19575
 icmd                                      2.61
-sw1                                    11.0759
-l1a                                    11.0759
-l1b                                    11.0759
-l1c                                    11.0155
-sw2                                    11.0759
-l2a                                    11.0759
-l2b                                    11.0759
-l2c                                    11.0155
+sw1                                    10.9961
+l1a                                    10.9961
+l1b                                    11.0765
+il1                                       2.61
+l1c                                    11.0157
+sw2                                    10.9961
+l2a                                    10.9961
+l2b                                    11.0765
+il2                                       2.61
+l2c                                    11.0157
 ncout                                        0
 ncl                                          0
+oct                                          0
 q                                            0
 ovreq                                        0
 ctl                                          1
@@ -62,15 +65,13 @@ bo1in#branch                                 0
 bvds#branch                                  0
 bdrven#branch                                0
 bovr#branch                                  0
-vm2#branch                             2.59132
-bsw2#branch                           -2.59132
-vm1#branch                             2.59132
-bsw1#branch                           -2.59132
+vm1#branch                                2.61
+vm2#branch                                2.61
+bsw2#branch                              -2.61
+bsw1#branch                              -2.61
 bic#branch                                   0
 bven#branch                                  0
 lesl#branch                                  0
-l2#branch                              2.59132
-l1#branch                              2.59132
 lcab#branch                                  0
 vo1x#branch                                  0
 vflt#branch                                  0
@@ -79,29 +80,30 @@ vio1#branch                                  0
 vbat#branch                                  0
 
 
-No. of Data Rows : 20179
+No. of Data Rows : 20137
 
   Measurements for Transient Analysis
 
-vraw_max_fault      =  3.00233e+01 at=  2.64999e-04
-vsafe_max_fault     =  1.17526e+01 at=  1.18145e-04
-o1_max_fault        =  1.17270e+01 at=  1.18145e-04
-s2e_max_fault       =  1.17499e+01 at=  1.18145e-04
-vds_iso_max         =  2.75045e+01 at=  4.00000e-04
-o1_minus_in_max     =  -4.21407e-04 at=  1.18150e-04
-s2e_minus_in_max    =  4.11511e-01 at=  1.19819e-04
-vraw_pre            =  1.09951e+01
-q_end               =  1.00275e+00
-iso_i_max           =  5.91736e+00 at=  1.18145e-04
-il1_max_fault       =  6.29158e+01 at=  1.60719e-04
+vraw_max_fault      =  2.65015e+01 at=  3.99589e-04
+vsafe_max_fault     =  1.10134e+01 at=  1.07026e-04
+o1_max_fault        =  1.09890e+01 at=  1.07026e-04
+s2e_max_fault       =  1.10119e+01 at=  1.07026e-04
+vds_iso_max         =  2.41242e+01 at=  4.00000e-04
+o1_minus_in_max     =  7.57897e-04 at=  1.07029e-04
+s2e_minus_in_max    =  4.11507e-01 at=  1.08691e-04
+vraw_pre            =  1.09954e+01
+q_end               =  1.00287e+00
+iso_i_max           =  5.40081e+00 at=  1.07026e-04
+il1_max_fault       =  1.00727e+02 at=  1.34591e-04
+il1_at_open         =  1.89063e+01
 
 
-Total analysis time (seconds) = 0.537359
+Total analysis time (seconds) = 0.739175
 
-Total elapsed time (seconds) = 0.543 
+Total elapsed time (seconds) = 0.746 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 9907.801 MB.
-Maximum ngspice program size =   12.465 MB.
-Current ngspice program size =   12.465 MB.
+DRAM currently available = 9615.957 MB.
+Maximum ngspice program size =   13.035 MB.
+Current ngspice program size =   13.035 MB.
 

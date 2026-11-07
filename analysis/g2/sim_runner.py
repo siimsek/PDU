@@ -42,6 +42,7 @@ VTRIP_EFF_MAX = TRIP_MAX + v("CMP_OD") * K_DIV
 VTRIP_EFF_MIN = TRIP_MIN + v("CMP_OD") * K_DIV
 T_CHAIN_MAX = PROT["timing"]["total_max_s"]
 VCOARSE_MAX = PROT["coarse_ov"]["path_a"][1]
+N1 = json.loads((ROOT / "reports" / "g4" / "n1-results.json").read_text(encoding="utf-8"))
 VSCALE = 1 + v("RFB1") / v("RFB2")
 TF = 0.1e-3            # fault time for steady-state-start cases
 
@@ -49,9 +50,13 @@ TF = 0.1e-3            # fault time for steady-state-start cases
 def base_params():
     n = D.N_COUT
     return {
-        "RSRC": 0.05, "LCAB": 0.5e-6, "RF1": 5e-3, "TVS_BV": 36.7, "TVS_RS": (v("VIN_CLAMP") - 36.7) / 28.1,
+        "RSRC": 0.05, "LCAB": 0.5e-6, "RF1": 5e-3,
+        # D1 SMCJ33A fitted to the datasheet line VBR min -> VC max @ IPPM (doc 88394 p.2)
+        "TVS_BV": v("TVS_IN_VBR_MIN"), "TVS_RS": (v("VIN_CLAMP") - v("TVS_IN_VBR_MIN")) / v("TVS_IN_IPPM"),
         "RQ1": 16e-3 * 1.8, "CIN_EFF": 8 * 4.7e-6 * 0.5,
         "RUV1": D.RUV1, "RUV2": D.RUV2, "VEN_R": v("VEN_R_MIN") / 2 + v("VEN_R_MAX") / 2, "VEN_H": v("VEN_HYS_TYP"),
+        "LFLOOR": v("LFLOOR_BEYOND_16A"), "IOC": N1["oc_threshold_A"]["max"],
+        "TOC_DLY": v("OC_INA_DELAY_SCREEN") + v("CMP_TPD_MAX") + 7.8e-9, "EN_OC": 1,
         "TSS": 3e-3, "VREF_FB": v("VFB_NOM"),
         "RFB1": v("RFB1"), "RFB2": v("RFB2"), "GM": v("GM_EA_TYP"), "REA": 10e6,
         "RCOMP": D.RCOMP, "CCOMP": D.CCOMP, "CHF": D.CHF, "VCOFS": 0.0, "RI": v("RS_NOM") * v("GCS"),
@@ -61,8 +66,9 @@ def base_params():
         "VTRIP_EFF": VTRIP_EFF_MAX, "VCOARSE": VCOARSE_MAX, "EN_PREC": 1, "EN_COARSE": 1, "TDLY": T_CHAIN_MAX,
         "TON": 7.5e-6, "EN_DRV": 1, "RON_ISO": v("QISO_RDS_MAX_10V") * v("QISO_RDS_HOT_FACTOR"),
         "CEFIN_EFF": 2 * 100e-9 * 0.5, "R_BLEED_SAFE": 4.7e3, "REN_EF1": D.REN_EF1, "REN_EF2": D.REN_EF2,
-        "EF_UVLO": 1.2, "EF_UVLO_F": 1.1, "EF_OVLO": 16.9, "ILIM_O1": EF_ILIM_TABLE[D.RILIM_O1][1], "ILIM_S2E": EF_ILIM_TABLE[D.RILIM_S2E][1],
-        "RON_EF": 3.2e-3 * 1.5, "IS_DREV": 2e-5, "IL0": 0.0, "CPORT_O1": 10e-6 * 0.4, "CPORT_S2E": 10e-6 * 0.4, "RSHORT": 10e-3,
+        "EF_UVLO": v("EF_UVLO_R_TYP"), "EF_UVLO_F": v("EF_UVLO_F_TYP"), "EF_OVLO": v("EF_OVLO_TYP"),
+        "ILIM_O1": EF_ILIM_TABLE[D.RILIM_O1][1], "ILIM_S2E": EF_ILIM_TABLE[D.RILIM_S2E][1],
+        "RON_EF": v("EF_RON_MAX_25C") * v("EF_RON_HOT_FACTOR"), "IS_DREV": 2e-5, "IL0": 0.0, "CPORT_O1": 10e-6 * 0.4, "CPORT_S2E": 10e-6 * 0.4, "RSHORT": 10e-3,
     }
 
 
@@ -90,6 +96,9 @@ COMMON_MEAS = [
     ("iso_i_max", f"MAX i(VMISO) FROM={TF} TO={{TSTOP}}"),
     ("il1_max_fault", f"MAX i(VM1) FROM={TF} TO={{TSTOP}}"),
 ]
+
+
+PROT_MEAS = COMMON_MEAS + [("il1_at_open", "FIND i(VM1) WHEN V(ctl)=0.45 FALL=1")]   # only where the isolator must open
 
 
 def deck_text(name, params, sources, tstop, tmax, meas, extra=()):
@@ -125,7 +134,7 @@ def steady(params, vin, i_total, io1, is2="0.22", fault="0", o1ext="0", vbat=Non
     vc0 = p["RI"] * i_total / 2 + p["VCOFS"]
     ic = [f".ic V(vin)={vin} V(anode)={vin} V(n_cin)=0 V(vraw)={vset} V(ncout)=0 V(vsafe)={vset} "
           f"V(o1)={vset} V(s2e)={vset} V(ss)={p['VREF_FB']} V(ens)=1 V(q)=0 V(ctl)=1 V(comp)={vc0} V(cmid)={vc0} "
-          f"V(en_ef)={vset * D.REN_EF2 / (D.REN_EF1 + D.REN_EF2)} V(efs)=1"]
+          f"V(en_ef)={vset * D.REN_EF2 / (D.REN_EF1 + D.REN_EF2)} V(efs)=1 V(il1)={i_total / 2} V(il2)={i_total / 2} V(oct)=0"]
     srcs = src(vbat or f"0 {vin} 1 {vin}", io1=io1, is2=is2, fault=fault, o1ext=o1ext)
     return p, srcs, ic
 
@@ -147,15 +156,21 @@ def family_cases():
         "f1_worst": dict(COUT_EFF=c_corner("min"), LPH=v("L_NOM") * 0.8, RSRC=0.02, VREF_FB=10.8333 / VSCALE),
         "f1_worst_nominal_setpoint": dict(COUT_EFF=c_corner("min"), LPH=v("L_NOM") * 0.8, RSRC=0.02),
         "f1_typ_loaded": dict(COUT_EFF=c_corner("typ"), RSRC=0.05, TDLY=0.6e-6),
-        "f1_noprot_baseline": dict(COUT_EFF=c_corner("min"), LPH=v("L_NOM") * 0.8, RSRC=0.02, EN_PREC=0, EN_COARSE=0),
+        "f1_noprot_baseline": dict(COUT_EFF=c_corner("min"), LPH=v("L_NOM") * 0.8, RSRC=0.02, EN_PREC=0, EN_COARSE=0, EN_OC=0),
+        # G4 / N1: saturation floor stress and the pre-G4 voltage-trip-only design for comparison (FAIL kept visible)
+        "f1_worst_lfloor0p05": dict(COUT_EFF=c_corner("min"), LPH=v("L_NOM") * 0.8, RSRC=0.02, VREF_FB=10.8333 / VSCALE, LFLOOR=0.05),
+        "f1_worst_highsetpoint_lfloor0p05": dict(COUT_EFF=c_corner("min"), LPH=v("L_NOM") * 0.8, RSRC=0.02,
+                                                 VREF_FB=v("BUS_STEADY_MAX") / VSCALE, LFLOOR=0.05),
+        "f1_voltage_trip_only_g3_design": dict(COUT_EFF=c_corner("min"), LPH=v("L_NOM") * 0.8, RSRC=0.02,
+                                               VREF_FB=10.8333 / VSCALE, EN_OC=0),
     }
     for name, ov in f1.items():
         loaded = "loaded" in name
         p, srcs, ic = steady({**B, **ov}, 26.0, 5.22 if loaded else 0.0, io1="5.0" if loaded else "0",
                              is2="0.22" if loaded else "0", fault=fault_at())
-        cases[name] = ("F1", p, srcs, TF + 0.3e-3, 20e-9, COMMON_MEAS,
+        cases[name] = ("F1", p, srcs, TF + 0.3e-3, 20e-9, COMMON_MEAS if "noprot" in name else PROT_MEAS,
                        {"o1_max_fault": ("<=", 12.0), "vsafe_max_fault": ("<", 30.0), "vds_iso_max": ("<", 100.0),
-                        "vraw_max_fault": ("<", 60.0)}, ic)
+                        "vraw_max_fault": ("<", v("LM70880_VOUT_ABS"))}, ic)
     # F2: startup / UVLO / hot-plug / dip
     st_meas = [("vin_max", "MAX V(vin)"), ("vraw_max", "MAX V(vraw)"), ("vraw_end", "FIND V(vraw) AT={TSTOP}"),
                ("vraw_end_hi", "FIND V(vraw) AT={TSTOP}"),
@@ -187,6 +202,13 @@ def family_cases():
     f3["f3_stacked_low_setpoint_cmin_gmmin"] = {"COUT_EFF": c_corner("min"), "GM": v("GM_EA_MIN"), "VREF_FB": 10.8333 / VSCALE}
     f3["f3_stacked_high_setpoint_cmin_gmmin"] = {"COUT_EFF": c_corner("min"), "GM": v("GM_EA_MIN"),
                                                  "VREF_FB": v("BUS_STEADY_MAX") / VSCALE}
+    # G4 B4: corners of the board-trimmed static window (b4-results.json), with 32x COUT / RCOMP 33.2k
+    _b4 = json.loads((ROOT / "reports" / "g4" / "b4-results.json").read_text(encoding="utf-8"))
+    _tlo, _thi = _b4["trimmed_window_V"]
+    f3["f3_trimmed_low_setpoint_cmin_gmmin"] = {"COUT_EFF": c_corner("min"), "GM": v("GM_EA_MIN"), "VREF_FB": _tlo / VSCALE}
+    f3["f3_trimmed_high_setpoint_cmin_gmmin"] = {"COUT_EFF": c_corner("min"), "GM": v("GM_EA_MIN"), "VREF_FB": _thi / VSCALE}
+    f3["f3_trimmed_low_setpoint_cmin_gmmin_vin20_l0.8"] = {"COUT_EFF": c_corner("min"), "GM": v("GM_EA_MIN"),
+                                                           "VREF_FB": _tlo / VSCALE, "LPH": v("L_NOM") * 0.8, "_VIN": 20.0}
     for name, ov in f3.items():
         ov = dict(ov)
         vin_case = ov.pop("_VIN", 22.2)
@@ -211,8 +233,8 @@ def family_cases():
         nm = f"f5_vt{vt:.3f}_td{td*1e9:.0f}ns_c{cn}_r{rs*1e3:.0f}m_l{lf}"
         p, srcs, ic = steady({**B, "VTRIP_EFF": vt, "TDLY": td, "COUT_EFF": c_corner(cn), "RSRC": rs, "LPH": v("L_NOM") * lf,
                               "VREF_FB": 10.8333 / VSCALE}, 26.0, 0.0, io1="0", is2="0", fault=fault_at())
-        cases[nm] = ("F5", p, srcs, TF + 0.2e-3, 20e-9, COMMON_MEAS, {"o1_max_fault": ("<=", 12.0), "vsafe_max_fault": ("<", 30.0),
-                                                                      "vraw_max_fault": ("<", 60.0)}, ic)
+        cases[nm] = ("F5", p, srcs, TF + 0.2e-3, 20e-9, PROT_MEAS, {"o1_max_fault": ("<=", 12.0), "vsafe_max_fault": ("<", 30.0),
+                                                                      "vraw_max_fault": ("<", v("LM70880_VOUT_ABS"))}, ic)
     p, srcs, ic = steady({**B, "EN_PREC": 0, "COUT_EFF": c_corner("min"), "LPH": v("L_NOM") * 0.8, "RSRC": 0.02}, 26.0, 0.0,
                          io1="0", is2="0", fault=fault_at())
     cases["f5_precision_path_open_residual"] = ("F5", p, srcs, TF + 0.3e-3, 20e-9, COMMON_MEAS,

@@ -31,16 +31,19 @@ fb                                         0.8
 comp                                   0.19575
 cmid                                   0.19575
 icmd                                      2.61
-sw1                                    11.0759
-l1a                                    11.0759
-l1b                                    11.0759
-l1c                                    11.0155
-sw2                                    11.0759
-l2a                                    11.0759
-l2b                                    11.0759
-l2c                                    11.0155
+sw1                                    10.9961
+l1a                                    10.9961
+l1b                                    11.0765
+il1                                       2.61
+l1c                                    11.0157
+sw2                                    10.9961
+l2a                                    10.9961
+l2b                                    11.0765
+il2                                       2.61
+l2c                                    11.0157
 ncout                                        0
 ncl                                          0
+oct                                          0
 q                                            0
 ovreq                                        0
 ctl                                          1
@@ -62,15 +65,13 @@ bo1in#branch                                 0
 bvds#branch                                  0
 bdrven#branch                                0
 bovr#branch                                  0
-vm2#branch                             2.59132
-bsw2#branch                           -2.59132
-vm1#branch                             2.59132
-bsw1#branch                           -2.59132
+vm1#branch                                2.61
+vm2#branch                                2.61
+bsw2#branch                              -2.61
+bsw1#branch                              -2.61
 bic#branch                                   0
 bven#branch                                  0
 lesl#branch                                  0
-l2#branch                              2.59132
-l1#branch                              2.59132
 lcab#branch                                  0
 vo1x#branch                                  0
 vflt#branch                                  0
@@ -79,32 +80,32 @@ vio1#branch                                  0
 vbat#branch                                  0
 
 
-No. of Data Rows : 21138
+No. of Data Rows : 21139
 
   Measurements for Transient Analysis
 
-vraw_max_fault      =  1.10101e+01 at=  1.00014e-04
-vsafe_max_fault     =  1.09350e+01 at=  1.00006e-04
-o1_max_fault        =  1.09110e+01 at=  1.00006e-04
-s2e_max_fault       =  1.09339e+01 at=  1.00006e-04
-vds_iso_max         =  1.19816e-01 at=  1.00012e-04
+vraw_max_fault      =  1.10010e+01 at=  1.00012e-04
+vsafe_max_fault     =  1.09352e+01 at=  1.00006e-04
+o1_max_fault        =  1.09112e+01 at=  1.00006e-04
+s2e_max_fault       =  1.09342e+01 at=  1.00006e-04
+vds_iso_max         =  1.13708e-01 at=  1.00011e-04
 o1_minus_in_max     =  -2.40000e-02 at=  1.00006e-04
-s2e_minus_in_max    =  7.89455e-02 at=  1.00009e-04
-vraw_pre            =  1.09951e+01
+s2e_minus_in_max    =  6.01470e-02 at=  1.00009e-04
+vraw_pre            =  1.09954e+01
 q_end               =  0.00000e+00
-iso_i_max           =  1.04007e+01 at=  1.00012e-04
-il1_max_fault       =  4.73533e+00 at=  1.43673e-04
-s2e_min_fault       =  1.07906e+01 at=  1.22373e-04
-io1_max             =  9.29460e+00 at=  1.50073e-04
-vraw_min_fault      =  1.08987e+01 at=  1.22373e-04
+iso_i_max           =  9.87048e+00 at=  1.00011e-04
+il1_max_fault       =  4.69569e+00 at=  1.48183e-04
+s2e_min_fault       =  1.08364e+01 at=  1.24883e-04
+io1_max             =  9.29307e+00 at=  1.50083e-04
+vraw_min_fault      =  1.09445e+01 at=  1.24883e-04
 
 
-Total analysis time (seconds) = 0.645791
+Total analysis time (seconds) = 0.814739
 
-Total elapsed time (seconds) = 0.652 
+Total elapsed time (seconds) = 0.821 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 10009.918 MB.
-Maximum ngspice program size =   12.742 MB.
-Current ngspice program size =   12.742 MB.
+DRAM currently available = 9624.965 MB.
+Maximum ngspice program size =   12.684 MB.
+Current ngspice program size =   12.684 MB.
 

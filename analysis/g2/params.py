@@ -28,6 +28,9 @@ class P:
 DS = {
     "LM70880": "TI LM70880-Q1 SNVSBX7A (Jun 2024)",
     "TPS25982": "TI TPS25982 SLVSEI3D (May 2026)",
+    "INA296": "TI INA296A-Q1/INA296B-Q1 datasheet (downloaded 2026-11-07)",
+    "LVC1G11": "TI SN74LVC1G11 datasheet (downloaded 2026-11-07)",
+    "SMCJ": "Vishay SMCJ5.0A thru SMCJ188CA doc 88394 (Rev 09-Jan-2024)",
     "LM74502H": "TI LM74502/LM74502H SNOSDE5A (May 2022)",
     "TLV3601": "TI TLV360x Rev E (2023)",
     "REF5025A": "TI REF50xxA-Q1 SBOS456H (Feb 2015)",
@@ -52,7 +55,7 @@ PARAMS: dict[str, P] = {
     "VIN_MIN": P(20.0, "V", "KULLANICI", "6S, 20-26 V envelope"),
     "VIN_NOM": P(22.2, "V", "KULLANICI", "6S nominal"),
     "VIN_MAX": P(26.0, "V", "KULLANICI", "6S, 20-26 V envelope"),
-    "VIN_CLAMP": P(53.3, "V", "VARSAYIM", "SMCJ33A family clamp (G1); exact TVS datasheet doğrulanamadı",
+    "VIN_CLAMP": P(53.3, "V", "DATASHEET", "Vishay SMCJ33A VC max 53.3 V @ IPPM 28.1 A, doc 88394 Rev 09-Jan-2024 p.2 (G4: verified)",
                    "Higher clamp raises Q_ISO VDS, divider clamp current, LDO/LM74502H VS stress."),
     "I_BUS_CAP": P(7.5, "A", "KULLANICI", "power-stage capacity target"),
     "I_LOAD_STEP_LO": P(0.75, "A", "KULLANICI", "Family 4 step"),
@@ -161,6 +164,25 @@ PARAMS: dict[str, P] = {
     "EF_UVLO_R_MAX": P(1.23, "V", "DATASHEET", DS["TPS25982"] + " p.9"),
     "EF_GIMON_MIN": P(238.6e-6, "A/A", "DATASHEET", DS["TPS25982"] + " p.8 (3 A..min(15A,ILIM))"),
     "EF_GIMON_MAX": P(253.4e-6, "A/A", "DATASHEET", DS["TPS25982"] + " p.8"),
+
+    # ---- G4 additions: eFuse constants used by the netlist (TPS259824L), TVS clamps, phase-overcurrent trip
+    "EF_UVLO_R_TYP": P(1.20, "V", "DATASHEET", DS["TPS25982"] + " p.9 VUVLO(R) 1.18/1.20/1.23"),
+    "EF_UVLO_F_TYP": P(1.10, "V", "DATASHEET", DS["TPS25982"] + " p.9 VUVLO(F) 1.08/1.10/1.13"),
+    "EF_OVLO_TYP": P(16.9, "V", "DATASHEET", DS["TPS25982"] + " p.4/p.8 '4' variant OVLO 16.32/16.9/17.31 V"),
+    "EF_RON_MAX_25C": P(3.2e-3, "ohm", "DATASHEET", DS["TPS25982"] + " p.9 RON max, TJ=25 C"),
+    "EF_RON_HOT_FACTOR": P(1.5, "-", "VARSAYIM", "RON at hot TJ relative to 25 C max (graph p.11 not numerically extracted)",
+                           "eFuse conduction loss and VSAFE->port drop"),
+    "TVS_IN_VBR_MIN": P(36.7, "V", "DATASHEET", "Vishay SMCJ33A VBR min, doc 88394 p.2"),
+    "TVS_IN_IPPM": P(28.1, "A", "DATASHEET", "Vishay SMCJ33A IPPM (10/1000 us), doc 88394 p.2"),
+    "TVS_IN_VWM": P(33.0, "V", "DATASHEET", "Vishay SMCJ33A VWM, doc 88394 p.2"),
+    "OC_INA_VCM_MAX": P(110.0, "V", "DATASHEET", DS["INA296"] + " p.5 VCM -5..110 V (survival -20..120 V)"),
+    "OC_INA_SETTLE_TYP": P(1.0e-6, "s", "DATASHEET", DS["INA296"] + " p.6 settling to 1 % TYPICAL (no max)"),
+    "OC_INA_DELAY_SCREEN": P(1.5e-6, "s", "VARSAYIM", "1.5 x typical settling used in budget; O1 <= 11.94 V even at 4 us (n1-results.json)",
+                             "OC path timing; voltage path remains the guaranteed-delay backup"),
+    "LM70880_VOUT_ABS": P(60.0, "V", "DATASHEET", DS["LM70880"] + " p.5 VOUT, ISNS+ abs max"),
+    "LM70880_BIAS_ABS": P(32.0, "V", "DATASHEET", DS["LM70880"] + " p.5 BIAS abs max (G4: BIAS tied to AGND, p.13)"),
+    "LFLOOR_BEYOND_16A": P(0.15, "-", "VARSAYIM", "L(I) above 16 A not published (doc 34207 p.3 ends at 16 A); floor swept 0.05-0.5",
+                           "O1 peak with OC trip: path B bound 11.50 V at 0.15, 11.87 V at 0.05 (low static corner)"),
 }
 
 # TPS25982 datasheet guaranteed ILIM points, TJ -40..125 C (p.9): RILIM -> (min, typ, max)

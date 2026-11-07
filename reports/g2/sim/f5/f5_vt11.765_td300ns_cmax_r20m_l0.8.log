@@ -34,13 +34,16 @@ icmd                                         0
 sw1                                    10.8333
 l1a                                    10.8333
 l1b                                    10.8333
+il1                                          0
 l1c                                    10.8333
 sw2                                    10.8333
 l2a                                    10.8333
 l2b                                    10.8333
+il2                                          0
 l2c                                    10.8333
 ncout                                        0
 ncl                                          0
+oct                                          0
 q                                            0
 ovreq                                        0
 ctl                                          1
@@ -62,15 +65,13 @@ bo1in#branch                                 0
 bvds#branch                                  0
 bdrven#branch                                0
 bovr#branch                                  0
+vm1#branch                                   0
 vm2#branch                                   0
 bsw2#branch                                  0
-vm1#branch                                   0
 bsw1#branch                                  0
 bic#branch                                   0
 bven#branch                                  0
 lesl#branch                                  0
-l2#branch                                    0
-l1#branch                                    0
 lcab#branch                                  0
 vo1x#branch                                  0
 vflt#branch                                  0
@@ -79,29 +80,30 @@ vio1#branch                                  0
 vbat#branch                                  0
 
 
-No. of Data Rows : 15132
+No. of Data Rows : 15163
 
   Measurements for Transient Analysis
 
-vraw_max_fault      =  2.98950e+01 at=  2.88570e-04
-vsafe_max_fault     =  1.17850e+01 at=  1.20661e-04
-o1_max_fault        =  1.17841e+01 at=  1.20853e-04
-s2e_max_fault       =  1.17841e+01 at=  1.20853e-04
-vds_iso_max         =  1.82778e+01 at=  2.88830e-04
-o1_minus_in_max     =  1.13890e-01 at=  1.35350e-04
-s2e_minus_in_max    =  1.13890e-01 at=  1.35350e-04
+vraw_max_fault      =  2.48985e+01 at=  3.00000e-04
+vsafe_max_fault     =  1.08923e+01 at=  1.06571e-04
+o1_max_fault        =  1.08921e+01 at=  1.06751e-04
+s2e_max_fault       =  1.08921e+01 at=  1.06751e-04
+vds_iso_max         =  1.41746e+01 at=  3.00000e-04
+o1_minus_in_max     =  1.11766e-01 at=  1.22312e-04
+s2e_minus_in_max    =  1.11766e-01 at=  1.22312e-04
 vraw_pre            =  1.08332e+01
-q_end               =  1.00305e+00
-iso_i_max           =  6.99841e-01 at=  1.20661e-04
-il1_max_fault       =  8.57580e+01 at=  1.69590e-04
+q_end               =  1.00303e+00
+iso_i_max           =  1.53511e-01 at=  1.06571e-04
+il1_max_fault       =  1.38329e+02 at=  1.43672e-04
+il1_at_open         =  1.94879e+01
 
 
-Total analysis time (seconds) = 0.416667
+Total analysis time (seconds) = 0.550482
 
-Total elapsed time (seconds) = 0.423 
+Total elapsed time (seconds) = 0.557 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 10009.035 MB.
-Maximum ngspice program size =   12.191 MB.
-Current ngspice program size =   12.191 MB.
+DRAM currently available = 9618.695 MB.
+Maximum ngspice program size =   12.141 MB.
+Current ngspice program size =   12.141 MB.
 

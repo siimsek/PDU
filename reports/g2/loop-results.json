@@ -1,27 +1,27 @@
 {
   "classification": "HESAP (analytic model) + SİM (ngspice AC of same model); bench FRA required",
   "selected": {
-    "rcomp": 16900.0,
+    "rcomp": 33200.0,
     "ccomp": 1e-08,
     "chf": 2.2e-11,
-    "n_cout": 16
+    "n_cout": 32
   },
-  "pm_min_deg": 66.85964605771977,
-  "gm_min_dB": 11.654694467919612,
+  "pm_min_deg": 63.1084388115645,
+  "gm_min_dB": 11.53153262495708,
   "fc_range_Hz": [
-    9810.514650583094,
-    40875.83740462882
+    9586.411376840273,
+    39562.37083839036
   ],
-  "dip_proxy_max_V": 0.19927088127619794,
-  "pm_after_model_margin_deg": 56.85964605771977,
+  "dip_proxy_max_V": 0.10209240446943091,
+  "pm_after_model_margin_deg": 53.1084388115645,
   "pass_pm": true,
   "pass_gm": true,
   "old_comp_16cout": {
-    "pm_min": 57.998773960377264,
-    "gm_min": 16.4201786952909,
+    "pm_min": 45.41763592479242,
+    "gm_min": 22.44058958596504,
     "fc": [
-      6282.793552965743,
-      22850.161020921754
+      3763.4998390508645,
+      11749.033214294072
     ]
   },
   "old_comp_8cout": {
@@ -55,10 +55,10 @@
       "vin": 26.0,
       "iload": 0.75,
       "fsw": 400000.0,
-      "fc_Hz": 39718.03104526979,
-      "pm_deg": 66.85964605771977,
-      "gm_dB": 14.178933040466703,
-      "dip_proxy_V": 0.13515448322802245
+      "fc_Hz": 38533.33896001239,
+      "pm_deg": 63.1084388115645,
+      "gm_dB": 13.028637814814733,
+      "dip_proxy_V": 0.06965487686297643
     },
     {
       "c_corner": "min",
@@ -67,10 +67,10 @@
       "vin": 20.0,
       "iload": 0.75,
       "fsw": 400000.0,
-      "fc_Hz": 39763.77613427935,
-      "pm_deg": 67.04768820795894,
-      "gm_dB": 14.073759371730608,
-      "dip_proxy_V": 0.13499899865220075
+      "fc_Hz": 38574.301512213824,
+      "pm_deg": 63.29028708585952,
+      "gm_dB": 12.940346997131671,
+      "dip_proxy_V": 0.06958090944379502
     },
     {
       "c_corner": "min",
@@ -79,10 +79,10 @@
       "vin": 20.0,
       "iload": 0.75,
       "fsw": 480000.0,
-      "fc_Hz": 39274.21997082682,
-      "pm_deg": 67.23303058431145,
-      "gm_dB": 16.157637259809,
-      "dip_proxy_V": 0.13668177152201705
+      "fc_Hz": 38133.80016324436,
+      "pm_deg": 63.495180936190394,
+      "gm_dB": 14.553375787496538,
+      "dip_proxy_V": 0.0703846710500683
     },
     {
       "c_corner": "min",
@@ -91,22 +91,22 @@
       "vin": 26.0,
       "iload": 7.5,
       "fsw": 400000.0,
-      "fc_Hz": 39707.72127469583,
-      "pm_deg": 67.62548184190587,
-      "gm_dB": 14.179680628202975,
-      "dip_proxy_V": 0.13518957493485909
+      "fc_Hz": 38530.095270774225,
+      "pm_deg": 63.50244885644307,
+      "gm_dB": 13.028995264185824,
+      "dip_proxy_V": 0.06966074081874603
     },
     {
       "c_corner": "min",
       "l_factor": 1.2,
       "gm": 0.00143,
-      "vin": 26.0,
-      "iload": 0.75,
-      "fsw": 480000.0,
-      "fc_Hz": 39371.76061883151,
-      "pm_deg": 67.66268581757129,
-      "gm_dB": 16.046211790764872,
-      "dip_proxy_V": 0.13634315246218487
+      "vin": 20.0,
+      "iload": 7.5,
+      "fsw": 400000.0,
+      "fc_Hz": 38571.06261794017,
+      "pm_deg": 63.683859814962375,
+      "gm_dB": 12.94070422577086,
+      "dip_proxy_V": 0.06958675230094899
     }
   ],
   "spice_checks": [
@@ -119,18 +119,18 @@
         "iload": 0.75,
         "fsw": 400000.0
       },
-      "analytic_fc_Hz": 39718.03104526979,
-      "analytic_pm_deg": 66.85964605771977,
+      "analytic_fc_Hz": 38533.33896001239,
+      "analytic_pm_deg": 63.1084388115645,
       "spice": {
         "completed": true,
-        "fc_Hz": 39718.0043568031,
-        "pm_deg": 66.85931481287744,
+        "fc_Hz": 38533.32869687461,
+        "pm_deg": 63.10835830659998,
         "deck": "reports/g2/sim/loop/ac_case0.cir",
         "log": "reports/g2/sim/loop/ac_case0.log",
-        "sha256": "aa1373254e0081ee62ec269081fac9d127bdc60f710bc620e6bb4b89d9596c2e"
+        "sha256": "3eaa58ec86bf58308e35675d2bf041ea34b554143f884ced72295e1f2435920d"
       },
-      "diff_pm_deg": 0.0003312448423287151,
-      "diff_fc_rel": 6.719488332418422e-07
+      "diff_pm_deg": 8.05049645151712e-05,
+      "diff_fc_rel": 2.6634443806017316e-07
     },
     {
       "corner": {
@@ -141,18 +141,18 @@
         "iload": 0.75,
         "fsw": 400000.0
       },
-      "analytic_fc_Hz": 39763.77613427935,
-      "analytic_pm_deg": 67.04768820795894,
+      "analytic_fc_Hz": 38574.301512213824,
+      "analytic_pm_deg": 63.29028708585952,
       "spice": {
         "completed": true,
-        "fc_Hz": 39763.75700989222,
-        "pm_deg": 67.0474269850839,
+        "fc_Hz": 38574.304828546476,
+        "pm_deg": 63.29031298005905,
         "deck": "reports/g2/sim/loop/ac_case1.cir",
         "log": "reports/g2/sim/loop/ac_case1.log",
-        "sha256": "39625eb0c35df43344c4110cb8ee924d723e81a9e3086bddf3d958c715bf317c"
+        "sha256": "d44932dd1414dcf73207bddc4182b3957338ff682aeac336ac8b81cf188df232"
       },
-      "diff_pm_deg": 0.0002612228750393797,
-      "diff_fc_rel": 4.809502061053905e-07
+      "diff_pm_deg": -2.589419953125116e-05,
+      "diff_fc_rel": -8.597258371878524e-08
     },
     {
       "corner": {
@@ -163,18 +163,18 @@
         "iload": 0.75,
         "fsw": 480000.0
       },
-      "analytic_fc_Hz": 39274.21997082682,
-      "analytic_pm_deg": 67.23303058431145,
+      "analytic_fc_Hz": 38133.80016324436,
+      "analytic_pm_deg": 63.495180936190394,
       "spice": {
         "completed": true,
-        "fc_Hz": 39274.191134302826,
-        "pm_deg": 67.2328450453451,
+        "fc_Hz": 38133.78660118974,
+        "pm_deg": 63.49511080797386,
         "deck": "reports/g2/sim/loop/ac_case2.cir",
         "log": "reports/g2/sim/loop/ac_case2.log",
-        "sha256": "df42a1e872512e143c54d773f938f254b05cef119599342b7de8dc678dae7d52"
+        "sha256": "fbe5d2ea9d1bc528830503eb5806876cadbb140565b3c0d5d33183066d76c69a"
       },
-      "diff_pm_deg": 0.00018553896634898592,
-      "diff_fc_rel": 7.342359744644256e-07
+      "diff_pm_deg": 7.012821653518131e-05,
+      "diff_fc_rel": 3.556440582030973e-07
     },
     {
       "corner": {
@@ -185,18 +185,18 @@
         "iload": 7.5,
         "fsw": 400000.0
       },
-      "analytic_fc_Hz": 9834.368515978702,
-      "analytic_pm_deg": 82.52287634946845,
+      "analytic_fc_Hz": 9608.624957844513,
+      "analytic_pm_deg": 83.15355867770461,
       "spice": {
         "completed": true,
-        "fc_Hz": 9834.369577961334,
-        "pm_deg": 82.5228370794643,
+        "fc_Hz": 9608.625503413026,
+        "pm_deg": 83.15349193357389,
         "deck": "reports/g2/sim/loop/ac_case3.cir",
         "log": "reports/g2/sim/loop/ac_case3.log",
-        "sha256": "fa2a240c9ec611ad5b0a2c9b22f6dc4994c6ee196f45edb4317b08054a9341eb"
+        "sha256": "3e505a83821973e87c889339cd92fb9670ce73ef2709e4e194db8219617f3597"
       },
-      "diff_pm_deg": 3.9270004151603644e-05,
-      "diff_fc_rel": -1.0798685401436359e-07
+      "diff_pm_deg": 6.674413072005336e-05,
+      "diff_fc_rel": -5.6779038026810724e-08
     },
     {
       "corner": {
@@ -207,18 +207,18 @@
         "iload": 7.5,
         "fsw": 480000.0
       },
-      "analytic_fc_Hz": 9826.494199400982,
-      "analytic_pm_deg": 82.46495520828563,
+      "analytic_fc_Hz": 9601.299549814723,
+      "analytic_pm_deg": 83.0926658731276,
       "spice": {
         "completed": true,
-        "fc_Hz": 9826.494360880146,
-        "pm_deg": 82.46494778519698,
+        "fc_Hz": 9601.299660942364,
+        "pm_deg": 83.09263667172772,
         "deck": "reports/g2/sim/loop/ac_case4.cir",
         "log": "reports/g2/sim/loop/ac_case4.log",
-        "sha256": "99942962b46055ac643db51bf53ba00d4bbd1ba23d3b2bb612c503247240bca6"
+        "sha256": "69c1e062c2af22ddc3562c61ed90f1e8423d1844213bffd4b32c4ed965b75df8"
       },
-      "diff_pm_deg": 7.423088646874021e-06,
-      "diff_fc_rel": -1.6433038818597367e-08
+      "diff_pm_deg": 2.9201399883049817e-05,
+      "diff_fc_rel": -1.1574229019650772e-08
     }
   ]
 }

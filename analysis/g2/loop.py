@@ -39,7 +39,7 @@ REA = 10e6
 PM_MODEL_MARGIN = 10.0   # deg, VARSAYIM model-uncertainty allowance -> model PM target 55 deg
 PM_TARGET = 45.0
 GM_TARGET = 6.0
-DIP_PROXY_MAX = 0.20   # V, first-order proxy only; nominal setpoint allowance 0.216 V; real check = SIM family 3
+DIP_PROXY_MAX = 0.11   # V, G4 B4: stacked (trimmed) tolerance corners need dip <~0.11 V; real check = SIM family 3
 
 
 def plant(s, vin, l, c, esr, rload, fsw, rs=None):
@@ -136,7 +136,7 @@ def select():
     """Pick RCOMP / CCOMP / CHF: maximise worst PM subject to GM >= 9 dB, fc_max <= fsw_min/6 and
     first-order load-step dip proxy dI/(2 pi fc C) <= DIP_PROXY_MAX at every corner."""
     best = None
-    for rc in (12.1e3, 15.0e3, 16.9e3, 18.7e3, 20.0e3, 22.1e3, 24.9e3, 27.4e3, 30.1e3):
+    for rc in (24.9e3, 27.4e3, 30.1e3, 33.2e3, 36.5e3, 40.2e3):
         for cc in (2.2e-9, 3.3e-9, 4.7e-9, 6.8e-9, 10e-9):
             for chf in (22e-12, 33e-12, 47e-12):
                 ev = evaluate(rc, cc, chf, reduced=True)

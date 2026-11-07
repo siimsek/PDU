@@ -63,15 +63,15 @@
     "kelvin": "4-terminal not required; Kelvin escape from pad inner edges (LM70880 p.16)"
   },
   "cout": {
-    "n": 16,
-    "ceff_min_F": 0.0001853028,
-    "ceff_typ_F": 0.000329952,
-    "ceff_max_F": 0.000515328,
-    "esr_ohm": 0.000120025,
+    "n": 32,
+    "ceff_min_F": 0.0003706056,
+    "ceff_typ_F": 0.000659904,
+    "ceff_max_F": 0.001030656,
+    "esr_ohm": 6.00125e-05,
     "ripple_current_pp_A_pathA": 0.777714932126697,
     "ripple_current_pp_A_pathB": 0.7776654411764712,
     "diff_A": 4.949095022577232e-05,
-    "ripple_voltage_pp_V": 0.0007491257094153242,
+    "ripple_voltage_pp_V": 0.0003745628547076621,
     "voltage_derating": 0.11,
     "dc_bias": "Ceff per part from TDK model at 11 V (G1); 100 V rating -> 11 % of rating"
   },
