@@ -105,8 +105,8 @@ def rows():
                   nets={"A": "/GND", "K": "/ANODE"}, v_applied=26.0, v_rating=33.0, p_applied_W="", p_rating_W="",
                   derating=26.0 / 33.0, lifecycle="doğrulanamadı", note="VBR 36.7-40.6 V, VC 53.3 V @ IPPM 28.1 A (doc 88394 p.2); VWM 33 V > VIN max 26 V", dnp=False))
     R.append(u("U5", "LM74700-Q1", "LM74700QDBVRQ1", "TI_LM74700", "SOT-23-6 (DBV)", "Package_TO_SOT_SMD:SOT-23-6", FP_LIB,
-               {"1": "/VCAP", "2": "/GND", "3": "/ANODE(EN)", "4": "/GATE", "5": "/ANODE", "6": "/VIN(CATHODE)"},
-               v_app=53.3, v_rat=65.0, note="pin map per TI DBV table; verify against KiCad symbol before transfer"))
+               {"1": "/VCAP", "2": "/GND", "3": "/ANODE(EN)", "4": "/VIN(CATHODE)", "5": "/GATE", "6": "/ANODE"},
+               v_app=53.3, v_rat=65.0, note="pin map per TI LM74700-Q1 Table 5-1 (DBV): 1 VCAP, 2 GND, 3 EN, 4 CATHODE, 5 GATE, 6 ANODE (G5 T-006 fix; G2 map had 4/5/6 shifted)"))
     R.append(u("Q1", "100 V N-MOSFET", "BSC160N10NS3G", "INF_BSC160", "PG-TDSON-8", "PDU:TDSON-8-1_Konnect", "repo custom land (G1: adapted, final land/paste acceptance open)",
                {"S": "/ANODE", "G": "/GATE", "D": "/VIN"}, kind="Q", v_app=53.3, v_rat=100.0, mfr="Infineon", custom=True))
     R.append(c("CIN_U5", "22n", "", "", 26.0, 100.0, "0603", C0603, {"1": "/ANODE", "2": "/GND"}, note="rating >=53.3 V required"))

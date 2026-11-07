@@ -1,24 +1,24 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-005b-2 → main
-- **Aktif kart:** T-006 (Ready, Claude Code — şema B1 giriş). THINKER Ready: R-003 tur 2 (J2).
+- **Dal / son commit:** wp/T-006 (taslak PR; **birleştirilmedi** — D-007 + R-004 bekliyor)
+- **Aktif kart:** T-006 (Review). THINKER Ready: D-007 (D1 konumu), R-004 (B1 incelemesi), R-003 tur 2 (J2).
 
 ## Yapılanlar
-- D-006 (#24): kart 120 × 85 mm, bileşenler yalnız üst yüzde, 4× M3 NPTH Ø3,2 (VARSAYIM) → T-013 girdisi.
-- R-003 (#25): Q1 özel footprint doğru (Infineon Fig. 2), C5750 kabul; `analysis/check_footprints.py` artık 4 footprint (Q1, C5750, RGE, RRX) PASS. T-005b Done.
-- J2: Codex stok Mini-Fit Jr footprint'ini "5,50 mm ≠ 4,20 mm" diye reddetti; BUILDER itirazı: 2 devreli çift sırada 5,50 mm sıra arası aralık olabilir → R-003 tur 2, sonra T-016.
+- T-005b: Q1 + C5750 footprint PASS (#26). D-006: 120 × 85 mm, tek yüz.
+- T-006 (dal): `check_consistency.py --schematic`; `scripts/sch_edit_b1.py` ile F1 sembolü/VBAT etiketi silindi, J1.1 → /ANODE, B1 MPN alanları; ERC 0. Spec'teki U5 pin haritası hatası düzeltildi.
+- B1 kalan fark: D1.K /VIN (şema) vs /ANODE (spec + SPICE) → D-007.
 
 ## Sonraki adım
-Claude Code: T-006 — `check_consistency.py --schematic` (kicad-cli netlist ↔ spec) + B1 giriş bloğu (F1 sembolünü kaldır, J1.1 → /ANODE, D1 SMCJ33A, Q1/U5, CIN) `scripts/kicad_sexpr.py` ile.
+Codex: D-007, R-004, R-003 tur 2. Sonra Claude Code: D-007'yi uygula (spec/SPICE/şema), B1 fark 0 → T-006 PR'ını birleştir → T-007 (B2 buck çekirdeği).
 
 ## Engeller
-- T-016 ← R-003 tur 2. T-008 ← T-007.
+- T-006 birleştirme ← D-007 + R-004. T-016 ← R-003 tur 2.
+- **KiCad GUI açık** (kicad.exe, `~PDU.kicad_pro.lck` 17:07:40). 17:09:54'te GUI `PDU.kicad_pcb`/`PDU.kicad_pro`'yu yeniden kaydetti (açı normalizasyonu, netclass sırası); BUILDER bunları çalışma ağacında geri aldı, KiCad yerel geçmişinde (`.history`) duruyor. GUI'den şema kaydedilirse `wp/T-006` düzenlemesinin üzerine yazar → şema düzenlemeleri yalnız dal commit'lerinden alınır.
 
 ## Kullanıcıdan bekleyenler (yalnız fiziksel, engellemez)
-- U-001 O1/S2E akım ölçümü, U-007 T5g gecikme + O1 tepe ölçümü (kart üretilince).
-- **Birleştirme yetkisi: VERİLDİ (2026-11-07, "Yetki veriyorum").** KiCad/tasarım PR'ı için THINKER onayı yeterli (WORKFLOW kural 6).
+- U-001, U-007 tezgâh ölçümleri (kart üretilince).
+- **Birleştirme yetkisi: VERİLDİ (2026-11-07).** KiCad/tasarım PR'ı için THINKER onayı yeterli (WORKFLOW kural 6).
 
 ## Okuma gerektirmeyen notlar
-- Molex 46015 satış çizimi tarayıcıda indirme olarak açılıyor (BUILDER okuyamadı); çizim okumayı THINKER yapıyor.
-- Q1 footprint açıklamasındaki "KiCad ile aynı" ifadesi yanlış; geometri Infineon'a uygun.
+- Şema düzenleme betikleri tekrar üretilebilir: `python scripts/sch_edit_b1.py` (temiz main şemasında).

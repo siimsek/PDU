@@ -28,6 +28,8 @@ G1 [`KICAD-CHANGE-LIST.md`](../g1/KICAD-CHANGE-LIST.md) satırlarının yerini b
 | SW1 | B3U-1000P | `Button_Switch_SMD:SW_SPST_B3U-1000P` | ARATAS sayfası |
 | F1 | **şemadan ve PCB'den kaldırılır** (G5 T-004 / D-001): sigorta kart dışında, batarya + kablosunda — Eaton PV-10A10F (10×38 mm, 10 A, 1000 VDC, 50 kA) + CHPV1U DIN-ray yuvası (33 kA DC). G2/G4'teki `/VBAT`–`/ANODE` F1 satırı SUPERSEDED | J1 pin 1: `/VBAT` → **`/ANODE`**; `/VBAT` ağı karttan kalkar | DC kesme değeri doğrulanan tek set; sigorta bataryaya en yakın noktada kabloyu da korur |
 
+U5 (LM74700-Q1) pin haritası düzeltmesi (G5 T-006): 1 VCAP, 2 GND, 3 EN, 4 CATHODE (/VIN), 5 GATE, 6 ANODE (TI Tablo 5-1); G2 spec'teki kayık harita SUPERSEDED, mevcut şema doğru. D1 katot ağı D-007 kararına bağlı.
+
 Test noktası ekleri: TP_OC_SENSE1, TP_OC_SENSE2, TP_OC_REF, TP_OVP_BUS_N; faz şöntü akım enjeksiyonu için RS1/RS2 Kelvin padleri (BENCH T5g).
 
 ## 1. Değişen referanslar (G2)

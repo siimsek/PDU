@@ -3666,6 +3666,13 @@
 	)
 	(wire
 		(pts
+			(xy 59.69 365.76)
+			(xy 67.31 365.76)
+		)
+		(uuid "91a9e956-3ccf-5430-957c-09677d05a94b")
+	)
+	(wire
+		(pts
 			(xy 149.86 91.44)
 			(xy 149.86 96.52)
 		)
@@ -5689,16 +5696,6 @@
 		)
 		(uuid "1d32c50e-49ab-42c6-ade4-59d9bd11a348")
 	)
-	(label "VBAT"
-		(at 35.56 365.76 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "afe80c9c-62b3-48b3-b8c7-a7df09f0715a")
-	)
 	(label "DVDT_O1"
 		(at 463.55 287.02 0)
 		(effects
@@ -6200,70 +6197,19 @@
 				)
 			)
 		)
+		(property "MPN" "430450200"
+			(at 25.4 365.76 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
 					(reference "J1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Fuse")
-		(at 63.5 365.76 90)
-		(unit 1)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "f3566f14-9e66-4cca-af55-fcc684494d98")
-		(property "Reference" "F1"
-			(at 63.5 363.728 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10A"
-			(at 63.5 367.665 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 63.5 365.76 0)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 63.5 365.76 0)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Fuse"
-			(at 63.5 365.76 0)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project "PDU"
-				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
-					(reference "F1")
 					(unit 1)
 				)
 			)
@@ -6312,6 +6258,15 @@
 			)
 		)
 		(property "Description" "Diode"
+			(at 469.9 381 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SMCJ33A-E3/57T"
 			(at 469.9 381 0)
 			(hide yes)
 			(effects
@@ -6778,6 +6733,15 @@
 				)
 			)
 		)
+		(property "MPN" "C3225X7S2A475K200AB"
+			(at 66.04 255.27 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -6832,6 +6796,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 86.36 255.27 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C3225X7S2A475K200AB"
 			(at 86.36 255.27 0)
 			(hide yes)
 			(effects
@@ -6902,6 +6875,15 @@
 				)
 			)
 		)
+		(property "MPN" "C3225X7S2A475K200AB"
+			(at 106.68 255.27 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -6956,6 +6938,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 127 255.27 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C3225X7S2A475K200AB"
 			(at 127 255.27 0)
 			(hide yes)
 			(effects
@@ -8334,6 +8325,15 @@
 				)
 			)
 		)
+		(property "MPN" "C3225X7S2A475K200AB"
+			(at 66.04 102.87 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -8388,6 +8388,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 86.36 102.87 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C3225X7S2A475K200AB"
 			(at 86.36 102.87 0)
 			(hide yes)
 			(effects
@@ -8458,6 +8467,15 @@
 				)
 			)
 		)
+		(property "MPN" "C3225X7S2A475K200AB"
+			(at 106.68 102.87 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -8512,6 +8530,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 127 102.87 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C3225X7S2A475K200AB"
 			(at 127 102.87 0)
 			(hide yes)
 			(effects
@@ -10559,6 +10586,15 @@
 				)
 			)
 		)
+		(property "MPN" "LM74700QDBVRQ1"
+			(at 393.7 381 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -10621,6 +10657,15 @@
 				)
 			)
 		)
+		(property "MPN" "BSC160N10NS3G"
+			(at 431.8 368.3 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -10675,6 +10720,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 360.68 381 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C1608X7R1H104K080AA"
 			(at 360.68 381 0)
 			(hide yes)
 			(effects
@@ -10865,6 +10919,15 @@
 				)
 			)
 		)
+		(property "MPN" "C1608X7R2A103K080AA"
+			(at 144.78 255.27 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -10919,6 +10982,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 144.78 102.87 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C1608X7R2A103K080AA"
 			(at 144.78 102.87 0)
 			(hide yes)
 			(effects
@@ -11402,6 +11474,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 335.28 381 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C1608X7R2A223K080AA"
 			(at 335.28 381 0)
 			(hide yes)
 			(effects

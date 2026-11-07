@@ -143,6 +143,54 @@ def set_property(root: SList, ref: str, name: str, value: str) -> bool:
     return False
 
 
+def top(root: SList) -> SList:
+    """The single top-level list of a KiCad file (kicad_sch / kicad_pcb / footprint)."""
+    return next(x for x in root if isinstance(x, SList))
+
+
+def remove_node(parent: SList, node: SList) -> None:
+    """Remove a child list together with the whitespace run in front of it (keeps formatting tidy)."""
+    i = next(k for k, x in enumerate(parent) if x is node)
+    j = i - 1 if i > 0 and isinstance(parent[i - 1], WS) else i
+    del parent[j:i + 1]
+
+
+def insert_after(parent: SList, anchor: SList, text: str, indent: str = "\n\t") -> SList:
+    """Parse `text` (one S-expression) and insert it after `anchor` with KiCad-style indentation."""
+    node = next(x for x in parse(text) if isinstance(x, SList))
+    i = next(k for k, x in enumerate(parent) if x is anchor)
+    parent[i + 1:i + 1] = [WS(indent), node]
+    return node
+
+
+def labels(sch: SList, text: str):
+    return [n for n in sch.children("label") if n.atoms()[1].value == text]
+
+
+def at_of(node: SList):
+    a = next(node.children("at"), None)
+    return tuple(float(x.value) for x in a.atoms()[1:3]) if a is not None else None
+
+
+def wire_text(p1, p2, uuid: str) -> str:
+    # same layout KiCad 10 writes in PDU.kicad_sch (default stroke omitted)
+    return f'(wire\n\t\t(pts\n\t\t\t(xy {p1[0]:g} {p1[1]:g})\n\t\t\t(xy {p2[0]:g} {p2[1]:g})\n\t\t)\n\t\t(uuid "{uuid}")\n\t)'
+
+
+def set_or_add_property(root: SList, ref: str, name: str, value: str) -> str:
+    """Set a symbol property; add it (hidden, at the symbol origin) when missing. Returns 'set', 'added' or 'missing-ref'."""
+    if set_property(root, ref, name, value):
+        return "set"
+    sym = symbol_by_ref(root, ref)
+    if sym is None:
+        return "missing-ref"
+    x, y = at_of(sym)
+    last = [p for p in sym.children("property")][-1]
+    insert_after(sym, last, f'(property "{name}" {quote(value)}\n\t\t\t(at {x:g} {y:g} 0)\n\t\t\t(hide yes)\n'
+                            f'\t\t\t(effects\n\t\t\t\t(font\n\t\t\t\t\t(size 1.27 1.27)\n\t\t\t\t)\n\t\t\t)\n\t\t)', indent="\n\t\t")
+    return "added"
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = ap.add_subparsers(dest="cmd", required=True)

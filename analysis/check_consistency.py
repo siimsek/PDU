@@ -11,8 +11,11 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import re
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -101,7 +104,80 @@ def check():
     return errors
 
 
+KICAD_CLI = os.environ.get("KICAD_CLI", r"C:\Program Files\KiCad\10.0\bin\kicad-cli.exe")
+# Schematic blocks (T-006..T-012): refs whose schematic netlist must equal the spec after the block card.
+BLOCKS = {
+    "B1": ["J1", "D1", "U5", "Q1", "CIN_U5", "CVCAP", "CBIN1", "CBIN2"] + [f"CIN{i}" for i in range(1, 9)],
+}
+
+
+def schematic_netlist(sch: Path | None = None) -> dict:
+    """Export the schematic netlist with kicad-cli and return {ref: {"fields": {...}, "footprint": str, "pins": {num: (name, net)}}}."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import kicad_sexpr as ks
+    sch = sch or ROOT / "PDU.kicad_sch"
+    with tempfile.TemporaryDirectory() as t:
+        out = Path(t) / "net.net"
+        subprocess.run([KICAD_CLI, "sch", "export", "netlist", "--format", "kicadsexpr", "-o", str(out), str(sch)],
+                       capture_output=True, check=True)
+        root = ks.top(ks.parse(out.read_text(encoding="utf-8")))
+    comps = {}
+    for c in next(root.children("components")).children("comp"):
+        ref = next(c.children("ref")).atoms()[1].value
+        fp = next(c.children("footprint"), None)
+        fields = {}
+        for fs in c.children("fields"):
+            for f in fs.children("field"):
+                vals = [x for x in f if isinstance(x, ks.Atom)][1:]
+                fields[next(f.children("name")).atoms()[1].value] = vals[-1].value if vals else ""
+        comps[ref] = {"fields": fields, "footprint": fp.atoms()[1].value if fp is not None else "", "pins": {}}
+    for n in next(root.children("nets")).children("net"):
+        net = next(n.children("name")).atoms()[1].value
+        for nd in n.children("node"):
+            ref = next(nd.children("ref")).atoms()[1].value
+            pin = next(nd.children("pin")).atoms()[1].value
+            pf = next(nd.children("pinfunction"), None)
+            name = re.sub(rf"_{re.escape(pin)}$", "", pf.atoms()[1].value) if pf is not None else ""
+            if ref in comps:
+                comps[ref]["pins"][pin] = (name, net)
+    return comps
+
+
+def schematic_diff(refs, comps=None) -> list:
+    spec, _ = parse_spec(ROOT / "design" / "pdu_v2_spec.yaml")
+    comps = comps if comps is not None else schematic_netlist()
+    errs = []
+    for ref in refs:
+        s, c = spec.get(ref), comps.get(ref)
+        if s is None or c is None:
+            errs.append(f"{ref}: {'not in spec' if s is None else 'not in schematic'}")
+            continue
+        if c["footprint"] != s.get("footprint", ""):
+            errs.append(f"{ref}.footprint: schematic '{c['footprint']}' != spec '{s.get('footprint')}'")
+        if c["fields"].get("MPN", "") != s.get("mpn", ""):
+            errs.append(f"{ref}.MPN: schematic '{c['fields'].get('MPN', '')}' != spec '{s.get('mpn')}'")
+        for key, net in s["pins"].items():
+            want = "/" + net.lstrip("/").split("(")[0] if net.startswith("/") else net
+            m = re.match(r"^(\w[\w/+\-]*)\((\d+)\)$", key)
+            if key.isdigit() or m:
+                num = key if key.isdigit() else m.group(2)
+                got = c["pins"].get(num, (None, None))[1]
+            else:
+                hits = [nt for nm, nt in c["pins"].values() if nm.replace(" ", "") == key.replace(" ", "")]
+                got = hits[0] if hits and all(h == hits[0] for h in hits) else (hits or None)
+            if got != want:
+                errs.append(f"{ref}.{key}: schematic {got} != spec {want}")
+    return errs
+
+
 def main():
+    if "--schematic" in sys.argv:
+        blocks = [a for a in sys.argv[1:] if a in BLOCKS] or list(BLOCKS)
+        errs = schematic_diff([r for b in blocks for r in BLOCKS[b]])
+        print(json.dumps({"blocks": blocks, "pass": not errs, "n_errors": len(errs)}))
+        for e in errs:
+            print("FAIL:", e)
+        return 0 if not errs else 1
     errs = check()
     out = {"pass": not errs, "errors": errs}
     (ROOT / "reports" / "g4" / "consistency.json").write_text(json.dumps(out, indent=2), encoding="utf-8", newline="\n")
