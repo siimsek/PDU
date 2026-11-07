@@ -1,0 +1,17 @@
+T-014 KiCad CLI attempt for R-002
+Source: PR #52, wp/T-014 @ 5a2985cc18d0867dc3030feb3117807254bd96ef
+PDU.kicad_sch blob SHA-1: 1f64061d70fe581617f2544f67ec8f8d7eaf5a15
+Header: (version 20250610), (generator_version "10.0")
+
+$ kicad-cli version
+9.0.2
+
+$ kicad-cli sch erc --format json --severity-all --output reports/R-002/erc.json PDU.kicad_sch
+exit code: 3
+Failed to load schematic
+
+$ kicad-cli sch export netlist --format kicadsexpr --output reports/R-002/netlist.net PDU.kicad_sch
+exit code: 3
+Failed to load schematic
+
+No fresh ERC or netlist file was produced. The available CLI is 9.0.2 while the source is KiCad 10 format; this tool/version limitation does not prove a schematic defect. The reported KiCad 10.0.7 raw artifacts were audited separately.
