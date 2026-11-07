@@ -140,5 +140,5 @@ D3,SS34-E3/57T,Diode_SMD:D_SMC,STOK,yes,KiCad standard library footprint (IPC-73
 REN1,CRCW060364K9FKEA,Resistor_SMD:R_0603_1608Metric,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 REN2,CRCW060310K0FKEA,Resistor_SMD:R_0603_1608Metric,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 J1,430450200,Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
-J2,430450400,Connector_Molex:Molex_Micro-Fit_3.0_43045-0400_2x02_P3.00mm_Horizontal,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 J3,430450200,Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
+J2,460150206,Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical,STOK,yes,"KiCad standard library (Mini-Fit Jr 5566-02A, 4.20 mm); compare pads/holes with Molex 460150206_sd.pdf (T-005b)",compare with manufacturer land

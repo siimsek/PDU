@@ -44,6 +44,7 @@ DSD = {
     "TI_INA296": "TI INA296A-Q1/B-Q1 SBOSA32D p.2 (pins), p.4-6; addendum INA296A2QDGKRQ1 Active/Production",
     "TI_LVC1G11": "TI SN74LVC1G11 datasheet tpd table; addendum SN74LVC1G11DBVR Active/Production",
     "MOLEX_PAGE": "Molex official part page (status Active, current/contact), checked 2026-11-07 (G4)",
+    "MOLEX_HCS": "Molex part pages 460150206 / 39012020 / 457501111 (Active, checked 2026-11-07) + PS-45750-001 p.8-9 (18 AWG 2 ckt 10.5 A, 30 C rise)",
     "ARATAS_B3U": "ARATAS (formerly Omron Components) B3U official page: B3U-1000P 'In production', checked 2026-11-07",
 }
 
@@ -264,23 +265,28 @@ def rows():
     R.append(r("REN1", "64.9k", crcw("0603", "64K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/VSAFE", "2": "/EN_EFUSE"}, 2e-3, 0.1))
     R.append(r("REN2", "10k", crcw("0603", "10K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/EN_EFUSE", "2": "/GND"}, 3e-4, 0.1))
     # ---------------- connectors
-    for ref, net, i_a, nckt in (("J1", "/VBAT", 4.48, 2), ("J2", "/O1_11V", 9.07, 4), ("J3", "/S2E_11V", 5.66, 2)):
-        mpn = "430450400" if nckt == 4 else "430450200"
-        fp = ("Connector_Molex:Molex_Micro-Fit_3.0_43045-0400_2x02_P3.00mm_Horizontal" if nckt == 4
-              else "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal")
-        nets = {"1": net, "2": "/GND"} if nckt == 2 else {"1": net, "2": net, "3": "/GND", "4": "/GND"}
-        per = i_a / (2 if nckt == 4 else 1)
-        R.append(dict(ref=ref, kind="J", value=f"Micro-Fit 3.0 header {nckt} ckt, {i_a} A", mpn=mpn, manufacturer="Molex",
+    for ref, net, i_a in (("J1", "/VBAT", 4.48), ("J3", "/S2E_11V", 5.66)):
+        R.append(dict(ref=ref, kind="J", value=f"Micro-Fit 3.0 header 2 ckt, {i_a} A", mpn="430450200", manufacturer="Molex",
                       datasheet=DSD["MOLEX_PAGE"] + "; 8.5 A max per contact, 600 V", tolerance="", tcr="", package="",
-                      footprint=fp, footprint_source=FP_LIB, custom_footprint=False, nets=nets,
-                      v_applied=26.0 if ref == "J1" else 11.6, v_rating=600.0, p_applied_W=per, p_rating_W=8.5,
-                      derating=per / 8.5, lifecycle="Active (Molex page)",
-                      note=("2 contacts per pole (ILIM_O1 max 9.07 A > 8.5 A/contact); current sharing not guaranteed" if nckt == 4
-                            else "18 AWG terminals 430300038"), dnp=False))
+                      footprint="Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal", footprint_source=FP_LIB,
+                      custom_footprint=False, nets={"1": net, "2": "/GND"},
+                      v_applied=26.0 if ref == "J1" else 11.6, v_rating=600.0, p_applied_W=i_a, p_rating_W=8.5,
+                      derating=i_a / 8.5, lifecycle="Active (Molex page)", note="18 AWG terminals 430300038", dnp=False))
+    # G5 D-003: O1 connector = Molex Mini-Fit Plus HCS (one contact per pole, no current sharing credited).
+    # Header page (2026-11-07): Active, dual row vertical 2 ckt, 4.20 mm, through hole, no PCB peg, 13 A/contact max
+    # (16 AWG); system rating 18 AWG 2 ckt dual row 10.5 A, 30 C rise (PS-45750-001 p.8-9) >= ILIM_O1 max 9.07 A.
+    R.append(dict(ref="J2", kind="J", value="Mini-Fit Plus HCS header 2 ckt vertical, 9.07 A", mpn="460150206", manufacturer="Molex",
+                  datasheet=DSD["MOLEX_HCS"], tolerance="", tcr="", package="",
+                  footprint="Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical",
+                  footprint_source="KiCad standard library (Mini-Fit Jr 5566-02A, 4.20 mm); compare pads/holes with Molex 460150206_sd.pdf (T-005b)",
+                  custom_footprint=False, nets={"1": "/O1_11V", "2": "/GND"}, v_applied=11.6, v_rating=600.0,
+                  p_applied_W=9.07, p_rating_W=10.5, derating=9.07 / 10.5, lifecycle="Active (Molex page)",
+                  note="D-003: 18 AWG system rating 10.5 A (PS-45750-001); one contact per pole", dnp=False))
     for ref, mpn, val in (("P1", "430250200", "Micro-Fit 3.0 receptacle 2 ckt (J1 mate)"),
-                          ("P2", "430250400", "Micro-Fit 3.0 receptacle 4 ckt (J2 mate)"),
+                          ("P2", "39012020", "Mini-Fit Jr receptacle housing 2 ckt dual row, 5557-02R (J2 mate)"),
                           ("P3", "430250200", "Micro-Fit 3.0 receptacle 2 ckt (J3 mate)"),
-                          ("CT1", "430300038", "Micro-Fit 3.0 crimp terminal 18 AWG, 8.5 A (qty 8)")):
+                          ("CT1", "430300038", "Micro-Fit 3.0 crimp terminal 18 AWG, 8.5 A (qty 4: P1, P3)"),
+                          ("CT2", "457501111", "Mini-Fit Plus HCS female crimp terminal 20-18 AWG (qty 2: P2)")):
         R.append(dict(ref=ref, kind="CABLE", value=val, mpn=mpn, manufacturer="Molex", datasheet=DSD["MOLEX_PAGE"], tolerance="",
                       tcr="", package="", footprint="", footprint_source="kablo tarafı (PCB dışı)", custom_footprint=False, nets={},
                       v_applied="", v_rating="", p_applied_W="", p_rating_W="", derating=None, lifecycle="Active (Molex page)",

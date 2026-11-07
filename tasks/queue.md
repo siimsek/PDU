@@ -5,9 +5,10 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | ID | Rol | Boyut | Bağımlılık | Durum |
 |---|---|---|---|---|
 | [T-001](done/T-001.md) | BUILDER | S | — | Done |
-| [R-001](R-001.md) | THINKER | M | D-003, D-004 (tur 2) | Blocked |
-| [D-003](D-003.md) | THINKER | M | — | Review |
-| [D-004](D-004.md) | THINKER | M | — | Review |
+| [R-001](R-001.md) | THINKER | M | T-015 (tur 2) | Ready |
+| [D-003](done/D-003.md) | THINKER | M | — | Done |
+| [D-004](done/D-004.md) | THINKER | M | — | Done |
+| [T-015](T-015.md) | BUILDER | S | D-003, D-004 | Review |
 | [T-002](done/T-002.md) | BUILDER | S | T-001 | Done |
 | [T-003](done/T-003.md) | BUILDER | M | T-001 | Done |
 | [D-001](D-001.md) | THINKER | M | — | Ready |

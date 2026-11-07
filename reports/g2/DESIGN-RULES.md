@@ -59,7 +59,7 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 | ID | Sağlandı? | Kanıt | AÇIK kalan |
 |---|---|---|---|
 | R01 | Evet (model) | G4: SİM F1/F5 VSAFE ≤11.37 V (korumasız referans F1 27.87 V FAIL korunur) | fiziksel T5c |
-| R02 | **Evet (koşullu, tezgâh)** | G4: faz OC tetiği; HESAP ≤11.41 V (L tabanı 0.05'e kadar), SİM F1 ≤11.37 V, F5 ≤11.07 V; 4× tipik INA gecikmesinde 11.56 V. G3 kaydı (yalnız gerilim tetiği, L_eff ≤0.4 → 12.019 V FAIL) N1-DECISION'da korunur | T5b/T5c/T5g; INA296 gecikmesi tipik; L(I) >16 A |
+| R02 | **Evet (koşullu, tezgâh kabulü T5g)** | G4: faz OC tetiği; HESAP ≤11.41 V (L tabanı 0.05'e kadar), SİM F1 ≤11.37 V, F5 ≤11.07 V. G5 D-004: INA296 yerleşmesi garantili olmadığından kanıt = T5g tam zincir gecikmesi ölçümü **≤3,0 µs** (U ≤0,1 µs; THINKER bağımsız HESAP'ında L tabanı 0,05'te izinli gerçek gecikme 3,29 µs) **ve** doğrudan O1 tepe ≤12,0 V; ölçülmeden O1 ≤12,0 V kesin değildir. G3 kaydı (yalnız gerilim tetiği, L_eff ≤0.4 → 12.019 V FAIL) N1-DECISION'da korunur | T5b/T5c/T5g; INA296 gecikmesi tipik; L(I) >16 A |
 | R03 | Evet (trimli) | G4: trip_min 11.2590 V; SİM F3 nominal bırakma ≤11.09 V, trimli üst köşe 11.20 V < 11.22 V, mandal set olmaz | trimsiz yığılmış üst köşe 11.26 V FAIL (görünür) → kabul kart başı trim (T1b) |
 | R04 | Evet (koşullu) | DATASHEET maks değerler ve koşulları `params.py`'de | VCM/overdrive ve 4.7 nF eşdeğerliği tezgâhta |
 | R05 | Evet | HESAP: VCM aralık dışı VRAW>23.24 V; kaba OV ≤13.70 V | — |
@@ -75,7 +75,7 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 | R15 | Kısmen | VDS payı 46.7 V | SOA µs grafiği okunamadı; EAS (çığ) anahtarlama SOA'sı değildir, modelde anahtar ideal → enerji kanıtı yok (G3 D7) |
 | R16 | Evet (model) | G4: SİM F4 D_REV ile OUT−IN 0.115 V; D_REV'siz 0.758 V FAIL | Schottky Vf/sıcak kaçak tipik; T6b |
 | R17 | Evet | DATASHEET p.9 tablo noktaları; toplam min 11.59 A | — |
-| R18 | Evet | G4: Molex ürün sayfaları (Active, 8.5 A/kontak); J2 43045-0400 2 kontak/kutup (ILIM_O1 max 9.07 A), J1/J3 43045-0200; terminal 43030-0038 | fiziksel ısınma ölçümü (T4) |
+| R18 | Evet | G5 D-003: J2 Molex Mini-Fit Plus HCS 46015-0206 tek kontak/kutup, 18 AWG sistem değeri 10,5 A ≥ ILIM_O1 maks 9,07 A (PS-45750-001); G4'teki 43045-0400 2 kontak/kutup çözümü paylaşım garantisi olmadığı için SUPERSEDED (R-001). J1/J3 43045-0200; terminal 43030-0038 | fiziksel ısınma ölçümü (T4) |
 | R19 | Evet | KICAD-CHANGE-LIST-FINAL (REN1 → VSAFE) | — |
 | R20 | Evet | R_OVT 26 V'ta %20 (geçici 53.3 V'ta %84, kısa süreli) | — |
 | R21 | Evet | U10 IN = VIN | termal VIN 26 V: 0.34 W |

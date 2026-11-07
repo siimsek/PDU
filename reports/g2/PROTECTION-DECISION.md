@@ -8,7 +8,7 @@ G1 kapanış kararı (ortak bara seri ayırıcı, U3/U4 IN önünde) somutlaşt�
 |---|---|---|
 | İkinci tetik yolu | **Faz aşırı akım tetiği**: her fazın RS'i → INA296A2 (G=20) → TLV3601, eşik 12.97–13.60 A (R_OCT 255 Ω / R_OCB 1.00 kΩ, 2.5 V REF); SN74LVC1G11 ile bara OV çıkışı (`/OVP_BUS_N`) ve iki OC çıkışı aynı mandal PRE_n'ine | [`N1-DECISION.md`](../g4/N1-DECISION.md), HESAP `n1-results.json` |
 | O1 tepe | HESAP ≤11.41 V (16 A üstü L tabanı 0.5…0.05, VIN 20/26 V, V0 alt/üst); SİM F1 ≤11.37 V, F5 48 köşe ≤11.07 V; yalnız gerilim tetiği (G3 tasarımı) 32× COUT ile HESAP 11.92–12.15 V (taban ≤0.15'te **FAIL**), protection.py doğrusal L 11.889 V | SİM-RESULTS F1/F5 |
-| OC zinciri gecikmesi | 2.556 µs (INA296 1.5 µs VARSAYIM; datasheet yalnız tipik 1 µs) + gerilim zinciri 1.048 µs; 4 µs INA gecikmesinde O1 11.56 V | HESAP |
+| OC zinciri gecikmesi | 2.556 µs (INA296 1.5 µs VARSAYIM; datasheet yalnız tipik 1 µs) + gerilim zinciri 1.048 µs; 4 µs INA gecikmesinde O1 11.56 V. **G5 D-004 kabul kapısı:** T5g'de akımın 13,6 A'yı geçtiği andan Q2 VGS <1 V'a kadar ölçülen gecikme ≤3,0 µs (U ≤0,1 µs) ve O1 tepe ≤12,0 V (bağımsız HESAP: izinli gerçek gecikme L tabanı 0,05'te 3,29 µs). Alternatif garantili sensör INA301A1-Q1 (1 µs maks yalnız 1 mV overdrive, 36 V CM) tek başına kapanış sayılmadı | HESAP + tezgâh |
 | U3/U4 IN | VSAFE ≤11.37 V (SİM) | SİM F1 |
 | Ham bara | ≤35.8 V (SİM F1/F5, 32× COUT) < LM70880 VOUT abs 60 V; TVS kelepçe reddedildi (40 A sınırı) | SİM |
 | R_OVT açık artık riski | **Kapandı**: OC yolu bağımsız → SİM F5 residual O1 11.20 V PASS | SİM F5 |
