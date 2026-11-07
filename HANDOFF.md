@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-007 (taslak PR; **birleştirilmedi** — R-006 bekliyor)
-- **Aktif kart:** T-007 (Review). THINKER Ready: R-006 (B2 incelemesi), R-005 tur 2 (F5 sayısal kök neden).
+- **Dal / son commit:** wp/T-007 → main (R-006 KOŞULLU kapandı)
+- **Aktif kart:** R-005 düzeltmesi (BIL1/BIL2 düzgünleştirme + F5) → T-008 (COUT 8 → 32).
 
 ## Yapılanlar
 - R-005 (#31, #32): sim_runner timeout 900 s; F5 yeniden: aynı 2 köşe 3. kez tamamlanmadı → kanıt yok (AÇIK). Log'da yalnız başlangıç OP; adım çöküşü şüphesi → R-005 tur 2.
@@ -13,7 +13,7 @@
 Codex: R-006 + R-005 tur 2. Sonra Claude Code: R-006 ONAY → T-007 birleştir → T-008 (COUT 8 → 32); R-005 önerisini uygulayıp F5'i yeniden koş.
 
 ## Engeller
-- T-007 birleştirme ← R-006. F5 iki köşe ← R-005 tur 2.
+- F5 iki köşe ← R-005 tur 2 düzgünleştirmesinin uygulanması.
 
 ## Kullanıcıdan bekleyenler (yalnız fiziksel, engellemez)
 - U-001, U-007 tezgâh ölçümleri (kart üretilince).

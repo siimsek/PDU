@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\SK\\Desktop\\Masaüstü\\PDU\\PDU.kicad_sch")
-		(date "2026-11-07T18:53:10")
+		(date "2026-11-07T19:24:28")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -3271,23 +3271,15 @@
 			(ref "RFB2")
 			(value "9.76k")
 			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(datasheet "https://industrial.panasonic.com/ww/products/pt/high-precision-chip-resistors/models/ERA3AEB1022V")
 			(description "Resistor")
 			(fields
 				(field
-					(name "Specification") "10.2k 0603 0.1W; manufacturer verified; procurement/assembly verification required")
-				(field
-					(name "TCR") "<=25 ppm/K")
-				(field
-					(name "Tolerance") "0.1%")
-				(field
 					(name "MPN") "TNPW06039K76BXEA")
-				(field
-					(name "Manufacturer") "Panasonic")
 				(field
 					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
 				(field
-					(name "Datasheet") "https://industrial.panasonic.com/ww/products/pt/high-precision-chip-resistors/models/ERA3AEB1022V")
+					(name "Datasheet")
+				)
 				(field
 					(name "Description") "Resistor")
 			)
@@ -3297,24 +3289,8 @@
 				(description "Resistor")
 			)
 			(property
-				(name "Specification")
-				(value "10.2k 0603 0.1W; manufacturer verified; procurement/assembly verification required")
-			)
-			(property
-				(name "TCR")
-				(value "<=25 ppm/K")
-			)
-			(property
-				(name "Tolerance")
-				(value "0.1%")
-			)
-			(property
 				(name "MPN")
 				(value "TNPW06039K76BXEA")
-			)
-			(property
-				(name "Manufacturer")
-				(value "Panasonic")
 			)
 			(property
 				(name "Sheetname")

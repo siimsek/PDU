@@ -95,6 +95,14 @@ def apply(text: str, spec: dict) -> tuple[str, list]:
         log.append(f"R_TRIM placed, pins {rp}; GND wire shortened to {low}; label FB_TRIM at {p2}")
     for ref in B2_REFS:
         s = spec[ref]
+        sym = ks.symbol_by_ref(root, ref)
+        old = {p.atoms()[1].value: p.atoms()[2].value for p in sym.children("property")} if sym is not None else {}
+        if old.get("MPN") and old["MPN"] != s["mpn"]:
+            # R-006: part changed -> drop the previous part's metadata (manufacturer, spec text, tolerance, datasheet URL)
+            for extra in ("Specification", "TCR", "Tolerance", "Manufacturer"):
+                ks.remove_property(root, ref, extra)
+            ks.set_property(root, ref, "Datasheet", "")
+            log.append(f"{ref}: stale metadata of {old['MPN']} removed")
         if NUMERIC.match(s["value"]):
             ks.set_property(root, ref, "Value", s["value"])
         ks.set_property(root, ref, "Footprint", s["footprint"])

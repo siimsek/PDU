@@ -151,6 +151,7 @@ def schematic_netlist(sch: Path | None = None) -> dict:
 def schematic_diff(refs, comps=None) -> list:
     spec, _ = parse_spec(ROOT / "design" / "pdu_v2_spec.yaml")
     comps = comps if comps is not None else schematic_netlist()
+    bom_mfr = {r["ref"]: r["manufacturer"] for r in csv.DictReader((ROOT / "design" / "bom-v2.csv").open(encoding="utf-8"))}
     errs = []
     for ref in refs:
         s, c = spec.get(ref), comps.get(ref)
@@ -161,6 +162,9 @@ def schematic_diff(refs, comps=None) -> list:
             errs.append(f"{ref}.footprint: schematic '{c['footprint']}' != spec '{s.get('footprint')}'")
         if re.fullmatch(r"[0-9.]+[pnumkMR]?", s.get("value", "")) and c.get("value") != s["value"]:
             errs.append(f"{ref}.value: schematic '{c.get('value')}' != spec '{s['value']}'")
+        mfr = bom_mfr.get(ref, "")
+        if c["fields"].get("Manufacturer") and mfr and c["fields"]["Manufacturer"].split()[0].lower() not in mfr.lower():
+            errs.append(f"{ref}.Manufacturer: schematic '{c['fields']['Manufacturer']}' != BOM '{mfr}' (stale metadata, R-006)")
         if c["fields"].get("MPN", "") != s.get("mpn", ""):
             errs.append(f"{ref}.MPN: schematic '{c['fields'].get('MPN', '')}' != spec '{s.get('mpn')}'")
         for key, net in s["pins"].items():

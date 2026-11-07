@@ -22,3 +22,6 @@ Düzenleme: `python scripts/sch_edit_b2.py` (kayıpsız S-ifade; B1 uygulanmış
 - **SW4 ayrı ağ** (`/SW4_PHk`, p.3: SW4 içten SW1–3'e bağlı, PCB'de ayrıca yönlendirilmez).
 
 TP_FB_INJ_A/B test noktaları T-012 (B7) kapsamında.
+
+## R-006 düzeltmesi
+RFB2 (ve klonlanan R_INJ/R_TRIM) üzerindeki önceki parçanın (Panasonic ERA3AEB1022V / ERA3AEB134V) Datasheet, Specification, TCR, Tolerance, Manufacturer alanları silindi; MPN/Value spec'ten. `check_consistency.py --schematic` Manufacturer alanını BOM üreticisiyle karşılaştırıyor (RFB1, RIMON1/2 Panasonic = BOM). ERC 0, B1+B2 fark 0 (yeniden üretildi).
