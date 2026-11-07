@@ -111,6 +111,7 @@ BLOCKS = {
     "B2": ["U1", "U2", "L1", "L2", "RS1", "RS2", "CBOOT1", "CBOOT2", "RBOOT1", "RBOOT2", "RT1", "RT2", "CVCC1", "CVCC2",
            "CVDDA1", "CVDDA2", "RCFG1", "RCFG2", "RSYNC", "RFB1", "R_INJ", "RFB2", "R_TRIM", "RCOMP", "CCOMP", "CHF",
            "RUV1", "RUV2"],
+    "B3": [f"COUT{i}" for i in range(1, 33)],
 }
 
 
