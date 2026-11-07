@@ -43,8 +43,8 @@ GAP_BY_GROUP = {"COUT bankası (32× C5750)": 0.15}   # 8 x 4 C5750 grid fits th
 # D-006 §3 regions (x0, y0, x1, y1) in D-006 coordinates; group names from floorplan.GROUPS.
 REGIONS = {   # list of rectangles per group, filled in order
     "Giriş (J1, TVS, ters kutup, CIN)": [(0.5, 47.5, 24, 72), (0.5, 13, 24, 37.5), (15, 38, 24, 47)],
-    "Buck faz 1": [(25, 58, 57, 84.5)],
-    "Buck faz 2": [(25, 0.5, 57, 27)],
+    "Buck faz 1": [(25, 58, 45.1, 84.5), (53.1, 58, 57, 84.5)],      # beside the U1 + CIN1-4 column (HOT_LOOP)
+    "Buck faz 2": [(37.1, 0.5, 57, 27), (25, 0.5, 28.9, 27)],        # beside the U2 + CIN5-8 column
     "COUT bankası (32× C5750)": [(24.5, 28.5, 90, 57)],
     "Buck ortak kontrol (FB/COMP/UV/CFG)": [(58, 58, 75, 84.5)],
     "OVP + OC mantık, REF, mandal, LDO": [(76, 58, 108, 84.5)],
@@ -56,6 +56,14 @@ REGIONS = {   # list of rectangles per group, filled in order
 # Micro-Fit 43045 horizontal opens towards -y at 0 deg: 90 deg faces west, 270 deg faces east.
 PINNED = {"J1": ("W", 42.5, 90), "J3": ("E", 32.6, 270), "J2": ("E", 46.0, 0), "J_OVP_INJ_BUS": ("S", 78.0, 0)}
 EDGE_MARGIN = 0.5
+# R-012 #1 / PCB-HANDOFF §3.2: CIN directly at each LM70880's VIN-PGND edge (smallest hot loop).
+# RRX0029B: VIN pads 1-3, 27-29 and PGND pads 23-26 are all on the footprint's -y edge; CIN (1210, pad 1 = /VIN
+# at -x) gets the IC's rotation so its VIN pad faces the IC VIN pads, stacked away from that edge.
+# U1 at 180 deg: VIN/PGND edge faces the board interior (down), SW pads (+x) face west towards L1.
+HOT_LOOP = {"U1": {"at": (49.0, 78.0), "rot": 180, "caps": ["CIN1", "CIN2", "CIN3", "CIN4"]},
+            "U2": {"at": (33.0, 5.0), "rot": 0, "caps": ["CIN5", "CIN6", "CIN7", "CIN8"]}}
+HOT_GAP = 0.3
+GROUP_OVERRIDE = {**{c: "Buck faz 1" for c in HOT_LOOP["U1"]["caps"]}, **{c: "Buck faz 2" for c in HOT_LOOP["U2"]["caps"]}}
 
 
 def mm(v: float) -> int:
@@ -198,6 +206,28 @@ def pin(box, edge: str, c: float):
     return c - w / 2 + dx, top - dy
 
 
+def hot_loop(fps) -> dict:
+    """IC + its CIN column; returns D-006 anchors."""
+    out = {}
+    for ic, spec in HOT_LOOP.items():
+        x, y = spec["at"]
+        fps[ic].SetOrientationDegrees(spec["rot"])
+        fps[ic].BuildCourtyardCaches()
+        w, h, dx, dy = courtyard_box(fps[ic])
+        out[ic] = (x, y)
+        sign = -1 if spec["rot"] == 180 else 1          # stacking direction (D-006 y) away from the VIN-PGND edge
+        top, bottom = y + dy, y + dy - h                # D-006 (y up): anchor is dy below the bbox top
+        cur = top + HOT_GAP if sign > 0 else bottom - HOT_GAP
+        for c in spec["caps"]:
+            fps[c].SetOrientationDegrees(spec["rot"])
+            fps[c].BuildCourtyardCaches()
+            cw, ch, cdx, cdy = courtyard_box(fps[c])
+            ctop = cur + ch if sign > 0 else cur
+            out[c] = (x - cw / 2 + cdx, ctop - cdy)
+            cur = (ctop + HOT_GAP) if sign > 0 else (ctop - ch - HOT_GAP)
+    return out
+
+
 def pack_multi(items, rects, gap):
     out, rest = {}, dict(items)
     for r in rects:
@@ -273,15 +303,19 @@ def main(argv) -> int:
         fps[ref].SetOrientationDegrees(rot)
         fps[ref].BuildCourtyardCaches()
         placed[ref] = pin(courtyard_box(fps[ref]), edge, c)
+    placed.update(hot_loop(fps))
     for ref, fp in fps.items():
-        if ref in PINNED:
+        g = GROUP_OVERRIDE.get(ref) or next((g for g, rx in GROUPS if re.match(rx, ref)), None)
+        if ref in placed:
+            if g:
+                groups[g].setdefault("__fixed__", []).append(ref)
             continue
-        g = next((g for g, rx in GROUPS if re.match(rx, ref)), None)
         if g is None:
             ungrouped.append(ref)
             g = "OVP + OC mantık, REF, mandal, LDO"
         groups[g][ref] = courtyard_box(fp)
     overflow = {}
+    fixed = {g: items.pop("__fixed__", []) for g, items in groups.items()}
     for g, items in groups.items():
         pos, over = pack_multi(items, REGIONS[g], GAP_BY_GROUP.get(g, GAP))
         placed.update(pos)
@@ -296,7 +330,8 @@ def main(argv) -> int:
     res = {"generator": "scripts/pcb_setup.py", "netlist": netlist.relative_to(ROOT).as_posix(),
            "removed_items": removed, "board_mm": [W, H], "copper_layers": b.GetCopperLayerCount(),
            "pinned": PINNED, "holes": HOLES, "hole_keepout_r_mm": HOLE_KEEPOUT_R, "footprints": len(fps), "nets": len(netinfo),
-           "regions": REGIONS, "groups": {g: sorted(v) for g, v in groups.items()}, "ungrouped": ungrouped,
+           "hot_loop": HOT_LOOP, "regions": REGIONS,
+           "groups": {g: sorted(list(v) + fixed[g]) for g, v in groups.items()}, "ungrouped": ungrouped,
            "overflow": overflow, "pads_without_netlist_pin": unmatched_pads,
            "positions_d006": {r: [round(x, 3), round(y, 3)] for r, (x, y) in sorted(placed.items())}}
     OUT.parent.mkdir(parents=True, exist_ok=True)

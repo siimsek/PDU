@@ -16,9 +16,22 @@
 (rule "S2E_PORT width"
 	(condition "A.NetClass == 'S2E_PORT' && A.NetName != '/GND'")
 	(constraint track_width (min 2.97mm) (opt 3.3mm)))
-# Neck-down where a power track enters a footprint (fine-pitch pads); later rules take precedence.
-(rule "power neck-down inside courtyards"
-	(condition "(A.NetClass == 'INPUT_POWER' || A.NetClass == 'BUS_POWER' || A.NetClass == 'PHASE_POWER' || A.NetClass == 'O1_PORT' || A.NetClass == 'S2E_PORT') && A.intersectsCourtyard('*')")
+# Neck-down only inside the courtyard of a footprint with a fine-pitch pad (<= 0.65 mm) of that class
+# (list generated from PDU.kicad_pcb pads). Neck length <= 1.5 mm and pad-ended: scripts/pcb_drc.py audit.
+(rule "INPUT_POWER neck-down at fine-pitch pads"
+	(condition "A.NetClass == 'INPUT_POWER' && A.NetName != '/GND' && (A.intersectsCourtyard('Q1') || A.intersectsCourtyard('U1') || A.intersectsCourtyard('U10') || A.intersectsCourtyard('U2') || A.intersectsCourtyard('U5'))")
+	(constraint track_width (min 0.25mm)))
+(rule "BUS_POWER neck-down at fine-pitch pads"
+	(condition "A.NetClass == 'BUS_POWER' && A.NetName != '/GND' && (A.intersectsCourtyard('U1') || A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U2') || A.intersectsCourtyard('U3') || A.intersectsCourtyard('U4') || A.intersectsCourtyard('U6'))")
+	(constraint track_width (min 0.25mm)))
+(rule "PHASE_POWER neck-down at fine-pitch pads"
+	(condition "A.NetClass == 'PHASE_POWER' && A.NetName != '/GND' && (A.intersectsCourtyard('U1') || A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U2'))")
+	(constraint track_width (min 0.25mm)))
+(rule "O1_PORT neck-down at fine-pitch pads"
+	(condition "A.NetClass == 'O1_PORT' && A.NetName != '/GND' && (A.intersectsCourtyard('U3'))")
+	(constraint track_width (min 0.25mm)))
+(rule "S2E_PORT neck-down at fine-pitch pads"
+	(condition "A.NetClass == 'S2E_PORT' && A.NetName != '/GND' && (A.intersectsCourtyard('U4'))")
 	(constraint track_width (min 0.25mm)))
 # Pads of one footprint: fine-pitch packages (SOT-23-6, VSSOP, SC-70) have 0.15 mm pad gaps by design;
 # netclass clearance (0.2-0.3 mm) applies between footprints. 0.15 mm = DFM minimum (PCB-HANDOFF §7 VARSAYIM).

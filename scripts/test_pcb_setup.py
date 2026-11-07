@@ -53,3 +53,40 @@ def test_placement_inside_board_and_complete():
 def test_drc_gate_recorded_pass():
     s = json.loads((T013 / "drc-summary.json").read_text(encoding="utf-8"))
     assert s["pass"] and s["schematic_parity_issues"] == 0 and not s["empty_errors"]
+
+
+def _with_segment(text: str, a, b, w: float, net: str) -> str:
+    seg = (f'\t(segment\n\t\t(start {a[0]:g} {a[1]:g})\n\t\t(end {b[0]:g} {b[1]:g})\n\t\t(width {w:g})\n'
+           f'\t\t(layer "F.Cu")\n\t\t(net "{net}")\n\t\t(uuid "00000000-0000-0000-0000-000000000001")\n\t)\n')
+    i = text.rstrip().rfind(")")
+    return text[:i] + seg + text[i:]
+
+
+def test_neck_audit_limits_scope_and_length():
+    text = (ROOT / "PDU.kicad_pcb").read_text(encoding="utf-8")
+    rows = pcb_rules.routing_rows()
+    pad = next(p for p in pcb_drc.fine_pads(text, rows) if p[1] == "U1" and p[2] == "/VIN")
+    x, y = pad[3], pad[4]
+    assert pcb_drc.neck_audit(_with_segment(text, (x, y), (x + 1.0, y), 0.3, "/VIN"), rows) == []
+    long_ = pcb_drc.neck_audit(_with_segment(text, (x, y), (x + 3.0, y), 0.3, "/VIN"), rows)
+    assert long_ and "length" in long_[0]["why"][0]
+    free = pcb_drc.neck_audit(_with_segment(text, (90, 87.2), (91, 87.2), 0.3, "/VIN"), rows)
+    assert free and "not ended" in free[0]["why"][-1]
+    assert pcb_drc.neck_audit(_with_segment(text, (90, 87.2), (95, 87.2), 3.3, "/VIN"), rows) == []
+    assert pcb_drc.neck_audit(_with_segment(text, (x, y), (x + 1.0, y), 0.2, "/VIN"), rows)[0]["why"][0] == "width < neck min"
+
+
+def test_cin_at_buck_hot_loop():
+    """R-012 #1: CIN1-4 at U1, CIN5-8 at U2 (PCB-HANDOFF §3.2), not in the input group."""
+    import math
+    pl = json.loads((T013 / "placement.json").read_text(encoding="utf-8"))
+    pos = pl["positions_d006"]
+    for ic, caps in (("U1", range(1, 5)), ("U2", range(5, 9))):
+        d = sorted(math.dist(pos[ic], pos[f"CIN{i}"]) for i in caps)
+        assert d[0] < 6.0 and d[-1] < 17.0
+    assert all(f"CIN{i}" in pl["groups"]["Buck faz 1"] for i in range(1, 5))
+    assert all(f"CIN{i}" in pl["groups"]["Buck faz 2"] for i in range(5, 9))
+
+
+def test_neck_probe_recorded_pass():
+    assert json.loads((T013 / "neck-probe.json").read_text(encoding="utf-8"))["pass"]

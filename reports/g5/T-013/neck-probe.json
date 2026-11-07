@@ -1,0 +1,88 @@
+{
+ "net": "/VIN",
+ "tracks": {
+  "A": {
+   "start": [
+    81.9,
+    39.25
+   ],
+   "end": [
+    82.9,
+    39.25
+   ],
+   "width": 0.3
+  },
+  "B": {
+   "start": [
+    81.9,
+    39.25
+   ],
+   "end": [
+    84.9,
+    39.25
+   ],
+   "width": 0.3
+  },
+  "C": {
+   "start": [
+    90.0,
+    87.2
+   ],
+   "end": [
+    91.0,
+    87.2
+   ],
+   "width": 0.3
+  },
+  "D": {
+   "start": [
+    100.0,
+    87.2
+   ],
+   "end": [
+    105.0,
+    87.2
+   ],
+   "width": 3.3
+  }
+ },
+ "drc_track_width": {
+  "A": false,
+  "B": false,
+  "C": true,
+  "D": false
+ },
+ "audit": {
+  "A": [],
+  "B": [
+   "length 3.00 > 1.5 mm"
+  ],
+  "C": [
+   "not ended on a fine-pitch pad of the same net"
+  ],
+  "D": []
+ },
+ "expected": {
+  "A": [
+   false,
+   []
+  ],
+  "B": [
+   false,
+   [
+    "length"
+   ]
+  ],
+  "C": [
+   true,
+   [
+    "not ended"
+   ]
+  ],
+  "D": [
+   false,
+   []
+  ]
+ },
+ "pass": true
+}

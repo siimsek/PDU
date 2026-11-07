@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-013 (taslak PR; **birleştirilmedi** — R-012 bekliyor)
+- **Dal / son commit:** wp/T-013 (PR #49 taslak; R-012 tur 1 KOŞULLU → düzeltildi, tur 2 bekliyor; PR #50)
 - **Aktif kart:** T-013 (Review). PCB kuruldu: 120 × 85, 4 katman, 180 ayak izi, parite 0, boş kart DRC 0 (reports/g5/PCB-SETUP.md).
 
 ## Yapılanlar
+- R-012 tur 1 (2 engelleyici) düzeltildi: CIN1–4/5–8 U1/U2 VIN–PGND kenarında (5,6–16,4 mm); darboğaz DRU kuralı ince adımlı padli ayak izleriyle sınırlı + `pcb_drc.py` uzunluk denetimi (≤1,5 mm), `pcb_neck_probe.py` kanıtı.
 - T-012 (#47) main'de (R-011 ONAY). T-013 (dal): `pcb_setup.py` (pcbnew) + `pcb_rules.py` + `pcb_drc.py`; netclass routing-g2'ye eşitlendi; kaba bölge yerleşimi; iz yok.
 - T-011 (#44) main'de (R-010: kanonik Value kuralı). T-012 (dal): D-008 test padleri + J_OVP_INJ_BUS + JP_EN_BUCK (BOM dışı), notlar/antet; ERC 0, B1–B7 fark 0.
 - T-010 + T-009 (#42) main'de (R-009: Q2 TI land footprint). T-011 (dal): B6 tamam; şemadaki 142 PCB parçasının tamamı spec ile birebir, ERC 0.
@@ -15,7 +16,7 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: R-012 (T-013 incelemesi). Sonra Claude Code: T-013 birleştir → T-014 KICAD-READY kapısı → R-002.
+Codex: R-012 tur 2 (PR #50). ONAY → Claude Code: #50 + #49 birleştir → T-014 KICAD-READY → R-002.
 
 ## Engeller
 F5 iki köşe: kısaltılmış pencere kanıtı var (O1 10,92 V), tam pencere AÇIK (backlog).
