@@ -91,12 +91,12 @@ q_end               =  0.00000e+00
 o1_min_info         =  1.07909e+01 at=  3.49275e-04
 
 
-Total analysis time (seconds) = 1.7382
+Total analysis time (seconds) = 2.10163
 
-Total elapsed time (seconds) = 1.744 
+Total elapsed time (seconds) = 2.113 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 9671.527 MB.
-Maximum ngspice program size =   11.957 MB.
-Current ngspice program size =   11.957 MB.
+DRAM currently available =  561.484 MB.
+Maximum ngspice program size =   11.918 MB.
+Current ngspice program size =   11.918 MB.
 

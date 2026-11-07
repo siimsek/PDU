@@ -102,8 +102,8 @@ def rows():
     # G5 T-004 / D-001: F1 is OFF-BOARD (battery cable, DIN-rail holder); see cable rows F1/XF1 at the end. J1.1 = /ANODE.
     R.append(dict(ref="D1", kind="D", value="TVS 33 V VWM, 1500 W", mpn="SMCJ33A-E3/57T", manufacturer="Vishay General Semiconductor", datasheet=DSD["VSH_SMCJ"],
                   tolerance="", tcr="", package="SMC", footprint="Diode_SMD:D_SMC", footprint_source=FP_LIB, custom_footprint=False,
-                  nets={"A": "/GND", "K": "/ANODE"}, v_applied=26.0, v_rating=33.0, p_applied_W="", p_rating_W="",
-                  derating=26.0 / 33.0, lifecycle="doğrulanamadı", note="VBR 36.7-40.6 V, VC 53.3 V @ IPPM 28.1 A (doc 88394 p.2); VWM 33 V > VIN max 26 V", dnp=False))
+                  nets={"A": "/GND", "K": "/VIN"}, v_applied=26.0, v_rating=33.0, p_applied_W="", p_rating_W="",
+                  derating=26.0 / 33.0, lifecycle="doğrulanamadı", note="VBR 36.7-40.6 V, VC 53.3 V @ IPPM 28.1 A (doc 88394 p.2); VWM 33 V > VIN max 26 V; G5 D-007: cathode on /VIN (after Q1) so reverse battery does not forward-bias the TVS", dnp=False))
     R.append(u("U5", "LM74700-Q1", "LM74700QDBVRQ1", "TI_LM74700", "SOT-23-6 (DBV)", "Package_TO_SOT_SMD:SOT-23-6", FP_LIB,
                {"1": "/VCAP", "2": "/GND", "3": "/ANODE(EN)", "4": "/VIN(CATHODE)", "5": "/GATE", "6": "/ANODE"},
                v_app=53.3, v_rat=65.0, note="pin map per TI LM74700-Q1 Table 5-1 (DBV): 1 VCAP, 2 GND, 3 EN, 4 CATHODE, 5 GATE, 6 ANODE (G5 T-006 fix; G2 map had 4/5/6 shifted)"))
@@ -276,7 +276,7 @@ def rows():
     R.append(dict(ref="J2", kind="J", value="Mini-Fit Plus HCS header 2 ckt vertical, 9.07 A", mpn="460150206", manufacturer="Molex",
                   datasheet=DSD["MOLEX_HCS"], tolerance="", tcr="", package="",
                   footprint="Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical",
-                  footprint_source="KiCad standard library (Mini-Fit Jr 5566-02A, 4.20 mm); compare pads/holes with Molex 460150206_sd.pdf (T-005b)",
+                  footprint_source="KiCad standard library (Mini-Fit Jr 5566-02A); verified vs Molex SD-46015-001 (row 5.50 mm, hole 1.40 mm, no peg) R-003 tour 2",
                   custom_footprint=False, nets={"1": "/O1_11V", "2": "/GND"}, v_applied=11.6, v_rating=600.0,
                   p_applied_W=9.07, p_rating_W=10.5, derating=9.07 / 10.5, lifecycle="Active (Molex page)",
                   note="D-003: 18 AWG system rating 10.5 A (PS-45750-001); one contact per pole", dnp=False))

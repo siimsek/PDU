@@ -18,7 +18,7 @@
 RSRC vbat n_src {RSRC}
 LCAB n_src n_cab {LCAB}
 RF1 n_cab anode {RF1}
-DTVS 0 anode DTVSM
+DTVS 0 vin DTVSM
 .model DTVSM D(BV={TVS_BV} IBV=1m RS={TVS_RS} IS=1e-12)
 * LM74700 + Q1 as forward-only resistance (reverse blocked)
 BQ1 anode vin I = max(V(anode,vin),0)/{RQ1} + min(V(anode,vin),0)*1e-9

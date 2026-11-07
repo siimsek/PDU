@@ -15,7 +15,9 @@ TITLES = {
     "F4": "Aile 4 — eFuse kısa devresi, O1/S2E izolasyonu, giriş kaybı / OUT>IN",
     "F5": "Aile 5 — koruma köşe taraması (eşik, gecikme, Ceff, hata akımı, L) + hassas yol açık artık riski",
 }
-EXPECTED_FAIL = {"f1_noprot_baseline": "korumasız referans: G1 FAIL'inin yeni netlistte yeniden üretimi (silinmez)",
+EXPECTED_FAIL = {"f5_vt11.487_td300ns_ctyp_r200m_l0.8": "TAMAMLANMADI: zaman aşımı (exit -9), 2 deneme (G5 D-007) — kanıt yok, PASS sayılmaz (AÇIK)",
+                 "f5_vt11.765_td300ns_ctyp_r200m_l0.8": "TAMAMLANMADI: zaman aşımı (exit -9), 2 deneme (G5 D-007) — kanıt yok, PASS sayılmaz (AÇIK)",
+                 "f1_noprot_baseline": "korumasız referans: G1 FAIL'inin yeni netlistte yeniden üretimi (silinmez)",
                  "f4_input_loss_without_drev": "D_REV'siz karşılaştırma (D_REV gerekçesi)",
                  "f5_precision_path_open_residual": "R_OVT açık devre: G4'te faz OC tetiği bağımsız yol olarak kapatıyor",
                  "f3_stacked_low_setpoint_cmin_gmmin": "trimsiz statik alt köşe + transient (görünür FAIL; trim ile kapanır)",
