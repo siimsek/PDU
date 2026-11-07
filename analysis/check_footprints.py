@@ -53,6 +53,19 @@ def _rrx_pads():
 
 
 REFERENCE = {
+    "TDSON-8-1_Konnect": {  # Q1 BSC160N10NS3 G; data via R-003 (THINKER), reports/R-003/land-data.md
+        "source": "Infineon BSC160N10NS3 G datasheet Rev. 2.4, Fig. 2 p.10 (footprint); PG-TDSON-8-1 package drawing Rev. 01.00 p.2",
+        "body": (0.0, 0.0),
+        "pads": {"1": (-2.9, -1.905, 0.85, 0.5), "2": (-2.9, -0.635, 0.85, 0.5), "3": (-2.9, 0.635, 0.85, 0.5),
+                 "4": (-2.9, 1.905, 0.85, 0.5), "5": (1.05, 0.0, 4.55, 4.41)},
+        "polygons": {}, "exposed": ["5"], "symbol": None,
+    },
+    "TDK_C5750_2220_Recommended": {  # COUT1-32 C5750X7S2A226M280KB; data via R-003
+        "source": "TDK Product Center C5750X7S2A226M280KB, Recommended Land Pattern PA 4.10-4.80 / PB 1.20-1.40 / PC 4.00-5.00 mm",
+        "body": (0.0, 0.0), "pads": {"1": (-2.875, 0.0, 1.3, 4.5), "2": (2.875, 0.0, 1.3, 4.5)},
+        "ranges": {"PA": (4.10, 4.80), "PB": (1.20, 1.40), "PC": (4.00, 5.00)},
+        "polygons": {}, "exposed": [], "symbol": None, "pin1": False,
+    },
     "TPS25982_RGE0024M": {
         "source": "TI TPS25982 SLVSEI3D, RGE0024M 4223975/B, p.55 (outline), p.56 (example board layout)",
         "body": (4.0, 4.0), "pads": _rge_pads(), "polygons": {}, "exposed": ["25", "26"],
@@ -152,13 +165,22 @@ def check_one(name: str, ref: dict, text: str | None = None) -> dict:
         need = (min(-bw / 2, all_cu[0]), min(-bh / 2, all_cu[1]), max(bw / 2, all_cu[2]), max(bh / 2, all_cu[3]))
         if not (cx0 <= need[0] and cy0 <= need[1] and cx1 >= need[2] and cy1 >= need[3]):
             errs.append(f"courtyard {round(cx0, 3), round(cy0, 3), round(cx1, 3), round(cy1, 3)} does not enclose body/copper {need}")
-    p1 = ref["pads"]["1"]
-    marks = [p for lay, pts in graphics if lay in ("F.SilkS", "F.Fab") for p in pts
-             if ((p[0] - p1[0]) ** 2 + (p[1] - p1[1]) ** 2) ** 0.5 <= 1.5]
-    if not marks:
-        errs.append("no pin-1 marker (F.SilkS/F.Fab item within 1.5 mm of pad 1)")
-    sym = load_symbol_pins(ref["symbol"])
-    if sym is None:
+    for key, (lo, hi) in ref.get("ranges", {}).items():
+        # two-terminal land: PA = inner gap, PB = pad length along the part, PC = pad width (TDK naming)
+        (x1, _, w1, h1), (x2, _, w2, h2) = pads["1"][0], pads["2"][0]
+        val = {"PA": abs(x2 - x1) - (w1 + w2) / 2, "PB": w1, "PC": h1}[key]
+        if not lo <= val <= hi:
+            errs.append(f"{key} = {val:.3f} mm outside manufacturer range {lo}-{hi}")
+    if ref.get("pin1", True):
+        p1 = ref["pads"]["1"]
+        marks = [p for lay, pts in graphics if lay in ("F.SilkS", "F.Fab") for p in pts
+                 if ((p[0] - p1[0]) ** 2 + (p[1] - p1[1]) ** 2) ** 0.5 <= 1.5]
+        if not marks:
+            errs.append("no pin-1 marker (F.SilkS/F.Fab item within 1.5 mm of pad 1)")
+    sym = load_symbol_pins(ref["symbol"]) if ref.get("symbol") else {}
+    if not ref.get("symbol"):
+        pass  # stock KiCad symbol (Device:*); pin mapping checked by the schematic consistency step
+    elif sym is None:
         errs.append(f"symbol {ref['symbol']} not in PDU.kicad_sym")
     else:
         norm = lambda s: s.replace(" ", "")  # noqa: E731
@@ -168,7 +190,7 @@ def check_one(name: str, ref: dict, text: str | None = None) -> dict:
         extra = set(sym) - set(ref["pin_table"])
         if extra:
             errs.append(f"symbol has pins not in datasheet table: {sorted(extra)}")
-    return {"footprint": name, "source": ref["source"], "pin_table_source": ref["pin_table_source"],
+    return {"footprint": name, "source": ref["source"], "pin_table_source": ref.get("pin_table_source", "—"),
             "pads_checked": len(ref["pads"]), "polygons_checked": len(ref["polygons"]), "pass": not errs, "errors": errs}
 
 

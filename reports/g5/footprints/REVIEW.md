@@ -19,3 +19,8 @@ Görsel kontrol: `kicad-cli fp export svg` → [`TPS25982_RGE0024M.svg`](TPS2598
 - `PDU:TDSON-8-1_Konnect` (Q1) açıklaması "KiCad TDSON-8-1 ile aynı 5 bakır pad" diyor, ama KiCad 10 stok `Package_SON:Infineon_PG-TDSON-8_6.15x5.15mm` ile **farklı**: pad 1–4 0,85 × 0,5 @ x −2,9 (stok 1,2 × 0,65 @ x −2,825); drain pad 5 tek parça 4,55 × 4,41 @ x 1,05 (stok 4,5 × 4,7 @ x 0,675 + 4 dış pad 1,0 × 0,7 @ x 2,925). Infineon resmi footprint'i yerel datasheet'te yok → **R-003** (THINKER) üretici belgesiyle karar verir; T-005b Blocked.
 - C5750: yerel TDK teslim spesifikasyonundaki tablo (a 4,5 / b 8,0 / c 5,6 mm) güvenilirlik **test kartı** ölçüsüdür, önerilen land değildir; footprint'teki "gap 4,45, pad 1,30 × 4,50" TDK önerisiyle R-003'te doğrulanacak.
 - J2 (Molex 46015-0206): stok Mini-Fit Jr 5566-02A dikey footprint'i ↔ Molex 460150206_sd.pdf karşılaştırması R-003'te.
+
+## T-005b sonucu (R-003 tur 1 verisiyle)
+- **Q1 `PDU:TDSON-8-1_Konnect`: PASS** — Infineon BSC160N10NS3 G Rev. 2.4 Fig. 2 (p.10): pad 1–4 0,85 × 0,5 @ x −2,9; drain 4,55 × 4,41 @ x +1,05. KiCad stok `Infineon_PG-TDSON-8_6.15x5.15mm` bu parçanın çizimiyle aynı değil → özel footprint doğru (THINKER kararı). Açıklamadaki "KiCad ile aynı" ifadesi yanlıştır (dosya değiştirilmedi; KiCad fazında açıklama düzeltilebilir).
+- **C5750 `PDU:TDK_C5750_2220_Recommended`: PASS** — PA 4,45 / PB 1,30 / PC 4,50 mm, TDK önerilen aralıklarda (4,10–4,80 / 1,20–1,40 / 4,00–5,00).
+- **J2:** R-003 tur 2 + T-016.
