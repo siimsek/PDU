@@ -12,3 +12,5 @@ Tek satır: `- [kaynak] konu — neden engelleyici değil — önerilen kart/rol
 - [R-001] BIAS→AGND is correct for the ≤60 V fault case, but exact VIN-to-VCC LDO dissipation needs actual VIN/IVCC and thermal budget — no thermal criterion currently supplied — THINKER/BENCH.
 - [R-001] Define production R_TRIM replacement range, per-board trim procedure and RFB1 tolerance for complete VOUT corner analysis — current 442 Ω point is within calculated static window — BUILDER.
 - [R-001 Tur 2] G4 N1-DECISION §2 hâlâ 8.97 A'yı normal tepe faz akımı olarak adlandırıyor; düzeltilmiş HESAP 5.58322 A — elektriksel akım-kapasitesi bulgusu kapanmış olsa da OCP/normal oranı anlatımının senkronlanması gerekiyor — BUILDER dokümantasyonu.
+- [D-005] T3 O1 harici giriş mutlak maks / aşım toleransı yazılı üretici teyidi (bilgi amaçlı; 12,0 V kriteri korunuyor) — engelleyici değil.
+- [D-001] Kompakt kart dışı sigorta yuvası (DIN-ray yerine kablo içi/panel tipi) — aynı DC kesme kanıtıyla THINKER araştırabilir; mekanik montaj bilinmiyor.

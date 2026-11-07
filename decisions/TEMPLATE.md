@@ -2,7 +2,7 @@
 
 - **Kart:** tasks/D-xxx.md
 - **Yazan:** Codex | ChatGPT (model), tarih
-- **Kullanıcı kararı gerekli mi:** Evet | Hayır — neden
+- **Fiziksel iş gerekli mi:** Evet (hangi tezgâh ölçümü) | Hayır — kararı THINKER verir, kullanıcıya soru sorulmaz
 
 ## Soru
 Tek paragraf: neye karar veriliyor, hangi kriterle.

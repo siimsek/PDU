@@ -1,15 +1,16 @@
 # Kullanıcıdan beklenenler
 
-Röle modu: kullanıcı dosya yüklemez. Belge isteyen maddeler önce THINKER kartıyla (resmi siteden) denenir; kullanıcıya yalnız ajanların yapamadığı kalır ve prompt'un sonunda tek soru olarak sorulur. Cevap gelince madde `Done (tarih, kaynak)` olur.
+Kullanıcıya soru sorulmaz (2026-11-07): kararları THINKER verir. Burada yalnız **fiziksel** işler (tezgâh ölçümü) ve bilgi amaçlı dış iletişim maddeleri durur; hiçbiri tasarım akışını engellemez. Sonuçları sohbete yazmanız yeterli, dosyayı Claude Code commit eder.
 
 | ID | Gereken | Engellediği | Durum |
 |---|---|---|---|
 | U-001 | **T-1: O1 ve S2E gerçek akım ölçümü** (fiziksel; ajan yapamaz — prosedür aşağıda, sonuçları sohbete yazmanız yeterli, dosyayı Claude Code commit eder) | RILIM_O1/S2E ve J2 kararının doğrulanması (BENCH T-1); KiCad'i engellemez | Açık |
-| U-002 | T3 Gemstone O1 mutlak maks / aşım toleransı — D-002: çalışma aralığı 5–12 V DC (resmi), mutlak maks ve aşım yayımlanmamış. **Önce D-005 (THINKER): resmi şema PDF'inden giriş koruma zinciri**; yalnız o da kapatamazsa üreticiye soru | O1 marjı; 12,0 V kriteri korunur (D-002 önerisi) | D-005'te |
+| U-002 | T3 O1 mutlak maks / aşım toleransı — D-002 ve D-005 resmi kaynakta bulamadı. 12,0 V kriteri (üretici çalışma aralığının üst ucu) korunuyor; **engelleyici değil**. İsterseniz T3'e yazılı soru (bilgi amaçlı) | — | Bilgi (engellemez) |
 | U-003 | F1 sigorta belgesi — **önce D-001 (THINKER, web)**; yalnız hiçbir seçenekte DC kesme kapasitesi okunamazsa kullanıcı kararı | D-001, T-004, T-005b | D-001'de |
 | U-004 | Şema gözle kontrolü — **R-002 render tabanlı yapar** (kicad-cli SVG/PDF dışa aktarımı + netlist); kullanıcı için isteğe bağlı | KICAD-READY kabulü | Bekliyor (T-012) |
 | U-005 | **Birleştirme yetkisi** — tek cevap: "yetki veriyorum" (BUILDER, kriterleri geçen PR'ları birleştirir; KiCad/tasarım PR'ında tek satır onay sorar) veya "her PR'ı sor" | Kartların main'e girmesi | Done (2026-11-07, "Yetki veriyorum") |
-| U-006 | **F1 kart dışı mı?** D-001 önerisi: Eaton PV-10A10F (10 A, 1000 VDC, 50 kA) + CHPV1U DIN-ray yuvası (33 kA DC) batarya kablosunda; PCB'den F1 kalkar. Alternatif: kart üstü delikten geçme yuva (Littelfuse KLK + L60030M3PCB) — yuvanın DC kısa devre değeri yayımlanmamış | T-004, T-005b (F1 footprint), T-006 (giriş bloğu) | Açık |
+| U-006 | F1 kart dışı mı? — Kullanıcı "hangisi daha iyiyse" dedi (2026-11-07); BUILDER kararı: **kart dışı** Eaton PV-10A10F + CHPV1U (D-001; DC kesme değeri doğrulanan tek set, sigorta bataryaya yakın → kabloyu da korur) | T-004 | Done (2026-11-07) |
+| U-007 | **T5g tezgâh ölçümü** (fiziksel): faz akımı 13,6 A geçişinden TP_ISO_GATE VGS <1 V'a tam zincir gecikmesi ≤3,0 µs (U ≤0,1 µs), 26 V, min Ceff, her faz; T5c ile doğrudan O1 tepe ≤12,0 V (BENCH-ACCEPTANCE T5g). Kart üretilince | O1 ≤12,0 V fiziksel kanıtı (R-001 #3) | Bekliyor (kart) |
 
 ## U-001 prosedürü — O1/S2E gerçek akımı (kart gelmeden)
 

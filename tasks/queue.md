@@ -5,7 +5,7 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | ID | Rol | Boyut | Bağımlılık | Durum |
 |---|---|---|---|---|
 | [T-001](done/T-001.md) | BUILDER | S | — | Done |
-| [R-001](R-001.md) | THINKER | M | T-015 (tur 2) | Ready |
+| [R-001](done/R-001.md) | THINKER | M | T-015 (tur 2) | Done |
 | [D-003](done/D-003.md) | THINKER | M | — | Done |
 | [D-004](done/D-004.md) | THINKER | M | — | Done |
 | [T-015](done/T-015.md) | BUILDER | S | D-003, D-004 | Done |
@@ -13,8 +13,8 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-003](done/T-003.md) | BUILDER | M | T-001 | Done |
 | [D-001](done/D-001.md) | THINKER | M | — | Done |
 | [D-002](done/D-002.md) | THINKER | S | — | Done |
-| [D-005](D-005.md) | THINKER | S | D-002 | Ready |
-| [T-004](T-004.md) | BUILDER | S | D-001 (Done) + U-006 | Blocked |
+| [D-005](done/D-005.md) | THINKER | S | D-002 | Done |
+| [T-004](T-004.md) | BUILDER | S | D-001 (Done) | InProgress |
 | [T-005a](done/T-005a.md) | BUILDER | M | T-002 | Done |
 | [T-005b](T-005b.md) | BUILDER | M | T-002, T-004 | Draft |
 | [T-006](T-006.md) | BUILDER | M | T-002, T-005a | Draft |
