@@ -101,19 +101,22 @@ def test_real_packs_within_budget():
     _, n_codex, excluded, _ = mp.build_pack("R-001", "codex")
     assert n_codex <= mp.LIMIT["codex"]
     assert "reports/g4/n1-results.json" in excluded
-    _, n_chk, _, _ = mp.build_pack("T-001", "checker")
+    _, n_chk, _, _ = mp.build_pack("T-002", "checker")
     assert n_chk <= mp.LIMIT["checker"]
 
 
 def test_entry_pack_under_6k_tokens():
-    files = ["docs/START-HERE.md", "CLAUDE.md", "HANDOFF.md", "tasks/T-001.md"]
-    chars = sum(len((ROOT / f).read_text(encoding="utf-8")) for f in files)
-    assert chars // 4 <= 6000
-    files_t = ["docs/START-HERE.md", "AGENTS.md", "HANDOFF.md", "tasks/R-001.md"]
-    assert sum(len((ROOT / f).read_text(encoding="utf-8")) for f in files_t) // 4 <= 6000
+    from wf_common import iter_cards
+    base = {"BUILDER": ["docs/START-HERE.md", "CLAUDE.md", "HANDOFF.md"],
+            "THINKER": ["docs/START-HERE.md", "AGENTS.md", "HANDOFF.md"]}
+    for card in iter_cards(ROOT):  # every card (open or done) must fit the entry budget
+        rol = parse_card(card.read_text(encoding="utf-8"))["scalars"]["Rol"].split()[0]
+        chars = sum(len((ROOT / f).read_text(encoding="utf-8")) for f in base[rol]) + len(card.read_text(encoding="utf-8"))
+        assert chars // 4 <= 6000, card.name
 
 
 def test_all_cards_parse_with_required_fields():
-    for p in (ROOT / "tasks").glob("[TRD]-*.md"):
+    from wf_common import iter_cards
+    for p in iter_cards(ROOT):
         c = parse_card(p.read_text(encoding="utf-8"))
         assert c["scalars"]["ID"] == p.stem
