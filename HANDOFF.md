@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-012 (taslak PR; **birleştirilmedi** — R-011 bekliyor)
-- **Aktif kart:** T-012 (Review). Şema bitti (B1–B7, 180 ref spec ile birebir, ERC 0). Sıradaki: T-013 PCB kurulumu (D-006: 120 × 85, 4 katman).
+- **Dal / son commit:** wp/T-012 → main (R-011 ONAY, PR #48)
+- **Aktif kart:** T-013 (InProgress — PCB kurulumu). Şema tamam (180 ref, ERC 0).
 
 ## Yapılanlar
 - T-011 (#44) main'de (R-010: kanonik Value kuralı). T-012 (dal): D-008 test padleri + J_OVP_INJ_BUS + JP_EN_BUCK (BOM dışı), notlar/antet; ERC 0, B1–B7 fark 0.
