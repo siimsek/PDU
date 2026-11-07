@@ -28,7 +28,7 @@ Opus: mimari karar, zor hata ayıklama. Sonnet: uygulama, betik, ERC döngüsü,
 ## KiCad
 - KiCad dosyası (`*.kicad_sch/pcb/pro/sym/mod/dru`) **yalnız kart izin veriyorsa**: blok öncesi commit, blok sonrası ERC (yeni ihlal yok) + tutarlılık fark=0; bozulursa `git checkout -- <dosya>` ile geri al.
 - kicad-cli PATH'te değil: `"C:\Program Files\KiCad\10.0\bin\kicad-cli.exe"`. ERC/DRC çıktısını yalnız `reports/<faz>/` altına yaz.
-- Şema düzenleme aracı kararı T-002'de (`reports/g5/TOOLING.md`); karar çıkana kadar KiCad dosyasını metin olarak düzenleme.
+- Düzenleme aracı (T-002, `reports/g5/TOOLING.md`): yalnız `scripts/kicad_sexpr.py` (kayıpsız S-ifade) + kicad-cli ERC/netlist doğrulaması; elle metin düzenleme ve GUI talimatı yok.
 
 ## Araçlar
 - ngspice: `PDU_NGSPICE` veya `F:\Spice64\bin\ngspice_con.exe`. `python analysis/run_all.py` ~6 dk → arka planda koş.

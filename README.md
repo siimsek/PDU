@@ -23,4 +23,8 @@ Son koşu özeti: [`reports/g2/VERIFY.md`](reports/g2/VERIFY.md); SPICE sonuçla
 
 [KiCad 10 projesi](PDU.kicad_pro), [şema](PDU.kicad_sch), [PCB](PDU.kicad_pcb), [projeye özel kütüphane](hardware/lib). Bu dosyalardaki eski değerler (ör. TPS259824O, RFB2 10.2k, 8× COUT) bilinçli olarak değiştirilmedi. Eski durum belgeleri (`docs/PROJECT-STATE.md`, `docs/design.md`, `hardware/*.md`) SUPERSEDED başlığıyla geçmiş kaydıdır.
 
+## KiCad düzenleme kuralı
+
+KiCad şema/PCB dosyaları yalnız `scripts/kicad_sexpr.py` (kayıpsız S-ifade; dokunulmayan metin baytça korunur) ile ve her bloktan sonra kicad-cli ERC + netlist tutarlılığıyla düzenlenir. Eski "yalnız Konnect MCP" kuralı, MCP sunucusu ve açık KiCad GUI gerektirdiği için kaldırıldı (gerekçe ve yuvarlak-gezi kanıtı: [`reports/g5/TOOLING.md`](reports/g5/TOOLING.md)). Kilit dosyaları silinmez.
+
 Kaynak depo: [siimsek/PDU](https://github.com/siimsek/PDU).
