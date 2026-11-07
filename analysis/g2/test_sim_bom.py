@@ -68,7 +68,7 @@ def test_bom_no_mpn_without_datasheet_and_derating():
         assert not row["derating_ok"].startswith("NO"), row["ref"]
     opened = (ROOT / "reports" / "g2" / "BOM-OPEN.md").read_text(encoding="utf-8")
     for row in rows:
-        if not row["mpn"]:
+        if not row["mpn"] and row["kind"] not in ("TP", "FIX", "JP"):   # D-008 PCB-only pads are not purchased
             assert f"| {row['ref']} |" in opened, row["ref"]
 
 
@@ -111,7 +111,7 @@ def test_three_way_consistency_passes():
 
 def test_bom_has_no_open_rows_and_footprints_verified():
     rows = list(csv.DictReader((ROOT / "design" / "bom-v2.csv").open(encoding="utf-8")))
-    assert [r["ref"] for r in rows if not r["mpn"]] == []          # G5 T-004: F1 selected (off-board, D-001)
+    assert [r["ref"] for r in rows if not r["mpn"] and r["kind"] not in ("TP", "FIX", "JP")] == []  # T-004; D-008 pads
     assert {r["ref"]: r["kind"] for r in rows}["F1"] == "CABLE"
     fm = list(csv.DictReader((ROOT / "design" / "footprint-map.csv").open(encoding="utf-8")))
     assert all(r["verified_file"] == "yes" for r in fm if r["stock_or_custom"] == "STOK")

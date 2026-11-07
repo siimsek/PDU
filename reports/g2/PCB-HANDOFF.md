@@ -38,7 +38,7 @@ Via sayısı iki yolun büyüğüdür: 0.5 A/via taraması ve 0.3 mm delik / 20 
 5. **OVP + OC mantık grubu:** U7, U8, U9, U10, U13, U14, U15, R_OCT/R_OCB, R_OVT/R_OVB, R_OV2T/R_OV2B, R_Q, R_EN1/2, R_CLR/C_CLR, SW1; SW düğümlerinden ≥10 mm uzak, L2 GND üstünde. **R_OVT ve R_OV2T'nin VRAW ucu Kelvin olarak Q2 drain bakırından alınır** (yük akımı geçmeyen ayrı iz).
 5b. **Faz OC algılama (G4):** U11/U12 (INA296A2) her fazın RS'ine **Kelvin** bağlanır: IN+ RS'in ISNS ucundan, IN− VOUT ucundan, pad iç kenarından iki paralel iz, SW bakırının altından geçmeden; INA296 RS'e ≤15 mm. OUT (`/OC_SENSE1/2`) → U13/U14 kısa iz, L2 GND referanslı. Arızalı faz akımı (≤138 A tepe, µs) RS ve bobin bakırından geçer; RS padleri ve faz bakırı bu darbeye göre geniş tutulur.
 6. **eFuse grubu:** U3, U4, CEFIN1/2, CEFOUT1/2, D_REV1/2 (eFuse OUT–IN arasında, kısa), D2/D3, J2 (G5 D-003: Molex Mini-Fit Plus HCS 46015-0206, 2 devre, dikey, delikten geçme), J3. RILIM/RIMON/CDVDT pin yanında.
-7. Test noktaları (G4 ekleri: TP_OC_SENSE1/2, TP_OC_REF, TP_OVP_BUS_N; R_TRIM erişilebilir, kart kenarına yakın) ve J_OVP_INJ_BUS kart kenarına yakın; prob GND noktaları her grubun yanında.
+7. Test noktaları (G5 D-008: 36 BOM dışı pad — sinyal 1,0 mm, ray ve prob GND 2,0 mm `TestPoint:TestPoint_Pad_*`; liste `decisions/D-008-test-points.md`), J_OVP_INJ_BUS (6 mm² lehim padleri `Connector_Wire:SolderWire-6sqmm_1x02_P14mm_D3.5mm_OD7mm`, /VOUT–/GND, kart kenarında), JP_EN_BUCK (açık lehim köprüsü /EN_BUCK–/GND); R_TRIM erişilebilir; prob GND padleri (TP_GND_FB/OC/OVP/POWER) ilgili grupların yanında.
 
 ## 4. Termal
 

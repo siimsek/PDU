@@ -38,6 +38,8 @@ G5 T-010/T-009: B5 (30 parça) ve B4 (12 parça) şemaya eklendi (scripts/sch_ed
 
 G5 T-011: B6 — U3/U4 IN ve CEFIN1/2, REN1 → /VSAFE; D_REV1/2 eklendi; RILIM 182/300 Ω; CEFOUT 1206; D2/D3 SMC; J2 46015-0206; PWR_FLAG /VSAFE (scripts/sch_edit_b6.py). Bu noktada şemadaki 142 PCB parçasının tamamı spec ile birebir (check_consistency --schematic B1–B6).
 
+G5 T-012: B7 — D-008 test padleri (36), J_OVP_INJ_BUS, JP_EN_BUCK (in_bom no), notlar ve antet (scripts/sch_edit_b7.py). Şema 180 ref ile spec'e birebir.
+
 Test noktası ekleri: TP_OC_SENSE1, TP_OC_SENSE2, TP_OC_REF, TP_OVP_BUS_N; faz şöntü akım enjeksiyonu için RS1/RS2 Kelvin padleri (BENCH T5g).
 
 ## 1. Değişen referanslar (G2)

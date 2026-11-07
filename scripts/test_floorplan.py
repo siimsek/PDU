@@ -14,7 +14,7 @@ import floorplan as fp  # noqa: E402
 def test_every_bom_row_has_area_and_groups_sum():
     res = fp.compute()
     assert res["missing"] == []
-    assert res["parts"] == 142
+    assert res["parts"] == 142 + 38  # D-008 test pads / fixture / jumper
     assert abs(sum(g["area_mm2"] for g in res["groups"].values()) - res["total_courtyard_mm2"]) < 0.5
     assert "diğer" not in res["groups"], "every ref must map to a PCB-HANDOFF group"
     cout = [r for r in res["rows"] if r["ref"].startswith("COUT")]

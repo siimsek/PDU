@@ -102,14 +102,14 @@ def _place_texts(root, ref: str, lib_id: str, at, pins: dict) -> None:
     _set_at(root, ref, "Value", x, max(ys) + 3.81)
 
 
-def place_part(root, ref: str, lib_id: str, at, row: dict, ref_prefix: str = "U", rot: int = 0) -> dict:
+def place_part(root, ref: str, lib_id: str, at, row: dict, ref_prefix: str = "U", rot: int = 0, in_bom: bool = True) -> dict:
     sch = ks.top(root)
     if ks.symbol_by_ref(root, ref) is not None:
         return {}
     ensure_lib_symbol(sch, lib_id)
     sheet = next(sch.children("uuid")).atoms()[1].value
     x, y = at
-    txt = (f'(symbol\n\t\t(lib_id "{lib_id}")\n\t\t(at {x:g} {y:g} {rot})\n\t\t(unit 1)\n\t\t(in_bom yes)\n\t\t(on_board yes)'
+    txt = (f'(symbol\n\t\t(lib_id "{lib_id}")\n\t\t(at {x:g} {y:g} {rot})\n\t\t(unit 1)\n\t\t(in_bom {"yes" if in_bom else "no"})\n\t\t(on_board yes)'
            f'\n\t\t(dnp no)\n\t\t(uuid "{uid(ref)}")'
            + _prop("Reference", ref, x + 2.54, y - 5.08) + _prop("Value", row["value"], x + 2.54, y + 5.08)
            + _prop("Footprint", row["footprint"], x, y, True) + _prop("Datasheet", "", x, y, True)
