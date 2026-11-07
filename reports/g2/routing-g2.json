@@ -4,7 +4,6 @@
     {
       "name": "INPUT_POWER",
       "nets": [
-        "/VBAT",
         "/ANODE",
         "/VIN"
       ],

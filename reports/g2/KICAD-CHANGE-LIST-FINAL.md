@@ -26,7 +26,7 @@ G1 [`KICAD-CHANGE-LIST.md`](../g1/KICAD-CHANGE-LIST.md) satırlarının yerini b
 | CEFOUT1/2 | 0805 → **1206 C3216X7R1E106K160AB** | `Capacitor_SMD:C_1206_3216Metric` | 25 V'ta %48 kullanım (≤%50) |
 | MLCC'ler | TDK MPN'leri (bom-v2.csv) | footprint-map.csv | TDK sayfaları "Production" |
 | SW1 | B3U-1000P | `Button_Switch_SMD:SW_SPST_B3U-1000P` | ARATAS sayfası |
-| F1 | ağ `/VBAT`–`/ANODE` (G2'deki `/F1_OUT` hatası düzeltildi); MPN AÇIK (aday 0456020.ER) | ÖZEL footprint | check_consistency bulgusu |
+| F1 | **şemadan ve PCB'den kaldırılır** (G5 T-004 / D-001): sigorta kart dışında, batarya + kablosunda — Eaton PV-10A10F (10×38 mm, 10 A, 1000 VDC, 50 kA) + CHPV1U DIN-ray yuvası (33 kA DC). G2/G4'teki `/VBAT`–`/ANODE` F1 satırı SUPERSEDED | J1 pin 1: `/VBAT` → **`/ANODE`**; `/VBAT` ağı karttan kalkar | DC kesme değeri doğrulanan tek set; sigorta bataryaya en yakın noktada kabloyu da korur |
 
 Test noktası ekleri: TP_OC_SENSE1, TP_OC_SENSE2, TP_OC_REF, TP_OVP_BUS_N; faz şöntü akım enjeksiyonu için RS1/RS2 Kelvin padleri (BENCH T5g).
 
@@ -79,7 +79,7 @@ Test noktası ekleri: TP_OC_SENSE1, TP_OC_SENSE2, TP_OC_REF, TP_OVP_BUS_N; faz �
 | D_REV1, D_REV2 | SS34-E3/57T (SMC) | A=`/O1_11V`/`/S2E_11V`, K=`/VSAFE` | R16 OUT ≤ IN+0.3 V |
 | R_INJ | 0 Ω CRCW06030000Z0EA (FRA'da 49.9 Ω) | `/VOUT`–`/FB_INJ` | tezgâh FRA (düşük Z tarafı) |
 
-Silinen referans yok. MPN'siz kalan tek satır F1 ([`BOM-OPEN.md`](BOM-OPEN.md)).
+Silinen referans: **F1** (kart dışına taşındı, BOM'da kablo tarafı satırı F1/XF1). MPN'siz satır yok ([`BOM-OPEN.md`](BOM-OPEN.md)).
 
 ## 3. Test noktaları ve enjeksiyon padleri (BOM dışı, footprint)
 

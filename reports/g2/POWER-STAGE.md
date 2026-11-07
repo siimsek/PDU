@@ -82,7 +82,7 @@ O1 için ILIM 182 Ω seçimi, ölçülmemiş yük zarfına dayanır. O1 sürekli
 | Kalem | Hesap | Durum |
 |---|---|---|
 | Kaynak kısa devre akımı (26 V, R_src 20–200 mΩ + 5 mΩ) | 1040 / 473 / 248 / 127 A | VARSAYIM taraması |
-| F1 gereksinimi | Anma ≥5.98 A (giriş 4.48 A / 0.75) → 10 A sınıfı; DC gerilim ≥53.3 V; kesme kapasitesi ≥1040 A (20 mΩ köşesi) | **MPN AÇIK**: sigorta üretici datasheet'lerine erişilemedi (Littelfuse 403/DNS) |
+| F1 gereksinimi | Anma ≥5.98 A (giriş 4.48 A / 0.75) → 10 A sınıfı; DC gerilim ≥53.3 V; kesme kapasitesi ≥1040 A (20 mΩ köşesi) | G5 T-004 / D-001: **Eaton PV-10A10F + CHPV1U, kart dışı** (batarya + kablosu). 10 A, 1000 VDC; kesme 50 kA (sigorta) / 33 kA DC (yuva) ≫ 1040 A; I²t 7/70 A²s @1000 VDC (26 V değeri yayımlanmamış). Koordinasyon: giriş izi (3,3 mm, 1 oz) Onderdonk erime I²t ≈ 1,1·10³ A²s ≫ 70 A²s (HESAP); Q1 I_D,pulse 168 A → kart içi kısa devrede Q1 sigortayla korunmaz (kabul edilen risk; sigorta kablo/batarya korumasıdır) | DATASHEET + HESAP |
 | TVS D1 | SMCJ33A ailesi: VRWM 33 V (26 V'a 7 V marj), Vc 53.3 V | Datasheet doğrulanamadı → VARSAYIM |
 | Q1 BSC160N10NS3G | VDS 100 V (clamp'a 46.7 V marj), iletim 0.58 W | DATASHEET (repo PDF) |
 | LM74700-Q1 | ANODE abs ±65 V → clamp'a 11.7 V marj; ters polarite bloke | DATASHEET p.5 |

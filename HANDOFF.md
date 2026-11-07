@@ -1,24 +1,24 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-005a → main
-- **Aktif kart:** — (Blocked: T-004 ← U-006 F1 kart dışı kararı. Ready: R-001 tur 2, D-005 → Codex)
+- **Dal / son commit:** wp/T-004 → main
+- **Aktif kart:** T-005b (Ready, Claude Code). THINKER Ready: D-006 (kart ölçüsü).
 
 ## Yapılanlar
-- PR #13 (T-015, J2 Mini-Fit Plus HCS + T5g kabulü) kullanıcı onayıyla birleşti; D-001 (#15), D-002 (#14) birleşti, kayıt #16.
-- D-001 önerisi F1'i kart dışına (Eaton PV-10A10F + CHPV1U DIN-ray) taşıyor → U-006; ön kontrol: iz I²t yeterli, Q1 (168 A darbe) sigortayla korunmaz.
-- T-005a: `analysis/check_footprints.py` — RGE0024M ve RRX0029B footprint'leri TI land pattern'ine ±0,02 mm uyuyor, semboller TI pin tablolarıyla aynı (reports/g5/footprints/REVIEW.md).
+- Kural (kullanıcı, 2026-11-07): kullanıcıya karar sorusu sorulmaz; kararlar THINKER D-kartıyla prompt üzerinden. KiCad/tasarım PR'ı için THINKER onayı yeterli.
+- R-001 tur 2 KOŞULLU kapandı (#18): kalan tek madde fiziksel T5g ölçümü → U-007. D-005 (#19): T3 mutlak maks doğrulanamadı → engelleyici değil.
+- T-004: F1 kart dışı (Eaton PV-10A10F + CHPV1U, D-001; kullanıcı "hangisi daha iyiyse"); J1.1 → /ANODE; BOM 149/149 MPN; alan %44,4 / %33,7.
 
 ## Sonraki adım
-Kullanıcı U-006 cevabı → T-004. Paralel: Codex R-001 tur 2 + D-005. Sonra T-005b (Q1, C5750, J2 Molex çizimi, F1).
+T-005b: Q1 TDSON-8 (Infineon) ve C5750 (TDK) land doğrulaması `analysis/check_footprints.py`'ye; J2 Molex çizimi THINKER'a (R/D kartı).
 
 ## Engeller
-- T-004, T-005b (F1 kısmı), T-006 (giriş bloğu) ← U-006. T-013 ← kart ölçüsü onayı (öneri 120 × 85).
+- Yok (T-013 ← D-006 THINKER kararı).
 
-## Kullanıcıdan bekleyenler
-- **U-006:** F1 kart dışı DIN-ray sigortası mı, kart üstü mü? U-001 tezgâh ölçümü (fiziksel).
-- **Birleştirme yetkisi: VERİLDİ (2026-11-07, kullanıcı: "Yetki veriyorum").** Kapsam: BUILDER, kabul kriterleri + pytest + check_workflow geçen PR'ları birleştirir; KiCad dosyası veya tasarım değeri değiştiren PR'da birleştirmeden önce tek satır onay sorar (WORKFLOW röle kuralı 6).
+## Kullanıcıdan bekleyenler (yalnız fiziksel, engellemez)
+- U-001 O1/S2E akım ölçümü, U-007 T5g gecikme + O1 tepe ölçümü (kart üretilince).
+- **Birleştirme yetkisi: VERİLDİ (2026-11-07, "Yetki veriyorum").** KiCad/tasarım PR'ı için THINKER onayı yeterli (WORKFLOW kural 6).
 
 ## Okuma gerektirmeyen notlar
-- THINKER artık `tasks/queue.md`'yi değiştirmiyor (paralel PR çakışmaları); BUILDER birleştirirken eşitler.
-- Stencil açıklıkları ve termal via'lar T-005a kapsamı dışında (REVIEW.md).
+- SPICE'taki RF1 5 mΩ seri direnç kart dışı sigortayı temsil etmeye devam ediyor (VARSAYIM; PV-10A10F soğuk direnci okunmadı).
+- Q1 (168 A darbe) kart içi kısa devrede sigortayla korunmaz — kabul edilen risk (POWER-STAGE F1 satırı).

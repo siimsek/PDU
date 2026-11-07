@@ -22,7 +22,7 @@ VSAFE >24 V, O1 >12.0 V, LM70880 kılıf >110 °C, Q1/Q2 kılıf >100 °C, bekle
 
 | Test | Yöntem | HESAP / SİM tahmini | Ölçüm kabul kriteri |
 |---|---|---|---|
-| **T0** görsel/süreklilik | Polarite (D1, D2/D3, D_REV, Q1, Q2), kısa devre ölçümü (VIN, VOUT, VSAFE, P5V–GND) | — | kısa yok; diyot yönleri doğru |
+| **T0** görsel/süreklilik (+ kart dışı F1: Eaton PV-10A10F / CHPV1U batarya + kablosunda, bataryaya en yakın) | Polarite (D1, D2/D3, D_REV, Q1, Q2), kısa devre ölçümü (VIN, VOUT, VSAFE, P5V–GND) | — | kısa yok; diyot yönleri doğru |
 | **T-1** O1 ve S2E gerçek akım ölçümü (G4) | Hedef yük (T3 Gemstone O1, S2E) ile çalışma profilinde akım probu + 10 kHz kayıt: ortalama, 10 ms RMS, tepe, başlangıç akımı | Tasarım zarfı: BUS 7.5 A, O1 ILIM 7.23–9.07 A, S2E 4.36–5.66 A (DATASHEET p.9) | O1 tepe < 7.23 A (ILIM min) ve RMS ≤7.0 A; S2E tepe < 4.36 A; aşılırsa RILIM/konnektör/COUT kararı yeniden açılır |
 | **T1** yüksüz açılış | 20 / 22.2 / 26 V, akım sınırlı kaynak; VRAW, VSAFE, O1, S2E, VIN | SİM F2: VRAW son 11.0 V, aşım ≤11.02 V, mandal set olmaz; hot-plug VIN tepe 42.1 V (1 µH kablo VARSAYIMI) | VRAW 10.8333–11.1605 V; aşım <11.259 V (trip_min); mandal Q=L; VIN tepe <65 V |
 | **T1b** kart başı trim (G4) | 25 °C, yüksüz, VIN 22.2 V, 15 dk ısınma; VOUT'u 6.5 hane DMM ile ölç; `b4-results.json` `trim_table`'dan R_TRIM seç (varsayılan 442 Ω → 10.994 V); tak, tekrar ölç | HESAP trimli pencere 10.888–11.105 V | Trim sonrası VOUT 10.980–11.008 V (10.994 V ± ½ adım 0.125 %); kayıt: seri no, R_TRIM, önce/sonra |

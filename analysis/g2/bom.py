@@ -44,6 +44,7 @@ DSD = {
     "TI_INA296": "TI INA296A-Q1/B-Q1 SBOSA32D p.2 (pins), p.4-6; addendum INA296A2QDGKRQ1 Active/Production",
     "TI_LVC1G11": "TI SN74LVC1G11 datasheet tpd table; addendum SN74LVC1G11DBVR Active/Production",
     "MOLEX_PAGE": "Molex official part page (status Active, current/contact), checked 2026-11-07 (G4)",
+    "EATON_F1": "Eaton 720110 Rev. Jan 2026 p.1 (PV-10A10F 10 A, 1000 VDC, 50 kA, I2t 7/70 A2s @1000 VDC) + 720147 Rev. Aug 2025 p.1-2 (CHPV1U 1000 VDC/30 A, 33 kA DC); D-001",
     "MOLEX_HCS": "Molex part pages 460150206 / 39012020 / 457501111 (Active, checked 2026-11-07) + PS-45750-001 p.8-9 (18 AWG 2 ckt 10.5 A, 30 C rise)",
     "ARATAS_B3U": "ARATAS (formerly Omron Components) B3U official page: B3U-1000P 'In production', checked 2026-11-07",
 }
@@ -98,10 +99,7 @@ def crcw(size, val_code):
 def rows():
     R = []
     # ---------------- input
-    R.append(dict(ref="F1", kind="F", value="10 A DC, >=53.3 VDC, >=1040 A breaking", mpn="", manufacturer="", datasheet="",
-                  tolerance="", tcr="", package="", footprint="", footprint_source="AÇIK", custom_footprint=True,
-                  nets={"1": "/VBAT", "2": "/ANODE"}, v_applied=26.0, v_rating="", p_applied_W="", p_rating_W="",
-                  derating=None, lifecycle="doğrulanamadı", note="candidate Littelfuse 0456020.ER (20 A, 65 VDC, I2t 18 A2s, 2.3 mOhm per Littelfuse page); DC interrupting rating not readable (PDF only via download) -> AÇIK", dnp=False))
+    # G5 T-004 / D-001: F1 is OFF-BOARD (battery cable, DIN-rail holder); see cable rows F1/XF1 at the end. J1.1 = /ANODE.
     R.append(dict(ref="D1", kind="D", value="TVS 33 V VWM, 1500 W", mpn="SMCJ33A-E3/57T", manufacturer="Vishay General Semiconductor", datasheet=DSD["VSH_SMCJ"],
                   tolerance="", tcr="", package="SMC", footprint="Diode_SMD:D_SMC", footprint_source=FP_LIB, custom_footprint=False,
                   nets={"A": "/GND", "K": "/ANODE"}, v_applied=26.0, v_rating=33.0, p_applied_W="", p_rating_W="",
@@ -265,7 +263,7 @@ def rows():
     R.append(r("REN1", "64.9k", crcw("0603", "64K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/VSAFE", "2": "/EN_EFUSE"}, 2e-3, 0.1))
     R.append(r("REN2", "10k", crcw("0603", "10K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/EN_EFUSE", "2": "/GND"}, 3e-4, 0.1))
     # ---------------- connectors
-    for ref, net, i_a in (("J1", "/VBAT", 4.48), ("J3", "/S2E_11V", 5.66)):
+    for ref, net, i_a in (("J1", "/ANODE", 4.48), ("J3", "/S2E_11V", 5.66)):
         R.append(dict(ref=ref, kind="J", value=f"Micro-Fit 3.0 header 2 ckt, {i_a} A", mpn="430450200", manufacturer="Molex",
                       datasheet=DSD["MOLEX_PAGE"] + "; 8.5 A max per contact, 600 V", tolerance="", tcr="", package="",
                       footprint="Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal", footprint_source=FP_LIB,
@@ -286,11 +284,16 @@ def rows():
                           ("P2", "39012020", "Mini-Fit Jr receptacle housing 2 ckt dual row, 5557-02R (J2 mate)"),
                           ("P3", "430250200", "Micro-Fit 3.0 receptacle 2 ckt (J3 mate)"),
                           ("CT1", "430300038", "Micro-Fit 3.0 crimp terminal 18 AWG, 8.5 A (qty 4: P1, P3)"),
-                          ("CT2", "457501111", "Mini-Fit Plus HCS female crimp terminal 20-18 AWG (qty 2: P2)")):
-        R.append(dict(ref=ref, kind="CABLE", value=val, mpn=mpn, manufacturer="Molex", datasheet=DSD["MOLEX_PAGE"], tolerance="",
+                          ("CT2", "457501111", "Mini-Fit Plus HCS female crimp terminal 20-18 AWG (qty 2: P2)"),
+                          ("F1", "PV-10A10F", "Fuse 10x38 mm gPV 10 A, 1000 VDC, 50 kA DC breaking (battery cable, off-board; D-001)"),
+                          ("XF1", "CHPV1U", "Fuse holder 10x38 mm DIN-rail 1P, 1000 VDC / 30 A, 33 kA DC (F1; D-001)")):
+        eaton = ref in ("F1", "XF1")
+        R.append(dict(ref=ref, kind="CABLE", value=val, mpn=mpn, manufacturer="Eaton (Bussmann)" if eaton else "Molex",
+                      datasheet=DSD["EATON_F1"] if eaton else DSD["MOLEX_PAGE"], tolerance="",
                       tcr="", package="", footprint="", footprint_source="kablo tarafı (PCB dışı)", custom_footprint=False, nets={},
                       v_applied="", v_rating="", p_applied_W="", p_rating_W="", derating=None, lifecycle="Active (Molex page)",
-                      note="cable side; 18 AWG 0.5-1.5 m (VARSAYIM)", dnp=False))
+                      note=("off-board in battery + lead, nearest the battery; 18 AWG; D-001 (DIN rail mounting)" if eaton
+                            else "cable side; 18 AWG 0.5-1.5 m (VARSAYIM)"), dnp=False))
     return R
 
 

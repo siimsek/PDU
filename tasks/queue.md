@@ -14,9 +14,10 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [D-001](done/D-001.md) | THINKER | M | — | Done |
 | [D-002](done/D-002.md) | THINKER | S | — | Done |
 | [D-005](done/D-005.md) | THINKER | S | D-002 | Done |
-| [T-004](T-004.md) | BUILDER | S | D-001 (Done) | InProgress |
+| [T-004](done/T-004.md) | BUILDER | S | D-001 (Done) | Done |
+| [D-006](D-006.md) | THINKER | S | T-003 | Ready |
 | [T-005a](done/T-005a.md) | BUILDER | M | T-002 | Done |
-| [T-005b](T-005b.md) | BUILDER | M | T-002, T-004 | Draft |
+| [T-005b](T-005b.md) | BUILDER | M | T-002, T-004 | Ready |
 | [T-006](T-006.md) | BUILDER | M | T-002, T-005a | Draft |
 | [T-007](T-007.md) | BUILDER | M | T-006 | Draft |
 | [T-008](T-008.md) | BUILDER | M | T-007, T-005b | Draft |
@@ -24,7 +25,7 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-010](T-010.md) | BUILDER | M | T-009 | Draft |
 | [T-011](T-011.md) | BUILDER | M | T-010 | Draft |
 | [T-012](T-012.md) | BUILDER | M | T-011 | Draft |
-| [T-013](T-013.md) | BUILDER | M | T-012, T-003 + kullanıcı kart ölçüsü kararı | Draft |
+| [T-013](T-013.md) | BUILDER | M | T-012, D-006 | Draft |
 | [T-014](T-014.md) | BUILDER | S | T-013, T-005a, T-005b | Draft |
 | [R-002](R-002.md) | THINKER | M | T-014 | Draft |
 
