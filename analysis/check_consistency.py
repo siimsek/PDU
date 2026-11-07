@@ -113,6 +113,8 @@ BLOCKS = {
            "RUV1", "RUV2"],
     "B3": [f"COUT{i}" for i in range(1, 33)],
     "B4": ["U11", "U12", "U13", "U14", "U15", "R_OCT", "R_OCB", "C_INA1", "C_INA2", "C_OCC1", "C_OCC2", "C_AND"],
+    "B6": ["U3", "RILIM1", "RIMON1", "CDVDT1", "CEFIN1", "CEFOUT1", "RPG1", "RPG1B", "D_REV1", "D2", "U4", "RILIM2",
+           "RIMON2", "CDVDT2", "CEFIN2", "CEFOUT2", "RPG2", "RPG2B", "D_REV2", "D3", "REN1", "REN2", "J3", "J2"],
     "B5": ["U6", "Q2", "U7", "U8", "U9", "U10", "RRAWBL", "R_GS", "C_ISO_VCAP", "C_ISO_VS", "R_OVT", "R_OVB", "C_CMP",
            "C_REF_IN", "C_REF_OUT", "C_REF_NR", "C_LAT", "R_CLR", "C_CLR", "SW1", "R_Q", "R_OV2T", "R_OV2B", "R_EN1",
            "R_EN2", "C_LDO_IN", "C_LDO_OUT", "C_LDO_DELAY", "R_BL5", "R_BLS"],

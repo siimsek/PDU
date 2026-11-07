@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-010 → main (T-010 + T-009; R-009 kapandı)
-- **Aktif kart:** T-011 (Ready — B6 eFuse + çıkışlar).
+- **Dal / son commit:** wp/T-011 (taslak PR; **birleştirilmedi** — R-010 bekliyor)
+- **Aktif kart:** T-011 (Review). THINKER Ready: R-010 (B6 + tam şema).
 
 ## Yapılanlar
+- T-010 + T-009 (#42) main'de (R-009: Q2 TI land footprint). T-011 (dal): B6 tamam; şemadaki 142 PCB parçasının tamamı spec ile birebir, ERC 0.
 - T-017 (#40) main'de. T-010 + T-009 (dal): B5 30 + B4 12 parça `sch_place.py` ile (etiket-pin); ERC 0; B1–B5 fark 0; blok dışı 0. Q2 footprint TI land'den özel (R-009).
 - T-008 (#38) main'de (R-007 ONAY). B5 bloğu şemada yok → T-009 öncesi T-010; stokta olmayan 5 sembol T-017 ile üretildi (make_symbols.py; datasheet sayfaları görsel okundu).
 - T-007 (#33) main'de; R-006 kapandı. R-005 (#37): BIL düzgünleştirmesi etkisiz (geri alındı); kısaltılmış pencere O1 10,92 V; `scripts/pre_merge.py` kapısı.
@@ -14,7 +15,7 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: R-009 (B4+B5 netlist, Q2 TDSON-8-1 ↔ TI land). Sonra Claude Code: birleştir → T-011 (B6 eFuse + çıkışlar: U3/U4 TPS259824L IN = /VSAFE, RILIM, J2/J3).
+Codex: R-010. Sonra Claude Code: T-011 birleştir → T-012 (B7: test noktaları, J_OVP_INJ_BUS/JP_EN_BUCK, notlar/antet; spec'te TP yok → karar gerekebilir).
 
 ## Engeller
 F5 iki köşe: kısaltılmış pencere kanıtı var (O1 10,92 V), tam pencere AÇIK (backlog).

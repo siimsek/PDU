@@ -1084,8 +1084,8 @@ parts:
     footprint: "Resistor_SMD:R_0603_1608Metric"
     dnp: false
     pins:
-      "1": "/O1_11V"
-      "2": "/PG_O1"
+      "1": "/PG_O1"
+      "2": "/O1_11V"
   - ref: RPG1B
     value: "18k"
     mpn: "CRCW060318K0FKEA"
@@ -1170,8 +1170,8 @@ parts:
     footprint: "Resistor_SMD:R_0603_1608Metric"
     dnp: false
     pins:
-      "1": "/S2E_11V"
-      "2": "/PG_S2E"
+      "1": "/PG_S2E"
+      "2": "/S2E_11V"
   - ref: RPG2B
     value: "18k"
     mpn: "CRCW060318K0FKEA"
@@ -1309,7 +1309,7 @@ nets:
   "/ISO_OV": [U6.7, R_Q.2, R_OV2T.2, R_OV2B.1]
   "/ISO_VCAP": [U6.4, C_ISO_VCAP.1]
   "/LDO_DELAY": [U10.7, C_LDO_DELAY.1]
-  "/O1_11V": [U3.OUT, CEFOUT1.1, RPG1.1, D_REV1.A, D2.K, J2.1]
+  "/O1_11V": [U3.OUT, CEFOUT1.1, RPG1.2, D_REV1.A, D2.K, J2.1]
   "/OC_REF": [U13.3, U14.3, R_OCT.2, R_OCB.1]
   "/OC_SENSE1": [U11.5, U13.4]
   "/OC_SENSE2": [U12.5, U14.4]
@@ -1321,12 +1321,12 @@ nets:
   "/OVP_SENSE": [R_OVT.2, R_OVB.1, U7.4]
   "/OVP_TRIP_N": [U15.4, U9.7]
   "/P5V_PROT": [U7.5, U11.6, U13.5, C_INA1.1, C_OCC1.1, U12.6, U14.5, C_INA2.1, C_OCC2.1, U15.5, C_AND.1, C_CMP.1, U8.2, C_REF_IN.1, U9.2, U9.8, C_LAT.1, R_CLR.1, R_EN1.1, U10.1, C_LDO_OUT.1, R_BL5.1]
-  "/PG_O1": [U3.PG, RPG1.2, RPG1B.1]
-  "/PG_S2E": [U4.PG, RPG2.2, RPG2B.1]
+  "/PG_O1": [U3.PG, RPG1.1, RPG1B.1]
+  "/PG_S2E": [U4.PG, RPG2.1, RPG2B.1]
   "/REF_NR": [U8.5, C_REF_NR.1]
   "/RT_PH1": [U1.RT, RT1.1]
   "/RT_PH2": [U2.RT, RT2.1]
-  "/S2E_11V": [U4.OUT, CEFOUT2.1, RPG2.1, D_REV2.A, D3.K, J3.1]
+  "/S2E_11V": [U4.OUT, CEFOUT2.1, RPG2.2, D_REV2.A, D3.K, J3.1]
   "/SW4_PH1": [U1.SW4, CBOOT1.2]
   "/SW4_PH2": [U2.SW4, CBOOT2.2]
   "/SW_PH1": [U1.SW, L1.1]

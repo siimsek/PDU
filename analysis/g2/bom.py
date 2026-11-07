@@ -250,7 +250,7 @@ def rows():
         R.append(c(f"CEFOUT{idx}", "10u", "", "", 11.94, 25.0, "1206", C1206, {"1": f"/{port}_11V", "2": "/GND"},
                    note="25 V 0805: 46 % of rating; Ceff assumed 40 % (DC-bias datasheet not available)"))
         R.append(r(f"RPG{idx}", "100k", crcw("0603", "100K"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB,
-                   {"1": f"/{port}_11V", "2": f"/PG_{port}"}, 1e-3, 0.1))
+                   {"1": f"/PG_{port}", "2": f"/{port}_11V"}, 1e-3, 0.1))  # pin order as drawn in the schematic (T-011)
         R.append(r(f"RPG{idx}B", "18k", crcw("0603", "18K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB,
                    {"1": f"/PG_{port}", "2": "/GND"}, 2e-4, 0.1))
         R.append(dict(ref=f"D_REV{idx}", kind="D", value="Schottky 40 V 3 A", mpn="SS34-E3/57T", manufacturer="Vishay General Semiconductor",
