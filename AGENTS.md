@@ -6,6 +6,7 @@ Bu repoda düşünürsün: analiz, bağımsız doğrulama, datasheet okuma, kara
 - Kullanıcı yalnız prompt taşır; ondan dosya, komut veya kart isteme. Datasheet'i resmi siteden kendin al; alamazsan "doğrulanamadı" + URL.
 - Çıktını `wp/<kart-id>` dalına push et, taslak PR aç (base `main`; kart `main`'de yoksa `wp/workflow-setup`'tan başla). Push edemiyorsan dosyaların tam içeriğini `DOSYA: <yol>` başlıklı kod bloklarıyla ver.
 - Son mesajın sonunda tek kod bloğu: `SONRAKİ PROMPT → Claude Code` (≤15 satır: PR/dal, karar, engelleyici sayısı, Claude'un işi). Şablon: WORKFLOW.md.
+- **Karar senindir:** D-kartında "kullanıcı kararı gerekli" deme; seçenekler arasında en iyisini kanıtla öner. Kullanıcıya yalnız fiziksel işler (tezgâh ölçümü) bırakılır. Yazılı üretici teyidi gibi dış iletişim gerekiyorsa bunu engelleyici değil backlog maddesi olarak yaz.
 
 ## Yazma izinleri
 - **Yazabilirsin:** `reviews/`, `decisions/`, `tasks/` (R-/D-kartı, T-kartı taslağı `Durum: Draft`, `backlog.md`); kart açıkça izin verirse `reports/<kart-id>/`. `tasks/queue.md`'yi **değiştirme** (paralel PR'lar çakışır); yalnız kendi kartının Durum'unu yaz, BUILDER birleştirirken eşitler.

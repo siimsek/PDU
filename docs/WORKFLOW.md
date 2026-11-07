@@ -16,8 +16,8 @@ Claude Code ──(SONRAKİ PROMPT → Codex)──▶ kullanıcı ──▶ Cod
 2. **Dosya alışverişi yalnız GitHub üzerinden** (`siimsek/PDU`): her ajan kendi dalına (`wp/<kart-id>`) push eder ve taslak PR açar; diğer ajan dalı/PR'ı oradan okur. Datasheet ve resmi belgeleri ajan kendisi indirir (resmi üretici sitesi); erişemezse "doğrulanamadı" yazar, kullanıcıdan dosya istemez.
 3. **Codex push/PR açamıyorsa** (ör. Codex Web oturumu): çıktı dosyalarının tam içeriğini son mesajda `DOSYA: <yol>` başlıklı kod bloklarıyla verir; Claude Code bu içeriği `wp/<kart-id>` dalına commit edip PR açar. Kullanıcıya düğme/komut işi bırakılmaz.
 4. **Paket:** Codex `python scripts/make_pack.py --task <ID> --for codex` komutunu kendi ortamında çalıştırır (paket git'e girmez).
-5. **Kullanıcıya kalanlar yalnız:** karar cevabı (tek kelime/seçenek), fiziksel tezgâh ölçümü, birleştirme yetkisi. Bunlar `tasks/BLOCKED-ON-USER.md`'de ve prompt'un sonunda tek soru olarak sorulur.
-6. **Birleştirme:** kullanıcı "birleştirme yetkisi" verdiyse (HANDOFF'ta kayıtlı) BUILDER, kabul kriterleri + `check_workflow.py` + pytest geçen PR'ları birleştirir; KiCad/tasarım değeri değiştiren PR'larda birleştirmeden önce prompt'un sonunda kullanıcıya tek satır onay sorar. Yetki yoksa birleştirme kullanıcıya sorulur.
+5. **Kullanıcıya soru sorulmaz** (kullanıcı kararı, 2026-11-07). Tasarım/mimari kararı gerekirse BUILDER onu bir THINKER D-kartı olarak yazar ve `SONRAKİ PROMPT → Codex` ile sorar; THINKER önerisi karar olarak uygulanır. Belge erişimi gerekiyorsa da THINKER dener. Kullanıcıya yalnız **fiziksel** işler kalır (tezgâh ölçümü, kart/yük elde etme); bunlar `tasks/BLOCKED-ON-USER.md`'de durur ve tasarım akışını engellemez.
+6. **Birleştirme:** BUILDER kabul kriterleri + `check_workflow.py` + pytest geçen PR'ları birleştirir (yetki 2026-11-07). KiCad dosyası veya tasarım değeri değiştiren PR için kullanıcı onayı yerine **THINKER onayı** yeterlidir: dayandığı D-kartı kararı veya bir R-kartı ONAY/KOŞULLU sonucu. Bunlardan biri yoksa BUILDER önce R-kartı açar ve prompt'la sorar.
 
 ## Roller ve yazma izinleri
 
