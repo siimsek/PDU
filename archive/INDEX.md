@@ -10,6 +10,7 @@ Hiçbir dosya silinmedi; hepsi `git mv` ile taşındı (geçmiş: `git log --fol
 | `g1-evidence/hardware/validation/` | Bileşen/footprint doğrulama çizimleri, LTC4365/TPS3701 kanıtları, C5750 vendor koşuları (KiCad `Pinmap.kicad_*` dosyaları yerinde bırakıldı) | `hardware/validation/` | Ham kanıt; `c5750/vendor-ac-summary.json` aktif kaldı | `hardware/COUT-qualification.md` |
 | `g1-tooling/` | `generate_g1_reports.py`, `run_g1_simulations.py`, `run_ovp_component_checks.py` | `analysis/` | Test bağımlılığı yok; ilki G1 raporlarını eski içerikle ezer (**çalıştırma**) | `reports/g1/SIMULATION-RESULTS.md` |
 | `konnect-diagnostics/.konnect/` | Konnect ara DRC/netlist/plan JSON'ları | `.konnect/diagnostics/` | Ara çıktı; `netclass-plan.json` aktif kaldı (`calculate_routing_rules.py`, `pdu_calc`) | `hardware/routing-width-calculations.json` |
+| `docs-legacy/AI-WORKFLOW.md` | G1 dönemi AI çalışma düzeni | `docs/AI-WORKFLOW.md` | W0 ile yerini `docs/WORKFLOW.md` aldı | `docs/WORKFLOW.md` |
 | `docs-legacy/docs/archive/` | Eski doküman arşivi, netlist ve ekran görüntüleri | `docs/archive/` | Zaten arşivdi; tek kökte toplandı | `docs/START-HERE.md` |
 | `renders/` | Şema/PCB PNG/SVG render'ları | `hardware/`, kök | Üretilmiş görsel | — |
 | `g2-sim-attempts/` (188) | G2 SPICE `-attemptN` deck/log çiftleri (yakınsama düzeltmeleri öncesi) | `reports/g2/sim/f1..f5/` | İlk/son deneme kanıtı; nihai koşular `reports/g2/sim/` | `reports/g2/SIM-RESULTS.md`, `reports/g2/PROGRESS.md` K5 |

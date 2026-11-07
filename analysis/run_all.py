@@ -29,6 +29,7 @@ STEPS = [
     ("BOM v2 / spec / footprint map (Stage 6, G4 C)", [sys.executable, "-m", "analysis.g2.bom"]),
     ("spec <-> BOM <-> SPICE consistency (G4 C3)", [sys.executable, "analysis/check_consistency.py"]),
     ("full-system ngspice families F1-F5 (Stage 5)", [sys.executable, "-m", "analysis.g2.sim_runner"]),
+    ("workflow check (W0)", [sys.executable, "scripts/check_workflow.py"]),
     ("pytest (all)", [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider"]),
 ]
 
