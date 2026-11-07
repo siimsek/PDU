@@ -34,19 +34,25 @@ Footprint değerleri `hardware/lib/PDU.pretty/TDK_C5750_2220_Recommended.kicad_m
 
 ## J2 — Molex Mini-Fit Plus HCS 46015-0206
 
-Birincil ürün kaynağı: Molex resmi parça sayfası. Sayfa 46015-0206 için 2 devre, dikey, through-hole, mating/termination pitch 4.20 mm ve önerilen PCB kalınlığı 1.78 mm bilgilerini veriyor. Molex resmi seri çizimi SD-46015-001 Rev. C, 46015 serisi dual-row HCS başlık düzenini ve 4.20 mm pin aralığını gösteriyor; çizelgede 46015-0206 da listeleniyor.
+Birincil kaynaklar: Molex SD-46015-001 Rev. C, sayfa 1 (4-devre çizimi ve PCB layout; çizelgede 46015-0206 da listeleniyor) ve resmi 46015-0206 ürün sayfası. Repo footprint'i KiCad resmi `Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical` dosyasıdır.
 
-| Pad / parametre | Üretici hedefi | Repo'daki KiCad pad'i | Fark / sonuç |
+| Parametre | Üretici çizimi / ürün verisi | Repo pad geometrisi | Fark / değerlendirme |
 |---|---:|---:|---|
-| 1–2 merkez aralığı | 4.20 mm pitch; merkez koordinatı bu değere göre normalize edilebilir | pad 1 (0,0), pad 2 (0,5.50) | +1.30 mm; kabul toleransı ±0.02 mm'nin çok dışında |
-| Pad boyutu | **doğrulanamadı** | her pad 2.70×3.30 | Üretici 46015-0206 PCB layout çizimi erişilemedi; boyut kıyaslanamıyor |
-| Delik çapı | **doğrulanamadı** | her pad için Ø1.40 | Üretici 46015-0206 PCB layout çizimi erişilemedi; delik kıyaslanamıyor |
-| Opsiyonel peg delikleri | 3.00 mm; yalnız opsiyonel peg için | stok footprint'te yok | Sinyal terminali delik çapı olarak kullanılamaz |
+| İki terminalin sıra-merkezi arası | 5.50 ±0.10 mm (SD-46015-001 p.1, önerilen PCB layout; 2-devre gövdede her sırada bir pin) | Pad1 (0,0), Pad2 (0,5.50) mm | Nominal fark 0.00 mm; kabul |
+| Sıra içi art arda kontakt aralığı | 4.20 ±0.10 mm non-accumulative; iki devreli parçada pinler farklı sıralarda olduğundan bu J2.1–J2.2 sıra aralığı değildir | Uygulanmıyor; 2×01 footprint'te aynı sırada ikinci terminal yok | Önceki Tur 1 karşılaştırması 4.20'yi iki pin arası çapraz sıra ölçüsü kabul ederek hata yaptı |
+| Terminal PCB deliği | Ø1.40 ±0.05 mm (SD-46015-001 p.1; terminal hole) | Her iki pad Ø1.40 mm drill | Nominal fark 0.00 mm; kabul |
+| Opsiyonel peg deliği | Ø3.00 ±0.05 mm, yalnız opsiyonel peg için; 46015-0206 ürün çizelgesinde PEGS=NO | Footprint'te peg deliği yok | Eşleşiyor; Ø3.00 terminal deliği değildir |
+| Bakır pad ölçüsü | Molex çizimi önerilen delik layout'u verir; bu çizimde pad bakır eni/boyu belirtilmemiş | 2.70×3.30 mm; pad1 roundrect, pad2 oval | Üretici hedef ölçüsü yayımlanmadığı için bakır pad farkı hesaplanamaz; repo pad geometrisi ölçülüdür ve uydurma üretici değeri atanmamıştır |
 
-Repo eşlemesi `Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical` olarak kayıtlı; KiCad kaynak dosyasının açıklaması bu footprint'in eski 5566-02A Mini-Fit Jr parçası olduğunu belirtir. Bu, istenen 46015-0206 Mini-Fit Plus HCS parçasının MPN'si değildir. KiCad dosyasında pin merkezleri 5.50 mm, 1.40 mm delik ve 2.70×3.30 mm pad yazılıdır. Molex ürün sayfasındaki 4.20 mm termination pitch ile 5.50 mm footprint aralığı uyuşmaz.
+**Karar: stok 5566-02A footprint geometrisi J2 için kabul.** 5.50 mm iki sıra aralığı, Ø1.40 mm terminal deliği ve peg bulunmaması resmi 46015 ailesi çizimi / 0206 parça bilgisiyle uyumlu. KiCad footprint açıklamasındaki 5566-02A eski Mini-Fit Jr parça adıdır; gerçek J2 MPN'si BOM'da 46015-0206 kalmalıdır. Molex bakır pad ölçüsü yayımlamadığından 2.70×3.30 mm pad ölçüsünü üretici land ölçüsü gibi göstermeyin; değişiklik gerektiren kanıt yoktur.
 
-**J2 sonucu: stok footprint kabul edilemez; 46015-0206 için üretici çizimine dayalı yeni footprint gerekir.** 4.20 mm pitch resmi parça sayfasında doğrulanmıştır. Molex'in bu MPN'ye ait `460150206_sd.pdf` satış çizimi resmi sayfada bulunamadı; doğrudan dosya URL'si okunamadı. Bu nedenle pad eni/boyu ve terminal deliği için değer yazılmamıştır.
+Repo footprint'inden hesap: kısa eksen annular ring = (2.70−1.40)/2 = 0.65 mm; uzun eksen = (3.30−1.40)/2 = 0.95 mm. Bunlar geometri hesabıdır, Molex tavsiyesi değildir.
 
+### Kaynaklar
+
+- Molex SD-46015-001 Rev. C, p.1 (resmi satış çizimi; family land pattern, 46015-0206 ürün çizelgesi): https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/salesdrawingpdf/460/46015/460150402_sd.pdf
+- Molex 46015-0206 resmi ürün sayfası (2 circuits, 2 rows, vertical, no peg retention; 4.20 mm series pitch): https://www.molex.com/en-us/products/part-detail/460150206
+- KiCad footprint kaynak dosyası (pad merkezleri, şekil, ölçü ve drill): https://github.com/KiCad/kicad-footprints/blob/master/Connector_Molex.pretty/Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical.kicad_mod
 ## Kaynaklar
 
 - Infineon, BSC160N10NS3 G datasheet, Rev. 2.4, pp. 1, 10: https://www.infineon.com/dgdl/Infineon-BSC160N10NS3-DS-v02_04-en.pdf?fileId=db3a30432239cccd01226040189a7f47
