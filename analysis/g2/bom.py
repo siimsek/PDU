@@ -120,10 +120,10 @@ def rows():
     for k in (1, 2):
         R.append(u(f"U{k}", "LM70880-Q1", "LM70880QRRXRQ1", "TI_LM70880", "VQFN-29 (RRX)", "PDU:LM70880_RRX0029B_RectLands",
                    "repo custom land (G1: copper approach/paste acceptance open)",
-                   {"VIN": "/VIN", "SW": f"/SW_PH{k}", "CBOOT": f"/CBOOT{k}", "ISNS+": f"/ISNS{k}", "VOUT": "/VOUT",
-                    "EN/UVLO": "/EN_BUCK", "EXTCOMP": "/COMP", "FB": "/FB", "RT": f"/RT_PH{k}", "VCC": f"/VCC{k}",
+                   {"VIN": "/VIN", "SW": f"/SW_PH{k}", "SW4": f"/SW4_PH{k}", "CBOOT": f"/CBOOT{k}", "ISNS+": f"/ISNS{k}", "VOUT": "/VOUT",
+                    "EN/UVLO": "/EN_BUCK", "EXTCOMP": "/COMP", "FB": "/FB" if k == 1 else "/GND", "RT": f"/RT_PH{k}", "VCC": f"/VCC{k}",
                     "VDDA": f"/VDDA{k}", "CONFIG": "/CFG_PRI" if k == 1 else "/CFG_SEC",
-                    "PG/SYNCOUT": "/SYNC" if k == 1 else "NC", "PFM/SYNCIN": "/GND" if k == 1 else "/SYNC",
+                    "PG/SYNCOUT": "/SYNC" if k == 1 else "NC", "PFM/SYNCIN": "/GND" if k == 1 else "/SYNC",  # secondary FB -> AGND in FPWM (LM70880 p.19)
                     "BIAS(6)": "/GND(AGND)"},
                    v_app=53.3, v_rat=87.5, custom=True))
         R.append(dict(ref=f"L{k}", kind="L", value="6.8uH", mpn="IHLP4040DZER6R8M01", manufacturer="Vishay Dale",
@@ -134,10 +134,10 @@ def rows():
                       note="Irms 4.21 A vs Iheat 8 A typ; Ilim peak 8.97 A vs Isat 13.5 A typ", dnp=False))
         R.append(r(f"RS{k}", "7.5m", "WSL25127L500FEA", "VSH_WSL", "1%", "75ppm/K", "2512", "Resistor_SMD:R_2512_6332Metric",
                    FP_LIB + "; Kelvin escape per LM70880 p.16", {"1": f"/ISNS{k}", "2": "/VOUT"}, 0.134, 1.0))
-        R.append(c(f"CBOOT{k}", "47n", "", "", 8.5, 25.0, "0603", C0603, {"1": f"/CBOOT{k}", "2": f"/SW4_PH{k}"},
+        R.append(c(f"CBOOT{k}", "47n", "", "", 8.5, 25.0, "0603", C0603, {"1": f"/CBOOT_R{k}", "2": f"/SW4_PH{k}"},
                    note="LM70880 p.4 recommends 47 nF"))
         R.append(r(f"RBOOT{k}", "1", crcw("0603", "1R00"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB,
-                   {"1": f"/CBOOT{k}", "2": f"/SW4_PH{k}"}, 0.01, 0.1, note="series 1 ohm (VCC=8 V option, LM70880 p.4)"))
+                   {"1": f"/CBOOT_R{k}", "2": f"/CBOOT{k}"}, 0.01, 0.1, note="1 ohm in SERIES with CBOOT (LM70880 p.4): CBOOT pin -> RBOOT -> /CBOOT_Rk -> CBOOT cap -> SW4 (G5 T-007 fix; G2 spec had them in parallel)"))
         R.append(r(f"RT{k}", "49.9k", crcw("0603", "49K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB,
                    {"1": f"/RT_PH{k}", "2": "/GND"}, 1e-4, 0.1))
         R.append(c(f"CVCC{k}", "4.7u", "", "", 8.5, 25.0, "0805", C0805, {"1": f"/VCC{k}", "2": "/GND"}))

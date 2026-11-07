@@ -177,6 +177,73 @@ def wire_text(p1, p2, uuid: str) -> str:
     return f'(wire\n\t\t(pts\n\t\t\t(xy {p1[0]:g} {p1[1]:g})\n\t\t\t(xy {p2[0]:g} {p2[1]:g})\n\t\t)\n\t\t(uuid "{uuid}")\n\t)'
 
 
+def lib_symbol(sch: SList, lib_id: str) -> SList | None:
+    ls = next(sch.children("lib_symbols"), None)
+    return next((s for s in ls.children("symbol") if s.atoms()[1].value == lib_id), None) if ls is not None else None
+
+
+def pin_points(sch: SList, root: SList, ref: str) -> dict:
+    """Absolute schematic coordinates of every pin end of a placed symbol: {pin_number: (x, y)}.
+    KiCad schematic: y grows downward; library y grows upward; symbol rotation is counter-clockwise; (mirror x|y)."""
+    import math
+    sym = symbol_by_ref(root, ref)
+    if sym is None:
+        return {}
+    a = next(sym.children("at")).atoms()
+    sx, sy, rot = float(a[1].value), float(a[2].value), float(a[3].value) if len(a) > 3 else 0.0
+    mirror = next(sym.children("mirror"), None)
+    mir = mirror.atoms()[1].value if mirror is not None else ""
+    lib = lib_symbol(sch, next(sym.children("lib_id")).atoms()[1].value)
+    unit_node = next(sym.children("unit"), None)
+    unit = int(unit_node.atoms()[1].value) if unit_node is not None else 1
+    out = {}
+    for sub in lib.children("symbol"):
+        m = sub.atoms()[1].value.rsplit("_", 2)
+        if len(m) == 3 and m[1].isdigit() and int(m[1]) not in (0, unit):
+            continue
+        for pin in sub.children("pin"):
+            pa = next(pin.children("at")).atoms()
+            px, py = float(pa[1].value), -float(pa[2].value)   # library -> schematic y
+            if mir == "x":
+                py = -py
+            elif mir == "y":
+                px = -px
+            th = math.radians(rot)
+            rx = px * math.cos(th) + py * math.sin(th)
+            ry = -px * math.sin(th) + py * math.cos(th)
+            out[next(pin.children("number")).atoms()[1].value] = (round(sx + rx, 4), round(sy + ry, 4))
+    return out
+
+
+def items_at(sch: SList, pt, tol: float = 0.01) -> list:
+    """Labels, power/other symbol pins are not resolved here: returns labels and wires touching point pt."""
+    hits = []
+    for kind in ("label", "global_label", "hierarchical_label"):
+        for n in sch.children(kind):
+            p = at_of(n)
+            if p and abs(p[0] - pt[0]) < tol and abs(p[1] - pt[1]) < tol:
+                hits.append((kind, n.atoms()[1].value, n))
+    for w in sch.children("wire"):
+        pts = [tuple(float(a.value) for a in xy.atoms()[1:3]) for xy in next(w.children("pts")).children("xy")]
+        if any(abs(p[0] - pt[0]) < tol and abs(p[1] - pt[1]) < tol for p in pts):
+            hits.append(("wire", pts, w))
+    return hits
+
+
+def set_label_text(label: SList, text: str) -> None:
+    a = label.atoms()[1]
+    label[label.index(a)] = Atom(quote(text))
+
+
+def remove_property(root: SList, ref: str, name: str) -> bool:
+    sym = symbol_by_ref(root, ref)
+    for prop in (sym.children("property") if sym is not None else []):
+        if prop.atoms()[1].value == name:
+            remove_node(sym, prop)
+            return True
+    return False
+
+
 def set_or_add_property(root: SList, ref: str, name: str, value: str) -> str:
     """Set a symbol property; add it (hidden, at the symbol origin) when missing. Returns 'set', 'added' or 'missing-ref'."""
     if set_property(root, ref, name, value):

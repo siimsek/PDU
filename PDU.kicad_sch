@@ -4556,7 +4556,7 @@
 	(wire
 		(pts
 			(xy 269.24 332.74)
-			(xy 269.24 321.31)
+			(xy 269.24 328.93)
 		)
 		(uuid "708d4578-8406-445c-b70c-1d32d1ccacdb")
 	)
@@ -5266,6 +5266,46 @@
 		)
 		(uuid "68c75443-ce66-41be-9446-f44e11308330")
 	)
+	(label "FB_TRIM"
+		(at 269.24 321.31 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c86b1097-81f0-5494-80f1-d4da582406dd")
+	)
+	(label "VOUT"
+		(at 276.86 295.91 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "32f0fa53-7f30-5854-b9e6-51d1dabb4146")
+	)
+	(label "CBOOT_R2"
+		(at 139.7 110.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "55531a7f-e30f-525e-afae-48b921dae585")
+	)
+	(label "CBOOT_R1"
+		(at 139.7 262.89 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e3721313-30c1-5c3e-a17c-d950e465f2e5")
+	)
 	(label "GND"
 		(at 205.74 264.16 0)
 		(effects
@@ -5286,7 +5326,7 @@
 		)
 		(uuid "9ecdf5f1-ff08-4e06-a8a7-5dd04cc5042d")
 	)
-	(label "VOUT"
+	(label "GND"
 		(at 205.74 284.48 0)
 		(effects
 			(font
@@ -5346,7 +5386,7 @@
 		)
 		(uuid "6206fc9c-778f-47a5-8b96-e0998cc4d867")
 	)
-	(label "VOUT"
+	(label "GND"
 		(at 205.74 132.08 0)
 		(effects
 			(font
@@ -5436,7 +5476,7 @@
 		)
 		(uuid "5380a733-6cbc-433d-87f4-93ca0f5a54b2")
 	)
-	(label "VOUT"
+	(label "FB_INJ"
 		(at 269.24 295.91 0)
 		(effects
 			(font
@@ -6611,6 +6651,15 @@
 				)
 			)
 		)
+		(property "MPN" "IHLP4040DZER6R8M01"
+			(at 114.3 275.59 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -6663,6 +6712,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 91.44 275.59 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "WSL25127L500FEA"
 			(at 91.44 275.59 0)
 			(hide yes)
 			(effects
@@ -7445,6 +7503,15 @@
 				)
 			)
 		)
+		(property "MPN" "C1608X7R1H473K080AA"
+			(at 139.7 266.7 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -7499,6 +7566,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 167.64 311.15 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C2012X7R1E475K125AB"
 			(at 167.64 311.15 0)
 			(hide yes)
 			(effects
@@ -7569,6 +7645,15 @@
 				)
 			)
 		)
+		(property "MPN" "C1608X7R1H104K080AA"
+			(at 193.04 311.15 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -7629,6 +7714,15 @@
 				)
 			)
 		)
+		(property "MPN" "CRCW060349K9FKEA"
+			(at 269.24 278.13 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -7681,6 +7775,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 294.64 278.13 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CRCW060354K9FKEA"
 			(at 294.64 278.13 0)
 			(hide yes)
 			(effects
@@ -7805,6 +7908,74 @@
 		))
 	(symbol
 		(lib_id "Device:R")
+		(at 273.05 295.91 270)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6d090199-0adb-5bd3-8a0b-c0d1e337a483")
+		(property "Reference" "R_INJ"
+			(at 279.4 294.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0"
+			(at 279.4 297.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 273.05 295.91 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 273.05 295.91 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 273.05 295.91 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "PDU"
+				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
+					(reference "R_INJ")
+					(unit 1)
+				)
+			)
+		)
+		(property "MPN" "CRCW06030000Z0EA"
+			(at 273.05 295.91 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		))
+	(symbol
+		(lib_id "Device:R")
 		(at 269.24 317.5 0)
 		(unit 1)
 		(in_bom yes)
@@ -7819,7 +7990,7 @@
 				)
 			)
 		)
-		(property "Value" "10.2k"
+		(property "Value" "9.76k"
 			(at 275.59 318.77 0)
 			(effects
 				(font
@@ -7836,7 +8007,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://industrial.panasonic.com/ww/products/pt/high-precision-chip-resistors/models/ERA3AEB1022V"
+		(property "Datasheet" ""
 			(at 269.24 317.5 0)
 			(hide yes)
 			(effects
@@ -7862,8 +8033,7 @@
 				)
 			)
 		)
-	
-		(property "Specification" "10.2k 0603 0.1W; manufacturer verified; procurement/assembly verification required"
+		(property "MPN" "TNPW06039K76BXEA"
 			(at 269.24 317.5 0)
 			(hide yes)
 			(effects
@@ -7871,9 +8041,33 @@
 					(size 1.27 1.27)
 				)
 			)
+		))
+	(symbol
+		(lib_id "Device:R")
+		(at 269.24 325.12 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6ceb940e-4fbe-5382-90fb-550609a00357")
+		(property "Reference" "R_TRIM"
+			(at 275.59 323.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
 		)
-		(property "TCR" "<=25 ppm/K"
-			(at 269.24 317.5 0)
+		(property "Value" "442"
+			(at 275.59 326.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 269.24 325.12 0)
 			(hide yes)
 			(effects
 				(font
@@ -7881,8 +8075,8 @@
 				)
 			)
 		)
-		(property "Tolerance" "0.1%"
-			(at 269.24 317.5 0)
+		(property "Datasheet" ""
+			(at 269.24 325.12 0)
 			(hide yes)
 			(effects
 				(font
@@ -7890,8 +8084,8 @@
 				)
 			)
 		)
-		(property "MPN" "ERA3AEB1022V"
-			(at 269.24 317.5 0)
+		(property "Description" "Resistor"
+			(at 269.24 325.12 0)
 			(hide yes)
 			(effects
 				(font
@@ -7899,8 +8093,16 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Panasonic"
-			(at 269.24 317.5 0)
+		(instances
+			(project "PDU"
+				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
+					(reference "R_TRIM")
+					(unit 1)
+				)
+			)
+		)
+		(property "MPN" "TNPW0603442RBXEA"
+			(at 269.24 325.12 0)
 			(hide yes)
 			(effects
 				(font
@@ -7924,7 +8126,7 @@
 				)
 			)
 		)
-		(property "Value" "9.53k"
+		(property "Value" "33.2k"
 			(at 250.19 307.34 0)
 			(effects
 				(font
@@ -7959,6 +8161,15 @@
 				)
 			)
 		)
+		(property "MPN" "CRCW060333K2FKEA"
+			(at 243.84 306.07 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -7985,7 +8196,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "4.7n"
+		(property "Value" "10n"
 			(at 244.475 326.39 0)
 			(effects
 				(font
@@ -8021,6 +8232,15 @@
 				)
 			)
 		)
+		(property "MPN" "C1608C0G1H103J080AA"
+			(at 243.84 323.85 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -8047,7 +8267,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "47p"
+		(property "Value" "22p"
 			(at 226.695 326.39 0)
 			(effects
 				(font
@@ -8075,6 +8295,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 226.06 323.85 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C1608C0G1H220J080AA"
 			(at 226.06 323.85 0)
 			(hide yes)
 			(effects
@@ -8143,6 +8372,15 @@
 				)
 			)
 		)
+		(property "MPN" "CRCW0603100KFKEA"
+			(at 218.44 306.07 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -8203,6 +8441,15 @@
 				)
 			)
 		)
+		(property "MPN" "IHLP4040DZER6R8M01"
+			(at 114.3 123.19 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -8255,6 +8502,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 91.44 123.19 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "WSL25127L500FEA"
 			(at 91.44 123.19 0)
 			(hide yes)
 			(effects
@@ -9037,6 +9293,15 @@
 				)
 			)
 		)
+		(property "MPN" "C1608X7R1H473K080AA"
+			(at 139.7 114.3 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -9091,6 +9356,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 167.64 158.75 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C2012X7R1E475K125AB"
 			(at 167.64 158.75 0)
 			(hide yes)
 			(effects
@@ -9161,6 +9435,15 @@
 				)
 			)
 		)
+		(property "MPN" "C1608X7R1H104K080AA"
+			(at 193.04 158.75 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -9221,6 +9504,15 @@
 				)
 			)
 		)
+		(property "MPN" "CRCW060349K9FKEA"
+			(at 233.68 125.73 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -9273,6 +9565,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 259.08 125.73 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CRCW060390K9FKEA"
 			(at 259.08 125.73 0)
 			(hide yes)
 			(effects
@@ -10762,7 +11063,7 @@
 				)
 			)
 		)
-		(property "Value" "180k"
+		(property "Value" "174k"
 			(at 234.95 90.17 0)
 			(effects
 				(font
@@ -10797,6 +11098,15 @@
 				)
 			)
 		)
+		(property "MPN" "TNPW0603174KBEEA"
+			(at 228.6 88.9 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -10822,7 +11132,7 @@
 				)
 			)
 		)
-		(property "Value" "10.0k"
+		(property "Value" "10k"
 			(at 234.95 107.95 0)
 			(effects
 				(font
@@ -10849,6 +11159,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 228.6 106.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TNPW060310K0BEEA"
 			(at 228.6 106.68 0)
 			(hide yes)
 			(effects
@@ -11360,6 +11679,15 @@
 				)
 			)
 		)
+		(property "MPN" "CRCW06031R00FKEA"
+			(at 146.05 262.89 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -11412,6 +11740,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 146.05 110.49 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CRCW06031R00FKEA"
 			(at 146.05 110.49 0)
 			(hide yes)
 			(effects
