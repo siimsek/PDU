@@ -100,12 +100,12 @@ io1_max             =  2.22486e-01 at=  1.68968e-04
 vraw_min_fault      =  2.66507e+00 at=  3.00010e+00
 
 
-Total analysis time (seconds) = 5.0987
+Total analysis time (seconds) = 4.99665
 
-Total elapsed time (seconds) = 5.109 
+Total elapsed time (seconds) = 5.007 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 9609.020 MB.
-Maximum ngspice program size =   23.172 MB.
-Current ngspice program size =   23.172 MB.
+DRAM currently available = 9663.020 MB.
+Maximum ngspice program size =   23.184 MB.
+Current ngspice program size =   23.184 MB.
 

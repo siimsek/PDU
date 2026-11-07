@@ -91,7 +91,7 @@ PARAMS: dict[str, P] = {
     "FSW_MIN": P(400e3, "Hz", "DATASHEET", "previous datasheet table basis 400/440/480 kHz (docs/design.md)"),
     "FSW_MAX": P(480e3, "Hz", "DATASHEET", "previous datasheet table basis 400/440/480 kHz (docs/design.md)"),
     "RFB1": P(130e3, "ohm", "DATASHEET", "ERA3AEB134V repo BOM, 0.1%"),
-    "RFB2": P(10.2e3, "ohm", "DATASHEET", "ERA3AEB1022V repo BOM, 0.1%"),
+    "RFB2": P(10.2e3, "ohm", "HESAP", "nominal RFB2 leg; G4: realised as RFB2_FIXED 9.76k TNPW + R_TRIM 442 ohm = 10.202k (+0.02 %, < half trim step; design.py)"),
 
     # ---- magnetics / sense / caps
     "L_NOM": P(6.8e-6, "H", "DATASHEET", DS["IHLP4040"] + " p.1"),
@@ -177,12 +177,12 @@ PARAMS: dict[str, P] = {
     "TVS_IN_VWM": P(33.0, "V", "DATASHEET", "Vishay SMCJ33A VWM, doc 88394 p.2"),
     "OC_INA_VCM_MAX": P(110.0, "V", "DATASHEET", DS["INA296"] + " p.5 VCM -5..110 V (survival -20..120 V)"),
     "OC_INA_SETTLE_TYP": P(1.0e-6, "s", "DATASHEET", DS["INA296"] + " p.6 settling to 1 % TYPICAL (no max)"),
-    "OC_INA_DELAY_SCREEN": P(1.5e-6, "s", "VARSAYIM", "1.5 x typical settling used in budget; O1 <= 11.94 V even at 4 us (n1-results.json)",
+    "OC_INA_DELAY_SCREEN": P(1.5e-6, "s", "VARSAYIM", "1.5 x typical settling used in budget; O1 <= 11.56 V even at 4 us, VIN 20/26 V worst (n1-results.json)",
                              "OC path timing; voltage path remains the guaranteed-delay backup"),
     "LM70880_VOUT_ABS": P(60.0, "V", "DATASHEET", DS["LM70880"] + " p.5 VOUT, ISNS+ abs max"),
     "LM70880_BIAS_ABS": P(32.0, "V", "DATASHEET", DS["LM70880"] + " p.5 BIAS abs max (G4: BIAS tied to AGND, p.13)"),
     "LFLOOR_BEYOND_16A": P(0.15, "-", "VARSAYIM", "L(I) above 16 A not published (doc 34207 p.3 ends at 16 A); floor swept 0.05-0.5",
-                           "O1 peak with OC trip: path B bound 11.50 V at 0.15, 11.87 V at 0.05 (low static corner)"),
+                           "O1 peak with OC trip: path B bound 11.17 V at 0.15, 11.35 V at 0.05 (n1-results.json)"),
 }
 
 # TPS25982 datasheet guaranteed ILIM points, TJ -40..125 C (p.9): RILIM -> (min, typ, max)

@@ -2,6 +2,21 @@
 
 G1 kapanış kararı (ortak bara seri ayırıcı, U3/U4 IN önünde) somutlaştırıldı. Hesaplar: [`analysis/g2/protection.py`](../../analysis/g2/protection.py) → [`protection-results.json`](protection-results.json); testler: [`analysis/g2/test_protection.py`](../../analysis/g2/test_protection.py). Etiketler: HESAP / DATASHEET(sayfa) / SİM / VARSAYIM / AÇIK. Bu belge **fiziksel kabul değildir**.
 
+## 0. G4 güncellemesi (geçerli; aşağıdaki G2/G3 sayılarıyla çelişirse bu bölüm geçerlidir)
+
+| Konu | G4 durumu | Kanıt |
+|---|---|---|
+| İkinci tetik yolu | **Faz aşırı akım tetiği**: her fazın RS'i → INA296A2 (G=20) → TLV3601, eşik 12.97–13.60 A (R_OCT 255 Ω / R_OCB 1.00 kΩ, 2.5 V REF); SN74LVC1G11 ile bara OV çıkışı (`/OVP_BUS_N`) ve iki OC çıkışı aynı mandal PRE_n'ine | [`N1-DECISION.md`](../g4/N1-DECISION.md), HESAP `n1-results.json` |
+| O1 tepe | HESAP ≤11.41 V (16 A üstü L tabanı 0.5…0.05, VIN 20/26 V, V0 alt/üst); SİM F1 ≤11.37 V, F5 48 köşe ≤11.07 V; yalnız gerilim tetiği (G3 tasarımı) 32× COUT ile HESAP 11.92–12.15 V (taban ≤0.15'te **FAIL**), protection.py doğrusal L 11.889 V | SİM-RESULTS F1/F5 |
+| OC zinciri gecikmesi | 2.556 µs (INA296 1.5 µs VARSAYIM; datasheet yalnız tipik 1 µs) + gerilim zinciri 1.048 µs; 4 µs INA gecikmesinde O1 11.56 V | HESAP |
+| U3/U4 IN | VSAFE ≤11.37 V (SİM) | SİM F1 |
+| Ham bara | ≤35.8 V (SİM F1/F5, 32× COUT) < LM70880 VOUT abs 60 V; TVS kelepçe reddedildi (40 A sınırı) | SİM |
+| R_OVT açık artık riski | **Kapandı**: OC yolu bağımsız → SİM F5 residual O1 11.20 V PASS | SİM F5 |
+| VIN TVS | SMCJ33A-E3/57T, VBR min 36.7 V, VC 53.3 V @ 28.1 A (Vishay doc 88394 p.2) — VARSAYIM'dan DATASHEET'e | DATASHEET |
+| LM70880 BIAS | AGND (p.13); fail-safe: VSAFE kaybı LM70880 beslemesini etkilemez | DATASHEET p.13 |
+| eFuse | TPS259824L aktif sınırlayıcı: ILIM'de termal kapanmaya kadar sınırlar, sonra mandallı (RETRY GND); EN/güç döngüsüyle temizlenir | DATASHEET p.4, p.30–32 |
+| Kalan tek nokta | Q_ISO D-S kısası (değişmedi, AÇIK) | — |
+
 ## 1. Uygulama seçenekleri
 
 | Ölçüt | **A (SEÇİLDİ)**: TLV3601 + REF5025A + SN74LVC1G74 → **LM74502H OV pini** → 1× CSD19531Q5A; LM74502H OV pininde bağımsız kaba OV bölücüsü | **B (YEDEK)**: G1 zinciri TLV3601/TLV1701 + REF5025A + SN74LVC1G74 + LTC7001 + 2× CSD19536KTT + TPS7A1601 12 V + 2× MMBT3904 INP kenetleme | **C (ELENDİ)**: Yalnız LM74502H, OV pini doğrudan VRAW bölücüsünden (entegre OVP kontrolcülü tek zincir) |
@@ -10,9 +25,9 @@ G1 kapanış kararı (ortak bara seri ayırıcı, U3/U4 IN önünde) somutlaşt�
 | Eşik köşesi | **11.2590–11.5368 V** (HESAP; G3: referans sürüklenmesi 165 K kutu yöntemiyle). Ref ±0.1 % + 8 ppm/K × 165 K, R 0.1 %/15 ppm/K (TNPW 'X'; 10 ppm yalnız TNPU serisinde), Vos ±5 mV, hist. 1.5–5 mV, IB ±5 µA, ΔT 100 K | Aynı karşılaştırıcı/referans → benzer | OV eşiği 1.165–1.333 V (DATASHEET p.6): oran 1.144 > izinli pencere 12.0/11.25 = 1.067 → **sayısal olarak imkânsız** |
 | Gecikme MAKS | 4.5 ns (TLV3601, 50 mV OD, VCM=VEE+0.3 V, p.7) + 6.4 ns (LVC1G74 PRE→Q, 5 V, −40…125 °C, p.7) + ~37 ns (OV düğümü RC, HESAP) + **1.000 µs (LM74502H tOVP_OFF max, C_GS=4.7 nF, p.6)** = **1.048 µs** | LTC7001 70 ns max yalnız 1 nF yükte; 2×CSD19536 (Qg max 153 nC/adet) yükünde **garanti edilemez**. LTC7001 datasheet'i bu turda okunamadı (analog.com bağlantı reddi) → **doğrulanamadı** | 1 µs max var, ama eşik çözülemez |
 | Gecikme koşulları | Karşılaştırıcı: datasheet VCM=0.3 V'ta test eder, bizde VCM≈2.53 V → **koşullu**. Sürücü: CSD19531Q5A Qg(13.9 V)≈63.1 nC vs test yükü 4.7 nF×13.9 V=65.3 nC (oran 0.97) → **koşullu, tezgâh ölçümüyle kabul** | **Garanti edilemez → yalnız tezgâh** | — |
-| O1 tepe (HESAP, en kötü köşe) | **11.941 V** (16× COUT; marj 59 mV, G3); **SİM F1 11.920 V, F5 48 köşe maks 11.920 V** (G3 yeniden koşu); 12× COUT'ta 11.962 V; özgün 8× COUT'ta **12.006 V FAIL** | Gecikme sınırı yok → hesaplanamaz | — |
-| U3/U4 IN tepe | VSAFE ≤11.941 V HESAP; SİM F1/F5 ≤11.922 V; korumasız referansta 33.0 V (FAIL korunur) | — | — |
-| FET VDS / VGS | 100 V vs VRAW maks 53.3 V (TVS clamp VARSAYIMI) → 46.7 V pay; VGS ≤13.9 V (LM74502H VCAP max) < 20 V | 100 V | — |
+| O1 tepe (HESAP, en kötü köşe) — G3 kaydı, geçerli değer §0 | **11.941 V** (16× COUT; marj 59 mV, G3); **SİM F1 11.920 V, F5 48 köşe maks 11.920 V** (G3 yeniden koşu); 12× COUT'ta 11.962 V; özgün 8× COUT'ta **12.006 V FAIL** | Gecikme sınırı yok → hesaplanamaz | — |
+| U3/U4 IN tepe — G3 kaydı, geçerli §0 | VSAFE ≤11.941 V HESAP; SİM F1/F5 ≤11.922 V; korumasız referansta 33.0 V (FAIL korunur) | — | — |
+| FET VDS / VGS | 100 V vs VRAW maks 53.3 V (SMCJ33A kelepçesi, DATASHEET doc 88394 p.2) → 46.7 V pay; VGS ≤13.9 V (LM74502H VCAP max) < 20 V | 100 V | — |
 | Kapanma enerjisi | ≤0.40 mJ (üçgen sınır 15 A × 53.3 V × 1 µs / 2) vs EAS 180 mJ → oran 0.0022. **SOA grafiği sayısal okunamadı → AÇIK** | SOA 100 µs'den kısa eğri yok → AÇIK | — |
 | İletim kaybı | 7.5 A, RDS(on) 6.4 mΩ × 1.8 (sıcak VARSAYIM) → 0.65 W, Tj≈117 °C (85 °C ortam, RθJA 50 K/W) | 2 FET seri → 2× RDS | — |
 | Ek aktif parça | 6 (CMP, REF, LAT, DRV, FET, LDO5) | 10 | 2 |
@@ -89,9 +104,9 @@ Bu değişirse ne değişir: L toleransı, VIN maks, faz bobini, COUT Ceff ve s�
 
 ## 5. SİM özeti
 
-F1: 3/3 korumalı koşu PASS (O1 ≤11.92 V), korumasız referans FAIL (O1 19.57 V, VSAFE 33.0 V). F5: 48/48 köşe PASS, O1 11.499–11.920 V, ham bara VRAW ≤34.07 V; hassas yol açık artık riski O1 13.98 V (FAIL, beklenen).
+G4 geçerli özet §0'dadır. G3 kaydı — F1: 3/3 korumalı koşu PASS (O1 ≤11.92 V), korumasız referans FAIL (O1 19.57 V, VSAFE 33.0 V). F5: 48/48 köşe PASS, O1 11.499–11.920 V, ham bara VRAW ≤34.07 V; hassas yol açık artık riski O1 13.98 V (FAIL, beklenen).
 
-### G3 ek bulgusu — bobin doyumu (AÇIK)
+### G3 ek bulgusu — bobin doyumu (G4'te kapandı: §0 ve N1-DECISION; aşağıdaki metin G3 kaydıdır)
 
 Yüksek taraf kısasında arızalı fazın akımı SİM'de 61–86 A tepeye çıkar (`il1_max_fault`); garanti eşiğine ulaşıldığı anda ≈32 A. IHLP4040DZER6R8M01 Isat **tipik** 13.5 A (%20 L düşüşü; doc 34509), daha yüksek akımda L(I) eğrisi sayısal olarak okunamadı. Model sabit L kullanır. Duyarlılık (HESAP, aynı köşe): L_eff/L = 0.8 → 11.941 V, 0.6 → 11.970 V, 0.5 → 11.990 V, **0.4 → 12.019 V (FAIL)**, 0.3 → 12.061 V. Çıkış yolu: (a) Vishay L(I) eğrisi veya tezgâhta ölçüm (BENCH T5c gerçek bobinle), (b) daha yüksek Isat'lı bobin, (c) COUT artırımı. **O1 ≤12.0 V iddiası bu nedenle koşulludur.** Ayrıntı [`SIM-RESULTS.md`](SIM-RESULTS.md).
 
@@ -99,5 +114,6 @@ Yüksek taraf kısasında arızalı fazın akımı SİM'de 61–86 A tepeye çı
 
 - Karşılaştırıcı gecikmesi VCM≈2.5 V'ta ve düşük overdrive'da garanti değil; sürücü 1 µs yalnız 4.7 nF toplu yükte garanti → **tezgâhta gerçek kapanma süresi ölçümü şart** (BENCH T5).
 - SOA (µs ölçeği) grafikten okunamadı; enerji oranı küçük ama fiziksel kabul AÇIK.
-- TVS clamp 53.3 V varsayımı (datasheet doğrulanamadı).
-- R_OVT açık devre ve Q_ISO kısa devre tek-nokta arızaları (artık risk).
+- TVS kelepçe 53.3 V: G4'te DATASHEET ile doğrulandı (Vishay doc 88394 p.2).
+- Q_ISO kısa devre tek-nokta arızası (artık risk). R_OVT açık devre G4'te OC yoluyla kapandı.
+- INA296 gecikmesi yalnız tipik (BENCH T5g); 16 A üstü L(I) yayımlanmamış (BENCH T5c / Vishay).

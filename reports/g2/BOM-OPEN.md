@@ -6,17 +6,17 @@ Toplam satır: **147**; MPN'li: **146**; MPN AÇIK: **1**.
 
 | Ref | Değer / gereksinim | Neden seçilemedi | Gereken belge |
 |---|---|---|---|
-| F1 | 10 A DC, >=53.3 VDC, >=1040 A breaking — candidate Littelfuse 0456020.ER (20 A, 65 VDC, I2t 18 A2s, 2.3 mOhm per Littelfuse page); DC interrupting rating not readable (PDF only via download) -> AÇIK | Sigorta üretici datasheet'leri erişilemedi (Littelfuse 403/DNS); kaynak kısa devre akımı 127–1040 A | Sigorta + yuva datasheet'i (DC kesme, I²t) |
+| F1 | 10 A DC, >=53.3 VDC, >=1040 A breaking — candidate Littelfuse 0456020.ER (20 A, 65 VDC, I2t 18 A2s, 2.3 mOhm per Littelfuse page); DC interrupting rating not readable (PDF only via download) -> AÇIK | G4: Littelfuse ürün sayfası okundu, datasheet PDF yalnız indirme olarak açıldı (DC kesme kapasitesi okunamadı); kaynak kısa devre akımı 127–1040 A | Sigorta + yuva datasheet'i (DC kesme, I²t) |
 
 ## Derating uyarıları
 
 - R/C satırlarında %50 sınırını aşan uygulama yok (MPN'siz C satırları için gereken anma gerilimi `v_rating` sütununda).
 
-## Mutlak maksimuma yakın (>%80) aktif parçalar (53.3 V TVS clamp VARSAYIMINA göre)
+## Mutlak maksimuma yakın (>%80) aktif parçalar (53.3 V SMCJ33A kelepçesine göre, DATASHEET Vishay doc 88394 p.2)
 
-- U5 (LM74700QDBVRQ1): 82% — TVS datasheet doğrulanınca yeniden kontrol
-- U6 (LM74502HDDFR): 82% — TVS datasheet doğrulanınca yeniden kontrol
-- U10 (TPS7A1650QDGNRQ1): 89% — TVS datasheet doğrulanınca yeniden kontrol
+- U5 (LM74700QDBVRQ1): 82% — kısa süreli kelepçe gerilimi; abs-max altında, BENCH T1 hot-plug ile ölç
+- U6 (LM74502HDDFR): 82% — kısa süreli kelepçe gerilimi; abs-max altında, BENCH T1 hot-plug ile ölç
+- U10 (TPS7A1650QDGNRQ1): 89% — kısa süreli kelepçe gerilimi; abs-max altında, BENCH T1 hot-plug ile ölç
 
 ## Özel footprint gereken satırlar
 

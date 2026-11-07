@@ -25,12 +25,12 @@ s2e_end             =  1.09577e+01
 ens_min_dip         =  -2.38946e-216 at=  1.10078e-02
 
 
-Total analysis time (seconds) = 89.6582
+Total analysis time (seconds) = 86.2629
 
-Total elapsed time (seconds) = 89.670 
+Total elapsed time (seconds) = 86.271 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 9396.727 MB.
-Maximum ngspice program size =   18.207 MB.
-Current ngspice program size =   17.418 MB.
+DRAM currently available = 9668.750 MB.
+Maximum ngspice program size =   18.223 MB.
+Current ngspice program size =   17.430 MB.
 

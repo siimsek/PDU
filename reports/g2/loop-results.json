@@ -34,12 +34,12 @@
   },
   "bench_adjust": {
     "rcomp_range": [
-      10000.0,
-      33000.0
+      22000.0,
+      47000.0
     ],
     "ccomp_range": [
-      2.2e-09,
-      1e-08
+      4.7e-09,
+      2.2e-08
     ],
     "chf_range": [
       2.2e-11,
@@ -127,7 +127,7 @@
         "pm_deg": 63.10835830659998,
         "deck": "reports/g2/sim/loop/ac_case0.cir",
         "log": "reports/g2/sim/loop/ac_case0.log",
-        "sha256": "3eaa58ec86bf58308e35675d2bf041ea34b554143f884ced72295e1f2435920d"
+        "sha256": "aca88e2597e59597642660a7be77d363c0b24065b13408efe4b4f774a8a3be05"
       },
       "diff_pm_deg": 8.05049645151712e-05,
       "diff_fc_rel": 2.6634443806017316e-07
@@ -149,7 +149,7 @@
         "pm_deg": 63.29031298005905,
         "deck": "reports/g2/sim/loop/ac_case1.cir",
         "log": "reports/g2/sim/loop/ac_case1.log",
-        "sha256": "d44932dd1414dcf73207bddc4182b3957338ff682aeac336ac8b81cf188df232"
+        "sha256": "c2197f913334706f594daa5ef363fbecb60b9c9a1ee1605d4e2e6ba60f95a93a"
       },
       "diff_pm_deg": -2.589419953125116e-05,
       "diff_fc_rel": -8.597258371878524e-08
@@ -171,7 +171,7 @@
         "pm_deg": 63.49511080797386,
         "deck": "reports/g2/sim/loop/ac_case2.cir",
         "log": "reports/g2/sim/loop/ac_case2.log",
-        "sha256": "fbe5d2ea9d1bc528830503eb5806876cadbb140565b3c0d5d33183066d76c69a"
+        "sha256": "df2e6f0bdbaa1ab5bc5d4def281bb4178f4e1ea9adc6e29e05f5a9556285849d"
       },
       "diff_pm_deg": 7.012821653518131e-05,
       "diff_fc_rel": 3.556440582030973e-07
@@ -193,7 +193,7 @@
         "pm_deg": 83.15349193357389,
         "deck": "reports/g2/sim/loop/ac_case3.cir",
         "log": "reports/g2/sim/loop/ac_case3.log",
-        "sha256": "3e505a83821973e87c889339cd92fb9670ce73ef2709e4e194db8219617f3597"
+        "sha256": "9df4e3e731760c5f35284bc75c8063f12e3cba267ad293b195dcab4709ee2a1e"
       },
       "diff_pm_deg": 6.674413072005336e-05,
       "diff_fc_rel": -5.6779038026810724e-08
@@ -215,7 +215,7 @@
         "pm_deg": 83.09263667172772,
         "deck": "reports/g2/sim/loop/ac_case4.cir",
         "log": "reports/g2/sim/loop/ac_case4.log",
-        "sha256": "69c1e062c2af22ddc3562c61ed90f1e8423d1844213bffd4b32c4ed965b75df8"
+        "sha256": "3359b703c04f93864f01857b23e3bea7fdcfd4416fff3bfbbe5ea1f6ba446992"
       },
       "diff_pm_deg": 2.9201399883049817e-05,
       "diff_fc_rel": -1.1574229019650772e-08

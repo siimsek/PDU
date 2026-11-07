@@ -1,3 +1,5 @@
+> Bu dosya alt ajan A'ya verilen **G3 durumu** girdisidir (G4 öncesi değerler bilinçli olarak G3'teki gibidir: RCOMP 16.9k, 16× COUT, RFB2 10.2k). Geçerli değerler: `analysis/g2/design.py`.
+
 # G4 bağımsız yeniden türetme girdileri (sonuç içermez)
 
 Bu tablo yalnız datasheet değerleri ve seçilmiş devre değerlerini verir. G3 sonuç dosyalarından türetilmemiştir.

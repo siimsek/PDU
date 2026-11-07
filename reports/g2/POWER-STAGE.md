@@ -25,7 +25,7 @@ Isat/Iheat **tipik** değerdir; çekirdek kaybı Vishay hesaplayıcısı olmadan
 
 | Grup | Değer | Hesap | Durum |
 |---|---|---|---|
-| COUT | **16× TDK C5750X7S2A226M280KB** (8 mevcut + 8 yeni COUT9–16) | Ceff min/typ/max 185.3 / 330.0 / 515.3 µF (G1 TDK modeli + tolerans/ısı/%10 yaşlanma); ESR 0.12 mΩ; gerilim kullanım oranı 11 V/100 V = %11 (≥%50 marj ✓, DC-bias Ceff'e dahil) | DATASHEET+HESAP |
+| COUT | **32× TDK C5750X7S2A226M280KB** (8 mevcut + 24 yeni COUT9–32; G4) | Ceff min/typ/max 370.6 / 659.9 / 1030.7 µF (G1 TDK modeli + tolerans/ısı/%10 yaşlanma); ESR 0.06 mΩ; gerilim kullanım oranı 11 V/100 V = %11 (≥%50 marj ✓, DC-bias Ceff'e dahil) | DATASHEET+HESAP |
 | COUT ripple akımı (2 faz iptali) | 0.7777 A p-p (A) / 0.7777 A (B), fark 0.05 mA | ΔV ≈ 0.75 mV p-p | HESAP |
 | CIN | 8× 4.7 µF 1210 (mevcut değer) | Irms 1.125 A (A, ripple hariç) / 1.197 A (B, ripple dahil), fark 72 mA (yol farkı modelden); VIN taramasında en kötü 1.353 A; kapasitör başına ~0.15 A | **MPN ve DC-bias doğrulanamadı** (TDK/Murata 403) → BOM-OPEN; Ceff %50 VARSAYIM |
 
@@ -45,7 +45,7 @@ Toplam verim **%92 VARSAYIM** (LM70880 datasheet'inde RDS(on)/anahtarlama kaybı
 | LDO5 | 0.336 | HESAP |
 | **Kart toplamı** | **8.97** | |
 
-**LM70880 Tj** (85 °C ortam VARSAYIMI): JEDEC θJA 33.5 K/W → 179.9 °C; EVM θJA 18.6 K/W → 137.7 °C. **125 °C taramasını aşar (FAIL, VARSAYIM bağımlı).** Tj ≤125 °C için izinli ortam: EVM kartında ≤72 °C, JEDEC kartında ≤30 °C. Kart ortalama ısınması ~58 K (doğal taşınım 10 W/m²K VARSAYIM). → Ortam sıcaklığı kullanıcı girdisi (USER-DECISIONS) ve tezgâh termal ölçümü (BENCH T4) şart. Verim varsayımı değişirse IC kaybı ve Tj doğrudan değişir.
+**LM70880 Tj** — G4 (BIAS = AGND, IC kaybı 3.00 W, `g4_tj_by_ambient_C`): EVM θJA 18.6 K/W ile **50 °C ortam 105.9 °C, 40 °C ortam 95.9 °C** (geçer); JEDEC θJA 33.5 K/W ile 50 °C'de 150.6 °C (FAIL → EVM benzeri bakır/via zorunlu). Tj ≤125 °C için EVM kartında ortam ≤69 °C. G2 kaydı (85 °C, BIAS'sız kayıp): JEDEC 179.9 °C; EVM 137.7 °C → **85 °C'de FAIL korunur**. Kart ortalama ısınması ~58 K (doğal taşınım 10 W/m²K VARSAYIM). → Ortam sıcaklığı kullanıcı girdisi (USER-DECISIONS) ve tezgâh termal ölçümü (BENCH T4) şart. Verim varsayımı değişirse IC kaybı ve Tj doğrudan değişir.
 
 ## 5. eFuse ILIM / IMON / EN / dV/dt
 

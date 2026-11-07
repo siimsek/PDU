@@ -151,8 +151,10 @@ def compute():
     keep = INA_DELAY_SCREEN
     for d in (1.0e-6, 1.5e-6, 2.0e-6, 3.0e-6, 4.0e-6):
         INA_DELAY_SCREEN = d
-        r_ = simulate(0.05, True, v0=11.1605)
-        sens.append({"ina_delay_s": d, "o1_peak_V": r_["o1_peak_V"], "i_at_open_A": r_["i_at_open_A"], "trip_path": r_["trip_path"]})
+        r_ = max((simulate(0.05, True, vin=vi, v0=11.1605) | {"vin": vi} for vi in (20.0, 26.0)),
+                 key=lambda x: x["o1_peak_V"])
+        sens.append({"ina_delay_s": d, "o1_peak_V": r_["o1_peak_V"], "vin_worst": r_["vin"],
+                     "i_at_open_A": r_["i_at_open_A"], "trip_path": r_["trip_path"]})
     INA_DELAY_SCREEN = keep
     res = {
         "ina_delay_sensitivity_floor0p05_v0high": sens,

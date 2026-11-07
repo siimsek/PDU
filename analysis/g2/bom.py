@@ -364,7 +364,7 @@ def main():
              "| Ref | Değer / gereksinim | Neden seçilemedi | Gereken belge |", "|---|---|---|---|"]
     reason = {"C": ("MLCC üretici datasheet'ine erişilemedi (TDK/Murata 403; Vishay VJ serisi X7R ≥1 µF ve seçim tablosu "
                     "kombinasyonu metinden doğrulanamadı); DC-bias eğrisi yok", "Seçilecek MLCC serisinin datasheet'i + DC-bias eğrisi"),
-              "F": ("Sigorta üretici datasheet'leri erişilemedi (Littelfuse 403/DNS); kaynak kısa devre akımı 127–1040 A", "Sigorta + yuva datasheet'i (DC kesme, I²t)"),
+              "F": ("G4: Littelfuse ürün sayfası okundu, datasheet PDF yalnız indirme olarak açıldı (DC kesme kapasitesi okunamadı); kaynak kısa devre akımı 127–1040 A", "Sigorta + yuva datasheet'i (DC kesme, I²t)"),
               "D": ("TVS datasheet'i erişilemedi", "SMCJ33A resmi datasheet'i (Vishay/Littelfuse)"),
               "J": ("Molex PS-43045 sunucusu bağlantıyı reddetti", "Molex PS-43045-001 + mating housing/crimp"),
               "SW": ("G1 adayı bu turda okunmadı", "Buton datasheet'i")}
@@ -377,10 +377,10 @@ def main():
             lines.append(f"- {row['ref']}: {row['derating']:.0%} > %50")
     else:
         lines.append("- R/C satırlarında %50 sınırını aşan uygulama yok (MPN'siz C satırları için gereken anma gerilimi `v_rating` sütununda).")
-    lines += ["", "## Mutlak maksimuma yakın (>%80) aktif parçalar (53.3 V TVS clamp VARSAYIMINA göre)", ""]
+    lines += ["", "## Mutlak maksimuma yakın (>%80) aktif parçalar (53.3 V SMCJ33A kelepçesine göre, DATASHEET Vishay doc 88394 p.2)", ""]
     for row in R:
         if row["kind"] in ("U", "Q", "D") and isinstance(row["derating"], float) and row["derating"] > 0.8:
-            lines.append(f"- {row['ref']} ({row['mpn'] or row['value']}): {row['derating']:.0%} — TVS datasheet doğrulanınca yeniden kontrol")
+            lines.append(f"- {row['ref']} ({row['mpn'] or row['value']}): {row['derating']:.0%} — kısa süreli kelepçe gerilimi; abs-max altında, BENCH T1 hot-plug ile ölç")
     lines += ["", "## Özel footprint gereken satırlar", ""]
     for row in R:
         if row["custom_footprint"]:

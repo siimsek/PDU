@@ -98,12 +98,12 @@ il1_max_fault       =  1.38330e+02 at=  1.43659e-04
 il1_at_open         =  2.21041e+01
 
 
-Total analysis time (seconds) = 0.550019
+Total analysis time (seconds) = 0.54601
 
-Total elapsed time (seconds) = 0.556 
+Total elapsed time (seconds) = 0.553 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 9614.055 MB.
-Maximum ngspice program size =   12.391 MB.
-Current ngspice program size =   12.391 MB.
+DRAM currently available = 9675.555 MB.
+Maximum ngspice program size =   12.402 MB.
+Current ngspice program size =   12.402 MB.
 

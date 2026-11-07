@@ -233,7 +233,7 @@ def compute(run_spice=True):
            "pass_pm": ev["pm_min"] - PM_MODEL_MARGIN >= PM_TARGET, "pass_gm": ev["gm_min"] >= GM_TARGET,
            "old_comp_16cout": {"pm_min": old["pm_min"], "gm_min": old["gm_min"], "fc": [old["fc_min"], old["fc_max"]]},
            "old_comp_8cout": {"pm_min": old8["pm_min"], "gm_min": old8["gm_min"], "fc": [old8["fc_min"], old8["fc_max"]]},
-           "bench_adjust": {"rcomp_range": [10e3, 33e3], "ccomp_range": [2.2e-9, 10e-9], "chf_range": [22e-12, 100e-12],
+           "bench_adjust": {"rcomp_range": [22e3, 47e3], "ccomp_range": [4.7e-9, 22e-9], "chf_range": [22e-12, 100e-12],
                             "fra_injection": "R_INJ 49.9 ohm in RFB1 leg (0 ohm default), TP_FB_INJ_A/B"},
            "worst_rows": sorted(ev["rows"], key=lambda r: r["pm_deg"])[:5]}
     if run_spice:

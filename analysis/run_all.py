@@ -1,4 +1,4 @@
-"""Reproduce every G2 calculation, simulation and test with one command.
+"""Reproduce every G2/G4 calculation, simulation and test with one command.
 
     python analysis/run_all.py            # all calculations + all 5 ngspice families + pytest
     python analysis/run_all.py --skip-sim # calculations + pytest using the stored sim-results.json
@@ -22,8 +22,12 @@ STEPS = [
     ("protection (Stage 2)", [sys.executable, "-m", "analysis.g2.protection"]),
     ("power stage / ILIM / UVLO / input (Stage 3)", [sys.executable, "-m", "analysis.g2.power"]),
     ("loop analytic + ngspice AC (Stage 4)", [sys.executable, "-m", "analysis.g2.loop"]),
+    ("N1 phase-OC trip / L(i) (G4 B1)", [sys.executable, "-m", "analysis.g2.n1"]),
+    ("stacked tolerance + trim (G4 B4)", [sys.executable, "-m", "analysis.g2.b4"]),
+    ("gm / UVLO open assumptions (G4 B5)", [sys.executable, "-m", "analysis.g2.b5"]),
     ("routing inputs (Stage 6)", [sys.executable, "-m", "analysis.g2.routing"]),
-    ("BOM v2 / spec / BOM-OPEN (Stage 6)", [sys.executable, "-m", "analysis.g2.bom"]),
+    ("BOM v2 / spec / footprint map (Stage 6, G4 C)", [sys.executable, "-m", "analysis.g2.bom"]),
+    ("spec <-> BOM <-> SPICE consistency (G4 C3)", [sys.executable, "analysis/check_consistency.py"]),
     ("full-system ngspice families F1-F5 (Stage 5)", [sys.executable, "-m", "analysis.g2.sim_runner"]),
     ("pytest (all)", [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider"]),
 ]

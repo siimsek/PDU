@@ -33,8 +33,8 @@ def static_window():
     return lo, hi
 
 
-RFB2_FIXED = 9.76e3          # TNPW 0.1 %
-R_TRIM_DEFAULT = 442.0       # TNPW 0.1 %, 9.76k + 442 = 10.202k (nominal unchanged)
+RFB2_FIXED = D.RFB2_FIXED    # TNPW 0.1 % (single source: design.py)
+R_TRIM_DEFAULT = D.R_TRIM_DEFAULT
 
 
 def trim_table():

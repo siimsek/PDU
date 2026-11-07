@@ -54,13 +54,13 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 | R29 | Tamamlanmayan simülasyon PASS sayılmaz; FAIL silinmez; ilk/son deneme ve hash saklanır. | G1-R2-04, 6693550928 | `analysis/g2/sim_runner.py` completed bayrağı + SHA256. | Tasarımda |
 | R30 | Tezgâh enjeksiyonu için erişim: VRAW enjeksiyon padi, VSAFE/O1/S2E/GATE test noktaları; enjeksiyon akım sınırlı fixture ile. | G1 KICAD-CHANGE-LIST | KICAD-CHANGE-LIST-FINAL test noktaları. | Tasarımda |
 
-## Kapanış durumu (Aşama 6)
+## Kapanış durumu (Aşama 6; G4 güncellemesi satırlarda "G4:" ile)
 
 | ID | Sağlandı? | Kanıt | AÇIK kalan |
 |---|---|---|---|
-| R01 | Evet (model) | SİM F1/F5: VSAFE ≤11.922 V (korumasız referans 33.0 V FAIL) | fiziksel T5c; bobin doyumu (G3) |
-| R02 | **Koşullu** (G3 denetim D1) | HESAP 11.941 V, SİM F1/F5 maks 11.920 V — iki gecikme datasheet test koşulu dışında; parazitik/ölçüm payı bütçede yok; bobin doyumu: L_eff ≤0.4 → 12.019 V FAIL | tezgâh T5b/T5c; L(I) eğrisi; ölçüm belirsizliği |
-| R03 | Kısmen | trip_min 11.2590 V (bant + 39.0 mV); SİM F3 nominal bırakma ≤11.19 V < 11.22 V, mandal trip_min'de modellenerek set olmadı | yığılmış üst köşe: bırakma mandalı set eder (F3 FAIL, q=1) → trim/kullanıcı kararı |
+| R01 | Evet (model) | G4: SİM F1/F5 VSAFE ≤11.37 V (korumasız referans F1 27.87 V FAIL korunur) | fiziksel T5c |
+| R02 | **Evet (koşullu, tezgâh)** | G4: faz OC tetiği; HESAP ≤11.41 V (L tabanı 0.05'e kadar), SİM F1 ≤11.37 V, F5 ≤11.07 V; 4× tipik INA gecikmesinde 11.56 V. G3 kaydı (yalnız gerilim tetiği, L_eff ≤0.4 → 12.019 V FAIL) N1-DECISION'da korunur | T5b/T5c/T5g; INA296 gecikmesi tipik; L(I) >16 A |
+| R03 | Evet (trimli) | G4: trip_min 11.2590 V; SİM F3 nominal bırakma ≤11.09 V, trimli üst köşe 11.20 V < 11.22 V, mandal set olmaz | trimsiz yığılmış üst köşe 11.26 V FAIL (görünür) → kabul kart başı trim (T1b) |
 | R04 | Evet (koşullu) | DATASHEET maks değerler ve koşulları `params.py`'de | VCM/overdrive ve 4.7 nF eşdeğerliği tezgâhta |
 | R05 | Evet | HESAP: VCM aralık dışı VRAW>23.24 V; kaba OV ≤13.70 V | — |
 | R06 | Evet | HESAP 6.29 / 6.47 mA < 10 mA | — |
@@ -73,18 +73,18 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 | R13 | Evet | R_GS 100 kΩ (BOM) | — |
 | R14 | Koşullu | Qg oranı 0.97 (gerçek ≤ test yükü) | tezgâh T5b |
 | R15 | Kısmen | VDS payı 46.7 V | SOA µs grafiği okunamadı; EAS (çığ) anahtarlama SOA'sı değildir, modelde anahtar ideal → enerji kanıtı yok (G3 D7) |
-| R16 | Evet (model) | SİM F4: D_REV ile OUT−IN 0.133 V; D_REV'siz 0.777 V FAIL | Schottky Vf/sıcak kaçak tipik; T6b |
+| R16 | Evet (model) | G4: SİM F4 D_REV ile OUT−IN 0.115 V; D_REV'siz 0.758 V FAIL | Schottky Vf/sıcak kaçak tipik; T6b |
 | R17 | Evet | DATASHEET p.9 tablo noktaları; toplam min 11.59 A | — |
-| R18 | Hayır | — | Molex PS okunamadı → AÇIK |
+| R18 | Evet | G4: Molex ürün sayfaları (Active, 8.5 A/kontak); J2 43045-0400 2 kontak/kutup (ILIM_O1 max 9.07 A), J1/J3 43045-0200; terminal 43030-0038 | fiziksel ısınma ölçümü (T4) |
 | R19 | Evet | KICAD-CHANGE-LIST-FINAL (REN1 → VSAFE) | — |
 | R20 | Evet | R_OVT 26 V'ta %20 (geçici 53.3 V'ta %84, kısa süreli) | — |
 | R21 | Evet | U10 IN = VIN | termal VIN 26 V: 0.34 W |
 | R22 | Evet | Kapı kapatma EN bölücüsüyle | — |
-| R23 | Kısmen | Referans/alt direnç arızası güvenli | R_OVT açık: kaba yol 11.58–13.74 V, SİM O1 13.98 V (artık risk); Q2 D-S kısa (tek nokta) |
+| R23 | Kısmen | Referans/alt direnç arızası güvenli; G4: R_OVT açıkken OC yolu korur, SİM F5 residual O1 11.20 V PASS | Q2 D-S kısa (tek nokta) |
 | R24 | Evet | Bölücü VRAW'da | — |
 | R25 | Evet | CBOOT 47 nF + 1 Ω; LM74502H VCAP 100 nF | — |
-| R26 | Kısmen | SİM F3 nominal 8/8 PASS (VIN 20/22.2/26 V, min 10.802 V, marj 22 mV; O1 portunda ≈10.69 V bilgi) — G1 Family 4 FAIL nominal köşede kapandı | yığılmış alt köşe min 10.64 V FAIL → trim/kullanıcı kararı; ince marj tezgâhta |
-| R27 | Evet (model) | 216 köşe PM 66.9° (−10° → 56.9°), GM 11.7 dB; ngspice AC <0.001°; gm maks VARSAYIM | tezgâh FRA T3 |
-| R28 | Evet | her modülde path A/B + fark; 95 pytest; G3 bağımsız yeniden türetme 10/10 ≤%1 | bağımsız fiziksel ikinci yol yok |
+| R26 | Evet (nominal + trimli) | G4: 32× COUT + RCOMP 33.2k; SİM F3 nominal min 10.89–10.93 V, trimli alt köşe 10.79 V | trimsiz yığılmış alt köşe 10.73 V FAIL (görünür); trim kabulü VFB sıcaklık payı VARSAYIMI'na bağlı (B2-B6 §B4) |
+| R27 | Evet (model) | G4: 216 köşe PM 63.1° (−10° → 53.1°), GM 11.5 dB; ngspice AC <0.001°; gm 0.5–1.8 mS taramada geçer | tezgâh FRA T3 |
+| R28 | Evet | her modülde path A/B + fark; pytest (sayı VERIFY.md); G4 alt ajan A yeniden türetme 7/10 <%1, 3 fark kök nedenli (AUDIT2) | bağımsız fiziksel ikinci yol yok |
 | R29 | Evet | sim-results.json completed/SHA256, `-attemptN` | — |
 | R30 | Evet | KICAD-CHANGE-LIST-FINAL §3 | — |

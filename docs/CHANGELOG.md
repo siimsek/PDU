@@ -1,5 +1,12 @@
 # Değişiklik kaydı
 
+## 7 Kasım 2026 — G4 kapanış (wp/g4-closure)
+
+- Faz aşırı akım tetiği (INA296A2 + TLV3601 ×2, SN74LVC1G11) ortak bara ayırıcı mandalına eklendi; doğrusal olmayan L(i) modeli; O1 HESAP ≤11.41 V.
+- 32× COUT, RCOMP 33.2 kΩ, RFB2 9.76 kΩ + R_TRIM (kart başı trim); LM70880 BIAS → AGND.
+- BOM 146/147 MPN (TDK MLCC, Molex konnektör, Vishay SMCJ33A, Omron buton); `design/footprint-map.csv`; `analysis/check_consistency.py`.
+- Raporlar: `reports/g4/` (AUDIT2, N1-DECISION, B2-B6, PCB-READY-v2, USER-DECISIONS).
+
 ## 19 Ekim2026 — hesap ve rapor eşliği düzeltmesi
 
 - `calculate.py` eski2,61k/4,99k IMON ve25 V COUT bilgileri yerine güncel Konnect export/BOM verisine bağlandı.88 µF önceki kompanzasyon dayanağı,164,98 µF tipik üretici verisi ve257,664 µF üst hassasiyet ayrı etiketlendi; yeni direnç önerileri uygulanmış sayılmıyor.

@@ -94,15 +94,15 @@
     10.846379411764707,
     11.145777450980393
   ],
-  "f3_dip_V": 0.19420000000000037,
-  "f3_overshoot_V": 0.1936,
+  "f3_dip_V": 0.10230000000000139,
+  "f3_overshoot_V": 0.09759999999999991,
   "corners": [
     {
       "window": "untrimmed",
       "static_lo_V": 10.83326782975716,
       "static_hi_V": 11.160459243126857,
-      "step_min_V": 10.63906782975716,
-      "release_max_V": 11.354059243126857,
+      "step_min_V": 10.730967829757159,
+      "release_max_V": 11.258059243126857,
       "min_ok": false,
       "max_ok_band": false,
       "steady_ok": true
@@ -111,10 +111,10 @@
       "window": "trimmed",
       "static_lo_V": 10.887614705882353,
       "static_hi_V": 11.104542156862744,
-      "step_min_V": 10.693414705882352,
-      "release_max_V": 11.298142156862744,
-      "min_ok": false,
-      "max_ok_band": false,
+      "step_min_V": 10.785314705882351,
+      "release_max_V": 11.202142156862744,
+      "min_ok": true,
+      "max_ok_band": true,
       "steady_ok": true
     }
   ],

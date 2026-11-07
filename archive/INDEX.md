@@ -1,4 +1,4 @@
-# archive/ — taşınmış kanıt dizini (G3, 2026-11-07)
+# archive/ — taşınmış kanıt dizini (G3, G4 eki 2026-11-07)
 
 Hiçbir dosya silinmedi; hepsi `git mv` ile taşındı (geçmiş: `git log --follow <yeni yol>`). Bayt bütünlüğü: [`MANIFEST-SHA256.txt`](MANIFEST-SHA256.txt) (`sha256sum -c archive/MANIFEST-SHA256.txt`), `.gitattributes` `/archive/** -text` ile satır sonu dönüşümü kapalı. **Gerekmedikçe okuma**; güncel durum için [`docs/START-HERE.md`](../docs/START-HERE.md).
 
@@ -13,6 +13,7 @@ Hiçbir dosya silinmedi; hepsi `git mv` ile taşındı (geçmiş: `git log --fol
 | `docs-legacy/docs/archive/` | Eski doküman arşivi, netlist ve ekran görüntüleri | `docs/archive/` | Zaten arşivdi; tek kökte toplandı | `docs/START-HERE.md` |
 | `renders/` | Şema/PCB PNG/SVG render'ları | `hardware/`, kök | Üretilmiş görsel | — |
 | `g2-sim-attempts/` (188) | G2 SPICE `-attemptN` deck/log çiftleri (yakınsama düzeltmeleri öncesi) | `reports/g2/sim/f1..f5/` | İlk/son deneme kanıtı; nihai koşular `reports/g2/sim/` | `reports/g2/SIM-RESULTS.md`, `reports/g2/PROGRESS.md` K5 |
+| `g2-sim-attempts/g4-rerun/` (164), `superseded-g3/` (96), `g3-rerun/` (40) | G3/G4 yeniden koşularında deck değiştiği için korunan önceki deck/log'lar (G4: 32× COUT, L(i), OC tetiği) | `reports/g2/sim/f1..f5/` | `sim_runner.py` deneme kuralı (FAIL/deneme silinmez) | `reports/g2/SIM-RESULTS.md` |
 | `g2-debug/` | G2 hata ayıklama deck/log'ları (d.cir, e.cir) | `reports/g2/sim/f2`, `f4` | Rapor sayısına bağlı değil | — |
 
 Repodan çıkarılan (git rm, geçmişte duruyor): `reports/g2/sim/f2/d.txt` (10.8 MB) ve `reports/g2/sim/f4/e.txt` (29.1 MB) — G2 hata ayıklama dalga biçimi dökümleri, hiçbir rapor sayısına kaynak değil; commit `a99ee4b` içinde geri alınabilir (`git show a99ee4b:reports/g2/sim/f4/e.txt`).

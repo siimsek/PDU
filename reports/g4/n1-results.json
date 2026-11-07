@@ -2,31 +2,36 @@
   "ina_delay_sensitivity_floor0p05_v0high": [
     {
       "ina_delay_s": 1e-06,
-      "o1_peak_V": 11.335918239175458,
-      "i_at_open_A": 21.018516160706017,
+      "o1_peak_V": 11.386735670383844,
+      "vin_worst": 20.0,
+      "i_at_open_A": 17.595615783498605,
       "trip_path": "OC"
     },
     {
       "ina_delay_s": 1.5e-06,
-      "o1_peak_V": 11.365027558312423,
-      "i_at_open_A": 23.101010592309486,
+      "o1_peak_V": 11.41064261819329,
+      "vin_worst": 20.0,
+      "i_at_open_A": 18.623296083826713,
       "trip_path": "OC"
     },
     {
       "ina_delay_s": 2e-06,
-      "o1_peak_V": 11.396989915857462,
-      "i_at_open_A": 25.347116122462264,
+      "o1_peak_V": 11.435923267798094,
+      "vin_worst": 20.0,
+      "i_at_open_A": 19.676924051090968,
       "trip_path": "OC"
     },
     {
       "ina_delay_s": 3e-06,
-      "o1_peak_V": 11.470550410490732,
-      "i_at_open_A": 30.56947337388406,
+      "o1_peak_V": 11.49075300410238,
+      "vin_worst": 20.0,
+      "i_at_open_A": 21.87278498407194,
       "trip_path": "OC"
     },
     {
       "ina_delay_s": 4e-06,
       "o1_peak_V": 11.560162533931413,
+      "vin_worst": 26.0,
       "i_at_open_A": 37.89604512751455,
       "trip_path": "OC"
     }
