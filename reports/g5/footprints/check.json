@@ -2,6 +2,24 @@
   "tolerance_mm": 0.02,
   "results": [
     {
+      "footprint": "TDSON-8-1_Konnect",
+      "source": "Infineon BSC160N10NS3 G datasheet Rev. 2.4, Fig. 2 p.10 (footprint); PG-TDSON-8-1 package drawing Rev. 01.00 p.2",
+      "pin_table_source": "—",
+      "pads_checked": 5,
+      "polygons_checked": 0,
+      "pass": true,
+      "errors": []
+    },
+    {
+      "footprint": "TDK_C5750_2220_Recommended",
+      "source": "TDK Product Center C5750X7S2A226M280KB, Recommended Land Pattern PA 4.10-4.80 / PB 1.20-1.40 / PC 4.00-5.00 mm",
+      "pin_table_source": "—",
+      "pads_checked": 2,
+      "polygons_checked": 0,
+      "pass": true,
+      "errors": []
+    },
+    {
       "footprint": "TPS25982_RGE0024M",
       "source": "TI TPS25982 SLVSEI3D, RGE0024M 4223975/B, p.55 (outline), p.56 (example board layout)",
       "pin_table_source": "TI TPS25982 Table 5-1, p.5-6 (thermal pad 1 = IN, pad 2 = GND)",

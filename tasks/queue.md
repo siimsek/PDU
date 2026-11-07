@@ -15,11 +15,12 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [D-002](done/D-002.md) | THINKER | S | — | Done |
 | [D-005](done/D-005.md) | THINKER | S | D-002 | Done |
 | [T-004](done/T-004.md) | BUILDER | S | D-001 (Done) | Done |
-| [D-006](D-006.md) | THINKER | S | T-003 | Ready |
+| [D-006](done/D-006.md) | THINKER | S | T-003 | Done |
 | [T-005a](done/T-005a.md) | BUILDER | M | T-002 | Done |
-| [R-003](R-003.md) | THINKER | M | — | Ready |
-| [T-005b](T-005b.md) | BUILDER | M | T-002, T-004, R-003 | Blocked |
-| [T-006](T-006.md) | BUILDER | M | T-002, T-005a | Draft |
+| [R-003](R-003.md) | THINKER | M | — (tur 2: J2) | Ready |
+| [T-005b](done/T-005b.md) | BUILDER | M | T-002, T-004, R-003 | Done |
+| [T-016](T-016.md) | BUILDER | S | R-003 tur 2 | Blocked |
+| [T-006](T-006.md) | BUILDER | M | T-002, T-005a | Ready |
 | [T-007](T-007.md) | BUILDER | M | T-006 | Draft |
 | [T-008](T-008.md) | BUILDER | M | T-007, T-005b | Draft |
 | [T-009](T-009.md) | BUILDER | M | T-008 | Draft |
