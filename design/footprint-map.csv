@@ -76,7 +76,7 @@ COUT31,C5750X7S2A226M280KB,PDU:TDK_C5750_2220_Recommended,ÖZEL,n/a,repo custom 
 COUT32,C5750X7S2A226M280KB,PDU:TDK_C5750_2220_Recommended,ÖZEL,n/a,repo custom land (TDK recommended; prototype-accepted per docs/design.md),repo custom land: land/paste acceptance open
 RRAWBL,CRCW120610K0FKEA,Resistor_SMD:R_1206_3216Metric,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 U6,LM74502HDDFR,Package_TO_SOT_SMD:TSOT-23-8,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (DDF 2.9x1.6 thin; verify vs TI land),compare with manufacturer land
-Q2,CSD19531Q5A,Package_SON:VSONP-8-1EP_5x6_P1.27mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (lib descr: TI Q5A package),low
+Q2,CSD19531Q5A,Package_TO_SOT_SMD:TDSON-8-1,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (KiCad default for CSD19531Q5A; verify vs TI land R-009),compare with manufacturer land
 R_GS,CRCW0603100KFKEA,Resistor_SMD:R_0603_1608Metric,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 C_ISO_VCAP,C1608X7R1H104K080AA,Capacitor_SMD:C_0603_1608Metric,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 C_ISO_VS,C1608X7S2A104K080AB,Capacitor_SMD:C_0603_1608Metric,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low

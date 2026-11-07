@@ -2,10 +2,10 @@
   "classification": "HESAP (courtyard bbox from footprint files) + VARSAYIM (flagged rows)",
   "fill_limit_one_side": 0.55,
   "parts": 142,
-  "total_courtyard_mm2": 3434.2,
+  "total_courtyard_mm2": 3438.0,
   "missing": [],
   "flagged": {},
-  "min_board_area_for_limit_mm2": 6244.0,
+  "min_board_area_for_limit_mm2": 6250.9,
   "groups": {
     "Giriş (J1, TVS, ters kutup, CIN)": {
       "parts": 16,
@@ -29,7 +29,7 @@
     },
     "Ortak bara ayırıcı": {
       "parts": 5,
-      "area_mm2": 63.62
+      "area_mm2": 67.43
     },
     "OVP + OC mantık, REF, mandal, LDO": {
       "parts": 36,
@@ -45,29 +45,29 @@
       "w_mm": 101.6,
       "h_mm": 76.2,
       "area_mm2": 7741.9,
-      "fill_one_side": 0.4436,
-      "fill_two_side": 0.2218
+      "fill_one_side": 0.4441,
+      "fill_two_side": 0.222
     },
     "PCB-HANDOFF estimate 120 x 85": {
       "w_mm": 120.0,
       "h_mm": 85.0,
       "area_mm2": 10200.0,
-      "fill_one_side": 0.3367,
-      "fill_two_side": 0.1683
+      "fill_one_side": 0.3371,
+      "fill_two_side": 0.1685
     },
     "130 x 90": {
       "w_mm": 130.0,
       "h_mm": 90.0,
       "area_mm2": 11700.0,
-      "fill_one_side": 0.2935,
-      "fill_two_side": 0.1468
+      "fill_one_side": 0.2938,
+      "fill_two_side": 0.1469
     },
     "140 x 100": {
       "w_mm": 140.0,
       "h_mm": 100.0,
       "area_mm2": 14000.0,
-      "fill_one_side": 0.2453,
-      "fill_two_side": 0.1226
+      "fill_one_side": 0.2456,
+      "fill_two_side": 0.1228
     }
   },
   "rows": [
@@ -843,11 +843,11 @@
     },
     {
       "ref": "Q2",
-      "footprint": "Package_SON:VSONP-8-1EP_5x6_P1.27mm",
-      "source": "<KiCad stock>/Package_SON.pretty/VSONP-8-1EP_5x6_P1.27mm.kicad_mod",
-      "w_mm": 6.8,
-      "h_mm": 5.4,
-      "area_mm2": 36.72,
+      "footprint": "Package_TO_SOT_SMD:TDSON-8-1",
+      "source": "<KiCad stock>/Package_TO_SOT_SMD.pretty/TDSON-8-1.kicad_mod",
+      "w_mm": 7.16,
+      "h_mm": 5.66,
+      "area_mm2": 40.526,
       "flag": "",
       "group": "Ortak bara ayırıcı"
     },

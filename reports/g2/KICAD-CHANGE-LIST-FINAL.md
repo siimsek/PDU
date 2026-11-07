@@ -34,6 +34,8 @@ G5 T-007 spec düzeltmeleri (şema zaten doğru): U2 FB → /GND (FPWM çift faz
 
 G5 T-008: COUT9–COUT32 şemaya eklendi (scripts/sch_edit_b3.py; VOUT/GND etiketleri, sayfa üst ortası 3 × 8 ızgara).
 
+G5 T-010/T-009: B5 (30 parça) ve B4 (12 parça) şemaya eklendi (scripts/sch_edit_b5.py, sch_edit_b4.py; etiket-pin yerleşimi). **Q2 footprint VSONP-8-1EP → `Package_TO_SOT_SMD:TDSON-8-1`** (stok VSONP pad numaraları 1/2/3 = S/G/D, CSD19531Q5A sembolü 1–3/4/5 ile uyumsuzdu); land doğrulaması R-009.
+
 Test noktası ekleri: TP_OC_SENSE1, TP_OC_SENSE2, TP_OC_REF, TP_OVP_BUS_N; faz şöntü akım enjeksiyonu için RS1/RS2 Kelvin padleri (BENCH T5g).
 
 ## 1. Değişen referanslar (G2)

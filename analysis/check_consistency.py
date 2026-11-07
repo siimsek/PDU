@@ -112,6 +112,10 @@ BLOCKS = {
            "CVDDA1", "CVDDA2", "RCFG1", "RCFG2", "RSYNC", "RFB1", "R_INJ", "RFB2", "R_TRIM", "RCOMP", "CCOMP", "CHF",
            "RUV1", "RUV2"],
     "B3": [f"COUT{i}" for i in range(1, 33)],
+    "B4": ["U11", "U12", "U13", "U14", "U15", "R_OCT", "R_OCB", "C_INA1", "C_INA2", "C_OCC1", "C_OCC2", "C_AND"],
+    "B5": ["U6", "Q2", "U7", "U8", "U9", "U10", "RRAWBL", "R_GS", "C_ISO_VCAP", "C_ISO_VS", "R_OVT", "R_OVB", "C_CMP",
+           "C_REF_IN", "C_REF_OUT", "C_REF_NR", "C_LAT", "R_CLR", "C_CLR", "SW1", "R_Q", "R_OV2T", "R_OV2B", "R_EN1",
+           "R_EN2", "C_LDO_IN", "C_LDO_OUT", "C_LDO_DELAY", "R_BL5", "R_BLS"],
 }
 
 
@@ -180,7 +184,7 @@ def schematic_diff(refs, comps=None) -> list:
                 if not hits:  # numbered pin groups (VIN1..VIN6, SW1..SW4, PGND1..4) carry one spec name
                     hits = [nt for nm, nt in c["pins"].values() if re.fullmatch(re.escape(k0) + r"\d+", nm.replace(" ", "")) and nm not in s["pins"]]
                 got = hits[0] if hits and all(h == hits[0] for h in hits) else (sorted(set(hits)) or None)
-            if want == "NC" and (got is None or str(got).startswith("unconnected-")):
+            if want.upper().startswith(("NC", "DNC", "/NC", "/DNC")) and (got is None or str(got).startswith("unconnected-")):
                 continue
             if got != want:
                 errs.append(f"{ref}.{key}: schematic {got} != spec {want}")

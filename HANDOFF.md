@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-017 → main (R-008 ONAY, PR #41)
-- **Aktif kart:** T-010 (InProgress — B5 koruma ayırıcı).
+- **Dal / son commit:** wp/T-010 (taslak PR; T-010 + T-009 birlikte; **birleştirilmedi** — R-009 bekliyor)
+- **Aktif kart:** T-010 + T-009 (Review). THINKER Ready: R-009.
 
 ## Yapılanlar
+- T-017 (#40) main'de. T-010 + T-009 (dal): B5 30 + B4 12 parça `sch_place.py` ile (etiket-pin); ERC 0; B1–B5 fark 0; blok dışı 0. Q2 footprint TDSON-8-1 (pad numarası uyumsuzluğu).
 - T-008 (#38) main'de (R-007 ONAY). B5 bloğu şemada yok → T-009 öncesi T-010; stokta olmayan 5 sembol T-017 ile üretildi (make_symbols.py; datasheet sayfaları görsel okundu).
 - T-007 (#33) main'de; R-006 kapandı. R-005 (#37): BIL düzgünleştirmesi etkisiz (geri alındı); kısaltılmış pencere O1 10,92 V; `scripts/pre_merge.py` kapısı.
 - T-008 (dal): COUT9–32 eklendi; ERC 0, B1–B3 fark 0 (reports/g5/T-008/EVIDENCE.md).
@@ -13,7 +14,7 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: R-008 (pin tabloları). Sonra Claude Code: T-017 birleştir → T-010 B5 (U6 LM74502H, Q2 CSD19531Q5A, U7 TLV3601, U8 REF5025, U9 LVC1G74, U10 TPS7A16, dirençler, SW1).
+Codex: R-009 (B4+B5 netlist, Q2 TDSON-8-1 ↔ TI land). Sonra Claude Code: birleştir → T-011 (B6 eFuse + çıkışlar: U3/U4 TPS259824L IN = /VSAFE, RILIM, J2/J3).
 
 ## Engeller
 F5 iki köşe: kısaltılmış pencere kanıtı var (O1 10,92 V), tam pencere AÇIK (backlog).
