@@ -26,9 +26,9 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [R-005](done/R-005.md) | THINKER | S | — (tur 2) | Done |
 | [T-007](done/T-007.md) | BUILDER | M | T-006 | Done |
 | [R-006](done/R-006.md) | THINKER | S | T-007 | Done |
-| [T-008](T-008.md) | BUILDER | M | T-007, T-005b | Review |
-| [R-007](R-007.md) | THINKER | S | T-008 | Ready |
-| [T-009](T-009.md) | BUILDER | M | T-008 | Draft |
+| [T-008](done/T-008.md) | BUILDER | M | T-007, T-005b | Done |
+| [R-007](done/R-007.md) | THINKER | S | T-008 | Done |
+| [T-009](T-009.md) | BUILDER | M | T-008 | Ready |
 | [T-010](T-010.md) | BUILDER | M | T-009 | Draft |
 | [T-011](T-011.md) | BUILDER | M | T-010 | Draft |
 | [T-012](T-012.md) | BUILDER | M | T-011 | Draft |

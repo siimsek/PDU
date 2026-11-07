@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-008 (taslak PR; **birleştirilmedi** — R-007 bekliyor)
-- **Aktif kart:** T-008 (Review). THINKER Ready: R-007 (B3 incelemesi).
+- **Dal / son commit:** wp/T-008 → main (R-007 ONAY, PR #39)
+- **Aktif kart:** T-009 (Ready — B4 faz OC zinciri).
 
 ## Yapılanlar
 - T-007 (#33) main'de; R-006 kapandı. R-005 (#37): BIL düzgünleştirmesi etkisiz (geri alındı); kısaltılmış pencere O1 10,92 V; `scripts/pre_merge.py` kapısı.
@@ -15,7 +15,7 @@
 Codex: R-007. Sonra Claude Code: R-007 ONAY → T-008 birleştir → T-009 (B4 faz OC zinciri: U11–U15, R_OCT/R_OCB, kondansatörler; yeni semboller).
 
 ## Engeller
-- T-008 birleştirme ← R-007. F5 iki köşe: kısaltılmış pencere kanıtı var (O1 10,92 V), tam pencere AÇIK (backlog).
+F5 iki köşe: kısaltılmış pencere kanıtı var (O1 10,92 V), tam pencere AÇIK (backlog).
 
 ## Kullanıcıdan bekleyenler (yalnız fiziksel, engellemez)
 - U-001, U-007 tezgâh ölçümleri (kart üretilince).
