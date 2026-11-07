@@ -58,7 +58,8 @@ def check():
     errors = []
     spec, nets = parse_spec(ROOT / "design" / "pdu_v2_spec.yaml")
     bom = {r["ref"]: r for r in csv.DictReader((ROOT / "design" / "bom-v2.csv").open(encoding="utf-8")) if r["kind"] != "CABLE"}
-    spec_pcb = {k: v for k, v in spec.items() if k in bom or k not in ("P1", "P2", "P3", "CT1", "CT2")}
+    cable = {r["ref"] for r in csv.DictReader((ROOT / "design" / "bom-v2.csv").open(encoding="utf-8")) if r["kind"] == "CABLE"}
+    spec_pcb = {k: v for k, v in spec.items() if k not in cable}
     if set(spec_pcb) != set(bom):
         errors.append(f"ref sets differ: spec-only {sorted(set(spec_pcb) - set(bom))}, bom-only {sorted(set(bom) - set(spec_pcb))}")
     for ref in set(spec_pcb) & set(bom):

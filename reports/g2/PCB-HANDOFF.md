@@ -31,7 +31,7 @@ Via sayısı iki yolun büyüğüdür: 0.5 A/via taraması ve 0.3 mm delik / 20 
 
 ## 3. Kritik döngüler ve yerleşim grupları
 
-1. **Giriş grubu:** J1 → F1 → D1 (TVS, J1'e en yakın) → Q1/U5 → CIN1–8. TVS dönüşü doğrudan L2 GND'ye en az 4 via.
+1. **Giriş grubu:** J1 → D1 (TVS, J1'e en yakın) → Q1/U5 → CIN1–8. F1 kart dışında (batarya kablosu, Eaton PV-10A10F + CHPV1U DIN-ray; G5 T-004). TVS dönüşü doğrudan L2 GND'ye en az 4 via.
 2. **Buck grubu (×2):** her LM70880 için CIN–VIN–PGND sıcak döngüsü en küçük alan (CIN IC'nin VIN/PGND pinlerine bitişik, L1 katmanında); SW bakırı yalnız IC–L arası; RS Kelvin uçları pad iç kenarından, birbirine paralel, SW altından geçmeden; COMP/FB/RT/VDDA bileşenleri SW'nin karşı tarafında, L2 GND referanslı.
 3. **COUT bankası (G4: 32×):** 32× C5750 iki faz çıkışı arasında simetrik (faz başına 16, iki sıra); Q2 drain'i bankanın ortasına bağlanır. Banka hem yük adımı (B4) hem hata anı ham bara tepesi (≤35.8 V, SİM F1/F5) için gereklidir; DNP yapılamaz.
 4. **Ayırıcı grubu:** Q2 (CSD19531Q5A) + U6 (LM74502H) + C_ISO_VS/VCAP + R_GS bitişik; GATE izi ≤10 mm; **hata akımı döngüsü** COUT → Q2 → VSAFE dökümü → CEFIN/eFuse IN → GND dönüşü L2 üzerinden kısa. Q2 drain/source pad'leri ≥1 in² (645 mm²) bakır (RθJA 50 K/W koşulu, DATASHEET).
@@ -57,7 +57,7 @@ J1 (giriş) ile J2/J3 (çıkış) kartın karşı kenarlarında; giriş akım yo
 ## 7. Kart boyutu ve DFM varsayımları
 
 - Mevcut geçici sınır 101.6 × 76.2 mm. Eklenenler: 24× 2220 COUT (G2+G4; ~24 × 35 mm² + aralık), ayırıcı grubu (~150 mm²), OVP+OC mantık grubu (~350 mm²), D_REV ×2 SMC, J2 4 devre. Tahmin: **120 × 85 mm** (VARSAYIM; yerleşim çalışmasıyla teyit).
-- DFM (VARSAYIM, üreticiyle teyit): min iz/aralık 0.15/0.15 mm, via 0.3/0.6 mm, via-in-pad dolgulu (LM70880 EP), 1 oz tüm katmanlar, ENIG, stencil 0.12 mm; özel footprint'ler (G4 footprint-map.csv: 38 satır / 5 paket): F1, Q1, LM70880 RRX, C5750 2220, TPS25982 RGE; diğer 105 satır stok KiCad 10 kütüphanesinde doğrulandı.
+- DFM (VARSAYIM, üreticiyle teyit): min iz/aralık 0.15/0.15 mm, via 0.3/0.6 mm, via-in-pad dolgulu (LM70880 EP), 1 oz tüm katmanlar, ENIG, stencil 0.12 mm; özel footprint'ler (footprint-map.csv: 37 satır / 4 paket): Q1, LM70880 RRX, C5750 2220, TPS25982 RGE; diğer 105 satır stok KiCad 10 kütüphanesinde doğrulandı.
 
 ## 8. KiCad'e aktarım öncesi kontrol
 

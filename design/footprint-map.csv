@@ -1,5 +1,4 @@
 ref,mpn,footprint,stock_or_custom,verified_file,source,risk
-F1,,,ÖZEL,,AÇIK,footprint AÇIK (part not selected)
 D1,SMCJ33A-E3/57T,Diode_SMD:D_SMC,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 U5,LM74700QDBVRQ1,Package_TO_SOT_SMD:SOT-23-6,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 Q1,BSC160N10NS3G,PDU:TDSON-8-1_Konnect,ÖZEL,n/a,"repo custom land (G1: adapted, final land/paste acceptance open)",repo custom land: land/paste acceptance open

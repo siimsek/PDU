@@ -26,13 +26,13 @@ OUT = ROOT / "reports" / "g5" / "floorplan.json"
 FILL_LIMIT = 0.55  # T-003 card: above this (one side, current outline) -> user decision on board size
 
 # Parts without a footprint yet (VARSAYIM, replaced when the part is selected).
-NO_FP_AREA = {"F1": (25.0, 10.0, "VARSAYIM: 5x20 mm fuse-clip/holder class footprint until D-001/T-004 select F1")}
+NO_FP_AREA: dict = {}  # G5 T-004: F1 moved off-board (D-001), no footprint-less PCB parts left
 
 BOARDS = {"current 101.6 x 76.2": (101.6, 76.2), "PCB-HANDOFF estimate 120 x 85": (120.0, 85.0),
           "130 x 90": (130.0, 90.0), "140 x 100": (140.0, 100.0)}
 
 GROUPS = [  # PCB-HANDOFF §3 groups; first match wins
-    ("Giriş (J1, F1, TVS, ters kutup, CIN)", r"^(J1|F1|D1|U5|Q1|CIN.*|CBIN\d|CVCAP)$"),
+    ("Giriş (J1, TVS, ters kutup, CIN)", r"^(J1|D1|U5|Q1|CIN.*|CBIN\d|CVCAP)$"),
     ("Buck faz 1", r"^(U1|L1|RS1|CBOOT1|RBOOT1|RT1|CVCC1|CVDDA1)$"),
     ("Buck faz 2", r"^(U2|L2|RS2|CBOOT2|RBOOT2|RT2|CVCC2|CVDDA2)$"),
     ("Buck ortak kontrol (FB/COMP/UV/CFG)", r"^(RCFG\d|RSYNC|RFB\d|R_INJ|R_TRIM|RCOMP|CCOMP|CHF|RUV\d)$"),

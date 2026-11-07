@@ -2,11 +2,10 @@
 
 Kaynak: [`design/bom-v2.csv`](../../design/bom-v2.csv), üretici: [`analysis/g2/bom.py`](../../analysis/g2/bom.py). MPN yalnız bu G2 oturumunda okunan resmi üretici belgesi seri/değer/paket/sipariş kodunu doğruladığında yazıldı.
 
-Toplam satır: **148**; MPN'li: **147**; MPN AÇIK: **1**.
+Toplam satır: **149**; MPN'li: **149**; MPN AÇIK: **0**.
 
 | Ref | Değer / gereksinim | Neden seçilemedi | Gereken belge |
 |---|---|---|---|
-| F1 | 10 A DC, >=53.3 VDC, >=1040 A breaking — candidate Littelfuse 0456020.ER (20 A, 65 VDC, I2t 18 A2s, 2.3 mOhm per Littelfuse page); DC interrupting rating not readable (PDF only via download) -> AÇIK | G4: Littelfuse ürün sayfası okundu, datasheet PDF yalnız indirme olarak açıldı (DC kesme kapasitesi okunamadı); kaynak kısa devre akımı 127–1040 A | Sigorta + yuva datasheet'i (DC kesme, I²t) |
 
 ## Derating uyarıları
 
@@ -20,7 +19,6 @@ Toplam satır: **148**; MPN'li: **147**; MPN AÇIK: **1**.
 
 ## Özel footprint gereken satırlar
 
-- F1 (10 A DC, >=53.3 VDC, >=1040 A breaking): AÇIK — AÇIK
 - Q1 (BSC160N10NS3G): PDU:TDSON-8-1_Konnect — repo custom land (G1: adapted, final land/paste acceptance open)
 - U1 (LM70880QRRXRQ1): PDU:LM70880_RRX0029B_RectLands — repo custom land (G1: copper approach/paste acceptance open)
 - U2 (LM70880QRRXRQ1): PDU:LM70880_RRX0029B_RectLands — repo custom land (G1: copper approach/paste acceptance open)

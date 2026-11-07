@@ -102,9 +102,10 @@ def test_three_way_consistency_passes():
     assert check() == []
 
 
-def test_bom_has_single_open_row_and_footprints_verified():
+def test_bom_has_no_open_rows_and_footprints_verified():
     rows = list(csv.DictReader((ROOT / "design" / "bom-v2.csv").open(encoding="utf-8")))
-    assert [r["ref"] for r in rows if not r["mpn"]] == ["F1"]
+    assert [r["ref"] for r in rows if not r["mpn"]] == []          # G5 T-004: F1 selected (off-board, D-001)
+    assert {r["ref"]: r["kind"] for r in rows}["F1"] == "CABLE"
     fm = list(csv.DictReader((ROOT / "design" / "footprint-map.csv").open(encoding="utf-8")))
     assert all(r["verified_file"] == "yes" for r in fm if r["stock_or_custom"] == "STOK")
 
