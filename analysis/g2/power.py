@@ -169,7 +169,15 @@ def losses():
     board_area_m2 = 0.1016 * 0.0762
     h_conv = 10.0   # VARSAYIM natural convection W/m2K, both sides
     dt_board = total_board / (h_conv * 2 * board_area_m2)
+    # G4: BIAS -> AGND, VCC from internal LDO off VIN (LM70880 p.13). IVCC 10 mA is VARSAYIM (not read as a table value).
+    p_bias_extra = 0.010 * (v("VIN_NOM") - 5.0)
+    p_ic_g4 = p_ic_each + p_bias_extra
+    tj_by_amb = {f"{ta:.0f}C": {"evm_18p6": ta + p_ic_g4 * 18.6, "jedec_33p5": ta + p_ic_g4 * 33.5,
+                               "q_iso": ta + pl["q_iso"] * 50.0}
+                 for ta in (40.0, 50.0, v("T_AMB_MAX"))}
     return {"p_out_W": p_out, "eta_assumed": ETA_ASSUMED, "p_conv_loss_W": p_conv_loss, "parts_W": pl,
+            "g4_bias_agnd_extra_each_W_VARSAYIM": p_bias_extra, "g4_ic_loss_each_W": p_ic_g4,
+            "g4_tj_by_ambient_C": tj_by_amb, "g4_ta_max_evm_for_tj125_C": 125 - p_ic_g4 * 18.6,
             "ic_loss_each_W": p_ic_each, "tj_ic_C": tj_ic, "ta_max_for_tj125_C": ta_max_for_125,
             "eta_pathB": eta_b, "eta_diff": ETA_ASSUMED - eta_b,
             "board_total_W": total_board, "board_dT_K_VARSAYIM": dt_board,
@@ -261,7 +269,7 @@ def compute():
 
 def main():
     res = compute()
-    OUT.write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8")
+    OUT.write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
     print(json.dumps({"irms": res["inductor"]["irms_A_pathA"], "uvlo": res["uvlo_174k"]["rising_pathA"],
                       "ilim_sum_min": res["efuse"]["sum_min_A"], "tj_ic": res["losses"]["tj_ic_C"]}, ensure_ascii=True))
 

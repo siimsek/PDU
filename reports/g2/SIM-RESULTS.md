@@ -22,7 +22,7 @@ Bir koşu yalnız ngspice çıkış kodu 0 ve istenen bütün `.meas` değerleri
 | [f1_noprot_baseline](sim/f1/f1_noprot_baseline.log) | True | o1_max_fault=19.35, vsafe_max_fault=27.87, vds_iso_max=0.028, vraw_max_fault=27.87 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **FAIL** | korumasız referans: G1 FAIL'inin yeni netlistte yeniden üretimi (silinmez) |
 | [f1_worst_lfloor0p05](sim/f1/f1_worst_lfloor0p05.log) | True | o1_max_fault=11.04, vsafe_max_fault=11.04, vds_iso_max=22.25, vraw_max_fault=33.11 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
 | [f1_worst_highsetpoint_lfloor0p05](sim/f1/f1_worst_highsetpoint_lfloor0p05.log) | True | o1_max_fault=11.37, vsafe_max_fault=11.37, vds_iso_max=16.45, vraw_max_fault=27.65 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
-| [f1_voltage_trip_only_g3_design](sim/f1/f1_voltage_trip_only_g3_design.log) | True | o1_max_fault=11.96, vsafe_max_fault=11.96, vds_iso_max=16.14, vraw_max_fault=27.9 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
+| [f1_voltage_trip_only_g3_design](sim/f1/f1_voltage_trip_only_g3_design.log) | True | o1_max_fault=11.96, vsafe_max_fault=11.96, vds_iso_max=16.14, vraw_max_fault=27.9 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** | G3 tasarımı (OC tetiksiz) karşılaştırma; HESAP L-tabanı ≤0.15'te FAIL |
 
 ## Aile 2 — 20–26 V açılış, UVLO kalkışı, hot-plug, dip
 
@@ -43,12 +43,12 @@ Bir koşu yalnız ngspice çıkış kodu 0 ve istenen bütün `.meas` değerleri
 | [f3_nominal_ctyp_gm_ea_max](sim/f3/f3_nominal_ctyp_gm_ea_max.log) | True | bus_min=10.93, bus_max_release=11.06, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** |  |
 | [f3_nominal_cmax_gm_ea_min](sim/f3/f3_nominal_cmax_gm_ea_min.log) | True | bus_min=10.9, bus_max_release=11.08, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** |  |
 | [f3_nominal_cmax_gm_ea_max](sim/f3/f3_nominal_cmax_gm_ea_max.log) | True | bus_min=10.93, bus_max_release=11.06, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** |  |
-| [f3_stacked_low_setpoint_cmin_gmmin](sim/f3/f3_stacked_low_setpoint_cmin_gmmin.log) | True | bus_min=10.73, bus_max_release=10.93, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **FAIL** | statik alt köşe + transient yığılması |
-| [f3_stacked_high_setpoint_cmin_gmmin](sim/f3/f3_stacked_high_setpoint_cmin_gmmin.log) | True | bus_min=11.06, bus_max_release=11.26, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **FAIL** | statik üst köşe + yük bırakma yığılması |
+| [f3_stacked_low_setpoint_cmin_gmmin](sim/f3/f3_stacked_low_setpoint_cmin_gmmin.log) | True | bus_min=10.73, bus_max_release=10.93, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **FAIL** | trimsiz statik alt köşe + transient (görünür FAIL; trim ile kapanır) |
+| [f3_stacked_high_setpoint_cmin_gmmin](sim/f3/f3_stacked_high_setpoint_cmin_gmmin.log) | True | bus_min=11.06, bus_max_release=11.26, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **FAIL** | trimsiz statik üst köşe + bırakma (görünür FAIL; trim ile kapanır) |
 | [f3_nominal_cmin_gmmin_vin20_l0.8](sim/f3/f3_nominal_cmin_gmmin_vin20_l0.8.log) | True | bus_min=10.9, bus_max_release=11.09, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** |  |
 | [f3_nominal_cmin_gmmin_vin26_l1.2](sim/f3/f3_nominal_cmin_gmmin_vin26_l1.2.log) | True | bus_min=10.89, bus_max_release=11.09, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** |  |
-| [f3_trimmed_low_setpoint_cmin_gmmin](sim/f3/f3_trimmed_low_setpoint_cmin_gmmin.log) | True | bus_min=10.79, bus_max_release=10.98, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** |  |
-| [f3_trimmed_high_setpoint_cmin_gmmin](sim/f3/f3_trimmed_high_setpoint_cmin_gmmin.log) | True | bus_min=11, bus_max_release=11.2, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** |  |
+| [f3_trimmed_low_setpoint_cmin_gmmin](sim/f3/f3_trimmed_low_setpoint_cmin_gmmin.log) | True | bus_min=10.79, bus_max_release=10.98, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** | kart başı trim sonrası statik alt köşe (b4-results.json) |
+| [f3_trimmed_high_setpoint_cmin_gmmin](sim/f3/f3_trimmed_high_setpoint_cmin_gmmin.log) | True | bus_min=11, bus_max_release=11.2, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** | kart başı trim sonrası statik üst köşe |
 | [f3_trimmed_low_setpoint_cmin_gmmin_vin20_l0.8](sim/f3/f3_trimmed_low_setpoint_cmin_gmmin_vin20_l0.8.log) | True | bus_min=10.79, bus_max_release=10.98, q_end=0 | bus_min >= 10.78, bus_max_release < 11.22, q_end < 0.5 | **PASS** |  |
 
 ## Aile 4 — eFuse kısa devresi, O1/S2E izolasyonu, giriş kaybı / OUT>IN
@@ -72,7 +72,7 @@ Hassas yol açık (R_OVT açık devre, yalnız kaba OV): O1 tepe 11.2 V, VSAFE t
 
 ## Model sınırları
 
-- Ortalama (anahtarlamasız) model: tepe akım komutu + sınırlı ortalama anahtar, akım döngüsü ~100 kHz eşdeğer; örnekleme etkisi ve LM70880 iç devresi yok. eFuse: tek yönlü, aktif akım sınırı, UVLO histerezisi, 16.9 V OVLO; ITIMER/termal kapanma yok.
+- Ortalama (anahtarlamasız) model: tepe akım komutu + sınırlı ortalama anahtar, akım döngüsü ~100 kHz eşdeğer; örnekleme etkisi ve LM70880 iç devresi yok. G4: bobin L(i) Vishay doc 34207 p.3 tipik eğrisi (16 A'ya kadar) + 16 A üstü taban LFLOOR (VARSAYIM); faz aşırı akım tetiği (INA296+TLV3601) TOC_DLY gecikmesiyle. eFuse: tek yönlü, aktif akım sınırı, UVLO histerezisi, 16.9 V OVLO; ITIMER/termal kapanma yok.
 - Koruma zinciri: karşılaştırıcı+mandal+LM74502H tek toplu gecikme (`TDLY`) ile; eşik garantili-gecikme seviyesinde (trip + 50 mV overdrive×k). FET ideal anahtar + gövde diyotu; SOA/termal yok.
 - Kapasitörler toplu Ceff + ESR/ESL; CIN/CEFOUT Ceff VARSAYIM (datasheet yok).
 - Bu sonuçlar tezgâh ölçümünün yerini tutmaz (BENCH-ACCEPTANCE).

@@ -180,7 +180,7 @@ def spice_deck(k, rc, cc, chf, tag):
 def run_spice_case(k, rc, cc, chf, tag):
     SIMDIR.mkdir(parents=True, exist_ok=True)
     deck = SIMDIR / f"{tag}.cir"
-    deck.write_text(spice_deck(k, rc, cc, chf, tag), encoding="utf-8")
+    deck.write_text(spice_deck(k, rc, cc, chf, tag), encoding="utf-8", newline="\n")
     log = SIMDIR / f"{tag}.log"
     p = subprocess.run([str(NGSPICE), "-b", "-o", str(log), deck.name], cwd=SIMDIR, capture_output=True, text=True, timeout=120)
     data = SIMDIR / f"{tag}.txt"
@@ -253,7 +253,7 @@ def compute(run_spice=True):
 
 def main():
     res = compute()
-    OUT.write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8")
+    OUT.write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
     print(json.dumps({k: res[k] for k in ("selected", "pm_min_deg", "gm_min_dB", "fc_range_Hz")}, ensure_ascii=True))
     for c in res.get("spice_checks", []):
         print(c["analytic_pm_deg"], c["spice"].get("pm_deg"), c["analytic_fc_Hz"], c["spice"].get("fc_Hz"))

@@ -349,7 +349,7 @@ def compute(n_cout=None):
 def main():
     res = compute()
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8")
+    OUT.write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
     w = res["o1_peak_worst"]
     print(json.dumps({"rt": res["precision_divider"]["rt_ohm"], "trip": res["trip_threshold"]["path_a_enumerated"],
                       "o1_peak_worst_V": w["peak_V"], "margin_V": w["margin_V"]}, ensure_ascii=True))

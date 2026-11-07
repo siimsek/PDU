@@ -17,9 +17,12 @@ TITLES = {
 }
 EXPECTED_FAIL = {"f1_noprot_baseline": "korumasız referans: G1 FAIL'inin yeni netlistte yeniden üretimi (silinmez)",
                  "f4_input_loss_without_drev": "D_REV'siz karşılaştırma (D_REV gerekçesi)",
-                 "f5_precision_path_open_residual": "R_OVT açık devre artık riski (yalnız kaba OV)",
-                 "f3_stacked_low_setpoint_cmin_gmmin": "statik alt köşe + transient yığılması",
-                 "f3_stacked_high_setpoint_cmin_gmmin": "statik üst köşe + yük bırakma yığılması"}
+                 "f5_precision_path_open_residual": "R_OVT açık devre: G4'te faz OC tetiği bağımsız yol olarak kapatıyor",
+                 "f3_stacked_low_setpoint_cmin_gmmin": "trimsiz statik alt köşe + transient (görünür FAIL; trim ile kapanır)",
+                 "f3_stacked_high_setpoint_cmin_gmmin": "trimsiz statik üst köşe + bırakma (görünür FAIL; trim ile kapanır)",
+                 "f1_voltage_trip_only_g3_design": "G3 tasarımı (OC tetiksiz) karşılaştırma; HESAP L-tabanı ≤0.15'te FAIL",
+                 "f3_trimmed_low_setpoint_cmin_gmmin": "kart başı trim sonrası statik alt köşe (b4-results.json)",
+                 "f3_trimmed_high_setpoint_cmin_gmmin": "kart başı trim sonrası statik üst köşe"}
 
 
 def fmt(x):
@@ -70,7 +73,8 @@ def main():
                   "(artık risk; PROTECTION-DECISION §4)."]
     L += ["", "## Model sınırları", "",
           "- Ortalama (anahtarlamasız) model: tepe akım komutu + sınırlı ortalama anahtar, akım döngüsü ~100 kHz eşdeğer; örnekleme etkisi ve "
-          "LM70880 iç devresi yok. eFuse: tek yönlü, aktif akım sınırı, UVLO histerezisi, 16.9 V OVLO; ITIMER/termal kapanma yok.",
+          "LM70880 iç devresi yok. G4: bobin L(i) Vishay doc 34207 p.3 tipik eğrisi (16 A'ya kadar) + 16 A üstü taban LFLOOR (VARSAYIM); "
+          "faz aşırı akım tetiği (INA296+TLV3601) TOC_DLY gecikmesiyle. eFuse: tek yönlü, aktif akım sınırı, UVLO histerezisi, 16.9 V OVLO; ITIMER/termal kapanma yok.",
           "- Koruma zinciri: karşılaştırıcı+mandal+LM74502H tek toplu gecikme (`TDLY`) ile; eşik garantili-gecikme seviyesinde "
           "(trip + 50 mV overdrive×k). FET ideal anahtar + gövde diyotu; SOA/termal yok.",
           "- Kapasitörler toplu Ceff + ESR/ESL; CIN/CEFOUT Ceff VARSAYIM (datasheet yok).",
