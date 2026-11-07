@@ -8,7 +8,7 @@ Röle modu: kullanıcı dosya yüklemez. Belge isteyen maddeler önce THINKER ka
 | U-002 | T3 Gemstone O1 giriş spec'i — **önce D-002 (THINKER, web)**; yalnız D-002 "doğrulanamadı" derse kullanıcıya bağlantı/üretici sorusu | O1 marjı (HESAP ≤11,41 V vs 12,0 V); kriter değişmez | D-002'de |
 | U-003 | F1 sigorta belgesi — **önce D-001 (THINKER, web)**; yalnız hiçbir seçenekte DC kesme kapasitesi okunamazsa kullanıcı kararı | D-001, T-004, T-005b | D-001'de |
 | U-004 | Şema gözle kontrolü — **R-002 render tabanlı yapar** (kicad-cli SVG/PDF dışa aktarımı + netlist); kullanıcı için isteğe bağlı | KICAD-READY kabulü | Bekliyor (T-012) |
-| U-005 | **Birleştirme yetkisi** — tek cevap: "yetki veriyorum" (BUILDER, kriterleri geçen PR'ları birleştirir; KiCad/tasarım PR'ında tek satır onay sorar) veya "her PR'ı sor" | Kartların main'e girmesi | Açık |
+| U-005 | **Birleştirme yetkisi** — tek cevap: "yetki veriyorum" (BUILDER, kriterleri geçen PR'ları birleştirir; KiCad/tasarım PR'ında tek satır onay sorar) veya "her PR'ı sor" | Kartların main'e girmesi | Done (2026-11-07, "Yetki veriyorum") |
 
 ## U-001 prosedürü — O1/S2E gerçek akımı (kart gelmeden)
 

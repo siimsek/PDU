@@ -16,8 +16,8 @@ Codex: R-001 / D-001 / D-002 (taban dal `wp/workflow-setup` — W0 main'e girene
 - W0 PR'ı (#4) birleşmeden BUILDER kartları main'den başlayamaz.
 
 ## Kullanıcıdan bekleyenler
-- U-005 birleştirme yetkisi (tek cevap). U-001 tezgâh ölçümü (fiziksel; ne zaman mümkünse).
-- Birleştirme yetkisi: **henüz verilmedi** (verildiğinde buraya tarih ve kapsam yazılır).
+- U-001 tezgâh ölçümü (fiziksel; ne zaman mümkünse).
+- **Birleştirme yetkisi: VERİLDİ (2026-11-07, kullanıcı: "Yetki veriyorum").** Kapsam: BUILDER, kabul kriterleri + pytest + check_workflow geçen PR'ları birleştirir; KiCad dosyası veya tasarım değeri değiştiren PR'da birleştirmeden önce tek satır onay sorar (WORKFLOW röle kuralı 6).
 
 ## Okuma gerektirmeyen notlar
 - Baseline (G4): pytest 109 (W0 dahil); run_all exit 0; ERC 0; DRC 228 / 197 / 73.
