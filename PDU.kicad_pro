@@ -520,7 +520,7 @@
         "clearance": 0.3,
         "name": "INPUT_POWER",
         "priority": -1,
-        "track_width": 4.5,
+        "track_width": 3.3,
         "via_diameter": 1.2,
         "via_drill": 0.6
       },
@@ -528,7 +528,7 @@
         "clearance": 0.2,
         "name": "BUS_POWER",
         "priority": -1,
-        "track_width": 6.0,
+        "track_width": 5.5,
         "via_diameter": 1.2,
         "via_drill": 0.6
       },
@@ -536,23 +536,23 @@
         "clearance": 0.2,
         "name": "PHASE_POWER",
         "priority": -1,
-        "track_width": 3.5,
+        "track_width": 2.6,
         "via_diameter": 1.2,
         "via_drill": 0.6
       },
       {
         "clearance": 0.2,
-        "name": "O1_POWER",
+        "name": "O1_PORT",
         "priority": -1,
-        "track_width": 4.5,
+        "track_width": 5.3,
         "via_diameter": 1.2,
         "via_drill": 0.6
       },
       {
         "clearance": 0.2,
-        "name": "S2E_POWER",
+        "name": "S2E_PORT",
         "priority": -1,
-        "track_width": 2.5,
+        "track_width": 3.3,
         "via_diameter": 1.2,
         "via_drill": 0.6
       },
@@ -589,10 +589,6 @@
     "netclass_patterns": [
       {
         "netclass": "INPUT_POWER",
-        "pattern": "/VBAT"
-      },
-      {
-        "netclass": "INPUT_POWER",
         "pattern": "/ANODE"
       },
       {
@@ -624,11 +620,11 @@
         "pattern": "/ISNS2"
       },
       {
-        "netclass": "O1_POWER",
+        "netclass": "O1_PORT",
         "pattern": "/O1_11V"
       },
       {
-        "netclass": "S2E_POWER",
+        "netclass": "S2E_PORT",
         "pattern": "/S2E_11V"
       },
       {
@@ -641,11 +637,11 @@
       },
       {
         "netclass": "AUX_LOCAL",
-        "pattern": "Net-(CBOOT1-Pad1)"
+        "pattern": "/CBOOT_R1"
       },
       {
         "netclass": "AUX_LOCAL",
-        "pattern": "Net-(CBOOT2-Pad1)"
+        "pattern": "/CBOOT_R2"
       },
       {
         "netclass": "AUX_LOCAL",
@@ -770,6 +766,18 @@
       {
         "netclass": "NC_DO_NOT_ROUTE",
         "pattern": "unconnected-(U4-ITIMER-Pad7)"
+      },
+      {
+        "netclass": "BUS_POWER",
+        "pattern": "/VSAFE"
+      },
+      {
+        "netclass": "AUX_LOCAL",
+        "pattern": "/ISO_GATE"
+      },
+      {
+        "netclass": "AUX_LOCAL",
+        "pattern": "/ISO_VCAP"
       }
     ]
   },
