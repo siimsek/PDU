@@ -26,6 +26,16 @@ T-013'ün dört katmanlı PCB kurulumu için hangi kart dış ölçüsü ve hang
 - 120×85 alanında 2×645=1290 mm² Q1/Q2 bakır alanı, kart alanının %12.65'ine denktir. Aynı oran 101.6×76.2'de %16.66; 130×90'da %11.03 olur. Bu oranlar yerleşim alanı hesabı değildir; termal gereksinimin küçük kartta kapladığı göreli alanı gösterir. LM70880 termal bakır/via sayısı için handoff'ta ölçülü alan verilmediğinden değer türetilmemiştir.
 - Kesin kart birim maliyeti üretici, panel, adet, bitmiş bakır, yüzey kaplama ve sipariş bilgileri olmadan hesaplanamaz; 130×90'ın 120×85'e göre alan farkı 15.0% değil, **14.71%**'dir (1500/10200). Tek yüz montaj seçimi mühendislik önerisidir; maliyet garantisi değildir.
 
+## T-013'ün uygulayacağı değerler
+
+1. Dış sınır: **120×85 mm**; orijin sol-alt köşe, X=0…120 mm, Y=0…85 mm.
+2. Montaj: tüm SMD ve konnektör gövdeleri L1/üst yüzde; B.Cu üzerinde komponent yok. THT konektör lehimleri alttan yapılabilir.
+3. Yerleşim: J1 batarya/giriş konektörü batı (x=0) kenarında; J2 ve J3 çıkış konektörleri doğu (x=120) kenarında. Giriş zinciri J1→D1→Q1/U5→CIN kompakt; iki buck fazı ayrı ve kompakt; 32× C5750 bankası iki fazın ortasında yaklaşık 63×25 mm şerit; Q2/eFuse/J2-J3 çıkış yolu kısa. OVP/OC/REF/mandal mantığı SW düğümlerinden en az 10 mm uzakta.
+4. Katmanlar: 4 katman, 1.6 mm; talep edilen 1 oz bitmiş bakır tüm katmanlar. L1 bileşen+güç, L2 kesintisiz GND, L3 VIN/VOUT/VSAFE güç dökümleri+yardımcı, L4 sinyal+ikincil GND.
+5. Seçili güç izi genişlikleri: INPUT 3.3 mm, BUS 5.5 mm, PHASE 2.6 mm, O1 5.3 mm, S2E 3.3 mm; alan kazanmak için küçültme yok.
+6. Termal: Q1 ve Q2 için her biri en az 645 mm² bakır; LM70880 exposed pad altı EVM-benzeri via dizisi. LM70880 zone/via sayısını tahmin etme; T-013 üretici datasheet/EVM transferi ve DRC ile boyutlandırsın.
+7. Başlangıç delikleri: 4× M3 clearance NPTH Ø3.2 mm, merkezler (6,6), (114,6), (6,79), (114,79) mm; her delik çevresinde bakır/courtyard keepout, gerçek mekanik çakışma kontrolü.
+
 ## Açık varsayımlar
 - **VARSAYIM:** Muhafaza / sabitleme ortamı tanımlı değil. Başlangıç delik planı 4× M3 clearance NPTH, Ø3.2 mm; sol-alt orijin, koordinatlar (6,6), (114,6), (6,79), (114,79) mm. T-013 bakır ve courtyard keepout'ları ile mekanik çakışmayı kontrol etsin. Montaj donanımı değişirse delik sayısı/ölçüsü mekanik çizimle güncellensin.
 - **VARSAYIM:** Üretici 4 katmanda 1 oz tüm katmanları henüz onaylamadı (PCB-HANDOFF §1); T-013 güç dökümlerini bu stackup'a göre kursun ve üretici DFM'siyle teyit etsin.
