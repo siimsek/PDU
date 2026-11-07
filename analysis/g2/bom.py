@@ -222,7 +222,7 @@ def rows():
     R.append(r("R_EN1", "15k", crcw("0603", "15K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/P5V_PROT", "2": "/ISO_EN"}, 1e-3, 0.1))
     R.append(r("R_EN2", "10k", crcw("0603", "10K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/ISO_EN", "2": "/GND"}, 4e-4, 0.1))
     R.append(u("U10", "TPS7A1650-Q1", "TPS7A1650QDGNRQ1", "TI_TPS7A16", "HVSSOP-8 (DGN)", "Package_SO:HVSSOP-8-1EP_3x3mm_P0.65mm_EP1.57x1.89mm",
-               FP_LIB + " (DGN)", {"8": "/VIN", "1": "/P5V_PROT", "2": "NC", "3": "/CLR_N(PG)", "4": "/GND",
+               FP_LIB + " (DGN)", {"8": "/VIN", "1": "/P5V_PROT", "2": "NC", "3": "/CLR_N(PG)", "4": "/GND", "9": "/GND(EP)",
                                                             "5": "/VIN(EN)", "6": "NC", "7": "/LDO_DELAY"}, v_app=53.3, v_rat=60.0))
     R.append(c("C_LDO_IN", "1u", "", "", 26.0, 100.0, "1206", C1206, {"1": "/VIN", "2": "/GND"}, note="TI recommends 10 uF at IN (p.3); 1 uF local + CIN bank"))
     R.append(c("C_LDO_OUT", "2.2u", "", "", 5.1, 25.0, "0805", C0805, {"1": "/P5V_PROT", "2": "/GND"}, note="datasheet test COUT=2.2 uF"))
