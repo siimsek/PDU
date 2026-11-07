@@ -7,3 +7,7 @@ Tek satır: `- [kaynak] konu — neden engelleyici değil — önerilen kart/rol
 - [G4 B4] Trimsiz yığılmış köşeler görünür FAIL (bara min 10,73 V, bırakma 11,26 V; SİM F3) — kabul kart başı trim T1b ile; FAIL kaydı silinmez — bilgi.
 - [G4 B5] LM70880 EA gm maks yayımlanmamış (taramada 0,5–1,8 mS geçer) — tezgâh FRA T3 — BENCH.
 - [G4 C] MLCC DC-bias grafikleri okunamadı (Ceff VARSAYIM) — Ceff payları muhafazakâr — THINKER datasheet okuma.
+
+- [R-001] Startup PRE/CLR overlap creates a temporary nonstable latch state — no persistent set expected under no-fault sequence; verify /P5V_PROT, PRE, CLR and OVP_Q traces on bench — BENCH/THINKER.
+- [R-001] BIAS→AGND is correct for the ≤60 V fault case, but exact VIN-to-VCC LDO dissipation needs actual VIN/IVCC and thermal budget — no thermal criterion currently supplied — THINKER/BENCH.
+- [R-001] Define production R_TRIM replacement range, per-board trim procedure and RFB1 tolerance for complete VOUT corner analysis — current 442 Ω point is within calculated static window — BUILDER.
