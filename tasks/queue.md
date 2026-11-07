@@ -8,7 +8,7 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [R-001](R-001.md) | THINKER | M | D-003, D-004 (tur 2) | Blocked |
 | [D-003](D-003.md) | THINKER | M | — | Ready |
 | [D-004](D-004.md) | THINKER | M | — | Ready |
-| [T-002](T-002.md) | BUILDER | S | T-001 | Ready |
+| [T-002](done/T-002.md) | BUILDER | S | T-001 | Done |
 | [T-003](T-003.md) | BUILDER | M | T-001 | Ready |
 | [D-001](D-001.md) | THINKER | M | — | Ready |
 | [D-002](D-002.md) | THINKER | S | — | Ready |
