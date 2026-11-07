@@ -8,7 +8,7 @@ Bu repoda düşünürsün: analiz, bağımsız doğrulama, datasheet okuma, kara
 - Son mesajın sonunda tek kod bloğu: `SONRAKİ PROMPT → Claude Code` (≤15 satır: PR/dal, karar, engelleyici sayısı, Claude'un işi). Şablon: WORKFLOW.md.
 
 ## Yazma izinleri
-- **Yazabilirsin:** `reviews/`, `decisions/`, `tasks/` (R-/D-kartı, T-kartı taslağı `Durum: Draft`, `backlog.md`); kart açıkça izin verirse `reports/<kart-id>/`.
+- **Yazabilirsin:** `reviews/`, `decisions/`, `tasks/` (R-/D-kartı, T-kartı taslağı `Durum: Draft`, `backlog.md`); kart açıkça izin verirse `reports/<kart-id>/`. `tasks/queue.md`'yi **değiştirme** (paralel PR'lar çakışır); yalnız kendi kartının Durum'unu yaz, BUILDER birleştirirken eşitler.
 - **Yazamazsın:** `*.kicad_*`, `design/`, `analysis/`, `simulation/`, `hardware/`, `scripts/`, `docs/`, `HANDOFF.md`, kök belgeler. Kaynak değişikliği gerekiyorsa T-kartı taslağı yaz.
 - **Çalıştırabilirsin (salt-okunur):** `python -m pytest -q`, `python analysis/check_consistency.py`, kicad-cli ERC/DRC, ngspice. Dosya üreten komutun çıktısını yalnız `reports/<kart-id>/` altına yaz.
 - `main`'e push, birleştirme, force push, geçmiş yeniden yazma yok.
