@@ -17,18 +17,19 @@ No. of Data Rows : 117324
 vin_max             =  2.82333e+01 at=  6.04615e-05
 vraw_max            =  1.10180e+01 at=  3.08713e-03
 vraw_end            =  1.09957e+01
+vraw_end_hi         =  1.09957e+01
 q_end               =  0.00000e+00
 ens_end             =  9.99999e-01
 o1_end              =  1.08825e+01
 s2e_end             =  1.09140e+01
 
 
-Total analysis time (seconds) = 73.0071
+Total analysis time (seconds) = 72.772
 
-Total elapsed time (seconds) = 73.014 
+Total elapsed time (seconds) = 72.779 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 10173.523 MB.
-Maximum ngspice program size =   17.297 MB.
-Current ngspice program size =   17.297 MB.
+DRAM currently available = 9951.148 MB.
+Maximum ngspice program size =   17.207 MB.
+Current ngspice program size =   17.207 MB.
 

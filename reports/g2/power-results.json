@@ -21,9 +21,10 @@
     "ocp_above_capacity": true,
     "slope_comp_check": {
       "l_for_1x_downslope_H": 7.901100062978949e-06,
-      "se_over_sn": 1.1619264798498454,
-      "se_over_sn_l_min": 1.4524080998123068
+      "se_over_sn": 0.8606396509090911,
+      "se_over_sn_l_min": 0.6885117207272728
     },
+    "t_cs_delay_note": "75 ns is TYPICAL (LM70880 p.17); peak uses typ -> conditional",
     "status": "Isat/Iheat are TYPICAL datasheet values (Vishay doc 34509); core loss AÇIK"
   },
   "inductor_vin_nom": {
@@ -47,9 +48,10 @@
     "ocp_above_capacity": true,
     "slope_comp_check": {
       "l_for_1x_downslope_H": 7.901100062978949e-06,
-      "se_over_sn": 1.1619264798498454,
-      "se_over_sn_l_min": 1.4524080998123068
+      "se_over_sn": 0.8606396509090911,
+      "se_over_sn_l_min": 0.6885117207272728
     },
+    "t_cs_delay_note": "75 ns is TYPICAL (LM70880 p.17); peak uses typ -> conditional",
     "status": "Isat/Iheat are TYPICAL datasheet values (Vishay doc 34509); core loss AÇIK"
   },
   "sense": {

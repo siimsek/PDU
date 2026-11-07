@@ -34,7 +34,7 @@ def test_clamp_current_below_10mA_both_paths(res16):
 def test_coarse_ov_window(res16):
     co = res16["coarse_ov"]
     assert co["above_transient_band"] and co["below_efuse_in_recommended"]
-    assert co["path_a"][0] > res16["trip_threshold"]["path_a_enumerated"][1]  # precision path trips first
+    assert co["path_a"][0] >= res16["trip_threshold"]["path_a_enumerated"][1] + 0.030  # precision first, >=30 mV
     assert abs(co["diff_V"][0]) < 0.05 and abs(co["diff_V"][1]) < 0.05
     assert co["latched_margin_over_ovr_max_V"] > 0.3
 

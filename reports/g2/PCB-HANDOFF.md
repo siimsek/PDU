@@ -1,13 +1,13 @@
 # G2 — PCB devir teslimi
 
-Girdi: [`KICAD-CHANGE-LIST-FINAL.md`](KICAD-CHANGE-LIST-FINAL.md), [`design/pdu_v2_spec.yaml`](../../design/pdu_v2_spec.yaml), [`routing-g2.json`](routing-g2.json) (üretici: [`analysis/g2/routing.py`](../../analysis/g2/routing.py), girdiler [`routing-input-g2.json`](routing-input-g2.json)). Kök dizindeki `calculate_routing_rules.py` aynı IPC-2221 bağıntısını `.konnect` planından okur; G2 akımları ve yeni ağlar (`/VSAFE`, port sınıfları) `routing-input-g2.json` içindedir ve bir sonraki KiCad fazında netclass planına aktarılmalıdır. Etiketler: HESAP / VARSAYIM / AÇIK.
+Girdi: [`KICAD-CHANGE-LIST-FINAL.md`](KICAD-CHANGE-LIST-FINAL.md), [`design/pdu_v2_spec.yaml`](../../design/pdu_v2_spec.yaml), [`routing-g2.json`](routing-g2.json) (üretici: [`analysis/g2/routing.py`](../../analysis/g2/routing.py), girdiler [`routing-input-g2.json`](routing-input-g2.json)). Kök dizindeki `calculate_routing_rules.py` G3'te `reports/g2/routing-input-g2.json` planını okuyacak şekilde güncellendi (yoksa eski `.konnect` planına düşer); seçilen genişlikler ısınma ≤20 °C ve 50 mV düşüm kontrollerini geçer → [`hardware/routing-width-calculations.json`](../../hardware/routing-width-calculations.json). Etiketler: HESAP / VARSAYIM / AÇIK.
 
 ## 1. Katman sayısı: 4 katman (öneri)
 
 | Ölçüt | 2 katman | 4 katman |
 |---|---|---|
 | SW sıcak döngüsü (VIN–CIN–PGND) | GND dönüşü bölünür; döngü alanı büyür | L2 kesintisiz GND, döngü L1–L2 arası 0.2 mm dielektrikle kapanır |
-| Bara/hata akımı (BUS 7.5 A, O1 9.07 A, yüksek taraf kısası sırasında faz ~60 A tepe, SİM F1) | dış katman genişliği HESAP: BUS ≥4.91 mm, O1 ≥4.75 mm; dönüş de aynı genişlikte iz ister | Dış katman güç + L2 GND düzlemi dönüşü taşır |
+| Bara/hata akımı (BUS 7.5 A, O1 9.07 A, yüksek taraf kısası sırasında arızalı faz 61–86 A tepe, SİM F1/F5 `il1_max_fault`) | dış katman genişliği HESAP: BUS ≥4.91 mm, O1 ≥4.75 mm; dönüş de aynı genişlikte iz ister | Dış katman güç + L2 GND düzlemi dönüşü taşır |
 | Analog/koruma (karşılaştırıcı bölücüsü, REF, mandal, COMP/FB) | SW bakırına yakın, referans düzlemi yok | L2 referansı altında, gürültüden ayrık |
 | Termal yayılım (LM70880 ~2.8 W/adet VARSAYIM, Q2 0.65 W, Q1 0.58 W) | sınırlı | L2/L3 bakırına termal via |
 
@@ -17,15 +17,15 @@ Stackup (VARSAYIM, üretici onayı AÇIK): L1 bileşen + güç dökümleri / L2 
 
 ## 2. Netclass genişlikleri ve via sayıları (HESAP, ΔT 20 °C, 31.5 µm dış katman, segment 30–50 mm, 50 mV düşüm bütçesi)
 
-| Sınıf | Ağlar | Akım zarfı | Dış katman min genişlik | Via (min) | Dayanak |
-|---|---|---:|---:|---:|---|
-| INPUT_POWER | /VBAT, /F1_OUT, /ANODE, /VIN | 4.48 A | 2.94 mm | 9 | 82.5 W / %92 / 20 V |
-| BUS_POWER | /VOUT, /VSAFE, /GND | 7.5 A | 4.91 mm | 15 | kapasite hedefi |
-| PHASE_POWER | /SW_PHx, /ISNSx | 5.58 A | 2.35 mm (kısa tutulur) | 12 | faz tepe akımı |
-| O1_PORT | /O1_11V | 9.07 A | 4.75 mm | 19 | ILIM_O1 max |
-| S2E_PORT | /S2E_11V | 5.66 A | 2.97 mm | 12 | ILIM_S2E max |
-| ANALOG | /FB, /FB_INJ, /COMP*, /OVP_*, /ISO_OV, /ISO_EN, /CLR_N, /REF_NR | <10 mA | 0.25 mm | — | — |
-| GATE | /ISO_GATE, /GATE | tepe A (kapı) | 0.4 mm, kısa | — | LM74502H sink tipik 2.37 A |
+| Sınıf | Ağlar | Akım zarfı | Dış katman min genişlik | **Seçilen** (×1.1, `calculate_routing_rules.py` doğrulamalı) | Via (min) | Dayanak |
+|---|---|---:|---:|---:|---:|---|
+| INPUT_POWER | /VBAT, /F1_OUT, /ANODE, /VIN | 4.48 A | 2.94 mm | **3.3 mm** (ΔT 6.9 °C, 44.5 mV) | 9 | 82.5 W / %92 / 20 V |
+| BUS_POWER | /VOUT, /VSAFE, /GND | 7.5 A | 4.91 mm | **5.5 mm** (ΔT 9.6 °C, 44.7 mV) | 15 | kapasite hedefi |
+| PHASE_POWER | /SW_PHx, /ISNSx | 5.58 A | 2.35 mm (kısa tutulur) | **2.6 mm** (ΔT 16.9 °C, 42.2 mV) | 12 | faz tepe akımı |
+| O1_PORT | /O1_11V | 9.07 A | 4.75 mm | **5.3 mm** (ΔT 15.8 °C, 44.8 mV) | 19 | ILIM_O1 max |
+| S2E_PORT | /S2E_11V | 5.66 A | 2.97 mm | **3.3 mm** (ΔT 11.8 °C, 44.9 mV) | 12 | ILIM_S2E max |
+| ANALOG | /FB, /FB_INJ, /COMP*, /OVP_*, /ISO_OV, /ISO_EN, /CLR_N, /REF_NR | <10 mA | 0.25 mm | 0.25 mm | — | — |
+| GATE | /ISO_GATE, /GATE | tepe A (kapı) | 0.4 mm, kısa | 0.4 mm | — | LM74502H sink tipik 2.37 A |
 
 Via sayısı iki yolun büyüğüdür: 0.5 A/via taraması ve 0.3 mm delik / 20 µm kaplama varil yoğunluğu 30 A/mm² (VARSAYIM). Üretici kaplama/termal kabulüyle yeniden hesaplanmadan DRC kuralına çevrilmez.
 
@@ -47,7 +47,7 @@ Via sayısı iki yolun büyüğüdür: 0.5 A/via taraması ve 0.3 mm delik / 20 
 
 ## 5. Güvenlik mesafeleri (hata gerilimi)
 
-Normal en yüksek gerilim 26 V (VIN). Hata durumları: VIN TVS clamp 53.3 V (VARSAYIM), VRAW yüksek taraf kısasında SİM ≤33 V (F1), ayırıcı FET VDS SİM ≤27.5 V. Dış katman kaplamasız 31–100 V için 0.6 mm (IPC-2221 B2 tablosu — bu turda standart metni yeniden okunmadı, VARSAYIM). Öneri: VIN/ANODE/VOUT ile mantık ağları arasında ≥0.6 mm; aynı ağ sınıfı içinde üretici minimumu.
+Normal en yüksek gerilim 26 V (VIN). Hata durumları: VIN TVS clamp 53.3 V (VARSAYIM), VRAW yüksek taraf kısasında SİM ≤34.1 V (F1/F5) — LM70880 BIAS bu nedenle `/VSAFE`'e taşındı (G3), ayırıcı FET VDS SİM ≤27.5 V. Dış katman kaplamasız 31–100 V için 0.6 mm (IPC-2221 B2 tablosu — bu turda standart metni yeniden okunmadı, VARSAYIM). Öneri: VIN/ANODE/VOUT ile mantık ağları arasında ≥0.6 mm; aynı ağ sınıfı içinde üretici minimumu.
 
 ## 6. Konnektör yerleşimi
 

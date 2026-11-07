@@ -1,69 +1,71 @@
-f1_worst                                                completed=True pass=True vsafe_max_fault=11.91 o1_max_fault=11.91 vds_iso_max=21.23
-f1_worst_nominal_setpoint                               completed=True pass=True vsafe_max_fault=11.9 o1_max_fault=11.9 vds_iso_max=21.16
-f1_typ_loaded                                           completed=True pass=True vsafe_max_fault=11.75 o1_max_fault=11.72 vds_iso_max=27.51
-f1_noprot_baseline                                      completed=True pass=False vsafe_max_fault=33 o1_max_fault=19.57 vds_iso_max=0.02898
-f2_hotplug_26V                                          completed=True pass=True vin_max=42.1 vraw_max=11.02 vraw_end=11 q_end=0
-f2_hotplug_20V_full_load                                completed=True pass=True vin_max=28.23 vraw_max=11.02 vraw_end=11 q_end=0
-f2_ramp_to_20V_uvlo_high_corner                         completed=True pass=True vin_max=19.99 vraw_max=11.02 vraw_end=11 q_end=0
-f2_dip_22V_to_15V_restart                               completed=True pass=True vin_max=31.35 vraw_max=11.02 vraw_end=11 q_end=0 ens_min_dip=-2.736e-214
+f1_worst                                                completed=True pass=True vraw_max_fault=33 vsafe_max_fault=11.92 o1_max_fault=11.92 vds_iso_max=21.22
+f1_worst_nominal_setpoint                               completed=True pass=True vraw_max_fault=32.95 vsafe_max_fault=11.91 o1_max_fault=11.91 vds_iso_max=21.19
+f1_typ_loaded                                           completed=True pass=True vraw_max_fault=30.02 vsafe_max_fault=11.75 o1_max_fault=11.73 vds_iso_max=27.5
+f1_noprot_baseline                                      completed=True pass=False vraw_max_fault=33 vsafe_max_fault=33 o1_max_fault=19.57 vds_iso_max=0.02898
+f2_hotplug_26V                                          completed=True pass=True vin_max=42.1 vraw_max=11.02 vraw_end=11 vraw_end_hi=11 q_end=0
+f2_hotplug_20V_full_load                                completed=True pass=True vin_max=28.23 vraw_max=11.02 vraw_end=11 vraw_end_hi=11 q_end=0
+f2_ramp_to_20V_uvlo_high_corner                         completed=True pass=True vin_max=19.99 vraw_max=11.02 vraw_end=11 vraw_end_hi=11 q_end=0
+f2_dip_22V_to_15V_restart                               completed=True pass=True vin_max=31.35 vraw_max=11.02 vraw_end=11 vraw_end_hi=11 q_end=0 ens_min_dip=-2.736e-214
 f3_nominal_cmin_gm_ea_min                               completed=True pass=True bus_min=10.81 bus_max_release=11.19 q_end=0
 f3_nominal_cmin_gm_ea_max                               completed=True pass=True bus_min=10.86 bus_max_release=11.13 q_end=0
 f3_nominal_ctyp_gm_ea_min                               completed=True pass=True bus_min=10.82 bus_max_release=11.17 q_end=0
 f3_nominal_ctyp_gm_ea_max                               completed=True pass=True bus_min=10.87 bus_max_release=11.12 q_end=0
 f3_nominal_cmax_gm_ea_min                               completed=True pass=True bus_min=10.83 bus_max_release=11.17 q_end=0
 f3_nominal_cmax_gm_ea_max                               completed=True pass=True bus_min=10.88 bus_max_release=11.12 q_end=0
+f3_nominal_cmin_gmmin_vin20_l0.8                        completed=True pass=True bus_min=10.81 bus_max_release=11.18 q_end=0
+f3_nominal_cmin_gmmin_vin26_l1.2                        completed=True pass=True bus_min=10.8 bus_max_release=11.19 q_end=0
 f3_stacked_low_setpoint_cmin_gmmin                      completed=True pass=False bus_min=10.64 bus_max_release=11.02 q_end=0
-f3_stacked_high_setpoint_cmin_gmmin                     completed=True pass=False bus_min=10.97 bus_max_release=11.35 q_end=0
-f4_o1_short_s2e_isolation                               completed=True pass=True q_end=0 s2e_min_fault=10.82 io1_max=8.354
+f3_stacked_high_setpoint_cmin_gmmin                     completed=True pass=False bus_min=10.97 bus_max_release=12.64 q_end=1.003
+f4_o1_short_s2e_isolation                               completed=True pass=True q_end=0 s2e_min_fault=10.79 io1_max=9.295
 f4_input_loss_with_drev                                 completed=True pass=True o1_minus_in_max=0.133 s2e_minus_in_max=-8.607e-05
 f4_input_loss_without_drev                              completed=True pass=False o1_minus_in_max=0.7769 s2e_minus_in_max=-0.0008851
-f5_vt11.493_td300ns_cmin_r20m_l0.8                      completed=True pass=True vsafe_max_fault=11.52 o1_max_fault=11.52
-f5_vt11.493_td300ns_cmin_r20m_l1.2                      completed=True pass=True vsafe_max_fault=11.52 o1_max_fault=11.52
-f5_vt11.493_td300ns_cmin_r200m_l0.8                     completed=True pass=True vsafe_max_fault=11.52 o1_max_fault=11.52
-f5_vt11.493_td300ns_cmin_r200m_l1.2                     completed=True pass=True vsafe_max_fault=11.52 o1_max_fault=11.52
-f5_vt11.493_td300ns_ctyp_r20m_l0.8                      completed=True pass=True vsafe_max_fault=11.51 o1_max_fault=11.51
-f5_vt11.493_td300ns_ctyp_r20m_l1.2                      completed=True pass=True vsafe_max_fault=11.51 o1_max_fault=11.51
-f5_vt11.493_td300ns_ctyp_r200m_l0.8                     completed=True pass=True vsafe_max_fault=11.51 o1_max_fault=11.51
-f5_vt11.493_td300ns_ctyp_r200m_l1.2                     completed=True pass=True vsafe_max_fault=11.51 o1_max_fault=11.51
-f5_vt11.493_td300ns_cmax_r20m_l0.8                      completed=True pass=True vsafe_max_fault=11.51 o1_max_fault=11.51
-f5_vt11.493_td300ns_cmax_r20m_l1.2                      completed=True pass=True vsafe_max_fault=11.51 o1_max_fault=11.51
-f5_vt11.493_td300ns_cmax_r200m_l0.8                     completed=True pass=True vsafe_max_fault=11.51 o1_max_fault=11.51
-f5_vt11.493_td300ns_cmax_r200m_l1.2                     completed=True pass=True vsafe_max_fault=11.51 o1_max_fault=11.51
-f5_vt11.493_td1047ns_cmin_r20m_l0.8                     completed=True pass=True vsafe_max_fault=11.63 o1_max_fault=11.63
-f5_vt11.493_td1047ns_cmin_r20m_l1.2                     completed=True pass=True vsafe_max_fault=11.61 o1_max_fault=11.6
-f5_vt11.493_td1047ns_cmin_r200m_l0.8                    completed=True pass=True vsafe_max_fault=11.63 o1_max_fault=11.62
-f5_vt11.493_td1047ns_cmin_r200m_l1.2                    completed=True pass=True vsafe_max_fault=11.6 o1_max_fault=11.6
-f5_vt11.493_td1047ns_ctyp_r20m_l0.8                     completed=True pass=True vsafe_max_fault=11.59 o1_max_fault=11.59
-f5_vt11.493_td1047ns_ctyp_r20m_l1.2                     completed=True pass=True vsafe_max_fault=11.58 o1_max_fault=11.57
-f5_vt11.493_td1047ns_ctyp_r200m_l0.8                    completed=True pass=True vsafe_max_fault=11.59 o1_max_fault=11.59
-f5_vt11.493_td1047ns_ctyp_r200m_l1.2                    completed=True pass=True vsafe_max_fault=11.57 o1_max_fault=11.57
-f5_vt11.493_td1047ns_cmax_r20m_l0.8                     completed=True pass=True vsafe_max_fault=11.57 o1_max_fault=11.57
-f5_vt11.493_td1047ns_cmax_r20m_l1.2                     completed=True pass=True vsafe_max_fault=11.56 o1_max_fault=11.56
-f5_vt11.493_td1047ns_cmax_r200m_l0.8                    completed=True pass=True vsafe_max_fault=11.56 o1_max_fault=11.56
-f5_vt11.493_td1047ns_cmax_r200m_l1.2                    completed=True pass=True vsafe_max_fault=11.55 o1_max_fault=11.55
-f5_vt11.759_td300ns_cmin_r20m_l0.8                      completed=True pass=True vsafe_max_fault=11.79 o1_max_fault=11.79
-f5_vt11.759_td300ns_cmin_r20m_l1.2                      completed=True pass=True vsafe_max_fault=11.79 o1_max_fault=11.79
-f5_vt11.759_td300ns_cmin_r200m_l0.8                     completed=True pass=True vsafe_max_fault=11.79 o1_max_fault=11.79
-f5_vt11.759_td300ns_cmin_r200m_l1.2                     completed=True pass=True vsafe_max_fault=11.79 o1_max_fault=11.78
-f5_vt11.759_td300ns_ctyp_r20m_l0.8                      completed=True pass=True vsafe_max_fault=11.78 o1_max_fault=11.78
-f5_vt11.759_td300ns_ctyp_r20m_l1.2                      completed=True pass=True vsafe_max_fault=11.78 o1_max_fault=11.78
-f5_vt11.759_td300ns_ctyp_r200m_l0.8                     completed=True pass=True vsafe_max_fault=11.78 o1_max_fault=11.78
-f5_vt11.759_td300ns_ctyp_r200m_l1.2                     completed=True pass=True vsafe_max_fault=11.78 o1_max_fault=11.78
-f5_vt11.759_td300ns_cmax_r20m_l0.8                      completed=True pass=True vsafe_max_fault=11.78 o1_max_fault=11.78
-f5_vt11.759_td300ns_cmax_r20m_l1.2                      completed=True pass=True vsafe_max_fault=11.78 o1_max_fault=11.77
-f5_vt11.759_td300ns_cmax_r200m_l0.8                     completed=True pass=True vsafe_max_fault=11.78 o1_max_fault=11.77
-f5_vt11.759_td300ns_cmax_r200m_l1.2                     completed=True pass=True vsafe_max_fault=11.77 o1_max_fault=11.77
-f5_vt11.759_td1047ns_cmin_r20m_l0.8                     completed=True pass=True vsafe_max_fault=11.91 o1_max_fault=11.91
-f5_vt11.759_td1047ns_cmin_r20m_l1.2                     completed=True pass=True vsafe_max_fault=11.89 o1_max_fault=11.89
-f5_vt11.759_td1047ns_cmin_r200m_l0.8                    completed=True pass=True vsafe_max_fault=11.91 o1_max_fault=11.91
-f5_vt11.759_td1047ns_cmin_r200m_l1.2                    completed=True pass=True vsafe_max_fault=11.88 o1_max_fault=11.88
-f5_vt11.759_td1047ns_ctyp_r20m_l0.8                     completed=True pass=True vsafe_max_fault=11.87 o1_max_fault=11.87
-f5_vt11.759_td1047ns_ctyp_r20m_l1.2                     completed=True pass=True vsafe_max_fault=11.86 o1_max_fault=11.85
-f5_vt11.759_td1047ns_ctyp_r200m_l0.8                    completed=True pass=True vsafe_max_fault=11.86 o1_max_fault=11.86
-f5_vt11.759_td1047ns_ctyp_r200m_l1.2                    completed=True pass=True vsafe_max_fault=11.85 o1_max_fault=11.85
-f5_vt11.759_td1047ns_cmax_r20m_l0.8                     completed=True pass=True vsafe_max_fault=11.85 o1_max_fault=11.85
-f5_vt11.759_td1047ns_cmax_r20m_l1.2                     completed=True pass=True vsafe_max_fault=11.84 o1_max_fault=11.83
-f5_vt11.759_td1047ns_cmax_r200m_l0.8                    completed=True pass=True vsafe_max_fault=11.84 o1_max_fault=11.83
-f5_vt11.759_td1047ns_cmax_r200m_l1.2                    completed=True pass=True vsafe_max_fault=11.83 o1_max_fault=11.82
-f5_precision_path_open_residual                         completed=True pass=False vsafe_max_fault=13.94 o1_max_fault=13.94
-{"F1": {"runs": 4, "completed": 4, "pass": 3}, "F2": {"runs": 4, "completed": 4, "pass": 4}, "F3": {"runs": 8, "completed": 8, "pass": 6}, "F4": {"runs": 3, "completed": 3, "pass": 2}, "F5": {"runs": 49, "completed": 49, "pass": 48}}
+f5_vt11.487_td300ns_cmin_r20m_l0.8                      completed=True pass=True vraw_max_fault=32.99 vsafe_max_fault=11.52 o1_max_fault=11.51
+f5_vt11.487_td300ns_cmin_r20m_l1.2                      completed=True pass=True vraw_max_fault=34.06 vsafe_max_fault=11.51 o1_max_fault=11.51
+f5_vt11.487_td300ns_cmin_r200m_l0.8                     completed=True pass=True vraw_max_fault=26.19 vsafe_max_fault=11.52 o1_max_fault=11.51
+f5_vt11.487_td300ns_cmin_r200m_l1.2                     completed=True pass=True vraw_max_fault=27.02 vsafe_max_fault=11.51 o1_max_fault=11.51
+f5_vt11.487_td300ns_ctyp_r20m_l0.8                      completed=True pass=True vraw_max_fault=31.34 vsafe_max_fault=11.51 o1_max_fault=11.51
+f5_vt11.487_td300ns_ctyp_r20m_l1.2                      completed=True pass=True vraw_max_fault=33.18 vsafe_max_fault=11.51 o1_max_fault=11.5
+f5_vt11.487_td300ns_ctyp_r200m_l0.8                     completed=True pass=True vraw_max_fault=25 vsafe_max_fault=11.51 o1_max_fault=11.51
+f5_vt11.487_td300ns_ctyp_r200m_l1.2                     completed=True pass=True vraw_max_fault=25.41 vsafe_max_fault=11.5 o1_max_fault=11.5
+f5_vt11.487_td300ns_cmax_r20m_l0.8                      completed=True pass=True vraw_max_fault=29.89 vsafe_max_fault=11.5 o1_max_fault=11.5
+f5_vt11.487_td300ns_cmax_r20m_l1.2                      completed=True pass=True vraw_max_fault=30.81 vsafe_max_fault=11.5 o1_max_fault=11.5
+f5_vt11.487_td300ns_cmax_r200m_l0.8                     completed=True pass=True vraw_max_fault=22.73 vsafe_max_fault=11.5 o1_max_fault=11.5
+f5_vt11.487_td300ns_cmax_r200m_l1.2                     completed=True pass=True vraw_max_fault=22.82 vsafe_max_fault=11.5 o1_max_fault=11.5
+f5_vt11.487_td1048ns_cmin_r20m_l0.8                     completed=True pass=True vraw_max_fault=32.99 vsafe_max_fault=11.62 o1_max_fault=11.62
+f5_vt11.487_td1048ns_cmin_r20m_l1.2                     completed=True pass=True vraw_max_fault=34.06 vsafe_max_fault=11.6 o1_max_fault=11.6
+f5_vt11.487_td1048ns_cmin_r200m_l0.8                    completed=True pass=True vraw_max_fault=26.19 vsafe_max_fault=11.62 o1_max_fault=11.62
+f5_vt11.487_td1048ns_cmin_r200m_l1.2                    completed=True pass=True vraw_max_fault=27.02 vsafe_max_fault=11.6 o1_max_fault=11.59
+f5_vt11.487_td1048ns_ctyp_r20m_l0.8                     completed=True pass=True vraw_max_fault=31.28 vsafe_max_fault=11.59 o1_max_fault=11.59
+f5_vt11.487_td1048ns_ctyp_r20m_l1.2                     completed=True pass=True vraw_max_fault=32.44 vsafe_max_fault=11.57 o1_max_fault=11.57
+f5_vt11.487_td1048ns_ctyp_r200m_l0.8                    completed=True pass=True vraw_max_fault=25 vsafe_max_fault=11.58 o1_max_fault=11.58
+f5_vt11.487_td1048ns_ctyp_r200m_l1.2                    completed=True pass=True vraw_max_fault=25.41 vsafe_max_fault=11.56 o1_max_fault=11.56
+f5_vt11.487_td1048ns_cmax_r20m_l0.8                     completed=True pass=True vraw_max_fault=29.89 vsafe_max_fault=11.57 o1_max_fault=11.56
+f5_vt11.487_td1048ns_cmax_r20m_l1.2                     completed=True pass=True vraw_max_fault=30.81 vsafe_max_fault=11.55 o1_max_fault=11.55
+f5_vt11.487_td1048ns_cmax_r200m_l0.8                    completed=True pass=True vraw_max_fault=22.73 vsafe_max_fault=11.56 o1_max_fault=11.56
+f5_vt11.487_td1048ns_cmax_r200m_l1.2                    completed=True pass=True vraw_max_fault=22.82 vsafe_max_fault=11.55 o1_max_fault=11.55
+f5_vt11.765_td300ns_cmin_r20m_l0.8                      completed=True pass=True vraw_max_fault=33 vsafe_max_fault=11.8 o1_max_fault=11.8
+f5_vt11.765_td300ns_cmin_r20m_l1.2                      completed=True pass=True vraw_max_fault=34.07 vsafe_max_fault=11.79 o1_max_fault=11.79
+f5_vt11.765_td300ns_cmin_r200m_l0.8                     completed=True pass=True vraw_max_fault=26.19 vsafe_max_fault=11.8 o1_max_fault=11.8
+f5_vt11.765_td300ns_cmin_r200m_l1.2                     completed=True pass=True vraw_max_fault=27.02 vsafe_max_fault=11.79 o1_max_fault=11.79
+f5_vt11.765_td300ns_ctyp_r20m_l0.8                      completed=True pass=True vraw_max_fault=31.28 vsafe_max_fault=11.79 o1_max_fault=11.79
+f5_vt11.765_td300ns_ctyp_r20m_l1.2                      completed=True pass=True vraw_max_fault=32.45 vsafe_max_fault=11.79 o1_max_fault=11.78
+f5_vt11.765_td300ns_ctyp_r200m_l0.8                     completed=True pass=True vraw_max_fault=25 vsafe_max_fault=11.79 o1_max_fault=11.79
+f5_vt11.765_td300ns_ctyp_r200m_l1.2                     completed=True pass=True vraw_max_fault=25.41 vsafe_max_fault=11.78 o1_max_fault=11.78
+f5_vt11.765_td300ns_cmax_r20m_l0.8                      completed=True pass=True vraw_max_fault=29.89 vsafe_max_fault=11.79 o1_max_fault=11.78
+f5_vt11.765_td300ns_cmax_r20m_l1.2                      completed=True pass=True vraw_max_fault=30.81 vsafe_max_fault=11.78 o1_max_fault=11.78
+f5_vt11.765_td300ns_cmax_r200m_l0.8                     completed=True pass=True vraw_max_fault=22.73 vsafe_max_fault=11.78 o1_max_fault=11.78
+f5_vt11.765_td300ns_cmax_r200m_l1.2                     completed=True pass=True vraw_max_fault=22.82 vsafe_max_fault=11.78 o1_max_fault=11.78
+f5_vt11.765_td1048ns_cmin_r20m_l0.8                     completed=True pass=True vraw_max_fault=33 vsafe_max_fault=11.92 o1_max_fault=11.92
+f5_vt11.765_td1048ns_cmin_r20m_l1.2                     completed=True pass=True vraw_max_fault=34.07 vsafe_max_fault=11.9 o1_max_fault=11.89
+f5_vt11.765_td1048ns_cmin_r200m_l0.8                    completed=True pass=True vraw_max_fault=26.19 vsafe_max_fault=11.92 o1_max_fault=11.91
+f5_vt11.765_td1048ns_cmin_r200m_l1.2                    completed=True pass=True vraw_max_fault=27.02 vsafe_max_fault=11.89 o1_max_fault=11.89
+f5_vt11.765_td1048ns_ctyp_r20m_l0.8                     completed=True pass=True vraw_max_fault=31.28 vsafe_max_fault=11.88 o1_max_fault=11.88
+f5_vt11.765_td1048ns_ctyp_r20m_l1.2                     completed=True pass=True vraw_max_fault=32.45 vsafe_max_fault=11.86 o1_max_fault=11.86
+f5_vt11.765_td1048ns_ctyp_r200m_l0.8                    completed=True pass=True vraw_max_fault=25 vsafe_max_fault=11.87 o1_max_fault=11.87
+f5_vt11.765_td1048ns_ctyp_r200m_l1.2                    completed=True pass=True vraw_max_fault=25.41 vsafe_max_fault=11.85 o1_max_fault=11.85
+f5_vt11.765_td1048ns_cmax_r20m_l0.8                     completed=True pass=True vraw_max_fault=29.9 vsafe_max_fault=11.86 o1_max_fault=11.86
+f5_vt11.765_td1048ns_cmax_r20m_l1.2                     completed=True pass=True vraw_max_fault=30.81 vsafe_max_fault=11.84 o1_max_fault=11.84
+f5_vt11.765_td1048ns_cmax_r200m_l0.8                    completed=True pass=True vraw_max_fault=22.73 vsafe_max_fault=11.84 o1_max_fault=11.84
+f5_vt11.765_td1048ns_cmax_r200m_l1.2                    completed=True pass=True vraw_max_fault=22.82 vsafe_max_fault=11.83 o1_max_fault=11.83
+f5_precision_path_open_residual                         completed=True pass=False vsafe_max_fault=13.98 o1_max_fault=13.98
+{"F1": {"runs": 4, "completed": 4, "pass": 3}, "F2": {"runs": 4, "completed": 4, "pass": 4}, "F3": {"runs": 10, "completed": 10, "pass": 8}, "F4": {"runs": 3, "completed": 3, "pass": 2}, "F5": {"runs": 97, "completed": 97, "pass": 96}}

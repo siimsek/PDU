@@ -11,9 +11,9 @@ Kaynak: Vishay doc 34509 p.1 (6.8 µH ±20 %, DCR max 23.3 mΩ, Isat typ 13.5 A,
 | Ripple p-p | 2.916 A | — | — | — |
 | Faz tepe akımı (7.5 A toplam) | 5.5832 A | 5.5831 A (sayısal üçgen) | 0.1 mA | Isat typ 13.5 A |
 | Faz Irms | 4.2100 A | 4.2100 A | <1 µA | Iheat typ 8 A → 3.79 A marj |
-| Akım sınırında tepe (VCS max 62 mV / RS min, soğuk + 75 ns gecikme aşımı, 53.3 V) | 8.974 A | — | — | Isat'a 4.53 A marj |
+| Akım sınırında tepe (VCS max 62 mV / RS min, soğuk + 75 ns **tipik** gecikme aşımı, 53.3 V) | 8.974 A | — | — | Isat'a 4.53 A marj |
 | OCP min ortalama toplam | 10.19 A | — | — | >7.5 A kapasite |
-| Eğim kompanzasyonu Se/Sn (Eq.7, p.16) | 1.16 (L nom), 1.45 (L min) | — | — | ≥0.5 kararlılık için |
+| Eğim kompanzasyonu Se/Sn = L/L_sc (Eq.7, p.16) | 0.86 (L nom), 0.69 (L min) (G3 düzeltmesi; önceki 1.16/1.45 ters orandı) | — | — | ≥0.5 kararlılık için |
 
 Isat/Iheat **tipik** değerdir; çekirdek kaybı Vishay hesaplayıcısı olmadan hesaplanamadı (0.15 W/adet VARSAYIM) → AÇIK.
 
@@ -51,6 +51,7 @@ Toplam verim **%92 VARSAYIM** (LM70880 datasheet'inde RDS(on)/anahtarlama kaybı
 
 | Büyüklük | Değer | Kanıt |
 |---|---|---|
+| eFuse varyantı | **TPS259824LNRGER** (aktif akım sınırlayıcı; O varyantı circuit breaker'dır, p.4) — G3 denetim düzeltmesi | DATASHEET p.4 |
 | RILIM_O1 | **182 Ω** → 7.23 / 8.13 / 9.07 A (min/typ/max, TJ −40…125 °C) | DATASHEET TPS25982 p.9 tablo noktası |
 | RILIM_S2E | **300 Ω** → 4.36 / 4.98 / 5.66 A | DATASHEET p.9 tablo noktası |
 | Garantili-min toplam | **11.59 A ≥ 7.5 A ✓** (eski 301/604 Ω nominal 7.4877 A FAIL korunur) | HESAP |

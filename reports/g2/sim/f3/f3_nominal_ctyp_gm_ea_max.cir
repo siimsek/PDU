@@ -31,11 +31,11 @@
 .param COUT_EFF=0.000329952
 .param COUT_ESR=0.000120025
 .param COUT_ESL=3.125e-11
-.param VTRIP_EFF=11.7586983
-.param VCOARSE=13.7034958
+.param VTRIP_EFF=11.2590048
+.param VCOARSE=13.7377754
 .param EN_PREC=1
 .param EN_COARSE=1
-.param TDLY=1.04726221e-06
+.param TDLY=1.04826729e-06
 .param TON=7.5e-06
 .param EN_DRV=1
 .param RON_ISO=0.01152
@@ -74,4 +74,5 @@ BPD pdiss 0 V = V(vraw,vsafe)*i(VMISO)
 .meas tran bus_max_release MAX V(vraw) FROM=0.0013 TO=0.0023
 .meas tran bus_pre FIND V(vraw) AT=0.00029699999999999996
 .meas tran q_end FIND V(q) AT=0.0023
+.meas tran o1_min_info MIN V(o1) FROM=0.0003 TO=0.0013
 .end

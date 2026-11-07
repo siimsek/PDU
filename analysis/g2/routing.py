@@ -66,6 +66,10 @@ def compute():
         rows.append({**c, "outer_width_ipc_mm": ext_a, "outer_width_drop_mm": ext_b, "outer_width_min_mm": max(ext_a, ext_b),
                      "inner_width_ipc_mm": inn_a, "inner_width_drop_mm": inn_b, "inner_width_min_mm": max(inn_a, inn_b),
                      "vias_0p5A_each": va, "vias_barrel_density": vb, "vias_min": max(va, vb)})
+    # selected outer-layer width: max(IPC, drop) x 1.1, rounded up to 0.1 mm (consumed by calculate_routing_rules.py)
+    for c, r_ in zip(CLASSES, rows):
+        c["trace_width"] = math.ceil(r_["outer_width_min_mm"] * 1.1 * 10) / 10
+        r_["selected_width_mm"] = c["trace_width"]
     inp = {"nominal_copper_um": 35, "calculation_copper_um": CU_UM, "inner_copper_um_VARSAYIM": CU_INNER_UM,
            "trace_deltaT_C": DT, "resistivity_temperature_C": T_RHO, "drop_budget_mV_per_trunk": DROP_MV,
            "classes": CLASSES, "source": "G2 analysis/g2/routing.py (replaces G1 routing-input for transfer)"}

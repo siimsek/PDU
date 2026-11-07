@@ -31,11 +31,11 @@
 .param COUT_EFF=0.0001853028
 .param COUT_ESR=0.000120025
 .param COUT_ESL=3.125e-11
-.param VTRIP_EFF=11.7586983
-.param VCOARSE=13.7034958
+.param VTRIP_EFF=11.7646503
+.param VCOARSE=13.7377754
 .param EN_PREC=1
 .param EN_COARSE=1
-.param TDLY=1.04726221e-06
+.param TDLY=1.04826729e-06
 .param TON=7.5e-06
 .param EN_DRV=1
 .param RON_ISO=0.01152
@@ -80,5 +80,5 @@ BPD pdiss 0 V = V(vraw,vsafe)*i(VMISO)
 .meas tran vraw_pre FIND V(vraw) AT=9.8e-05
 .meas tran q_end FIND V(q) AT=0.0004
 .meas tran iso_i_max MAX i(VMISO) FROM=0.0001 TO=0.0004
-.meas tran eiso INTEG V(pdiss) FROM=0.0001 TO=0.0004
+.meas tran il1_max_fault MAX i(VM1) FROM=0.0001 TO=0.0004
 .end

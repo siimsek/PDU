@@ -12,7 +12,7 @@ Hesap: [`analysis/g2/loop.py`](../../analysis/g2/loop.py) → [`loop-results.jso
 6. EA çıkış direnci 10 MΩ (VARSAYIM; yalnız düşük frekans kazancını etkiler).
 7. COUT Ceff min/typ/max = 185.3 / 330.0 / 515.3 µF (16× C5750, Aşama 3); ESR 0.12 mΩ.
 
-Köşeler: Ceff {min, typ, max} × L {0.8, 1.0, 1.2} × gm {970, 1200, 1430 µS} × VIN {20, 26 V} × yük {0.75, 7.5 A} × fsw {400, 480 kHz} = **432 köşe**.
+Köşeler: Ceff {min, typ, max} × L {0.8, 1.0, 1.2} × gm {970, 1200, 1430 µS} × VIN {20, 26 V} × yük {0.75, 7.5 A} × fsw {400, 480 kHz} = **216 köşe** (G3 düzeltmesi; önceki '432' sayım hatası).
 
 ## Seçim
 
@@ -44,9 +44,9 @@ Bu uyum cebir/sayısal çözümü doğrular; **modelin fiziksel doğruluğunu do
 ## Tezgâhta ayar ve FRA
 
 - RCOMP footprint'i 10–33 kΩ, CCOMP 2.2–10 nF, CHF 22–100 pF seçeneklerine uygun (0603).
-- FRA enjeksiyonu: RFB1 koluna seri `R_INJ` (varsayılan 0 Ω, FRA için 49.9 Ω), `TP_FB_INJ_A/B`.
+- FRA enjeksiyonu: `/VOUT` ile RFB1 üst ucu arasına seri `R_INJ` (varsayılan 0 Ω, FRA için 49.9 Ω), `TP_FB_INJ_A`=`/VOUT`, `TP_FB_INJ_B`=`/FB_INJ` (G3: düşük empedans tarafına taşındı; analitik/SPICE döngü kırma noktasıyla aynı).
 - **Tezgâh FRA şart** (BENCH T3): PM ≥45°, GM ≥6 dB en az VIN 20/26 V ve 0.75/7 A'da.
 
 ## Yük adımı
 
-0.75→7→0.75 A transient kontrolü büyük-sinyal ortalama modelle SİM Aile 3'te yapılır ([`SIM-RESULTS.md`](SIM-RESULTS.md)); kriter bara min ≥10.78 V ve aşım < trip_min 11.2737 V.
+0.75→7→0.75 A transient kontrolü büyük-sinyal ortalama modelle SİM Aile 3'te yapılır ([`SIM-RESULTS.md`](SIM-RESULTS.md)); kriter bara min ≥10.78 V ve aşım < trip_min (`protection-results.json`, G3: 11.2590 V) ve 11.22 V transient bandı.

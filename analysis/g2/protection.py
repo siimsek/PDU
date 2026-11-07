@@ -33,8 +33,8 @@ RB = 2.32e3            # precision divider bottom, TNPW1206 0.1 % 15 ppm/K (pair
 R_TOL = 0.001          # 0.1 %
 R_TCR = 15e-6          # 15 ppm/K: TNPW "X" code with 0.1 % (doc 28758 p.3; 10 ppm needs TNPU series)
 TRIP_MIN_TARGET = v("BUS_TRANSIENT_MAX") + 0.030   # R03: 11.25 V
-RT2 = 64.9e3           # coarse divider top (CRCW 1 %); pair search: coarse_min >= precision trip_max + 30 mV
-RB2 = 24.9e3           # coarse divider bottom (CRCW 1 %)
+RT2 = 60.4e3           # coarse divider top (CRCW 1 %); pair search: coarse_min >= precision trip_max + 30 mV (G3 fix)
+RB2 = 19.6e3           # coarse divider bottom (CRCW 1 %)
 RQ = 10.0e3            # latch Q -> OV pin
 COARSE_TOL = 0.01
 REN_TOP = 15.0e3       # 5 V rail -> LM74502H EN/UVLO
@@ -70,7 +70,7 @@ def trip_corners_enumerated(rt, rb=RB, tol=R_TOL, tcr=R_TCR):
     for sref, sdr, st, sb, stt, stb, sos, hys, sib in itertools.product(
             (-1, 1), (-1, 1), (-1, 1), (-1, 1), (-1, 1), (-1, 1), (-1, 1),
             (v("CMP_HYS_MIN"), v("CMP_HYS_MAX")), (-1, 1)):
-        vref = v("VREF") * (1 + sref * v("VREF_TOL")) * (1 + sdr * v("VREF_TC") * dT)
+        vref = v("VREF") * (1 + sref * v("VREF_TOL")) * (1 + sdr * v("VREF_TC") * v("DT_REF_BOX"))
         rt_ = rt * (1 + st * tol) * (1 + stt * tcr * dT)
         rb_ = rb * (1 + sb * tol) * (1 + stb * tcr * dT)
         voff = sos * v("CMP_VOS") + hys / 2.0  # rising threshold sits half the hysteresis above offset
@@ -85,7 +85,7 @@ def trip_corners_interval(rt, rb=RB, tol=R_TOL, tcr=R_TCR):
     rth = rt * rb / (rt + rb)
     vnom_in = v("VREF") + (v("CMP_HYS_MIN") + v("CMP_HYS_MAX")) / 4.0
     nom = vnom_in * k
-    d_ref = v("VREF") * (v("VREF_TOL") + v("VREF_TC") * dT) * k
+    d_ref = v("VREF") * (v("VREF_TOL") + v("VREF_TC") * v("DT_REF_BOX")) * k
     d_ratio = vnom_in * (rt / rb) * 2 * (tol + tcr * dT)       # dk = (rt/rb)*(drt/rt - drb/rb)
     d_os = v("CMP_VOS") * k
     d_hys = (v("CMP_HYS_MAX") - v("CMP_HYS_MIN")) / 4.0 * k

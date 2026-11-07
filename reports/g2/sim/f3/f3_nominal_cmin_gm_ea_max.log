@@ -87,14 +87,15 @@ bus_min             =  1.08575e+01 at=  3.09675e-04
 bus_max_release     =  1.11342e+01 at=  1.30997e-03
 bus_pre             =  1.09960e+01
 q_end               =  0.00000e+00
+o1_min_info         =  1.07443e+01 at=  3.09775e-04
 
 
-Total analysis time (seconds) = 1.37281
+Total analysis time (seconds) = 1.36732
 
-Total elapsed time (seconds) = 1.379 
+Total elapsed time (seconds) = 1.373 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 10186.770 MB.
-Maximum ngspice program size =   11.508 MB.
-Current ngspice program size =   11.508 MB.
+DRAM currently available = 10007.340 MB.
+Maximum ngspice program size =   11.887 MB.
+Current ngspice program size =   11.887 MB.
 

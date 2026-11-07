@@ -15,8 +15,10 @@ def test_inductor_two_paths_and_margins(r):
     assert i["ocp_above_capacity"]
 
 
-def test_slope_comp_at_least_half_downslope(r):
-    assert r["inductor"]["slope_comp_check"]["se_over_sn"] > 0.5
+def test_slope_comp_ratio_is_L_over_Lsc_and_above_half(r):
+    sc = r["inductor"]["slope_comp_check"]
+    assert abs(sc["se_over_sn"] - 6.8e-6 / sc["l_for_1x_downslope_H"]) < 1e-9
+    assert 0.5 < sc["se_over_sn_l_min"] < sc["se_over_sn"] < 1.0
 
 
 def test_shunt_derating_below_50pct(r):

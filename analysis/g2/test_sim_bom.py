@@ -61,3 +61,30 @@ def test_bom_no_mpn_without_datasheet_and_derating():
 def test_no_kicad_files_in_g2_outputs():
     for p in (ROOT / "design").iterdir():
         assert ".kicad_" not in p.name
+
+
+# ---- G3 audit regression guards
+def test_efuse_is_active_current_limiter_variant():
+    rows = {r["ref"]: r for r in csv.DictReader((ROOT / "design" / "bom-v2.csv").open(encoding="utf-8"))}
+    assert rows["U3"]["mpn"] == rows["U4"]["mpn"] == "TPS259824LNRGER"
+
+
+def test_lm70880_bias_on_protected_rail_and_fra_injection_at_low_z_side():
+    spec = (ROOT / "design" / "pdu_v2_spec.yaml").read_text(encoding="utf-8")
+    assert spec.count('"BIAS(6)": "/VSAFE"') == 2
+    blk = spec.split("- ref: R_INJ")[1].split("- ref:")[0]
+    assert '"/VOUT"' in blk and '"/FB_INJ"' in blk
+
+
+def test_sim_runs_match_current_case_set_and_transient_band_criterion():
+    from analysis.g2 import sim_runner
+    assert set(SIM["runs"]) == set(sim_runner.family_cases())
+    for n, r in SIM["runs"].items():
+        if r["family"] == "F3":
+            assert r["criteria"]["bus_max_release"]["limit"] == 11.22, n
+
+
+def test_raw_bus_fault_peak_below_lm70880_vout_pin_limit():
+    for n, r in SIM["runs"].items():
+        if "vraw_max_fault" in r["criteria"]:
+            assert r["measures"]["vraw_max_fault"] < 60.0, n

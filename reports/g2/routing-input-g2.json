@@ -16,7 +16,8 @@
       ],
       "current_A": 4.483695652173912,
       "length_mm": 50,
-      "basis": "82.5 W / 92 % (VARSAYIM) / 20 V"
+      "basis": "82.5 W / 92 % (VARSAYIM) / 20 V",
+      "trace_width": 3.3
     },
     {
       "name": "BUS_POWER",
@@ -27,7 +28,8 @@
       ],
       "current_A": 7.5,
       "length_mm": 50,
-      "basis": "7.5 A capacity target; VSAFE carries the same current through Q2"
+      "basis": "7.5 A capacity target; VSAFE carries the same current through Q2",
+      "trace_width": 5.5
     },
     {
       "name": "PHASE_POWER",
@@ -39,7 +41,8 @@
       ],
       "current_A": 5.583,
       "length_mm": 30,
-      "basis": "phase peak 5.583 A (power.py, +10 % share, VIN 26 V)"
+      "basis": "phase peak 5.583 A (power.py, +10 % share, VIN 26 V)",
+      "trace_width": 2.6
     },
     {
       "name": "O1_PORT",
@@ -48,7 +51,8 @@
       ],
       "current_A": 9.07,
       "length_mm": 40,
-      "basis": "ILIM_O1 max 9.07 A (could flow continuously just below trip in a max-corner part)"
+      "basis": "ILIM_O1 max 9.07 A (could flow continuously just below trip in a max-corner part)",
+      "trace_width": 5.3
     },
     {
       "name": "S2E_PORT",
@@ -57,7 +61,8 @@
       ],
       "current_A": 5.66,
       "length_mm": 40,
-      "basis": "ILIM_S2E max 5.66 A"
+      "basis": "ILIM_S2E max 5.66 A",
+      "trace_width": 3.3
     }
   ],
   "source": "G2 analysis/g2/routing.py (replaces G1 routing-input for transfer)"

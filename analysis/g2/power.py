@@ -66,7 +66,7 @@ def inductor(vin=None, i_total=None):
         "iheat_typ_A": v("L_IHEAT_TYP"), "irms_margin_A": v("L_IHEAT_TYP") - irms_a,
         "ocp_avg_min_total_A": 2 * i_lim_avg_min_phase,
         "ocp_above_capacity": 2 * i_lim_avg_min_phase > v("I_BUS_CAP"),
-        "slope_comp_check": slope_comp(),
+        "slope_comp_check": slope_comp(), "t_cs_delay_note": "75 ns is TYPICAL (LM70880 p.17); peak uses typ -> conditional",
         "status": "Isat/Iheat are TYPICAL datasheet values (Vishay doc 34509); core loss AÇIK",
     }
 
@@ -74,8 +74,9 @@ def inductor(vin=None, i_total=None):
 def slope_comp():
     """LM70880 Eq.7: L_sc[uH] = VOUT*RS[mOhm]/(24*Fsw[MHz]); ratio Se/Sn(downslope)."""
     l_sc = VOUT * v("RS_NOM") * 1e3 / (24 * v("FSW_NOM") / 1e6) * 1e-6
-    return {"l_for_1x_downslope_H": l_sc, "se_over_sn": l_sc / v("L_NOM"),
-            "se_over_sn_l_min": l_sc / (v("L_NOM") * (1 - v("L_TOL")))}
+    # Se is fixed; sensed downslope Sn = VOUT*RS*GCS/L, and Se = Sn at L = L_sc  ->  Se/Sn = L / L_sc (G3 audit E3 fix)
+    return {"l_for_1x_downslope_H": l_sc, "se_over_sn": v("L_NOM") / l_sc,
+            "se_over_sn_l_min": v("L_NOM") * (1 - v("L_TOL")) / l_sc}
 
 
 def sense_resistor():

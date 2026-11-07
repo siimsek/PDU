@@ -60,6 +60,8 @@ PARAMS: dict[str, P] = {
     "R_SRC_MIN": P(0.020, "ohm", "VARSAYIM", "battery+cable sweep", "Fault current, F1 I2t, Q1 SOA."),
     "R_SRC_MAX": P(0.200, "ohm", "VARSAYIM", "battery+cable sweep", "Fault current, F1 I2t, Q1 SOA."),
     "T_AMB_MAX": P(85.0, "C", "VARSAYIM", "G1 thermal screen ambient", "Thermal margins of every part."),
+    "DT_REF_BOX": P(165.0, "K", "VARSAYIM", "REF5025A drift is a box-method spec over -40..125 C; full 165 K span used (G3 audit D4)",
+                     "Reference drift corner; long-term drift/solder shift not included."),
     "DT_DRIFT": P(100.0, "K", "VARSAYIM", "25 C -> 125 C worst drift span", "Reference/resistor drift corners."),
 
     # ---- buck controller

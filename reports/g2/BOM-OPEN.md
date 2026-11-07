@@ -54,6 +54,12 @@ Toplam satır: **114**; MPN'li: **71**; MPN AÇIK: **43**.
 
 - R/C satırlarında %50 sınırını aşan uygulama yok (MPN'siz C satırları için gereken anma gerilimi `v_rating` sütununda).
 
+## Mutlak maksimuma yakın (>%80) aktif parçalar (53.3 V TVS clamp VARSAYIMINA göre)
+
+- U5 (LM74700QDBVRQ1): 82% — TVS datasheet doğrulanınca yeniden kontrol
+- U6 (LM74502HDDFR): 82% — TVS datasheet doğrulanınca yeniden kontrol
+- U10 (TPS7A1650QDGNRQ1): 89% — TVS datasheet doğrulanınca yeniden kontrol
+
 ## Özel footprint gereken satırlar
 
 - F1 (10 A DC, >=53.3 VDC, >=1040 A breaking): AÇIK — AÇIK
@@ -76,5 +82,5 @@ Toplam satır: **114**; MPN'li: **71**; MPN AÇIK: **43**.
 - COUT14 (C5750X7S2A226M280KB): PDU:TDK_C5750_2220_Recommended — repo custom land (TDK recommended; prototype-accepted per docs/design.md)
 - COUT15 (C5750X7S2A226M280KB): PDU:TDK_C5750_2220_Recommended — repo custom land (TDK recommended; prototype-accepted per docs/design.md)
 - COUT16 (C5750X7S2A226M280KB): PDU:TDK_C5750_2220_Recommended — repo custom land (TDK recommended; prototype-accepted per docs/design.md)
-- U3 (TPS259824ONRGER): PDU:TPS25982_RGE0024M — repo custom land
-- U4 (TPS259824ONRGER): PDU:TPS25982_RGE0024M — repo custom land
+- U3 (TPS259824LNRGER): PDU:TPS25982_RGE0024M — repo custom land
+- U4 (TPS259824LNRGER): PDU:TPS25982_RGE0024M — repo custom land

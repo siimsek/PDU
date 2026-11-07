@@ -45,6 +45,8 @@ FP_LIB = "KiCad standard library footprint (IPC-7351 nominal)"
 
 
 def r(ref, value, mpn, ds, tol, tcr, pkg, fp, fp_src, nets, p_applied, p_rating, note="", dnp=False, custom=False):
+    if p_rating and mpn.startswith(("TNPW", "CRCW")):
+        p_rating = p_rating * (155 - 85) / (155 - 70)   # G3: Vishay derating 70->155 C, rated at T_AMB_MAX 85 C
     return dict(ref=ref, kind="R", value=value, mpn=mpn, manufacturer="Vishay" if mpn.startswith(("TNPW", "CRCW", "WSL"))
                 else ("Panasonic" if mpn.startswith("ERA") else ""), datasheet=DSD.get(ds, ds), tolerance=tol, tcr=tcr,
                 package=pkg, footprint=fp, footprint_source=fp_src, custom_footprint=custom, nets=nets,
@@ -116,7 +118,8 @@ def rows():
                    {"VIN": "/VIN", "SW": f"/SW_PH{k}", "CBOOT": f"/CBOOT{k}", "ISNS+": f"/ISNS{k}", "VOUT": "/VOUT",
                     "EN/UVLO": "/EN_BUCK", "EXTCOMP": "/COMP", "FB": "/FB", "RT": f"/RT_PH{k}", "VCC": f"/VCC{k}",
                     "VDDA": f"/VDDA{k}", "CONFIG": "/CFG_PRI" if k == 1 else "/CFG_SEC",
-                    "PG/SYNCOUT": "/SYNC" if k == 1 else "NC", "PFM/SYNCIN": "/GND" if k == 1 else "/SYNC"},
+                    "PG/SYNCOUT": "/SYNC" if k == 1 else "NC", "PFM/SYNCIN": "/GND" if k == 1 else "/SYNC",
+                    "BIAS(6)": "/VSAFE"},
                    v_app=53.3, v_rat=87.5, custom=True))
         R.append(dict(ref=f"L{k}", kind="L", value="6.8uH", mpn="IHLP4040DZER6R8M01", manufacturer="Vishay Dale",
                       datasheet=DSD["VSH_IHLP"], tolerance="20%", tcr="", package="IHLP-4040DZ", footprint="Inductor_SMD:L_Vishay_IHLP-4040",
@@ -137,9 +140,9 @@ def rows():
     R.append(r("RCFG1", "54.9k", crcw("0603", "54K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/CFG_PRI", "2": "/GND"}, 1e-4, 0.1))
     R.append(r("RCFG2", "90.9k", crcw("0603", "90K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/CFG_SEC", "2": "/GND"}, 1e-4, 0.1))
     R.append(r("RSYNC", "100k", crcw("0603", "100K"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/SYNC", "2": "/VDDA1"}, 1e-4, 0.1))
-    R.append(r("RFB1", "130k", "ERA3AEB134V", "PAN_ERA", "0.1%", "25ppm/K", "0603", R0603, FP_LIB, {"1": "/VOUT", "2": "/FB_INJ"}, 1e-3, 0.1))
+    R.append(r("RFB1", "130k", "ERA3AEB134V", "PAN_ERA", "0.1%", "25ppm/K", "0603", R0603, FP_LIB, {"1": "/FB_INJ", "2": "/FB"}, 1e-3, 0.1))
     R.append(r("R_INJ", "0", crcw("0603", "0000Z0"[:4]).replace("FKEA", "Z0EA"), "VSH_CRCW", "jumper", "", "0603", R0603, FP_LIB,
-               {"1": "/FB_INJ", "2": "/FB"}, 0.0, 0.1, note="FRA injection: replace with 49.9 ohm for bench FRA (TP_FB_INJ_A/B)"))
+               {"1": "/VOUT", "2": "/FB_INJ"}, 0.0, 0.1, note="FRA injection at divider top (low-Z VOUT side): 49.9 ohm for bench FRA (TP_FB_INJ_A=/VOUT, TP_FB_INJ_B=/FB_INJ)"))
     R.append(r("RFB2", "10.2k", "ERA3AEB1022V", "PAN_ERA", "0.1%", "25ppm/K", "0603", R0603, FP_LIB, {"1": "/FB", "2": "/GND"}, 1e-4, 0.1))
     R.append(r("RCOMP", "16.9k", crcw("0603", "16K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB,
                {"1": "/COMP", "2": "/COMP_MID"}, 1e-5, 0.1, note="G2 Stage 4; bench range 10-33k"))
@@ -187,9 +190,9 @@ def rows():
                   v_applied=5.0, v_rating="", p_applied_W="", p_rating_W="", derating=None, lifecycle="doğrulanamadı",
                   note="G1 candidate Omron B3U-1000P not re-read in G2", dnp=False))
     R.append(r("R_Q", "10k", crcw("0603", "10K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/OVP_Q", "2": "/ISO_OV"}, 1e-3, 0.1))
-    R.append(r("R_OV2T", "64.9k", crcw("0603", "64K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/VOUT", "2": "/ISO_OV"},
-               (26 - 2) ** 2 / 64.9e3, 0.1, note="coarse OV 11.55-13.70 V"))
-    R.append(r("R_OV2B", "24.9k", crcw("0603", "24K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/ISO_OV", "2": "/GND"}, 3e-4, 0.1))
+    R.append(r("R_OV2T", "60.4k", crcw("0603", "60K4"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/VOUT", "2": "/ISO_OV"},
+               (26 - 2) ** 2 / 60.4e3, 0.1, note="coarse OV 11.58-13.74 V (>= precision trip_max + 30 mV)"))
+    R.append(r("R_OV2B", "19.6k", crcw("0603", "19K6"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/ISO_OV", "2": "/GND"}, 3e-4, 0.1))
     R.append(r("R_EN1", "15k", crcw("0603", "15K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/P5V_PROT", "2": "/ISO_EN"}, 1e-3, 0.1))
     R.append(r("R_EN2", "10k", crcw("0603", "10K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/ISO_EN", "2": "/GND"}, 4e-4, 0.1))
     R.append(u("U10", "TPS7A1650-Q1", "TPS7A1650QDGNRQ1", "TI_TPS7A16", "HVSSOP-8 (DGN)", "Package_SO:MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm",
@@ -205,10 +208,10 @@ def rows():
                11.6 ** 2 / 4.7e3, 0.25, note="VSAFE bleeder (R16)"))
     for k, port, ilim, rl in ((3, "O1", D.RILIM_O1, "182R"), (4, "S2E", D.RILIM_S2E, "300R")):
         idx = 1 if port == "O1" else 2
-        R.append(u(f"U{k}", "TPS259824O", "TPS259824ONRGER", "TI_TPS25982", "VQFN-24 (RGE)", "PDU:TPS25982_RGE0024M", "repo custom land",
+        R.append(u(f"U{k}", "TPS259824L", "TPS259824LNRGER", "TI_TPS25982", "VQFN-24 (RGE)", "PDU:TPS25982_RGE0024M", "repo custom land",
                    {"IN": "/VSAFE", "OUT": f"/{port}_11V", "EN/UVLO": "/EN_EFUSE", "ILIM": f"/ILIM_{port}", "IMON": f"/IMON_{port}",
                     "dVdt": f"/DVDT_{port}", "PG": f"/PG_{port}", "GND": "/GND"}, v_app=11.6, v_rat=30.0, custom=True,
-                   note="IN moved from /VOUT to /VSAFE (G2); repo had ...NRGET (250 pcs) - both orderables in TI addendum"))
+                   note="IN moved /VOUT->/VSAFE; variant O (circuit breaker) -> L (active current limiter, 16.9 V OVLO; TPS25982 p.4) per G3 audit"))
         R.append(r(f"RILIM{idx}", str(int(ilim)), tnpw("0603", rl), "VSH_TNPW", "0.1%", "15ppm/K", "0603", R0603, FP_LIB,
                    {"1": f"/ILIM_{port}", "2": "/GND"}, 1e-4, 0.1, note="TPS25982 p.9 guaranteed table point"))
         R.append(r(f"RIMON{idx}", "806", "ERA3AEB8060V", "PAN_ERA", "0.1%", "25ppm/K", "0603", R0603, FP_LIB,
@@ -224,8 +227,8 @@ def rows():
         R.append(dict(ref=f"D_REV{idx}", kind="D", value="Schottky 40 V 3 A", mpn="SS34-E3/57T", manufacturer="Vishay General Semiconductor",
                       datasheet=DSD["VSH_SS34"], tolerance="", tcr="", package="SMC (DO-214AB)", footprint="Diode_SMD:D_SMC",
                       footprint_source=FP_LIB, custom_footprint=False, nets={"A": f"/{port}_11V", "K": "/VSAFE"},
-                      v_applied=0.05, v_rating=40.0, p_applied_W="", p_rating_W="", derating=0.05 / 40, lifecycle="doğrulanamadı",
-                      note="OUT->IN clamp for TPS25982 OUT<=VIN+0.3 V (R16); Vf at mA level typical only", dnp=False))
+                      v_applied=11.94, v_rating=40.0, p_applied_W="", p_rating_W="", derating=11.94 / 40, lifecycle="doğrulanamadı",
+                      note="OUT->IN clamp (R16); reverse-biased up to VSAFE when port shorted; Vf/leakage typical only (hot leakage back-feed AÇIK)", dnp=False))
         R.append(dict(ref=f"D{1 + idx}", kind="D", value="Schottky 40 V 3 A", mpn="SS34-E3/57T", manufacturer="Vishay General Semiconductor",
                       datasheet=DSD["VSH_SS34"], tolerance="", tcr="", package="SMC (DO-214AB)", footprint="Diode_SMD:D_SMC",
                       footprint_source=FP_LIB, custom_footprint=False, nets={"A": "/GND", "K": f"/{port}_11V"},
@@ -290,6 +293,10 @@ def main():
             lines.append(f"- {row['ref']}: {row['derating']:.0%} > %50")
     else:
         lines.append("- R/C satırlarında %50 sınırını aşan uygulama yok (MPN'siz C satırları için gereken anma gerilimi `v_rating` sütununda).")
+    lines += ["", "## Mutlak maksimuma yakın (>%80) aktif parçalar (53.3 V TVS clamp VARSAYIMINA göre)", ""]
+    for row in R:
+        if row["kind"] in ("U", "Q", "D") and isinstance(row["derating"], float) and row["derating"] > 0.8:
+            lines.append(f"- {row['ref']} ({row['mpn'] or row['value']}): {row['derating']:.0%} — TVS datasheet doğrulanınca yeniden kontrol")
     lines += ["", "## Özel footprint gereken satırlar", ""]
     for row in R:
         if row["custom_footprint"]:

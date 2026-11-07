@@ -93,18 +93,18 @@ s2e_minus_in_max    =  -8.60734e-05 at=  3.00010e+00
 vraw_pre            =  1.09959e+01
 q_end               =  0.00000e+00
 iso_i_max           =  2.22504e-01 at=  1.00068e-04
-eiso                =   2.84364e-06 from=  1.00000e-04 to=  3.00010e+00
+il1_max_fault       =  1.11917e-01 at=  1.00000e-04
 s2e_min_fault       =  2.58905e-06 at=  3.00010e+00
 io1_max             =  2.22485e-01 at=  1.51676e-04
 vraw_min_fault      =  8.32213e-01 at=  3.00010e+00
 
 
-Total analysis time (seconds) = 4.04689
+Total analysis time (seconds) = 4.02102
 
-Total elapsed time (seconds) = 4.058 
+Total elapsed time (seconds) = 4.031 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 10177.895 MB.
-Maximum ngspice program size =   26.547 MB.
-Current ngspice program size =   23.121 MB.
+DRAM currently available = 9999.148 MB.
+Maximum ngspice program size =   23.160 MB.
+Current ngspice program size =   23.160 MB.
 

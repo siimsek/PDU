@@ -15,7 +15,7 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 | R05 | Karşılaştırıcı giriş ortak modu: eşik geçişi anında VCM önerilen aralıkta olmalı; aralık dışına çıkan fault'ta karşılaştırıcı çıkışına güvenilmez, koruma bağımsız bir yolla tutulmalı. | 6692033623 §1, 6694409747 | Trip anında VCM ≈2.5 V (aralık −0.2…5.2 V). VRAW > ~23.9 V'ta giriş aralık dışı; bu bölgeyi `U_DRV` OV pinindeki **bağımsız kaba OV bölücüsü** kapatır (VS-beslemeli, mantık rayından bağımsız). Mandal bir kez set olunca karşılaştırıcı çıkışı önemsizdir. | HESAP; fiziksel AÇIK |
 | R06 | Karşılaştırıcı giriş clamp akımı VCC=0 ve VRAW=53.3 V (TVS clamp) köşesinde ≤10 mA. | TLV3601 DATASHEET Rev E p.5 dipnot; 6692033623 | Bölücü Thevenin direnci ≥1.9 kΩ; hesap tüm köşelerde. | HESAP |
 | R07 | Clamp üzerinden 5 V rayına geri besleme rayı belirsiz bölgeye taşımamalı. | 6692033623 §3 | 5 V rayında bleeder; ray LDO'suz iken denge gerilimi hesabı. | HESAP |
-| R08 | Mandal VCC <1.65 V'ta durum belirsiz → mandal durumuna güvenilmez; mantık rayı geçerli olana kadar kapı **bağımsız yolla** kapalı tutulur. | SN74LVC1G74 DATASHEET Rev G p.4; 6692825552 §2 | `U_DRV` EN/UVLO pini 5 V rayından bölücüyle beslenir: 5 V rayı ≥3.3 V olmadan kapı açılamaz; ray 2.57–3.09 V altına inerse kapı kapanır. | DATASHEET+HESAP |
+| R08 | Mandal VCC <1.65 V'ta durum belirsiz → mandal durumuna güvenilmez; mantık rayı geçerli olana kadar kapı **bağımsız yolla** kapalı tutulur. | SN74LVC1G74 DATASHEET Rev G p.4; 6692825552 §2 | `U_DRV` EN/UVLO pini 5 V rayından bölücüyle beslenir: kapı 2.90–3.375 V arasında açılır; ray 2.57–3.16 V altına inerse kapanır (G3 düzeltmesi). | DATASHEET+HESAP |
 | R09 | PRE ve CLR aynı anda aktifse çıkış güvenli (KAPALI) yönde olmalı. | SN74LVC1G74 fonksiyon tablosu (PRE=L,CLR=L → Q=H, Q̄=H) | Trip = PRE (Q=H → OV pini yüksek → kapı kapalı). Reset/POR = CLR. Çakışmada Q=H → KAPALI. | DATASHEET |
 | R10 | Açılışta mandal belirli şekilde temizlenmeli; açılışta hata varsa ayırıcı kapalı kalmalı. | 6692825552 §2; 6693550928 | POR RC + LDO PG → CLR. Karşılaştırıcı 2.1 V POR altında çıkışı LOW tutar → PRE aktif → Q=H (KAPALI). | DATASHEET+HESAP |
 | R11 | Reset yalnız güç döngüsü veya manuel buton; otomatik yeniden deneme yok; hata sürerken reset etkisiz. | Kullanıcı varsayılanı; 6692825552 §2 | Buton CLR'yi çeker; PRE aktifken Q=H kalır (R09). | DATASHEET |
@@ -40,7 +40,7 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 | R20 | Hata bölücüsündeki direnç gücü sürekli hata gerilimine göre ≤%50 nominal. | 6692033623 §2 | Bölücü direnç gücü 26 V sürekli ve 53.3 V geçici için hesaplanır; paket buna göre. | HESAP |
 | R21 | Mantık/koruma LDO'su sürekli hata gerilimi görmemeli (termal). | 6692825552 §4 (40.709 V'ta Tj 130.49 °C) | `U_LDO5` girişi VIN (Q1 sonrası, 20–26 V), VRAW değil. | HESAP |
 | R22 | TPS7A16 PG yalnız VIN ≥3 V'ta geçerli; düşük VIN güvenliği PG'ye bırakılmaz. | TPS7A16-Q1 DATASHEET Rev E p.6 | Kapı kapatma yolu R08'deki EN bölücüsüdür; PG yalnız CLR açılış zamanlaması için. | DATASHEET |
-| R23 | Bölücü/referans tek arızasında güvenli durum analiz edilir; tek açık direnç tüm OV korumasını kaldırmamalı. | 6692825552, kullanıcı G2 talimatı | Referans kaybı → karşılaştırıcı LOW → trip (güvenli). Alt direnç açık → trip (güvenli). Üst direnç açık → hassas yol kör; **kaba OV yolu** VSAFE'i ≤12.77 V'ta keser (U3/U4 korunur, O1 12 V garantisi yok) → artık risk, AÇIK. | HESAP |
+| R23 | Bölücü/referans tek arızasında güvenli durum analiz edilir; tek açık direnç tüm OV korumasını kaldırmamalı. | 6692825552, kullanıcı G2 talimatı | Referans kaybı → karşılaştırıcı LOW → trip (güvenli). Alt direnç açık → trip (güvenli). Üst direnç açık → hassas yol kör; **kaba OV yolu** VSAFE'i 11.58–13.74 V'ta keser (G3 düzeltmesi; SİM 13.98 V) (U3/U4 korunur, O1 12 V garantisi yok) → artık risk, AÇIK. | HESAP |
 | R24 | Algılama VRAW (ayırıcı öncesi) üzerinde; ayırıcı açıldıktan sonra hata sürdükçe mandal tutar. | 6683120653 deck | U_CMP bölücüsü VRAW'da. | Tasarımda |
 
 ## D. Güç katı, döngü ve doğrulama
@@ -49,7 +49,7 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 |---|---|---|---|---|
 | R25 | Bootstrap: LM70880 CBOOT=47 nF (VCC=8 V seçilirse 1 Ω seri); ayrık sürücü kullanılırsa sürücünün CB eşitsizliği (LTC7001: CB > 306 nF + 10·CG). | LM70880 DATASHEET p.4 pin tablosu; 6694409747 LTC7001 bootstrap | LM70880 CBOOT 47 nF + RBOOT 1 Ω korunur. Seçilen koruma zincirinde ayrık bootstrap yok (LM74502H iç şarj pompası, VCAP 0.1 µF DATASHEET p.4). | DATASHEET |
 | R26 | Yük adımı 0.75→7 A ve geri: bara min ≥10.78 V; aşım R03 eşiğinin altında. Kriter gevşetilmez. | G1 Family 4 10.7109 V **FAIL** | Ceff artırımı + COMP yeniden seçimi (Aşama 4), Aile 3. | SİM; fiziksel AÇIK |
-| R27 | Döngü PM ≥45°, GM ≥6 dB tüm Ceff/L/gm/VIN/yük köşelerinde; model belirsizliği PM'den pay olarak düşülür. | G1 BENCH T3 | Analitik + SPICE AC (Aşama 4). | HESAP+SİM; FRA şart |
+| R27 | Döngü PM ≥45°, GM ≥6 dB tüm Ceff/L/gm/VIN/yük köşelerinde; model belirsizliği PM'den pay olarak düşülür. | G1 BENCH T3 | Analitik + SPICE AC (Aşama 4), 216 köşe. | HESAP+SİM; FRA şart |
 | R28 | Her hesap iki yolla; fark raporlu; birimli; pytest'li. | Kullanıcı G2 kuralı; 6681813880 P1 | `analysis/g2/*` her sonuçta `path_a`, `path_b`, `diff`. | HESAP |
 | R29 | Tamamlanmayan simülasyon PASS sayılmaz; FAIL silinmez; ilk/son deneme ve hash saklanır. | G1-R2-04, 6693550928 | `analysis/g2/sim_runner.py` completed bayrağı + SHA256. | Tasarımda |
 | R30 | Tezgâh enjeksiyonu için erişim: VRAW enjeksiyon padi, VSAFE/O1/S2E/GATE test noktaları; enjeksiyon akım sınırlı fixture ile. | G1 KICAD-CHANGE-LIST | KICAD-CHANGE-LIST-FINAL test noktaları. | Tasarımda |
@@ -58,33 +58,33 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 
 | ID | Sağlandı? | Kanıt | AÇIK kalan |
 |---|---|---|---|
-| R01 | Evet | SİM F1/F5: VSAFE ≤11.915 V (korumasız referans 33.0 V FAIL) | fiziksel T5c |
-| R02 | Evet (model/hesap) | HESAP 11.935 V, SİM F1 11.912 V, F5 maks 11.912 V | tezgâh T5b/T5c; ölçüm belirsizliği (USER-DECISIONS #2) |
-| R03 | Kısmen | trip_min 11.2649 V (bant + 44.9 mV); SİM F3 nominal bırakma ≤11.19 V | yığılmış üst köşe bırakma 11.35 V > trip_min (F3 FAIL) → trim/kullanıcı kararı |
+| R01 | Evet (model) | SİM F1/F5: VSAFE ≤11.922 V (korumasız referans 33.0 V FAIL) | fiziksel T5c; bobin doyumu (G3) |
+| R02 | **Koşullu** (G3 denetim D1) | HESAP 11.941 V, SİM F1/F5 maks 11.920 V — iki gecikme datasheet test koşulu dışında; parazitik/ölçüm payı bütçede yok; bobin doyumu: L_eff ≤0.4 → 12.019 V FAIL | tezgâh T5b/T5c; L(I) eğrisi; ölçüm belirsizliği |
+| R03 | Kısmen | trip_min 11.2590 V (bant + 39.0 mV); SİM F3 nominal bırakma ≤11.19 V < 11.22 V, mandal trip_min'de modellenerek set olmadı | yığılmış üst köşe: bırakma mandalı set eder (F3 FAIL, q=1) → trim/kullanıcı kararı |
 | R04 | Evet (koşullu) | DATASHEET maks değerler ve koşulları `params.py`'de | VCM/overdrive ve 4.7 nF eşdeğerliği tezgâhta |
 | R05 | Evet | HESAP: VCM aralık dışı VRAW>23.24 V; kaba OV ≤13.70 V | — |
 | R06 | Evet | HESAP 6.29 / 6.47 mA < 10 mA | — |
 | R07 | Kısmen | HESAP: 1 kΩ bleeder ile 26 V'ta ray 1.92 V | ≥40 V hata + LDO yokken ray 3.1–4.1 V; kaba OV yoluna güvenilir |
-| R08 | Evet | HESAP EN kapama 2.57–3.16 V > 2.1 V POR > 1.65 V | — |
+| R08 | Evet (koşullu) | HESAP: kapı açılma 2.90–3.375 V, kapanma 2.57–3.16 V > 1.65 V (mandal min); 2.1 V POR yalnız **tipik** | T5e |
 | R09 | Evet | DATASHEET fonksiyon tablosu | — |
 | R10 | Evet | POR RC 120 ms + PG; karşılaştırıcı POR LOW | tezgâh T1/T5e |
 | R11 | Evet | DATASHEET | tezgâh T5f |
 | R12 | Kısmen | LM74502H EN deşarjı (RDSON 0.4–2 Ω) | tUVLO_OFF yalnız tipik 2 µs → T5e |
 | R13 | Evet | R_GS 100 kΩ (BOM) | — |
 | R14 | Koşullu | Qg oranı 0.97 (gerçek ≤ test yükü) | tezgâh T5b |
-| R15 | Kısmen | VDS payı 46.7 V; enerji oranı 0.0022 × EAS | SOA µs grafiği okunamadı |
-| R16 | Evet (model) | SİM F4: D_REV ile OUT−IN 0.133 V; D_REV'siz 0.777 V FAIL | Schottky Vf tipik; T6b |
+| R15 | Kısmen | VDS payı 46.7 V | SOA µs grafiği okunamadı; EAS (çığ) anahtarlama SOA'sı değildir, modelde anahtar ideal → enerji kanıtı yok (G3 D7) |
+| R16 | Evet (model) | SİM F4: D_REV ile OUT−IN 0.133 V; D_REV'siz 0.777 V FAIL | Schottky Vf/sıcak kaçak tipik; T6b |
 | R17 | Evet | DATASHEET p.9 tablo noktaları; toplam min 11.59 A | — |
 | R18 | Hayır | — | Molex PS okunamadı → AÇIK |
 | R19 | Evet | KICAD-CHANGE-LIST-FINAL (REN1 → VSAFE) | — |
 | R20 | Evet | R_OVT 26 V'ta %20 (geçici 53.3 V'ta %84, kısa süreli) | — |
 | R21 | Evet | U10 IN = VIN | termal VIN 26 V: 0.34 W |
 | R22 | Evet | Kapı kapatma EN bölücüsüyle | — |
-| R23 | Kısmen | Referans/alt direnç arızası güvenli | R_OVT açık: SİM O1 13.94 V (artık risk), Q2 D-S kısa (tek nokta) |
+| R23 | Kısmen | Referans/alt direnç arızası güvenli | R_OVT açık: kaba yol 11.58–13.74 V, SİM O1 13.98 V (artık risk); Q2 D-S kısa (tek nokta) |
 | R24 | Evet | Bölücü VRAW'da | — |
 | R25 | Evet | CBOOT 47 nF + 1 Ω; LM74502H VCAP 100 nF | — |
-| R26 | Kısmen | SİM F3 nominal 6/6 PASS (min 10.81 V) — G1 Family 4 FAIL nominal köşede kapandı | yığılmış alt köşe min 10.64 V FAIL → trim/kullanıcı kararı |
-| R27 | Evet (model) | 432 köşe PM 66.9° (−10° → 56.9°), GM 11.7 dB; ngspice AC <0.001° | tezgâh FRA T3 |
-| R28 | Evet | her modülde path A/B + fark; 91 pytest | bağımsız fiziksel ikinci yol yok |
+| R26 | Kısmen | SİM F3 nominal 8/8 PASS (VIN 20/22.2/26 V, min 10.802 V, marj 22 mV; O1 portunda ≈10.69 V bilgi) — G1 Family 4 FAIL nominal köşede kapandı | yığılmış alt köşe min 10.64 V FAIL → trim/kullanıcı kararı; ince marj tezgâhta |
+| R27 | Evet (model) | 216 köşe PM 66.9° (−10° → 56.9°), GM 11.7 dB; ngspice AC <0.001°; gm maks VARSAYIM | tezgâh FRA T3 |
+| R28 | Evet | her modülde path A/B + fark; 95 pytest; G3 bağımsız yeniden türetme 10/10 ≤%1 | bağımsız fiziksel ikinci yol yok |
 | R29 | Evet | sim-results.json completed/SHA256, `-attemptN` | — |
 | R30 | Evet | KICAD-CHANGE-LIST-FINAL §3 | — |

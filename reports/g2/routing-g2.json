@@ -20,7 +20,8 @@
       "inner_width_min_mm": 9.032253058798707,
       "vias_0p5A_each": 9,
       "vias_barrel_density": 8,
-      "vias_min": 9
+      "vias_min": 9,
+      "selected_width_mm": 3.3
     },
     {
       "name": "BUS_POWER",
@@ -40,7 +41,8 @@
       "inner_width_min_mm": 18.364059903051945,
       "vias_0p5A_each": 15,
       "vias_barrel_density": 14,
-      "vias_min": 15
+      "vias_min": 15,
+      "selected_width_mm": 5.5
     },
     {
       "name": "PHASE_POWER",
@@ -61,7 +63,8 @@
       "inner_width_min_mm": 12.222214268836032,
       "vias_0p5A_each": 12,
       "vias_barrel_density": 10,
-      "vias_min": 12
+      "vias_min": 12,
+      "selected_width_mm": 2.6
     },
     {
       "name": "O1_PORT",
@@ -79,7 +82,8 @@
       "inner_width_min_mm": 23.86850869490729,
       "vias_0p5A_each": 19,
       "vias_barrel_density": 17,
-      "vias_min": 19
+      "vias_min": 19,
+      "selected_width_mm": 5.3
     },
     {
       "name": "S2E_PORT",
@@ -97,7 +101,8 @@
       "inner_width_min_mm": 12.45532714851688,
       "vias_0p5A_each": 12,
       "vias_barrel_density": 11,
-      "vias_min": 12
+      "vias_min": 12,
+      "selected_width_mm": 3.3
     }
   ]
 }

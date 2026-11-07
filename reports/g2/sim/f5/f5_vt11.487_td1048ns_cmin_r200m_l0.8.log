@@ -1,0 +1,107 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * g2 case f5_vt11.487_td1048ns_cmin_r200m_l0.8
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vbat                                        26
+io1_set                                      0
+is2_set                                      0
+fault1                                       0
+o1_ext                                       0
+n_src                                       26
+n_cab                                       26
+anode                                       26
+vin                                         26
+n_cin                                        0
+ven                                    1.41304
+ens                                          1
+ss                                    0.788157
+vraw                                   10.8333
+fb                                    0.788157
+comp                                         0
+cmid                                         0
+icmd                                         0
+sw1                                    10.8333
+l1a                                    10.8333
+l1b                                    10.8333
+l1c                                    10.8333
+sw2                                    10.8333
+l2a                                    10.8333
+l2b                                    10.8333
+l2c                                    10.8333
+ncout                                        0
+ncl                                          0
+q                                            0
+ovreq                                        0
+ctl                                          1
+drven                                        1
+nisod                                  10.8333
+vsafe                                  10.8333
+en_ef                                  1.44637
+efs                                          1
+o1                                     10.8333
+s2e                                    10.8333
+vds                                          0
+o1in                                         0
+s2ein                                        0
+pdiss                                        0
+bpd#branch                                   0
+vmiso#branch                                 0
+bs2in#branch                                 0
+bo1in#branch                                 0
+bvds#branch                                  0
+bdrven#branch                                0
+bovr#branch                                  0
+vm2#branch                                   0
+bsw2#branch                                  0
+vm1#branch                                   0
+bsw1#branch                                  0
+bic#branch                                   0
+bven#branch                                  0
+lesl#branch                                  0
+l2#branch                                    0
+l1#branch                                    0
+lcab#branch                                  0
+vo1x#branch                                  0
+vflt#branch                                  0
+vis2#branch                                  0
+vio1#branch                                  0
+vbat#branch                                  0
+
+
+No. of Data Rows : 15215
+
+  Measurements for Transient Analysis
+
+vraw_max_fault      =  2.61875e+01 at=  2.62796e-04
+vsafe_max_fault     =  1.16197e+01 at=  1.11112e-04
+o1_max_fault        =  1.16178e+01 at=  1.11260e-04
+s2e_max_fault       =  1.16178e+01 at=  1.11260e-04
+vds_iso_max         =  1.47306e+01 at=  2.64396e-04
+o1_minus_in_max     =  1.13505e-01 at=  1.25876e-04
+s2e_minus_in_max    =  1.13505e-01 at=  1.25876e-04
+vraw_pre            =  1.08332e+01
+q_end               =  1.00279e+00
+iso_i_max           =  1.05802e+00 at=  1.11112e-04
+il1_max_fault       =  3.92577e+01 at=  1.32136e-04
+
+
+Total analysis time (seconds) = 0.414027
+
+Total elapsed time (seconds) = 0.420 
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 10015.828 MB.
+Maximum ngspice program size =   11.996 MB.
+Current ngspice program size =   11.996 MB.
+

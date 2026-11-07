@@ -88,7 +88,7 @@ COMMON_MEAS = [
     ("vraw_pre", f"FIND V(vraw) AT={TF * 0.98}"),
     ("q_end", "FIND V(q) AT={TSTOP}"),
     ("iso_i_max", f"MAX i(VMISO) FROM={TF} TO={{TSTOP}}"),
-    ("eiso", f"INTEG V(pdiss) FROM={TF} TO={{TSTOP}}"),
+    ("il1_max_fault", f"MAX i(VM1) FROM={TF} TO={{TSTOP}}"),
 ]
 
 
@@ -154,12 +154,16 @@ def family_cases():
         p, srcs, ic = steady({**B, **ov}, 26.0, 5.22 if loaded else 0.0, io1="5.0" if loaded else "0",
                              is2="0.22" if loaded else "0", fault=fault_at())
         cases[name] = ("F1", p, srcs, TF + 0.3e-3, 20e-9, COMMON_MEAS,
-                       {"o1_max_fault": ("<=", 12.0), "vsafe_max_fault": ("<", 30.0), "vds_iso_max": ("<", 100.0)}, ic)
+                       {"o1_max_fault": ("<=", 12.0), "vsafe_max_fault": ("<", 30.0), "vds_iso_max": ("<", 100.0),
+                        "vraw_max_fault": ("<", 60.0)}, ic)
     # F2: startup / UVLO / hot-plug / dip
     st_meas = [("vin_max", "MAX V(vin)"), ("vraw_max", "MAX V(vraw)"), ("vraw_end", "FIND V(vraw) AT={TSTOP}"),
+               ("vraw_end_hi", "FIND V(vraw) AT={TSTOP}"),
                ("q_end", "FIND V(q) AT={TSTOP}"), ("ens_end", "FIND V(ens) AT={TSTOP}"), ("o1_end", "FIND V(o1) AT={TSTOP}"),
                ("s2e_end", "FIND V(s2e) AT={TSTOP}")]
-    crit_st = {"vraw_max": ("<", TRIP_MIN), "q_end": ("<", 0.5), "vraw_end": (">", 10.78), "vin_max": ("<", 65.0)}
+    # G3: transient band 11.22 V (REQUIREMENTS), steady window 10.8333-11.1605 V at nominal setpoint, LM74700 65 V
+    crit_st = {"vraw_max": ("<", v("BUS_TRANSIENT_MAX")), "q_end": ("<", 0.5), "vraw_end": (">=", 10.8333),
+               "vraw_end_hi": ("<=", v("BUS_STEADY_MAX")), "vin_max": ("<", 65.0)}
     cases["f2_hotplug_26V"] = ("F2", {**B, "RSRC": 0.02, "LCAB": 1e-6}, src(step_on(26.0), io1="5.0"), 8e-3, 0.5e-6, st_meas, crit_st, ())
     cases["f2_hotplug_20V_full_load"] = ("F2", {**B}, src(step_on(20.0), io1="6.78"), 8e-3, 0.5e-6, st_meas, crit_st, ())
     ven_hi = 19.623 * D.RUV2 / (D.RUV1 + D.RUV2)
@@ -172,21 +176,27 @@ def family_cases():
     t1, t2, t3 = 0.3e-3, 1.3e-3, 2.3e-3
     io1 = f"PWL(0 0.53 {t1:.6g} 0.53 {t1 + 1e-6:.6g} 6.78 {t2:.6g} 6.78 {t2 + 1e-6:.6g} 0.53)"
     ls_meas = [("bus_min", f"MIN V(vraw) FROM={t1} TO={t2}"), ("bus_max_release", f"MAX V(vraw) FROM={t2} TO={t3}"),
-               ("bus_pre", f"FIND V(vraw) AT={t1 * 0.99}"), ("q_end", "FIND V(q) AT={TSTOP}")]
-    ls_crit = {"bus_min": (">=", v("BUS_MIN_STEP")), "bus_max_release": ("<", TRIP_MIN), "q_end": ("<", 0.5)}
+               ("bus_pre", f"FIND V(vraw) AT={t1 * 0.99}"), ("q_end", "FIND V(q) AT={TSTOP}"),
+               ("o1_min_info", f"MIN V(o1) FROM={t1} TO={t2}")]
+    # G3: release peak vs 11.22 V band; latch modeled at the EARLIEST trip (trip_min, no overdrive) to detect nuisance trips
+    ls_crit = {"bus_min": (">=", v("BUS_MIN_STEP")), "bus_max_release": ("<", v("BUS_TRANSIENT_MAX")), "q_end": ("<", 0.5)}
     f3 = {f"f3_nominal_c{cn}_{gmn.lower()}": {"COUT_EFF": c_corner(cn), "GM": v(gmn)}
           for cn, gmn in itertools.product(("min", "typ", "max"), ("GM_EA_MIN", "GM_EA_MAX"))}
+    f3["f3_nominal_cmin_gmmin_vin20_l0.8"] = {"COUT_EFF": c_corner("min"), "GM": v("GM_EA_MIN"), "LPH": v("L_NOM") * 0.8, "_VIN": 20.0}
+    f3["f3_nominal_cmin_gmmin_vin26_l1.2"] = {"COUT_EFF": c_corner("min"), "GM": v("GM_EA_MIN"), "LPH": v("L_NOM") * 1.2, "_VIN": 26.0}
     f3["f3_stacked_low_setpoint_cmin_gmmin"] = {"COUT_EFF": c_corner("min"), "GM": v("GM_EA_MIN"), "VREF_FB": 10.8333 / VSCALE}
     f3["f3_stacked_high_setpoint_cmin_gmmin"] = {"COUT_EFF": c_corner("min"), "GM": v("GM_EA_MIN"),
                                                  "VREF_FB": v("BUS_STEADY_MAX") / VSCALE}
     for name, ov in f3.items():
-        p, srcs, ic = steady({**B, **ov}, 22.2, 0.75, io1=io1)
+        ov = dict(ov)
+        vin_case = ov.pop("_VIN", 22.2)
+        p, srcs, ic = steady({**B, **ov, "VTRIP_EFF": TRIP_MIN}, vin_case, 0.75, io1=io1)
         cases[name] = ("F3", p, srcs, t3, 50e-9, ls_meas, ls_crit, ic)
     # F4: eFuse short / isolation / input loss
     f4m = COMMON_MEAS + [("s2e_min_fault", f"MIN V(s2e) FROM={TF} TO={{TSTOP}}"),
                          ("io1_max", f"MAX i(VMISO) FROM={TF + 50e-6} TO={{TSTOP}}"),
                          ("vraw_min_fault", f"MIN V(vraw) FROM={TF} TO={{TSTOP}}")]
-    p, srcs, ic = steady({**B}, 22.2, 5.22, io1="5.0", o1ext=fault_at())
+    p, srcs, ic = steady({**B, "ILIM_O1": EF_ILIM_TABLE[D.RILIM_O1][2]}, 22.2, 5.22, io1="5.0", o1ext=fault_at())
     cases["f4_o1_short_s2e_isolation"] = ("F4", p, srcs, TF + 2e-3, 0.1e-6, f4m,
                                           {"s2e_min_fault": (">=", 9.0), "q_end": ("<", 0.5),
                                            "io1_max": ("<=", EF_ILIM_TABLE[D.RILIM_O1][2] + 0.22 + 0.5)}, ic)
@@ -201,7 +211,8 @@ def family_cases():
         nm = f"f5_vt{vt:.3f}_td{td*1e9:.0f}ns_c{cn}_r{rs*1e3:.0f}m_l{lf}"
         p, srcs, ic = steady({**B, "VTRIP_EFF": vt, "TDLY": td, "COUT_EFF": c_corner(cn), "RSRC": rs, "LPH": v("L_NOM") * lf,
                               "VREF_FB": 10.8333 / VSCALE}, 26.0, 0.0, io1="0", is2="0", fault=fault_at())
-        cases[nm] = ("F5", p, srcs, TF + 0.2e-3, 20e-9, COMMON_MEAS, {"o1_max_fault": ("<=", 12.0), "vsafe_max_fault": ("<", 30.0)}, ic)
+        cases[nm] = ("F5", p, srcs, TF + 0.2e-3, 20e-9, COMMON_MEAS, {"o1_max_fault": ("<=", 12.0), "vsafe_max_fault": ("<", 30.0),
+                                                                      "vraw_max_fault": ("<", 60.0)}, ic)
     p, srcs, ic = steady({**B, "EN_PREC": 0, "COUT_EFF": c_corner("min"), "LPH": v("L_NOM") * 0.8, "RSRC": 0.02}, 26.0, 0.0,
                          io1="0", is2="0", fault=fault_at())
     cases["f5_precision_path_open_residual"] = ("F5", p, srcs, TF + 0.3e-3, 20e-9, COMMON_MEAS,
@@ -267,7 +278,8 @@ def main(argv):
     fams = set(a.upper() for a in argv) or {"F1", "F2", "F3", "F4", "F5"}
     cases = family_cases()
     prev = json.loads(OUTJ.read_text(encoding="utf-8")) if OUTJ.exists() else {"runs": {}}
-    runs = prev.get("runs", {})
+    # keep only cases defined now (renamed/obsolete runs are dropped from the summary; their files go to archive/)
+    runs = {n: r for n, r in prev.get("runs", {}).items() if n in cases}
     for name, (fam, p, s, tstop, tmax, meas, crit, extra) in cases.items():
         if fam not in fams:
             continue
