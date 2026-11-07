@@ -11,9 +11,10 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-015](done/T-015.md) | BUILDER | S | D-003, D-004 | Done |
 | [T-002](done/T-002.md) | BUILDER | S | T-001 | Done |
 | [T-003](done/T-003.md) | BUILDER | M | T-001 | Done |
-| [D-001](D-001.md) | THINKER | M | — | Review |
-| [D-002](D-002.md) | THINKER | S | — | Review |
-| [T-004](T-004.md) | BUILDER | S | D-001 (Done) | Draft |
+| [D-001](done/D-001.md) | THINKER | M | — | Done |
+| [D-002](done/D-002.md) | THINKER | S | — | Done |
+| [D-005](D-005.md) | THINKER | S | D-002 | Ready |
+| [T-004](T-004.md) | BUILDER | S | D-001 (Done) + U-006 | Blocked |
 | [T-005a](T-005a.md) | BUILDER | M | T-002 | Ready |
 | [T-005b](T-005b.md) | BUILDER | M | T-002, T-004 | Draft |
 | [T-006](T-006.md) | BUILDER | M | T-002, T-005a | Draft |
@@ -27,4 +28,4 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-014](T-014.md) | BUILDER | S | T-013, T-005a, T-005b | Draft |
 | [R-002](R-002.md) | THINKER | M | T-014 | Draft |
 
-Paralel yürütülebilir: D-001 ∥ D-002 ∥ D-003 ∥ D-004 (THINKER) ∥ T-002/T-003 (BUILDER) (farklı roller, farklı yazma yolları). T-002/T-003 T-001'den sonra.
+Paralel yürütülebilir: THINKER kartları birbirinden ve BUILDER kartlarından bağımsız. THINKER `queue.md`'yi değiştirmez (paralel PR çakışması); yalnız kendi kartının Durum'unu yazar, BUILDER birleştirirken kuyruğu eşitler.
