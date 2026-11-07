@@ -1,6 +1,6 @@
 # START HERE — IDA PDU (6S LiPo → 11 V, 7.5 A)
 
-**Önce bunu oku → [`HANDOFF.md`](../HANDOFF.md) → aktif kart (`tasks/`, sıra [`tasks/queue.md`](../tasks/queue.md)).** Rolün: Claude Code = BUILDER ([`CLAUDE.md`](../CLAUDE.md)); Codex/ChatGPT = THINKER ([`AGENTS.md`](../AGENTS.md)); Claude sohbet = CHECKER; karar/ölçüm/birleştirme = kullanıcı. Düzen: [`WORKFLOW.md`](WORKFLOW.md).
+**Önce bunu oku → [`HANDOFF.md`](../HANDOFF.md) → aktif kart (`tasks/`, sıra [`tasks/queue.md`](../tasks/queue.md)).** Rolün: Claude Code = BUILDER ([`CLAUDE.md`](../CLAUDE.md)); Codex/ChatGPT = THINKER ([`AGENTS.md`](../AGENTS.md)); Claude sohbet = CHECKER; karar/ölçüm/birleştirme = kullanıcı. Düzen: [`WORKFLOW.md`](WORKFLOW.md) — **röle modu:** kullanıcı yalnız prompt taşır; her oturum `SONRAKİ PROMPT` bloğuyla biter, dosyalar GitHub dal/PR'larından akar.
 
 **Hedef:** 20–26 V girişten 2 fazlı LM70880 buck ile 11 V ortak bara; 2× TPS259824L eFuse ile O1 ve S2E portları. Sert kriterler: O1 anlık ≤12,0 V, kararlı bara ≤11,1605 V, yük adımında bara ≥10,78 V, eFuse IN <30 V.
 

@@ -11,6 +11,11 @@ Görev kartını uygularsın: KiCad, betik, SPICE, BOM, test, belge; commit, pus
 6. **Eksik karar/girdi → tahmin etme.** Kartı `Blocked` yap, nedenini yaz, `tasks/BLOCKED-ON-USER.md`'ye `U-xxx` ekle, dur.
 7. **Durdurma:** aynı araç hatası 2 denemede aşılmazsa dur, "kanıt yok" yaz, HANDOFF'a kaydet.
 
+## Röle modu (zorunlu)
+- Kullanıcı yalnız prompt taşır: ondan dosya yükleme, komut, kart isteme. THINKER çıktısını GitHub'dan (PR/dal) al; Codex dosyaları mesajda `DOSYA:` bloklarıyla verdiyse sen commit edip PR aç.
+- Her oturumun son mesajı tek kod bloğuyla biter: `SONRAKİ PROMPT → Codex` (≤15 satır, kendi kendine yeterli) — veya kullanıcıya tek soru (karar/ölçüm/birleştirme).
+- Birleştirme yalnız HANDOFF'ta kayıtlı kullanıcı yetkisiyle (WORKFLOW.md röle kuralı 6).
+
 ## Model rehberi
 Opus: mimari karar, zor hata ayıklama. Sonnet: uygulama, betik, ERC döngüsü, belge. Haiku: toplu/mekanik iş. Kartın **Model önerisi** alanına uy.
 

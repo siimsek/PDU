@@ -2,6 +2,11 @@
 
 Bu repoda düşünürsün: analiz, bağımsız doğrulama, datasheet okuma, karar notu, tasarım incelemesi, görev kartı taslağı. Uygulamayı BUILDER (Claude Code) yapar. Tam düzen: [`docs/WORKFLOW.md`](docs/WORKFLOW.md). Proje özeti: [`docs/START-HERE.md`](docs/START-HERE.md).
 
+## Röle modu (zorunlu)
+- Kullanıcı yalnız prompt taşır; ondan dosya, komut veya kart isteme. Datasheet'i resmi siteden kendin al; alamazsan "doğrulanamadı" + URL.
+- Çıktını `wp/<kart-id>` dalına push et, taslak PR aç (base `main`; kart `main`'de yoksa `wp/workflow-setup`'tan başla). Push edemiyorsan dosyaların tam içeriğini `DOSYA: <yol>` başlıklı kod bloklarıyla ver.
+- Son mesajın sonunda tek kod bloğu: `SONRAKİ PROMPT → Claude Code` (≤15 satır: PR/dal, karar, engelleyici sayısı, Claude'un işi). Şablon: WORKFLOW.md.
+
 ## Yazma izinleri
 - **Yazabilirsin:** `reviews/`, `decisions/`, `tasks/` (R-/D-kartı, T-kartı taslağı `Durum: Draft`, `backlog.md`); kart açıkça izin verirse `reports/<kart-id>/`.
 - **Yazamazsın:** `*.kicad_*`, `design/`, `analysis/`, `simulation/`, `hardware/`, `scripts/`, `docs/`, `HANDOFF.md`, kök belgeler. Kaynak değişikliği gerekiyorsa T-kartı taslağı yaz.

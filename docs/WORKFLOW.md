@@ -1,6 +1,23 @@
-# Çalışma düzeni (W0) — üç rol, kart tabanlı, limit-dostu
+# Çalışma düzeni (W0) — röle modu, kart tabanlı, limit-dostu
 
 Kalıcı bağlam repodadır: oturum = kısa prompt + [`HANDOFF.md`](../HANDOFF.md) + bir görev kartı (`tasks/`). Eski düzen: [`archive/docs-legacy/AI-WORKFLOW.md`](../archive/docs-legacy/AI-WORKFLOW.md) (SUPERSEDED).
+
+## Röle modu (varsayılan): kullanıcı yalnız prompt taşır
+
+Kullanıcı dosya yüklemez, komut çalıştırmaz, kart yazmaz; yalnız bir ajanın verdiği prompt'u diğerine yapıştırır.
+
+```
+Claude Code ──(SONRAKİ PROMPT → Codex)──▶ kullanıcı ──▶ Codex
+     ▲                                                    │
+     └──────── kullanıcı ◀──(SONRAKİ PROMPT → Claude Code)┘
+```
+
+1. **Her oturum bir prompt ile biter.** Son mesajın sonunda tek bir kod bloğu: başlık `SONRAKİ PROMPT → Codex` veya `SONRAKİ PROMPT → Claude Code`. Prompt kendi kendine yeterlidir (repo, dal, kart, ne yapılacak, nereye yazılacak, bitince ne döndürülecek) ve ≤ 15 satırdır.
+2. **Dosya alışverişi yalnız GitHub üzerinden** (`siimsek/PDU`): her ajan kendi dalına (`wp/<kart-id>`) push eder ve taslak PR açar; diğer ajan dalı/PR'ı oradan okur. Datasheet ve resmi belgeleri ajan kendisi indirir (resmi üretici sitesi); erişemezse "doğrulanamadı" yazar, kullanıcıdan dosya istemez.
+3. **Codex push/PR açamıyorsa** (ör. Codex Web oturumu): çıktı dosyalarının tam içeriğini son mesajda `DOSYA: <yol>` başlıklı kod bloklarıyla verir; Claude Code bu içeriği `wp/<kart-id>` dalına commit edip PR açar. Kullanıcıya düğme/komut işi bırakılmaz.
+4. **Paket:** Codex `python scripts/make_pack.py --task <ID> --for codex` komutunu kendi ortamında çalıştırır (paket git'e girmez).
+5. **Kullanıcıya kalanlar yalnız:** karar cevabı (tek kelime/seçenek), fiziksel tezgâh ölçümü, birleştirme yetkisi. Bunlar `tasks/BLOCKED-ON-USER.md`'de ve prompt'un sonunda tek soru olarak sorulur.
+6. **Birleştirme:** kullanıcı "birleştirme yetkisi" verdiyse (HANDOFF'ta kayıtlı) BUILDER, kabul kriterleri + `check_workflow.py` + pytest geçen PR'ları birleştirir; KiCad/tasarım değeri değiştiren PR'larda birleştirmeden önce prompt'un sonunda kullanıcıya tek satır onay sorar. Yetki yoksa birleştirme kullanıcıya sorulur.
 
 ## Roller ve yazma izinleri
 
@@ -8,8 +25,8 @@ Kalıcı bağlam repodadır: oturum = kısa prompt + [`HANDOFF.md`](../HANDOFF.m
 |---|---|---|---|---|
 | **BUILDER** | Claude Code (Opus/Sonnet/Haiku) | T-kartını uygular: KiCad, betik, SPICE, BOM, test, belge; commit, push, taslak PR | kartın "İzinli yazma yolları"; her zaman `HANDOFF.md`, `tasks/queue.md`, kendi kartının Durum alanı | kart dışı yollar; `main`; `reviews/`, `decisions/` içeriği |
 | **THINKER** | Codex (CLI/App/Web), ChatGPT (Web/Work) | analiz, bağımsız doğrulama, datasheet okuma, R-/D-kartı, T-kartı taslağı | `reviews/`, `decisions/`, `tasks/` (kart taslağı, backlog); kart izin verirse `reports/<id>/` | `*.kicad_*`, `design/`, `analysis/`, `simulation/`, `hardware/`, `scripts/` |
-| **CHECKER** | Claude (sohbet) | prompt/kart yazar, kontrol paketini denetler | repoya yazmaz (kullanıcı aktarır) | — |
-| **KULLANICI** | proje sahibi | karar, tezgâh ölçümü, birleştirme, kritik onay | her şey | — |
+| **CHECKER** (isteğe bağlı) | Claude (sohbet) | ara kontrol: `make_pack --for checker` paketi | repoya yazmaz | — |
+| **KULLANICI** | proje sahibi | prompt taşır; karar cevabı, tezgâh ölçümü, birleştirme yetkisi | — | — |
 
 THINKER salt-okunur komut çalıştırabilir (pytest, kicad-cli ERC/DRC, ngspice); dosya üretiyorsa `reports/<id>/` altına. `python scripts/check_workflow.py` izin matrisi dışı değişikliği uyarır.
 
@@ -60,31 +77,20 @@ Claude 5 saatlik pencere: kartı bitiremeyeceksen bir sonraki kilometre taşınd
 
 ## Oturum prompt şablonları
 
-**BUILDER (Claude Code):**
+Ajanlar bu şablonları doldurup **SONRAKİ PROMPT** bloğu olarak verir; kullanıcı aynen yapıştırır.
+
+**→ Codex (THINKER, inceleme/karar):**
 ```
-CLAUDE.md ve docs/START-HERE.md'yi oku, HANDOFF.md'den devam et, aktif kart tasks/T-xxx.md'yi uygula.
-Kart dışına çıkma; eksik karar varsa kartı Blocked yap ve dur.
-Her kilometre taşında commit + HANDOFF. Bitince kısa rapor: kabul kriterleri, komut çıkışları, açıklar.
+GitHub siimsek/PDU reposunda THINKER'sın. AGENTS.md'yi oku (dal: <taban dal>).
+Kart: tasks/<ID>.md. Paket: python scripts/make_pack.py --task <ID> --for codex (kendi ortamında).
+BUILDER sonuçlarını kendi hesabın bitmeden açma. Çıktı: <reviews/R-xxx.md | decisions/D-xxx-*.md> şablonla.
+wp/<ID> dalına push et, taslak PR aç (base: main). Push edemiyorsan dosyaları "DOSYA: <yol>" bloklarıyla ver.
+Sonunda "SONRAKİ PROMPT → Claude Code" bloğu yaz: PR/dal adı, karar, engelleyici bulgu sayısı, Claude'un yapacağı iş.
 ```
 
-**THINKER inceleme (Codex/ChatGPT):**
+**→ Claude Code (BUILDER):**
 ```
-AGENTS.md'yi oku. Girdi: packs/R-xxx-codex.md (yoksa: python scripts/make_pack.py --task R-xxx --for codex).
-Sonuçları görmeden bağımsız doğrula; reviews/R-xxx.md'yi reviews/TEMPLATE.md ile yaz:
-karar (ONAY/KOŞULLU/RED) + yalnız engelleyici, kanıtlı bulgular; diğerleri tasks/backlog.md.
-```
-
-**THINKER karar notu:**
-```
-AGENTS.md'yi oku. Girdi: packs/D-xxx-chatgpt.md. Soru kartta.
-decisions/D-xxx-*.md'yi decisions/TEMPLATE.md ile yaz: seçenekler tablosu, öneri, kanıt (resmi belge + sayfa),
-açık varsayımlar, kullanıcı kararı gerekli mi. Okunamayan değer uydurma: "doğrulanamadı" yaz.
-```
-
-**CHECKER (Claude sohbetine yapıştır):**
-```
-Aşağıdaki kontrol paketi IDA PDU reposundan (python scripts/make_pack.py --task <ID> --for checker).
-Bu pakette tutarsızlık, aşırı iddia (kanıtsız PASS, tipik değeri garanti sayma), atlanmış kabul kriteri ara.
-En çok 10 madde; her madde için paketteki satırı göster. Yeni iş önerme.
-<paketi buraya yapıştır>
+CLAUDE.md, docs/START-HERE.md ve HANDOFF.md'yi oku. <Codex PR #n / dal wp/<ID>> çıktısını GitHub'dan al.
+Aktif kart: tasks/<ID>.md. Kabul kriterlerini sağla; her kilometre taşında commit + HANDOFF; taslak PR.
+Sonunda "SONRAKİ PROMPT → Codex" bloğu yaz (veya kullanıcıya tek soru).
 ```

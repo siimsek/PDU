@@ -1,14 +1,14 @@
 # Kullanıcıdan beklenenler
 
-Her madde: ID, ne gerekiyor, neyi engelliyor, nasıl teslim edilir. Cevap gelince madde `Done (tarih, kaynak)` olur; kartın Durum'u güncellenir.
+Röle modu: kullanıcı dosya yüklemez. Belge isteyen maddeler önce THINKER kartıyla (resmi siteden) denenir; kullanıcıya yalnız ajanların yapamadığı kalır ve prompt'un sonunda tek soru olarak sorulur. Cevap gelince madde `Done (tarih, kaynak)` olur.
 
 | ID | Gereken | Engellediği | Durum |
 |---|---|---|---|
-| U-001 | **T-1: O1 ve S2E gerçek akım ölçümü** (prosedür aşağıda) | RILIM_O1/S2E ve J2 kararının doğrulanması (BENCH T-1); KiCad'i engellemez | Açık |
-| U-002 | **T3 Gemstone O1 datasheet/spec** (mutlak maks giriş, kısa süreli aşım) — PDF veya resmi bağlantı `reports/g5/inputs/` altına | O1 marjı (HESAP ≤11,41 V vs 12,0 V); kriter değişmez | Açık |
-| U-003 | **F1 sigorta + yuva resmi belgesi** (DC kesme kapasitesi açık yazan; aday Littelfuse 0456020.ER) | D-001, T-004, T-005b (F1 footprint) | Açık |
-| U-004 | **Şemanın KiCad GUI'de blok blok gözle kontrolü** (R-002 kontrol listesiyle) | T-012 sonrası; KICAD-READY kapısının kabulü | Bekliyor (T-012) |
-| U-005 | **PR birleştirme kararları** (wp/workflow-setup ve sonraki kart dalları) | Kartların main'e girmesi | Açık |
+| U-001 | **T-1: O1 ve S2E gerçek akım ölçümü** (fiziksel; ajan yapamaz — prosedür aşağıda, sonuçları sohbete yazmanız yeterli, dosyayı Claude Code commit eder) | RILIM_O1/S2E ve J2 kararının doğrulanması (BENCH T-1); KiCad'i engellemez | Açık |
+| U-002 | T3 Gemstone O1 giriş spec'i — **önce D-002 (THINKER, web)**; yalnız D-002 "doğrulanamadı" derse kullanıcıya bağlantı/üretici sorusu | O1 marjı (HESAP ≤11,41 V vs 12,0 V); kriter değişmez | D-002'de |
+| U-003 | F1 sigorta belgesi — **önce D-001 (THINKER, web)**; yalnız hiçbir seçenekte DC kesme kapasitesi okunamazsa kullanıcı kararı | D-001, T-004, T-005b | D-001'de |
+| U-004 | Şema gözle kontrolü — **R-002 render tabanlı yapar** (kicad-cli SVG/PDF dışa aktarımı + netlist); kullanıcı için isteğe bağlı | KICAD-READY kabulü | Bekliyor (T-012) |
+| U-005 | **Birleştirme yetkisi** — tek cevap: "yetki veriyorum" (BUILDER, kriterleri geçen PR'ları birleştirir; KiCad/tasarım PR'ında tek satır onay sorar) veya "her PR'ı sor" | Kartların main'e girmesi | Açık |
 
 ## U-001 prosedürü — O1/S2E gerçek akımı (kart gelmeden)
 
@@ -17,5 +17,5 @@ Her madde: ID, ne gerekiyor, neyi engelliyor, nasıl teslim edilir. Cevap gelinc
 3. Kaynak → (şönt veya prob) → yükün kendi kablosu/konnektörü. Şönt kullanılıyorsa kaynağın eksi ucuna (düşük taraf) koy.
 4. Osiloskop: 10 µs/div ile **açılış** (güç verme anı, 50 ms pencere), sonra 1 ms/div ile **çalışma profili** (O1: motor/ESC kalkış, en zor manevra; S2E: dönme başlangıcı ve kararlı) — her biri en az 3 kez.
 5. Kaydet: tepe akım, açılış tepe + süresi, 10 ms kayan RMS maksimum, ortalama; kaynak geriliminin en düşük değeri (kaynak sınıra girdiyse not et).
-6. Dosyalar: ham osiloskop CSV'leri + özet tablo `reports/g5/inputs/T-1/` (tarih, ekipman, prob, yük sürümü).
+6. Sonuç: özet değerleri (tepe, açılış tepe/süre, RMS, ortalama, ekipman) Claude Code sohbetine yazın; Claude `reports/g5/inputs/T-1/` altına commit eder.
 7. Kabul (BENCH T-1): O1 tepe < 7,23 A ve RMS ≤ 7,0 A; S2E tepe < 4,36 A. Aşılırsa durum RILIM/konnektör/COUT kararını yeniden açar — kriter değişmez.

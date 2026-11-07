@@ -9,6 +9,7 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-002](T-002.md) | BUILDER | S | T-001 | Ready |
 | [T-003](T-003.md) | BUILDER | M | T-001 | Ready |
 | [D-001](D-001.md) | THINKER | M | — | Ready |
+| [D-002](D-002.md) | THINKER | S | — | Ready |
 | [T-004](T-004.md) | BUILDER | S | D-001 (Done) | Draft |
 | [T-005a](T-005a.md) | BUILDER | M | T-002 | Draft |
 | [T-005b](T-005b.md) | BUILDER | M | T-002, T-004 | Draft |
@@ -23,4 +24,4 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-014](T-014.md) | BUILDER | S | T-013, T-005a, T-005b | Draft |
 | [R-002](R-002.md) | THINKER | M | T-014 | Draft |
 
-Paralel yürütülebilir: T-001 ∥ R-001 ∥ D-001 (farklı roller, farklı yazma yolları). T-002/T-003 T-001'den sonra.
+Paralel yürütülebilir: T-001 ∥ R-001 ∥ D-001 ∥ D-002 (farklı roller, farklı yazma yolları). T-002/T-003 T-001'den sonra.
