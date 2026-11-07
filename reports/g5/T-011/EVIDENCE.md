@@ -18,3 +18,6 @@ Düzenleme: `python scripts/sch_edit_b6.py` (B1–B5 uygulanmış main şeması 
 - Spec: RPG1/RPG2 pin sırası şemadaki çizime uyduruldu (direnç, elektriksel fark yok).
 
 Kalan: T-012 (test noktaları, J_OVP_INJ_BUS / JP_EN_BUCK, notlar ve antet — şemadaki "J1 -> F1" metni, pasif yazı yerleşimi).
+
+## R-010 düzeltmesi
+Kanonik Value kuralı: şemadaki her sembolün Value'su spec değeriyle aynı (`scripts/sch_values.py`; D1, U1, U2, U3, U4, U5, Q1, D2, D3, J1, J2, J3 eşitlendi). `check_consistency.py --schematic` tüm Value dizgelerini karşılaştırıyor → B1–B6 fark 0; ERC 0 (yeniden üretildi).

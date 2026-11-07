@@ -9161,7 +9161,7 @@
 				)
 			)
 		)
-		(property "Value" "VBAT"
+		(property "Value" "Micro-Fit 3.0 header 2 ckt, 4.48 A"
 			(at 25.4 360.68 0)
 			(effects
 				(font
@@ -9230,7 +9230,7 @@
 				)
 			)
 		)
-		(property "Value" "SMCJ33A"
+		(property "Value" "TVS 33 V VWM, 1500 W"
 			(at 462.28 383.54 90)
 			(effects
 				(font
@@ -9299,7 +9299,7 @@
 				)
 			)
 		)
-		(property "Value" "LM70880QRRXRQ1"
+		(property "Value" "LM70880-Q1"
 			(at 180.34 294.64 0)
 			(effects
 				(font
@@ -9368,7 +9368,7 @@
 				)
 			)
 		)
-		(property "Value" "LM70880QRRXRQ1"
+		(property "Value" "LM70880-Q1"
 			(at 180.34 142.24 0)
 			(effects
 				(font
@@ -9437,7 +9437,7 @@
 				)
 			)
 		)
-		(property "Value" "TPS259824LNRGER"
+		(property "Value" "TPS259824L"
 			(at 431.8 297.18 0)
 			(effects
 				(font
@@ -9506,7 +9506,7 @@
 				)
 			)
 		)
-		(property "Value" "TPS259824LNRGER"
+		(property "Value" "TPS259824L"
 			(at 431.8 144.78 0)
 			(effects
 				(font
@@ -14942,7 +14942,7 @@
 				)
 			)
 		)
-		(property "Value" "SS34"
+		(property "Value" "Schottky 40 V 3 A"
 			(at 523.24 334.01 0)
 			(effects
 				(font
@@ -15467,7 +15467,7 @@
 				)
 			)
 		)
-		(property "Value" "SS34"
+		(property "Value" "Schottky 40 V 3 A"
 			(at 523.24 181.61 0)
 			(effects
 				(font
@@ -15536,7 +15536,7 @@
 				)
 			)
 		)
-		(property "Value" "O1"
+		(property "Value" "Mini-Fit Plus HCS header 2 ckt vertical, 9.07 A"
 			(at 558.8 325.12 0)
 			(effects
 				(font
@@ -15605,7 +15605,7 @@
 				)
 			)
 		)
-		(property "Value" "S2E"
+		(property "Value" "Micro-Fit 3.0 header 2 ckt, 5.66 A"
 			(at 558.8 172.72 0)
 			(effects
 				(font
@@ -15918,7 +15918,7 @@
 				)
 			)
 		)
-		(property "Value" "LM74700"
+		(property "Value" "LM74700-Q1"
 			(at 397.51 394.97 0)
 			(effects
 				(font
@@ -15988,7 +15988,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "BSC160N10NS3G"
+		(property "Value" "100 V N-MOSFET"
 			(at 441.96 375.92 90)
 			(effects
 				(font

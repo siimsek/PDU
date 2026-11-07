@@ -167,7 +167,7 @@ def schematic_diff(refs, comps=None) -> list:
             continue
         if c["footprint"] != s.get("footprint", ""):
             errs.append(f"{ref}.footprint: schematic '{c['footprint']}' != spec '{s.get('footprint')}'")
-        if re.fullmatch(r"[0-9.]+[pnumkMR]?", s.get("value", "")) and c.get("value") != s["value"]:
+        if c.get("value") != s.get("value", ""):   # R-010: canonical rule, schematic Value == spec value (all refs)
             errs.append(f"{ref}.value: schematic '{c.get('value')}' != spec '{s['value']}'")
         mfr = bom_mfr.get(ref, "")
         if c["fields"].get("Manufacturer") and mfr and c["fields"]["Manufacturer"].split()[0].lower() not in mfr.lower():

@@ -80,8 +80,6 @@ def apply(text: str, spec: dict) -> tuple[str, list]:
             ks.set_property(root, ref, "Value", s["value"])
         ks.set_property(root, ref, "Footprint", s["footprint"])
         ks.set_or_add_property(root, ref, "MPN", s["mpn"])
-    for ref in ("U3", "U4"):
-        ks.set_property(root, ref, "Value", "TPS259824LNRGER")
     if ks.symbol_by_ref(root, "#FLG05") is None:      # /VSAFE drives U3/U4 IN power pins (Q2 source is passive)
         from sch_edit_b2 import clone_resistor as clone_symbol, label_text
         at = (430 * 1.27, 32 * 1.27)

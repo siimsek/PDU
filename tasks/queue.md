@@ -33,9 +33,10 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-010](done/T-010.md) | BUILDER | M | T-017, R-008 | Done |
 | [T-009](done/T-009.md) | BUILDER | M | T-010 | Done |
 | [R-009](done/R-009.md) | THINKER | M | T-010, T-009 | Done |
-| [T-011](T-011.md) | BUILDER | M | T-010 | Review |
-| [R-010](R-010.md) | THINKER | S | T-011 | Ready |
-| [T-012](T-012.md) | BUILDER | M | T-011 | Draft |
+| [T-011](done/T-011.md) | BUILDER | M | T-010 | Done |
+| [R-010](done/R-010.md) | THINKER | S | T-011 | Done |
+| [D-008](done/D-008.md) | THINKER | S | — | Done |
+| [T-012](T-012.md) | BUILDER | M | T-011 | Ready |
 | [T-013](T-013.md) | BUILDER | M | T-012, D-006 | Draft |
 | [T-014](T-014.md) | BUILDER | S | T-013, T-005a, T-005b | Draft |
 | [R-002](R-002.md) | THINKER | M | T-014 | Draft |

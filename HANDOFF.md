@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-011 (taslak PR; **birleştirilmedi** — R-010 bekliyor)
-- **Aktif kart:** T-011 (Review). THINKER Ready: R-010 (B6 + tam şema).
+- **Dal / son commit:** wp/T-011 → main (R-010 kapandı)
+- **Aktif kart:** T-012 (Ready — B7: D-008 test noktaları, J_OVP_INJ_BUS, JP_EN_BUCK, notlar/antet).
 
 ## Yapılanlar
 - T-010 + T-009 (#42) main'de (R-009: Q2 TI land footprint). T-011 (dal): B6 tamam; şemadaki 142 PCB parçasının tamamı spec ile birebir, ERC 0.

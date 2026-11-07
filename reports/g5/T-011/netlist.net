@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\SK\\Desktop\\Masaüstü\\PDU\\PDU.kicad_sch")
-		(date "2026-11-07T20:59:13")
+		(date "2026-11-07T21:17:57")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -4832,7 +4832,7 @@
 		)
 		(comp
 			(ref "D1")
-			(value "SMCJ33A")
+			(value "TVS 33 V VWM, 1500 W")
 			(footprint "Diode_SMD:D_SMC")
 			(description "Diode")
 			(fields
@@ -4892,7 +4892,7 @@
 		)
 		(comp
 			(ref "D2")
-			(value "SS34")
+			(value "Schottky 40 V 3 A")
 			(footprint "Diode_SMD:D_SMC")
 			(description "Schottky diode")
 			(fields
@@ -4952,7 +4952,7 @@
 		)
 		(comp
 			(ref "D3")
-			(value "SS34")
+			(value "Schottky 40 V 3 A")
 			(footprint "Diode_SMD:D_SMC")
 			(description "Schottky diode")
 			(fields
@@ -5132,7 +5132,7 @@
 		)
 		(comp
 			(ref "J1")
-			(value "VBAT")
+			(value "Micro-Fit 3.0 header 2 ckt, 4.48 A")
 			(footprint "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal")
 			(description "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
 			(fields
@@ -5192,7 +5192,7 @@
 		)
 		(comp
 			(ref "J2")
-			(value "O1")
+			(value "Mini-Fit Plus HCS header 2 ckt vertical, 9.07 A")
 			(footprint "Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical")
 			(description "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
 			(fields
@@ -5252,7 +5252,7 @@
 		)
 		(comp
 			(ref "J3")
-			(value "S2E")
+			(value "Micro-Fit 3.0 header 2 ckt, 5.66 A")
 			(footprint "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal")
 			(description "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
 			(fields
@@ -5432,7 +5432,7 @@
 		)
 		(comp
 			(ref "Q1")
-			(value "BSC160N10NS3G")
+			(value "100 V N-MOSFET")
 			(footprint "PDU:TDSON-8-1_Konnect")
 			(datasheet "http://www.infineon.com/dgdl/Infineon-BSC160N10NS3-DS-v02_04-en.pdf?fileId=db3a30432239cccd01226040189a7f47")
 			(description "42A Id, 100V Vds, OptiMOS N-Channel Power MOSFET, 16.0mOhm Ron, Qg (typ) 19.0nC, PG-TDSON-8")
@@ -8098,7 +8098,7 @@
 		)
 		(comp
 			(ref "U1")
-			(value "LM70880QRRXRQ1")
+			(value "LM70880-Q1")
 			(footprint "PDU:LM70880_RRX0029B_RectLands")
 			(datasheet "https://www.ti.com/lit/ds/symlink/lm70880-q1.pdf")
 			(fields
@@ -8234,7 +8234,7 @@
 		)
 		(comp
 			(ref "U2")
-			(value "LM70880QRRXRQ1")
+			(value "LM70880-Q1")
 			(footprint "PDU:LM70880_RRX0029B_RectLands")
 			(datasheet "https://www.ti.com/lit/ds/symlink/lm70880-q1.pdf")
 			(fields
@@ -8370,7 +8370,7 @@
 		)
 		(comp
 			(ref "U3")
-			(value "TPS259824LNRGER")
+			(value "TPS259824L")
 			(footprint "PDU:TPS25982_RGE0024M")
 			(fields
 				(field
@@ -8494,7 +8494,7 @@
 		)
 		(comp
 			(ref "U4")
-			(value "TPS259824LNRGER")
+			(value "TPS259824L")
 			(footprint "PDU:TPS25982_RGE0024M")
 			(fields
 				(field
@@ -8618,7 +8618,7 @@
 		)
 		(comp
 			(ref "U5")
-			(value "LM74700")
+			(value "LM74700-Q1")
 			(footprint "Package_TO_SOT_SMD:SOT-23-6")
 			(datasheet "http://www.ti.com/lit/gpn/LM74700-Q1")
 			(description "Low Iq reverse battery protection ideal diode controller, SOT-23-6")
