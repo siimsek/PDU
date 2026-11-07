@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-017 (taslak PR; R-008 bekliyor)
-- **Aktif kart:** T-017 (Review). Sıra değişti: T-017 → T-010 (B5 koruma ayırıcı) → T-009 (B4 faz OC); B4 ağları B5'e bağlı.
+- **Dal / son commit:** wp/T-017 → main (R-008 ONAY, PR #41)
+- **Aktif kart:** T-010 (InProgress — B5 koruma ayırıcı).
 
 ## Yapılanlar
 - T-008 (#38) main'de (R-007 ONAY). B5 bloğu şemada yok → T-009 öncesi T-010; stokta olmayan 5 sembol T-017 ile üretildi (make_symbols.py; datasheet sayfaları görsel okundu).
