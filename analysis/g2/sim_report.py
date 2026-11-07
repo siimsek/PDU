@@ -15,8 +15,8 @@ TITLES = {
     "F4": "Aile 4 — eFuse kısa devresi, O1/S2E izolasyonu, giriş kaybı / OUT>IN",
     "F5": "Aile 5 — koruma köşe taraması (eşik, gecikme, Ceff, hata akımı, L) + hassas yol açık artık riski",
 }
-EXPECTED_FAIL = {"f5_vt11.487_td300ns_ctyp_r200m_l0.8": "TAMAMLANMADI: zaman aşımı (exit -9), 2 deneme (G5 D-007) — kanıt yok, PASS sayılmaz (AÇIK)",
-                 "f5_vt11.765_td300ns_ctyp_r200m_l0.8": "TAMAMLANMADI: zaman aşımı (exit -9), 2 deneme (G5 D-007) — kanıt yok, PASS sayılmaz (AÇIK)",
+EXPECTED_FAIL = {"f5_vt11.487_td300ns_ctyp_r200m_l0.8": "TAMAMLANMADI (4 deneme; çözücü ~215 µs'de tıkanıyor) — PASS sayılmaz. Kısaltılmış pencere (100–214 µs) SİM: O1 10,92 V ≤ 12,0 V; VRAW tam pencere AÇIK (reports/g5/R-005/RESULT.md)",
+                 "f5_vt11.765_td300ns_ctyp_r200m_l0.8": "TAMAMLANMADI (4 deneme; çözücü ~215 µs'de tıkanıyor) — PASS sayılmaz. Kısaltılmış pencere (100–214 µs) SİM: O1 10,92 V ≤ 12,0 V; VRAW tam pencere AÇIK (reports/g5/R-005/RESULT.md)",
                  "f1_noprot_baseline": "korumasız referans: G1 FAIL'inin yeni netlistte yeniden üretimi (silinmez)",
                  "f4_input_loss_without_drev": "D_REV'siz karşılaştırma (D_REV gerekçesi)",
                  "f5_precision_path_open_residual": "R_OVT açık devre: G4'te faz OC tetiği bağımsız yol olarak kapatıyor",
@@ -67,7 +67,8 @@ def main():
               f"- En kötü köşe: [{Path(worst['deck']).stem}]({worst['log'].replace('reports/g2/', '', 1)})." if worst else ""]
         incomplete = [n for n, r in sweep.items() if not r["completed"]]
         if incomplete:
-            L.append(f"- Tamamlanmayan: {', '.join(incomplete)} → kanıt yok.")
+            L.append(f"- Tamamlanmayan: {', '.join(incomplete)} → tam pencere kanıtı yok (PASS sayılmadı). "
+                     "Kısaltılmış pencere 100–214 µs SİM: O1 10,92 V ≤ 12,0 V; ayrıntı `reports/g5/R-005/RESULT.md`.")
     if "f5_precision_path_open_residual" in f5:
         r = f5["f5_precision_path_open_residual"]
         L += ["", f"Hassas yol açık (R_OVT açık devre, yalnız kaba OV): O1 tepe {fmt(r['measures'].get('o1_max_fault', '—'))} V, "
