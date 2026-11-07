@@ -1,0 +1,87 @@
+{
+  "classification": "HESAP + S\u0130M (dip/overshoot from F3 nominal runs)",
+  "vnom_V": 10.996078431372549,
+  "static_window_untrimmed_V": [
+    10.83326782975716,
+    11.160459243126857
+  ],
+  "trim_table": [
+    {
+      "step_pct": 0.25,
+      "R_TRIM_UP_parallel_RFB2": 3740000.0,
+      "vout_up_V": 11.023885918003565,
+      "R_TRIM_DN_parallel_RFB1": 47500000.0,
+      "vout_dn_V": 10.968249537900402
+    },
+    {
+      "step_pct": 0.5,
+      "R_TRIM_UP_parallel_RFB2": 1910000.0,
+      "vout_up_V": 11.050528693152652,
+      "R_TRIM_DN_parallel_RFB1": 23700000.0,
+      "vout_dn_V": 10.94045567870455
+    },
+    {
+      "step_pct": 0.75,
+      "R_TRIM_UP_parallel_RFB2": 1270000.0,
+      "vout_up_V": 11.077968195152076,
+      "R_TRIM_DN_parallel_RFB1": 15800000.0,
+      "vout_dn_V": 10.912871262754948
+    },
+    {
+      "step_pct": 1.0,
+      "R_TRIM_UP_parallel_RFB2": 953000.0,
+      "vout_up_V": 11.10520749747958,
+      "R_TRIM_DN_parallel_RFB1": 11800000.0,
+      "vout_dn_V": 10.884972798842924
+    },
+    {
+      "step_pct": 1.25,
+      "R_TRIM_UP_parallel_RFB2": 750000.0,
+      "vout_up_V": 11.134745098039216,
+      "R_TRIM_DN_parallel_RFB1": 9530000.0,
+      "vout_dn_V": 10.85886412536029
+    },
+    {
+      "step_pct": 1.5,
+      "R_TRIM_UP_parallel_RFB2": 634000.0,
+      "vout_up_V": 11.160116286262138,
+      "R_TRIM_DN_parallel_RFB1": 7870000.0,
+      "vout_dn_V": 10.830392156862745
+    }
+  ],
+  "trimmed_window_V": [
+    10.887614705882353,
+    11.104542156862744
+  ],
+  "trimmed_half_width": 0.009863855206847365,
+  "trimmed_window_if_vfb_temp_full": [
+    10.846379411764707,
+    11.145777450980393
+  ],
+  "f3_dip_V": 0.19420000000000037,
+  "f3_overshoot_V": 0.1936,
+  "corners": [
+    {
+      "window": "untrimmed",
+      "static_lo_V": 10.83326782975716,
+      "static_hi_V": 11.160459243126857,
+      "step_min_V": 10.63906782975716,
+      "release_max_V": 11.354059243126857,
+      "min_ok": false,
+      "max_ok_band": false,
+      "steady_ok": true
+    },
+    {
+      "window": "trimmed",
+      "static_lo_V": 10.887614705882353,
+      "static_hi_V": 11.104542156862744,
+      "step_min_V": 10.693414705882352,
+      "release_max_V": 11.298142156862744,
+      "min_ok": false,
+      "max_ok_band": false,
+      "steady_ok": true
+    }
+  ],
+  "n_cout": 16,
+  "rcomp": 16900.0
+}
