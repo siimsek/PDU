@@ -36,6 +36,8 @@ G5 T-008: COUT9–COUT32 şemaya eklendi (scripts/sch_edit_b3.py; VOUT/GND etike
 
 G5 T-010/T-009: B5 (30 parça) ve B4 (12 parça) şemaya eklendi (scripts/sch_edit_b5.py, sch_edit_b4.py; etiket-pin yerleşimi). **Q2 footprint VSONP-8-1EP → `PDU:TI_CSD19531Q5A_Q5A`** (stok VSONP pad numaraları 1/2/3 = S/G/D sembolle uyumsuz; TDSON-8-1 pad 1–4 TI bandı dışında — R-009; özel footprint TI SLPS406B §7.2 p.10'dan, check_footprints PASS).
 
+G5 T-011: B6 — U3/U4 IN ve CEFIN1/2, REN1 → /VSAFE; D_REV1/2 eklendi; RILIM 182/300 Ω; CEFOUT 1206; D2/D3 SMC; J2 46015-0206; PWR_FLAG /VSAFE (scripts/sch_edit_b6.py). Bu noktada şemadaki 142 PCB parçasının tamamı spec ile birebir (check_consistency --schematic B1–B6).
+
 Test noktası ekleri: TP_OC_SENSE1, TP_OC_SENSE2, TP_OC_REF, TP_OVP_BUS_N; faz şöntü akım enjeksiyonu için RS1/RS2 Kelvin padleri (BENCH T5g).
 
 ## 1. Değişen referanslar (G2)

@@ -71,6 +71,15 @@ def _prop(name, value, x, y, hide=False):
             f'\t\t\t\t\t(size 1.27 1.27)\n\t\t\t\t)\n\t\t\t)\n\t\t)')
 
 
+def _pin_names(sch, lib_id: str) -> dict:
+    lib = ks.lib_symbol(sch, lib_id)
+    out: dict = {}
+    for p in ks.walk(lib):
+        if p.head == "pin":
+            out.setdefault(next(p.children("name")).atoms()[1].value, []).append(next(p.children("number")).atoms()[1].value)
+    return out
+
+
 def _set_at(root, ref: str, prop: str, x: float, y: float) -> None:
     sym = ks.symbol_by_ref(root, ref)
     for p in sym.children("property"):
@@ -113,8 +122,14 @@ def place_part(root, ref: str, lib_id: str, at, row: dict, ref_prefix: str = "U"
     _place_texts(root, ref, lib_id, (x, y), pins)
     label_anchor = next(sch.children("label"))
     placed = {}
+    names = _pin_names(sch, lib_id)
     for key, net in row["pins"].items():
-        nums = [str(n) for n in range(int(key.split("-")[0]), int(key.split("-")[1]) + 1)] if re.fullmatch(r"\d+-\d+", key) else [key]
+        if re.fullmatch(r"\d+-\d+", key):
+            nums = [str(n) for n in range(int(key.split("-")[0]), int(key.split("-")[1]) + 1)]
+        elif key in pins:
+            nums = [key]
+        else:                                   # named spec key (A/K, S/G/D ...)
+            nums = names.get(key, [])
         for num in nums:
             if num not in pins:
                 continue

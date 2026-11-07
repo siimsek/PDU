@@ -6373,6 +6373,56 @@
 		)
 		(uuid "68c75443-ce66-41be-9446-f44e11308330")
 	)
+	(label "VSAFE"
+		(at 546.1 40.64 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5a7eac4c-c3ac-5215-b2e4-ac59ca3e822b")
+	)
+	(label "VSAFE"
+		(at 516.89 40.64 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2ea10f4c-6f26-5da8-a16a-062622fcc93e")
+	)
+	(label "S2E_11V"
+		(at 524.51 40.64 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e9a5f35e-69a2-5b1c-a6d3-a3cc354cefb8")
+	)
+	(label "VSAFE"
+		(at 496.57 40.64 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0af4c330-fdc1-5685-a554-86ef98bfd8bc")
+	)
+	(label "O1_11V"
+		(at 504.19 40.64 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a66e7f26-80c5-5c32-9068-108819bf4406")
+	)
 	(label "GND"
 		(at 243.84 393.7 0)
 		(effects
@@ -8405,7 +8455,7 @@
 		)
 		(uuid "ce2b8c78-3d4c-4e5f-9c16-550a821b8b8a")
 	)
-	(label "VOUT"
+	(label "VSAFE"
 		(at 495.3 85.09 0)
 		(effects
 			(font
@@ -8685,7 +8735,7 @@
 		)
 		(uuid "12cf5fcf-3038-4782-8d0d-224597d95518")
 	)
-	(label "VOUT"
+	(label "VSAFE"
 		(at 401.32 101.6 0)
 		(effects
 			(font
@@ -8695,7 +8745,7 @@
 		)
 		(uuid "33a7dab4-3304-4ac2-959a-6bf048692080")
 	)
-	(label "VOUT"
+	(label "VSAFE"
 		(at 401.32 254 0)
 		(effects
 			(font
@@ -9111,7 +9161,7 @@
 				)
 			)
 		)
-		(property "Value" "VBAT"
+		(property "Value" "Micro-Fit 3.0 header 2 ckt, 4.48 A"
 			(at 25.4 360.68 0)
 			(effects
 				(font
@@ -9180,7 +9230,7 @@
 				)
 			)
 		)
-		(property "Value" "SMCJ33A"
+		(property "Value" "TVS 33 V VWM, 1500 W"
 			(at 462.28 383.54 90)
 			(effects
 				(font
@@ -9249,7 +9299,7 @@
 				)
 			)
 		)
-		(property "Value" "LM70880QRRXRQ1"
+		(property "Value" "LM70880-Q1"
 			(at 180.34 294.64 0)
 			(effects
 				(font
@@ -9318,7 +9368,7 @@
 				)
 			)
 		)
-		(property "Value" "LM70880QRRXRQ1"
+		(property "Value" "LM70880-Q1"
 			(at 180.34 142.24 0)
 			(effects
 				(font
@@ -9387,7 +9437,7 @@
 				)
 			)
 		)
-		(property "Value" "TPS259824ONRGET"
+		(property "Value" "TPS259824L"
 			(at 431.8 297.18 0)
 			(effects
 				(font
@@ -9404,7 +9454,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps25982.pdf"
+		(property "Datasheet" ""
 			(at 431.8 287.02 0)
 			(hide yes)
 			(effects
@@ -9431,7 +9481,7 @@
 			)
 		)
 	
-		(property "MPN" "TPS259824ONRGET"
+		(property "MPN" "TPS259824LNRGER"
 			(at 431.8 287.02 0)
 			(hide yes)
 			(effects
@@ -9456,7 +9506,7 @@
 				)
 			)
 		)
-		(property "Value" "TPS259824ONRGET"
+		(property "Value" "TPS259824L"
 			(at 431.8 144.78 0)
 			(effects
 				(font
@@ -9473,7 +9523,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps25982.pdf"
+		(property "Datasheet" ""
 			(at 431.8 134.62 0)
 			(hide yes)
 			(effects
@@ -9500,7 +9550,7 @@
 			)
 		)
 	
-		(property "MPN" "TPS259824ONRGET"
+		(property "MPN" "TPS259824LNRGER"
 			(at 431.8 134.62 0)
 			(hide yes)
 			(effects
@@ -14436,7 +14486,7 @@
 				)
 			)
 		)
-		(property "Value" "301"
+		(property "Value" "182"
 			(at 552.45 303.53 0)
 			(effects
 				(font
@@ -14463,6 +14513,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 546.1 302.26 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TNPW0603182RBXEA"
 			(at 546.1 302.26 0)
 			(hide yes)
 			(effects
@@ -14531,6 +14590,15 @@
 				)
 			)
 		)
+		(property "MPN" "CRCW0603100KFKEA"
+			(at 383.54 292.1 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -14585,6 +14653,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 477.52 302.26 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C1608C0G1H102J080AA"
 			(at 477.52 302.26 0)
 			(hide yes)
 			(effects
@@ -14760,6 +14837,15 @@
 				)
 			)
 		)
+		(property "MPN" "C1608X7R1H104K080AA"
+			(at 383.54 259.08 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -14795,7 +14881,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 500.38 331.47 0)
 			(hide yes)
 			(effects
@@ -14814,6 +14900,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 500.38 331.47 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C3216X7R1E106K160AB"
 			(at 500.38 331.47 0)
 			(hide yes)
 			(effects
@@ -14847,7 +14942,7 @@
 				)
 			)
 		)
-		(property "Value" "SS34"
+		(property "Value" "Schottky 40 V 3 A"
 			(at 523.24 334.01 0)
 			(effects
 				(font
@@ -14855,7 +14950,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SMA"
+		(property "Footprint" "Diode_SMD:D_SMC"
 			(at 523.24 331.47 0)
 			(hide yes)
 			(effects
@@ -14874,6 +14969,15 @@
 			)
 		)
 		(property "Description" "Schottky diode"
+			(at 523.24 331.47 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SS34-E3/57T"
 			(at 523.24 331.47 0)
 			(hide yes)
 			(effects
@@ -14907,7 +15011,7 @@
 				)
 			)
 		)
-		(property "Value" "604"
+		(property "Value" "300"
 			(at 552.45 151.13 0)
 			(effects
 				(font
@@ -14934,6 +15038,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 546.1 149.86 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TNPW0603300RBXEA"
 			(at 546.1 149.86 0)
 			(hide yes)
 			(effects
@@ -15002,6 +15115,15 @@
 				)
 			)
 		)
+		(property "MPN" "CRCW0603100KFKEA"
+			(at 383.54 139.7 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -15056,6 +15178,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 477.52 149.86 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C1608C0G1H102J080AA"
 			(at 477.52 149.86 0)
 			(hide yes)
 			(effects
@@ -15231,6 +15362,15 @@
 				)
 			)
 		)
+		(property "MPN" "C1608X7R1H104K080AA"
+			(at 383.54 106.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -15266,7 +15406,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 500.38 179.07 0)
 			(hide yes)
 			(effects
@@ -15285,6 +15425,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
+			(at 500.38 179.07 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "C3216X7R1E106K160AB"
 			(at 500.38 179.07 0)
 			(hide yes)
 			(effects
@@ -15318,7 +15467,7 @@
 				)
 			)
 		)
-		(property "Value" "SS34"
+		(property "Value" "Schottky 40 V 3 A"
 			(at 523.24 181.61 0)
 			(effects
 				(font
@@ -15326,7 +15475,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SMA"
+		(property "Footprint" "Diode_SMD:D_SMC"
 			(at 523.24 179.07 0)
 			(hide yes)
 			(effects
@@ -15345,6 +15494,15 @@
 			)
 		)
 		(property "Description" "Schottky diode"
+			(at 523.24 179.07 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SS34-E3/57T"
 			(at 523.24 179.07 0)
 			(hide yes)
 			(effects
@@ -15378,7 +15536,7 @@
 				)
 			)
 		)
-		(property "Value" "O1"
+		(property "Value" "Mini-Fit Plus HCS header 2 ckt vertical, 9.07 A"
 			(at 558.8 325.12 0)
 			(effects
 				(font
@@ -15386,7 +15544,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal"
+		(property "Footprint" "Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical"
 			(at 558.8 320.04 0)
 			(hide yes)
 			(effects
@@ -15405,6 +15563,15 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 558.8 320.04 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "460150206"
 			(at 558.8 320.04 0)
 			(hide yes)
 			(effects
@@ -15438,7 +15605,7 @@
 				)
 			)
 		)
-		(property "Value" "S2E"
+		(property "Value" "Micro-Fit 3.0 header 2 ckt, 5.66 A"
 			(at 558.8 172.72 0)
 			(effects
 				(font
@@ -15465,6 +15632,15 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 558.8 167.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "430450200"
 			(at 558.8 167.64 0)
 			(hide yes)
 			(effects
@@ -15666,6 +15842,67 @@
 		)
 	)
 	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 546.1 40.64 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6427bca7-15f3-5937-a178-5f25f648d898")
+		(property "Reference" "#FLG05"
+			(at 546.1 38.735 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 546.1 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 546.1 40.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 546.1 40.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 546.1 40.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "PDU"
+				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
+					(reference "#FLG05")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Power_Management:LM74700")
 		(at 393.7 381 0)
 		(unit 1)
@@ -15681,7 +15918,7 @@
 				)
 			)
 		)
-		(property "Value" "LM74700"
+		(property "Value" "LM74700-Q1"
 			(at 397.51 394.97 0)
 			(effects
 				(font
@@ -15751,7 +15988,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "BSC160N10NS3G"
+		(property "Value" "100 V N-MOSFET"
 			(at 441.96 375.92 90)
 			(effects
 				(font
@@ -16268,6 +16505,15 @@
 				)
 			)
 		)
+		(property "MPN" "CRCW060364K9FKEA"
+			(at 495.3 88.9 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -16293,7 +16539,7 @@
 				)
 			)
 		)
-		(property "Value" "10.0k"
+		(property "Value" "10k"
 			(at 501.65 107.95 0)
 			(effects
 				(font
@@ -16320,6 +16566,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 495.3 106.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CRCW060310K0FKEA"
 			(at 495.3 106.68 0)
 			(hide yes)
 			(effects
@@ -16388,6 +16643,15 @@
 				)
 			)
 		)
+		(property "MPN" "CRCW060318K0FKEA"
+			(at 383.54 309.88 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(instances
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
@@ -16440,6 +16704,15 @@
 			)
 		)
 		(property "Description" "Resistor"
+			(at 383.54 157.48 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CRCW060318K0FKEA"
 			(at 383.54 157.48 0)
 			(hide yes)
 			(effects
@@ -19181,6 +19454,126 @@
 			(project "PDU"
 				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
 					(reference "C_AND")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 500.38 40.64 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3e97eb54-0b2c-5d95-955c-c98ae775d8d4")
+		(property "Reference" "D_REV1"
+			(at 501.65 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Schottky 40 V 3 A"
+			(at 501.65 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SMC"
+			(at 500.38 40.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 500.38 40.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SS34-E3/57T"
+			(at 500.38 40.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "PDU"
+				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
+					(reference "D_REV1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 520.7 40.64 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "29812f06-d76d-544a-b2e6-9c725254f13c")
+		(property "Reference" "D_REV2"
+			(at 521.97 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Schottky 40 V 3 A"
+			(at 521.97 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SMC"
+			(at 520.7 40.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 520.7 40.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SS34-E3/57T"
+			(at 520.7 40.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "PDU"
+				(path "/23c00cb1-04e4-4ce5-9f73-83023bdf1e61"
+					(reference "D_REV2")
 					(unit 1)
 				)
 			)
