@@ -26,6 +26,8 @@ from analysis.g2.params import EF_ILIM_TABLE, v
 
 ROOT = Path(__file__).resolve().parents[2]
 NETLIST = ROOT / "design" / "pdu_v2.cir"
+# R-005: 300 s cut two F5 corners (TVS on /VIN); timeout only, .tran step/method/tolerances unchanged.
+SIM_TIMEOUT_S = int(os.environ.get("PDU_SIM_TIMEOUT", "900"))
 PARAM_INC = ROOT / "design" / "pdu_v2_params.inc"
 SIMROOT = ROOT / "reports" / "g2" / "sim"
 OUTJ = ROOT / "reports" / "g2" / "sim-results.json"
@@ -270,7 +272,7 @@ def run_case(name, fam, params, sources, tstop, tmax, meas, crit, extra=()):
         shutil.move(str(log), str(d / f"{name}-attempt{k}.log"))
     deck.write_text(text, encoding="utf-8", newline="\n")
     try:
-        p = subprocess.run([str(NGSPICE), "-b", "-o", log.name, deck.name], cwd=d, capture_output=True, text=True, timeout=300)
+        p = subprocess.run([str(NGSPICE), "-b", "-o", log.name, deck.name], cwd=d, capture_output=True, text=True, timeout=SIM_TIMEOUT_S)
         code = p.returncode
     except subprocess.TimeoutExpired:
         code = -9
