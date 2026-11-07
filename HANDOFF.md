@@ -17,7 +17,7 @@ Kullanıcı onayı → PR #13'ü birleştir → T-005a (`analysis/check_footprin
 - T-013 → kart ölçüsü onayı (öneri 120 × 85).
 
 ## Kullanıcıdan bekleyenler
-- PR #13 için tek satır onay. U-001 tezgâh ölçümü (fiziksel; ne zaman mümkünse).
+- PR #13: kullanıcı onayı verildi (2026-11-07, "Onaylıyorum"). U-001 tezgâh ölçümü (fiziksel; ne zaman mümkünse).
 - **Birleştirme yetkisi: VERİLDİ (2026-11-07, kullanıcı: "Yetki veriyorum").** Kapsam: BUILDER, kabul kriterleri + pytest + check_workflow geçen PR'ları birleştirir; KiCad dosyası veya tasarım değeri değiştiren PR'da birleştirmeden önce tek satır onay sorar (WORKFLOW röle kuralı 6).
 
 ## Okuma gerektirmeyen notlar
