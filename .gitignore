@@ -41,3 +41,6 @@ simulation/candidate-global-startup-one-hot-r2.log
 **/_t.cir
 **/_t.log
 reports/**/sim/**/dbg/
+
+# W0: session packs (scripts/make_pack.py)
+packs/

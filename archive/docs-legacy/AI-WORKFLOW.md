@@ -1,4 +1,4 @@
-> **SUPERSEDED (G3, 2026-11-07) → AGENTS.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+> **SUPERSEDED (G3 → AGENTS.md; W0, 2026-11-07 → [docs/WORKFLOW.md](../../docs/WORKFLOW.md)).** Bu belge geçmiş kaydıdır; içerik değiştirilmedi. Hâlâ geçerli kurallar (kirli ağaç, kanıt sınıfları, gizlilik taraması, taslak PR) WORKFLOW.md'ye alındı.
 
 # IDA PDU — kalıcı AI çalışma düzeni
 
