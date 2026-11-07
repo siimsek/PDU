@@ -39,6 +39,12 @@ DSD = {
     "VSH_SS34": "Vishay SS32-SS36 doc 88751 p.1-2 (SMC; ordering pattern SS3x-E3/57T)",
     "TDK_C5750": "TDK C5750X7S2A226M280KB characterization sheet (repo) + G1 Ceff model",
     "PAN_ERA": "Panasonic ERA-3AEB (repo BOM 'manufacturer verified'; not re-read in G2)",
+    "TDK_PAGE": "TDK Product Center part page (official), status Production, checked 2026-11-07 (G4)",
+    "VSH_SMCJ": "Vishay SMCJ5.0A thru SMCJ188CA doc 88394 Rev 09-Jan-2024 p.2 (table), p.3 (ordering pattern -E3/57T)",
+    "TI_INA296": "TI INA296A-Q1/B-Q1 SBOSA32D p.2 (pins), p.4-6; addendum INA296A2QDGKRQ1 Active/Production",
+    "TI_LVC1G11": "TI SN74LVC1G11 datasheet tpd table; addendum SN74LVC1G11DBVR Active/Production",
+    "MOLEX_PAGE": "Molex official part page (status Active, current/contact), checked 2026-11-07 (G4)",
+    "ARATAS_B3U": "ARATAS (formerly Omron Components) B3U official page: B3U-1000P 'In production', checked 2026-11-07",
 }
 
 FP_LIB = "KiCad standard library footprint (IPC-7351 nominal)"
@@ -93,12 +99,12 @@ def rows():
     # ---------------- input
     R.append(dict(ref="F1", kind="F", value="10 A DC, >=53.3 VDC, >=1040 A breaking", mpn="", manufacturer="", datasheet="",
                   tolerance="", tcr="", package="", footprint="", footprint_source="AÇIK", custom_footprint=True,
-                  nets={"1": "/VBAT", "2": "/F1_OUT"}, v_applied=26.0, v_rating="", p_applied_W="", p_rating_W="",
-                  derating=None, lifecycle="doğrulanamadı", note="Fuse vendor datasheets not reachable (403/DNS)", dnp=False))
-    R.append(dict(ref="D1", kind="D", value="TVS SMCJ33A family (VRWM 33 V)", mpn="", manufacturer="", datasheet="",
+                  nets={"1": "/VBAT", "2": "/ANODE"}, v_applied=26.0, v_rating="", p_applied_W="", p_rating_W="",
+                  derating=None, lifecycle="doğrulanamadı", note="candidate Littelfuse 0456020.ER (20 A, 65 VDC, I2t 18 A2s, 2.3 mOhm per Littelfuse page); DC interrupting rating not readable (PDF only via download) -> AÇIK", dnp=False))
+    R.append(dict(ref="D1", kind="D", value="TVS 33 V VWM, 1500 W", mpn="SMCJ33A-E3/57T", manufacturer="Vishay General Semiconductor", datasheet=DSD["VSH_SMCJ"],
                   tolerance="", tcr="", package="SMC", footprint="Diode_SMD:D_SMC", footprint_source=FP_LIB, custom_footprint=False,
                   nets={"A": "/GND", "K": "/ANODE"}, v_applied=26.0, v_rating=33.0, p_applied_W="", p_rating_W="",
-                  derating=26.0 / 33.0, lifecycle="doğrulanamadı", note="Vishay/Littelfuse SMCJ datasheet not reachable; VRWM>VIN_max only", dnp=False))
+                  derating=26.0 / 33.0, lifecycle="doğrulanamadı", note="VBR 36.7-40.6 V, VC 53.3 V @ IPPM 28.1 A (doc 88394 p.2); VWM 33 V > VIN max 26 V", dnp=False))
     R.append(u("U5", "LM74700-Q1", "LM74700QDBVRQ1", "TI_LM74700", "SOT-23-6 (DBV)", "Package_TO_SOT_SMD:SOT-23-6", FP_LIB,
                {"1": "/VCAP", "2": "/GND", "3": "/ANODE(EN)", "4": "/GATE", "5": "/ANODE", "6": "/VIN(CATHODE)"},
                v_app=53.3, v_rat=65.0, note="pin map per TI DBV table; verify against KiCad symbol before transfer"))
@@ -119,7 +125,7 @@ def rows():
                     "EN/UVLO": "/EN_BUCK", "EXTCOMP": "/COMP", "FB": "/FB", "RT": f"/RT_PH{k}", "VCC": f"/VCC{k}",
                     "VDDA": f"/VDDA{k}", "CONFIG": "/CFG_PRI" if k == 1 else "/CFG_SEC",
                     "PG/SYNCOUT": "/SYNC" if k == 1 else "NC", "PFM/SYNCIN": "/GND" if k == 1 else "/SYNC",
-                    "BIAS(6)": "/VSAFE"},
+                    "BIAS(6)": "/GND(AGND)"},
                    v_app=53.3, v_rat=87.5, custom=True))
         R.append(dict(ref=f"L{k}", kind="L", value="6.8uH", mpn="IHLP4040DZER6R8M01", manufacturer="Vishay Dale",
                       datasheet=DSD["VSH_IHLP"], tolerance="20%", tcr="", package="IHLP-4040DZ", footprint="Inductor_SMD:L_Vishay_IHLP-4040",
@@ -143,9 +149,12 @@ def rows():
     R.append(r("RFB1", "130k", "ERA3AEB134V", "PAN_ERA", "0.1%", "25ppm/K", "0603", R0603, FP_LIB, {"1": "/FB_INJ", "2": "/FB"}, 1e-3, 0.1))
     R.append(r("R_INJ", "0", crcw("0603", "0000Z0"[:4]).replace("FKEA", "Z0EA"), "VSH_CRCW", "jumper", "", "0603", R0603, FP_LIB,
                {"1": "/VOUT", "2": "/FB_INJ"}, 0.0, 0.1, note="FRA injection at divider top (low-Z VOUT side): 49.9 ohm for bench FRA (TP_FB_INJ_A=/VOUT, TP_FB_INJ_B=/FB_INJ)"))
-    R.append(r("RFB2", "10.2k", "ERA3AEB1022V", "PAN_ERA", "0.1%", "25ppm/K", "0603", R0603, FP_LIB, {"1": "/FB", "2": "/GND"}, 1e-4, 0.1))
-    R.append(r("RCOMP", "16.9k", crcw("0603", "16K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB,
-               {"1": "/COMP", "2": "/COMP_MID"}, 1e-5, 0.1, note="G2 Stage 4; bench range 10-33k"))
+    R.append(r("RFB2", "9.76k", tnpw("0603", "9K76"), "VSH_TNPW", "0.1%", "15ppm/K", "0603", R0603, FP_LIB, {"1": "/FB", "2": "/FB_TRIM"}, 1e-4, 0.1,
+               note="G4 B4: RFB2 leg = 9.76k + R_TRIM"))
+    R.append(r("R_TRIM", "442", tnpw("0603", "442R"), "VSH_TNPW", "0.1%", "15ppm/K", "0603", R0603, FP_LIB, {"1": "/FB_TRIM", "2": "/GND"}, 1e-5, 0.1,
+               note="per-board trim, default 442 ohm (10.994 V); table 280-604 ohm in reports/g4/b4-results.json"))
+    R.append(r("RCOMP", "33.2k", crcw("0603", "33K2"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB,
+               {"1": "/COMP", "2": "/COMP_MID"}, 1e-5, 0.1, note="G4 B4 (32x COUT); bench range 22-47k"))
     R.append(c("CCOMP", "10n", "", "", 2.1, 25.0, "0603", C0603, {"1": "/COMP_MID", "2": "/GND"}, note="G2 Stage 4; C0G/X7R; bench 2.2-10 nF"))
     R.append(c("CHF", "22p", "", "", 2.1, 50.0, "0603", C0603, {"1": "/COMP", "2": "/GND"}, dielectric="C0G", note="G2 Stage 4; bench 22-100 pF"))
     R.append(r("RUV1", "174k", tnpw("0603", "174K", "E"), "VSH_TNPW", "0.1%", "25ppm/K", "0603", R0603, FP_LIB,
@@ -156,14 +165,14 @@ def rows():
         R.append(c(f"COUT{i}", "22u", "C5750X7S2A226M280KB", "TDK_C5750", 11.16, 100.0, "2220", "PDU:TDK_C5750_2220_Recommended",
                    {"1": "/VOUT", "2": "/GND"}, dielectric="X7S", custom=True,
                    fp_src="repo custom land (TDK recommended; prototype-accepted per docs/design.md)",
-                   note="new (G2: COUT9-16 added)" if i > 8 else "existing"))
+                   note="new (G2: COUT9-16, G4: COUT17-32)" if i > 8 else "existing"))
     R.append(r("RRAWBL", "10k", crcw("0805", "10K0"), "VSH_CRCW", "1%", "100ppm/K", "0805", R0805, FP_LIB,
                {"1": "/VOUT", "2": "/GND"}, 26 ** 2 / 10e3, 0.125 * 1.0, note="raw bus bleeder (fault 26 V: 68 mW -> 0805 54 %: use 1206)" ))
     # ---------------- isolator chain
-    R.append(u("U6", "LM74502H", "LM74502HDDFR", "TI_LM74502", "SOT-23-THIN-8 (DDF)", "Package_TO_SOT_SMD:SOT-23-8", FP_LIB + " (verify DDF land vs TI)",
+    R.append(u("U6", "LM74502H", "LM74502HDDFR", "TI_LM74502", "SOT-23-THIN-8 (DDF)", "Package_TO_SOT_SMD:TSOT-23-8", FP_LIB + " (DDF 2.9x1.6 thin; verify vs TI land)",
                {"1": "/ISO_EN", "2": "/GND", "3": "NC", "4": "/ISO_VCAP", "5": "/VOUT", "6": "/ISO_GATE", "7": "/ISO_OV", "8": "/VSAFE"},
                v_app=53.3, v_rat=65.0))
-    R.append(u("Q2", "100 V N-MOSFET", "CSD19531Q5A", "TI_CSD19531", "SON 5x6", "Package_SON:Texas_VSON-8-1EP_5x6mm", FP_LIB + " (verify vs TI land p.8)",
+    R.append(u("Q2", "100 V N-MOSFET", "CSD19531Q5A", "TI_CSD19531", "SON 5x6", "Package_SON:VSONP-8-1EP_5x6_P1.27mm", FP_LIB + " (lib descr: TI Q5A package)",
                {"1-3": "/VSAFE", "4": "/ISO_GATE", "5-8": "/VOUT"}, kind="Q", v_app=53.3, v_rat=100.0))
     R.append(r("R_GS", "100k", crcw("0603", "100K"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/ISO_GATE", "2": "/VSAFE"}, 0.002, 0.1))
     R.append(c("C_ISO_VCAP", "100n", "", "", 14.0, 50.0, "0603", C0603, {"1": "/ISO_VCAP", "2": "/VOUT"}, note="LM74502H VCAP-VS >=0.1 uF (p.4)"))
@@ -173,7 +182,24 @@ def rows():
     R.append(r("R_OVB", "2.32k", tnpw("1206", "2K32"), "VSH_TNPW", "0.1%", "15ppm/K", "1206", R1206, FP_LIB,
                {"1": "/OVP_SENSE", "2": "/GND"}, 0.014, 0.25))
     R.append(u("U7", "TLV3601", "TLV3601DCKR", "TI_TLV3601", "SC70-5 (DCK)", "Package_TO_SOT_SMD:SOT-353_SC-70-5", FP_LIB,
-               {"1": "/OVP_TRIP_N", "2": "/GND", "3": "/OVP_REF", "4": "/OVP_SENSE", "5": "/P5V_PROT"}))
+               {"1": "/OVP_BUS_N", "2": "/GND", "3": "/OVP_REF", "4": "/OVP_SENSE", "5": "/P5V_PROT"}))
+    # ---- G4 B1: phase overcurrent trip (INA296 + TLV3601 per phase, 3-input AND into latch PRE)
+    for k in (1, 2):
+        R.append(u(f"U{10 + k}", "INA296A2-Q1 (G=20)", "INA296A2QDGKRQ1", "TI_INA296", "VSSOP-8 (DGK)", "Package_SO:VSSOP-8_3x3mm_P0.65mm", FP_LIB,
+                   {"8": f"/ISNS{k}(IN+)", "1": "/VOUT(IN-)", "2": "/GND", "3": "/GND(REF2)", "7": "/GND(REF1)", "4": "/GND(NC)",
+                    "5": f"/OC_SENSE{k}", "6": "/P5V_PROT"}, v_app=51.5, v_rat=110.0,
+                   note="CM -5..110 V; settling 1 us TYPICAL (OC timing conditional)"))
+        R.append(u(f"U{12 + k}", "TLV3601", "TLV3601DCKR", "TI_TLV3601", "SC70-5 (DCK)", "Package_TO_SOT_SMD:SOT-353_SC-70-5", FP_LIB,
+                   {"1": f"/OC_TRIP{k}_N", "2": "/GND", "3": "/OC_REF", "4": f"/OC_SENSE{k}", "5": "/P5V_PROT"}))
+        R.append(c(f"C_INA{k}", "100n", "", "", 5.1, 50.0, "0603", C0603, {"1": "/P5V_PROT", "2": "/GND"}))
+        R.append(c(f"C_OCC{k}", "100n", "", "", 5.1, 50.0, "0603", C0603, {"1": "/P5V_PROT", "2": "/GND"}))
+    R.append(u("U15", "SN74LVC1G11 (3-in AND)", "SN74LVC1G11DBVR", "TI_LVC1G11", "SOT-23-6 (DBV)", "Package_TO_SOT_SMD:SOT-23-6", FP_LIB,
+               {"1": "/OVP_BUS_N(A)", "3": "/OC_TRIP1_N(B)", "6": "/OC_TRIP2_N(C)", "4": "/OVP_TRIP_N(Y)", "2": "/GND", "5": "/P5V_PROT"},
+               note="pin map per TI DBV table: verify against symbol"))
+    R.append(c("C_AND", "100n", "", "", 5.1, 50.0, "0603", C0603, {"1": "/P5V_PROT", "2": "/GND"}))
+    R.append(r("R_OCT", "255", tnpw("0603", "255R"), "VSH_TNPW", "0.1%", "15ppm/K", "0603", R0603, FP_LIB, {"1": "/OVP_REF", "2": "/OC_REF"}, 2e-3, 0.1,
+               note="OC threshold 12.97-13.60 A (n1-results.json)"))
+    R.append(r("R_OCB", "1.00k", tnpw("0603", "1K00"), "VSH_TNPW", "0.1%", "15ppm/K", "0603", R0603, FP_LIB, {"1": "/OC_REF", "2": "/GND"}, 4e-3, 0.1))
     R.append(c("C_CMP", "100n", "", "", 5.1, 25.0, "0603", C0603, {"1": "/P5V_PROT", "2": "/GND"}))
     R.append(u("U8", "REF5025A-Q1", "REF5025AQDRQ1", "TI_REF5025A", "SOIC-8 (D)", "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm", FP_LIB,
                {"2": "/P5V_PROT", "3": "NC(TEMP)", "4": "/GND", "5": "/REF_NR", "6": "/OVP_REF", "1": "DNC", "7": "NC", "8": "DNC"}))
@@ -185,18 +211,19 @@ def rows():
     R.append(c("C_LAT", "100n", "", "", 5.1, 25.0, "0603", C0603, {"1": "/P5V_PROT", "2": "/GND"}))
     R.append(r("R_CLR", "100k", crcw("0603", "100K"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/P5V_PROT", "2": "/CLR_N"}, 3e-4, 0.1))
     R.append(c("C_CLR", "1u", "", "", 5.1, 25.0, "0603", C0603, {"1": "/CLR_N", "2": "/GND"}, note="POR ~120 ms"))
-    R.append(dict(ref="SW1", kind="SW", value="momentary reset, SPST-NO", mpn="", manufacturer="", datasheet="", tolerance="", tcr="",
-                  package="", footprint="", footprint_source="AÇIK", custom_footprint=False, nets={"1": "/CLR_N", "2": "/GND"},
+    R.append(dict(ref="SW1", kind="SW", value="momentary reset, SPST-NO", mpn="B3U-1000P", manufacturer="ARATAS (Omron Components)",
+                  datasheet=DSD["ARATAS_B3U"], tolerance="", tcr="",
+                  package="B3U SMT", footprint="Button_Switch_SMD:SW_SPST_B3U-1000P", footprint_source=FP_LIB, custom_footprint=False, nets={"1": "/CLR_N", "2": "/GND"},
                   v_applied=5.0, v_rating="", p_applied_W="", p_rating_W="", derating=None, lifecycle="doğrulanamadı",
-                  note="G1 candidate Omron B3U-1000P not re-read in G2", dnp=False))
+                  note="contact rating not in page text (doğrulanamadı); use 5 V / ~50 uA (CLR pull-up)", dnp=False))
     R.append(r("R_Q", "10k", crcw("0603", "10K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/OVP_Q", "2": "/ISO_OV"}, 1e-3, 0.1))
     R.append(r("R_OV2T", "60.4k", crcw("0603", "60K4"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/VOUT", "2": "/ISO_OV"},
                (26 - 2) ** 2 / 60.4e3, 0.1, note="coarse OV 11.58-13.74 V (>= precision trip_max + 30 mV)"))
     R.append(r("R_OV2B", "19.6k", crcw("0603", "19K6"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/ISO_OV", "2": "/GND"}, 3e-4, 0.1))
     R.append(r("R_EN1", "15k", crcw("0603", "15K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/P5V_PROT", "2": "/ISO_EN"}, 1e-3, 0.1))
     R.append(r("R_EN2", "10k", crcw("0603", "10K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/ISO_EN", "2": "/GND"}, 4e-4, 0.1))
-    R.append(u("U10", "TPS7A1650-Q1", "TPS7A1650QDGNRQ1", "TI_TPS7A16", "HVSSOP-8 (DGN)", "Package_SO:MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm",
-               FP_LIB + " (verify DGN exposed pad vs TI)", {"8": "/VIN", "1": "/P5V_PROT", "2": "NC", "3": "/CLR_N(PG)", "4": "/GND",
+    R.append(u("U10", "TPS7A1650-Q1", "TPS7A1650QDGNRQ1", "TI_TPS7A16", "HVSSOP-8 (DGN)", "Package_SO:HVSSOP-8-1EP_3x3mm_P0.65mm_EP1.57x1.89mm",
+               FP_LIB + " (DGN)", {"8": "/VIN", "1": "/P5V_PROT", "2": "NC", "3": "/CLR_N(PG)", "4": "/GND",
                                                             "5": "/VIN(EN)", "6": "NC", "7": "/LDO_DELAY"}, v_app=53.3, v_rat=60.0))
     R.append(c("C_LDO_IN", "1u", "", "", 26.0, 100.0, "1206", C1206, {"1": "/VIN", "2": "/GND"}, note="TI recommends 10 uF at IN (p.3); 1 uF local + CIN bank"))
     R.append(c("C_LDO_OUT", "2.2u", "", "", 5.1, 25.0, "0805", C0805, {"1": "/P5V_PROT", "2": "/GND"}, note="datasheet test COUT=2.2 uF"))
@@ -218,7 +245,7 @@ def rows():
                    {"1": f"/IMON_{port}", "2": "/GND"}, 1e-3, 0.1))
         R.append(c(f"CDVDT{idx}", "1.0n", "", "", 15.6, 50.0, "0603", C0603, {"1": f"/DVDT_{port}", "2": "/GND"}, note="sees VIN+4 V (TPS25982 p.37 design example)"))
         R.append(c(f"CEFIN{idx}", "100n", "", "", 11.6, 50.0, "0603", C0603, {"1": "/VSAFE", "2": "/GND"}))
-        R.append(c(f"CEFOUT{idx}", "10u", "", "", 11.6, 25.0, "0805", C0805, {"1": f"/{port}_11V", "2": "/GND"},
+        R.append(c(f"CEFOUT{idx}", "10u", "", "", 11.94, 25.0, "1206", C1206, {"1": f"/{port}_11V", "2": "/GND"},
                    note="25 V 0805: 46 % of rating; Ceff assumed 40 % (DC-bias datasheet not available)"))
         R.append(r(f"RPG{idx}", "100k", crcw("0603", "100K"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB,
                    {"1": f"/{port}_11V", "2": f"/PG_{port}"}, 1e-3, 0.1))
@@ -237,18 +264,75 @@ def rows():
     R.append(r("REN1", "64.9k", crcw("0603", "64K9"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/VSAFE", "2": "/EN_EFUSE"}, 2e-3, 0.1))
     R.append(r("REN2", "10k", crcw("0603", "10K0"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/EN_EFUSE", "2": "/GND"}, 3e-4, 0.1))
     # ---------------- connectors
-    for ref, net, i_a in (("J1", "/VBAT", 4.48), ("J2", "/O1_11V", 7.0), ("J3", "/S2E_11V", 1.5)):
-        R.append(dict(ref=ref, kind="J", value=f"2-pin power, >={i_a} A continuous", mpn="", manufacturer="Molex (Micro-Fit 3.0 family, G1)",
-                      datasheet="Molex PS-43045-001 not reachable in G2", tolerance="", tcr="", package="",
-                      footprint="Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal", footprint_source=FP_LIB,
-                      custom_footprint=False, nets={"1": net, "2": "/GND"}, v_applied=26.0 if ref == "J1" else 11.6, v_rating="",
-                      p_applied_W="", p_rating_W="", derating=None, lifecycle="doğrulanamadı",
-                      note="header + mating housing + crimp + wire gauge set must be selected together", dnp=False))
+    for ref, net, i_a, nckt in (("J1", "/VBAT", 4.48, 2), ("J2", "/O1_11V", 9.07, 4), ("J3", "/S2E_11V", 5.66, 2)):
+        mpn = "430450400" if nckt == 4 else "430450200"
+        fp = ("Connector_Molex:Molex_Micro-Fit_3.0_43045-0400_2x02_P3.00mm_Horizontal" if nckt == 4
+              else "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal")
+        nets = {"1": net, "2": "/GND"} if nckt == 2 else {"1": net, "2": net, "3": "/GND", "4": "/GND"}
+        per = i_a / (2 if nckt == 4 else 1)
+        R.append(dict(ref=ref, kind="J", value=f"Micro-Fit 3.0 header {nckt} ckt, {i_a} A", mpn=mpn, manufacturer="Molex",
+                      datasheet=DSD["MOLEX_PAGE"] + "; 8.5 A max per contact, 600 V", tolerance="", tcr="", package="",
+                      footprint=fp, footprint_source=FP_LIB, custom_footprint=False, nets=nets,
+                      v_applied=26.0 if ref == "J1" else 11.6, v_rating=600.0, p_applied_W=per, p_rating_W=8.5,
+                      derating=per / 8.5, lifecycle="Active (Molex page)",
+                      note=("2 contacts per pole (ILIM_O1 max 9.07 A > 8.5 A/contact); current sharing not guaranteed" if nckt == 4
+                            else "18 AWG terminals 430300038"), dnp=False))
+    for ref, mpn, val in (("P1", "430250200", "Micro-Fit 3.0 receptacle 2 ckt (J1 mate)"),
+                          ("P2", "430250400", "Micro-Fit 3.0 receptacle 4 ckt (J2 mate)"),
+                          ("P3", "430250200", "Micro-Fit 3.0 receptacle 2 ckt (J3 mate)"),
+                          ("CT1", "430300038", "Micro-Fit 3.0 crimp terminal 18 AWG, 8.5 A (qty 8)")):
+        R.append(dict(ref=ref, kind="CABLE", value=val, mpn=mpn, manufacturer="Molex", datasheet=DSD["MOLEX_PAGE"], tolerance="",
+                      tcr="", package="", footprint="", footprint_source="kablo tarafı (PCB dışı)", custom_footprint=False, nets={},
+                      v_applied="", v_rating="", p_applied_W="", p_rating_W="", derating=None, lifecycle="Active (Molex page)",
+                      note="cable side; 18 AWG 0.5-1.5 m (VARSAYIM)", dnp=False))
     return R
+
+
+# G4: MLCC part numbers confirmed on TDK Product Center pages (status Production, 2026-11-07). value/voltage/dielectric
+# from the page; DC-bias graph not read (JS) -> Ceff assumptions stay VARSAYIM where they matter (CIN, CEFOUT).
+MLCC = {
+    "4.7u/100": ("C3225X7S2A475K200AB", "1210", 100.0, "X7S", C1210),
+    "10u/25": ("C3216X7R1E106K160AB", "1206", 25.0, "X7R", C1206),
+    "4.7u/25": ("C2012X7R1E475K125AB", "0805", 25.0, "X7R", C0805),
+    "2.2u/25": ("C2012X7R1E225K125AB", "0805", 25.0, "X7R", C0805),
+    "1u/25": ("C1608X7R1E105K080AB", "0603", 25.0, "X7R", C0603),
+    "1u/100": ("C3216X7R2A105K160AA", "1206", 100.0, "X7R", C1206),
+    "100n/50": ("C1608X7R1H104K080AA", "0603", 50.0, "X7R", C0603),
+    "100n/100": ("C1608X7S2A104K080AB", "0603", 100.0, "X7S", C0603),
+    "47n/50": ("C1608X7R1H473K080AA", "0603", 50.0, "X7R", C0603),
+    "22n/100": ("C1608X7R2A223K080AA", "0603", 100.0, "X7R", C0603),
+    "10n/100": ("C1608X7R2A103K080AA", "0603", 100.0, "X7R", C0603),
+    "10n/50c0g": ("C1608C0G1H103J080AA", "0603", 50.0, "C0G", C0603),
+    "1.0n/50c0g": ("C1608C0G1H102J080AA", "0603", 50.0, "C0G", C0603),
+    "22p/50c0g": ("C1608C0G1H220J080AA", "0603", 50.0, "C0G", C0603),
+}
+
+
+def mlcc_key(row):
+    v, ref = row["value"], row["ref"]
+    if ref in ("CCOMP", "C_LDO_DELAY"):
+        return "10n/50c0g"
+    if ref.startswith("CDVDT"):
+        return "1.0n/50c0g"
+    if ref == "CHF":
+        return "22p/50c0g"
+    if v == "100n":
+        return "100n/100" if ref == "C_ISO_VS" else "100n/50"
+    if v == "1u":
+        return "1u/100" if ref == "C_LDO_IN" else "1u/25"
+    return {"4.7u": "4.7u/100" if ref.startswith("CIN") else "4.7u/25", "10u": "10u/25", "2.2u": "2.2u/25",
+            "47n": "47n/50", "22n": "22n/100", "10n": "10n/100"}.get(v)
 
 
 def fix_rows(R):
     for row in R:
+        if row["kind"] == "C" and not row["mpn"]:
+            k = mlcc_key(row)
+            if k:
+                mpn, pkg, vr, diel, fp = MLCC[k]
+                row.update(mpn=mpn, manufacturer="TDK", datasheet=DSD["TDK_PAGE"], package=pkg, v_rating=vr, tcr=diel,
+                           footprint=fp, derating=(row["v_applied"] / vr) if row["v_applied"] else None,
+                           lifecycle="Production (TDK page, 2026-11-07)")
         if row["ref"] == "RRAWBL":   # applied 68 mW -> use 1206 (0.25 W) for <=50 %
             row.update(package="1206", footprint=R1206, mpn=crcw("1206", "10K0"), p_rating_W=0.25,
                        derating=row["p_applied_W"] / 0.25, note="raw bus bleeder; 26 V fault 68 mW -> 27 %")
@@ -302,6 +386,28 @@ def main():
         if row["custom_footprint"]:
             lines.append(f"- {row['ref']} ({row['mpn'] or row['value']}): {row['footprint'] or 'AÇIK'} — {row['footprint_source']}")
     OPEN.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    # footprint map (G4 C2): stock KiCad 10 footprint existence verified by file name
+    import os
+    lib = os.environ.get("KICAD_FP_DIR", r"C:\Program Files\KiCad\10.0\share\kicad\footprints")
+    fm = ROOT / "design" / "footprint-map.csv"
+    with fm.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["ref", "mpn", "footprint", "stock_or_custom", "verified_file", "source", "risk"])
+        for row in R:
+            if row["kind"] == "CABLE":
+                continue
+            fpn = row["footprint"]
+            if not fpn:
+                w.writerow([row["ref"], row["mpn"], "", "ÖZEL", "", row["footprint_source"], "footprint AÇIK (part not selected)"])
+                continue
+            libn, name = fpn.split(":", 1)
+            path = os.path.join(lib, libn + ".pretty", name + ".kicad_mod")
+            stock = libn != "PDU"
+            exists = os.path.exists(path) if stock else False
+            risk = ("repo custom land: land/paste acceptance open" if not stock else
+                    ("compare with manufacturer land" if "verify" in row["footprint_source"] or "compare" in row["footprint_source"] else "low"))
+            w.writerow([row["ref"], row["mpn"], fpn, "STOK" if stock else "ÖZEL", "yes" if exists else ("n/a" if not stock else "NO"),
+                        row["footprint_source"], risk])
     # spec yaml (hand-rolled, no dependency)
     y = ["# PDU v2 machine-readable schematic summary (generated by analysis/g2/bom.py)",
          "# /VOUT is the raw buck bus (VRAW in G2 reports); /VSAFE is the isolator output feeding both eFuse IN pins.",

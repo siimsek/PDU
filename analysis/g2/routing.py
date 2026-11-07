@@ -25,7 +25,7 @@ DROP_MV = 50.0
 RHO = 1.724e-8 * (1 + 0.00393 * (T_RHO - 20))
 
 CLASSES = [
-    {"name": "INPUT_POWER", "nets": ["/VBAT", "/F1_OUT", "/ANODE", "/VIN"], "current_A": 82.5 / 0.92 / 20.0, "length_mm": 50,
+    {"name": "INPUT_POWER", "nets": ["/VBAT", "/ANODE", "/VIN"], "current_A": 82.5 / 0.92 / 20.0, "length_mm": 50,
      "basis": "82.5 W / 92 % (VARSAYIM) / 20 V"},
     {"name": "BUS_POWER", "nets": ["/VOUT", "/VSAFE", "/GND"], "current_A": 7.5, "length_mm": 50,
      "basis": "7.5 A capacity target; VSAFE carries the same current through Q2"},

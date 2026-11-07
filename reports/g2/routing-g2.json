@@ -5,7 +5,6 @@
       "name": "INPUT_POWER",
       "nets": [
         "/VBAT",
-        "/F1_OUT",
         "/ANODE",
         "/VIN"
       ],

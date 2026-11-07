@@ -6,8 +6,11 @@ ROOT = Path(__file__).resolve().parents[2]
 SIM = json.loads((ROOT / "reports" / "g2" / "sim-results.json").read_text(encoding="utf-8"))
 PROT = json.loads((ROOT / "reports" / "g2" / "protection-results.json").read_text(encoding="utf-8"))
 
-EXPECTED_FAIL = {"f1_noprot_baseline", "f4_input_loss_without_drev", "f5_precision_path_open_residual",
+# G4: the precision-path-open residual case now passes (independent phase-overcurrent trip); untrimmed stacked
+# corners stay visible FAILs, the trimmed-window corners pass.
+EXPECTED_FAIL = {"f1_noprot_baseline", "f4_input_loss_without_drev",
                  "f3_stacked_low_setpoint_cmin_gmmin", "f3_stacked_high_setpoint_cmin_gmmin"}
+N1 = json.loads((ROOT / "reports" / "g4" / "n1-results.json").read_text(encoding="utf-8"))
 
 
 def test_all_five_families_completed():
@@ -24,14 +27,18 @@ def test_failures_are_exactly_the_recorded_ones():
 
 def test_unprotected_baseline_fail_is_preserved():
     r = SIM["runs"]["f1_noprot_baseline"]["measures"]
-    assert r["o1_max_fault"] > 12.0 and r["vsafe_max_fault"] > 30.0
+    assert r["o1_max_fault"] > 12.0   # VSAFE 27.9 V with 32x COUT + saturating L (was 33 V with 16x)
 
 
 def test_o1_hesap_and_sim_agree_for_worst_case():
+    # same model class on both sides: N1 path A (RK4 with L(i), OC trip) vs full-system SPICE, floor 0.15, V0 low
     sim = SIM["runs"]["f1_worst"]["measures"]["o1_max_fault"]
-    hesap = PROT["o1_peak_worst"]["peak_V"]
+    hesap = [r for r in N1["rows"] if r["floor"] == 0.15][0]["with_oc_trip"]["o1_peak_V"]
     assert sim <= 12.0 and hesap <= 12.0
     assert abs(sim - hesap) < 0.05, (sim, hesap)
+    # voltage-trip-only (G3 design) stays marginal/FAIL: kept visible
+    v_only = [r for r in N1["rows"] if r["floor"] == 0.15][0]["voltage_trip_only"]["o1_peak_V"]
+    assert v_only > 12.0 and abs(v_only - SIM["runs"]["f1_voltage_trip_only_g3_design"]["measures"]["o1_max_fault"]) < 0.1
 
 
 def test_f5_sweep_worst_below_limit():
@@ -71,7 +78,7 @@ def test_efuse_is_active_current_limiter_variant():
 
 def test_lm70880_bias_on_protected_rail_and_fra_injection_at_low_z_side():
     spec = (ROOT / "design" / "pdu_v2_spec.yaml").read_text(encoding="utf-8")
-    assert spec.count('"BIAS(6)": "/VSAFE"') == 2
+    assert spec.count('"BIAS(6)": "/GND(AGND)"') == 2   # G4: BIAS tied to AGND (LM70880 p.13: VIN must exceed external BIAS)
     blk = spec.split("- ref: R_INJ")[1].split("- ref:")[0]
     assert '"/VOUT"' in blk and '"/FB_INJ"' in blk
 
@@ -88,3 +95,21 @@ def test_raw_bus_fault_peak_below_lm70880_vout_pin_limit():
     for n, r in SIM["runs"].items():
         if "vraw_max_fault" in r["criteria"]:
             assert r["measures"]["vraw_max_fault"] < 60.0, n
+
+
+def test_three_way_consistency_passes():
+    from analysis.check_consistency import check
+    assert check() == []
+
+
+def test_bom_has_single_open_row_and_footprints_verified():
+    rows = list(csv.DictReader((ROOT / "design" / "bom-v2.csv").open(encoding="utf-8")))
+    assert [r["ref"] for r in rows if not r["mpn"]] == ["F1"]
+    fm = list(csv.DictReader((ROOT / "design" / "footprint-map.csv").open(encoding="utf-8")))
+    assert all(r["verified_file"] == "yes" for r in fm if r["stock_or_custom"] == "STOK")
+
+
+def test_trimmed_corners_pass_and_oc_trip_bounds_o1():
+    for n in ("f3_trimmed_low_setpoint_cmin_gmmin", "f3_trimmed_high_setpoint_cmin_gmmin"):
+        assert SIM["runs"][n]["pass"], n
+    assert N1["worst_with_oc_V"] <= 12.0
