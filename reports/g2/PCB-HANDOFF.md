@@ -33,7 +33,7 @@ Via sayısı iki yolun büyüğüdür: 0.5 A/via taraması ve 0.3 mm delik / 20 
 
 1. **Giriş grubu:** J1 → D1 (TVS, J1'e en yakın) → Q1/U5 → CIN1–8. F1 kart dışında (batarya kablosu, Eaton PV-10A10F + CHPV1U DIN-ray; G5 T-004). TVS dönüşü doğrudan L2 GND'ye en az 4 via.
 2. **Buck grubu (×2):** her LM70880 için CIN–VIN–PGND sıcak döngüsü en küçük alan (CIN IC'nin VIN/PGND pinlerine bitişik, L1 katmanında); SW bakırı yalnız IC–L arası; RS Kelvin uçları pad iç kenarından, birbirine paralel, SW altından geçmeden; COMP/FB/RT/VDDA bileşenleri SW'nin karşı tarafında, L2 GND referanslı.
-3. **COUT bankası (G4: 32×):** 32× C5750 iki faz çıkışı arasında simetrik (faz başına 16, iki sıra); Q2 drain'i bankanın ortasına bağlanır. Banka hem yük adımı (B4) hem hata anı ham bara tepesi (≤35.8 V, SİM F1/F5) için gereklidir; DNP yapılamaz.
+3. **COUT bankası (G4: 32×):** 32× C5750 iki faz çıkışı arasında simetrik (faz başına 16, iki sıra); Q2 drain'i bankanın ortasına bağlanır. Banka hem yük adımı (B4) hem hata anı ham bara tepesi (≤34.8 V, SİM F1/F5; G5 D-007 koşusu) için gereklidir; DNP yapılamaz.
 4. **Ayırıcı grubu:** Q2 (CSD19531Q5A) + U6 (LM74502H) + C_ISO_VS/VCAP + R_GS bitişik; GATE izi ≤10 mm; **hata akımı döngüsü** COUT → Q2 → VSAFE dökümü → CEFIN/eFuse IN → GND dönüşü L2 üzerinden kısa. Q2 drain/source pad'leri ≥1 in² (645 mm²) bakır (RθJA 50 K/W koşulu, DATASHEET).
 5. **OVP + OC mantık grubu:** U7, U8, U9, U10, U13, U14, U15, R_OCT/R_OCB, R_OVT/R_OVB, R_OV2T/R_OV2B, R_Q, R_EN1/2, R_CLR/C_CLR, SW1; SW düğümlerinden ≥10 mm uzak, L2 GND üstünde. **R_OVT ve R_OV2T'nin VRAW ucu Kelvin olarak Q2 drain bakırından alınır** (yük akımı geçmeyen ayrı iz).
 5b. **Faz OC algılama (G4):** U11/U12 (INA296A2) her fazın RS'ine **Kelvin** bağlanır: IN+ RS'in ISNS ucundan, IN− VOUT ucundan, pad iç kenarından iki paralel iz, SW bakırının altından geçmeden; INA296 RS'e ≤15 mm. OUT (`/OC_SENSE1/2`) → U13/U14 kısa iz, L2 GND referanslı. Arızalı faz akımı (≤138 A tepe, µs) RS ve bobin bakırından geçer; RS padleri ve faz bakırı bu darbeye göre geniş tutulur.
@@ -48,7 +48,7 @@ Via sayısı iki yolun büyüğüdür: 0.5 A/via taraması ve 0.3 mm delik / 20 
 
 ## 5. Güvenlik mesafeleri (hata gerilimi)
 
-Normal en yüksek gerilim 26 V (VIN). Hata durumları: VIN TVS (SMCJ33A) kelepçe 53.3 V (DATASHEET Vishay 88394 p.2), VRAW yüksek taraf kısasında SİM ≤35.8 V (F1/F5, 32× COUT) — LM70880 BIAS bu nedenle AGND'ye bağlandı (G4; abs 32 V), ayırıcı FET VDS SİM ≤24.9 V. Dış katman kaplamasız 31–100 V için 0.6 mm (IPC-2221 B2 tablosu — bu turda standart metni yeniden okunmadı, VARSAYIM). Öneri: VIN/ANODE/VOUT ile mantık ağları arasında ≥0.6 mm; aynı ağ sınıfı içinde üretici minimumu.
+Normal en yüksek gerilim 26 V (VIN). Hata durumları: VIN TVS (SMCJ33A) kelepçe 53.3 V (DATASHEET Vishay 88394 p.2), VRAW yüksek taraf kısasında SİM ≤34.8 V (F1/F5, 32× COUT; F5 47/49 tamamlandı) — LM70880 BIAS bu nedenle AGND'ye bağlandı (G4; abs 32 V), ayırıcı FET VDS SİM ≤24.1 V. Dış katman kaplamasız 31–100 V için 0.6 mm (IPC-2221 B2 tablosu — bu turda standart metni yeniden okunmadı, VARSAYIM). Öneri: VIN/ANODE/VOUT ile mantık ağları arasında ≥0.6 mm; aynı ağ sınıfı içinde üretici minimumu.
 
 ## 6. Konnektör yerleşimi
 

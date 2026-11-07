@@ -80,15 +80,15 @@ vio1#branch                                  0
 vbat#branch                                  0
 
 
-No. of Data Rows : 21094
+No. of Data Rows : 21089
 
   Measurements for Transient Analysis
 
-vraw_max_fault      =  3.44022e+01 at=  3.16193e-04
+vraw_max_fault      =  3.47626e+01 at=  3.16193e-04
 vsafe_max_fault     =  1.10380e+01 at=  1.07395e-04
 o1_max_fault        =  1.10374e+01 at=  1.07581e-04
 s2e_max_fault       =  1.10374e+01 at=  1.07581e-04
-vds_iso_max         =  2.35389e+01 at=  3.16193e-04
+vds_iso_max         =  2.38992e+01 at=  3.16193e-04
 o1_minus_in_max     =  1.12122e-01 at=  1.22750e-04
 s2e_minus_in_max    =  1.12122e-01 at=  1.22750e-04
 vraw_pre            =  1.08332e+01
@@ -98,12 +98,12 @@ il1_max_fault       =  1.14254e+02 at=  1.30050e-04
 il1_at_open         =  2.20333e+01
 
 
-Total analysis time (seconds) = 0.783106
+Total analysis time (seconds) = 0.891984
 
-Total elapsed time (seconds) = 0.790 
+Total elapsed time (seconds) = 0.913 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 9667.188 MB.
-Maximum ngspice program size =   12.668 MB.
-Current ngspice program size =   12.668 MB.
+DRAM currently available = 4233.000 MB.
+Maximum ngspice program size =   12.711 MB.
+Current ngspice program size =   12.711 MB.
 

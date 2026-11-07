@@ -40,3 +40,18 @@ def test_unbalanced_raises():
     import pytest
     with pytest.raises(ValueError):
         ks.parse("(a (b)")
+
+
+def test_remove_insert_and_add_property_roundtrip():
+    root = ks.parse(MINI)
+    sch = ks.top(root)
+    assert ks.set_or_add_property(root, "R1", "MPN", "X1") == "added"
+    out = ks.dumps(root)
+    assert '(property "MPN" "X1"' in out and out.startswith("(kicad_sch")
+    sym = next(sch.children("symbol"))
+    ks.remove_node(sch, sym)
+    assert "Device:R" not in ks.dumps(root)
+    anchor = next(sch.children("version"))
+    ks.insert_after(sch, anchor, ks.wire_text((1, 2), (3, 2), "u-1"))
+    again = ks.parse(ks.dumps(root))
+    assert ks.dumps(again) == ks.dumps(root) and "(xy 1 2)" in ks.dumps(root)

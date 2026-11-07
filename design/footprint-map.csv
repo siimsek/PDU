@@ -140,4 +140,4 @@ REN1,CRCW060364K9FKEA,Resistor_SMD:R_0603_1608Metric,STOK,yes,KiCad standard lib
 REN2,CRCW060310K0FKEA,Resistor_SMD:R_0603_1608Metric,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 J1,430450200,Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 J3,430450200,Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
-J2,460150206,Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical,STOK,yes,"KiCad standard library (Mini-Fit Jr 5566-02A, 4.20 mm); compare pads/holes with Molex 460150206_sd.pdf (T-005b)",compare with manufacturer land
+J2,460150206,Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical,STOK,yes,"KiCad standard library (Mini-Fit Jr 5566-02A); verified vs Molex SD-46015-001 (row 5.50 mm, hole 1.40 mm, no peg) R-003 tour 2",low

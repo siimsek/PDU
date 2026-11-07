@@ -14,6 +14,7 @@ carries its page. Checks per footprint:
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -23,6 +24,8 @@ import kicad_sexpr as ks  # noqa: E402
 
 TOL = 0.02
 LIB = ROOT / "hardware" / "lib"
+STOCK = Path(os.environ.get("KICAD_FP_DIR", r"C:\Program Files\KiCad\10.0\share\kicad\footprints"))
+DRILL_TOL = 0.05
 OUT = ROOT / "reports" / "g5" / "footprints" / "check.json"
 
 
@@ -53,6 +56,12 @@ def _rrx_pads():
 
 
 REFERENCE = {
+    "Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical": {  # J2 Molex 46015-0206 (stock KiCad footprint); R-003 tour 2
+        "source": "Molex SD-46015-001 Rev. C p.1 recommended PCB layout (via R-003 tour 2): row spacing 5.50 +-0.10, terminal hole 1.40 +-0.05, PEGS=NO for 46015-0206",
+        "stock": "Connector_Molex", "body": (0.0, 0.0), "pads": {}, "polygons": {}, "exposed": [],
+        "drills": {"1": 1.40, "2": 1.40}, "spacing": [("1", "2", 5.50, 0.10)], "no_npth": True,
+        "symbol": None, "pin1": False,  # stock footprint; pad copper size not published by Molex (R-003 tour 2)
+    },
     "TDSON-8-1_Konnect": {  # Q1 BSC160N10NS3 G; data via R-003 (THINKER), reports/R-003/land-data.md
         "source": "Infineon BSC160N10NS3 G datasheet Rev. 2.4, Fig. 2 p.10 (footprint); PG-TDSON-8-1 package drawing Rev. 01.00 p.2",
         "body": (0.0, 0.0),
@@ -99,9 +108,17 @@ def _val(node, head):
 def load_footprint(path: Path, text: str | None = None):
     root = ks.parse(text if text is not None else path.read_text(encoding="utf-8"))
     pads, graphics = {}, []
+    load_footprint.drills, load_footprint.npth = {}, []
     for n in ks.walk(root):
         if n.head == "pad":
             num = n.atoms()[1].value
+            drill = next(n.children("drill"), None)
+            if drill is not None:
+                d = float([a for a in drill.atoms() if a.value.replace(".", "").isdigit()][0].value)
+                if n.atoms()[2].value == "np_thru_hole":
+                    load_footprint.npth.append(d)
+                elif num:
+                    load_footprint.drills[num] = d
             at, size = _val(n, "at"), _val(n, "size")
             layers = [a.value for a in next(n.children("layers")).atoms()[1:]]
             if num and any(l.endswith(".Cu") or l == "*.Cu" for l in layers):
@@ -136,7 +153,19 @@ def load_symbol_pins(name: str):
 
 def check_one(name: str, ref: dict, text: str | None = None) -> dict:
     errs = []
-    pads, graphics = load_footprint(LIB / "PDU.pretty" / f"{name}.kicad_mod", text)
+    path = (STOCK / f"{ref['stock']}.pretty" / f"{name}.kicad_mod") if ref.get("stock") else LIB / "PDU.pretty" / f"{name}.kicad_mod"
+    pads, graphics = load_footprint(path, text)
+    for num, d in ref.get("drills", {}).items():
+        got = load_footprint.drills.get(num)
+        if got is None or abs(got - d) > DRILL_TOL:
+            errs.append(f"pad {num} drill {got} != {d} ±{DRILL_TOL}")
+    if ref.get("no_npth") and load_footprint.npth:
+        errs.append(f"unexpected NPTH (peg) holes {load_footprint.npth}")
+    for a, b, dist, tol in ref.get("spacing", []):
+        (xa, ya, *_), (xb, yb, *_) = pads[a][0], pads[b][0]
+        got = ((xa - xb) ** 2 + (ya - yb) ** 2) ** 0.5
+        if abs(got - dist) > tol:
+            errs.append(f"pad {a}-{b} spacing {got:.3f} != {dist} ±{tol}")
     for num, (x, y, w, h) in ref["pads"].items():
         prims = pads.get(num)
         if not prims:

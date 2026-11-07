@@ -1,6 +1,6 @@
 # G2 tam sistem SPICE sonuçları
 
-Netlist: [`design/pdu_v2.cir`](../../design/pdu_v2.cir) (SHA256 `1756b7e33556f9c7…`), parametre kaynağı `analysis/g2/params.py` + `design.py` → her deck'te `.param` bloğu; koşucu [`analysis/g2/sim_runner.py`](../../analysis/g2/sim_runner.py). Araç: ngspice (ngspice_con.exe). **behavioral average model, NOT silicon; no physical evidence.**
+Netlist: [`design/pdu_v2.cir`](../../design/pdu_v2.cir) (SHA256 `f6351423677407fb…`), parametre kaynağı `analysis/g2/params.py` + `design.py` → her deck'te `.param` bloğu; koşucu [`analysis/g2/sim_runner.py`](../../analysis/g2/sim_runner.py). Araç: ngspice (ngspice_con.exe). **behavioral average model, NOT silicon; no physical evidence.**
 
 Bir koşu yalnız ngspice çıkış kodu 0 ve istenen bütün `.meas` değerleri varsa *tamamlandı* sayılır; tamamlanmayan koşu PASS sayılmaz. Deck/log/girdi SHA256 `sim-results.json` içindedir; deck değiştiğinde önceki deck/log `-attemptN` olarak korunur.
 
@@ -10,28 +10,28 @@ Bir koşu yalnız ngspice çıkış kodu 0 ve istenen bütün `.meas` değerleri
 | F2 | 4 | 4 | 4 |
 | F3 | 13 | 13 | 11 |
 | F4 | 3 | 3 | 2 |
-| F5 | 49 | 49 | 49 |
+| F5 | 49 | 47 | 47 |
 
 ## Aile 1 — üst anahtar kısa devresi + ortak bara ayırıcı
 
 | Koşu | Tamam | Ölçümler (kriterli) | Kriterler | Sonuç | Not |
 |---|---|---|---|---|---|
-| [f1_worst](sim/f1/f1_worst.log) | True | o1_max_fault=11.04, vsafe_max_fault=11.04, vds_iso_max=23.54, vraw_max_fault=34.4 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
-| [f1_worst_nominal_setpoint](sim/f1/f1_worst_nominal_setpoint.log) | True | o1_max_fault=11.2, vsafe_max_fault=11.2, vds_iso_max=16.98, vraw_max_fault=28.03 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
+| [f1_worst](sim/f1/f1_worst.log) | True | o1_max_fault=11.04, vsafe_max_fault=11.04, vds_iso_max=23.9, vraw_max_fault=34.76 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
+| [f1_worst_nominal_setpoint](sim/f1/f1_worst_nominal_setpoint.log) | True | o1_max_fault=11.2, vsafe_max_fault=11.2, vds_iso_max=17.19, vraw_max_fault=28.23 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
 | [f1_typ_loaded](sim/f1/f1_typ_loaded.log) | True | o1_max_fault=10.99, vsafe_max_fault=11.01, vds_iso_max=24.12, vraw_max_fault=26.5 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
 | [f1_noprot_baseline](sim/f1/f1_noprot_baseline.log) | True | o1_max_fault=19.35, vsafe_max_fault=27.87, vds_iso_max=0.028, vraw_max_fault=27.87 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **FAIL** | korumasız referans: G1 FAIL'inin yeni netlistte yeniden üretimi (silinmez) |
-| [f1_worst_lfloor0p05](sim/f1/f1_worst_lfloor0p05.log) | True | o1_max_fault=11.04, vsafe_max_fault=11.04, vds_iso_max=22.25, vraw_max_fault=33.11 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
-| [f1_worst_highsetpoint_lfloor0p05](sim/f1/f1_worst_highsetpoint_lfloor0p05.log) | True | o1_max_fault=11.37, vsafe_max_fault=11.37, vds_iso_max=16.45, vraw_max_fault=27.65 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
-| [f1_voltage_trip_only_g3_design](sim/f1/f1_voltage_trip_only_g3_design.log) | True | o1_max_fault=11.96, vsafe_max_fault=11.96, vds_iso_max=16.14, vraw_max_fault=27.9 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** | G3 tasarımı (OC tetiksiz) karşılaştırma; HESAP L-tabanı ≤0.15'te FAIL |
+| [f1_worst_lfloor0p05](sim/f1/f1_worst_lfloor0p05.log) | True | o1_max_fault=11.04, vsafe_max_fault=11.04, vds_iso_max=16.78, vraw_max_fault=27.66 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
+| [f1_worst_highsetpoint_lfloor0p05](sim/f1/f1_worst_highsetpoint_lfloor0p05.log) | True | o1_max_fault=11.37, vsafe_max_fault=11.37, vds_iso_max=22.78, vraw_max_fault=33.97 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** |  |
+| [f1_voltage_trip_only_g3_design](sim/f1/f1_voltage_trip_only_g3_design.log) | True | o1_max_fault=11.96, vsafe_max_fault=11.96, vds_iso_max=19.59, vraw_max_fault=31.37 | o1_max_fault <= 12, vsafe_max_fault < 30, vds_iso_max < 100, vraw_max_fault < 60 | **PASS** | G3 tasarımı (OC tetiksiz) karşılaştırma; HESAP L-tabanı ≤0.15'te FAIL |
 
 ## Aile 2 — 20–26 V açılış, UVLO kalkışı, hot-plug, dip
 
 | Koşu | Tamam | Ölçümler (kriterli) | Kriterler | Sonuç | Not |
 |---|---|---|---|---|---|
-| [f2_hotplug_26V](sim/f2/f2_hotplug_26V.log) | True | vraw_max=11.01, q_end=0, vraw_end=11, vraw_end_hi=11, vin_max=42.09 | vraw_max < 11.22, q_end < 0.5, vraw_end >= 10.83, vraw_end_hi <= 11.16, vin_max < 65 | **PASS** |  |
+| [f2_hotplug_26V](sim/f2/f2_hotplug_26V.log) | True | vraw_max=11.01, q_end=0, vraw_end=11, vraw_end_hi=11, vin_max=42.23 | vraw_max < 11.22, q_end < 0.5, vraw_end >= 10.83, vraw_end_hi <= 11.16, vin_max < 65 | **PASS** |  |
 | [f2_hotplug_20V_full_load](sim/f2/f2_hotplug_20V_full_load.log) | True | vraw_max=11.01, q_end=0, vraw_end=11, vraw_end_hi=11, vin_max=28.23 | vraw_max < 11.22, q_end < 0.5, vraw_end >= 10.83, vraw_end_hi <= 11.16, vin_max < 65 | **PASS** |  |
 | [f2_ramp_to_20V_uvlo_high_corner](sim/f2/f2_ramp_to_20V_uvlo_high_corner.log) | True | vraw_max=11.02, q_end=0, vraw_end=11, vraw_end_hi=11, vin_max=19.97 | vraw_max < 11.22, q_end < 0.5, vraw_end >= 10.83, vraw_end_hi <= 11.16, vin_max < 65 | **PASS** |  |
-| [f2_dip_22V_to_15V_restart](sim/f2/f2_dip_22V_to_15V_restart.log) | True | vraw_max=11.02, q_end=0, vraw_end=11, vraw_end_hi=11, vin_max=31.34, ens_min_dip=-2.389e-216 | vraw_max < 11.22, q_end < 0.5, vraw_end >= 10.83, vraw_end_hi <= 11.16, vin_max < 65, ens_min_dip < 0.5 | **PASS** |  |
+| [f2_dip_22V_to_15V_restart](sim/f2/f2_dip_22V_to_15V_restart.log) | True | vraw_max=11.02, q_end=0, vraw_end=11, vraw_end_hi=11, vin_max=31.34, ens_min_dip=-2.725e-216 | vraw_max < 11.22, q_end < 0.5, vraw_end >= 10.83, vraw_end_hi <= 11.16, vin_max < 65, ens_min_dip < 0.5 | **PASS** |  |
 
 ## Aile 3 — yük adımı 0.75→7→0.75 A, COMP/Ceff köşeleri
 
@@ -63,10 +63,11 @@ Bir koşu yalnız ngspice çıkış kodu 0 ve istenen bütün `.meas` değerleri
 
 Tarama: VTRIP_EFF {trip_min, trip_max} + 50 mV×k overdrive × gecikme {0.3 µs, max} × Ceff {min, typ, max} × Rsrc {20, 200 mΩ} × L {0.8, 1.2} = 48 koşu; ön-hata barası statik alt köşe (10.8333 V), VIN 26 V, yüksüz.
 
-- Tamamlanan: 48/48; kriter PASS: 48.
-- O1 tepe aralığı: 10.8920 – 11.0718 V (sınır 12.0 V).
-- VSAFE (U3/U4 IN) tepe maks: 11.0723 V (sınır 30 V abs, 24 V önerilen).
-- En kötü köşe: [f5_vt11.487_td1048ns_cmin_r20m_l1.2](sim/f5/f5_vt11.487_td1048ns_cmin_r20m_l1.2.log).
+- Tamamlanan: 46/48; kriter PASS: 46.
+- O1 tepe aralığı: 10.8920 – 11.0715 V (sınır 12.0 V).
+- VSAFE (U3/U4 IN) tepe maks: 11.0720 V (sınır 30 V abs, 24 V önerilen).
+- En kötü köşe: [f5_vt11.487_td1048ns_cmin_r200m_l1.2](sim/f5/f5_vt11.487_td1048ns_cmin_r200m_l1.2.log).
+- Tamamlanmayan: f5_vt11.487_td300ns_ctyp_r200m_l0.8, f5_vt11.765_td300ns_ctyp_r200m_l0.8 → kanıt yok.
 
 Hassas yol açık (R_OVT açık devre, yalnız kaba OV): O1 tepe 11.2 V, VSAFE tepe 11.2 V → PASS (artık risk; PROTECTION-DECISION §4).
 

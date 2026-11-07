@@ -2,6 +2,15 @@
   "tolerance_mm": 0.02,
   "results": [
     {
+      "footprint": "Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical",
+      "source": "Molex SD-46015-001 Rev. C p.1 recommended PCB layout (via R-003 tour 2): row spacing 5.50 +-0.10, terminal hole 1.40 +-0.05, PEGS=NO for 46015-0206",
+      "pin_table_source": "—",
+      "pads_checked": 0,
+      "polygons_checked": 0,
+      "pass": true,
+      "errors": []
+    },
+    {
       "footprint": "TDSON-8-1_Konnect",
       "source": "Infineon BSC160N10NS3 G datasheet Rev. 2.4, Fig. 2 p.10 (footprint); PG-TDSON-8-1 package drawing Rev. 01.00 p.2",
       "pin_table_source": "—",

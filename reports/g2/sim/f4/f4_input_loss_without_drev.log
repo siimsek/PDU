@@ -80,32 +80,32 @@ vio1#branch                                  0
 vbat#branch                                  0
 
 
-No. of Data Rows : 150377
+No. of Data Rows : 150378
 
   Measurements for Transient Analysis
 
-vraw_max_fault      =  1.09960e+01 at=  9.32585e-04
-vsafe_max_fault     =  1.09935e+01 at=  9.32585e-04
+vraw_max_fault      =  1.09960e+01 at=  9.32779e-04
+vsafe_max_fault     =  1.09935e+01 at=  9.32779e-04
 o1_max_fault        =  1.09961e+01 at=  1.00000e-04
-s2e_max_fault       =  1.09924e+01 at=  9.32585e-04
-vds_iso_max         =  3.10484e+00 at=  2.01632e+00
-o1_minus_in_max     =  7.58354e-01 at=  3.98174e-03
-s2e_minus_in_max    =  -9.60596e-04 at=  9.27499e-03
+s2e_max_fault       =  1.09924e+01 at=  9.32779e-04
+vds_iso_max         =  3.10511e+00 at=  2.01616e+00
+o1_minus_in_max     =  7.58354e-01 at=  3.98191e-03
+s2e_minus_in_max    =  -9.60597e-04 at=  9.27516e-03
 vraw_pre            =  1.09960e+01
 q_end               =  0.00000e+00
-iso_i_max           =  2.22534e-01 at=  1.00069e-04
+iso_i_max           =  2.22504e-01 at=  1.00069e-04
 il1_max_fault       =  1.11888e-01 at=  1.00000e-04
-s2e_min_fault       =  7.15792e-14 at=  3.00010e+00
-io1_max             =  2.22486e-01 at=  1.68968e-04
-vraw_min_fault      =  2.66507e+00 at=  3.00010e+00
+s2e_min_fault       =  7.15783e-14 at=  3.00010e+00
+io1_max             =  2.22486e-01 at=  1.69162e-04
+vraw_min_fault      =  2.66524e+00 at=  3.00010e+00
 
 
-Total analysis time (seconds) = 4.99665
+Total analysis time (seconds) = 6.19565
 
-Total elapsed time (seconds) = 5.007 
+Total elapsed time (seconds) = 6.209 
 
 Total DRAM available = 16306.379 MB.
-DRAM currently available = 9663.020 MB.
-Maximum ngspice program size =   23.184 MB.
-Current ngspice program size =   23.184 MB.
+DRAM currently available =  565.383 MB.
+Maximum ngspice program size =   23.191 MB.
+Current ngspice program size =   23.191 MB.
 
