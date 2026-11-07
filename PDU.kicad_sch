@@ -16750,7 +16750,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:TDSON-8-1"
+		(property "Footprint" "PDU:TI_CSD19531Q5A_Q5A"
 			(at 204.47 180.34 0)
 			(hide yes)
 			(effects

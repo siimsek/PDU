@@ -20,3 +20,6 @@ Düzenleme: `python scripts/sch_edit_b5.py` ardından `python scripts/sch_edit_b
 
 ## Görsel
 Entegrelerde Reference/Value gövde üstü/altında; pasiflerde etiket–yazı yakınlığı kalıyor → T-012 (antet ve görsel düzen) ve R-002 görsel kontrol listesi.
+
+## R-009 düzeltmesi
+Q2 footprint `Package_TO_SOT_SMD:TDSON-8-1` (pad 1–4 0,85 × 0,50, TI bandı dışında) → **`PDU:TI_CSD19531Q5A_Q5A`** (`scripts/make_q2_footprint.py`, TI SLPS406B §7.2 p.10: S/G land 0,75 × 0,66, boşluk 0,555, drain gövdesi 4,295 × 4,51, parmak derinliği 0,655, toplam 6,255). `python analysis/check_footprints.py` → TI F1/F3/F6/F7/F10/F11 ve land yüksekliği bantları içinde, PASS. Şema yeniden üretildi; ERC 0, B1–B5 fark 0.

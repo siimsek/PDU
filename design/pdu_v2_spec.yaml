@@ -660,7 +660,7 @@ parts:
   - ref: Q2
     value: "100 V N-MOSFET"
     mpn: "CSD19531Q5A"
-    footprint: "Package_TO_SOT_SMD:TDSON-8-1"
+    footprint: "PDU:TI_CSD19531Q5A_Q5A"
     dnp: false
     pins:
       "1": "/VSAFE"

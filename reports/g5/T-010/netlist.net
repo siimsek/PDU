@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Users\\SK\\Desktop\\Masaüstü\\PDU\\PDU.kicad_sch")
-		(date "2026-11-07T20:29:07")
+		(date "2026-11-07T20:55:19")
 		(tool "Eeschema 10.0.7")
 		(sheet
 			(number "1")
@@ -5322,12 +5322,12 @@
 		(comp
 			(ref "Q2")
 			(value "100 V N-MOSFET")
-			(footprint "Package_TO_SOT_SMD:TDSON-8-1")
+			(footprint "PDU:TI_CSD19531Q5A_Q5A")
 			(fields
 				(field
 					(name "MPN") "CSD19531Q5A")
 				(field
-					(name "Footprint") "Package_TO_SOT_SMD:TDSON-8-1")
+					(name "Footprint") "PDU:TI_CSD19531Q5A_Q5A")
 				(field
 					(name "Datasheet")
 				)

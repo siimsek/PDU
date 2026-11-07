@@ -1,11 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-010 (taslak PR; T-010 + T-009 birlikte; **birleştirilmedi** — R-009 bekliyor)
-- **Aktif kart:** T-010 + T-009 (Review). THINKER Ready: R-009.
+- **Dal / son commit:** wp/T-010 → main (T-010 + T-009; R-009 kapandı)
+- **Aktif kart:** T-011 (Ready — B6 eFuse + çıkışlar).
 
 ## Yapılanlar
-- T-017 (#40) main'de. T-010 + T-009 (dal): B5 30 + B4 12 parça `sch_place.py` ile (etiket-pin); ERC 0; B1–B5 fark 0; blok dışı 0. Q2 footprint TDSON-8-1 (pad numarası uyumsuzluğu).
+- T-017 (#40) main'de. T-010 + T-009 (dal): B5 30 + B4 12 parça `sch_place.py` ile (etiket-pin); ERC 0; B1–B5 fark 0; blok dışı 0. Q2 footprint TI land'den özel (R-009).
 - T-008 (#38) main'de (R-007 ONAY). B5 bloğu şemada yok → T-009 öncesi T-010; stokta olmayan 5 sembol T-017 ile üretildi (make_symbols.py; datasheet sayfaları görsel okundu).
 - T-007 (#33) main'de; R-006 kapandı. R-005 (#37): BIL düzgünleştirmesi etkisiz (geri alındı); kısaltılmış pencere O1 10,92 V; `scripts/pre_merge.py` kapısı.
 - T-008 (dal): COUT9–32 eklendi; ERC 0, B1–B3 fark 0 (reports/g5/T-008/EVIDENCE.md).

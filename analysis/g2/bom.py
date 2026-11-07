@@ -174,7 +174,7 @@ def rows():
     # G5 T-010: stock VSONP-8-1EP numbers pads 1=S/2=G/3=D, the stock CSD19531Q5A symbol uses 1-3 S, 4 G, 5 D ->
     # gate would land on a source pad. KiCad's default footprint for this symbol (TDSON-8-1, pads 1..5) is used;
     # land vs TI CSD19531Q5A recommended pattern: THINKER R-009.
-    R.append(u("Q2", "100 V N-MOSFET", "CSD19531Q5A", "TI_CSD19531", "SON 5x6 (Q5A)", "Package_TO_SOT_SMD:TDSON-8-1", FP_LIB + " (KiCad default for CSD19531Q5A; verify vs TI land R-009)",
+    R.append(u("Q2", "100 V N-MOSFET", "CSD19531Q5A", "TI_CSD19531", "SON 5x6 (Q5A)", "PDU:TI_CSD19531Q5A_Q5A", "repo custom land from TI SLPS406B 7.2 p.10 (R-009; check_footprints TI F1..F11 bands)",
                {"1": "/VSAFE", "2": "/VSAFE", "3": "/VSAFE", "4": "/ISO_GATE", "5": "/VOUT"}, kind="Q", v_app=53.3, v_rat=100.0))
     R.append(r("R_GS", "100k", crcw("0603", "100K"), "VSH_CRCW", "1%", "100ppm/K", "0603", R0603, FP_LIB, {"1": "/ISO_GATE", "2": "/VSAFE"}, 0.002, 0.1))
     R.append(c("C_ISO_VCAP", "100n", "", "", 14.0, 50.0, "0603", C0603, {"1": "/ISO_VCAP", "2": "/VOUT"}, note="LM74502H VCAP-VS >=0.1 uF (p.4)"))

@@ -56,6 +56,16 @@ def _rrx_pads():
 
 
 REFERENCE = {
+    "TI_CSD19531Q5A_Q5A": {  # Q2; TI SLPS406B 7.2 p.10 recommended PCB pattern (R-009)
+        "source": "TI CSD19531Q5A SLPS406B Rev. B 7.2 p.10 recommended PCB pattern (F1..F11 min/max; nominal = midpoint)",
+        "body": (6.0, 5.0),
+        "pads": {"1": (-2.7525, -1.905, 0.75, 0.66), "2": (-2.7525, -0.635, 0.75, 0.66), "3": (-2.7525, 0.635, 0.75, 0.66),
+                 "4": (-2.7525, 1.905, 0.75, 0.66), "5": (0.325, 0.0, 4.295, 4.51)},
+        "polygons": {"5": (-1.8225, -2.255, 3.1275, 2.255)}, "exposed": ["5"], "symbol": None,
+        # TI dimension bands (mm): computed from the copper and checked against min..max
+        "ti_dims": {"F1": (6.205, 6.305), "F10": (4.9, 5.0), "F6": (0.63, 0.68), "F7": (0.7, 0.8), "F11": (4.46, 4.56),
+                    "F3": (4.46, 4.56), "land_h": (0.62, 0.70)},
+    },
     "Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical": {  # J2 Molex 46015-0206 (stock KiCad footprint); R-003 tour 2
         "source": "Molex SD-46015-001 Rev. C p.1 recommended PCB layout (via R-003 tour 2): row spacing 5.50 +-0.10, terminal hole 1.40 +-0.05, PEGS=NO for 46015-0206",
         "stock": "Connector_Molex", "body": (0.0, 0.0), "pads": {}, "polygons": {}, "exposed": [],
@@ -194,6 +204,19 @@ def check_one(name: str, ref: dict, text: str | None = None) -> dict:
         need = (min(-bw / 2, all_cu[0]), min(-bh / 2, all_cu[1]), max(bw / 2, all_cu[2]), max(bh / 2, all_cu[3]))
         if not (cx0 <= need[0] and cy0 <= need[1] and cx1 >= need[2] and cy1 >= need[3]):
             errs.append(f"courtyard {round(cx0, 3), round(cy0, 3), round(cx1, 3), round(cy1, 3)} does not enclose body/copper {need}")
+    if ref.get("ti_dims"):
+        sg = [pads[n][0] for n in ("1", "2", "3", "4")]
+        drain = pads["5"]
+        body = max(drain, key=lambda p: p[2] * p[3])
+        allx0 = min(p[0] - p[2] / 2 for prims in pads.values() for p in prims)
+        allx1 = max(p[0] + p[2] / 2 for prims in pads.values() for p in prims)
+        d_x0 = min(p[0] - p[2] / 2 for p in drain)
+        d_x1 = max(p[0] + p[2] / 2 for p in drain)
+        val = {"F1": allx1 - allx0, "F10": d_x1 - d_x0, "F6": d_x1 - (body[0] + body[2] / 2), "F7": sg[0][2],
+               "F11": body[3], "F3": (sg[3][1] + sg[3][3] / 2) - (sg[0][1] - sg[0][3] / 2), "land_h": sg[0][3]}
+        for k, (lo, hi) in ref["ti_dims"].items():
+            if not lo - 1e-9 <= val[k] <= hi + 1e-9:
+                errs.append(f"TI {k} = {val[k]:.4f} outside {lo}-{hi}")
     for key, (lo, hi) in ref.get("ranges", {}).items():
         # two-terminal land: PA = inner gap, PB = pad length along the part, PC = pad width (TDK naming)
         (x1, _, w1, h1), (x2, _, w2, h2) = pads["1"][0], pads["2"][0]

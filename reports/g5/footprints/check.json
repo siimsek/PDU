@@ -2,6 +2,15 @@
   "tolerance_mm": 0.02,
   "results": [
     {
+      "footprint": "TI_CSD19531Q5A_Q5A",
+      "source": "TI CSD19531Q5A SLPS406B Rev. B 7.2 p.10 recommended PCB pattern (F1..F11 min/max; nominal = midpoint)",
+      "pin_table_source": "—",
+      "pads_checked": 5,
+      "polygons_checked": 1,
+      "pass": true,
+      "errors": []
+    },
+    {
       "footprint": "Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical",
       "source": "Molex SD-46015-001 Rev. C p.1 recommended PCB layout (via R-003 tour 2): row spacing 5.50 +-0.10, terminal hole 1.40 +-0.05, PEGS=NO for 46015-0206",
       "pin_table_source": "—",
