@@ -37,7 +37,7 @@ Via sayısı iki yolun büyüğüdür: 0.5 A/via taraması ve 0.3 mm delik / 20 
 4. **Ayırıcı grubu:** Q2 (CSD19531Q5A) + U6 (LM74502H) + C_ISO_VS/VCAP + R_GS bitişik; GATE izi ≤10 mm; **hata akımı döngüsü** COUT → Q2 → VSAFE dökümü → CEFIN/eFuse IN → GND dönüşü L2 üzerinden kısa. Q2 drain/source pad'leri ≥1 in² (645 mm²) bakır (RθJA 50 K/W koşulu, DATASHEET).
 5. **OVP + OC mantık grubu:** U7, U8, U9, U10, U13, U14, U15, R_OCT/R_OCB, R_OVT/R_OVB, R_OV2T/R_OV2B, R_Q, R_EN1/2, R_CLR/C_CLR, SW1; SW düğümlerinden ≥10 mm uzak, L2 GND üstünde. **R_OVT ve R_OV2T'nin VRAW ucu Kelvin olarak Q2 drain bakırından alınır** (yük akımı geçmeyen ayrı iz).
 5b. **Faz OC algılama (G4):** U11/U12 (INA296A2) her fazın RS'ine **Kelvin** bağlanır: IN+ RS'in ISNS ucundan, IN− VOUT ucundan, pad iç kenarından iki paralel iz, SW bakırının altından geçmeden; INA296 RS'e ≤15 mm. OUT (`/OC_SENSE1/2`) → U13/U14 kısa iz, L2 GND referanslı. Arızalı faz akımı (≤138 A tepe, µs) RS ve bobin bakırından geçer; RS padleri ve faz bakırı bu darbeye göre geniş tutulur.
-6. **eFuse grubu:** U3, U4, CEFIN1/2, CEFOUT1/2, D_REV1/2 (eFuse OUT–IN arasında, kısa), D2/D3, J2 (G4: 4 devreli 43045-0400, 2 kontak/kutup), J3. RILIM/RIMON/CDVDT pin yanında.
+6. **eFuse grubu:** U3, U4, CEFIN1/2, CEFOUT1/2, D_REV1/2 (eFuse OUT–IN arasında, kısa), D2/D3, J2 (G5 D-003: Molex Mini-Fit Plus HCS 46015-0206, 2 devre, dikey, delikten geçme), J3. RILIM/RIMON/CDVDT pin yanında.
 7. Test noktaları (G4 ekleri: TP_OC_SENSE1/2, TP_OC_REF, TP_OVP_BUS_N; R_TRIM erişilebilir, kart kenarına yakın) ve J_OVP_INJ_BUS kart kenarına yakın; prob GND noktaları her grubun yanında.
 
 ## 4. Termal
@@ -52,7 +52,7 @@ Normal en yüksek gerilim 26 V (VIN). Hata durumları: VIN TVS (SMCJ33A) kelepç
 
 ## 6. Konnektör yerleşimi
 
-J1 (giriş) ile J2/J3 (çıkış) kartın karşı kenarlarında; giriş akım yolu buck grubuna kısa, çıkış akımı eFuse grubundan konnektöre kısa ve geniş (O1 ≥4.75 mm). Konnektörler (G4): J1/J3 Molex 43045-0200, J2 43045-0400 (2×2, 3.00 mm; pin 1–2 O1, 3–4 GND), eş: 43025-0200/-0400 + 43030-0038 terminal (18 AWG). Footprint stok KiCad `Connector_Molex` (footprint-map.csv).
+J1 (giriş) ile J2/J3 (çıkış) kartın karşı kenarlarında; giriş akım yolu buck grubuna kısa, çıkış akımı eFuse grubundan konnektöre kısa ve geniş (O1 ≥4.75 mm). Konnektörler: J1/J3 Molex Micro-Fit 3.0 43045-0200 (eş 43025-0200 + 43030-0038, 18 AWG); **J2 Molex Mini-Fit Plus HCS 46015-0206** (2 devre çift sıra, dikey, 4,20 mm; pin 1 O1, pin 2 GND; eş 39012020 [5557-02R] + 45750-1111 HCS terminal, 18 AWG; sistem değeri 10,5 A, Molex PS-45750-001 s.8–9: değer PCB izinin ısınmasına bağlıdır → J2 pad'lerinden O1 bakırı ≥4,75 mm, iki katmanda). Footprint stok KiCad `Connector_Molex` (footprint-map.csv); J2 pad/delik Molex 460150206_sd.pdf ile T-005b'de karşılaştırılır.
 
 ## 7. Kart boyutu ve DFM varsayımları
 

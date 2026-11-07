@@ -2,7 +2,7 @@
 
 Kaynak: [`design/bom-v2.csv`](../../design/bom-v2.csv), üretici: [`analysis/g2/bom.py`](../../analysis/g2/bom.py). MPN yalnız bu G2 oturumunda okunan resmi üretici belgesi seri/değer/paket/sipariş kodunu doğruladığında yazıldı.
 
-Toplam satır: **147**; MPN'li: **146**; MPN AÇIK: **1**.
+Toplam satır: **148**; MPN'li: **147**; MPN AÇIK: **1**.
 
 | Ref | Değer / gereksinim | Neden seçilemedi | Gereken belge |
 |---|---|---|---|

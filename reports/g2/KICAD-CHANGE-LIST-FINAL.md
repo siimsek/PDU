@@ -21,7 +21,7 @@ G1 [`KICAD-CHANGE-LIST.md`](../g1/KICAD-CHANGE-LIST.md) satırlarının yerini b
 | RCOMP | 33.2k CRCW060333K2FKEA | — | B4 |
 | COUT17–COUT32 (yeni) | 16× C5750X7S2A226M280KB | /VOUT–GND | B4 |
 | D1 | **SMCJ33A-E3/57T** (Vishay doc 88394) | D_SMC | datasheet doğrulandı (VC 53.3 V) |
-| J2 | 430450200 → **430450400** (4 devre, 2 kontak/kutup) | 1,2=/O1_11V; 3,4=/GND; `Molex_Micro-Fit_3.0_43045-0400_2x02_P3.00mm_Horizontal` | ILIM_O1 max 9.07 A > 8.5 A/kontak |
+| J2 | 430450200 → **460150206** Molex Mini-Fit Plus HCS, 2 devre çift sıra dikey, 4,20 mm (G5 D-003; G4'teki 430450400 SUPERSEDED) | 1=/O1_11V; 2=/GND; `Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical` (Molex 460150206_sd.pdf ile pad/delik karşılaştırması T-005b) | Tek kontak/kutup, 18 AWG sistem değeri 10,5 A ≥ ILIM_O1 maks 9,07 A (PS-45750-001 s.8–9); paralel kontak paylaşımı kredilenmez (R-001 bulgu 2) |
 | J1, J3 | 430450200 | aynı | Molex sayfası 8.5 A |
 | CEFOUT1/2 | 0805 → **1206 C3216X7R1E106K160AB** | `Capacitor_SMD:C_1206_3216Metric` | 25 V'ta %48 kullanım (≤%50) |
 | MLCC'ler | TDK MPN'leri (bom-v2.csv) | footprint-map.csv | TDK sayfaları "Production" |
