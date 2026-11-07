@@ -351,7 +351,7 @@ def main():
         d = row["derating"]
         row["derating_ok"] = "" if d is None else ("yes" if d <= 0.5 else ("NO (>50 %)" if row["kind"] in ("R", "C") else f"{d:.0%} of abs max"))
     with BOM.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")
+        w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore", lineterminator="\n")  # repo is LF (T-001)
         w.writeheader()
         for row in R:
             w.writerow({k: (f"{row[k]:.4g}" if isinstance(row.get(k), float) else row.get(k, "")) for k in cols})
@@ -391,7 +391,7 @@ def main():
     lib = os.environ.get("KICAD_FP_DIR", r"C:\Program Files\KiCad\10.0\share\kicad\footprints")
     fm = ROOT / "design" / "footprint-map.csv"
     with fm.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["ref", "mpn", "footprint", "stock_or_custom", "verified_file", "source", "risk"])
         for row in R:
             if row["kind"] == "CABLE":

@@ -113,3 +113,14 @@ def test_trimmed_corners_pass_and_oc_trip_bounds_o1():
     for n in ("f3_trimmed_low_setpoint_cmin_gmmin", "f3_trimmed_high_setpoint_cmin_gmmin"):
         assert SIM["runs"][n]["pass"], n
     assert N1["worst_with_oc_V"] <= 12.0
+
+
+def test_generated_csv_files_are_lf_only():
+    """T-001: bom.py must write LF line endings (repo is LF; csv module defaults to CRLF)."""
+    import subprocess
+    import sys
+    r = subprocess.run([sys.executable, "-m", "analysis.g2.bom"], cwd=ROOT, capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    for rel in ("design/bom-v2.csv", "design/footprint-map.csv"):
+        data = (ROOT / rel).read_bytes()
+        assert b"\r" not in data, rel
