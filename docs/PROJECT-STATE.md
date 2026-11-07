@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → docs/START-HERE.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # Amaç, yapılanlar ve devam noktası
 
 19 Ekim2026 checkpoint'i. Bu belge güncel durum özetidir; önceki raporların sonuçları tarihsel bağlamıyla korunur. **Üretim veya cihaz bağlama onayı verilmedi.**

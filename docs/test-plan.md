@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/BENCH-ACCEPTANCE.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # Prototip test planı
 
 ## Güncel kabul bağlamı

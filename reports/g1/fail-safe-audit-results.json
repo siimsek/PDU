@@ -1,0 +1,421 @@
+{
+  "classification": "DATASHEET + HESAP + negative behavioral fixture; no physical acceptance",
+  "latch_candidate": "SN74LVC1G74DCUR",
+  "driver_candidate": "LTC7001EMSE#PBF",
+  "FET_candidate": "2x CSD19536KTTT back-to-back",
+  "datasheet_pin_contract": {
+    "SN74LVC1G74DCUR_DCUpins": {
+      "CLK": 1,
+      "D": 2,
+      "Qbar": 3,
+      "GND": 4,
+      "Q": 5,
+      "CLR_n": 6,
+      "PRE_n": 7,
+      "VCC": 8
+    },
+    "SN74LVC1G74": "VCC 1.65-5.5V; CLR_n low -> Q=0; PRE_n low -> Q=1; both low is nonstable; no power-up default specified",
+    "LTC7001": "VCC pin1; VCCUV pin2; GND pin3; INP pin4; OVLO pin5; TGDN pin6; TGUP pin7; TS pin8; BST pin9; NC pin10; exposed pad pin11 GND. INP VIH 1.7-2.2V, VIL 1.3-1.8V; internal 1Mohm pull-down; TGDN pulls to TS; TGUP pulls up to BST.",
+    "TPS7A16QDGNRQ1_DGN8": {
+      "OUT": 1,
+      "FB_NC": 2,
+      "PG": 3,
+      "GND": 4,
+      "EN": 5,
+      "NC": 6,
+      "DELAY": 7,
+      "IN": 8
+    },
+    "TPS7A16_PG": "PG pin3 is open-drain active-high; pulls low below falling threshold 83-93% VOUT; PG function requires VIN>=3V; deassert timing has no guaranteed max used here; pull-up and receiving logic are unselected",
+    "CSD19536KTTT_D2PAK_each": {
+      "G": 1,
+      "D": 2,
+      "S": 3,
+      "tab": "D"
+    },
+    "CSD19536KTTT": "100V VDS, +/-20V VGS; Qg 118nC typical / 153nC max under datasheet test conditions; each device requires its own G pin1-to-S pin3 bleed; no physical two-gate turn-off result"
+  },
+  "current_candidate_status": {
+    "actual_pin_netlist_in_repo": false,
+    "CLR_PRE_ARM_fault_combiner_verified": false,
+    "independent_logic_rail_loss_clamp_part_selected": false,
+    "INP_external_10k_pulldown_fitted": false,
+    "two_gate_source_pulldowns_fitted": false,
+    "fail_safe_state": "OPEN; VCC<1.65V is explicitly unspecified latch operation, not SAFE"
+  },
+  "logic_truth_table": [
+    {
+      "event": "cold-start",
+      "logic_VCC_V": 0.0,
+      "driver_VCC_V": 0.0,
+      "PG_OK": false,
+      "RAW_safe": false,
+      "monitors_ok": false,
+      "ARM_level": false,
+      "ARM_rising_edge": false,
+      "PRE_n": 1,
+      "CLR_n": "not relied on",
+      "Q_before": null,
+      "Q_after": null,
+      "INP_policy": "NOT_CREDITED; DRIVER_RAIL_BELOW_UVLO; G-S_BLEEDS_ONLY",
+      "case": "cold-start",
+      "LDO_PG_OK": false,
+      "monitor_healthy": false,
+      "manual_ARM_edge": false,
+      "LTC7001_INP_policy": "NOT_CREDITED; DRIVER_RAIL_BELOW_UVLO; G-S_BLEEDS_ONLY",
+      "LTC7001_TGDN_policy": "to TS while driver operation is valid; otherwise only the separate gate-source bleeds are credited",
+      "FET1_FET2_VGS_policy": "not inferred from Q when either supply is invalid; tied-gate network is unverified"
+    },
+    {
+      "event": "reset asserted while rails become valid",
+      "logic_VCC_V": 5.0,
+      "driver_VCC_V": 12.0,
+      "PG_OK": false,
+      "RAW_safe": false,
+      "monitors_ok": false,
+      "ARM_level": false,
+      "ARM_rising_edge": false,
+      "PRE_n": 1,
+      "CLR_n": 0,
+      "Q_before": null,
+      "Q_after": false,
+      "INP_policy": "LOW",
+      "case": "reset asserted while rails become valid",
+      "LDO_PG_OK": false,
+      "monitor_healthy": false,
+      "manual_ARM_edge": false,
+      "LTC7001_INP_policy": "LOW",
+      "LTC7001_TGDN_policy": "to TS while driver operation is valid; otherwise only the separate gate-source bleeds are credited",
+      "FET1_FET2_VGS_policy": "not inferred from Q when either supply is invalid; tied-gate network is unverified"
+    },
+    {
+      "event": "PG valid / disarmed",
+      "logic_VCC_V": 5.0,
+      "driver_VCC_V": 12.0,
+      "PG_OK": true,
+      "RAW_safe": true,
+      "monitors_ok": true,
+      "ARM_level": false,
+      "ARM_rising_edge": false,
+      "PRE_n": 1,
+      "CLR_n": 1,
+      "Q_before": false,
+      "Q_after": false,
+      "INP_policy": "LOW",
+      "case": "PG valid / disarmed",
+      "LDO_PG_OK": true,
+      "monitor_healthy": true,
+      "manual_ARM_edge": false,
+      "LTC7001_INP_policy": "LOW",
+      "LTC7001_TGDN_policy": "to TS while driver operation is valid; otherwise only the separate gate-source bleeds are credited",
+      "FET1_FET2_VGS_policy": "not inferred from Q when either supply is invalid; tied-gate network is unverified"
+    },
+    {
+      "event": "manual ARM press",
+      "logic_VCC_V": 5.0,
+      "driver_VCC_V": 12.0,
+      "PG_OK": true,
+      "RAW_safe": true,
+      "monitors_ok": true,
+      "ARM_level": true,
+      "ARM_rising_edge": true,
+      "PRE_n": 1,
+      "CLR_n": 1,
+      "Q_before": false,
+      "Q_after": true,
+      "INP_policy": "HIGH",
+      "case": "manual ARM press",
+      "LDO_PG_OK": true,
+      "monitor_healthy": true,
+      "manual_ARM_edge": true,
+      "LTC7001_INP_policy": "HIGH",
+      "LTC7001_TGDN_policy": "to TS while driver operation is valid; otherwise only the separate gate-source bleeds are credited",
+      "FET1_FET2_VGS_policy": "not inferred from Q when either supply is invalid; tied-gate network is unverified"
+    },
+    {
+      "event": "OVP fault while button remains held",
+      "logic_VCC_V": 5.0,
+      "driver_VCC_V": 12.0,
+      "PG_OK": true,
+      "RAW_safe": false,
+      "monitors_ok": false,
+      "ARM_level": true,
+      "ARM_rising_edge": false,
+      "PRE_n": 1,
+      "CLR_n": 0,
+      "Q_before": true,
+      "Q_after": false,
+      "INP_policy": "LOW",
+      "case": "OVP fault while button remains held",
+      "LDO_PG_OK": true,
+      "monitor_healthy": false,
+      "manual_ARM_edge": false,
+      "LTC7001_INP_policy": "LOW",
+      "LTC7001_TGDN_policy": "to TS while driver operation is valid; otherwise only the separate gate-source bleeds are credited",
+      "FET1_FET2_VGS_policy": "not inferred from Q when either supply is invalid; tied-gate network is unverified"
+    },
+    {
+      "event": "fault recovery while button remains held",
+      "logic_VCC_V": 5.0,
+      "driver_VCC_V": 12.0,
+      "PG_OK": true,
+      "RAW_safe": true,
+      "monitors_ok": true,
+      "ARM_level": true,
+      "ARM_rising_edge": false,
+      "PRE_n": 1,
+      "CLR_n": 1,
+      "Q_before": false,
+      "Q_after": false,
+      "INP_policy": "LOW",
+      "case": "fault recovery while button remains held",
+      "LDO_PG_OK": true,
+      "monitor_healthy": true,
+      "manual_ARM_edge": false,
+      "LTC7001_INP_policy": "LOW",
+      "LTC7001_TGDN_policy": "to TS while driver operation is valid; otherwise only the separate gate-source bleeds are credited",
+      "FET1_FET2_VGS_policy": "not inferred from Q when either supply is invalid; tied-gate network is unverified"
+    },
+    {
+      "event": "manual button released",
+      "logic_VCC_V": 5.0,
+      "driver_VCC_V": 12.0,
+      "PG_OK": true,
+      "RAW_safe": true,
+      "monitors_ok": true,
+      "ARM_level": false,
+      "ARM_rising_edge": false,
+      "PRE_n": 1,
+      "CLR_n": 1,
+      "Q_before": false,
+      "Q_after": false,
+      "INP_policy": "LOW",
+      "case": "manual button released",
+      "LDO_PG_OK": true,
+      "monitor_healthy": true,
+      "manual_ARM_edge": false,
+      "LTC7001_INP_policy": "LOW",
+      "LTC7001_TGDN_policy": "to TS while driver operation is valid; otherwise only the separate gate-source bleeds are credited",
+      "FET1_FET2_VGS_policy": "not inferred from Q when either supply is invalid; tied-gate network is unverified"
+    },
+    {
+      "event": "fresh manual rearm press",
+      "logic_VCC_V": 5.0,
+      "driver_VCC_V": 12.0,
+      "PG_OK": true,
+      "RAW_safe": true,
+      "monitors_ok": true,
+      "ARM_level": true,
+      "ARM_rising_edge": true,
+      "PRE_n": 1,
+      "CLR_n": 1,
+      "Q_before": false,
+      "Q_after": true,
+      "INP_policy": "HIGH",
+      "case": "fresh manual rearm press",
+      "LDO_PG_OK": true,
+      "monitor_healthy": true,
+      "manual_ARM_edge": true,
+      "LTC7001_INP_policy": "HIGH",
+      "LTC7001_TGDN_policy": "to TS while driver operation is valid; otherwise only the separate gate-source bleeds are credited",
+      "FET1_FET2_VGS_policy": "not inferred from Q when either supply is invalid; tied-gate network is unverified"
+    }
+  ],
+  "thermal_screen": {
+    "ambient_C": 85.0,
+    "ambient_is_assumption": true,
+    "load_current_mA_screen": 19.170670535138623,
+    "LDO_IQ_15uA_use": "published light-load maximum reused as sensitivity; not a guaranteed max at this load",
+    "bleeder": {
+      "R_ohm": 470.0,
+      "tolerance_fraction": 0.01,
+      "I_mA_at_5p1V_Rmin": 10.96067053513862,
+      "P_mW_at_5p1V_Rmin": 55.899419729206954,
+      "part_rating_status": "OPEN: exact resistor MPN and temperature derating absent"
+    },
+    "datasheet_Tj_operating_max_C": 150.0,
+    "datasheet_TSD_rising_C": 170.0,
+    "125C_screen_C": 125.0,
+    "125C_is_TI_limit": false,
+    "sources": {
+      "VRAW_normal_11V_sustained": {
+        "VIN_V": 11.0,
+        "I5V_load_mA_screen": 19.170670535138623,
+        "P_LDO_W_steady_screen": 0.11710609026434558,
+        "thetaJA_C_per_W_datasheet_test_board": 66.2,
+        "deltaT_C_steady_screen": 7.752423175499678,
+        "Tj_C_at_assumed_ambient": 92.75242317549967,
+        "below_conservative_125C_screen": true,
+        "below_datasheet_150C_operating_max": true,
+        "status": "HESAP steady-state thetaJA estimate; board theta unknown"
+      },
+      "VRAW_fault_26V_sustained": {
+        "VIN_V": 26.0,
+        "I5V_load_mA_screen": 19.170670535138623,
+        "P_LDO_W_steady_screen": 0.404891148291425,
+        "thetaJA_C_per_W_datasheet_test_board": 66.2,
+        "deltaT_C_steady_screen": 26.803794016892333,
+        "Tj_C_at_assumed_ambient": 111.80379401689234,
+        "below_conservative_125C_screen": true,
+        "below_datasheet_150C_operating_max": true,
+        "status": "HESAP steady-state thetaJA estimate; board theta unknown"
+      },
+      "VRAW_fault_40p709V_sustained_hypothetical": {
+        "VIN_V": 40.709,
+        "I5V_load_mA_screen": 19.170670535138623,
+        "P_LDO_W_steady_screen": 0.687093176192779,
+        "thetaJA_C_per_W_datasheet_test_board": 66.2,
+        "deltaT_C_steady_screen": 45.48556826396197,
+        "Tj_C_at_assumed_ambient": 130.48556826396197,
+        "below_conservative_125C_screen": false,
+        "below_datasheet_150C_operating_max": true,
+        "status": "HESAP steady-state thetaJA estimate; board theta unknown"
+      },
+      "protected_VIN_min_20V_sustained": {
+        "VIN_V": 20.0,
+        "I5V_load_mA_screen": 19.170670535138623,
+        "P_LDO_W_steady_screen": 0.2897771250805932,
+        "thetaJA_C_per_W_datasheet_test_board": 66.2,
+        "deltaT_C_steady_screen": 19.183245680335272,
+        "Tj_C_at_assumed_ambient": 104.18324568033528,
+        "below_conservative_125C_screen": true,
+        "below_datasheet_150C_operating_max": true,
+        "status": "HESAP steady-state thetaJA estimate; board theta unknown"
+      },
+      "protected_VIN_max_26V_sustained": {
+        "VIN_V": 26.0,
+        "I5V_load_mA_screen": 19.170670535138623,
+        "P_LDO_W_steady_screen": 0.404891148291425,
+        "thetaJA_C_per_W_datasheet_test_board": 66.2,
+        "deltaT_C_steady_screen": 26.803794016892333,
+        "Tj_C_at_assumed_ambient": 111.80379401689234,
+        "below_conservative_125C_screen": true,
+        "below_datasheet_150C_operating_max": true,
+        "status": "HESAP steady-state thetaJA estimate; board theta unknown"
+      }
+    },
+    "VRAW_40p709V_fault_pulse": {
+      "pulse_duration_s": null,
+      "Tj_peak_C": null,
+      "status": "OPEN: exact RAW pulse duration and transient thermal impedance Ztheta(t) not established"
+    },
+    "source_choice": {
+      "VRAW": "lowest normal loss, but LDO input follows buck common-bus fault and 40.709V pulse",
+      "protected_VIN": "recommended analysis candidate: 20-26V source is independent of buck output fault; max steady estimate below 125C screen at assumed 85C, but actual PCB theta/rail fail behavior remain open"
+    }
+  },
+  "input_loss_efuse": {
+    "device": "TPS259824O",
+    "recommended_IN_V": [
+      2.7,
+      24.0
+    ],
+    "absolute_max_IN_V": [
+      -0.3,
+      30.0
+    ],
+    "recommended_OUT_max": "VIN + 0.3V",
+    "absolute_max_OUT_max": "min(30V, VIN + 0.3V)",
+    "datasheet_reverse_current_block_guarantee_found": false,
+    "datasheet_poweroff_reverse_path_spec_found": false,
+    "precharged_OUT_with_IN_lost": "OPEN/outside specified OUT-to-IN voltage condition when OUT remains above VIN+0.3V; do not infer reverse-current block or internal body-diode behavior",
+    "11V_precharge_input_loss_screen": {
+      "model_precharged_OUT_V": 11.0,
+      "VIN_lost_V": 0.0,
+      "VOUT_minus_VIN_V": 11.0,
+      "datasheet_abs_max_VOUT_at_VIN0_V": 0.3,
+      "conditional_excess_V": 10.7,
+      "status": "FAIL if output stays precharged at 11V after IN collapses; actual decay/current behavior OPEN"
+    },
+    "old_Q_EF2_minus_44p547uC": "ideal bilateral SW artifact only; not physical current, hold-up, backfeed, or protection evidence",
+    "required_validation": "separate hardware test or vendor clarification; no claim made from the ideal-switch simulation"
+  },
+  "negative_fixture": {
+    "deck": "reports/g1/sim/ovp-control-loss-negative-fixture.cir",
+    "log": "reports/g1/sim/ovp-control-loss-negative-fixture.log",
+    "solver_exit_code": 0,
+    "completed": true,
+    "missing_measures": [],
+    "measures": {
+      "inp_a_after_loss": 4.54133,
+      "g1a_after_loss": 9.996,
+      "g2a_after_loss": 9.996,
+      "inp_b_after_loss": 0.00099958,
+      "g1b_after_loss": 3.26446e-316,
+      "g2b_after_loss": 3.26446e-316,
+      "g1b_max_after_mon": 8.56256e-18,
+      "g2b_max_after_mon": 8.56256e-18
+    },
+    "limitations": [
+      "forced high command is an injected fault, not SN74LVC1G74 behavior",
+      "ideal monitor and switch are not a selected supervisor/driver model",
+      "MOSFET gate capacitance uses typical Qg-derived estimate; no max Qg/SOA/timing proof",
+      "logic thresholds and external clamp source are not physically verified"
+    ]
+  },
+  "status_register": [
+    {
+      "item": "SN74LVC1G74 pin/function contract",
+      "status": "PASS",
+      "scope": "datasheet logic only"
+    },
+    {
+      "item": "VCC below 1.65V implies latch safe",
+      "status": "FAIL",
+      "scope": "claim rejected; state is unspecified"
+    },
+    {
+      "item": "present CLR/ARM/PG/INP/FET network",
+      "status": "OPEN",
+      "scope": "not wired or physically verified"
+    },
+    {
+      "item": "ideal clamp negative fixture",
+      "status": "PASS",
+      "scope": "behavioral test only"
+    },
+    {
+      "item": "no-clamp stuck-high INP fixture",
+      "status": "FAIL",
+      "scope": "injected fault leaves modeled gates on"
+    },
+    {
+      "item": "TPS259824O reverse-current blocking",
+      "status": "OPEN",
+      "scope": "no datasheet guarantee found"
+    },
+    {
+      "item": "11V OUT retained at VIN=0",
+      "status": "FAIL",
+      "scope": "conditional OUT absolute maximum violation if retained"
+    },
+    {
+      "item": "LDO normal 11V and sustained 26V thermal screens",
+      "status": "PASS",
+      "scope": "125C screen / JEDEC theta assumption only"
+    },
+    {
+      "item": "LDO 40.709V sustained hypothetical",
+      "status": "FAIL",
+      "scope": "125C conservative screen only"
+    },
+    {
+      "item": "LDO 40.709V pulse peak Tj",
+      "status": "OPEN",
+      "scope": "pulse duration and Ztheta(t) absent"
+    },
+    {
+      "item": "O1 <=12V and normal bus <=11.1605V physical acceptance",
+      "status": "OPEN",
+      "scope": "no physical testing performed"
+    }
+  ],
+  "acceptance": {
+    "O1_peak_limit_V": 12.0,
+    "normal_bus_max_V": 11.1605,
+    "criteria_relaxed": false,
+    "physical_test": "NOT PERFORMED",
+    "design_status": "BLOCKED / OPEN"
+  },
+  "logic_truth_table_method": "temporal sequence initialized Q=None; generated from cold-start, reset/PG, ARM, fault, recovery, release and fresh re-arm events; existing negative ngspice fixture/log unchanged"
+}

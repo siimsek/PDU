@@ -1,0 +1,58 @@
+* G1 shared bus OVP: common disconnect ahead of both TPS25982 IN groups.
+* Behavioral component/timing screen only; no physical result.
+.param VTRIP=11.6231688336 TDELAY=3.254e-07 CLATCH=1n CBUK=92.6514u
+Vshort VIN 0 PWL(0 11 999u 11 1m 26 2m 26)
+Rcoil VIN LNODE 0.03245
+Lfault LNODE VRAW 5.44u IC=6.46
+CBUS VRAW 0 {CBUK} IC=11
+Rbleed VRAW 0 1k
+VSW_SENSE VRAW VRAW_SW 0
+Sbus VRAW_SW VSAFE CTRL_BUS 0 OVPSW
+Clatch_BUS CTRL_BUS 0 {CLATCH} IC=1
+Rlatch_BUS CTRL_BUS 0 1T
+Btrip_BUS CTRL_BUS 0 I=if(V(VRAW)>VTRIP,CLATCH*(1-0.45)/TDELAY,0)
+.model OVPSW SW(Ron=5.6m Roff=1T Vt=0.5 Vh=0.05)
+* Exported-netlist input caps: two 100 nF parts; BOM/derating not established.
+CEFIN1 VSAFE 0 100n IC=11
+CEFIN2 VSAFE 0 100n IC=11
+* Existing branch eFuse behavioral switches; not TPS25982 silicon.
+Sefuse VSAFE PRE CTRL_EF 0 EFUSESW
+Clatch_EF CTRL_EF 0 10n IC=1
+Rlatch_EF CTRL_EF 0 1T
+Btrip_EF CTRL_EF 0 I=if(V(VSAFE)>16.32,1m,0)
+.model EFUSESW SW(Ron=10m Roff=1T Vt=0.5 Vh=0.05)
+CEFOUT1 O1 0 10u IC=10.9
+CEFOUT2 S2E 0 10u IC=10.9
+* VARSAYIM: O1 branch at configured nominal ILIM; actual port current unmeasured.
+BLOAD_O1 O1 0 I=4.96
+* DATASHEET: S2E steady/start-up max at 12 V, held constant as sensitivity only.
+BLOAD_S2E S2E 0 I=1.5
+.ic V(VRAW)=11 V(VSAFE)=11 V(O1)=10.9 V(S2E)=10.9
+.tran 10n 2m 0 20n uic
+.options reltol=0.0001 abstol=1n method=gear
+.meas tran RAW_PEAK MAX V(VRAW) FROM=1m TO=2m
+.meas tran U3_IN_PEAK MAX V(VSAFE) FROM=1m TO=2m
+.meas tran U4_IN_PEAK MAX V(VSAFE) FROM=1m TO=2m
+.meas tran O1_PEAK MAX V(O1) FROM=1m TO=2m
+.meas tran S2E_PEAK MAX V(S2E) FROM=1m TO=2m
+.meas tran PHASE_CURRENT_PEAK MAX I(Lfault) FROM=1m TO=2m
+.meas tran BUS_TRIP WHEN V(VRAW)=VTRIP RISE=1
+.meas tran BUS_OPEN WHEN V(CTRL_BUS)=0.45 FALL=1
+.meas tran BUS_T_OFF TRIG V(VRAW) VAL=VTRIP RISE=1 TARG V(CTRL_BUS) VAL=0.45 FALL=1
+BINT_CAND_U3_GT24 0 T_CAND_U3_GT24 I=if(V(VSAFE)>24.0,1u,0)
+CT_CAND_U3_GT24 T_CAND_U3_GT24 0 1u IC=0
+RT_CAND_U3_GT24 T_CAND_U3_GT24 0 1T
+.meas tran CAND_U3_GT24_DURATION_S FIND V(T_CAND_U3_GT24) AT=2m
+BINT_CAND_U4_GT24 0 T_CAND_U4_GT24 I=if(V(VSAFE)>24.0,1u,0)
+CT_CAND_U4_GT24 T_CAND_U4_GT24 0 1u IC=0
+RT_CAND_U4_GT24 T_CAND_U4_GT24 0 1T
+.meas tran CAND_U4_GT24_DURATION_S FIND V(T_CAND_U4_GT24) AT=2m
+BINT_CAND_U3_GT30 0 T_CAND_U3_GT30 I=if(V(VSAFE)>30.0,1u,0)
+CT_CAND_U3_GT30 T_CAND_U3_GT30 0 1u IC=0
+RT_CAND_U3_GT30 T_CAND_U3_GT30 0 1T
+.meas tran CAND_U3_GT30_DURATION_S FIND V(T_CAND_U3_GT30) AT=2m
+BINT_CAND_U4_GT30 0 T_CAND_U4_GT30 I=if(V(VSAFE)>30.0,1u,0)
+CT_CAND_U4_GT30 T_CAND_U4_GT30 0 1u IC=0
+RT_CAND_U4_GT30 T_CAND_U4_GT30 0 1T
+.meas tran CAND_U4_GT30_DURATION_S FIND V(T_CAND_U4_GT30) AT=2m
+.end

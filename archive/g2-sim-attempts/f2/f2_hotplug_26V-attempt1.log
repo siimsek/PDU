@@ -1,0 +1,34 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * g2 case f2_hotplug_26v
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 79841
+
+  Measurements for Transient Analysis
+
+vin_max             =  4.20980e+01 at=  6.45426e-05
+vraw_max            =  1.10200e+01 at=  3.08671e-03
+vraw_end            =  1.09958e+01
+q_end               =  0.00000e+00
+ens_end             =  9.99999e-01
+o1_end              =  1.09116e+01
+s2e_end             =  1.09346e+01
+
+
+Total analysis time (seconds) = 43.6963
+
+Total elapsed time (seconds) = 43.703 
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 8567.621 MB.
+Maximum ngspice program size =   15.273 MB.
+Current ngspice program size =   15.273 MB.
+

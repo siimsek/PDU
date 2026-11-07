@@ -1,0 +1,14 @@
+* Buck high-side short: one phase, Lmin and hot-DCR sensitivity, model eFuse downstream.
+.include pdu-protection.inc
+Vshort VIN 0 PWL(0 11 999u 11 1m 26 2m 26)
+Rcoil VIN LNODE 0.03245
+Lfault LNODE VOUT 5.44u IC=0
+Rload1 O1_11V 0 2.2
+Rload2 S2E_11V 0 4.4
+.ic V(VOUT)=11 V(O1_11V)=10.9 V(S2E_11V)=10.9
+.tran 50n 2m 0 100n uic
+.options reltol=0.0001 abstol=1n method=gear
+.meas tran BUS_PEAK MAX V(VOUT) FROM=1m TO=2m
+.meas tran O1_PEAK MAX V(O1_11V) FROM=1m TO=2m
+.meas tran PHASE_CURRENT MAX I(Lfault) FROM=1m TO=2m
+.end

@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → docs/START-HERE.md ve reports/g2/.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # IDA PDU — güncel teknik tasarım
 
 19 Ekim2026. Kaynaklar: ana KiCad projesi, Konnect export'u ve doğrulanmış BOM. Eski hesap/karar metni [arşivde](archive/design-before-calculation-sync-20261019.md) korunur. Güncel devam noktası [PROJECT-STATE](PROJECT-STATE.md), özel parça kabulü [kontrol listesi](REVIEW-CHECKLIST.md).

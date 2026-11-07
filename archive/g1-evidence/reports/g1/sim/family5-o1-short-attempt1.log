@@ -1,0 +1,12 @@
+Note: gnd in a subcircuit is not set to 0 automatically
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * o1 output hard short; behavioral o-variant efuse.
+
+Error on line 4 or its substitute:
+  ren1 vout en_efuse 64900
+device already exists, bail out
+    Simulation interrupted due to error!
+

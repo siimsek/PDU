@@ -1,0 +1,61 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * g2 case f4_input_loss_with_drev
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+Warning: singular matrix:  check nodes sw1 and bsw1#branch
+
+Warning: singular matrix:  check nodes vm1#branch and l1a
+
+Warning: singular matrix:  check nodes vm2#branch and bsw1#branch
+
+Warning: singular matrix:  check nodes vm2#branch and bsw1#branch
+
+Warning: singular matrix:  check nodes vm2#branch and bsw1#branch
+
+
+Error: 1.63769e+168, 2 out of range for ^
+    in line bin2
+
+
+Error: 1.63769e+168, 2 out of range for ^
+    in line bin2
+
+
+Error: 1.63769e+168, 2 out of range for ^
+    in line bin2
+
+
+Error: 1.63769e+168, 2 out of range for ^
+    in line bin2
+
+
+Error: 1.63769e+168, 2 out of range for ^
+    in line bin2
+
+
+Error: 1.63769e+168, 2 out of range for ^
+    in line bin2
+
+doAnalyses: TRAN:  Timestep too small; initial timepoint: trouble with dtvsm-instance dtvs
+
+
+run simulation(s) aborted
+
+No. of Data Rows : 0
+
+Total analysis time (seconds) = 0.0011252
+
+Total elapsed time (seconds) = 0.007 
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 10155.820 MB.
+Maximum ngspice program size =   10.434 MB.
+Current ngspice program size =   10.434 MB.
+

@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/DESIGN-RULES.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # Kullanıcının kontrolü: kalan işler ve özel hazırlanan parçalar
 
 19 Ekim2026. Kullanıcının “kesin olarak ne kaldı, hangi parçaları kendin hazırladın veya tasarımından emin değilsin?” sorusunun kontrol kaydı. **Önce O1 korumasını ve U1/U2 footprintini incele.**

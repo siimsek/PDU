@@ -1,163 +1,71 @@
 {
   "plan": {
-    "date": "2026-10-19",
     "nominal_copper_um": 35,
     "calculation_copper_um": 31.5,
-    "trace_deltaT_C": 20,
-    "ambient_assumption_C": 50,
-    "resistivity_temperature_C": 70,
-    "drop_budget_mV_per_trunk": 50,
+    "inner_copper_um_VARSAYIM": 15.75,
+    "trace_deltaT_C": 20.0,
+    "resistivity_temperature_C": 70.0,
+    "drop_budget_mV_per_trunk": 50.0,
     "classes": [
       {
-        "name": "Default",
-        "trace_width": 0.25,
-        "clearance": 0.2,
-        "via_diameter": 0.8,
-        "via_drill": 0.4,
-        "nets": [],
-        "purpose": "Unclassified signal fallback; must not carry a power trunk."
-      },
-      {
         "name": "INPUT_POWER",
-        "trace_width": 4.5,
-        "clearance": 0.3,
-        "via_diameter": 1.2,
-        "via_drill": 0.6,
         "nets": [
           "/VBAT",
           "/ANODE",
           "/VIN"
         ],
-        "current_A": 6,
+        "current_A": 4.483695652173912,
         "length_mm": 50,
-        "purpose": "Input continuous routing envelope; not fuse clearing/fault approval."
+        "basis": "82.5 W / 92 % (VARSAYIM) / 20 V",
+        "trace_width": 3.3
       },
       {
         "name": "BUS_POWER",
-        "trace_width": 6,
-        "clearance": 0.2,
-        "via_diameter": 1.2,
-        "via_drill": 0.6,
         "nets": [
           "/VOUT",
+          "/VSAFE",
           "/GND"
         ],
-        "current_A": 8,
+        "current_A": 7.5,
         "length_mm": 50,
-        "purpose": "Common 11V trunk and power-return equivalent cross-section. GND plane preferred; analog taps are exceptions."
+        "basis": "7.5 A capacity target; VSAFE carries the same current through Q2",
+        "trace_width": 5.5
       },
       {
         "name": "PHASE_POWER",
-        "trace_width": 3.5,
-        "clearance": 0.2,
-        "via_diameter": 1.2,
-        "via_drill": 0.6,
         "nets": [
           "/SW_PH1",
           "/SW_PH2",
           "/ISNS1",
           "/ISNS2"
         ],
-        "current_A": 5,
-        "length_mm": 50,
-        "purpose": "Per-phase routing envelope; switch copper localized. ISNS IC branch is Kelvin, not a 3.5mm sense trace."
+        "current_A": 5.583,
+        "length_mm": 30,
+        "basis": "phase peak 5.583 A (power.py, +10 % share, VIN 26 V)",
+        "trace_width": 2.6
       },
       {
-        "name": "O1_POWER",
-        "trace_width": 4.5,
-        "clearance": 0.2,
-        "via_diameter": 1.2,
-        "via_drill": 0.6,
+        "name": "O1_PORT",
         "nets": [
           "/O1_11V"
         ],
-        "current_A": 6,
-        "length_mm": 50,
-        "purpose": "Routing envelope only. Does not assign O1 load, change RILIM, or guarantee current limit."
+        "current_A": 9.07,
+        "length_mm": 40,
+        "basis": "ILIM_O1 max 9.07 A (could flow continuously just below trip in a max-corner part)",
+        "trace_width": 5.3
       },
       {
-        "name": "S2E_POWER",
-        "trace_width": 2.5,
-        "clearance": 0.2,
-        "via_diameter": 1.2,
-        "via_drill": 0.6,
+        "name": "S2E_PORT",
         "nets": [
           "/S2E_11V"
         ],
-        "current_A": 3.2,
-        "length_mm": 50,
-        "purpose": "S2E routing envelope; current limit and real start load require validation."
-      },
-      {
-        "name": "AUX_LOCAL",
-        "trace_width": 0.5,
-        "clearance": 0.2,
-        "via_diameter": 0.8,
-        "via_drill": 0.4,
-        "nets": [
-          "/CBOOT1",
-          "/CBOOT2",
-          "Net-(CBOOT1-Pad1)",
-          "Net-(CBOOT2-Pad1)",
-          "/SW4_PH1",
-          "/SW4_PH2",
-          "/VCAP",
-          "/GATE",
-          "/VCC1",
-          "/VCC2",
-          "/VDDA1",
-          "/VDDA2"
-        ],
-        "current_A": 0.6,
-        "length_mm": 10,
-        "purpose": "Local bypass/bootstrap/gate branches; selected RMS routing envelope, peak pulse behavior not certified. Keep bootstrap and charge-pump loops very short."
-      },
-      {
-        "name": "CONTROL_SENSE",
-        "trace_width": 0.25,
-        "clearance": 0.2,
-        "via_diameter": 0.8,
-        "via_drill": 0.4,
-        "nets": [
-          "/CFG_PRI",
-          "/CFG_SEC",
-          "/COMP",
-          "/COMP_MID",
-          "/DVDT_O1",
-          "/DVDT_S2E",
-          "/EN_BUCK",
-          "/EN_EFUSE",
-          "/FB",
-          "/ILIM_O1",
-          "/ILIM_S2E",
-          "/IMON_O1",
-          "/IMON_S2E",
-          "/PG_O1",
-          "/PG_S2E",
-          "/RT_PH1",
-          "/RT_PH2",
-          "/SYNC"
-        ],
-        "current_A": 0.05,
-        "length_mm": 50,
-        "purpose": "Low-current analog/control traces; Kelvin branches from power nets must use manual narrow escape and documented connection point."
-      },
-      {
-        "name": "NC_DO_NOT_ROUTE",
-        "trace_width": 0.2,
-        "clearance": 0.2,
-        "via_diameter": 0.8,
-        "via_drill": 0.4,
-        "nets": [
-          "unconnected-(U1-NC-Pad10)",
-          "unconnected-(U2-NC-Pad10)",
-          "unconnected-(U2-PG{slash}SYNCOUT-Pad7)",
-          "unconnected-(U3-ITIMER-Pad7)",
-          "unconnected-(U4-ITIMER-Pad7)"
-        ],
-        "purpose": "Intentionally NC; class name is guidance, not a routing prohibition enforced by KiCad."
+        "current_A": 5.66,
+        "length_mm": 40,
+        "basis": "ILIM_S2E max 5.66 A",
+        "trace_width": 3.3
       }
-    ]
+    ],
+    "source": "G2 analysis/g2/routing.py (replaces G1 routing-input for transfer)"
   },
   "method": "IPC-2221 external empirical fit k=.048,b=.44,c=.725; Ohmic drop with Cu rho20=1.724e-8 ohm*m and alpha=.00393/K",
   "scope": "Uniform exterior copper, no plane credit,31.5um lower-bound design assumption. No IC thermal/EMI/fault or neck/via current guarantee.",
@@ -169,87 +77,63 @@
   "rows": [
     {
       "name": "INPUT_POWER",
-      "current_A": 6,
+      "current_A": 4.483695652173912,
       "length_mm": 50,
-      "selected_width_mm": 4.5,
-      "thermal_width_mm": 2.594513498272087,
-      "drop_width_mm": 3.9290780952380944,
-      "calculated_rise_C": 8.07170307405168,
-      "resistance_mohm": 7.276070546737213,
-      "voltage_drop_mV": 43.656423280423276,
-      "loss_W": 0.26193853968253966
+      "selected_width_mm": 3.3,
+      "thermal_width_mm": 1.7360103657685564,
+      "drop_width_mm": 2.936131728778467,
+      "calculated_rise_C": 6.940285188042225,
+      "resistance_mohm": 9.92191438191438,
+      "voltage_drop_mV": 44.48684437543132,
+      "loss_W": 0.19946547070505885
     },
     {
       "name": "BUS_POWER",
-      "current_A": 8,
+      "current_A": 7.5,
       "length_mm": 50,
-      "selected_width_mm": 6,
-      "thermal_width_mm": 3.858204350290267,
-      "drop_width_mm": 5.238770793650793,
-      "calculated_rise_C": 9.661663061436757,
-      "resistance_mohm": 5.4570529100529095,
-      "voltage_drop_mV": 43.656423280423276,
-      "loss_W": 0.3492513862433862
+      "selected_width_mm": 5.5,
+      "thermal_width_mm": 3.529595344789084,
+      "drop_width_mm": 4.911347619047618,
+      "calculated_rise_C": 9.629760494653063,
+      "resistance_mohm": 5.953148629148629,
+      "voltage_drop_mV": 44.648614718614716,
+      "loss_W": 0.3348646103896104
     },
     {
       "name": "PHASE_POWER",
-      "current_A": 5,
-      "length_mm": 50,
-      "selected_width_mm": 3.5,
-      "thermal_width_mm": 2.0176248708287434,
-      "drop_width_mm": 3.274231746031745,
-      "calculated_rise_C": 8.06952774441041,
-      "resistance_mohm": 9.354947845804988,
-      "voltage_drop_mV": 46.77473922902493,
-      "loss_W": 0.23387369614512468
+      "current_A": 5.583,
+      "length_mm": 30,
+      "selected_width_mm": 2.6,
+      "thermal_width_mm": 2.34912491105134,
+      "drop_width_mm": 2.193604300571428,
+      "calculated_rise_C": 16.920734315661605,
+      "resistance_mohm": 7.555919413919414,
+      "voltage_drop_mV": 42.18469808791209,
+      "loss_W": 0.23551716942481318
     },
     {
-      "name": "O1_POWER",
-      "current_A": 6,
-      "length_mm": 50,
-      "selected_width_mm": 4.5,
-      "thermal_width_mm": 2.594513498272087,
-      "drop_width_mm": 3.9290780952380944,
-      "calculated_rise_C": 8.07170307405168,
-      "resistance_mohm": 7.276070546737213,
-      "voltage_drop_mV": 43.656423280423276,
-      "loss_W": 0.26193853968253966
+      "name": "O1_PORT",
+      "current_A": 9.07,
+      "length_mm": 40,
+      "selected_width_mm": 5.3,
+      "thermal_width_mm": 4.5875573060291295,
+      "drop_width_mm": 4.751565109841269,
+      "calculated_rise_C": 15.766190758347058,
+      "resistance_mohm": 4.942236597783767,
+      "voltage_drop_mV": 44.82608594189877,
+      "loss_W": 0.4065725994930219
     },
     {
-      "name": "S2E_POWER",
-      "current_A": 3.2,
-      "length_mm": 50,
-      "selected_width_mm": 2.5,
-      "thermal_width_mm": 1.0901906570514495,
-      "drop_width_mm": 2.095508317460317,
-      "calculated_rise_C": 5.094800815793344,
-      "resistance_mohm": 13.096926984126982,
-      "voltage_drop_mV": 41.91016634920635,
-      "loss_W": 0.13411253231746034
-    },
-    {
-      "name": "AUX_LOCAL",
-      "current_A": 0.6,
-      "length_mm": 10,
-      "selected_width_mm": 0.5,
-      "thermal_width_mm": 0.10832921340497016,
-      "drop_width_mm": 0.0785815619047619,
-      "calculated_rise_C": 1.6090491580239843,
-      "resistance_mohm": 13.096926984126984,
-      "voltage_drop_mV": 7.8581561904761905,
-      "loss_W": 0.004714893714285714
-    },
-    {
-      "name": "CONTROL_SENSE",
-      "current_A": 0.05,
-      "length_mm": 50,
-      "selected_width_mm": 0.25,
-      "thermal_width_mm": 0.003517383589703275,
-      "drop_width_mm": 0.03274231746031745,
-      "calculated_rise_C": 0.01777869977158142,
-      "resistance_mohm": 130.96926984126983,
-      "voltage_drop_mV": 6.548463492063491,
-      "loss_W": 0.00032742317460317466
+      "name": "S2E_PORT",
+      "current_A": 5.66,
+      "length_mm": 40,
+      "selected_width_mm": 3.3,
+      "thermal_width_mm": 2.393929498886253,
+      "drop_width_mm": 2.9651442692063483,
+      "calculated_rise_C": 11.785080593112903,
+      "resistance_mohm": 7.9375315055315045,
+      "voltage_drop_mV": 44.926428321308315,
+      "loss_W": 0.2542835842986051
     }
   ]
 }

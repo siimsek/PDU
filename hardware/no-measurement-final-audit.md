@@ -1,3 +1,5 @@
+> **SUPERSEDED (G4, 2026-11-07) → docs/START-HERE.md.** 2026-10-19 anlık görüntüsünün geçmiş kaydıdır; içerik değiştirilmedi.
+
 # Independent final snapshot audit — 2026-10-19
 
 **Readiness: NOT READY. Current full-suite verification: completed, with two confirmed O1overvoltage acceptance failures.** The independent schematic/connectivity checks below completed. No design or rule mutation was made by this reviewer. Manufacturing and hardware acceptance are not implied.

@@ -1,0 +1,20 @@
+* Ideal comparator/latch/series switch sensitivity only; not a vendor part.
+.param VTRIP=11.46 COUT=10u TDELAY=0.5u
+Vfault SOURCE 0 PWL(0 11 4.999m 11 5m 16.9 5.2m 16.9 5.201m 11 6m 11)
+Rsource SOURCE PRE 0.54
+Sdisconnect PRE O1 CTRL 0 IDEALSW
+Clatch CTRL 0 1n IC=1
+Rlatch CTRL 0 1T
+Btrip CTRL 0 I=if(V(O1)>VTRIP,1m,0)
+* The initial latch voltage holds the series switch on; 1mA discharges 1nF
+* through 0.5V in 0.5us after threshold crossing, then remains latched off.
+.model IDEALSW SW(Ron=10m Roff=1T Vt=0.5 Vh=0.05)
+CEFOUT O1 0 {COUT}
+Rload O1 0 1Meg
+.ic V(O1)=11
+.tran 10n 6m 0 20n uic
+.options reltol=0.0001 abstol=1n method=gear
+.meas tran O1_PEAK MAX V(O1) FROM=4.9m TO=5.2m
+.meas tran O1_STEADY AVG V(O1) FROM=4m TO=4.9m
+.meas tran LATCH_MAX MAX V(CTRL) FROM=4.9m TO=5.2m
+.end

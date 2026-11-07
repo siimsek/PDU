@@ -1,0 +1,65 @@
+Note: gnd in a subcircuit is not set to 0 automatically
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * r6 targeted dual-rail loss: all gate voltages are measured relative to ts.
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+Error: no such vector as v(ga,tsa).
+ .meas tran vgs1_active_0p5us find v(ga,tsa) at=10.5u failed!
+
+Error: no such vector as v(ga,tsa).
+ .meas tran vgs2_active_0p5us find v(ga,tsa) at=10.5u failed!
+
+Error: no such vector as v(ga,tsa).
+ .meas tran vgs1_active_1us find v(ga,tsa) at=11u failed!
+
+Error: no such vector as v(ga,tsa).
+ .meas tran vgs2_active_1us find v(ga,tsa) at=11u failed!
+
+Error: no such vector as v(ga,tsa).
+ .meas tran vgs1_active_100us find v(ga,tsa) at=100u failed!
+
+
+Error: measure  tactive_to_2p1  when(WHEN) : no such vector as 'v(ga,tsa)'
+ .meas tran tactive_to_2p1 when v(ga,tsa)=2.1 fall=1 failed!
+
+Error: no such vector as v(gp,tsp).
+ .meas tran vgs1_passive_0p5us find v(gp,tsp) at=10.5u failed!
+
+Error: no such vector as v(gp,tsp).
+ .meas tran vgs2_passive_0p5us find v(gp,tsp) at=10.5u failed!
+
+Error: no such vector as v(gp,tsp).
+ .meas tran vgs1_passive_100us find v(gp,tsp) at=110u failed!
+
+Error: no such vector as v(gp,tsp).
+ .meas tran vgs2_passive_100us find v(gp,tsp) at=110u failed!
+
+
+Error: measure  tpassive_to_2p1  when(WHEN) : no such vector as 'v(gp,tsp)'
+ .meas tran tpassive_to_2p1 when v(gp,tsp)=2.1 fall=1 failed!
+
+
+No. of Data Rows : 50039
+
+  Measurements for Transient Analysis
+
+iactive_max         =  2.49865e+00 at=  1.00000e-05
+igs1_passive_0p5us  =  9.96734e-04
+igs2_passive_0p5us  =  9.96734e-04
+
+
+Total analysis time (seconds) = 0.192542
+
+Total elapsed time (seconds) = 0.201
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 4726.648 MB.
+Maximum ngspice program size =   13.242 MB.
+Current ngspice program size =   13.242 MB.

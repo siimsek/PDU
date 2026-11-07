@@ -1,0 +1,62 @@
+Note: gnd in a subcircuit is not set to 0 automatically
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * g1 shared bus ovp: common disconnect ahead of both tps25982 in groups.
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 100032
+
+  Measurements for Transient Analysis
+
+raw_peak            =  3.87216e+01 at=  1.06813e-03
+u3_in_peak          =  1.16225e+01 at=  1.00705e-03
+u4_in_peak          =  1.16225e+01 at=  1.00705e-03
+o1_peak             =  1.15558e+01 at=  1.00705e-03
+s2e_peak            =  1.15904e+01 at=  1.00705e-03
+phase_current_peak  =  5.86417e+01 at=  1.03127e-03
+common_switch_branch_i_peak=  9.91269e+00 at=  1.00705e-03
+common_switch_i_at_trip=  9.77066e+00
+common_switch_i_at_open=  0.00000e+00
+o1_min              =  4.70186e-11 at=  2.00000e-03
+s2e_min             =  4.71663e-11 at=  2.00000e-03
+bus_trip            =   1.00673e-03
+bus_open            =   1.00706e-03
+bus_t_off           =  3.22187e-07 targ=  1.00706e-03 trig=  1.00673e-03
+cand_u3_gt24_duration_s=  0.00000e+00
+cand_u4_gt24_duration_s=  0.00000e+00
+cand_u3_gt30_duration_s=  0.00000e+00
+cand_u4_gt30_duration_s=  0.00000e+00
+q_sw_c              =  5.83958e-05
+q_in1_c             =  -1.09685e-06
+q_in2_c             =  -1.09685e-06
+q_ef1_c             =  1.05137e-04
+q_ef2_c             =  -4.45470e-05
+q_out1_c            =  -1.09184e-04
+q_out2_c            =  -1.09527e-04
+q_load1_c           =  2.14321e-04
+q_load2_c           =  6.49801e-05
+i_in1_max           =  3.80284e-02 at=  1.00706e-03
+i_in1_min           =  -1.58630e+00 at=  1.00706e-03
+i_in2_max           =  3.80284e-02 at=  1.00706e-03
+i_in2_min           =  -1.58630e+00 at=  1.00706e-03
+i_out1_max          =  1.70879e+00 at=  1.00705e-03
+i_out1_min          =  -3.26828e+00 at=  1.00706e-03
+i_out2_max          =  1.70879e+00 at=  1.00705e-03
+i_out2_min          =  -3.26828e+00 at=  1.00706e-03
+
+
+Total analysis time (seconds) = 0.811305
+
+Total elapsed time (seconds) = 0.822
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 9863.160 MB.
+Maximum ngspice program size =   29.422 MB.
+Current ngspice program size =   29.422 MB.

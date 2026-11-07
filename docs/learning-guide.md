@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → docs/START-HERE.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # Uygulayarak öğrenme rehberi
 
 > Aktif devam noktası [PROJECT-STATE](PROJECT-STATE.md), özel parça incelemesi [REVIEW-CHECKLIST](REVIEW-CHECKLIST.md). Aşağıdaki ilk görevler öğrenme sırasıdır; yapılan PCB prototip yerleşimini veya kapanmamış O1 kabulünü yeniden yorumlamaz.

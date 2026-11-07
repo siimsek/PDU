@@ -1,0 +1,2224 @@
+{
+  "title": "IDA PDU G1 AI calculation report",
+  "scope": "Static arithmetic and explicitly labeled sensitivity assumptions; no KiCad source reads.",
+  "inputs": {
+    "battery_V": [
+      20,
+      26
+    ],
+    "nominal_V": 22.2,
+    "output_V": 11,
+    "load_target_A": 7,
+    "capacity_target_A": 7.5,
+    "measured_port_currents": false,
+    "ambient_assumption_C": 25,
+    "design_ambient": "not supplied",
+    "project_input_hashes": {
+      "export_sha256": "1f2f6085d3b162f287364cf570f3acdea2b81d6a4f8aa699f6c12a64431f7e9b",
+      "bom_sha256": "8387860581e488e8e6faf786c8d3d3bb14976fb09be785fbf3199d5720cbdaf5",
+      "component_count": 73,
+      "pin_count": 257
+    },
+    "existing_calculation_crosscheck": {
+      "setpoint_V": 10.996078431372549,
+      "static_feedback_corner_V": [
+        10.833301778897633,
+        11.160493549161034
+      ]
+    },
+    "used_assets": [
+      "simulation/project_inputs.py",
+      "hardware/validation/c5750/vendor-ac-summary.json",
+      "simulation/static-corner-results.json",
+      "hardware/calculation-summary.json",
+      ".konnect/diagnostics/netclass-plan.json"
+    ]
+  },
+  "buck": {
+    "duty": 0.4230769230769231,
+    "switching_frequency_Hz": 435066.34761801176,
+    "ripple": {
+      "name": "inductor ripple at 26 V, minimum L and frequency",
+      "unit": "A p-p",
+      "value": 2.9164309954751135,
+      "second_value": 2.9164309954751135,
+      "method_1": "Vout*(1-Vout/Vin)/(Lmin*fmin)",
+      "method_2": "(Vin-Vout)*D/(Lmin*fmin)",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    "phase_peak": {
+      "name": "phase peak current at 7.5 A total, +10% share",
+      "unit": "A",
+      "value": 5.583215497737557,
+      "second_value": 5.583215497737557,
+      "method_1": "Iphase_avg + deltaIL/2",
+      "method_2": "Iout*(1+share_error)/2 + deltaIL/2",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    "phase_average_at_equal_share_A": 3.75,
+    "assumed_share_error_fraction": 0.1,
+    "phase_average_worst_A": 4.125,
+    "IHLP_family_screen": {
+      "inductance_nominal_H": 6.8e-06,
+      "minimum_inductance_H": 5.44e-06,
+      "DCR_max_25C_ohm": 0.0233,
+      "DCR_125C_sensitivity_ohm": 0.032456900000000004,
+      "published_Isat_A_at_approx_20pct_L_drop": 13.5,
+      "published_Irms_A_at_40C_rise": 8.0,
+      "peak_headroom_to_Isat_A": 7.916784502262443,
+      "peak_fraction_of_Isat": 0.41357151835093015,
+      "exact_orderable_MPN_candidate": "IHLP4040DZER6R8M01 (Vishay cross-reference candidate; BOM remains blank until approved)",
+      "exact_orderable_MPN": "AÇIK — not yet approved/entered into the canonical BOM",
+      "tag": "DATASHEET/VARSAYIM"
+    },
+    "inductor_loss_per_phase_W": {
+      "25C_DCR": 0.41297904376723954,
+      "125C_TCR_sensitivity": 0.5752798079677647
+    },
+    "shunt": {
+      "assumed_tolerance_fraction": 0.01,
+      "assumed_TCR_ppm_K": 100,
+      "power_per_phase_W_nominal_DCR": 0.13293316859460497,
+      "power_per_phase_W_with_tolerance_TCR": 0.13560512528335653,
+      "minimum_part_power_for_50pct_rule_W": 0.27121025056671305,
+      "sense_current_min_A": 6.535306996046139,
+      "sense_min_dual": {
+        "name": "cycle sense threshold lower-current corner",
+        "unit": "A",
+        "value": 6.535306996046139,
+        "second_value": 6.535306996046139,
+        "method_1": "50mV/(Rmax incl. TCR)",
+        "method_2": "50mV/(7.5mΩ*1.01*1.01)",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      "sense_current_max_A": 8.434513485018536,
+      "sense_max_dual": {
+        "name": "cycle sense threshold upper-current corner",
+        "unit": "A",
+        "value": 8.434513485018536,
+        "second_value": 8.434513485018536,
+        "method_1": "62mV/(Rmin incl. TCR)",
+        "method_2": "62mV/(7.5mΩ*0.99*0.99)",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      "share_error_effect_A_vs_equal": 0.375,
+      "accuracy_limitation": "Shunt exact MPN, tolerance/TCR/power and controller ISNS comparator current error are open."
+    },
+    "output_capacitor": {
+      "Ceff_min_uF": 92.65137432724022,
+      "Ceff_vendor_typ_uF": 164.9775183889605,
+      "Ceff_max_uF": 241.52708692143818,
+      "aging_assumption_fraction": 0.1,
+      "ESR_bank_typ_400k_mohm": 0.24004996365370015,
+      "ESR_corner": "AÇIK; vendor model typical only",
+      "conservative_aligned_capacitor_ripple": {
+        "name": "two-phase output ripple, aligned conservative capacitor-only",
+        "unit": "V p-p",
+        "value": 0.019673419691908854,
+        "second_value": 0.019673419691908854,
+        "method_1": "(2*deltaIL)/(8*f*Cmin)",
+        "method_2": "deltaIL/(4*f*Cmin)",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "VARSAYIM"
+      },
+      "ESL_included": false
+    }
+  },
+  "feedback": {
+    "nominal": {
+      "name": "nominal feedback setpoint",
+      "unit": "V",
+      "value": 10.996078431372549,
+      "second_value": 10.996078431372549,
+      "method_1": "Vref*(1+Rtop/Rbottom)",
+      "method_2": "Vref*(Rtop+Rbottom)/Rbottom",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    "corner": {
+      "min_V": 10.833301778897633,
+      "max_V": 11.160493549161034,
+      "second_min_V": 10.833301778897633,
+      "second_max_V": 11.160493549161034,
+      "resistor_fractional_error": 0.0035
+    },
+    "static_corner_expected_V": [
+      10.833301778897633,
+      11.160493549161034
+    ],
+    "source": "simulation/static-corner-results.json; independent vertex evaluation included here"
+  },
+  "loop": {
+    "target_crossover_Hz": 40000,
+    "existing_RCOMP_ohm": 9530.0,
+    "existing_CCOMP_F": 4.700000000000001e-09,
+    "existing_CHF_F": 4.7e-11,
+    "estimated_RCOMP_range_ohm": [
+      10005.630144518795,
+      26083.052940839592
+    ],
+    "bench_adjustable_RCOMP_ohm": [
+      6800,
+      27000
+    ],
+    "bench_adjustable_CCOMP_F": [
+      2.2e-09,
+      1e-08
+    ],
+    "bench_adjustable_CHF_F": [
+      2.2e-11,
+      1e-10
+    ],
+    "phase_margin_estimate_deg": null,
+    "crossover_estimate_Hz": null,
+    "reason": "The netlist behavioral current loop is not the LM70880 silicon transfer function; gm, sampled-data delay, plant parasitics, real Ceff/ESR distribution and measured loop gain are unavailable. 40 kHz is a design assumption only.",
+    "rcomp_screens": [
+      {
+        "name": "RCOMP for assumed 40 kHz target, low assumed Ceff",
+        "unit": "ohm",
+        "value": 10005.630144518795,
+        "second_value": 10005.630144518796,
+        "method_1": "2π*fc*(Vout/Vref)*(Rs/N*10/gm)*Ceff",
+        "method_2": "(fc*2π*Ceff)*(Vout/Vref)*(Rs/(N*gm))*10",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 1.8189894035458565e-12,
+        "relative_difference_percent": 1.8179658624922495e-14,
+        "tag": "VARSAYIM"
+      },
+      {
+        "name": "RCOMP for assumed 40 kHz target, vendor typical",
+        "unit": "ohm",
+        "value": 17816.29299237677,
+        "second_value": 17816.29299237677,
+        "method_1": "2π*fc*(Vout/Vref)*(Rs/N*10/gm)*Ceff",
+        "method_2": "(fc*2π*Ceff)*(Vout/Vref)*(Rs/(N*gm))*10",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "VARSAYIM"
+      },
+      {
+        "name": "RCOMP for assumed 40 kHz target, high assumed Ceff",
+        "unit": "ohm",
+        "value": 26083.052940839592,
+        "second_value": 26083.052940839592,
+        "method_1": "2π*fc*(Vout/Vref)*(Rs/N*10/gm)*Ceff",
+        "method_2": "(fc*2π*Ceff)*(Vout/Vref)*(Rs/(N*gm))*10",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "VARSAYIM"
+      }
+    ],
+    "tag": "VARSAYIM/AÇIK"
+  },
+  "uvlo": {
+    "existing_180k_10k": {
+      "min_V": 17.71138613861386,
+      "max_V": 20.331818181818182,
+      "second_min_V": 17.71138613861386,
+      "second_max_V": 20.331818181818182
+    },
+    "candidate_174k_10k": {
+      "min_V": 17.152673267326733,
+      "max_V": 19.689090909090908,
+      "second_min_V": 17.152673267326733,
+      "second_max_V": 19.689090909090908
+    },
+    "max_nominal_top_resistor_for_20V_worst_rising_ohm": 176902.40452616688,
+    "independent_limit_ohm": 176902.4045261669,
+    "candidate_typical_rising_V": 18.4,
+    "candidate_typical_falling_V_assuming_0.9_ratio": 16.56,
+    "candidate_rising_V_per_cell_6S_max": 3.2815151515151513,
+    "candidate_rising_V_per_cell_6S_typ": 3.0666666666666664,
+    "en_leak_shift_V_per_uA": 0.174,
+    "leakage_max": "AÇIK: guaranteed LM70880 EN leakage bound not confirmed",
+    "policy": "20 V restart is required to claim operation across the stated 20–26 V input envelope; battery disconnect/falling threshold policy remains open."
+  },
+  "efuses": {
+    "O1": {
+      "RILIM_ohm": 301.0,
+      "nominal_ILIM_A": 4.9604983388704325,
+      "formula_second_A": 4.9604983388704325,
+      "ILIM_screen_if_RILIM_1pct_assumption_A": [
+        4.912473602842012,
+        5.009493271586295
+      ],
+      "published_guaranteed_range_A": "AÇIK: no guarantee for exact resistor value located; TPS25982 table values are discrete. 300 Ω gives 4.36–5.66 A across temperature; do not interpolate to 301 Ω or 604 Ω.",
+      "IMON_nominal_V_per_A": 0.198276,
+      "IMON_nominal_at_trip_V": 0.9835477686378739,
+      "IMON_gain_min_typ_max_uA_per_A": [
+        238.6,
+        246,
+        253.4
+      ],
+      "IMON_at_15A_V_max_gain_and_Rmax": 3.070499113499999,
+      "IMON_resistor_power_at_15A_W": 0.011670967130413493,
+      "IMON_resistor_rating_W_manufacturer": 0.1,
+      "IMON_resistor_fraction_of_rating_at_15A": 0.11670967130413493,
+      "IMON_accuracy_domain": "3 A..min(15 A, ILIM), -40..75 °C; S2E nominal ILIM is below 3 A, so gain accuracy not guaranteed at its trip.",
+      "dVdt_typ_V_per_ms": 4.6,
+      "dVdt_min_max_V_per_ms": [
+        2.0,
+        6.33
+      ],
+      "nominal_EN_rising_bus_V": 8.988,
+      "EN_rising_bus_corner_V_assumed_1pct": [
+        8.686552475247526,
+        9.373966666666668
+      ],
+      "EN_leak_shift_V_per_uA_assumed": 0.0649,
+      "EN_trip_pin_V_at_11V": 1.4686248331108145,
+      "PG_divider_V_at_11V": 1.6779661016949152,
+      "PG_divider_11V_corner_V_assumed_1pct": [
+        1.6497222689782864,
+        1.706605222734255
+      ],
+      "port_capacitance_nominal_F": 9.999999999999999e-06,
+      "charge_0to11V_C": 0.00010999999999999999,
+      "port_cap_energy_0to11V_J": 0.000605,
+      "inrush_at_typ_dVdt_A": 0.046,
+      "short_fault_sensitivity_at_3x_ILIM": {
+        "current_A": 14.881495016611296,
+        "FET_power_W_at_11V": 163.69644518272426,
+        "energy_J_if_constant_for_400ns": 6.547857807308971e-05,
+        "tag": "VARSAYIM; not SOA proof"
+      },
+      "RON_max_ohm": 0.0045,
+      "RON_loss_at_nominal_ILIM_W": 0.11072944696471343,
+      "OVP_trip_V_min_typ_max": [
+        16.32,
+        16.9,
+        17.31
+      ],
+      "OVP_response_max_s": 5e-06,
+      "short_circuit_response_max_s": 4e-07,
+      "note": "SC response test condition and retry/latch behavior are not equivalent to normal overload. Thermal/SOA is not contained in the behavioral model."
+    },
+    "S2E": {
+      "RILIM_ohm": 604.0,
+      "nominal_ILIM_A": 2.5272185430463576,
+      "formula_second_A": 2.5272185430463576,
+      "ILIM_screen_if_RILIM_1pct_assumption_A": [
+        2.5032856861845123,
+        2.5516348919660174
+      ],
+      "published_guaranteed_range_A": "AÇIK: no guarantee for exact resistor value located; TPS25982 table values are discrete. 300 Ω gives 4.36–5.66 A across temperature; do not interpolate to 301 Ω or 604 Ω.",
+      "IMON_nominal_V_per_A": 0.198276,
+      "IMON_nominal_at_trip_V": 0.5010867838410596,
+      "IMON_gain_min_typ_max_uA_per_A": [
+        238.6,
+        246,
+        253.4
+      ],
+      "IMON_at_15A_V_max_gain_and_Rmax": 3.070499113499999,
+      "IMON_resistor_power_at_15A_W": 0.011670967130413493,
+      "IMON_resistor_rating_W_manufacturer": 0.1,
+      "IMON_resistor_fraction_of_rating_at_15A": 0.11670967130413493,
+      "IMON_accuracy_domain": "3 A..min(15 A, ILIM), -40..75 °C; S2E nominal ILIM is below 3 A, so gain accuracy not guaranteed at its trip.",
+      "dVdt_typ_V_per_ms": 4.6,
+      "dVdt_min_max_V_per_ms": [
+        2.0,
+        6.33
+      ],
+      "nominal_EN_rising_bus_V": 8.988,
+      "EN_rising_bus_corner_V_assumed_1pct": [
+        8.686552475247526,
+        9.373966666666668
+      ],
+      "EN_leak_shift_V_per_uA_assumed": 0.0649,
+      "EN_trip_pin_V_at_11V": 1.4686248331108145,
+      "PG_divider_V_at_11V": 1.6779661016949152,
+      "PG_divider_11V_corner_V_assumed_1pct": [
+        1.6497222689782864,
+        1.706605222734255
+      ],
+      "port_capacitance_nominal_F": 9.999999999999999e-06,
+      "charge_0to11V_C": 0.00010999999999999999,
+      "port_cap_energy_0to11V_J": 0.000605,
+      "inrush_at_typ_dVdt_A": 0.046,
+      "short_fault_sensitivity_at_3x_ILIM": {
+        "current_A": 7.581655629139073,
+        "FET_power_W_at_11V": 83.3982119205298,
+        "energy_J_if_constant_for_400ns": 3.335928476821192e-05,
+        "tag": "VARSAYIM; not SOA proof"
+      },
+      "RON_max_ohm": 0.0045,
+      "RON_loss_at_nominal_ILIM_W": 0.028740751039428095,
+      "OVP_trip_V_min_typ_max": [
+        16.32,
+        16.9,
+        17.31
+      ],
+      "OVP_response_max_s": 5e-06,
+      "short_circuit_response_max_s": 4e-07,
+      "note": "SC response test condition and retry/latch behavior are not equivalent to normal overload. Thermal/SOA is not contained in the behavioral model."
+    }
+  },
+  "port_capacity_screen": {
+    "nominal_ILIM_sum_A": 7.48771688191679,
+    "7p5A_capacity_shortfall_A": 0.01228311808320992,
+    "screen_result": "FAIL by nominal arithmetic only: summed nominal channel limits are slightly below 7.5A; actual distribution and guaranteed min/max at 301Ω/604Ω are not established.",
+    "required_action": "Measure O1/S2E loads and select RILIM values whose datasheet guaranteed minimum current limits cover the actual split with margin; do not claim 7.5A until then."
+  },
+  "input_protection": {
+    "battery_input_current_A_at_82p5W": {
+      "0.8": 5.15625,
+      "0.9": 4.583333333333333,
+      "0.95": 4.342105263157895
+    },
+    "F1_fault_current_A": "AÇIK: Vbat/(Rbattery+Rcable+Rconnector+Rboard); source impedance, cable, interruption rating and I²t coordination unknown",
+    "F1_i2t": "AÇIK: selected fuse time-current curve and prospective fault current absent",
+    "TVS": {
+      "family": "SMCJ33A",
+      "assumed_clamp_V": 53.3,
+      "standoff_V": 33.0,
+      "clamp_current_condition_A": 28.0,
+      "LM74700_operating_abs_max_V": [
+        60,
+        65
+      ],
+      "LM70880_recommended_abs_max_V": [
+        80,
+        87.5
+      ],
+      "Q1_VDS_rating_V": 100,
+      "conditional_margin_V": {
+        "LM74700_operating": 6.700000000000003,
+        "LM74700_abs": 11.700000000000003,
+        "LM70880_recommended": 26.700000000000003,
+        "LM70880_abs": 34.2,
+        "Q1": 46.7
+      },
+      "tag": "DATASHEET/VARSAYIM",
+      "limitations": "53.3 V is a pulse clamp datum at specified current; wiring ESL, surge duration/energy and actual TVS manufacturer not verified."
+    },
+    "Q1": {
+      "RDSon_max_25C_ohm": 0.016,
+      "estimated_input_A": 5.15625,
+      "conduction_loss_screen": {
+        "name": "Q1 conduction loss at 82.5 W, 20 V, 80% efficiency",
+        "unit": "W",
+        "value": 0.425390625,
+        "second_value": 0.425390625,
+        "method_1": "I²*RDS(on), 25C datasheet max used as screen",
+        "method_2": "(Pout/(Vin*η))²*16mΩ",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      "ideal_diode_drop_loss_W": 0.10312500000000001,
+      "SOA": "AÇIK: data sheet SOA curve must be checked against the actual fault waveform; no board thermal proof."
+    }
+  },
+  "thermal": {
+    "input_current_A_by_efficiency": {
+      "0.8": 5.15625,
+      "0.9": 4.583333333333333,
+      "0.95": 4.342105263157895
+    },
+    "known_loss_screens": {
+      "inductor_copper_two_phase_W_hot_TCR_assumption": 1.1505596159355294,
+      "shunt_two_phase_W_tcr_assumption": 0.27121025056671305,
+      "Q1_W_25C_RDS_max_screen": 0.425390625,
+      "Q1_ideal_diode_20mV_drop_W": 0.10312500000000001,
+      "eFuse_combined_one_branch_full_7p5A_W_upper": 0.253125,
+      "known_sum_W_not_including_buck_switching_or_controller": 2.1002854915022424
+    },
+    "efficiency_sensitivity": {
+      "0.8": {
+        "assumed_efficiency": 0.8,
+        "loss_W": 20.625
+      },
+      "0.9": {
+        "assumed_efficiency": 0.9,
+        "loss_W": 9.166666666666671
+      },
+      "0.95": {
+        "assumed_efficiency": 0.95,
+        "loss_W": 4.34210526315789
+      }
+    },
+    "board_theta_assumption_C_per_W": {
+      "2_layer": 20,
+      "4_layer": 10
+    },
+    "board_temperature_rise_at_90pct_efficiency_C": {
+      "2_layer": 183.33333333333343,
+      "4_layer": 91.66666666666671
+    },
+    "ambient_reference_C": 25,
+    "design_ambient_C": "AÇIK",
+    "limitations": "Board θ values are scenario assumptions only; copper area, layer stack, via field, airflow and enclosure are unknown. No junction-temperature result is certified."
+  },
+  "routing": {
+    "source_plan_path": ".konnect/diagnostics/netclass-plan.json",
+    "input_plan": {
+      "date": "G1 calculation input; derived from canonical BOM/netlist and explicit assumptions",
+      "nominal_copper_um": 35,
+      "calculation_copper_um": 31.5,
+      "trace_deltaT_C": 20,
+      "ambient_assumption_C": 50,
+      "resistivity_temperature_C": 70,
+      "drop_budget_mV_per_trunk": 50,
+      "classes": [
+        {
+          "name": "Default",
+          "trace_width": 0.25,
+          "clearance": 0.2,
+          "via_diameter": 0.8,
+          "via_drill": 0.4,
+          "nets": [],
+          "purpose": "Unclassified signal fallback; must not carry a power trunk."
+        },
+        {
+          "name": "INPUT_POWER",
+          "trace_width": 4.5,
+          "clearance": 0.3,
+          "via_diameter": 1.2,
+          "via_drill": 0.6,
+          "nets": [
+            "/VBAT",
+            "/ANODE",
+            "/VIN"
+          ],
+          "current_A": 5.15625,
+          "length_mm": 50,
+          "purpose": "Input continuous routing envelope; not fuse clearing/fault approval.",
+          "g1_current_basis": "82.5 W / (20 V × 80% assumed efficiency)"
+        },
+        {
+          "name": "BUS_POWER",
+          "trace_width": 6,
+          "clearance": 0.2,
+          "via_diameter": 1.2,
+          "via_drill": 0.6,
+          "nets": [
+            "/VOUT",
+            "/GND"
+          ],
+          "current_A": 7.5,
+          "length_mm": 50,
+          "purpose": "Common 11V trunk and power-return equivalent cross-section. GND plane preferred; analog taps are exceptions.",
+          "g1_current_basis": "7.5 A total capacity target; measured load not available"
+        },
+        {
+          "name": "PHASE_POWER",
+          "trace_width": 3.5,
+          "clearance": 0.2,
+          "via_diameter": 1.2,
+          "via_drill": 0.6,
+          "nets": [
+            "/SW_PH1",
+            "/SW_PH2",
+            "/ISNS1",
+            "/ISNS2"
+          ],
+          "current_A": 5.583215497737557,
+          "length_mm": 50,
+          "purpose": "Per-phase routing envelope; switch copper localized. ISNS IC branch is Kelvin, not a 3.5mm sense trace.",
+          "g1_current_basis": "calculated phase peak; conservative continuous routing screen"
+        },
+        {
+          "name": "O1_POWER",
+          "trace_width": 4.5,
+          "clearance": 0.2,
+          "via_diameter": 1.2,
+          "via_drill": 0.6,
+          "nets": [
+            "/O1_11V"
+          ],
+          "current_A": 7.5,
+          "length_mm": 50,
+          "purpose": "Routing envelope only. Does not assign O1 load, change RILIM, or guarantee current limit.",
+          "g1_current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with S2E"
+        },
+        {
+          "name": "S2E_POWER",
+          "trace_width": 2.5,
+          "clearance": 0.2,
+          "via_diameter": 1.2,
+          "via_drill": 0.6,
+          "nets": [
+            "/S2E_11V"
+          ],
+          "current_A": 7.5,
+          "length_mm": 50,
+          "purpose": "S2E routing envelope; current limit and real start load require validation.",
+          "g1_current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with O1"
+        },
+        {
+          "name": "AUX_LOCAL",
+          "trace_width": 0.5,
+          "clearance": 0.2,
+          "via_diameter": 0.8,
+          "via_drill": 0.4,
+          "nets": [
+            "/CBOOT1",
+            "/CBOOT2",
+            "Net-(CBOOT1-Pad1)",
+            "Net-(CBOOT2-Pad1)",
+            "/SW4_PH1",
+            "/SW4_PH2",
+            "/VCAP",
+            "/GATE",
+            "/VCC1",
+            "/VCC2",
+            "/VDDA1",
+            "/VDDA2"
+          ],
+          "current_A": 0.6,
+          "length_mm": 10,
+          "purpose": "Local bypass/bootstrap/gate branches; selected RMS routing envelope, peak pulse behavior not certified. Keep bootstrap and charge-pump loops very short.",
+          "g1_current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1."
+        },
+        {
+          "name": "CONTROL_SENSE",
+          "trace_width": 0.25,
+          "clearance": 0.2,
+          "via_diameter": 0.8,
+          "via_drill": 0.4,
+          "nets": [
+            "/CFG_PRI",
+            "/CFG_SEC",
+            "/COMP",
+            "/COMP_MID",
+            "/DVDT_O1",
+            "/DVDT_S2E",
+            "/EN_BUCK",
+            "/EN_EFUSE",
+            "/FB",
+            "/ILIM_O1",
+            "/ILIM_S2E",
+            "/IMON_O1",
+            "/IMON_S2E",
+            "/PG_O1",
+            "/PG_S2E",
+            "/RT_PH1",
+            "/RT_PH2",
+            "/SYNC"
+          ],
+          "current_A": 0.05,
+          "length_mm": 50,
+          "purpose": "Low-current analog/control traces; Kelvin branches from power nets must use manual narrow escape and documented connection point.",
+          "g1_current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1."
+        },
+        {
+          "name": "NC_DO_NOT_ROUTE",
+          "trace_width": 0.2,
+          "clearance": 0.2,
+          "via_diameter": 0.8,
+          "via_drill": 0.4,
+          "nets": [
+            "unconnected-(U1-NC-Pad10)",
+            "unconnected-(U2-NC-Pad10)",
+            "unconnected-(U2-PG{slash}SYNCOUT-Pad7)",
+            "unconnected-(U3-ITIMER-Pad7)",
+            "unconnected-(U4-ITIMER-Pad7)"
+          ],
+          "purpose": "Intentionally NC; class name is guidance, not a routing prohibition enforced by KiCad."
+        }
+      ],
+      "assumed_via_current_A": 0.5,
+      "assumed_via_plating_um": 25
+    },
+    "current_envelopes": {
+      "INPUT_POWER": [
+        5.15625,
+        "82.5 W / (20 V × 80% assumed efficiency)"
+      ],
+      "BUS_POWER": [
+        7.5,
+        "7.5 A total capacity target; measured load not available"
+      ],
+      "PHASE_POWER": [
+        5.583215497737557,
+        "calculated phase peak; conservative continuous routing screen"
+      ],
+      "O1_POWER": [
+        7.5,
+        "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with S2E"
+      ],
+      "S2E_POWER": [
+        7.5,
+        "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with O1"
+      ]
+    },
+    "stackup_decision": "4 layers recommended for continuous ground return, thermal spreading, controlled power/analog separation and lower plane-path impedance. Equal sharing is a scenario only; no plane/via credit until actual connected copper and stackup are verified.",
+    "calculation": {
+      "plan": {
+        "date": "G1 calculation input; derived from canonical BOM/netlist and explicit assumptions",
+        "nominal_copper_um": 35,
+        "calculation_copper_um": 31.5,
+        "trace_deltaT_C": 20,
+        "ambient_assumption_C": 50,
+        "resistivity_temperature_C": 70,
+        "drop_budget_mV_per_trunk": 50,
+        "classes": [
+          {
+            "name": "Default",
+            "trace_width": 0.25,
+            "clearance": 0.2,
+            "via_diameter": 0.8,
+            "via_drill": 0.4,
+            "nets": [],
+            "purpose": "Unclassified signal fallback; must not carry a power trunk."
+          },
+          {
+            "name": "INPUT_POWER",
+            "trace_width": 4.5,
+            "clearance": 0.3,
+            "via_diameter": 1.2,
+            "via_drill": 0.6,
+            "nets": [
+              "/VBAT",
+              "/ANODE",
+              "/VIN"
+            ],
+            "current_A": 5.15625,
+            "length_mm": 50,
+            "purpose": "Input continuous routing envelope; not fuse clearing/fault approval.",
+            "g1_current_basis": "82.5 W / (20 V × 80% assumed efficiency)"
+          },
+          {
+            "name": "BUS_POWER",
+            "trace_width": 6,
+            "clearance": 0.2,
+            "via_diameter": 1.2,
+            "via_drill": 0.6,
+            "nets": [
+              "/VOUT",
+              "/GND"
+            ],
+            "current_A": 7.5,
+            "length_mm": 50,
+            "purpose": "Common 11V trunk and power-return equivalent cross-section. GND plane preferred; analog taps are exceptions.",
+            "g1_current_basis": "7.5 A total capacity target; measured load not available"
+          },
+          {
+            "name": "PHASE_POWER",
+            "trace_width": 3.5,
+            "clearance": 0.2,
+            "via_diameter": 1.2,
+            "via_drill": 0.6,
+            "nets": [
+              "/SW_PH1",
+              "/SW_PH2",
+              "/ISNS1",
+              "/ISNS2"
+            ],
+            "current_A": 5.583215497737557,
+            "length_mm": 50,
+            "purpose": "Per-phase routing envelope; switch copper localized. ISNS IC branch is Kelvin, not a 3.5mm sense trace.",
+            "g1_current_basis": "calculated phase peak; conservative continuous routing screen"
+          },
+          {
+            "name": "O1_POWER",
+            "trace_width": 4.5,
+            "clearance": 0.2,
+            "via_diameter": 1.2,
+            "via_drill": 0.6,
+            "nets": [
+              "/O1_11V"
+            ],
+            "current_A": 7.5,
+            "length_mm": 50,
+            "purpose": "Routing envelope only. Does not assign O1 load, change RILIM, or guarantee current limit.",
+            "g1_current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with S2E"
+          },
+          {
+            "name": "S2E_POWER",
+            "trace_width": 2.5,
+            "clearance": 0.2,
+            "via_diameter": 1.2,
+            "via_drill": 0.6,
+            "nets": [
+              "/S2E_11V"
+            ],
+            "current_A": 7.5,
+            "length_mm": 50,
+            "purpose": "S2E routing envelope; current limit and real start load require validation.",
+            "g1_current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with O1"
+          },
+          {
+            "name": "AUX_LOCAL",
+            "trace_width": 0.5,
+            "clearance": 0.2,
+            "via_diameter": 0.8,
+            "via_drill": 0.4,
+            "nets": [
+              "/CBOOT1",
+              "/CBOOT2",
+              "Net-(CBOOT1-Pad1)",
+              "Net-(CBOOT2-Pad1)",
+              "/SW4_PH1",
+              "/SW4_PH2",
+              "/VCAP",
+              "/GATE",
+              "/VCC1",
+              "/VCC2",
+              "/VDDA1",
+              "/VDDA2"
+            ],
+            "current_A": 0.6,
+            "length_mm": 10,
+            "purpose": "Local bypass/bootstrap/gate branches; selected RMS routing envelope, peak pulse behavior not certified. Keep bootstrap and charge-pump loops very short.",
+            "g1_current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1."
+          },
+          {
+            "name": "CONTROL_SENSE",
+            "trace_width": 0.25,
+            "clearance": 0.2,
+            "via_diameter": 0.8,
+            "via_drill": 0.4,
+            "nets": [
+              "/CFG_PRI",
+              "/CFG_SEC",
+              "/COMP",
+              "/COMP_MID",
+              "/DVDT_O1",
+              "/DVDT_S2E",
+              "/EN_BUCK",
+              "/EN_EFUSE",
+              "/FB",
+              "/ILIM_O1",
+              "/ILIM_S2E",
+              "/IMON_O1",
+              "/IMON_S2E",
+              "/PG_O1",
+              "/PG_S2E",
+              "/RT_PH1",
+              "/RT_PH2",
+              "/SYNC"
+            ],
+            "current_A": 0.05,
+            "length_mm": 50,
+            "purpose": "Low-current analog/control traces; Kelvin branches from power nets must use manual narrow escape and documented connection point.",
+            "g1_current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1."
+          },
+          {
+            "name": "NC_DO_NOT_ROUTE",
+            "trace_width": 0.2,
+            "clearance": 0.2,
+            "via_diameter": 0.8,
+            "via_drill": 0.4,
+            "nets": [
+              "unconnected-(U1-NC-Pad10)",
+              "unconnected-(U2-NC-Pad10)",
+              "unconnected-(U2-PG{slash}SYNCOUT-Pad7)",
+              "unconnected-(U3-ITIMER-Pad7)",
+              "unconnected-(U4-ITIMER-Pad7)"
+            ],
+            "purpose": "Intentionally NC; class name is guidance, not a routing prohibition enforced by KiCad."
+          }
+        ],
+        "assumed_via_current_A": 0.5,
+        "assumed_via_plating_um": 25
+      },
+      "method": "Existing calculate_routing_rules.py method: IPC-2221 external empirical fit k=.048,b=.44,c=.725 plus copper Ohm-law IR drop.",
+      "scope": "4-layer equal-path result uses the external-layer fit as sensitivity only; internal-plane thermal/current sharing, layout and fabrication require confirmation.",
+      "via_assumption": "0.5 A/via and 25 µm assumed plating; counts per transition cluster.",
+      "sources": [
+        "https://www.ti.com/lit/an/snva766/snva766.pdf",
+        "https://jlcpcb.com/capabilities/pcb-capabilities/",
+        "https://docs.kicad.org/10.0/en/pcbnew/pcbnew.html"
+      ],
+      "rows": [
+        {
+          "name": "INPUT_POWER",
+          "current_A_screen": 5.15625,
+          "current_basis": "82.5 W / (20 V × 80% assumed efficiency)",
+          "length_mm": 50.0,
+          "existing_profile_width_mm": 4.5,
+          "2_layer": {
+            "min_width_mm": 3.3765514880952376,
+            "thermal_width_mm": 2.1051035960868933,
+            "drop_width_mm": 3.3765514880952376,
+            "drop_mV": 50.00000000000001,
+            "loss_W": 0.25781250000000006,
+            "existing_profile_meets_screen": true,
+            "via_count_per_transition_at_assumed_limit": 11,
+            "via_bank_drop_mV_per_transition": 0.6565988106837933
+          },
+          "4_layer_two_equal_paths": {
+            "current_per_path_A": 2.578125,
+            "min_width_per_path_mm": 1.6882757440476188,
+            "thermal_width_per_path_mm": 0.8092071025985089,
+            "drop_width_per_path_mm": 1.6882757440476188,
+            "drop_mV": 50.00000000000001,
+            "loss_W": 0.25781250000000006,
+            "via_count_per_path_per_transition_at_assumed_limit": 6,
+            "total_via_count_per_transition": 12,
+            "via_bank_drop_mV_per_transition": 0.6018822431268106
+          },
+          "single_via_resistance_mohm_assumed": 1.400744129458759,
+          "tag": "HESAP/VARSAYIM"
+        },
+        {
+          "name": "BUS_POWER",
+          "current_A_screen": 7.5,
+          "current_basis": "7.5 A total capacity target; measured load not available",
+          "length_mm": 50.0,
+          "existing_profile_width_mm": 6,
+          "2_layer": {
+            "min_width_mm": 4.911347619047618,
+            "thermal_width_mm": 3.529595344789084,
+            "drop_width_mm": 4.911347619047618,
+            "drop_mV": 50.000000000000014,
+            "loss_W": 0.3750000000000001,
+            "existing_profile_meets_screen": true,
+            "via_count_per_transition_at_assumed_limit": 15,
+            "via_bank_drop_mV_per_transition": 0.7003720647293795
+          },
+          "4_layer_two_equal_paths": {
+            "current_per_path_A": 3.75,
+            "min_width_per_path_mm": 2.455673809523809,
+            "thermal_width_per_path_mm": 1.3567853038735032,
+            "drop_width_per_path_mm": 2.455673809523809,
+            "drop_mV": 50.000000000000014,
+            "loss_W": 0.3750000000000001,
+            "via_count_per_path_per_transition_at_assumed_limit": 8,
+            "total_via_count_per_transition": 16,
+            "via_bank_drop_mV_per_transition": 0.6565988106837933
+          },
+          "single_via_resistance_mohm_assumed": 1.400744129458759,
+          "tag": "HESAP/VARSAYIM"
+        },
+        {
+          "name": "PHASE_POWER",
+          "current_A_screen": 5.583215497737557,
+          "current_basis": "calculated phase peak; conservative continuous routing screen",
+          "length_mm": 50.0,
+          "existing_profile_width_mm": 3.5,
+          "2_layer": {
+            "min_width_mm": 3.6561482855257483,
+            "thermal_width_mm": 2.349249979098897,
+            "drop_width_mm": 3.6561482855257483,
+            "drop_mV": 50.00000000000001,
+            "loss_W": 0.2791607748868779,
+            "existing_profile_meets_screen": false,
+            "via_count_per_transition_at_assumed_limit": 12,
+            "via_bank_drop_mV_per_transition": 0.6517213609965872
+          },
+          "4_layer_two_equal_paths": {
+            "current_per_path_A": 2.7916077488687785,
+            "min_width_per_path_mm": 1.8280741427628742,
+            "thermal_width_per_path_mm": 0.9030575846243325,
+            "drop_width_per_path_mm": 1.8280741427628742,
+            "drop_mV": 50.00000000000001,
+            "loss_W": 0.2791607748868779,
+            "via_count_per_path_per_transition_at_assumed_limit": 6,
+            "total_via_count_per_transition": 12,
+            "via_bank_drop_mV_per_transition": 0.6517213609965872
+          },
+          "single_via_resistance_mohm_assumed": 1.400744129458759,
+          "tag": "HESAP/VARSAYIM"
+        },
+        {
+          "name": "O1_POWER",
+          "current_A_screen": 7.5,
+          "current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with S2E",
+          "length_mm": 50.0,
+          "existing_profile_width_mm": 4.5,
+          "2_layer": {
+            "min_width_mm": 4.911347619047618,
+            "thermal_width_mm": 3.529595344789084,
+            "drop_width_mm": 4.911347619047618,
+            "drop_mV": 50.000000000000014,
+            "loss_W": 0.3750000000000001,
+            "existing_profile_meets_screen": false,
+            "via_count_per_transition_at_assumed_limit": 15,
+            "via_bank_drop_mV_per_transition": 0.7003720647293795
+          },
+          "4_layer_two_equal_paths": {
+            "current_per_path_A": 3.75,
+            "min_width_per_path_mm": 2.455673809523809,
+            "thermal_width_per_path_mm": 1.3567853038735032,
+            "drop_width_per_path_mm": 2.455673809523809,
+            "drop_mV": 50.000000000000014,
+            "loss_W": 0.3750000000000001,
+            "via_count_per_path_per_transition_at_assumed_limit": 8,
+            "total_via_count_per_transition": 16,
+            "via_bank_drop_mV_per_transition": 0.6565988106837933
+          },
+          "single_via_resistance_mohm_assumed": 1.400744129458759,
+          "tag": "HESAP/VARSAYIM"
+        },
+        {
+          "name": "S2E_POWER",
+          "current_A_screen": 7.5,
+          "current_basis": "individual full-capacity branch envelope because port split is unmeasured; not simultaneous with O1",
+          "length_mm": 50.0,
+          "existing_profile_width_mm": 2.5,
+          "2_layer": {
+            "min_width_mm": 4.911347619047618,
+            "thermal_width_mm": 3.529595344789084,
+            "drop_width_mm": 4.911347619047618,
+            "drop_mV": 50.000000000000014,
+            "loss_W": 0.3750000000000001,
+            "existing_profile_meets_screen": false,
+            "via_count_per_transition_at_assumed_limit": 15,
+            "via_bank_drop_mV_per_transition": 0.7003720647293795
+          },
+          "4_layer_two_equal_paths": {
+            "current_per_path_A": 3.75,
+            "min_width_per_path_mm": 2.455673809523809,
+            "thermal_width_per_path_mm": 1.3567853038735032,
+            "drop_width_per_path_mm": 2.455673809523809,
+            "drop_mV": 50.000000000000014,
+            "loss_W": 0.3750000000000001,
+            "via_count_per_path_per_transition_at_assumed_limit": 8,
+            "total_via_count_per_transition": 16,
+            "via_bank_drop_mV_per_transition": 0.6565988106837933
+          },
+          "single_via_resistance_mohm_assumed": 1.400744129458759,
+          "tag": "HESAP/VARSAYIM"
+        },
+        {
+          "name": "AUX_LOCAL",
+          "current_A_screen": 0.6,
+          "current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1.",
+          "length_mm": 10.0,
+          "existing_profile_width_mm": 0.5,
+          "2_layer": {
+            "min_width_mm": 0.10832921340497016,
+            "thermal_width_mm": 0.10832921340497016,
+            "drop_width_mm": 0.0785815619047619,
+            "drop_mV": 36.2697925309391,
+            "loss_W": 0.02176187551856346,
+            "existing_profile_meets_screen": true,
+            "via_count_per_transition_at_assumed_limit": 2,
+            "via_bank_drop_mV_per_transition": 0.4202232388376277
+          },
+          "4_layer_two_equal_paths": {
+            "current_per_path_A": 0.3,
+            "min_width_per_path_mm": 0.041642021356650155,
+            "thermal_width_per_path_mm": 0.041642021356650155,
+            "drop_width_per_path_mm": 0.03929078095238095,
+            "drop_mV": 47.17684165217196,
+            "loss_W": 0.028306104991303177,
+            "via_count_per_path_per_transition_at_assumed_limit": 1,
+            "total_via_count_per_transition": 2,
+            "via_bank_drop_mV_per_transition": 0.4202232388376277
+          },
+          "single_via_resistance_mohm_assumed": 1.400744129458759,
+          "tag": "HESAP/VARSAYIM"
+        },
+        {
+          "name": "CONTROL_SENSE",
+          "current_A_screen": 0.05,
+          "current_basis": "Existing diagnostic plan envelope retained; not re-qualified in G1.",
+          "length_mm": 50.0,
+          "existing_profile_width_mm": 0.25,
+          "2_layer": {
+            "min_width_mm": 0.03274231746031745,
+            "thermal_width_mm": 0.003517383589703275,
+            "drop_width_mm": 0.03274231746031745,
+            "drop_mV": 50.000000000000014,
+            "loss_W": 0.002500000000000001,
+            "existing_profile_meets_screen": true,
+            "via_count_per_transition_at_assumed_limit": 1,
+            "via_bank_drop_mV_per_transition": 0.07003720647293796
+          },
+          "4_layer_two_equal_paths": {
+            "current_per_path_A": 0.025,
+            "min_width_per_path_mm": 0.016371158730158725,
+            "thermal_width_per_path_mm": 0.001352091074587591,
+            "drop_width_per_path_mm": 0.016371158730158725,
+            "drop_mV": 50.000000000000014,
+            "loss_W": 0.002500000000000001,
+            "via_count_per_path_per_transition_at_assumed_limit": 1,
+            "total_via_count_per_transition": 2,
+            "via_bank_drop_mV_per_transition": 0.03501860323646898
+          },
+          "single_via_resistance_mohm_assumed": 1.400744129458759,
+          "tag": "HESAP/VARSAYIM"
+        }
+      ]
+    },
+    "dual_path_checks": [
+      {
+        "name": "INPUT_POWER 2-layer thermal width",
+        "unit": "mm",
+        "value": 2.1051035960868933,
+        "second_value": 2.1051035960868933,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "INPUT_POWER 2-layer IR-drop width",
+        "unit": "mm",
+        "value": 3.3765514880952376,
+        "second_value": 3.376551488095238,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 4.440892098500626e-16,
+        "relative_difference_percent": 1.3152152763427274e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "INPUT_POWER 4-layer path thermal width",
+        "unit": "mm",
+        "value": 0.8092071025985089,
+        "second_value": 0.809207102598509,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 1.1102230246251565e-16,
+        "relative_difference_percent": 1.3719887295354075e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "INPUT_POWER 4-layer path IR-drop width",
+        "unit": "mm",
+        "value": 1.6882757440476188,
+        "second_value": 1.688275744047619,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 2.220446049250313e-16,
+        "relative_difference_percent": 1.3152152763427274e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "BUS_POWER 2-layer thermal width",
+        "unit": "mm",
+        "value": 3.529595344789084,
+        "second_value": 3.529595344789084,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "BUS_POWER 2-layer IR-drop width",
+        "unit": "mm",
+        "value": 4.911347619047618,
+        "second_value": 4.911347619047619,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 8.881784197001252e-16,
+        "relative_difference_percent": 1.8084210049712502e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "BUS_POWER 4-layer path thermal width",
+        "unit": "mm",
+        "value": 1.3567853038735032,
+        "second_value": 1.3567853038735032,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "BUS_POWER 4-layer path IR-drop width",
+        "unit": "mm",
+        "value": 2.455673809523809,
+        "second_value": 2.4556738095238093,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 4.440892098500626e-16,
+        "relative_difference_percent": 1.8084210049712502e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "PHASE_POWER 2-layer thermal width",
+        "unit": "mm",
+        "value": 2.349249979098897,
+        "second_value": 2.349249979098897,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "PHASE_POWER 2-layer IR-drop width",
+        "unit": "mm",
+        "value": 3.6561482855257483,
+        "second_value": 3.6561482855257488,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 4.440892098500626e-16,
+        "relative_difference_percent": 1.2146367575083274e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "PHASE_POWER 4-layer path thermal width",
+        "unit": "mm",
+        "value": 0.9030575846243325,
+        "second_value": 0.9030575846243325,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "PHASE_POWER 4-layer path IR-drop width",
+        "unit": "mm",
+        "value": 1.8280741427628742,
+        "second_value": 1.8280741427628744,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 2.220446049250313e-16,
+        "relative_difference_percent": 1.2146367575083274e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "O1_POWER 2-layer thermal width",
+        "unit": "mm",
+        "value": 3.529595344789084,
+        "second_value": 3.529595344789084,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "O1_POWER 2-layer IR-drop width",
+        "unit": "mm",
+        "value": 4.911347619047618,
+        "second_value": 4.911347619047619,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 8.881784197001252e-16,
+        "relative_difference_percent": 1.8084210049712502e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "O1_POWER 4-layer path thermal width",
+        "unit": "mm",
+        "value": 1.3567853038735032,
+        "second_value": 1.3567853038735032,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "O1_POWER 4-layer path IR-drop width",
+        "unit": "mm",
+        "value": 2.455673809523809,
+        "second_value": 2.4556738095238093,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 4.440892098500626e-16,
+        "relative_difference_percent": 1.8084210049712502e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "S2E_POWER 2-layer thermal width",
+        "unit": "mm",
+        "value": 3.529595344789084,
+        "second_value": 3.529595344789084,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "S2E_POWER 2-layer IR-drop width",
+        "unit": "mm",
+        "value": 4.911347619047618,
+        "second_value": 4.911347619047619,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 8.881784197001252e-16,
+        "relative_difference_percent": 1.8084210049712502e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "S2E_POWER 4-layer path thermal width",
+        "unit": "mm",
+        "value": 1.3567853038735032,
+        "second_value": 1.3567853038735032,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "S2E_POWER 4-layer path IR-drop width",
+        "unit": "mm",
+        "value": 2.455673809523809,
+        "second_value": 2.4556738095238093,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 4.440892098500626e-16,
+        "relative_difference_percent": 1.8084210049712502e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "AUX_LOCAL 2-layer thermal width",
+        "unit": "mm",
+        "value": 0.10832921340497016,
+        "second_value": 0.10832921340497015,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 1.3877787807814457e-17,
+        "relative_difference_percent": 1.2810752863066337e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "AUX_LOCAL 2-layer IR-drop width",
+        "unit": "mm",
+        "value": 0.0785815619047619,
+        "second_value": 0.0785815619047619,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "AUX_LOCAL 4-layer path thermal width",
+        "unit": "mm",
+        "value": 0.041642021356650155,
+        "second_value": 0.04164202135665015,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 6.938893903907228e-18,
+        "relative_difference_percent": 1.6663201443748118e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "AUX_LOCAL 4-layer path IR-drop width",
+        "unit": "mm",
+        "value": 0.03929078095238095,
+        "second_value": 0.03929078095238095,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "CONTROL_SENSE 2-layer thermal width",
+        "unit": "mm",
+        "value": 0.003517383589703275,
+        "second_value": 0.003517383589703275,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "CONTROL_SENSE 2-layer IR-drop width",
+        "unit": "mm",
+        "value": 0.03274231746031745,
+        "second_value": 0.03274231746031746,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 6.938893903907228e-18,
+        "relative_difference_percent": 2.119243365200684e-14,
+        "tag": "HESAP"
+      },
+      {
+        "name": "CONTROL_SENSE 4-layer path thermal width",
+        "unit": "mm",
+        "value": 0.001352091074587591,
+        "second_value": 0.001352091074587591,
+        "method_1": "IPC-2221 area then copper conversion",
+        "method_2": "area in mil² divided by copper thickness in mil",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 0.0,
+        "relative_difference_percent": 0.0,
+        "tag": "HESAP"
+      },
+      {
+        "name": "CONTROL_SENSE 4-layer path IR-drop width",
+        "unit": "mm",
+        "value": 0.016371158730158725,
+        "second_value": 0.01637115873015873,
+        "method_1": "rho*length*current/(copper*allowed_drop)",
+        "method_2": "rho*length/(copper*(allowed_drop/current))",
+        "validation_scope": "same_equation_arithmetic_crosscheck",
+        "absolute_difference": 3.469446951953614e-18,
+        "relative_difference_percent": 2.119243365200684e-14,
+        "tag": "HESAP"
+      }
+    ]
+  },
+  "datasheet_pages": {
+    "LM70880-Q1": {
+      "PDF_page_5": "absolute maximum ratings",
+      "PDF_page_6": "EN thresholds and thermal information; JESD thermal resistance is not application design value",
+      "PDF_page_7": "VFB 794/800/806mV, IFB 75nA, external gm 970/1200uS, 49.9kHz-frequency entry",
+      "PDF_page_8": "ISNS threshold 50/56/62mV, delay datum",
+      "PDF_page_14": "oscillator frequency equation",
+      "PDF_page_16": "external compensation/current sense description",
+      "PDF_page_34": "peak current overshoot warning and Kelvin routing"
+    },
+    "TPS25982": {
+      "PDF_page_5": "pin functions and pins",
+      "PDF_page_7": "operating conditions",
+      "PDF_page_8": "thermal information and recommended limits",
+      "PDF_page_9": "ILIM/OVP electrical characteristics at listed resistor values",
+      "PDF_page_10": "OVP and short response timing",
+      "PDF_page_21": "OVP response behavior",
+      "PDF_page_23": "RILIM equation/current breaker",
+      "PDF_page_28": "IMON accuracy application range",
+      "PDF_page_35": "RILIM selection example"
+    },
+    "LM74700-Q1": {
+      "PDF_page_5": "absolute maximum and recommended operating ratings",
+      "PDF_page_6": "thermal/electrical characteristics"
+    },
+    "Vishay_IHLP4040": {
+      "PDF_page_1": "6.8uH row: DCRmax23.3mOhm, heat-rating current8A, saturation current13.5A at approximate20% drop; 75V rated operating voltage",
+      "PDF_page_2-3": "inductance and thermal performance graphs; exact application temperature must be checked"
+    },
+    "TDK_C5750": {
+      "PDF_page_1": "22uF±20%,100V,X7S±22%,2220; DC-bias chart is typical only; vendor model AC numbers in hardware/validation/c5750/vendor-ac-summary.json"
+    },
+    "Molex_43045": {
+      "PDF_page_8": "PS-43045-001 Rev P5 current-derating table; exact assembly wire/circuit configuration matters"
+    },
+    "Infineon_BSC160N10NS3G": {
+      "PDF_page_1": "Product summary 100V/16mOhm/PG-TDSON-8; SOA page/operating waveform still requires exact package datasheet review"
+    }
+  },
+  "dual_path_validation_summary": {
+    "total_checks": 65,
+    "same_equation_arithmetic_crosschecks": 59,
+    "independent_algorithm_same_equation": 6,
+    "independent_physical_model_validations": 0,
+    "interpretation": "A second arithmetic path or algorithm is not independent model evidence. No calculation is independently validated against a production-silicon or measured physical model."
+  },
+  "dual_path_checks": [
+    {
+      "name": "inductor ripple at 26 V, minimum L and frequency",
+      "unit": "A p-p",
+      "value": 2.9164309954751135,
+      "second_value": 2.9164309954751135,
+      "method_1": "Vout*(1-Vout/Vin)/(Lmin*fmin)",
+      "method_2": "(Vin-Vout)*D/(Lmin*fmin)",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "phase peak current at 7.5 A total, +10% share",
+      "unit": "A",
+      "value": 5.583215497737557,
+      "second_value": 5.583215497737557,
+      "method_1": "Iphase_avg + deltaIL/2",
+      "method_2": "Iout*(1+share_error)/2 + deltaIL/2",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "two-phase output ripple, aligned conservative capacitor-only",
+      "unit": "V p-p",
+      "value": 0.019673419691908854,
+      "second_value": 0.019673419691908854,
+      "method_1": "(2*deltaIL)/(8*f*Cmin)",
+      "method_2": "deltaIL/(4*f*Cmin)",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "nominal feedback setpoint",
+      "unit": "V",
+      "value": 10.996078431372549,
+      "second_value": 10.996078431372549,
+      "method_1": "Vref*(1+Rtop/Rbottom)",
+      "method_2": "Vref*(Rtop+Rbottom)/Rbottom",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "cycle sense threshold lower-current corner",
+      "unit": "A",
+      "value": 6.535306996046139,
+      "second_value": 6.535306996046139,
+      "method_1": "50mV/(Rmax incl. TCR)",
+      "method_2": "50mV/(7.5mΩ*1.01*1.01)",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "cycle sense threshold upper-current corner",
+      "unit": "A",
+      "value": 8.434513485018536,
+      "second_value": 8.434513485018536,
+      "method_1": "62mV/(Rmin incl. TCR)",
+      "method_2": "62mV/(7.5mΩ*0.99*0.99)",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "Q1 conduction loss at 82.5 W, 20 V, 80% efficiency",
+      "unit": "W",
+      "value": 0.425390625,
+      "second_value": 0.425390625,
+      "method_1": "I²*RDS(on), 25C datasheet max used as screen",
+      "method_2": "(Pout/(Vin*η))²*16mΩ",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "COUT bank low sensitivity",
+      "unit": "F",
+      "value": 9.265137432724022e-05,
+      "second_value": 9.265137432724022e-05,
+      "method_1": "vendor-summary Ceff × tolerance × X7S temp × assumed aging",
+      "method_2": "per-part vendor Ceff × 8 × tolerance × X7S temp × assumed aging",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "COUT bank typical at 11 V",
+      "unit": "F",
+      "value": 0.0001649775183889605,
+      "second_value": 0.0001649775183889605,
+      "method_1": "local vendor summary bank value",
+      "method_2": "per-part vendor model × 8",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "SİM"
+    },
+    {
+      "name": "COUT bank upper sensitivity",
+      "unit": "F",
+      "value": 0.00024152708692143818,
+      "second_value": 0.00024152708692143815,
+      "method_1": "vendor-summary upper bank sensitivity",
+      "method_2": "per-part Ceff × 8 × tolerance × X7S temperature",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 2.710505431213761e-20,
+      "relative_difference_percent": 1.1222366260292e-14,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "FB lower static corner",
+      "unit": "V",
+      "value": 10.833301778897633,
+      "second_value": 10.833301778897633,
+      "method_1": "16-corner vertex enumeration",
+      "method_2": "monotonic closed-form corner",
+      "validation_scope": "independent_algorithm_same_equation",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "FB upper static corner",
+      "unit": "V",
+      "value": 11.160493549161034,
+      "second_value": 11.160493549161034,
+      "method_1": "16-corner vertex enumeration",
+      "method_2": "monotonic closed-form corner",
+      "validation_scope": "independent_algorithm_same_equation",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "existing 180k/10k lower UVLO",
+      "unit": "V",
+      "value": 17.71138613861386,
+      "second_value": 17.71138613861386,
+      "method_1": "corner vertex enumeration",
+      "method_2": "monotonic closed form",
+      "validation_scope": "independent_algorithm_same_equation",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "existing 180k/10k upper UVLO",
+      "unit": "V",
+      "value": 20.331818181818182,
+      "second_value": 20.331818181818182,
+      "method_1": "corner vertex enumeration",
+      "method_2": "monotonic closed form",
+      "validation_scope": "independent_algorithm_same_equation",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "candidate 174k/10k lower UVLO",
+      "unit": "V",
+      "value": 17.152673267326733,
+      "second_value": 17.152673267326733,
+      "method_1": "corner vertex enumeration",
+      "method_2": "monotonic closed form",
+      "validation_scope": "independent_algorithm_same_equation",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "candidate 174k/10k upper UVLO",
+      "unit": "V",
+      "value": 19.689090909090908,
+      "second_value": 19.689090909090908,
+      "method_1": "corner vertex enumeration",
+      "method_2": "monotonic closed form",
+      "validation_scope": "independent_algorithm_same_equation",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "O1 nominal ILIM formula",
+      "unit": "A",
+      "value": 4.9604983388704325,
+      "second_value": 4.9604983388704325,
+      "method_1": "1460/R(ohm)+0.11",
+      "method_2": "1.460/R(kΩ)+0.11",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "DATASHEET/HESAP"
+    },
+    {
+      "name": "O1 dV/dt pin current",
+      "unit": "V/s",
+      "value": 4600.0,
+      "second_value": 4600.0,
+      "method_1": "typical pin current / C_DVDT",
+      "method_2": "4.6 V/ms converted to V/s",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "DATASHEET/HESAP"
+    },
+    {
+      "name": "O1 port capacitor energy 0 to 11 V",
+      "unit": "J",
+      "value": 0.000605,
+      "second_value": 0.000605,
+      "method_1": "0.5*C*V²",
+      "method_2": "Q*V/2 where Q=C*V",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "O1 eFuse short pulse FET energy sensitivity",
+      "unit": "J",
+      "value": 6.547857807308971e-05,
+      "second_value": 6.547857807308971e-05,
+      "method_1": "(Vin*Ishort)*t",
+      "method_2": "Vin*t*Ishort",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "S2E nominal ILIM formula",
+      "unit": "A",
+      "value": 2.5272185430463576,
+      "second_value": 2.5272185430463576,
+      "method_1": "1460/R(ohm)+0.11",
+      "method_2": "1.460/R(kΩ)+0.11",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "DATASHEET/HESAP"
+    },
+    {
+      "name": "S2E dV/dt pin current",
+      "unit": "V/s",
+      "value": 4600.0,
+      "second_value": 4600.0,
+      "method_1": "typical pin current / C_DVDT",
+      "method_2": "4.6 V/ms converted to V/s",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "DATASHEET/HESAP"
+    },
+    {
+      "name": "S2E port capacitor energy 0 to 11 V",
+      "unit": "J",
+      "value": 0.000605,
+      "second_value": 0.000605,
+      "method_1": "0.5*C*V²",
+      "method_2": "Q*V/2 where Q=C*V",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "S2E eFuse short pulse FET energy sensitivity",
+      "unit": "J",
+      "value": 3.335928476821192e-05,
+      "second_value": 3.335928476821192e-05,
+      "method_1": "(Vin*Ishort)*t",
+      "method_2": "Vin*t*Ishort",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "O1 EN nominal bus threshold",
+      "unit": "V",
+      "value": 8.988,
+      "second_value": 8.988000000000001,
+      "method_1": "Vth*(Rtop+Rbottom)/Rbottom",
+      "method_2": "Vth*(1+Rtop/Rbottom)",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 1.7763568394002505e-15,
+      "relative_difference_percent": 1.976364974855641e-14,
+      "tag": "DATASHEET/HESAP"
+    },
+    {
+      "name": "O1 PG divider at 11V",
+      "unit": "V",
+      "value": 1.6779661016949152,
+      "second_value": 1.6779661016949152,
+      "method_1": "Vin*Rbottom/(Rtop+Rbottom)",
+      "method_2": "Vin/(1+Rtop/Rbottom)",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "S2E EN nominal bus threshold",
+      "unit": "V",
+      "value": 8.988,
+      "second_value": 8.988000000000001,
+      "method_1": "Vth*(Rtop+Rbottom)/Rbottom",
+      "method_2": "Vth*(1+Rtop/Rbottom)",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 1.7763568394002505e-15,
+      "relative_difference_percent": 1.976364974855641e-14,
+      "tag": "DATASHEET/HESAP"
+    },
+    {
+      "name": "S2E PG divider at 11V",
+      "unit": "V",
+      "value": 1.6779661016949152,
+      "second_value": 1.6779661016949152,
+      "method_1": "Vin*Rbottom/(Rtop+Rbottom)",
+      "method_2": "Vin/(1+Rtop/Rbottom)",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "sum of nominal O1 and S2E current limits",
+      "unit": "A",
+      "value": 7.48771688191679,
+      "second_value": 7.48771688191679,
+      "method_1": "sum calculated channel limits",
+      "method_2": "independent per-channel formula then sum",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "RCOMP for assumed 40 kHz target, low assumed Ceff",
+      "unit": "ohm",
+      "value": 10005.630144518795,
+      "second_value": 10005.630144518796,
+      "method_1": "2π*fc*(Vout/Vref)*(Rs/N*10/gm)*Ceff",
+      "method_2": "(fc*2π*Ceff)*(Vout/Vref)*(Rs/(N*gm))*10",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 1.8189894035458565e-12,
+      "relative_difference_percent": 1.8179658624922495e-14,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "RCOMP for assumed 40 kHz target, vendor typical",
+      "unit": "ohm",
+      "value": 17816.29299237677,
+      "second_value": 17816.29299237677,
+      "method_1": "2π*fc*(Vout/Vref)*(Rs/N*10/gm)*Ceff",
+      "method_2": "(fc*2π*Ceff)*(Vout/Vref)*(Rs/(N*gm))*10",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "RCOMP for assumed 40 kHz target, high assumed Ceff",
+      "unit": "ohm",
+      "value": 26083.052940839592,
+      "second_value": 26083.052940839592,
+      "method_1": "2π*fc*(Vout/Vref)*(Rs/N*10/gm)*Ceff",
+      "method_2": "(fc*2π*Ceff)*(Vout/Vref)*(Rs/(N*gm))*10",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "inductor copper loss per phase, hot DCR sensitivity",
+      "unit": "W",
+      "value": 0.5752798079677647,
+      "second_value": 0.5752798079677646,
+      "method_1": "I_rms² × hot DCR",
+      "method_2": "(I_DC² + deltaI²/12) × hot DCR",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 1.1102230246251565e-16,
+      "relative_difference_percent": 1.9298835266739745e-14,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "shunt power per phase, tolerance/TCR sensitivity",
+      "unit": "W",
+      "value": 0.13560512528335653,
+      "second_value": 0.13560512528335653,
+      "method_1": "I_rms² × Rmax(T)",
+      "method_2": "(I_DC² + deltaI²/12) × Rnom × tolerance × TCR",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "battery input current at 82.5 W / 80%",
+      "unit": "A",
+      "value": 5.15625,
+      "second_value": 5.15625,
+      "method_1": "Pout/(Vin×efficiency)",
+      "method_2": "Pin/Vin",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "proposed comparator high trip corner",
+      "unit": "V",
+      "value": 11.4635,
+      "second_value": 11.4635,
+      "method_1": "Vtrip_nom × (1+tolerance)",
+      "method_2": "nominal threshold plus relative error",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "O1 capacitive overshoot at 10 A / 0.5 us / 10 uF",
+      "unit": "V",
+      "value": 0.4999999999999999,
+      "second_value": 0.4999999999999999,
+      "method_1": "I×t/C",
+      "method_2": "(I×t) charge / C",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "VARSAYIM"
+    },
+    {
+      "name": "INPUT_POWER 2-layer thermal width",
+      "unit": "mm",
+      "value": 2.1051035960868933,
+      "second_value": 2.1051035960868933,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "INPUT_POWER 2-layer IR-drop width",
+      "unit": "mm",
+      "value": 3.3765514880952376,
+      "second_value": 3.376551488095238,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 4.440892098500626e-16,
+      "relative_difference_percent": 1.3152152763427274e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "INPUT_POWER 4-layer path thermal width",
+      "unit": "mm",
+      "value": 0.8092071025985089,
+      "second_value": 0.809207102598509,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 1.1102230246251565e-16,
+      "relative_difference_percent": 1.3719887295354075e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "INPUT_POWER 4-layer path IR-drop width",
+      "unit": "mm",
+      "value": 1.6882757440476188,
+      "second_value": 1.688275744047619,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 2.220446049250313e-16,
+      "relative_difference_percent": 1.3152152763427274e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "BUS_POWER 2-layer thermal width",
+      "unit": "mm",
+      "value": 3.529595344789084,
+      "second_value": 3.529595344789084,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "BUS_POWER 2-layer IR-drop width",
+      "unit": "mm",
+      "value": 4.911347619047618,
+      "second_value": 4.911347619047619,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 8.881784197001252e-16,
+      "relative_difference_percent": 1.8084210049712502e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "BUS_POWER 4-layer path thermal width",
+      "unit": "mm",
+      "value": 1.3567853038735032,
+      "second_value": 1.3567853038735032,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "BUS_POWER 4-layer path IR-drop width",
+      "unit": "mm",
+      "value": 2.455673809523809,
+      "second_value": 2.4556738095238093,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 4.440892098500626e-16,
+      "relative_difference_percent": 1.8084210049712502e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "PHASE_POWER 2-layer thermal width",
+      "unit": "mm",
+      "value": 2.349249979098897,
+      "second_value": 2.349249979098897,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "PHASE_POWER 2-layer IR-drop width",
+      "unit": "mm",
+      "value": 3.6561482855257483,
+      "second_value": 3.6561482855257488,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 4.440892098500626e-16,
+      "relative_difference_percent": 1.2146367575083274e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "PHASE_POWER 4-layer path thermal width",
+      "unit": "mm",
+      "value": 0.9030575846243325,
+      "second_value": 0.9030575846243325,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "PHASE_POWER 4-layer path IR-drop width",
+      "unit": "mm",
+      "value": 1.8280741427628742,
+      "second_value": 1.8280741427628744,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 2.220446049250313e-16,
+      "relative_difference_percent": 1.2146367575083274e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "O1_POWER 2-layer thermal width",
+      "unit": "mm",
+      "value": 3.529595344789084,
+      "second_value": 3.529595344789084,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "O1_POWER 2-layer IR-drop width",
+      "unit": "mm",
+      "value": 4.911347619047618,
+      "second_value": 4.911347619047619,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 8.881784197001252e-16,
+      "relative_difference_percent": 1.8084210049712502e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "O1_POWER 4-layer path thermal width",
+      "unit": "mm",
+      "value": 1.3567853038735032,
+      "second_value": 1.3567853038735032,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "O1_POWER 4-layer path IR-drop width",
+      "unit": "mm",
+      "value": 2.455673809523809,
+      "second_value": 2.4556738095238093,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 4.440892098500626e-16,
+      "relative_difference_percent": 1.8084210049712502e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "S2E_POWER 2-layer thermal width",
+      "unit": "mm",
+      "value": 3.529595344789084,
+      "second_value": 3.529595344789084,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "S2E_POWER 2-layer IR-drop width",
+      "unit": "mm",
+      "value": 4.911347619047618,
+      "second_value": 4.911347619047619,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 8.881784197001252e-16,
+      "relative_difference_percent": 1.8084210049712502e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "S2E_POWER 4-layer path thermal width",
+      "unit": "mm",
+      "value": 1.3567853038735032,
+      "second_value": 1.3567853038735032,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "S2E_POWER 4-layer path IR-drop width",
+      "unit": "mm",
+      "value": 2.455673809523809,
+      "second_value": 2.4556738095238093,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 4.440892098500626e-16,
+      "relative_difference_percent": 1.8084210049712502e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "AUX_LOCAL 2-layer thermal width",
+      "unit": "mm",
+      "value": 0.10832921340497016,
+      "second_value": 0.10832921340497015,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 1.3877787807814457e-17,
+      "relative_difference_percent": 1.2810752863066337e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "AUX_LOCAL 2-layer IR-drop width",
+      "unit": "mm",
+      "value": 0.0785815619047619,
+      "second_value": 0.0785815619047619,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "AUX_LOCAL 4-layer path thermal width",
+      "unit": "mm",
+      "value": 0.041642021356650155,
+      "second_value": 0.04164202135665015,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 6.938893903907228e-18,
+      "relative_difference_percent": 1.6663201443748118e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "AUX_LOCAL 4-layer path IR-drop width",
+      "unit": "mm",
+      "value": 0.03929078095238095,
+      "second_value": 0.03929078095238095,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "CONTROL_SENSE 2-layer thermal width",
+      "unit": "mm",
+      "value": 0.003517383589703275,
+      "second_value": 0.003517383589703275,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "CONTROL_SENSE 2-layer IR-drop width",
+      "unit": "mm",
+      "value": 0.03274231746031745,
+      "second_value": 0.03274231746031746,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 6.938893903907228e-18,
+      "relative_difference_percent": 2.119243365200684e-14,
+      "tag": "HESAP"
+    },
+    {
+      "name": "CONTROL_SENSE 4-layer path thermal width",
+      "unit": "mm",
+      "value": 0.001352091074587591,
+      "second_value": 0.001352091074587591,
+      "method_1": "IPC-2221 area then copper conversion",
+      "method_2": "area in mil² divided by copper thickness in mil",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 0.0,
+      "relative_difference_percent": 0.0,
+      "tag": "HESAP"
+    },
+    {
+      "name": "CONTROL_SENSE 4-layer path IR-drop width",
+      "unit": "mm",
+      "value": 0.016371158730158725,
+      "second_value": 0.01637115873015873,
+      "method_1": "rho*length*current/(copper*allowed_drop)",
+      "method_2": "rho*length/(copper*(allowed_drop/current))",
+      "validation_scope": "same_equation_arithmetic_crosscheck",
+      "absolute_difference": 3.469446951953614e-18,
+      "relative_difference_percent": 2.119243365200684e-14,
+      "tag": "HESAP"
+    }
+  ],
+  "status": "Calculations are screens; no physical acceptance."
+}

@@ -1,0 +1,33 @@
+Note: gnd in a subcircuit is not set to 0 automatically
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * measure switch-edge timing in preserved family-1 ideal latch model.
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 300024
+
+  Measurements for Transient Analysis
+
+o1_peak             =  1.19741e+01 at=  5.00073e-03
+ovp_trip            =   4.99995e-03
+ctrl_open           =   5.00051e-03
+ovp_toff            =  5.55847e-07 targ=  5.00051e-03 trig=  4.99995e-03
+i_before_off        =  4.48628e+00
+i_after_off         =  4.92761e-12
+
+
+Total analysis time (seconds) = 0.583686
+
+Total elapsed time (seconds) = 0.593
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 10086.895 MB.
+Maximum ngspice program size =   19.262 MB.
+Current ngspice program size =   19.262 MB.

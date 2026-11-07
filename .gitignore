@@ -35,3 +35,9 @@ hardware/validation/c5750/readme_ltspice_en.txt
 
 # Failed convergence generated a29MB diagnostic; retain locally, summarize in reports
 simulation/candidate-global-startup-one-hot-r2.log
+
+# G3: test/tool caches and ad-hoc ngspice scratch files
+.pytest_cache/
+**/_t.cir
+**/_t.log
+reports/**/sim/**/dbg/

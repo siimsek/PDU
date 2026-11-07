@@ -1,0 +1,35 @@
+Note: gnd in a subcircuit is not set to 0 automatically
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * tps1686 high-voltage efuse concept: input withstand plus port ovlo.
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 100022
+
+  Measurements for Transient Analysis
+
+raw_peak            =  3.95354e+01 at=  1.07150e-03
+o1_peak             =  1.17507e+01 at=  1.00903e-03
+s2e_peak            =  2.95726e+01 at=  1.04337e-03
+phase_current_peak  =  6.30093e+01 at=  1.03351e-03
+o1_trip             =   1.00604e-03
+s2e_trip            =   1.04035e-03
+hv_u3_gt24_duration_s=  7.49427e-04
+hv_u3_gt30_duration_s=  1.43164e-04
+
+
+Total analysis time (seconds) = 0.317371
+
+Total elapsed time (seconds) = 0.326
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 10060.207 MB.
+Maximum ngspice program size =   15.543 MB.
+Current ngspice program size =   15.543 MB.

@@ -1,0 +1,300 @@
+{
+  "ina_delay_sensitivity_floor0p05_v0high": [
+    {
+      "ina_delay_s": 1e-06,
+      "o1_peak_V": 11.386735670383844,
+      "vin_worst": 20.0,
+      "i_at_open_A": 17.595615783498605,
+      "trip_path": "OC"
+    },
+    {
+      "ina_delay_s": 1.5e-06,
+      "o1_peak_V": 11.41064261819329,
+      "vin_worst": 20.0,
+      "i_at_open_A": 18.623296083826713,
+      "trip_path": "OC"
+    },
+    {
+      "ina_delay_s": 2e-06,
+      "o1_peak_V": 11.435923267798094,
+      "vin_worst": 20.0,
+      "i_at_open_A": 19.676924051090968,
+      "trip_path": "OC"
+    },
+    {
+      "ina_delay_s": 3e-06,
+      "o1_peak_V": 11.49075300410238,
+      "vin_worst": 20.0,
+      "i_at_open_A": 21.87278498407194,
+      "trip_path": "OC"
+    },
+    {
+      "ina_delay_s": 4e-06,
+      "o1_peak_V": 11.560162533931413,
+      "vin_worst": 26.0,
+      "i_at_open_A": 37.89604512751455,
+      "trip_path": "OC"
+    }
+  ],
+  "classification": "HESAP; L(I) typical curve to 16 A (DATASHEET doc 34207 p.3) + swept floor beyond (VARSAYIM)",
+  "curve_points": [
+    [
+      0.0,
+      1.0
+    ],
+    [
+      4.0,
+      0.977
+    ],
+    [
+      8.0,
+      0.924
+    ],
+    [
+      12.0,
+      0.826
+    ],
+    [
+      16.0,
+      0.735
+    ]
+  ],
+  "slope_beyond_16A_per_A": -0.022749999999999992,
+  "oc_threshold_A": {
+    "min": 12.969908317843416,
+    "nom": 13.280212483399735,
+    "max": 13.599666138650495,
+    "divider_ohm": [
+      255.0,
+      1000.0
+    ],
+    "margin_over_normal_peak": 1.4452761664634963
+  },
+  "t_voltage_chain_s": 1.048267289301e-06,
+  "t_oc_chain_s": 2.556067289301e-06,
+  "v_guarantee_V": 11.764650307487882,
+  "bus_c_min_F": 0.0003787056,
+  "rows": [
+    {
+      "floor": 0.5,
+      "voltage_trip_only": {
+        "floor": 0.5,
+        "use_oc": false,
+        "o1_peak_V": 11.923933289459091,
+        "i_at_open_A": 59.67983452489806,
+        "t_open_s": 1.5147200000008956e-05,
+        "trip_path": "V",
+        "t_trip_v_s": 1.4098800000006657e-05,
+        "t_trip_oc_s": null,
+        "E_L_at_open_J": 0.005217470404082267
+      },
+      "with_oc_trip": {
+        "floor": 0.5,
+        "use_oc": true,
+        "o1_peak_V": 11.036792102778104,
+        "i_at_open_A": 23.366999407018202,
+        "t_open_s": 7.166999999993415e-06,
+        "trip_path": "OC",
+        "t_trip_v_s": null,
+        "t_trip_oc_s": 4.610799999998636e-06,
+        "E_L_at_open_J": 0.0011029397121208916
+      },
+      "oc_bound": {
+        "floor": 0.5,
+        "o1_peak_bound_V": 11.108844555471435,
+        "q1_C": 5.3899982132689134e-05,
+        "q2_C": 5.0450284073853965e-05,
+        "i_end_bound_A": 26.724121634346183
+      },
+      "diff_A_vs_B_V": 0.07205245269333105
+    },
+    {
+      "floor": 0.3,
+      "voltage_trip_only": {
+        "floor": 0.3,
+        "use_oc": false,
+        "o1_peak_V": 11.957290303645278,
+        "i_at_open_A": 72.95750041095002,
+        "t_open_s": 1.451520000000757e-05,
+        "trip_path": "V",
+        "t_trip_v_s": 1.3466800000005271e-05,
+        "t_trip_oc_s": null,
+        "E_L_at_open_J": 0.00523404576521656
+      },
+      "with_oc_trip": {
+        "floor": 0.3,
+        "use_oc": true,
+        "o1_peak_V": 11.036792102778104,
+        "i_at_open_A": 23.366999407018202,
+        "t_open_s": 7.166999999993415e-06,
+        "trip_path": "OC",
+        "t_trip_v_s": null,
+        "t_trip_oc_s": 4.610799999998636e-06,
+        "E_L_at_open_J": 0.0011029397121208916
+      },
+      "oc_bound": {
+        "floor": 0.3,
+        "o1_peak_bound_V": 11.126998804479383,
+        "q1_C": 5.3899982132689134e-05,
+        "q2_C": 5.7325399836958773e-05,
+        "i_end_bound_A": 33.87353605724364
+      },
+      "diff_A_vs_B_V": 0.09020670170127865
+    },
+    {
+      "floor": 0.15,
+      "voltage_trip_only": {
+        "floor": 0.15,
+        "use_oc": false,
+        "o1_peak_V": 12.013484646749399,
+        "i_at_open_A": 95.92441869043708,
+        "t_open_s": 1.3939400000006308e-05,
+        "trip_path": "V",
+        "t_trip_v_s": 1.2891000000004009e-05,
+        "t_trip_oc_s": null,
+        "E_L_at_open_J": 0.005248530434062605
+      },
+      "with_oc_trip": {
+        "floor": 0.15,
+        "use_oc": true,
+        "o1_peak_V": 11.036792102778104,
+        "i_at_open_A": 23.366999407018202,
+        "t_open_s": 7.166999999993415e-06,
+        "trip_path": "OC",
+        "t_trip_v_s": null,
+        "t_trip_oc_s": 4.610799999998636e-06,
+        "E_L_at_open_J": 0.0011029397121208916
+      },
+      "oc_bound": {
+        "floor": 0.15,
+        "o1_peak_bound_V": 11.172384426999256,
+        "q1_C": 5.3899982132689134e-05,
+        "q2_C": 7.45131892447208e-05,
+        "i_end_bound_A": 51.74707211448728
+      },
+      "diff_A_vs_B_V": 0.13559232422115208
+    },
+    {
+      "floor": 0.1,
+      "voltage_trip_only": {
+        "floor": 0.1,
+        "use_oc": false,
+        "o1_peak_V": 12.055466400428719,
+        "i_at_open_A": 113.28724267312577,
+        "t_open_s": 1.3651000000005675e-05,
+        "trip_path": "V",
+        "t_trip_v_s": 1.2602600000003377e-05,
+        "t_trip_oc_s": null,
+        "E_L_at_open_J": 0.005234516077572912
+      },
+      "with_oc_trip": {
+        "floor": 0.1,
+        "use_oc": true,
+        "o1_peak_V": 11.036792102778104,
+        "i_at_open_A": 23.366999407018202,
+        "t_open_s": 7.166999999993415e-06,
+        "trip_path": "OC",
+        "t_trip_v_s": null,
+        "t_trip_oc_s": 4.610799999998636e-06,
+        "E_L_at_open_J": 0.0011029397121208916
+      },
+      "oc_bound": {
+        "floor": 0.1,
+        "o1_peak_bound_V": 11.21777004951913,
+        "q1_C": 5.3899982132689134e-05,
+        "q2_C": 9.17009786524828e-05,
+        "i_end_bound_A": 69.62060817173091
+      },
+      "diff_A_vs_B_V": 0.18097794674102552
+    },
+    {
+      "floor": 0.05,
+      "voltage_trip_only": {
+        "floor": 0.05,
+        "use_oc": false,
+        "o1_peak_V": 12.14635541538779,
+        "i_at_open_A": 150.87465394960404,
+        "t_open_s": 1.3198200000004683e-05,
+        "trip_path": "V",
+        "t_trip_v_s": 1.2149800000002384e-05,
+        "t_trip_oc_s": null,
+        "E_L_at_open_J": 0.005115054028071452
+      },
+      "with_oc_trip": {
+        "floor": 0.05,
+        "use_oc": true,
+        "o1_peak_V": 11.036792102778104,
+        "i_at_open_A": 23.366999407018202,
+        "t_open_s": 7.166999999993415e-06,
+        "trip_path": "OC",
+        "t_trip_v_s": null,
+        "t_trip_oc_s": 4.610799999998636e-06,
+        "E_L_at_open_J": 0.0011029397121208916
+      },
+      "oc_bound": {
+        "floor": 0.05,
+        "o1_peak_bound_V": 11.353926917078748,
+        "q1_C": 5.3899982132689134e-05,
+        "q2_C": 0.00014326434687576885,
+        "i_end_bound_A": 123.24121634346183
+      },
+      "diff_A_vs_B_V": 0.31713481430064405
+    }
+  ],
+  "oc_corners_floor_0p05": [
+    {
+      "floor": 0.05,
+      "use_oc": true,
+      "o1_peak_V": 11.078766033542228,
+      "i_at_open_A": 18.851650696713275,
+      "t_open_s": 1.0327399999998388e-05,
+      "trip_path": "OC",
+      "t_trip_v_s": null,
+      "t_trip_oc_s": 7.771199999992783e-06,
+      "E_L_at_open_J": 0.0007830486164033248,
+      "vin": 20.0,
+      "v0": 10.8333
+    },
+    {
+      "floor": 0.05,
+      "use_oc": true,
+      "o1_peak_V": 11.41064261819329,
+      "i_at_open_A": 18.623296083826713,
+      "t_open_s": 1.0629999999999051e-05,
+      "trip_path": "OC",
+      "t_trip_v_s": null,
+      "t_trip_oc_s": 8.073799999993446e-06,
+      "E_L_at_open_J": 0.0007673900170353354,
+      "vin": 20.0,
+      "v0": 11.1605
+    },
+    {
+      "floor": 0.05,
+      "use_oc": true,
+      "o1_peak_V": 11.036792102778104,
+      "i_at_open_A": 23.366999407018202,
+      "t_open_s": 7.166999999993415e-06,
+      "trip_path": "OC",
+      "t_trip_v_s": null,
+      "t_trip_oc_s": 4.610799999998636e-06,
+      "E_L_at_open_J": 0.0011029397121208916,
+      "vin": 26.0,
+      "v0": 10.8333
+    },
+    {
+      "floor": 0.05,
+      "use_oc": true,
+      "o1_peak_V": 11.365027558312423,
+      "i_at_open_A": 23.101010592309486,
+      "t_open_s": 7.271399999993202e-06,
+      "trip_path": "OC",
+      "t_trip_v_s": null,
+      "t_trip_oc_s": 4.715199999998423e-06,
+      "E_L_at_open_J": 0.0010837628138540437,
+      "vin": 26.0,
+      "v0": 11.1605
+    }
+  ],
+  "worst_with_oc_V": 11.41064261819329,
+  "worst_voltage_only_V": 12.14635541538779
+}

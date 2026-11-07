@@ -1,0 +1,436 @@
+{
+  "classification": "HESAP + DATASHEET extraction + VARSAYIM; no physical or silicon-level PASS",
+  "starting_head": "17945c5cba258f33face4c7fee56f28370597d2f",
+  "comparator_candidates": [
+    {
+      "mpn": "TLV1701QDBVRQ1",
+      "manufacturer": "Texas Instruments",
+      "package": "SOT-23-5",
+      "lifecycle": "TI orderable MPN shown ACTIVE; inventory/stock not queried",
+      "supply_range_V": [
+        2.2,
+        36.0
+      ],
+      "input_common_mode": "V− to V+ (rail-to-rail)",
+      "input_offset_abs_max_V": 0.0063,
+      "propagation": {
+        "published_typical_pHL_s": 4.6e-07,
+        "published_typical_pLH_s": 5.6e-07,
+        "guaranteed_max_s": null,
+        "conditions": "100mV overdrive, CL=15pF, RPULLUP=5.1kΩ, 25°C; maximum column blank"
+      },
+      "fault_input_at_40p709V_V": 8.869063180827888,
+      "fault_input_valid_with_12V_rail": true,
+      "rail_loss": "No guaranteed comparator output state with V+ absent found; U12 PG can clear only while its datasheet VIN conditions hold.",
+      "threshold_corners": {
+        "nominal_V": 11.475,
+        "minimum_V": 11.24847299009901,
+        "maximum_V": 11.706668404040403,
+        "assumed_resistor_tolerance_fraction": 0.01,
+        "unmodeled_resistor_TCR": true,
+        "unmodeled_input_bias_and_leakage": true
+      },
+      "decision": "Wide-input monitor candidate; not a timing-qualified sole OVP because tPD(max) is unspecified."
+    },
+    {
+      "mpn": "LTC6752HMS8-2#TRPBF",
+      "manufacturer": "Analog Devices",
+      "package": "8-lead MSOP",
+      "lifecycle": "ADI product page lists PRODUCTION; inventory/stock not queried; no automotive qualification claim used",
+      "supply_range_V": {
+        "VCC_input": [
+          2.45,
+          5.25
+        ],
+        "VDD_output": [
+          1.71,
+          3.5
+        ]
+      },
+      "input_common_mode_at_VCC_5V": [
+        -0.2,
+        5.1
+      ],
+      "input_offset_abs_max_V": 0.009,
+      "propagation": {
+        "published_max_s": 5.7e-09,
+        "conditions": "H grade, VCC=5V, VDD=1.8V, CL=5pF, 50mV overdrive, datasheet common-mode test setup VCM=300mV; actual candidate threshold common mode is about 2.5V; no max is stated for zero overdrive or guaranteed at this actual VCM"
+      },
+      "fault_input_at_40p709V_V": 8.869063180827888,
+      "fault_input_over_operating_common_mode_at_40p709V_V": 3.7690631808278887,
+      "rail_loss": "Two supply pins permit either sequencing, but no valid fault-output state with both supplies absent is guaranteed; VDD=1.8V output needs level translation to the 5V CLR_N net.",
+      "threshold_corners": {
+        "nominal_V": 11.475,
+        "minimum_V": 11.23627193069307,
+        "maximum_V": 11.719257222222222,
+        "assumed_resistor_tolerance_fraction": 0.01,
+        "unmodeled_resistor_TCR": true,
+        "unmodeled_input_bias_and_leakage": true
+      },
+      "decision": "Fast comparator candidate only with a new fault-input clamp and 1.8V-to-5V low-dominant interface; not drop-in."
+    }
+  ],
+  "calculation_cross_checks": {
+    "threshold_corner_method_1": "closed-form monotonic endpoints",
+    "threshold_corner_method_2": "enumerate all 16 combinations of VREF, offset, Rtop and Rbottom endpoints",
+    "TLV1701_corner_min_abs_difference_V": 0.0,
+    "TLV1701_corner_max_abs_difference_V": 0.0,
+    "LTC6752_corner_min_abs_difference_V": 0.0,
+    "LTC6752_corner_max_abs_difference_V": 0.0,
+    "overdrive_method_1": "comparator differential slew from I/C bus slope and divider gain",
+    "overdrive_method_2": "capacitor charge needed for bus delta divided by fault current",
+    "TLV1701_overdrive_time_abs_difference_s": 0.0,
+    "LTC6752_overdrive_time_abs_difference_s": 0.0,
+    "scope": "Independent calculation algorithms/formulations over the same assumptions; not independent silicon or physical validation."
+  },
+  "timing": {
+    "gate_charge_screen": {
+      "Qg_max_C_per_FET": 1.53e-07,
+      "test_VGS_V": 10.0,
+      "Ceq_proxy_total_F": 3.06e-08,
+      "TGDN_R_max_ohm_at_VCC_BST_12V": 4.0,
+      "time_10V_to_2p1V_proxy_s": 1.9102328438759542e-07,
+      "status": "RC proxy only; not a guaranteed two-FET discharge time"
+    },
+    "LTC7001_bootstrap": {
+      "formula": "CB > total_Qg/1V + 10*CG",
+      "two_FET_Qg_max_C": 3.06e-07,
+      "external_CG_assumed_F": 0.0,
+      "required_Ceff_F": 3.06e-07,
+      "candidate_0p1uF_satisfies": false,
+      "status": "DATASHEET inequality evaluated at Qg maximum; no selected capacitor or DC-bias derating yet"
+    },
+    "TLV1701_chain": {
+      "illustrative_sum_s": 7.271232843875954e-07,
+      "input_overdrive_build_to_100mV_s_under_assumptions": 4.5900000000000007e-07,
+      "conditional_sum_including_overdrive_s": 1.1861232843875954e-06,
+      "sum_terms": {
+        "comparator_typical": 4.6e-07,
+        "SN74LVC1G74_CLR_to_Q_max": 6.1e-09,
+        "LTC7001_INP_to_TGDN_max_at_1nF": 7e-08,
+        "two_FET_gate_charge_RC_proxy": 1.9102328438759542e-07
+      },
+      "below_0p5us_screen": false,
+      "worst_case_status": "OPEN: comparator has no guaranteed tPD(max), its 100mV test overdrive builds after threshold crossing, driver load differs, and gate proxy is not a bound"
+    },
+    "LTC6752_chain": {
+      "conditional_sum_s": 2.728232843875954e-07,
+      "input_overdrive_build_to_50mV_s_under_assumptions": 2.2950000000000004e-07,
+      "conditional_sum_including_overdrive_s": 5.023232843875955e-07,
+      "sum_terms": {
+        "comparator_published_max_at_50mV_overdrive_and_VCM_0p3V": 5.7e-09,
+        "SN74LVC1G74_CLR_to_Q_max": 6.1e-09,
+        "LTC7001_INP_to_TGDN_max_at_1nF": 7e-08,
+        "two_FET_gate_charge_RC_proxy": 1.9102328438759542e-07
+      },
+      "below_0p5us_screen": false,
+      "O1_budget_remaining_after_conditional_sum_s": -2.2158050660981728e-07,
+      "worst_case_status": "OPEN: 50mV comparator max is published at VCM=300mV, not the candidate's about 2.5V; that overdrive builds after threshold; conditional sum exceeds O1 charge budget under assumptions and still omits input clamp, output translation, driver-load mismatch and FET turn-off guarantee"
+    },
+    "O1_limit": {
+      "criterion_V": 12.0,
+      "fault_current_assumption_A": 10.0,
+      "Ceff_assumption_F": 1e-05,
+      "TLV_trip_max_V_under_declared_assumptions": 11.706668404040403,
+      "TLV_max_total_trip_to_current_interruption_s": 2.933315959595966e-07,
+      "TLV_time_to_100mV_overdrive_s": 4.5900000000000007e-07,
+      "LTC_trip_max_V_under_declared_assumptions": 11.719257222222222,
+      "LTC_max_total_trip_to_current_interruption_s": 2.8074277777777824e-07,
+      "LTC_time_to_50mV_overdrive_s": 2.2950000000000004e-07,
+      "0p5us_screen_s": 5e-07,
+      "status": "Conditional constant-current charge balance only; actual I_fault(t), Ceff_min, ESR/ESL, clamp delay, measurement uncertainty and O1 transient remain OPEN. 0.5us screen is not substituted for O1≤12.0V."
+    }
+  },
+  "bjt_screen": {
+    "assumption_5V_range_V": [
+      4.9,
+      5.1
+    ],
+    "assumption_12V_range_V": [
+      11.76,
+      12.24
+    ],
+    "assumed_resistor_tolerance_fraction": 0.01,
+    "MMBT3904_VBE_screen_V": [
+      0.65,
+      0.95
+    ],
+    "MMBT3904_VCEsat_screen_max_V": 0.3,
+    "CLR_node_sink_leakage_A": 2.07e-06,
+    "CLR_node_sink_leakage_breakdown_A": {
+      "TPS7A1650QDGNRQ1_PG": 1e-06,
+      "TPS7A1601QDGNRQ1_PG": 1e-06,
+      "TLV1701QDBVRQ1_open_collector": 7e-08
+    },
+    "Q_INP_CLAMP_base_current_A": [
+      0.0004864986498649865,
+      0.0005321395775941231
+    ],
+    "Q_INP_CLAMP_INP_collector_current_max_A": 0.0048484848484848485,
+    "Q_INP_CLAMP_forced_beta_max": 9.966080789392537,
+    "Q_INP_RELEASE_base_current_min_A": 5.4030431793179326e-05,
+    "Q_INP_RELEASE_collector_current_max_A": 0.0005321395775941231,
+    "Q_INP_RELEASE_forced_beta_max": 9.848886265263923,
+    "CLR_N_high_min_V_with_release_base_load": 4.333385638888889,
+    "SN74LVC1G74_VIH_min_at_VCC_min_V": 3.43,
+    "CLR_N_high_margin_over_VIH_V": 0.903385638888889,
+    "status": "SCREEN ONLY: MMBT3904 saturation values are specified at 10mA/1mA and 50mA/5mA, not this sub-mA load; resistor MPN/TCR and rail sequencing are unresolved."
+  },
+  "single_node_definition": "CLR_N and PG_OK are the same copper node; it has one 10k pull-up to +5V and joins both TPS7A16-Q1 PG open-drains, TLV1701-Q1 OUT, latch CLR, and Q_INP_RELEASE base through 62k. Sink leakage screen is 1uA + 1uA + 70nA; PG behavior is specified only while each LDO VIN is at least 3V.",
+  "pin_connection_table": [
+    {
+      "ref_pin": "U_OVP TLV1701QDBVRQ1 pin 1 IN+",
+      "net": "VREF_2V5",
+      "connect": "U_REF REF5025AQDRQ1 pin 6 VOUT"
+    },
+    {
+      "ref_pin": "U_OVP pin 2 V−",
+      "net": "GND",
+      "connect": "ground plane"
+    },
+    {
+      "ref_pin": "U_OVP pin 3 IN−",
+      "net": "VRAW_SENSE",
+      "connect": "R_SENSE_TOP 17.95k from VRAW; R_SENSE_BOTTOM 5.00k to GND"
+    },
+    {
+      "ref_pin": "U_OVP pin 4 OUT open collector",
+      "net": "CLR_N = PG_OK",
+      "connect": "wired low-dominant with U5/U12 PG and U_LATCH pin 6; one 10k pull-up to +5V"
+    },
+    {
+      "ref_pin": "U_OVP pin 5 V+",
+      "net": "+12V_DRIVER",
+      "connect": "U12 TPS7A1601QDGNRQ1 output pin 1"
+    },
+    {
+      "ref_pin": "U_REF REF5025AQDRQ1 pin 2 VIN",
+      "net": "+5V",
+      "connect": "U5 TPS7A1650QDGNRQ1 output pin 1"
+    },
+    {
+      "ref_pin": "U_REF pin 3 TEMP",
+      "net": "NC",
+      "connect": "leave open"
+    },
+    {
+      "ref_pin": "U_REF pin 4 GND",
+      "net": "GND",
+      "connect": "ground"
+    },
+    {
+      "ref_pin": "U_REF pin 5 TRIM/NR",
+      "net": "REF_NR",
+      "connect": "1uF to GND per candidate wiring; verify exact reference application circuit"
+    },
+    {
+      "ref_pin": "U_REF pin 7 NC; pins 1,8 DNC",
+      "net": "NC/DNC",
+      "connect": "leave as datasheet specifies"
+    },
+    {
+      "ref_pin": "U5 TPS7A1650QDGNRQ1 pin 3 PG",
+      "net": "CLR_N = PG_OK",
+      "connect": "open-drain; low when 5V rail is below PG threshold while VIN≥3V"
+    },
+    {
+      "ref_pin": "U12 TPS7A1601QDGNRQ1 pin 3 PG",
+      "net": "CLR_N = PG_OK",
+      "connect": "open-drain; low when 12V rail is below PG threshold while VIN≥3V"
+    },
+    {
+      "ref_pin": "R_CLR 10k",
+      "net": "CLR_N to +5V",
+      "connect": "single common pull-up only"
+    },
+    {
+      "ref_pin": "U_LATCH SN74LVC1G74DCUR pin 1 CLK",
+      "net": "ARM_CLK",
+      "connect": "B3U-1000P momentary switch to +5V; 100k pull-down to GND"
+    },
+    {
+      "ref_pin": "U_LATCH pin 2 D",
+      "net": "+5V",
+      "connect": "logic high for manual ARM rising edge"
+    },
+    {
+      "ref_pin": "U_LATCH pin 3 Qbar",
+      "net": "NC",
+      "connect": "unused"
+    },
+    {
+      "ref_pin": "U_LATCH pin 4 GND",
+      "net": "GND",
+      "connect": "ground"
+    },
+    {
+      "ref_pin": "U_LATCH pin 5 Q",
+      "net": "INP_CMD",
+      "connect": "1k series resistor to U_DRIVER LTC7001EMSE#PBF pin 4 INP; Q_INP_CLAMP collector also joins INP"
+    },
+    {
+      "ref_pin": "U_LATCH pin 6 CLR",
+      "net": "CLR_N = PG_OK",
+      "connect": "same node as comparator OUT and both open-drain PG pins"
+    },
+    {
+      "ref_pin": "U_LATCH pin 7 PRE",
+      "net": "PRE_N",
+      "connect": "10k pull-up to +5V; never join CLR_N"
+    },
+    {
+      "ref_pin": "U_LATCH pin 8 VCC",
+      "net": "+5V",
+      "connect": "U5 output"
+    },
+    {
+      "ref_pin": "Q_INP_CLAMP MMBT3904LT1G pin 1 B",
+      "net": "CLAMP_B",
+      "connect": "22k from +12V_DRIVER"
+    },
+    {
+      "ref_pin": "Q_INP_CLAMP pin 2 E",
+      "net": "GND",
+      "connect": "ground"
+    },
+    {
+      "ref_pin": "Q_INP_CLAMP pin 3 C",
+      "net": "INP_CMD",
+      "connect": "U_DRIVER pin 4 INP"
+    },
+    {
+      "ref_pin": "Q_INP_RELEASE MMBT3904LT1G pin 1 B",
+      "net": "CLR_N = PG_OK",
+      "connect": "62k base resistor from the common node"
+    },
+    {
+      "ref_pin": "Q_INP_RELEASE pin 2 E",
+      "net": "GND",
+      "connect": "ground"
+    },
+    {
+      "ref_pin": "Q_INP_RELEASE pin 3 C",
+      "net": "CLAMP_B",
+      "connect": "sinks Q_INP_CLAMP base when rails are healthy"
+    },
+    {
+      "ref_pin": "U_DRIVER LTC7001EMSE#PBF pin 1 VCC",
+      "net": "+12V_DRIVER",
+      "connect": "U12 output; 100nF local bypass"
+    },
+    {
+      "ref_pin": "U_DRIVER pin 2 VCCUV",
+      "net": "GND",
+      "connect": "select minimum rising UVLO; do not count UVLO as a timing guarantee"
+    },
+    {
+      "ref_pin": "U_DRIVER pin 3 GND",
+      "net": "GND",
+      "connect": "ground"
+    },
+    {
+      "ref_pin": "U_DRIVER pin 4 INP",
+      "net": "INP_CMD",
+      "connect": "latch Q through1k and Q_INP_CLAMP collector"
+    },
+    {
+      "ref_pin": "U_DRIVER pin 5 OVLO",
+      "net": "GND",
+      "connect": "unused; tie low"
+    },
+    {
+      "ref_pin": "U_DRIVER pin 6 TGDN",
+      "net": "GATE1/GATE2",
+      "connect": "common active pull-down to TS; each FET gate has 10k gate-to-source bleed"
+    },
+    {
+      "ref_pin": "U_DRIVER pin 7 TGUP",
+      "net": "GATE1/GATE2",
+      "connect": "individual 10Ω turn-on resistor to each gate"
+    },
+    {
+      "ref_pin": "U_DRIVER pin 8 TS",
+      "net": "TS",
+      "connect": "Q1/Q2 common-source node"
+    },
+    {
+      "ref_pin": "U_DRIVER pin 9 BST",
+      "net": "BST",
+      "connect": ">306nF effective BST-to-TS for two FETs, before any CG contribution; 0.1uF is insufficient; select capacitor by bias/tolerance later"
+    },
+    {
+      "ref_pin": "U_DRIVER pin 10 NC; EP pin 11",
+      "net": "NC/GND",
+      "connect": "pin 10 open; exposed pad to GND per package guidance"
+    },
+    {
+      "ref_pin": "Q1/Q2 CSD19536KTTT pin 1 G",
+      "net": "GATE1/GATE2",
+      "connect": "individual TGUP resistor; common TGDN node; separate 10k to each source"
+    },
+    {
+      "ref_pin": "Q1 CSD19536KTTT pin 2 D/tab",
+      "net": "VRAW",
+      "connect": "upstream side of common disconnect"
+    },
+    {
+      "ref_pin": "Q2 CSD19536KTTT pin 2 D/tab",
+      "net": "VSAFE",
+      "connect": "downstream side / eFuse IN bus"
+    },
+    {
+      "ref_pin": "Q1/Q2 CSD19536KTTT pin 3 S",
+      "net": "TS",
+      "connect": "tie both sources together"
+    }
+  ],
+  "efuse_manufacturer_evidence": {
+    "part": "TPS259824O",
+    "datasheet": "TI TPS25982 Rev D, §6.1 p.6 and §6.3 p.7",
+    "input_abs_max_V": 30.0,
+    "output_max_abs_V": "min(30V, VIN + 0.3V)",
+    "recommended_vin_V": [
+      2.7,
+      24.0
+    ],
+    "reverse_current_or_input_loss_behavior": "No explicit guaranteed reverse-current, reverse-blocking, or input-loss OUT discharge behavior identified in datasheet text. OUT≤VIN+0.3V is an absolute maximum boundary, not an internal protective action guarantee.",
+    "official_model": {
+      "name": "TPS259824O PSpice Transient Model SLVMD37",
+      "model_version": "Final 1.30",
+      "date": "24APR2019",
+      "simulator": "PSpice 16.2",
+      "encrypted": true,
+      "modeled_features": [
+        "startup into pre-biased output",
+        "current limit",
+        "IMON",
+        "OV/UV",
+        "dV/dt",
+        "PG/Fault",
+        "thermal shutdown time"
+      ],
+      "omitted_features": [
+        "temperature dependence",
+        "input supply current vs input voltage in normal operation",
+        "input supply current vs input voltage at shutdown"
+      ],
+      "local_simulator_available": false,
+      "status": "Official model was retrieved and its readable header inspected; encrypted model could not be run locally (PSpice/Cadence not installed). It is not a production guarantee."
+    },
+    "r6_fixture_sequence": "In the CO_OPEN negative fixture the ideal common switch and ideal eFuse paths are forced open at 900us; the RAW fault ramp begins at 1ms. This is precharged/input-loss stress only, not real detection/turn-off sequencing.",
+    "status": "OPEN: behavioral fixture remains conditional; actual TPS259824O silicon reverse current, UVLO and differential transient response unverified."
+  },
+  "preserved_status": {
+    "Family2_O1_18p8039V": "FAIL retained",
+    "Family4_bus_10p7109V": "FAIL retained",
+    "common_bus_TPS25982_IN_40p709V": "FAIL retained",
+    "O1_peak_le_12V": "OPEN; physical measurement not performed",
+    "normal_bus_le_11p1605V": "OPEN",
+    "R6_passive_gate_bleed_0p5us_fixture": "FAIL retained as behavioral screen only; not a device prediction",
+    "WP1": "4 ESL incomplete; N-01 open",
+    "WP2": "69 FAIL / 6 incomplete",
+    "physical_gate_turnoff_and_FET_SOA": "OPEN"
+  },
+  "decision": "NO FEASIBLE GUARANTEED OVP CHAIN YET",
+  "physical_acceptance": false
+}

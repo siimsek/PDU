@@ -1,0 +1,32 @@
+Note: gnd in a subcircuit is not set to 0 automatically
+
+Note: Compatibility modes selected: ps lt a
+
+
+Circuit: * g1 average model case; non-silicon controller approximations.
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 13041
+
+  Measurements for Transient Analysis
+
+bus_at_20           =  1.09954e+01 from=  3.00000e-03 to=  4.00161e-03
+bus_at_26           =  1.09961e+01 from=  8.00000e-03 to=  9.00100e-03
+bus_after_restart   =  1.09961e+01 from=  2.00000e-02 to=  2.40010e-02
+o1_peak             =  1.09996e+01 at=  4.77966e-03
+
+
+Total analysis time (seconds) = 0.929556
+
+Total elapsed time (seconds) = 0.940 
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 9958.340 MB.
+Maximum ngspice program size =   11.219 MB.
+Current ngspice program size =   11.219 MB.
+

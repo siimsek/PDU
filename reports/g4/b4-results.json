@@ -1,0 +1,123 @@
+{
+  "classification": "HESAP + S\u0130M (dip/overshoot from F3 nominal runs)",
+  "vnom_V": 10.996078431372549,
+  "static_window_untrimmed_V": [
+    10.83326782975716,
+    11.160459243126857
+  ],
+  "trim_table": [
+    {
+      "step_pct": -1.5,
+      "R_TRIM_ohm": 604.0,
+      "vout_V": 10.834735623311463,
+      "error_pct": 0.03322244308070488
+    },
+    {
+      "step_pct": -1.25,
+      "R_TRIM_ohm": 576.0,
+      "vout_V": 10.861919504643964,
+      "error_pct": 0.030317401333013194
+    },
+    {
+      "step_pct": -1.0,
+      "R_TRIM_ohm": 549.0,
+      "vout_V": 10.888272383354352,
+      "error_pct": 0.019793432014858503
+    },
+    {
+      "step_pct": -0.75,
+      "R_TRIM_ohm": 523.0,
+      "vout_V": 10.913780025284451,
+      "error_pct": 0.001577683106002148
+    },
+    {
+      "step_pct": -0.5,
+      "R_TRIM_ohm": 499.0,
+      "vout_V": 10.937440296325178,
+      "error_pct": -0.033431223058222326
+    },
+    {
+      "step_pct": -0.25,
+      "R_TRIM_ohm": 464.0,
+      "vout_V": 10.972143974960877,
+      "error_pct": 0.032417477896729
+    },
+    {
+      "step_pct": 0.0,
+      "R_TRIM_ohm": 442.0,
+      "vout_V": 10.994079592236817,
+      "error_pct": -0.018177745349912122
+    },
+    {
+      "step_pct": 0.25,
+      "R_TRIM_ohm": 412.0,
+      "vout_V": 11.024144710971294,
+      "error_pct": 0.005225925830232292
+    },
+    {
+      "step_pct": 0.5,
+      "R_TRIM_ohm": 383.0,
+      "vout_V": 11.053376713004042,
+      "error_pct": 0.020974365548531715
+    },
+    {
+      "step_pct": 0.75,
+      "R_TRIM_ohm": 357.0,
+      "vout_V": 11.079727191855294,
+      "error_pct": 0.010634716201241012
+    },
+    {
+      "step_pct": 1.0,
+      "R_TRIM_ohm": 332.0,
+      "vout_V": 11.105192231470472,
+      "error_pct": -0.0076263391417419335
+    },
+    {
+      "step_pct": 1.25,
+      "R_TRIM_ohm": 301.0,
+      "vout_V": 11.13694463770997,
+      "error_pct": 0.030675141897562597
+    },
+    {
+      "step_pct": 1.5,
+      "R_TRIM_ohm": 280.0,
+      "vout_V": 11.158565737051793,
+      "error_pct": -0.021986080820235454
+    }
+  ],
+  "trimmed_window_V": [
+    10.887614705882353,
+    11.104542156862744
+  ],
+  "trimmed_half_width": 0.009863855206847365,
+  "trimmed_window_if_vfb_temp_full": [
+    10.846379411764707,
+    11.145777450980393
+  ],
+  "f3_dip_V": 0.10230000000000139,
+  "f3_overshoot_V": 0.09759999999999991,
+  "corners": [
+    {
+      "window": "untrimmed",
+      "static_lo_V": 10.83326782975716,
+      "static_hi_V": 11.160459243126857,
+      "step_min_V": 10.730967829757159,
+      "release_max_V": 11.258059243126857,
+      "min_ok": false,
+      "max_ok_band": false,
+      "steady_ok": true
+    },
+    {
+      "window": "trimmed",
+      "static_lo_V": 10.887614705882353,
+      "static_hi_V": 11.104542156862744,
+      "step_min_V": 10.785314705882351,
+      "release_max_V": 11.202142156862744,
+      "min_ok": true,
+      "max_ok_band": true,
+      "steady_ok": true
+    }
+  ],
+  "n_cout": 32,
+  "rcomp": 33200.0
+}

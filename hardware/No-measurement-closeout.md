@@ -1,3 +1,5 @@
+> **SUPERSEDED (G4, 2026-11-07) → docs/START-HERE.md.** 2026-10-19 anlık görüntüsünün geçmiş kaydıdır; içerik değiştirilmedi.
+
 # Ölçüm gerektirmeyen tamamlamalar — 19 Ekim 2026
 
 ## Uygulanan değişiklikler
