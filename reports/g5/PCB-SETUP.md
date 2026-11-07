@@ -19,8 +19,8 @@ python scripts/pcb_drc.py                                           # boş kart 
 | Yerleşimli kart DRC | aynı dosya, özet [drc-summary.json](T-013/drc-summary.json) | Hatalar yalnız `unconnected_items` 402 (iz yok, beklenen). Courtyard çakışması 0, kenar ihlali 0. Uyarılar: silk_overlap 199, silk_over_copper 199, silk_edge_clearance 15 (kaba yerleşimde etiket metinleri; son yerleşimde temizlenir) |
 | Kural ↔ routing-g2 | `python scripts/pcb_rules.py --check` | `{"pass": true, "errors": []}` |
 | Darboğaz denetimi (R-012 #2) | `pcb_drc.py` → `drc-summary.json` `neck_down` | 780 ince adımlı güç padi; ihlal 0 (henüz iz yok) |
-| Darboğaz deneme izleri | `pcb_neck_probe.py` → [neck-probe.json](T-013/neck-probe.json) | PASS: A (0,3 × 1,0 mm, U1 pad 1'den) DRC ✓ denetim ✓; B (0,3 × 3,0 mm, aynı pad) DRC ✓ ama denetim **uzunluk 3,00 > 1,5**; C (0,3 mm, serbest alan) DRC **track_width** + denetim **pad'de bitmiyor**; D (3,3 mm) ikisi de ✓ |
-| Testler | `pytest scripts/test_pcb_setup.py` | 9 geçti |
+| Darboğaz deneme izleri | `pcb_neck_probe.py` → [neck-probe.json](T-013/neck-probe.json) | PASS: A (0,3 × 1,0 mm, U1 pad 1'den) DRC ✓ denetim ✓; B (0,3 × 3,0 mm, aynı pad) DRC ✓ ama denetim **uzunluk 3,00 > 1,5**; C (0,3 mm, serbest alan) DRC **track_width** + denetim **pad'de bitmiyor**; D (3,3 mm) ikisi de ✓; **yaylar (R-012 tur 2):** E kiriş 1.2 / gerçek 1.885 mm → denetim **uzunluk**; F gerçek 0.9188 mm → ✓ |
+| Testler | `pytest scripts/test_pcb_setup.py` | 11 geçti |
 
 ## Uygulanan değerler
 
@@ -58,7 +58,7 @@ python scripts/pcb_drc.py                                           # boş kart 
 2. **/GND min genişlik kuralı dışında.** GND dönüşü L2 düzleminden akar (HANDOFF §1). 0603 GND bağlantıları 4,9 mm olamaz.
 3. **Darboğaz (R-012 #2'den sonra sınırlandı):**
    - **Kapsam:** her güç sınıfı için yalnız o sınıfın ağında **ince adımlı padi** (dar kenar ≤ 0,65 mm, VARSAYIM) olan ayak izlerinin courtyard'ı. Liste PDU.kicad_pcb padlerinden üretilir: {'INPUT_POWER': ['Q1', 'U1', 'U10', 'U2', 'U5'], 'BUS_POWER': ['U1', 'U11', 'U12', 'U2', 'U3', 'U4', 'U6'], 'PHASE_POWER': ['U1', 'U11', 'U12', 'U2'], 'O1_PORT': ['U3'], 'S2E_PORT': ['U4']}. Eski genel `intersectsCourtyard('*')` kaldırıldı.
-   - **Uzunluk ve uç:** KiCad DRU iz uzunluğunu koşul olarak alamıyor (B denemesi: courtyard'a değen iz bütünüyle istisna alıyor). Bu yüzden `pcb_drc.py` denetimi var: sınıf min'inden dar her güç izi ≥ 0,25 mm, ≤ 1,5 mm (VARSAYIM: pad boyu ≤ 0,6 + courtyard payı) ve aynı ağdaki listeli bir ince adımlı padde bitmeli. Denetim ihlali kapıyı (pass) düşürür.
+   - **Uzunluk ve uç:** KiCad DRU iz uzunluğunu koşul olarak alamıyor (B denemesi: courtyard'a değen iz bütünüyle istisna alıyor). Bu yüzden `pcb_drc.py` denetimi var: sınıf min'inden dar her güç izi (segment veya yay; yayda gerçek yay uzunluğu, kiriş değil) ≥ 0,25 mm, ≤ 1,5 mm (VARSAYIM: pad boyu ≤ 0,6 + courtyard payı) ve aynı ağdaki listeli bir ince adımlı padde bitmeli. Denetim ihlali kapıyı (pass) düşürür.
 4. **Aynı ayak izinin padleri arası 0,15 mm** (DFM min, HANDOFF §7 VARSAYIM). SOT-23-6, VSSOP ve SC-70 paketlerinin pad aralığı tasarım gereği 0,15 mm'dir. Bu kural olmadan 26 sahte boşluk hatası çıkıyordu.
 5. **HV boşluğu 0,6 mm:** /ANODE, /VIN, /VOUT, /VSAFE ile GND dışı netler arasında, yalnız iz/döküm/via (HANDOFF §5: TVS kelepçesi 53,3 V). Paket içi pad aralıkları kapsam dışıdır.
 

@@ -4,8 +4,8 @@
 
 * Empty board = PDU.kicad_pcb with every schematic footprint removed (outline, stackup, mounting holes, keep-outs,
   region marks kept), checked in a temp copy next to PDU.kicad_pro / PDU.kicad_dru -> must have 0 errors (T-013).
-* Neck-down audit (R-012 #2): every power-class track narrower than its class min must be >= 0.25 mm, <= 1.5 mm
-  long and end on a fine-pitch pad of the same net whose footprint is in that class's neck-down list.
+* Neck-down audit (R-012 #2): every power-class track (segment or arc) narrower than its class min must be
+  >= 0.25 mm, <= 1.5 mm long (arcs: true arc length through `mid`, not the chord) and end on a fine-pitch pad of the same net whose footprint is in that class's neck-down list.
 * Placed board = PDU.kicad_pcb with --schematic-parity -> parity issues must be 0; the only allowed errors are
   unconnected items (no routing in T-013, PCB-HANDOFF §8); warnings (silkscreen) are listed, not gated.
 """
@@ -68,6 +68,32 @@ def _in_pad(x: float, y: float, pad) -> bool:
     return abs(lx) <= w / 2 + 1e-6 and abs(ly) <= h / 2 + 1e-6
 
 
+def arc_length(a, m, b) -> float:
+    """True length of the circular arc start a -> mid m -> end b (KiCad `arc`); collinear points -> polyline length."""
+    (ax, ay), (mx, my), (bx, by) = a, m, b
+    d = 2.0 * (ax * (my - by) + mx * (by - ay) + bx * (ay - my))
+    if abs(d) < 1e-12:
+        return math.dist(a, m) + math.dist(m, b)
+    ux = ((ax * ax + ay * ay) * (my - by) + (mx * mx + my * my) * (by - ay) + (bx * bx + by * by) * (ay - my)) / d
+    uy = ((ax * ax + ay * ay) * (bx - mx) + (mx * mx + my * my) * (ax - bx) + (bx * bx + by * by) * (mx - ax)) / d
+    r = math.dist((ux, uy), a)
+    ang = [math.atan2(py - uy, px - ux) for px, py in (a, m, b)]
+    tau = 2 * math.pi
+    sweep_ab = (ang[2] - ang[0]) % tau                  # counter-clockwise sweep a -> b
+    sweep_am = (ang[1] - ang[0]) % tau
+    sweep = sweep_ab if sweep_am <= sweep_ab else tau - sweep_ab   # the side of the circle that contains m
+    return r * sweep
+
+
+def track_length(seg) -> float:
+    """segment: straight start-end length; arc: true arc length through `mid` (not the chord)."""
+    pt = {k: tuple(float(v.value) for v in next(seg.children(k)).atoms()[1:3])
+          for k in ("start", "mid", "end") if next(seg.children(k), None) is not None}
+    if seg.head == "arc" and "mid" in pt:
+        return arc_length(pt["start"], pt["mid"], pt["end"])
+    return math.dist(pt["start"], pt["end"])
+
+
 def neck_audit(text: str, rows: dict) -> list:
     ncls = pr.power_net_class(rows)
     mins = {cls: pr.up(rows[row]["outer_width_min_mm"]) for row, cls in pr.CLASS_OF.items()}
@@ -83,13 +109,14 @@ def neck_audit(text: str, rows: dict) -> list:
         if not cls or w >= mins[cls] - 1e-6:
             continue
         a, b = (tuple(float(v.value) for v in next(seg.children(k)).atoms()[1:3]) for k in ("start", "end"))
-        length = math.dist(a, b)
+        length = track_length(seg)
         ends = any(_in_pad(*pt, pd) for pt in (a, b) for pd in pads if pd[0] == cls and pd[2] == net)
         why = [m for m, ok in (("width < neck min", w >= pr.NECK_MIN_MM - 1e-6),
                                (f"length {length:.2f} > {pr.NECK_MAX_LEN_MM:g} mm", length <= pr.NECK_MAX_LEN_MM + 1e-6),
                                ("not ended on a fine-pitch pad of the same net", ends)) if not ok]
         if why:
-            bad.append({"net": net, "class": cls, "width": w, "start": a, "end": b, "why": why})
+            bad.append({"net": net, "class": cls, "kind": seg.head, "width": w, "start": a, "end": b,
+                        "length": round(length, 4), "why": why})
     return bad
 
 

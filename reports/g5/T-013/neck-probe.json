@@ -2,6 +2,7 @@
  "net": "/VIN",
  "tracks": {
   "A": {
+   "kind": "segment",
    "start": [
     81.9,
     39.25
@@ -13,6 +14,7 @@
    "width": 0.3
   },
   "B": {
+   "kind": "segment",
    "start": [
     81.9,
     39.25
@@ -24,6 +26,7 @@
    "width": 0.3
   },
   "C": {
+   "kind": "segment",
    "start": [
     90.0,
     87.2
@@ -35,6 +38,7 @@
    "width": 0.3
   },
   "D": {
+   "kind": "segment",
    "start": [
     100.0,
     87.2
@@ -44,13 +48,52 @@
     87.2
    ],
    "width": 3.3
+  },
+  "E": {
+   "kind": "arc",
+   "start": [
+    81.9,
+    39.25
+   ],
+   "mid": [
+    82.5,
+    38.65
+   ],
+   "end": [
+    83.10000000000001,
+    39.25
+   ],
+   "width": 0.3,
+   "chord_mm": 1.2,
+   "true_length_mm": 1.885
+  },
+  "F": {
+   "kind": "arc",
+   "start": [
+    81.9,
+    39.25
+   ],
+   "mid": [
+    82.35000000000001,
+    39.17
+   ],
+   "end": [
+    82.80000000000001,
+    39.25
+   ],
+   "width": 0.3,
+   "chord_mm": 0.9,
+   "true_length_mm": 0.9188
   }
  },
+ "arcs_in_saved_board": 2,
  "drc_track_width": {
   "A": false,
   "B": false,
   "C": true,
-  "D": false
+  "D": false,
+  "E": null,
+  "F": null
  },
  "audit": {
   "A": [],
@@ -60,7 +103,11 @@
   "C": [
    "not ended on a fine-pitch pad of the same net"
   ],
-  "D": []
+  "D": [],
+  "E": [
+   "length 1.88 > 1.5 mm"
+  ],
+  "F": []
  },
  "expected": {
   "A": [
@@ -81,6 +128,16 @@
   ],
   "D": [
    false,
+   []
+  ],
+  "E": [
+   null,
+   [
+    "length"
+   ]
+  ],
+  "F": [
+   null,
    []
   ]
  },

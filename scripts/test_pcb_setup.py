@@ -90,3 +90,28 @@ def test_cin_at_buck_hot_loop():
 
 def test_neck_probe_recorded_pass():
     assert json.loads((T013 / "neck-probe.json").read_text(encoding="utf-8"))["pass"]
+
+
+def _with_arc(text: str, a, m, b, w: float, net: str) -> str:
+    arc = (f'\t(arc\n\t\t(start {a[0]:g} {a[1]:g})\n\t\t(mid {m[0]:g} {m[1]:g})\n\t\t(end {b[0]:g} {b[1]:g})\n'
+           f'\t\t(width {w:g})\n\t\t(layer "F.Cu")\n\t\t(net "{net}")\n\t\t(uuid "00000000-0000-0000-0000-000000000002")\n\t)\n')
+    i = text.rstrip().rfind(")")
+    return text[:i] + arc + text[i:]
+
+
+def test_arc_length_is_true_length_not_chord():
+    import math
+    assert abs(pcb_drc.arc_length((0, 0), (0.6, -0.6), (1.2, 0)) - math.pi * 0.6) < 1e-9      # semicircle
+    assert abs(pcb_drc.arc_length((1, 0), (-1, 1e-4), (0, -1)) - 1.5 * math.pi) < 1e-6      # 3/4 circle, far side
+    assert abs(pcb_drc.arc_length((0, 0), (0.5, 0), (1, 0)) - 1.0) < 1e-12                   # collinear
+
+
+def test_neck_audit_arcs():
+    """R-012 tur 2: a pad-ended neck arc with chord <= 1.5 mm but true length > 1.5 mm must fail; a short one passes."""
+    text = (ROOT / "PDU.kicad_pcb").read_text(encoding="utf-8")
+    rows = pcb_rules.routing_rows()
+    pad = next(p for p in pcb_drc.fine_pads(text, rows) if p[1] == "U1" and p[2] == "/VIN")
+    x, y = pad[3], pad[4]
+    long_arc = pcb_drc.neck_audit(_with_arc(text, (x, y), (x + 0.6, y - 0.6), (x + 1.2, y), 0.3, "/VIN"), rows)
+    assert len(long_arc) == 1 and long_arc[0]["kind"] == "arc" and long_arc[0]["why"] == ["length 1.88 > 1.5 mm"]
+    assert pcb_drc.neck_audit(_with_arc(text, (x, y), (x + 0.45, y - 0.08), (x + 0.9, y), 0.3, "/VIN"), rows) == []

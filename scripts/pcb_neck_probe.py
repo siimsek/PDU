@@ -9,6 +9,9 @@ U1 pad 1 and runs kicad-cli DRC + scripts/pcb_drc.neck_audit on it:
                                                                         to the whole track), audit length -> FAIL
   C  0.30 mm x 1.0 mm in free board area (no fine-pitch footprint)  -> DRC track_width,    audit not pad-ended
   D  3.30 mm x 5.0 mm in free board area (class width)              -> DRC ok,             audit ignores
+  E  0.30 mm ARC from the pad, chord 1.2 mm, true length 1.885 mm (semicircle) -> audit length -> FAIL
+     (R-012 tur 2: a chord-only check would pass it)
+  F  0.30 mm ARC from the pad, chord 0.9 mm, sagitta 0.08 mm, true length < 1.5 mm  -> audit ok
 """
 from __future__ import annotations
 
@@ -46,6 +49,8 @@ def main() -> int:
         tracks = {"A": ((x, y), (x + 1.0, y), 0.30), "B": ((x, y), (x + 3.0, y), 0.30),
                   "C": (free, (free[0] + 1.0, free[1]), 0.30),
                   "D": ((free[0] + 10.0, free[1]), (free[0] + 15.0, free[1]), 3.30)}
+        arcs = {"E": ((x, y), (x + 0.6, y - 0.6), (x + 1.2, y), 0.30),
+                "F": ((x, y), (x + 0.45, y - 0.08), (x + 0.9, y), 0.30)}
         made = {}
         for k, (a, e, w) in tracks.items():
             tr = P.PCB_TRACK(b)
@@ -55,7 +60,19 @@ def main() -> int:
             tr.SetLayer(P.F_Cu)
             tr.SetNet(net)
             b.Add(tr)
-            made[k] = {"start": a, "end": e, "width": w}
+            made[k] = {"kind": "segment", "start": a, "end": e, "width": w}
+        for k, (a, m_, e, w) in arcs.items():
+            arc = P.PCB_ARC(b)
+            arc.SetStart(P.VECTOR2I(P.FromMM(a[0]), P.FromMM(a[1])))
+            arc.SetMid(P.VECTOR2I(P.FromMM(m_[0]), P.FromMM(m_[1])))
+            arc.SetEnd(P.VECTOR2I(P.FromMM(e[0]), P.FromMM(e[1])))
+            arc.SetWidth(P.FromMM(w))
+            arc.SetLayer(P.F_Cu)
+            arc.SetNet(net)
+            b.Add(arc)
+            made[k] = {"kind": "arc", "start": a, "mid": m_, "end": e, "width": w,
+                       "chord_mm": round(((e[0] - a[0]) ** 2 + (e[1] - a[1]) ** 2) ** 0.5, 4),
+                       "true_length_mm": round(pcb_drc.arc_length(a, m_, e), 4)}
         P.SaveBoard(str(t / "PDU.kicad_pcb"), b, True)
         subprocess.run([CLI, "pcb", "drc", "--format", "json", "--severity-error", "-o", str(t / "drc.json"),
                         str(t / "PDU.kicad_pcb")], check=True, capture_output=True)
@@ -63,24 +80,32 @@ def main() -> int:
         widths = [v for v in drc["violations"] if v["type"] == "track_width"]
         text = (t / "PDU.kicad_pcb").read_text(encoding="utf-8")
         audit = pcb_drc.neck_audit(text, pr.routing_rows())
+        saved_arcs = text.count("\n\t(arc")
 
     def near(pt, q):
         return abs(pt[0] - q[0]) < 1e-3 and abs(pt[1] - q[1]) < 1e-3
 
-    res = {"net": net.GetNetname(), "tracks": made, "drc_track_width": {}, "audit": {}}
+    res = {"net": net.GetNetname(), "tracks": made, "arcs_in_saved_board": saved_arcs, "drc_track_width": {}, "audit": {}}
     for k, m in made.items():
-        # DRC items carry the track position; match by start point text in the item description is fragile, so
-        # match by the reported item position (mm).
+        res["audit"][k] = next((a["why"] for a in audit if a["kind"] == m["kind"] and near(a["start"], m["start"])
+                                and near(a["end"], m["end"])), [])
+        # DRC items carry the track position; match by the reported item position (mm).
+        if m["kind"] == "arc":
+            res["drc_track_width"][k] = None    # DRC position matching is only defined for the straight probes
+            continue
         res["drc_track_width"][k] = any(
             any(near((i["pos"]["x"], i["pos"]["y"]), m["start"]) or near((i["pos"]["x"], i["pos"]["y"]), m["end"])
                 or (min(m["start"][0], m["end"][0]) - 1e-3 <= i["pos"]["x"] <= max(m["start"][0], m["end"][0]) + 1e-3
                     and abs(i["pos"]["y"] - m["start"][1]) < 1e-3)
                 for i in v["items"]) for v in widths)
-        res["audit"][k] = next((a["why"] for a in audit if near(a["start"], m["start"]) and near(a["end"], m["end"])), [])
-    res["expected"] = {"A": [False, []], "B": [False, ["length"]], "C": [True, ["not ended"]], "D": [False, []]}
+    res["expected"] = {"A": [False, []], "B": [False, ["length"]], "C": [True, ["not ended"]], "D": [False, []],
+                       "E": [None, ["length"]], "F": [None, []]}
     ok = (not res["drc_track_width"]["A"] and res["drc_track_width"]["C"]
           and not res["drc_track_width"]["D"] and res["audit"]["A"] == [] and res["audit"]["D"] == []
-          and any("length" in w for w in res["audit"]["B"]) and any("not ended" in w for w in res["audit"]["C"]))
+          and any("length" in w for w in res["audit"]["B"]) and any("not ended" in w for w in res["audit"]["C"])
+          and saved_arcs == 2 and any("length" in w for w in res["audit"]["E"]) and res["audit"]["F"] == []
+          and made["E"]["chord_mm"] <= pr.NECK_MAX_LEN_MM < made["E"]["true_length_mm"]
+          and made["F"]["true_length_mm"] <= pr.NECK_MAX_LEN_MM)
     res["pass"] = ok
     with OUT.open("w", encoding="utf-8", newline="\n") as f:
         json.dump(res, f, indent=1)
