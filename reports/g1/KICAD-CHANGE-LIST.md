@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/KICAD-CHANGE-LIST-FINAL.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # Sonraki KiCad fazına aktarılacak değişiklik listesi
 
 Bu liste taslak değişiklik emridir; bu G1 dalında hiçbir `*.kicad_*` dosyası değiştirilmedi.

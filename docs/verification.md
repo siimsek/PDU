@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/VERIFY.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # IDA PDU — güncel doğrulama durumu
 
 19 Ekim2026. **Üretime hazır değil.** Eski aktarım/ara denetim kayıtları [arşivde](archive/verification-before-calculation-sync-20261019.md) korunur.

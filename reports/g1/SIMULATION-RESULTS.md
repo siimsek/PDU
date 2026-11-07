@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/SIM-RESULTS.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # G1 targeted ngspice runs
 
 | Family | Completed? | Criterion | Result | Model scope | Log |

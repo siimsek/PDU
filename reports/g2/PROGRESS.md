@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g3/PROGRESS.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # G2 ilerleme kaydı
 
 Dal: `wp/g2-circuit-design` (taban `wp/g1-ai-analysis` @ `77c98dd`, G1 kapanış commit'i push edildi). `*.kicad_*` dosyalarına dokunulmaz. `analysis/generate_g1_reports.py` çalıştırılmaz.

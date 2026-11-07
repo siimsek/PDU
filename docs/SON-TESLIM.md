@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/PCB-HANDOFF.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # PDU — şema ve yönlendirme teslimi
 
 Güncel genel durum ve inceleme sırası: [PROJECT-STATE](PROJECT-STATE.md) ve [REVIEW-CHECKLIST](REVIEW-CHECKLIST.md). Bu belge ayrıntılı yönlendirme kuralları ve teslim sınırları için korunur.

@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/ ve docs/START-HERE.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # G1 AI analiz özeti
 
 Dal `wp/g1-ai-analysis`; 6S LiPo PDU için hesap/simülasyon/karar ve sonraki faz girdileri. `*.kicad_*` değiştirilmedi.

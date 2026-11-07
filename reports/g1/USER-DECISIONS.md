@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g3/USER-DECISIONS.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # G1 kapanışı — kullanıcıdan gereken kararlar ve girdiler
 
 G1 yapay zekâ analizi bu dosyayla kapanır. Aşağıdaki girdiler gelmeden O1 OVP, eFuse akım sınırı ve ortak bara ayırıcı kabul edilemez. Geçerli mimari kararı [`OVP-UVLO-DECISION.md`](OVP-UVLO-DECISION.md) dosyasının "G1 kapanış kararı" bölümündedir; şematik değişiklikleri [`KICAD-CHANGE-LIST.md`](KICAD-CHANGE-LIST.md) dosyasındadır.

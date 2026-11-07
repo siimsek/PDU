@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → AGENTS.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # IDA PDU — kalıcı AI çalışma düzeni
 
 Bu belge Codex CLI, ChatGPT ve GitHub üzerinden sürdürülecek çalışmaları düzenler. Mevcut elektriksel gereksinimler, kanıt sınıfları, test sınırları ve tasarım kararlarının yerini almaz.

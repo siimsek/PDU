@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/BOM-OPEN.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # BOM doğrulama açıkları
 
 - Satır işlendi: **73/73**.

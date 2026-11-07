@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g3/USER-DECISIONS.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # G2 — kullanıcıdan gereken karar ve belgeler
 
 G1 [`USER-DECISIONS.md`](../g1/USER-DECISIONS.md) kararları cevaplanmadı; G2 aşağıdaki muhafazakâr varsayılanlarla ilerledi (VARSAYIM). Her satırda varsayım değişirse etkilenen sonuç yazılıdır.

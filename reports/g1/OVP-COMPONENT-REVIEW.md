@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/PROTECTION-DECISION.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # O1 OVP: component and timing feasibility screen
 
 Etiketler: **DATASHEET** = manufacturer specification; **HESAP** = reproducible calculation; **SİM** = ngspice model; **AÇIK** = unbounded or unmeasured; **VARSAYIM** = explicit scenario input.

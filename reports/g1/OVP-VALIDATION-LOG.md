@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/SIM-RESULTS.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # OVP targeted validation record
 
 Date: 2026-11-06 (Europe/Istanbul)

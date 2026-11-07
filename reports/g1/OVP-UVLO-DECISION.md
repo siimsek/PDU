@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/PROTECTION-DECISION.md (koruma) ve reports/g2/POWER-STAGE.md §6 (UVLO).** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # O1 OVP ve UVLO mimari kararı
 
 ## G1 kapanış kararı (2026-11-07) — geçerli karar

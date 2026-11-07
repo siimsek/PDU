@@ -21,3 +21,7 @@ sym-lib-table -text
 /hardware/pdu-current-bom.csv -text
 /hardware/pdu-current-bom.raw.csv -text
 /hardware/validation/c5750/vendor-ac-summary.json -text
+
+# G3: archived evidence keeps exact committed bytes (MANIFEST-SHA256 refers to them).
+/archive/** -text
+/simulation/pdu-efuse-ovp.ng.cir -text

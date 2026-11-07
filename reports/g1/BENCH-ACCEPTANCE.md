@@ -1,3 +1,5 @@
+> **SUPERSEDED (G3, 2026-11-07) → reports/g2/BENCH-ACCEPTANCE.md.** Bu belge geçmiş kaydıdır; içerik değiştirilmedi.
+
 # Fiziksel test kabul kriterleri (T0–T6)
 
 Bu kriterler ölçümle kapanır; SİM sonucu kabul yerine geçmez. O1 anlık tepe her aşamada ≤12.0 V; kararlı bara ≤11.1605 V şartları gevşetilmez.
