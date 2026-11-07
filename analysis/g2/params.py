@@ -106,8 +106,8 @@ PARAMS: dict[str, P] = {
     "N_COUT_OLD": P(8, "-", "DATASHEET", "repo BOM COUT1-8"),
 
     # ---- protection chain
-    "VREF": P(2.5, "V", "DATASHEET", DS["REF5025A"] + " p.4"),
-    "VREF_TOL": P(0.001, "-", "DATASHEET", DS["REF5025A"] + " p.4 standard grade +/-0.1%"),
+    "VREF": P(2.5, "V", "DATASHEET", DS["REF5025A"] + " p.5"),
+    "VREF_TOL": P(0.001, "-", "DATASHEET", DS["REF5025A"] + " p.5 standard grade +/-0.1%"),
     "VREF_TC": P(8e-6, "1/K", "DATASHEET", DS["REF5025A"] + " standard grade drift max (G1-cited)"),
     "CMP_VOS": P(5e-3, "V", "DATASHEET", DS["TLV3601"] + " p.7 -40..125 C"),
     "CMP_HYS_MIN": P(1.5e-3, "V", "DATASHEET", DS["TLV3601"] + " p.7"),
@@ -138,11 +138,11 @@ PARAMS: dict[str, P] = {
     "DRV_VCAP_MAX": P(13.9, "V", "DATASHEET", DS["LM74502H"] + " p.5 charge pump turn-off max"),
     "QISO_VDS": P(100.0, "V", "DATASHEET", DS["CSD19531Q5A"] + " p.1"),
     "QISO_VGS_ABS": P(20.0, "V", "DATASHEET", DS["CSD19531Q5A"] + " p.1"),
-    "QISO_RDS_MAX_10V": P(6.4e-3, "ohm", "DATASHEET", DS["CSD19531Q5A"] + " p.2, VGS=10V, 25 C"),
-    "QISO_CISS_MAX": P(3.87e-9, "F", "DATASHEET", DS["CSD19531Q5A"] + " p.2"),
-    "QISO_QG_MAX_10V": P(48e-9, "C", "DATASHEET", DS["CSD19531Q5A"] + " p.2"),
+    "QISO_RDS_MAX_10V": P(6.4e-3, "ohm", "DATASHEET", DS["CSD19531Q5A"] + " p.3, VGS=10V, 25 C"),
+    "QISO_CISS_MAX": P(3.87e-9, "F", "DATASHEET", DS["CSD19531Q5A"] + " p.3"),
+    "QISO_QG_MAX_10V": P(48e-9, "C", "DATASHEET", DS["CSD19531Q5A"] + " p.3"),
     "QISO_EAS": P(0.180, "J", "DATASHEET", DS["CSD19531Q5A"] + " p.1 single pulse avalanche"),
-    "QISO_RTH_JA": P(50.0, "K/W", "DATASHEET", DS["CSD19531Q5A"] + " p.2, 1 in2 2 oz Cu"),
+    "QISO_RTH_JA": P(50.0, "K/W", "DATASHEET", DS["CSD19531Q5A"] + " p.3, 1 in2 2 oz Cu"),
     "QISO_RDS_HOT_FACTOR": P(1.8, "-", "VARSAYIM", "RDS(on) at Tj~125 C relative to 25 C (graph not numerically extracted)",
                              "Conduction loss and Tj."),
     "LDO5_VOUT_TOL": P(0.02, "-", "DATASHEET", DS["TPS7A16"] + " +/-2% (G1-cited)"),
@@ -152,9 +152,9 @@ PARAMS: dict[str, P] = {
     "LDO5_RTH_JA": P(66.2, "K/W", "DATASHEET", DS["TPS7A16"] + " p.5 DGN"),
 
     # ---- eFuse
-    "EF_IN_ABS": P(30.0, "V", "DATASHEET", DS["TPS25982"] + " p.6"),
+    "EF_IN_ABS": P(30.0, "V", "DATASHEET", DS["TPS25982"] + " p.7"),
     "EF_IN_REC": P(24.0, "V", "DATASHEET", DS["TPS25982"] + " p.7"),
-    "EF_OUT_OVER_IN": P(0.3, "V", "DATASHEET", DS["TPS25982"] + " p.6 OUT max min(30, VIN+0.3)"),
+    "EF_OUT_OVER_IN": P(0.3, "V", "DATASHEET", DS["TPS25982"] + " p.7 OUT max min(30, VIN+0.3)"),
     "EF_UVLO_R_MIN": P(1.18, "V", "DATASHEET", DS["TPS25982"] + " p.9"),
     "EF_UVLO_R_MAX": P(1.23, "V", "DATASHEET", DS["TPS25982"] + " p.9"),
     "EF_GIMON_MIN": P(238.6e-6, "A/A", "DATASHEET", DS["TPS25982"] + " p.8 (3 A..min(15A,ILIM))"),

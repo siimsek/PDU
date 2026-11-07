@@ -23,14 +23,14 @@ OPEN = ROOT / "reports" / "g2" / "BOM-OPEN.md"
 
 DSD = {
     "TI_LM70880": "TI LM70880-Q1 SNVSBX7A p.1,4,6-8,16; addendum ACTIVE",
-    "TI_TPS25982": "TI TPS25982 SLVSEI3D p.6-9,21; addendum ACTIVE",
+    "TI_TPS25982": "TI TPS25982 SLVSEI3D p.7-9,22; addendum ACTIVE",
     "TI_LM74700": "TI LM74700-Q1 datasheet p.5; addendum LM74700QDBVRQ1 Active/Production",
     "TI_LM74502": "TI LM74502/H SNOSDE5A p.3-6; addendum LM74502HDDFR Active/Production",
     "TI_TLV3601": "TI TLV360x SNOSDB1E p.3,5,7; addendum TLV3601DCKR Active/Production",
-    "TI_REF5025A": "TI REF50xxA-Q1 SBOS456H p.4; addendum REF5025AQDRQ1 Active/Production",
+    "TI_REF5025A": "TI REF50xxA-Q1 SBOS456H p.5; addendum REF5025AQDRQ1 Active/Production",
     "TI_LVC1G74": "TI SN74LVC1G74 SCES794G p.4,7; addendum SN74LVC1G74DCUR Active/Production",
     "TI_TPS7A16": "TI TPS7A16-Q1 SBVS188E p.3-6; addendum TPS7A1650QDGNRQ1 Active/Production",
-    "TI_CSD19531": "TI CSD19531Q5A SLPS406B p.1-2 (orderable CSD19531Q5A / CSD19531Q5AT)",
+    "TI_CSD19531": "TI CSD19531Q5A SLPS406B p.1,3 (orderable CSD19531Q5A / CSD19531Q5AT)",
     "INF_BSC160": "Infineon BSC160N10NS3 G datasheet (repo hardware/_datasheets/bsc160n10ns3g.pdf) p.1",
     "VSH_IHLP": "Vishay doc 34509 p.1 (IHLP4040DZER6R8M01) + doc 34207",
     "VSH_WSL": "Vishay WSL doc 30100 p.1-2 (part numbering, 2512 1 W, TCR)",
@@ -213,7 +213,7 @@ def rows():
                    {"1": f"/ILIM_{port}", "2": "/GND"}, 1e-4, 0.1, note="TPS25982 p.9 guaranteed table point"))
         R.append(r(f"RIMON{idx}", "806", "ERA3AEB8060V", "PAN_ERA", "0.1%", "25ppm/K", "0603", R0603, FP_LIB,
                    {"1": f"/IMON_{port}", "2": "/GND"}, 1e-3, 0.1))
-        R.append(c(f"CDVDT{idx}", "1.0n", "", "", 15.6, 50.0, "0603", C0603, {"1": f"/DVDT_{port}", "2": "/GND"}, note="sees VIN+4 V (TPS25982 p.21)"))
+        R.append(c(f"CDVDT{idx}", "1.0n", "", "", 15.6, 50.0, "0603", C0603, {"1": f"/DVDT_{port}", "2": "/GND"}, note="sees VIN+4 V (TPS25982 p.37 design example)"))
         R.append(c(f"CEFIN{idx}", "100n", "", "", 11.6, 50.0, "0603", C0603, {"1": "/VSAFE", "2": "/GND"}))
         R.append(c(f"CEFOUT{idx}", "10u", "", "", 11.6, 25.0, "0805", C0805, {"1": f"/{port}_11V", "2": "/GND"},
                    note="25 V 0805: 46 % of rating; Ceff assumed 40 % (DC-bias datasheet not available)"))

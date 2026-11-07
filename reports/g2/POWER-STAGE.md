@@ -60,7 +60,7 @@ Toplam verim **%92 VARSAYIM** (LM70880 datasheet'inde RDS(on)/anahtarlama kaybı
 | Maks toplam | 14.73 A > buck OCP min 10.19 A → iki port aynı anda sınırdaysa buck hiccup'a girer (koruma hiyerarşisi) | HESAP |
 | IMON maks gerilim | 806 Ω × 253.4 µA/A × 9.07 A = 1.85 V | HESAP |
 | eFuse EN açma (VSAFE) | 8.82–9.24 V (64.9k/10k) | HESAP |
-| dV/dt | CdVdt 1 nF → 4.6 V/ms (Eq.3, p.21); 100 µF yükte 0.46 A ani akım | DATASHEET |
+| dV/dt | CdVdt 1 nF → 4.6 V/ms (Eq.3, p.22); 100 µF yükte 0.46 A ani akım | DATASHEET |
 
 O1 için ILIM 182 Ω seçimi, ölçülmemiş yük zarfına dayanır. O1 sürekli akımı ≤6.78 A değilse seçim değişir (USER-DECISIONS).
 

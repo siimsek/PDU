@@ -28,14 +28,14 @@ G1 kapanış kararı (ortak bara seri ayırıcı, U3/U4 IN önünde) somutlaşt�
 | Ref (öneri) | Değer / MPN | İşlev | Kanıt |
 |---|---|---|---|
 | R_OVT / R_OVB | 8.25 kΩ / 2.32 kΩ, TNPW1206 0.1 % 15 ppm/K (TNPW12068K25BXEA / TNPW12062K32BXEA) | Hassas eşik bölücüsü, VRAW → U_CMP IN− | HESAP; Vishay doc 28758 parça numarası şeması |
-| U_REF | REF5025AQDRQ1, 2.5 V | U_CMP IN+ | DATASHEET p.4 |
+| U_REF | REF5025AQDRQ1, 2.5 V | U_CMP IN+ | DATASHEET p.5 |
 | U_CMP | TLV3601DCKR (SC70-5), VCC=+5V_PROT | Çıkış LOW = aşırı gerilim → PRE_n | DATASHEET p.7 |
 | U_LAT | SN74LVC1G74DCUR; D=VCC, CLK=GND, PRE_n=U_CMP OUT, CLR_n=POR/PG/buton | Mandal; Q=H → ayırıcı KAPALI | DATASHEET p.4, p.7 |
 | R_Q | 10.0 kΩ CRCW0603 1 % | Q → U_DRV OV | HESAP |
 | R_OV2T / R_OV2B | 64.9 kΩ / 24.9 kΩ CRCW0603 1 % | Kaba OV: VRAW → U_DRV OV; trip **11.55–13.70 V** (iki yol farkı ≤2.5 mV) | HESAP |
 | U_DRV | LM74502HDDFR; VS=VRAW, SRC=VSAFE, GATE=Q_ISO G, VCAP 0.1 µF | Kapı sürücüsü + şarj pompası | DATASHEET p.3–6 |
 | R_EN1 / R_EN2 | 15.0 kΩ / 10.0 kΩ CRCW0603 1 % | +5V_PROT → U_DRV EN: açma ≤3.375 V, kapama 2.57–3.16 V | HESAP |
-| Q_ISO | CSD19531Q5A (SON 5×6) | VRAW (drain) → VSAFE (source) | DATASHEET p.1–2 |
+| Q_ISO | CSD19531Q5A (SON 5×6) | VRAW (drain) → VSAFE (source) | DATASHEET p.1, 3 |
 | R_GS | 100 kΩ CRCW0603 | G-S boşaltma (R13) | Tasarım |
 | U_LDO5 | TPS7A1650QDGNRQ1, giriş VIN (Q1 sonrası) | +5V_PROT | DATASHEET; R21 |
 | R_BL5 | 1.0 kΩ CRCW0805 | 5 V bleeder (clamp geri beslemesi, R07) | HESAP |

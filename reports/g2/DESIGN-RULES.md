@@ -28,7 +28,7 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 
 | ID | Zorunlu kural | Kaynak | Nasıl sağlandı (G2) | Durum |
 |---|---|---|---|---|
-| R16 | eFuse OUT ≤ min(30 V, VIN+0.3 V) abs-max her durumda (ayırıcı açılınca, giriş kaybında). | TPS25982 DATASHEET Rev D p.6; 6693550928 (OUT−IN 10.997 V) | VSAFE'e bleeder; her eFuse'ta OUT→IN Schottky (`D_REV1/2`); ayırıcı yalnız OV'de açılır (giriş kaybında açılmaz). Schottky Vf ≤0.3 V yalnız düşük akımda tipik → **koşullu**. | HESAP+SİM (Aile 4); fiziksel AÇIK |
+| R16 | eFuse OUT ≤ min(30 V, VIN+0.3 V) abs-max her durumda (ayırıcı açılınca, giriş kaybında). | TPS25982 DATASHEET Rev D p.7; 6693550928 (OUT−IN 10.997 V) | VSAFE'e bleeder; her eFuse'ta OUT→IN Schottky (`D_REV1/2`); ayırıcı yalnız OV'de açılır (giriş kaybında açılmaz). Schottky Vf ≤0.3 V yalnız düşük akımda tipik → **koşullu**. | HESAP+SİM (Aile 4); fiziksel AÇIK |
 | R17 | ILIM yalnız datasheet'in garanti verdiği tablo noktalarından seçilir; ara değer interpolasyonu garanti sayılmaz. O1+S2E garantili-min toplam ≥7.5 A. | TPS25982 DATASHEET p.9 tablosu; 6681813880 (7.4877 A FAIL) | RILIM_O1=182 Ω (7.23–9.07 A), RILIM_S2E=300 Ω (4.36–5.66 A). | DATASHEET+HESAP |
 | R18 | Konnektör sürekli akımı üretici derating'i içinde; kontak/kablo eşleşik set. | G1 KICAD-CHANGE-LIST (Micro-Fit W-W 7 A) | Molex PS bu turda okunamadı → **doğrulanamadı**; seçim AÇIK. | AÇIK |
 | R19 | eFuse EN/UVLO ve PG bölücüleri VSAFE'ten beslenir (ayırıcı açıkken eFuse'lar da kapanır). | G1 kapanış | REN1/REN2 VSAFE'e. | Tasarımda |
