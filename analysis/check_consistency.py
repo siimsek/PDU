@@ -108,6 +108,9 @@ KICAD_CLI = os.environ.get("KICAD_CLI", r"C:\Program Files\KiCad\10.0\bin\kicad-
 # Schematic blocks (T-006..T-012): refs whose schematic netlist must equal the spec after the block card.
 BLOCKS = {
     "B1": ["J1", "D1", "U5", "Q1", "CIN_U5", "CVCAP", "CBIN1", "CBIN2"] + [f"CIN{i}" for i in range(1, 9)],
+    "B2": ["U1", "U2", "L1", "L2", "RS1", "RS2", "CBOOT1", "CBOOT2", "RBOOT1", "RBOOT2", "RT1", "RT2", "CVCC1", "CVCC2",
+           "CVDDA1", "CVDDA2", "RCFG1", "RCFG2", "RSYNC", "RFB1", "R_INJ", "RFB2", "R_TRIM", "RCOMP", "CCOMP", "CHF",
+           "RUV1", "RUV2"],
 }
 
 
@@ -130,7 +133,9 @@ def schematic_netlist(sch: Path | None = None) -> dict:
             for f in fs.children("field"):
                 vals = [x for x in f if isinstance(x, ks.Atom)][1:]
                 fields[next(f.children("name")).atoms()[1].value] = vals[-1].value if vals else ""
-        comps[ref] = {"fields": fields, "footprint": fp.atoms()[1].value if fp is not None else "", "pins": {}}
+        val = next(c.children("value"), None)
+        comps[ref] = {"fields": fields, "footprint": fp.atoms()[1].value if fp is not None else "", "pins": {},
+                      "value": val.atoms()[1].value if val is not None else ""}
     for n in next(root.children("nets")).children("net"):
         net = next(n.children("name")).atoms()[1].value
         for nd in n.children("node"):
@@ -154,6 +159,8 @@ def schematic_diff(refs, comps=None) -> list:
             continue
         if c["footprint"] != s.get("footprint", ""):
             errs.append(f"{ref}.footprint: schematic '{c['footprint']}' != spec '{s.get('footprint')}'")
+        if re.fullmatch(r"[0-9.]+[pnumkMR]?", s.get("value", "")) and c.get("value") != s["value"]:
+            errs.append(f"{ref}.value: schematic '{c.get('value')}' != spec '{s['value']}'")
         if c["fields"].get("MPN", "") != s.get("mpn", ""):
             errs.append(f"{ref}.MPN: schematic '{c['fields'].get('MPN', '')}' != spec '{s.get('mpn')}'")
         for key, net in s["pins"].items():
@@ -163,8 +170,13 @@ def schematic_diff(refs, comps=None) -> list:
                 num = key if key.isdigit() else m.group(2)
                 got = c["pins"].get(num, (None, None))[1]
             else:
-                hits = [nt for nm, nt in c["pins"].values() if nm.replace(" ", "") == key.replace(" ", "")]
-                got = hits[0] if hits and all(h == hits[0] for h in hits) else (hits or None)
+                k0 = key.replace(" ", "")
+                hits = [nt for nm, nt in c["pins"].values() if nm.replace(" ", "") == k0]
+                if not hits:  # numbered pin groups (VIN1..VIN6, SW1..SW4, PGND1..4) carry one spec name
+                    hits = [nt for nm, nt in c["pins"].values() if re.fullmatch(re.escape(k0) + r"\d+", nm.replace(" ", "")) and nm not in s["pins"]]
+                got = hits[0] if hits and all(h == hits[0] for h in hits) else (sorted(set(hits)) or None)
+            if want == "NC" and (got is None or str(got).startswith("unconnected-")):
+                continue
             if got != want:
                 errs.append(f"{ref}.{key}: schematic {got} != spec {want}")
     return errs

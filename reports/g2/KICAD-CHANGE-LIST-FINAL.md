@@ -30,6 +30,8 @@ G1 [`KICAD-CHANGE-LIST.md`](../g1/KICAD-CHANGE-LIST.md) satırlarının yerini b
 
 U5 (LM74700-Q1) pin haritası düzeltmesi (G5 T-006): 1 VCAP, 2 GND, 3 EN, 4 CATHODE (/VIN), 5 GATE, 6 ANODE (TI Tablo 5-1); G2 spec'teki kayık harita SUPERSEDED, mevcut şema doğru. D1 katot ağı D-007 kararına bağlı.
 
+G5 T-007 spec düzeltmeleri (şema zaten doğru): U2 FB → /GND (FPWM çift faz, LM70880 p.19); RBOOT CBOOT ile **seri** (CBOOT pini → RBOOT → /CBOOT_Rk → CBOOT → /SW4_PHk, p.4); SW4 ayrı ağ /SW4_PHk (p.3). R_INJ ve R_TRIM şemaya eklendi (scripts/sch_edit_b2.py).
+
 Test noktası ekleri: TP_OC_SENSE1, TP_OC_SENSE2, TP_OC_REF, TP_OVP_BUS_N; faz şöntü akım enjeksiyonu için RS1/RS2 Kelvin padleri (BENCH T5g).
 
 ## 1. Değişen referanslar (G2)
