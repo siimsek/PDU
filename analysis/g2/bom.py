@@ -297,7 +297,41 @@ def rows():
                       v_applied="", v_rating="", p_applied_W="", p_rating_W="", derating=None, lifecycle="Active (Molex page)",
                       note=("off-board in battery + lead, nearest the battery; 18 AWG; D-001 (DIN rail mounting)" if eaton
                             else "cable side; 18 AWG 0.5-1.5 m (VARSAYIM)"), dnp=False))
+    # ---------------- G5 D-008: PCB-only test pads, fixture wire pads, solder jumper (not purchased, not in BOM totals)
+    for ref, net, fp in TEST_POINTS:
+        R.append(dict(ref=ref, kind="TP", value="TP", mpn="", manufacturer="", datasheet="", tolerance="", tcr="", package="",
+                      footprint=fp, footprint_source=FP_LIB + " (D-008 test pad)", custom_footprint=False, nets={"1": net},
+                      v_applied="", v_rating="", p_applied_W="", p_rating_W="", derating=None,
+                      lifecycle="PCB-only (D-008, not purchased)", note="bare test pad; BENCH-ACCEPTANCE / PCB-HANDOFF", dnp=False))
+    R.append(dict(ref="J_OVP_INJ_BUS", kind="FIX", value="OVP injection wire pads", mpn="", manufacturer="", datasheet="",
+                  tolerance="", tcr="", package="", footprint="Connector_Wire:SolderWire-6sqmm_1x02_P14mm_D3.5mm_OD7mm",
+                  footprint_source=FP_LIB + " (D-008 6 mm2 pads; Relief2x variant rejected: its courtyard includes the 90 mm cable relief; no current rating claimed)", custom_footprint=False,
+                  nets={"1": "/VOUT", "2": "/GND"}, v_applied="", v_rating="", p_applied_W="", p_rating_W="", derating=None,
+                  lifecycle="PCB-only (D-008, not purchased)", note="BENCH T5 fixture cable soldered here", dnp=False))
+    R.append(dict(ref="JP_EN_BUCK", kind="JP", value="SolderJumper open", mpn="", manufacturer="", datasheet="",
+                  tolerance="", tcr="", package="", footprint="Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm",
+                  footprint_source=FP_LIB + " (D-008)", custom_footprint=False, nets={"1": "/EN_BUCK", "2": "/GND"},
+                  v_applied="", v_rating="", p_applied_W="", p_rating_W="", derating=None,
+                  lifecycle="PCB-only (D-008, not purchased)", note="normally open; solder-bridge to disable the buck for T5 injection", dnp=False))
     return R
+
+
+PCB_ONLY_KINDS = ("TP", "FIX", "JP")
+_TP1, _TP2 = "TestPoint:TestPoint_Pad_D1.0mm", "TestPoint:TestPoint_Pad_D2.0mm"
+TEST_POINTS = [  # decisions/D-008-test-points.md
+    ("TP_ANODE", "/ANODE", _TP2), ("TP_VIN", "/VIN", _TP2), ("TP_VOUT", "/VOUT", _TP2), ("TP_VSAFE", "/VSAFE", _TP2),
+    ("TP_O1", "/O1_11V", _TP2), ("TP_S2E", "/S2E_11V", _TP2),
+    ("TP_ISO_GATE", "/ISO_GATE", _TP1), ("TP_ISO_OV", "/ISO_OV", _TP1), ("TP_OVP_TRIP_N", "/OVP_TRIP_N", _TP1),
+    ("TP_OVP_Q", "/OVP_Q", _TP1), ("TP_CLR_N", "/CLR_N", _TP1), ("TP_OVP_SENSE", "/OVP_SENSE", _TP1),
+    ("TP_OVP_REF", "/OVP_REF", _TP1), ("TP_OVP_BUS_N", "/OVP_BUS_N", _TP1), ("TP_P5V", "/P5V_PROT", _TP1),
+    ("TP_OC_SENSE1", "/OC_SENSE1", _TP1), ("TP_OC_SENSE2", "/OC_SENSE2", _TP1), ("TP_OC_REF", "/OC_REF", _TP1),
+    ("TP_FB_INJ_A", "/VOUT", _TP1), ("TP_FB_INJ_B", "/FB_INJ", _TP1), ("TP_COMP", "/COMP", _TP1),
+    ("TP_EN_BUCK", "/EN_BUCK", _TP1), ("TP_SW1", "/SW_PH1", _TP1), ("TP_SW2", "/SW_PH2", _TP1),
+    ("TP_ISNS1P", "/ISNS1", _TP1), ("TP_ISNS1N", "/VOUT", _TP1), ("TP_ISNS2P", "/ISNS2", _TP1), ("TP_ISNS2N", "/VOUT", _TP1),
+    ("TP_PG_O1", "/PG_O1", _TP1), ("TP_PG_S2E", "/PG_S2E", _TP1), ("TP_IMON_O1", "/IMON_O1", _TP1),
+    ("TP_IMON_S2E", "/IMON_S2E", _TP1),
+    ("TP_GND_FB", "/GND", _TP2), ("TP_GND_OC", "/GND", _TP2), ("TP_GND_OVP", "/GND", _TP2), ("TP_GND_POWER", "/GND", _TP2),
+]
 
 
 # G4: MLCC part numbers confirmed on TDK Product Center pages (status Production, 2026-11-07). value/voltage/dielectric
@@ -367,7 +401,7 @@ def main():
         w.writeheader()
         for row in R:
             w.writerow({k: (f"{row[k]:.4g}" if isinstance(row.get(k), float) else row.get(k, "")) for k in cols})
-    open_rows = [row for row in R if not row["mpn"]]
+    open_rows = [row for row in R if not row["mpn"] and row["kind"] not in PCB_ONLY_KINDS]
     over = [row for row in R if row["derating_ok"].startswith("NO")]
     lines = ["# G2 BOM — MPN seçilemeyen satırlar", "",
              "Kaynak: [`design/bom-v2.csv`](../../design/bom-v2.csv), üretici: [`analysis/g2/bom.py`](../../analysis/g2/bom.py). "

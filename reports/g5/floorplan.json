@@ -1,11 +1,11 @@
 {
   "classification": "HESAP (courtyard bbox from footprint files) + VARSAYIM (flagged rows)",
   "fill_limit_one_side": 0.55,
-  "parts": 142,
-  "total_courtyard_mm2": 3435.4,
+  "parts": 180,
+  "total_courtyard_mm2": 3817.7,
   "missing": [],
   "flagged": {},
-  "min_board_area_for_limit_mm2": 6246.2,
+  "min_board_area_for_limit_mm2": 6941.2,
   "groups": {
     "Giriş (J1, TVS, ters kutup, CIN)": {
       "parts": 16,
@@ -38,6 +38,10 @@
     "eFuse + çıkış konnektörleri": {
       "parts": 24,
       "area_mm2": 584.65
+    },
+    "Test noktaları / fixture (D-008)": {
+      "parts": 38,
+      "area_mm2": 382.25
     }
   },
   "boards": {
@@ -45,29 +49,29 @@
       "w_mm": 101.6,
       "h_mm": 76.2,
       "area_mm2": 7741.9,
-      "fill_one_side": 0.4437,
-      "fill_two_side": 0.2219
+      "fill_one_side": 0.4931,
+      "fill_two_side": 0.2466
     },
     "PCB-HANDOFF estimate 120 x 85": {
       "w_mm": 120.0,
       "h_mm": 85.0,
       "area_mm2": 10200.0,
-      "fill_one_side": 0.3368,
-      "fill_two_side": 0.1684
+      "fill_one_side": 0.3743,
+      "fill_two_side": 0.1871
     },
     "130 x 90": {
       "w_mm": 130.0,
       "h_mm": 90.0,
       "area_mm2": 11700.0,
-      "fill_one_side": 0.2936,
-      "fill_two_side": 0.1468
+      "fill_one_side": 0.3263,
+      "fill_two_side": 0.1631
     },
     "140 x 100": {
       "w_mm": 140.0,
       "h_mm": 100.0,
       "area_mm2": 14000.0,
-      "fill_one_side": 0.2454,
-      "fill_two_side": 0.1227
+      "fill_one_side": 0.2727,
+      "fill_two_side": 0.1363
     }
   },
   "rows": [
@@ -1490,6 +1494,386 @@
       "area_mm2": 76.8,
       "flag": "",
       "group": "eFuse + çıkış konnektörleri"
+    },
+    {
+      "ref": "TP_ANODE",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_VIN",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_VOUT",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_VSAFE",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_O1",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_S2E",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_ISO_GATE",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_ISO_OV",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_OVP_TRIP_N",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_OVP_Q",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_CLR_N",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_OVP_SENSE",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_OVP_REF",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_OVP_BUS_N",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_P5V",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_OC_SENSE1",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_OC_SENSE2",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_OC_REF",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_FB_INJ_A",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_FB_INJ_B",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_COMP",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_EN_BUCK",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_SW1",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_SW2",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_ISNS1P",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_ISNS1N",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_ISNS2P",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_ISNS2N",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_PG_O1",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_PG_S2E",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_IMON_O1",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_IMON_S2E",
+      "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod",
+      "w_mm": 2.0,
+      "h_mm": 2.0,
+      "area_mm2": 4.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_GND_FB",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_GND_OC",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_GND_OVP",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "TP_GND_POWER",
+      "footprint": "TestPoint:TestPoint_Pad_D2.0mm",
+      "source": "<KiCad stock>/TestPoint.pretty/TestPoint_Pad_D2.0mm.kicad_mod",
+      "w_mm": 3.0,
+      "h_mm": 3.0,
+      "area_mm2": 9.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "J_OVP_INJ_BUS",
+      "footprint": "Connector_Wire:SolderWire-6sqmm_1x02_P14mm_D3.5mm_OD7mm",
+      "source": "<KiCad stock>/Connector_Wire.pretty/SolderWire-6sqmm_1x02_P14mm_D3.5mm_OD7mm.kicad_mod",
+      "w_mm": 22.5,
+      "h_mm": 8.0,
+      "area_mm2": 180.0,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
+    },
+    {
+      "ref": "JP_EN_BUCK",
+      "footprint": "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm",
+      "source": "<KiCad stock>/Jumper.pretty/SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm.kicad_mod",
+      "w_mm": 3.3,
+      "h_mm": 2.5,
+      "area_mm2": 8.25,
+      "flag": "",
+      "group": "Test noktaları / fixture (D-008)"
     }
   ]
 }

@@ -39,6 +39,7 @@ GROUPS = [  # PCB-HANDOFF §3 groups; first match wins
     ("COUT bankası (32× C5750)", r"^(COUT\d+|RRAWBL)$"),
     ("Ortak bara ayırıcı", r"^(U6|Q2|R_GS|C_ISO_.*)$"),
     ("OVP + OC mantık, REF, mandal, LDO", r"^(R_OV.*|U7|U8|U9|U10|U1[1-5]|C_INA\d|C_OCC\d|C_AND|R_OC[TB]|C_CMP|C_REF_.*|C_LAT|R_CLR|C_CLR|SW1|R_Q|R_EN\d|C_LDO_.*|R_BL5|R_BLS)$"),
+    ("Test noktaları / fixture (D-008)", r"^(TP_.*|J_OVP_INJ_BUS|JP_EN_BUCK)$"),
     ("eFuse + çıkış konnektörleri", r"^(U3|U4|RILIM\d|RIMON\d|CDVDT\d|CEFIN\d|CEFOUT\d|RPG\d.*|D_REV\d|D2|D3|REN\d|J2|J3)$"),
 ]
 

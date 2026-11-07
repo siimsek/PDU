@@ -141,3 +141,41 @@ REN2,CRCW060310K0FKEA,Resistor_SMD:R_0603_1608Metric,STOK,yes,KiCad standard lib
 J1,430450200,Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 J3,430450200,Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal,STOK,yes,KiCad standard library footprint (IPC-7351 nominal),low
 J2,460150206,Connector_Molex:Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical,STOK,yes,"KiCad standard library (Mini-Fit Jr 5566-02A); verified vs Molex SD-46015-001 (row 5.50 mm, hole 1.40 mm, no peg) R-003 tour 2",low
+TP_ANODE,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_VIN,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_VOUT,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_VSAFE,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_O1,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_S2E,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_ISO_GATE,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_ISO_OV,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_OVP_TRIP_N,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_OVP_Q,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_CLR_N,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_OVP_SENSE,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_OVP_REF,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_OVP_BUS_N,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_P5V,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_OC_SENSE1,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_OC_SENSE2,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_OC_REF,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_FB_INJ_A,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_FB_INJ_B,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_COMP,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_EN_BUCK,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_SW1,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_SW2,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_ISNS1P,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_ISNS1N,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_ISNS2P,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_ISNS2N,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_PG_O1,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_PG_S2E,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_IMON_O1,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_IMON_S2E,,TestPoint:TestPoint_Pad_D1.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_GND_FB,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_GND_OC,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_GND_OVP,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+TP_GND_POWER,,TestPoint:TestPoint_Pad_D2.0mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 test pad),low
+J_OVP_INJ_BUS,,Connector_Wire:SolderWire-6sqmm_1x02_P14mm_D3.5mm_OD7mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008 6 mm2 pads; Relief2x variant rejected: its courtyard includes the 90 mm cable relief; no current rating claimed),low
+JP_EN_BUCK,,Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm,STOK,yes,KiCad standard library footprint (IPC-7351 nominal) (D-008),low
