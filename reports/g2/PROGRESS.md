@@ -19,8 +19,8 @@ Context sıfırlanırsa: bu dosyadaki son aşamanın "açık işler" listesinden
 | 2 Koruma mimarisi | tamam (COUT sayısı Aşama 4'te) | `PROTECTION-DECISION.md` |
 | 3 Güç katı hesabı | tamam | `POWER-STAGE.md` |
 | 4 Döngü kararlılığı | tamam (yük adımı Aile 3'te) | `LOOP-STABILITY.md` |
-| 5 Tam sistem SPICE | bkz. aşağı | `SIM-RESULTS.md`, `design/pdu_v2.cir` |
-| 6 BOM + PCB devri | bkz. aşağı | `design/bom-v2.csv`, `PCB-HANDOFF.md`, `VERIFY.md` |
+| 5 Tam sistem SPICE | tamam (68/68 koşu tamamlandı) | `SIM-RESULTS.md`, `design/pdu_v2.cir` |
+| 6 BOM + PCB devri | tamam (MPN AÇIK satırlar BOM-OPEN) | `design/bom-v2.csv`, `PCB-HANDOFF.md`, `VERIFY.md` |
 
 ## Kararlar günlüğü
 
@@ -32,6 +32,15 @@ Context sıfırlanırsa: bu dosyadaki son aşamanın "açık işler" listesinden
 
 - K4 (Aşama 4): RCOMP 16.9k / CCOMP 10 nF / CHF 22 pF; 432 köşede PM min 66.9° (−10° pay → 56.9°), GM min 11.7 dB, fc 9.8–40.9 kHz; ngspice AC ile <0.001° uyum.
 
+- K5 (Aşama 5): `design/pdu_v2.cir` ortalama model; 5 aile 68 koşu. Sayısal sorunlar ve çözümleri: (1) ESR düğümüne yanlış .ic → düzeltildi; (2) histerezissiz durum kaynakları sınırda titreşti → yumuşak sınırlı ifadeler; (3) anahtar kaynağı giriş akımı çekmiyordu → güç dengeli BIN1/BIN2; (4) iL=0'da kesikli kıskaç → sürekli kıskaç; (5) uic+.ic 13 koşuda ıraksadı → kararlı başlangıçlı koşularda OP (.ic) kullanıldı. Eski deck/log `-attemptN`.
+- K6 (Aşama 5): R_OVT/R_OVB TCR 10 → 15 ppm/K (TNPW 0.1 % ile 10 ppm yok). trip 11.2649–11.5309 V; O1 HESAP 11.935 V.
+- K7 (Aşama 6): BOM 114 satır; MPN'li 71, AÇIK 43 (MLCC, F1, D1, J1–J3, SW1). D2/D3 footprint SMA→SMC.
+
 ## Açık işler
 
-(her aşama sonunda güncellenir)
+- Fiziksel kabul (BENCH T0–T6) — hiçbir ölçüm yapılmadı.
+- F3 yığılmış statik+transient köşeleri FAIL (alt 10.64 V, üst bırakma 11.35 V) → trim veya kullanıcı kararı.
+- LM70880 Tj 85 °C ortamda 137.7 °C (VARSAYIM %92 verim) → ortam sıcaklığı kararı / termal ölçüm.
+- R_OVT açık devre artık riski (SİM O1 13.94 V), Q2 D-S kısa tek nokta arızası.
+- MPN AÇIK satırlar için datasheet erişimi (USER-DECISIONS).
+- `reports/g2/sim/dbg/` geçici hata ayıklama klasörü commit edilmedi (silinmesi kullanıcıya bırakıldı).

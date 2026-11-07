@@ -53,3 +53,38 @@ Kısaltmalar: `VRAW` = buck COUT ortak barası; `VSAFE` = ayırıcı sonrası, U
 | R28 | Her hesap iki yolla; fark raporlu; birimli; pytest'li. | Kullanıcı G2 kuralı; 6681813880 P1 | `analysis/g2/*` her sonuçta `path_a`, `path_b`, `diff`. | HESAP |
 | R29 | Tamamlanmayan simülasyon PASS sayılmaz; FAIL silinmez; ilk/son deneme ve hash saklanır. | G1-R2-04, 6693550928 | `analysis/g2/sim_runner.py` completed bayrağı + SHA256. | Tasarımda |
 | R30 | Tezgâh enjeksiyonu için erişim: VRAW enjeksiyon padi, VSAFE/O1/S2E/GATE test noktaları; enjeksiyon akım sınırlı fixture ile. | G1 KICAD-CHANGE-LIST | KICAD-CHANGE-LIST-FINAL test noktaları. | Tasarımda |
+
+## Kapanış durumu (Aşama 6)
+
+| ID | Sağlandı? | Kanıt | AÇIK kalan |
+|---|---|---|---|
+| R01 | Evet | SİM F1/F5: VSAFE ≤11.915 V (korumasız referans 33.0 V FAIL) | fiziksel T5c |
+| R02 | Evet (model/hesap) | HESAP 11.935 V, SİM F1 11.912 V, F5 maks 11.912 V | tezgâh T5b/T5c; ölçüm belirsizliği (USER-DECISIONS #2) |
+| R03 | Kısmen | trip_min 11.2649 V (bant + 44.9 mV); SİM F3 nominal bırakma ≤11.19 V | yığılmış üst köşe bırakma 11.35 V > trip_min (F3 FAIL) → trim/kullanıcı kararı |
+| R04 | Evet (koşullu) | DATASHEET maks değerler ve koşulları `params.py`'de | VCM/overdrive ve 4.7 nF eşdeğerliği tezgâhta |
+| R05 | Evet | HESAP: VCM aralık dışı VRAW>23.24 V; kaba OV ≤13.70 V | — |
+| R06 | Evet | HESAP 6.29 / 6.47 mA < 10 mA | — |
+| R07 | Kısmen | HESAP: 1 kΩ bleeder ile 26 V'ta ray 1.92 V | ≥40 V hata + LDO yokken ray 3.1–4.1 V; kaba OV yoluna güvenilir |
+| R08 | Evet | HESAP EN kapama 2.57–3.16 V > 2.1 V POR > 1.65 V | — |
+| R09 | Evet | DATASHEET fonksiyon tablosu | — |
+| R10 | Evet | POR RC 120 ms + PG; karşılaştırıcı POR LOW | tezgâh T1/T5e |
+| R11 | Evet | DATASHEET | tezgâh T5f |
+| R12 | Kısmen | LM74502H EN deşarjı (RDSON 0.4–2 Ω) | tUVLO_OFF yalnız tipik 2 µs → T5e |
+| R13 | Evet | R_GS 100 kΩ (BOM) | — |
+| R14 | Koşullu | Qg oranı 0.97 (gerçek ≤ test yükü) | tezgâh T5b |
+| R15 | Kısmen | VDS payı 46.7 V; enerji oranı 0.0022 × EAS | SOA µs grafiği okunamadı |
+| R16 | Evet (model) | SİM F4: D_REV ile OUT−IN 0.133 V; D_REV'siz 0.777 V FAIL | Schottky Vf tipik; T6b |
+| R17 | Evet | DATASHEET p.9 tablo noktaları; toplam min 11.59 A | — |
+| R18 | Hayır | — | Molex PS okunamadı → AÇIK |
+| R19 | Evet | KICAD-CHANGE-LIST-FINAL (REN1 → VSAFE) | — |
+| R20 | Evet | R_OVT 26 V'ta %20 (geçici 53.3 V'ta %84, kısa süreli) | — |
+| R21 | Evet | U10 IN = VIN | termal VIN 26 V: 0.34 W |
+| R22 | Evet | Kapı kapatma EN bölücüsüyle | — |
+| R23 | Kısmen | Referans/alt direnç arızası güvenli | R_OVT açık: SİM O1 13.94 V (artık risk), Q2 D-S kısa (tek nokta) |
+| R24 | Evet | Bölücü VRAW'da | — |
+| R25 | Evet | CBOOT 47 nF + 1 Ω; LM74502H VCAP 100 nF | — |
+| R26 | Kısmen | SİM F3 nominal 6/6 PASS (min 10.81 V) — G1 Family 4 FAIL nominal köşede kapandı | yığılmış alt köşe min 10.64 V FAIL → trim/kullanıcı kararı |
+| R27 | Evet (model) | 432 köşe PM 66.9° (−10° → 56.9°), GM 11.7 dB; ngspice AC <0.001° | tezgâh FRA T3 |
+| R28 | Evet | her modülde path A/B + fark; 91 pytest | bağımsız fiziksel ikinci yol yok |
+| R29 | Evet | sim-results.json completed/SHA256, `-attemptN` | — |
+| R30 | Evet | KICAD-CHANGE-LIST-FINAL §3 | — |
