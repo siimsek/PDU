@@ -9,11 +9,11 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [D-003](D-003.md) | THINKER | M | — | Ready |
 | [D-004](D-004.md) | THINKER | M | — | Ready |
 | [T-002](done/T-002.md) | BUILDER | S | T-001 | Done |
-| [T-003](T-003.md) | BUILDER | M | T-001 | Ready |
+| [T-003](done/T-003.md) | BUILDER | M | T-001 | Done |
 | [D-001](D-001.md) | THINKER | M | — | Ready |
 | [D-002](D-002.md) | THINKER | S | — | Ready |
 | [T-004](T-004.md) | BUILDER | S | D-001 (Done) | Draft |
-| [T-005a](T-005a.md) | BUILDER | M | T-002 | Draft |
+| [T-005a](T-005a.md) | BUILDER | M | T-002 | Ready |
 | [T-005b](T-005b.md) | BUILDER | M | T-002, T-004 | Draft |
 | [T-006](T-006.md) | BUILDER | M | T-002, T-005a | Draft |
 | [T-007](T-007.md) | BUILDER | M | T-006 | Draft |
