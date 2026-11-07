@@ -15,6 +15,7 @@ import json
 import math
 from pathlib import Path
 
+from analysis.g2 import design as D
 from analysis.g2.params import v
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -28,9 +29,9 @@ E96 = [1.00, 1.02, 1.05, 1.07, 1.10, 1.13, 1.15, 1.18, 1.21, 1.24, 1.27, 1.30, 1
        6.81, 6.98, 7.15, 7.32, 7.50, 7.68, 7.87, 8.06, 8.25, 8.45, 8.66, 8.87, 9.09, 9.31, 9.53, 9.76]
 
 # ---- design values (selected in this module; tests pin them)
-RB = 2.32e3            # precision divider bottom, TNPW1206 0.1 % 10 ppm/K (pair search, see PROTECTION-DECISION)
+RB = 2.32e3            # precision divider bottom, TNPW1206 0.1 % 15 ppm/K (pair search, see PROTECTION-DECISION)
 R_TOL = 0.001          # 0.1 %
-R_TCR = 10e-6          # 10 ppm/K (TNPW "Y" code)
+R_TCR = 15e-6          # 15 ppm/K: TNPW "X" code with 0.1 % (doc 28758 p.3; 10 ppm needs TNPU series)
 TRIP_MIN_TARGET = v("BUS_TRANSIENT_MAX") + 0.030   # R03: 11.25 V
 RT2 = 64.9e3           # coarse divider top (CRCW 1 %); pair search: coarse_min >= precision trip_max + 30 mV
 RB2 = 24.9e3           # coarse divider bottom (CRCW 1 %)
@@ -289,7 +290,8 @@ def por_clear():
             "note": "VIH=0.7*VCC used as LVC screen; capacitor tolerance +/-10% -> +/-10% time (HESAP)"}
 
 
-def compute(n_cout=12):
+def compute(n_cout=None):
+    n_cout = n_cout or D.N_COUT
     rt, lo, hi = select_rt()
     lo_b, hi_b, contrib = trip_corners_interval(rt)
     k_div = (rt + RB) / RB

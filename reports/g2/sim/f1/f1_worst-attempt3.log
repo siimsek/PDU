@@ -1,0 +1,38 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * g2 case f1_worst
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 20170
+
+  Measurements for Transient Analysis
+
+vraw_max_fault      =  3.29994e+01 at=  2.06868e-04
+vsafe_max_fault     =  1.19149e+01 at=  1.13099e-04
+o1_max_fault        =  1.19126e+01 at=  1.13247e-04
+s2e_max_fault       =  1.19126e+01 at=  1.13247e-04
+vds_iso_max         =  2.12303e+01 at=  2.06928e-04
+o1_minus_in_max     =  1.14182e-01 at=  1.27468e-04
+s2e_minus_in_max    =  1.14182e-01 at=  1.27468e-04
+vraw_pre            =  1.08332e+01
+q_end               =  1.00300e+00
+iso_i_max           =  1.24964e+00 at=  1.13099e-04
+eiso                =   9.77179e-08 from=  1.00000e-04 to=  4.00000e-04
+
+
+Total analysis time (seconds) = 0.541991
+
+Total elapsed time (seconds) = 0.553 
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 10153.727 MB.
+Maximum ngspice program size =   12.918 MB.
+Current ngspice program size =   12.336 MB.
+
