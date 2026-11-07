@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-013 (PR #49 taslak; R-012 tur 2 KOŞULLU → yay uzunluğu düzeltildi; bağımsız doğrulama R-013 bekliyor — **birleştirme yok**)
-- **Aktif kart:** T-013 (Review). PCB kuruldu: 120 × 85, 4 katman, 180 ayak izi, parite 0, boş kart DRC 0 (reports/g5/PCB-SETUP.md).
+- **Dal / son commit:** wp/T-013 → main (R-012 iki tur + R-013 ONAY; PR #49, #50, #51)
+- **Aktif kart:** T-014 (InProgress — KICAD-READY kapısı). PCB kurulu: 120 × 85, 4 katman, 180 ayak izi, parite 0, boş kart DRC 0.
 
 ## Yapılanlar
 - R-012 tur 2 (1 engelleyici): `neck_audit` yayda gerçek yay uzunluğu (start/mid/end); prob E/F yayları + testler. Doğrulama kartı tasks/R-013.md (queue: yalnız R-013 satırı — check_workflow kapısı için).
@@ -17,7 +17,7 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: R-013 (yay uzunluğu düzeltmesinin bağımsız doğrulaması, dal wp/R-013). ONAY → Claude Code: #50 + R-013 PR + #49 birleştir, queue eşitle (R-012/R-013) → T-014 KICAD-READY.
+Claude Code: T-014 KICAD-READY kapısı (reports/g5/KICAD-READY.md) → Codex: R-002.
 
 ## Engeller
 F5 iki köşe: kısaltılmış pencere kanıtı var (O1 10,92 V), tam pencere AÇIK (backlog).
