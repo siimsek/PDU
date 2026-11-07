@@ -67,7 +67,7 @@ Tarama: VTRIP_EFF {trip_min, trip_max} + 50 mV×k overdrive × gecikme {0.3 µs,
 - O1 tepe aralığı: 10.8920 – 11.0715 V (sınır 12.0 V).
 - VSAFE (U3/U4 IN) tepe maks: 11.0720 V (sınır 30 V abs, 24 V önerilen).
 - En kötü köşe: [f5_vt11.487_td1048ns_cmin_r200m_l1.2](sim/f5/f5_vt11.487_td1048ns_cmin_r200m_l1.2.log).
-- Tamamlanmayan: f5_vt11.487_td300ns_ctyp_r200m_l0.8, f5_vt11.765_td300ns_ctyp_r200m_l0.8 → kanıt yok.
+- Tamamlanmayan: f5_vt11.487_td300ns_ctyp_r200m_l0.8, f5_vt11.765_td300ns_ctyp_r200m_l0.8 → tam pencere kanıtı yok (PASS sayılmadı). Kısaltılmış pencere 100–214 µs SİM: O1 10,92 V ≤ 12,0 V; ayrıntı `reports/g5/R-005/RESULT.md`.
 
 Hassas yol açık (R_OVT açık devre, yalnız kaba OV): O1 tepe 11.2 V, VSAFE tepe 11.2 V → PASS (artık risk; PROTECTION-DECISION §4).
 

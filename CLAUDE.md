@@ -7,7 +7,7 @@ Görev kartını uygularsın: KiCad, betik, SPICE, BOM, test, belge; commit, pus
 2. Kartın **Girdiler**'ini oku, fazlasını değil. Yalnız **İzinli yazma yolları**'na yaz; kart dışına çıkma (fark ettiğin başka iş → `tasks/backlog.md`).
 3. Dal: kartın **Dal adı** (yoksa `wp/<kart-id>`, `main`'den). Kart Durum'u `InProgress`, `tasks/queue.md` güncelle.
 4. Her kilometre taşında commit + `HANDOFF.md` (≤40 satır, üzerine yaz). Oturum kesilirse sonraki oturum HANDOFF'tan devam eder.
-5. Bitiş: kabul kriteri komutlarını koş, çıkışları kaydet; `python scripts/check_workflow.py` exit 0; Durum `Review` (inceleme gerekiyorsa) veya `Done`; push; taslak PR (base `main`).
+5. Bitiş: kabul kriteri komutlarını koş, çıkışları kaydet; **birleştirmeden önce `python scripts/pre_merge.py` (şema kartlarında `--schematic B1 …`) exit 0** — çıktıyı `| tail` ile zincirleme (çıkış kodu kaybolur); Durum `Review`/`Done`; push; taslak PR (base `main`).
 6. **Eksik karar/girdi → tahmin etme.** Kartı `Blocked` yap, nedenini yaz, `tasks/BLOCKED-ON-USER.md`'ye `U-xxx` ekle, dur.
 7. **Durdurma:** aynı araç hatası 2 denemede aşılmazsa dur, "kanıt yok" yaz, HANDOFF'a kaydet.
 
