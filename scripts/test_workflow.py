@@ -168,3 +168,45 @@ def test_encoding_scope_skips_archive_kicad_and_binary(tmp_path):
 
 def test_repository_encoding_is_clean():
     assert cw.check_encoding(ROOT) == []
+
+
+def _standard_repo(tmp_path):
+    (tmp_path / "docs").mkdir()
+    (tmp_path / "decisions").mkdir()
+    shutil.copy(ROOT / cw.STANDARD_SRC, tmp_path / cw.STANDARD_SRC)
+    shutil.copy(ROOT / cw.STANDARD_DOC, tmp_path / cw.STANDARD_DOC)
+    for f in cw.STANDARD_LINKS:
+        shutil.copy(ROOT / f, tmp_path / f)
+    return tmp_path
+
+
+def test_standard_repository_is_complete_and_linked():
+    assert cw.check_standard(ROOT) == []
+
+
+def test_standard_detects_lost_source_text(tmp_path):
+    r = _standard_repo(tmp_path)
+    doc = r / cw.STANDARD_DOC
+    doc.write_bytes(doc.read_bytes()[:-20])
+    assert any("eksiksiz" in e for e in cw.check_standard(r))
+
+
+def test_standard_detects_missing_agent_link(tmp_path):
+    r = _standard_repo(tmp_path)
+    (r / "CLAUDE.md").write_text("baglanti yok", encoding="utf-8")
+    assert any("CLAUDE.md" in e for e in cw.check_standard(r))
+
+
+def test_standard_real_repo_fails_when_both_files_are_gone(tmp_path):
+    assert any("eksik" in e for e in cw.check_standard(tmp_path, required=True))
+
+
+def test_standard_minimal_fixture_may_have_neither_file(tmp_path):
+    assert cw.check_standard(tmp_path, required=False) == []
+
+
+def test_standard_detects_wrong_link_target(tmp_path):
+    r = _standard_repo(tmp_path)
+    (r / "CLAUDE.md").write_text("[standart](docs/YOK/POWER-PCB-ENGINEERING-STANDARD.md)", encoding="utf-8")
+    assert any("hedefi yanlış" in e for e in cw.check_standard(r))
+

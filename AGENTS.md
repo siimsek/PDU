@@ -33,6 +33,9 @@ Bu repoda düşünürsün: analiz, bağımsız doğrulama, datasheet okuma, kara
 ## Bağımsızlık
 Sayı doğrularken BUILDER'ın sonuç dosyalarını (`*results*.json`, `SIM-RESULTS.md`, `VERIFY.md`, raporlardaki sonuç tabloları) **açma**. Girdi tablosu + kriterle kendin hesapla; karşılaştırmayı ayrı bölümde, hesabından sonra yap ve farkı yüzde olarak yaz.
 
+## Mühendislik standardı (zorunlu)
+- Şematik ve PCB'ye dokunan her inceleme ve karar [`docs/POWER-PCB-ENGINEERING-STANDARD.md`](docs/POWER-PCB-ENGINEERING-STANDARD.md) standardına uyar; çelişkide daha kısıtlayıcı olan geçerlidir. THINKER `docs/`a yazmaz, değişiklik için kart açar.
+
 ## Kanıt ve kriterler
 - Etiketler: HESAP / DATASHEET(sayfa) / SİM / VARSAYIM / AÇIK. Kanıt sırası: tezgâh > komut çıktısı > hesap > yorum. Simülasyon fiziksel kanıt değildir.
 - Kriterler gevşetilmez: O1 ≤12,0 V; kararlı bara ≤11,1605 V; bara min ≥10,78 V; U3/U4 IN <30 V. FAIL silinmez.
