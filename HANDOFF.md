@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-025 → main (R-017 ONAY, PR #62; R-017 PR #63)
-- **Aktif kart:** T-022 (Ready — güç yolları, başlamadı). Dış katman 5,5 mm, ≥15 via, COUT/eFuse uçları, C doğu CIN GND L2 dönüşü, gerçek döngü alanı.
+- **Dal / son commit:** wp/T-022 (taslak PR; PDU.kicad_pcb değişmedi). D-010 (#65) main'de.
+- **Aktif kart:** T-022 **Blocked** — D-010 durdurma: Q2 180° gate DRC temiz 11,562 mm > 10 mm. Kanıt: reports/g5/T-022/D-010-fit-stop.md. D-011 (Q2 yönü) bekleniyor.
 
 ## Yapılanlar
+- T-022 sığma denemesi (geçici kopyalar, KiCad DRC): Q2 180° gate 11,562 mm; 7,0 mm güney şeridi TP_VSAFE ile kısa devre, 5,5 mm temiz; Q2 90° gate 5,469 mm + iki B.Cu bara + 20 via 0 hata.
 - T-021 (#59) + R-016 (#60) main'de. T-025: UTF-8 kök neden (run_all çözme, pre_merge konsol), kural + check_workflow denetimi. Birleşmiş 61 uzak ve 37 yerel dal silindi.
 - R-016 Tur 1 (PR #60, 1 engelleyici): CEFIN1/2 U3/U4 IN–GND çiftlerinde (≤1,50 mm); L3 /VSAFE şeridi genişletildi; q2-path.json: L3 darboğazı 6.0 mm < 18.36 mm, Q2 via 9/3 < 15 → T-022 kapısı.
 - T-020 (#57) + R-015 (#58) main'de; R-015 kartı main'e alınmadı. T-021 (dal): `scripts/pcb_zones.py`; L2/L4 GND, L3 /VIN /VOUT /VSAFE, 33 via-in-pad; DRC 0, parite 0. Sınırlar: reports/g5/T-021/zones-review.md.
@@ -23,14 +24,12 @@
 - T-017 (#40) main'de. T-010 + T-009 (dal): B5 30 + B4 12 parça `sch_place.py` ile (etiket-pin); ERC 0; B1–B5 fark 0; blok dışı 0. Q2 footprint TI land'den özel (R-009).
 - T-008 (#38) main'de (R-007 ONAY). B5 bloğu şemada yok → T-009 öncesi T-010; stokta olmayan 5 sembol T-017 ile üretildi (make_symbols.py; datasheet sayfaları görsel okundu).
 - T-007 (#33) main'de; R-006 kapandı. R-005 (#37): BIL düzgünleştirmesi etkisiz (geri alındı); kısaltılmış pencere O1 10,92 V; `scripts/pre_merge.py` kapısı.
-- T-007 (dal): `scripts/sch_edit_b2.py` — BIAS → GND, CBOOT_R düğümü, R_INJ (/VOUT–/FB_INJ), R_TRIM (/FB_TRIM–GND), RCOMP 33,2k / CCOMP 10n / CHF 22p / RFB2 9,76k + B2 MPN/footprint. ERC 0; B1+B2 fark 0; blok dışı değişiklik 0 (reports/g5/T-007/EVIDENCE.md).
-- Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: T-022 güç yolu planı (D-010). Sonra Claude Code: T-022.
+Codex: D-011 (Q2 yönü + /VOUT topolojisi). Sonra Claude Code: T-022 aynı dalda.
 
 ## Engeller
-Yok (yönlendirmeye). Açık koşullar: F5 iki köşe tam pencere AÇIK (kısaltılmış pencerede O1 10,92 V); 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
+T-022: Q2 yön kararı (D-011). Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
 
 ## Kullanıcıdan bekleyenler (yalnız fiziksel, engellemez)
 - U-001, U-007 tezgâh ölçümleri (kart üretilince).
