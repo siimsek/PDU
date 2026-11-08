@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-08T18:23:23",
+    "date": "2026-11-08T20:19:54",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -73,7 +73,7 @@
                         "x": 55.3625,
                         "y": 84.934999
                     },
-                    "uuid": "16696dc3-3b63-448c-829c-4d2442709125"
+                    "uuid": "f953a735-6543-434e-8a83-b04979a896c3"
                 }
             ],
             "severity": "error",
@@ -83,20 +83,20 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
-                    "pos": {
-                        "x": 55.595,
-                        "y": 61.145
-                    },
-                    "uuid": "f1508be0-1b82-4d40-801c-e09d9844ed01"
-                },
-                {
                     "description": "1 için [/VOUT] U11 ayak F.Cu",
                     "pos": {
                         "x": 56.1125,
                         "y": 52.02
                     },
                     "uuid": "c4beeb20-eb9c-4839-b742-7648f3dcc57c"
+                },
+                {
+                    "description": "Yol [/VOUT] B.Cu üzerinde, uzunluk 7.9850 mm",
+                    "pos": {
+                        "x": 57.5,
+                        "y": 55.0
+                    },
+                    "uuid": "d9d6c611-41da-48b6-b989-bf48c7aee486"
                 }
             ],
             "severity": "error",
@@ -111,7 +111,7 @@
                         "x": 71.775,
                         "y": 80.465
                     },
-                    "uuid": "a8c111bc-d0e9-47c7-84b7-583b519b59b8"
+                    "uuid": "462c916b-2ea6-4b4c-a73c-2587ac5d48be"
                 },
                 {
                     "description": "1 için [/VOUT] U12 ayak F.Cu",
@@ -129,20 +129,20 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "12 için [/VOUT] U1 ayak F.Cu",
-                    "pos": {
-                        "x": 79.0,
-                        "y": 35.6
-                    },
-                    "uuid": "46fb4ec6-92b8-4874-bc9f-5ada5cfc3355"
-                },
-                {
                     "description": "1 için [/VOUT] R_INJ ayak F.Cu",
                     "pos": {
                         "x": 94.515,
                         "y": 43.175
                     },
                     "uuid": "5fd6725a-943d-46a8-b0e4-0b74d810e612"
+                },
+                {
+                    "description": "12 için [/VOUT] U1 ayak F.Cu",
+                    "pos": {
+                        "x": 79.0,
+                        "y": 35.6
+                    },
+                    "uuid": "46fb4ec6-92b8-4874-bc9f-5ada5cfc3355"
                 }
             ],
             "severity": "error",
@@ -152,20 +152,20 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
-                    "pos": {
-                        "x": 118.870719,
-                        "y": 90.947553
-                    },
-                    "uuid": "281150b8-b8cc-4503-91f6-21ca93a11f64"
-                },
-                {
                     "description": "1 için [/VOUT] TP_FB_INJ_A ayak F.Cu",
                     "pos": {
                         "x": 119.895277,
                         "y": 100.336485
                     },
                     "uuid": "7f23ebb7-146b-4d1f-8511-8b78df8c4993"
+                },
+                {
+                    "description": "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
+                    "pos": {
+                        "x": 118.870719,
+                        "y": 90.947553
+                    },
+                    "uuid": "f7d28a12-9a8e-4691-9724-e02a98cbf678"
                 }
             ],
             "severity": "error",
@@ -410,7 +410,7 @@
                         "x": 61.345,
                         "y": 80.465
                     },
-                    "uuid": "13ed9c1e-e87a-4c39-8f2c-ef43677a091c"
+                    "uuid": "4b85dcba-24f1-42fb-86b9-1bed3c6615e3"
                 },
                 {
                     "description": "2 için [/GND] RRAWBL ayak F.Cu",
@@ -525,7 +525,7 @@
                         "x": 66.75,
                         "y": 104.75
                     },
-                    "uuid": "159269bb-faad-4d32-b4db-62902e3e4416"
+                    "uuid": "c22724b5-25d4-4fd7-b7a0-08c7c0041b2c"
                 },
                 {
                     "description": "4 için [/GND] U12 ayak F.Cu",
@@ -548,7 +548,7 @@
                         "x": 66.75,
                         "y": 104.75
                     },
-                    "uuid": "159269bb-faad-4d32-b4db-62902e3e4416"
+                    "uuid": "c22724b5-25d4-4fd7-b7a0-08c7c0041b2c"
                 },
                 {
                     "description": "2 için [/GND] CVCC2 ayak F.Cu",
@@ -694,7 +694,7 @@
                         "x": 78.75,
                         "y": 49.099999
                     },
-                    "uuid": "6692d235-9b0a-4fad-a5cc-615c881d5c64"
+                    "uuid": "e4151f72-ecda-45e1-ab6f-38c45ef9445b"
                 }
             ],
             "severity": "error",
@@ -916,7 +916,7 @@
                         "x": 89.0,
                         "y": 43.175
                     },
-                    "uuid": "a96081e3-199e-44d7-9d92-791e9c8a1615"
+                    "uuid": "7874d4a7-e0fe-4c1c-a47a-21cdc80a4f20"
                 },
                 {
                     "description": "2 için [/GND] RCFG1 ayak F.Cu",
@@ -1376,7 +1376,7 @@
                         "x": 118.5,
                         "y": 67.585
                     },
-                    "uuid": "481eb54a-538f-431f-9295-49fd1a9d37a7"
+                    "uuid": "ef560873-a8bc-425a-a611-fc7c4b26a61f"
                 },
                 {
                     "description": "2 için [/GND] U6 ayak F.Cu",
@@ -1499,7 +1499,7 @@
                         "x": 128.199999,
                         "y": 74.7
                     },
-                    "uuid": "b5ba6738-00a6-42f8-a7db-84d87899956a"
+                    "uuid": "0521d2a4-0515-47c3-868b-64f42ec4c6aa"
                 }
             ],
             "severity": "error",
@@ -1890,7 +1890,7 @@
                         "x": 138.653,
                         "y": 97.335
                     },
-                    "uuid": "e80c22b3-81b9-46ba-8423-00e1711a292a"
+                    "uuid": "301f86ea-52c5-4b9f-a96a-c1d3f3deed5b"
                 }
             ],
             "severity": "error",
@@ -2184,12 +2184,12 @@
                     "uuid": "d417bc22-f125-4dec-953f-fbe4109473e9"
                 },
                 {
-                    "description": "Geçit [/ISNS1] F.Cu - B.Cu üzerinde",
+                    "description": "1 için [/ISNS1] RS1 ayak F.Cu",
                     "pos": {
-                        "x": 62.3,
-                        "y": 48.599999
+                        "x": 67.9625,
+                        "y": 47.4
                     },
-                    "uuid": "7523ac24-26bc-42a7-a10a-2042352b4d46"
+                    "uuid": "de75f2db-2271-434c-985d-26ae37572090"
                 }
             ],
             "severity": "error",
@@ -4618,10 +4618,10 @@
                 {
                     "description": "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
                     "pos": {
-                        "x": 119.0,
-                        "y": 56.7
+                        "x": 107.0,
+                        "y": 95.0
                     },
-                    "uuid": "063c76ab-7b3b-4463-8fa1-fdf9fad55afe"
+                    "uuid": "bad7c54e-836f-4a82-a87d-16474fd9e6a2"
                 }
             ],
             "severity": "warning",
@@ -4633,40 +4633,10 @@
                 {
                     "description": "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
                     "pos": {
-                        "x": 107.0,
-                        "y": 95.0
+                        "x": 119.0,
+                        "y": 56.7
                     },
-                    "uuid": "3652879d-2df1-4246-8f94-e35bf7f93fd3"
-                }
-            ],
-            "severity": "warning",
-            "type": "via_dangling"
-        },
-        {
-            "description": "Via is not connected or connected on only one layer",
-            "items": [
-                {
-                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
-                    "pos": {
-                        "x": 136.644999,
-                        "y": 90.095
-                    },
-                    "uuid": "4649bd0a-712d-4a83-83e9-91a58ef8afc6"
-                }
-            ],
-            "severity": "warning",
-            "type": "via_dangling"
-        },
-        {
-            "description": "Via is not connected or connected on only one layer",
-            "items": [
-                {
-                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
-                    "pos": {
-                        "x": 138.045,
-                        "y": 91.695
-                    },
-                    "uuid": "8c056235-4049-4644-ab35-a513c2cefb5f"
+                    "uuid": "de96ad06-70b0-435b-a30a-5cb623e2b68b"
                 }
             ],
             "severity": "warning",
@@ -4681,7 +4651,37 @@
                         "x": 142.0,
                         "y": 65.4
                     },
-                    "uuid": "f58fd724-b9db-46fc-a630-ec90256bd953"
+                    "uuid": "1b6317a4-d6ff-4cf6-9153-23af5dc8f700"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
+                    "pos": {
+                        "x": 136.644999,
+                        "y": 90.095
+                    },
+                    "uuid": "a7618eac-bc69-4227-8117-ba8969801ebf"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
+                    "pos": {
+                        "x": 138.045,
+                        "y": 91.695
+                    },
+                    "uuid": "fa89075a-4691-448a-8989-75bdbf673ddb"
                 }
             ],
             "severity": "warning",
@@ -4696,11 +4696,57 @@
                         "x": 126.0,
                         "y": 76.7
                     },
-                    "uuid": "728e9596-fa0e-466c-8b92-8118029a2455"
+                    "uuid": "d2818cec-529d-461c-b984-1b72ee047547"
                 }
             ],
             "severity": "warning",
             "type": "via_dangling"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "U13 referans alanı",
+                    "pos": {
+                        "x": 63.394999,
+                        "y": 50.1
+                    },
+                    "uuid": "307a4a67-f619-4db1-a085-b05433c86c16"
+                },
+                {
+                    "description": "RS1 referans alanı",
+                    "pos": {
+                        "x": 65.0,
+                        "y": 50.175001
+                    },
+                    "uuid": "c67829d6-3269-41ca-a734-86c22a020646"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "C_INA1 referans alanı",
+                    "pos": {
+                        "x": 67.548,
+                        "y": 50.399998
+                    },
+                    "uuid": "be902278-b792-4590-917c-bf10e09caebc"
+                },
+                {
+                    "description": "RS1 referans alanı",
+                    "pos": {
+                        "x": 65.0,
+                        "y": 50.175001
+                    },
+                    "uuid": "c67829d6-3269-41ca-a734-86c22a020646"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
         }
     ]
 }

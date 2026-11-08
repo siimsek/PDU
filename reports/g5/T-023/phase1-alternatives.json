@@ -1,0 +1,32 @@
+{
+ "basis": "R-020 Tur 2: RS1 and U11 unchanged, temporary copies of the T-022 board, only the phase-1 arms added.",
+ "results": {
+  "B_mevcut_F_ve_B": {
+   "errors": 0,
+   "error_types": {},
+   "parity": 0,
+   "IN+_mm": 4.016,
+   "IN-_mm": 14.006,
+   "IN-_share_within_2mm_of_IN+": 0.49,
+   "pass_15mm": true
+  },
+  "A_ikisi_F_kuzeyden": {
+   "errors": 0,
+   "error_types": {},
+   "parity": 0,
+   "IN+_mm": 4.016,
+   "IN-_mm": 17.479,
+   "IN-_share_within_2mm_of_IN+": 0.0,
+   "pass_15mm": false
+  },
+  "C_F_uzerinde_gidis_donus": {
+   "errors": 0,
+   "error_types": {},
+   "parity": 0,
+   "IN+_mm": 9.562,
+   "IN-_mm": 14.006,
+   "IN-_share_within_2mm_of_IN+": 0.681,
+   "pass_15mm": true
+  }
+ }
+}

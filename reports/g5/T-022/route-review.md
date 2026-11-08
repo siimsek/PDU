@@ -1,10 +1,10 @@
 # T-022 — Güç yolları (D-010 geçerli kısımları + D-011, R-018 Tur 1 düzeltmeleri)
 
-**Durum: Done (R-018 Tur 2 KOŞULLU, koşullar kart ve backlog'da kapatıldı).** KiCad 10.0.7: DRC hatası **0**, parite **0**, boş kart DRC hatası **0**. Güç ağlarında açık uç yalnız T-023'e devredilen Kelvin, FB ve gate uçlarındadır.
+**Durum: Done; R-020 Tur 2 revizyonu.** T-023 faz 1 Kelvin paralelliği için RS1 180° döndürüldü ve RS1 güç yolu (`F_VOUT_RS1`, B.Cu bara, L1.2 → RS1.1, U1 ölçüm kolları) bu kartın betiğiyle yeniden üretildi; önceki kayıt git geçmişinde. KiCad 10.0.7: DRC hatası **0**, parite **0**, boş kart DRC hatası **0**. Güç ağlarında açık uç yalnız T-023'e devredilen Kelvin, FB ve gate uçlarındadır.
 
 Kaynak: [`scripts/pcb_route_power.py`](../../../scripts/pcb_route_power.py), T-021 kartından üretilir. Ham çıktı: [power-route-audit.json](power-route-audit.json), [route-items.json](route-items.json), [drc.json](drc.json), [drc-empty.json](drc-empty.json). Netclass, `PDU.kicad_dru` ve `PDU.kicad_pro` değişmedi.
 
-Uyarılar: `{'warning:via_dangling': 6}`. `via_dangling`, zone tap bağlama vialarıdır (ve D_REV1.2 çevresindeki iki via); bağlantı denetiminde açık uç vermez.
+Uyarılar: `{'warning:via_dangling': 6, 'warning:silk_overlap': 2}`. `via_dangling`, zone tap bağlama vialarıdır (ve D_REV1.2 çevresindeki iki via); bağlantı denetiminde açık uç vermez.
 
 Boş kart DRC: ayak izleri ve tüm bakır çıkarılmış kopya (T-013 anlamı). Aynı dosyayı bağımsız denetlemek için: `python.exe scripts/pcb_route_power.py --audit --empty-board <dosya>`, sonra `kicad-cli pcb drc --severity-all --refill-zones <dosya>` (dosya `PDU.kicad_pro` ve `PDU.kicad_dru` ile aynı dizinde olmalı).
 
@@ -45,13 +45,13 @@ Pay çok küçüktür; DRC temizdir. Üretici toleransı **doğrulanamadı** (DF
 |---|---:|---|---|---:|---:|---:|---:|---|
 | `/ANODE` | 6 | 0,5, 3,3 | B.Cu, F.Cu | 13,62 | 17 | 2 | 0 | — |
 | `/VIN` | 6 | 0,25 | F.Cu | 6,33 | 45 | 4 | 0 | — |
-| `/VOUT` | 16 | 0,25, 5,5, 7,0 | B.Cu, F.Cu | 130,69 | 132 | 6 | 6 | T-023: U11.1/U12.1 INA296 Kelvin, TP_ISNS1N/2N, R_INJ, TP_FB_INJ_A |
+| `/VOUT` | 16 | 0,25, 5,5, 7,0 | B.Cu, F.Cu | 139,49 | 132 | 7 | 6 | T-023: U11.1/U12.1 INA296 Kelvin, TP_ISNS1N/2N, R_INJ, TP_FB_INJ_A |
 | `/VSAFE` | 7 | 0,25, 5,5 | B.Cu, F.Cu | 14,78 | 43 | 7 | 0 | — |
 | `/O1_11V` | 5 | 0,25, 5,3 | B.Cu, F.Cu | 27,16 | 37 | 4 | 0 | — |
 | `/S2E_11V` | 5 | 0,25, 3,3 | F.Cu | 15,6 | 2 | 3 | 0 | — |
 | `/SW_PH1` | 0 | — | — | 0 | 0 | 1 | 0 | — |
 | `/SW_PH2` | 0 | — | — | 0 | 0 | 1 | 0 | — |
-| `/ISNS1` | 3 | 0,25, 2,6 | F.Cu | 7,02 | 2 | 1 | 2 | T-023: U11.8 INA296 Kelvin and TP_ISNS1P |
+| `/ISNS1` | 3 | 0,25, 2,6 | F.Cu | 9,16 | 2 | 1 | 2 | T-023: U11.8 INA296 Kelvin and TP_ISNS1P |
 | `/ISNS2` | 4 | 0,25, 2,6 | F.Cu | 8,65 | 2 | 1 | 2 | T-023: U12.8 INA296 Kelvin and TP_ISNS2P |
 | `/ISO_GATE` | 3 | 0,4 | F.Cu | 5,0 | 0 | 0 | 2 | T-023 R_GS and TP_ISO_GATE (Q2-U6 gate itself is routed) |
 
@@ -85,6 +85,7 @@ CIN → L3: U1 tarafı 12, U2 tarafı 12 via (hedef 9). Faz ağları katman değ
 | /SW_PH1 U1 -> L1 | 2,78 | 2,35 | evet |
 | /SW_PH2 U2 -> L2 | 2,76 | 2,35 | evet |
 | /VOUT RS2.2 -> field | 5,52 | 4,92 | evet |
+| /VOUT RS1.2 -> field | 5,52 | 4,92 | evet |
 | /VSAFE under U3 -> U4 | 6,56 | 4,92 | evet |
 | /VSAFE around CEFIN2 GND via (sum of both sides) | 5,24 | 4,92 | evet |
 | /O1_11V D_REV1 branch | 1,52 | 1,0 | evet |
@@ -114,7 +115,7 @@ geometrik yaklaşık: pad merkezleri arası düzlem poligonu, shoelace; akım ç
 | Düzlem | Ada | En büyük dolu alan (mm²) |
 |---|---:|---:|
 | L2_GND | 1 | 9287,11 |
-| L4_GND | 10 | 7609,76 |
+| L4_GND | 10 | 7564,04 |
 | L3_VIN | 1 | 3571,31 |
 | L3_VOUT | 1 | 2038,8 |
 | L3_VSAFE | 1 | 1667,15 |

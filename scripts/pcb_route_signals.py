@@ -344,21 +344,21 @@ def step1():
 # Kelvin arms are power-class nets (/ISNSx PHASE, /VOUT BUS): zone taps carrying no load current, 0.25 mm necks only inside the INA296 courtyard.
 # Each conductor: [(layer, width, polyline)]; vias join consecutive parts; "tp" = short branch to its moved test pad.
 # Phase 2: U12 at 180 deg puts IN+ west and IN- east at its south end, the same order as RS2.1/RS2.2, so both arms run parallel on F.Cu.
-# Phase 1: RS1 pad order and U11 pin order cannot match with RS1 north of U11, so IN+ and IN- run parallel, then IN- changes layer once.
+# Phase 1: RS1 at 180 deg (scripts/pcb_route_power.py) gives the same order, so both arms are parallel on F.Cu; the alternatives with RS1/U11 unchanged are in --probe1.
 U12_POS, U12_ROT = (40.425, 23.805), 180
 PAD_U12_1, PAD_U12_8 = (42.538, 22.83), (38.313, 22.83)
 KELVIN = {
-    "RS1-U11 IN+ (/ISNS1)": {"net": "/ISNS1", "from": "U11.8", "to": "RS1.1", "parts": [("F", 0.4, [(32.3, 66.4), (31.0, 64.9), (30.337, 62.98)])], "vias": [], "neck": [],
-                             "tp": ("F", 0.4, [(31.0, 64.9), (29.4, 65.6)])},
-    "RS1-U11 IN- (/VOUT)": {"net": "/VOUT", "from": "U11.1", "to": "RS1.2", "parts": [("F", 0.4, [(37.6, 68.3), (33.9, 65.6), (32.5, 64.0)]), ("B", 0.8, [(32.5, 64.0), (26.1, 64.0)])],
-                            "vias": [(32.5, 64.0), (26.1, 64.0)], "neck": [(26.1, 64.0), (26.1, 63.1)], "tp": ("F", 0.4, [(26.1, 64.0), (24.7, 65.1)])},
+    "RS1-U11 IN+ (/ISNS1)": {"net": "/ISNS1", "from": "U11.8", "to": "RS1.1", "parts": [("F", 0.4, [(37.963, 67.6), (37.4, 66.0), (31.85, 63.9), (30.337, 62.98)])], "vias": [], "neck": [],
+                             "tp": ("F", 0.4, [(37.963, 67.6), (39.7, 67.6)])},
+    "RS1-U11 IN- (/VOUT)": {"net": "/VOUT", "from": "U11.1", "to": "RS1.2", "parts": [("F", 0.4, [(32.037, 67.6), (32.45, 66.0), (26.9, 63.9), (26.112, 62.98)])], "vias": [], "neck": [],
+                            "tp": ("F", 0.4, [(32.037, 67.6), (30.4, 67.4)])},
     "RS2-U12 IN+ (/ISNS2)": {"net": "/ISNS2", "from": "U12.8", "to": "RS2.1", "parts": [("F", 0.4, [(43.8, 15.6), (44.0, 18.4), (38.8, 22.4), PAD_U12_8])], "vias": [], "neck": [],
                              "tp": ("F", 0.4, [(40.0, 21.48), (38.8, 20.0)])},
     "RS2-U12 IN- (/VOUT)": {"net": "/VOUT", "from": "U12.1", "to": "RS2.2", "parts": [("F", 0.4, [(49.1, 15.6), (48.8, 18.4), (43.6, 22.4), PAD_U12_1])], "vias": [], "neck": [],
                             "tp": ("F", 0.4, [(45.6, 20.86), (45.6, 19.6)])},
 }
 # R-020: test pads beside their Kelvin arm (search starts from R-020's coordinates, then checked against the new route).
-TP_MOVES = [("TP_ISNS1P", 29.4, 65.6), ("TP_ISNS1N", 24.7, 65.1), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
+TP_MOVES = [("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
 GATE_W = 0.4
 TP_GATE = (97.4, 44.6)
 TP_BRANCH = [(94.8, 47.49), (96.2, 46.5), (96.2, 44.6), (97.4, 44.6)]
@@ -366,7 +366,7 @@ R_GS_POS = (97.5, 49.3)
 R_GS_LINK = [(95.9, 49.3), (96.675, 49.3)]
 R_GS_VIA = (98.325, 49.3)
 OLD_R_GS_VIA = (92.85, 36.645)
-REFDES = [("C_ISO_VCAP", 92.6, 44.6, 0), ("R_GS", 97.5, 47.6, 0), ("TP_ISNS1P", 27.6, 67.4, 0), ("U11", 28.2, 59.4, 0), ("TP_ISNS1N", 23.3, 66.9, 90),
+REFDES = [("C_ISO_VCAP", 92.6, 44.6, 0), ("R_GS", 97.5, 47.6, 0), ("TP_ISNS1P", 41.5, 69.2, 0), ("RS1", 35.9, 70.2, 0), ("U11", 28.2, 59.4, 0), ("TP_ISNS1N", 26.0, 68.0, 90),
           ("TP_ISNS2P", 36.6, 21.6, 90), ("TP_ISNS2N", 48.4, 21.6, 0), ("RS2", 52.5, 21.0, 0)]
 HIDE_REF = ("TP_ISO_GATE",)       # no silk-free spot beside the gate pad; the pad stays identified in D-008 and the assembly drawing
 KELVIN_LIMIT = 15.0
@@ -475,19 +475,16 @@ def step2():
     for i, (name, k) in enumerate(KELVIN.items()):
         for j, (lay, w, pts) in enumerate(k["parts"]):
             polys = [ribbon(extend(pts), w)]
-            if k["tp"] and k["tp"][0] == lay and j == 0 and k["net"] != "/VOUT":
-                polys.append(ribbon(extend(k["tp"][2]), k["tp"][1]))
-            if k["tp"] and k["tp"][0] == lay and j == 0 and k["net"] == "/VOUT" and name.startswith("RS2"):
+            if k["tp"] and k["tp"][0] == lay and j == 0:
                 polys.append(ribbon(extend(k["tp"][2]), k["tp"][1]))
             t_zone(b, f"T023_KELVIN_{i}_{j}", k["net"], LAYERS[lay], polys)
-        if name == "RS1-U11 IN- (/VOUT)":
-            t_zone(b, f"T023_KELVIN_{i}_TP", k["net"], P.F_Cu, [ribbon(extend(k["tp"][2]), k["tp"][1])])
         for xy in k["vias"]:
             t_via(b, k["net"], xy)
         if k["neck"]:
             t_track(b, k["net"], P.F_Cu, 0.25, k["neck"])
     t_track(b, "/ISO_GATE", P.F_Cu, GATE_W, TP_BRANCH)
     t_track(b, "/ISO_GATE", P.F_Cu, GATE_W, R_GS_LINK)
+    t_track(b, "/GND", P.F_Cu, 0.25, [(31.0, 62.33), (32.1, 62.62)])       # U11.7 has no room for its own via beside the RS1 Kelvin arm; it shares U13.2's via
     P.ZONE_FILLER(b).Fill(b.Zones())
     b.BuildConnectivity()
     geo = Geo(b)
@@ -556,7 +553,7 @@ def step2_audit():
     def ang(s):
         return math.degrees(math.atan2(s[1][1] - s[0][1], s[1][0] - s[0][0]))
     pair["phase 2"]["main_section_angle_difference_deg"] = round(abs(ang(a1) - ang(a2)), 2)
-    b1 = KELVIN["RS1-U11 IN+ (/ISNS1)"]["parts"][0][2][0:2]
+    b1 = KELVIN["RS1-U11 IN+ (/ISNS1)"]["parts"][0][2][1:3]
     b2 = KELVIN["RS1-U11 IN- (/VOUT)"]["parts"][0][2][1:3]
     pair["phase 1"]["main_section_angle_difference_deg"] = round(abs(ang(b1) - ang(b2)), 2)
     pad_of = lambda r: next(x for x in geo.pads if f"{x['ref']}.{x['pin']}" == r)
@@ -566,7 +563,7 @@ def step2_audit():
           "Q2_gate_to_R_GS1_centre_mm": round(math.dist(g1, gr), 3), "Q2_source_to_R_GS2_centre_mm": round(math.dist(s1, gr2), 3), "R_GS_link_track_mm": round(polylen(R_GS_LINK), 3),
           "R_GS_gate_path_from_Q2_gate_pad_mm": round(math.dist(g1, R_GS_LINK[0]) + polylen(R_GS_LINK), 3), "tp_iso_gate_branch_mm": round(polylen(TP_BRANCH), 3)}
     tps = {}
-    for ref, (x, y) in {"TP_ISNS1P": (29.4, 65.6), "TP_ISNS1N": (24.7, 65.1), "TP_ISNS2P": (38.8, 20.0), "TP_ISNS2N": (45.6, 19.6)}.items():
+    for ref, (x, y) in {"TP_ISNS1P": (40.2, 67.6), "TP_ISNS1N": (29.6, 67.4), "TP_ISNS2P": (38.8, 20.0), "TP_ISNS2N": (45.6, 19.6)}.items():
         k = next(v for v in KELVIN.values() if ("ISNS1" in ref and "RS1" in v["from"] + v["to"] or "ISNS2" in ref and "RS2" in v["from"] + v["to"]) and ("P" in ref[-1:]) == (v["net"].startswith("/ISNS")))
         items = conn.GetConnectedItems(pads[f"{ref}.1"])
         linked = any(x_.GetClass() == "PAD" and f"{x_.GetParentFootprint().GetReference()}.{x_.GetNumber()}" == k["to"] for x_ in items)
@@ -590,6 +587,48 @@ def step2_audit():
     return 0
 
 
+# --------------------------------------------------------------------------- R-020 Tur 2: phase-1 alternatives with RS1/U11 unchanged, on temporary copies
+PROBE_ALTERNATIVES = {
+    "B_mevcut_F_ve_B": {"plus": [("F", 0.4, [(32.3, 66.4), (31.0, 64.9), (30.337, 62.98)])], "minus": [("F", 0.4, [(37.6, 68.3), (33.9, 65.6), (32.5, 64.0)]), ("B", 0.8, [(32.5, 64.0), (26.1, 64.0)])], "vias": [(32.5, 64.0), (26.1, 64.0)], "neck": [(26.1, 64.0), (26.1, 63.1)]},
+    "A_ikisi_F_kuzeyden": {"plus": [("F", 0.4, [(32.3, 66.4), (31.0, 64.9), (30.337, 62.98)])], "minus": [("F", 0.4, [(37.6, 68.3), (36.8, 70.6), (31.0, 70.6), (27.0, 66.0), (26.112, 62.98)])], "vias": [], "neck": []},
+    "C_F_uzerinde_gidis_donus": {"plus": [("F", 0.4, [(32.3, 66.4), (31.4, 65.2), (27.4, 65.2), (27.4, 64.4), (30.337, 62.98)])], "minus": [("F", 0.4, [(37.6, 68.3), (33.9, 65.6), (32.5, 64.0)]), ("B", 0.8, [(32.5, 64.0), (26.1, 64.0)])], "vias": [(32.5, 64.0), (26.1, 64.0)], "neck": [(26.1, 64.0), (26.1, 63.1)]},
+}
+
+
+def probe_phase1():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from pcb_route_power import ribbon
+    results = {}
+    with tempfile.TemporaryDirectory() as td:
+        t = Path(td)
+        for fn in ("PDU.kicad_pro", "PDU.kicad_dru"):
+            shutil.copy(ROOT / fn, t / fn)
+        for name, alt in PROBE_ALTERNATIVES.items():
+            b = P.LoadBoard(str(PCB))
+            for j, (lay, w, pts) in enumerate(alt["plus"]):
+                t_zone(b, f"T023_PROBE_P{j}", "/ISNS1", LAYERS[lay], [ribbon(extend(pts), w)])
+            for j, (lay, w, pts) in enumerate(alt["minus"]):
+                t_zone(b, f"T023_PROBE_M{j}", "/VOUT", LAYERS[lay], [ribbon(extend(pts), w)])
+            for xy in alt["vias"]:
+                t_via(b, "/VOUT", xy)
+            if alt["neck"]:
+                t_track(b, "/VOUT", P.F_Cu, 0.25, alt["neck"])
+            P.ZONE_FILLER(b).Fill(b.Zones())
+            P.SaveBoard(str(t / "PDU.kicad_pcb"), b, True)
+            d = drc(t / "PDU.kicad_pcb", t / "drc.json")
+            s0 = summary(d)
+            pl, mi = sum(polylen(x[2]) for x in alt["plus"]), sum(polylen(x[2]) for x in alt["minus"]) + polylen(alt["neck"])
+            pp = [q for x in alt["plus"] for q in sample(x[2])]
+            mm = [q for x in alt["minus"] for q in sample(x[2])]
+            near = sum(1 for q in mm if nearest_on(pp, q) <= 2.0) / len(mm)
+            results[name] = {"errors": s0["errors"], "error_types": {k: v for k, v in s0["by_type"].items() if k.startswith("error")}, "parity": s0["schematic_parity_issues"], "IN+_mm": round(pl, 3), "IN-_mm": round(mi, 3), "IN-_share_within_2mm_of_IN+": round(near, 3), "pass_15mm": pl <= KELVIN_LIMIT and mi <= KELVIN_LIMIT}
+    with (OUT / "phase1-alternatives.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump({"basis": "R-020 Tur 2: RS1 and U11 unchanged, temporary copies of the T-022 board, only the phase-1 arms added.", "results": results}, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    print(json.dumps(results, ensure_ascii=False, indent=0))
+    return 0
+
+
 if __name__ == "__main__":
     if "--step1" in sys.argv:
         sys.exit(step1())
@@ -597,4 +636,6 @@ if __name__ == "__main__":
         sys.exit(step2())
     if "--audit2" in sys.argv:
         sys.exit(step2_audit())
+    if "--probe1" in sys.argv:
+        sys.exit(probe_phase1())
     raise SystemExit(__doc__)

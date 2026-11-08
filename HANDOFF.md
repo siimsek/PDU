@@ -1,10 +1,12 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-023 (taslak PR #70; R-020 Tur 1 RET düzeltildi). R-020 PR #72.
-- **Aktif kart:** T-023 **InProgress** — R-020 Tur 2 bekliyor. DRC 0, parite 0, 199→112 açık çift, /GND 0. Faz 2 Kelvin paralel; faz 1 kısmen. Rapor: reports/g5/T-023/step2-report.md.
+- **Dal / son commit:** wp/T-023 (taslak PR #70; R-020 Tur 2 RED düzeltildi). T-026 PR #73, R-020 PR #72 açık.
+- **Aktif kart:** T-023 **InProgress** — DRC 0, parite 0, 199→112 açık çift. RS1 180° ile iki faz Kelvin F.Cu'da paralel. Rapor: reports/g5/T-023/step2-report.md.
 
 ## Yapılanlar
+- R-020 Tur 2: faz 1 alternatifleri ölçüldü (phase1-alternatives.json); RS1 180° + T-022 RS1 güç yolu yeniden üretildi; iki faz Kelvin F.Cu paralel.
+- R-020 Tur 2: faz 1 alternatifleri ölçüldü (phase1-alternatives.json); RS1 180° + T-022 RS1 güç yolu yeniden üretildi; iki faz Kelvin F.Cu paralel.
 - R-020 Tur 1: Kelvin yeniden (U12 180°, ayrı RS via'ları), R_GS Q2 yanına, TP_ISNS1P/1N/2P/2N kola 1,3–1,9 mm.
 - T-023 adım 2: 71 GND via, INA296 Kelvin (zone tap), R_GS kolu, TP_ISO_GATE taşındı.
 - T-023 adım 1: envanter ve GND via adayları; repo kartına yazılmadı.
@@ -22,11 +24,9 @@
 - R-002 tur 1 (PR #53, 1 engelleyici: Codex'te KiCad 9.0.2): 5a2985c üzerinde KiCad 10.0.7 ile ERC 0 + netlist, R-002 karşılaştırıcısı 0 fark (reports/g5/T-014/R-002-tur2/). LDSTRT/ITIMER gerekçesi AÇIK.
 - T-013 (#49) + R-012 (#50) + R-013 (#51) main'de. T-014: 9 maddeden 8 GEÇTİ, 1 KALDI (belge: START-HERE, VERIFY.md eski). run_all exit 0, F5 47/49 (bilinen 2 köşe AÇIK).
 - R-012 tur 2 (1 engelleyici): `neck_audit` yayda gerçek yay uzunluğu (start/mid/end); prob E/F yayları + testler. Doğrulama kartı tasks/R-013.md (queue: yalnız R-013 satırı — check_workflow kapısı için).
-- R-012 tur 1 (2 engelleyici) düzeltildi: CIN1–4/5–8 U1/U2 VIN–PGND kenarında (5,6–16,4 mm); darboğaz DRU kuralı ince adımlı padli ayak izleriyle sınırlı + `pcb_drc.py` uzunluk denetimi (≤1,5 mm), `pcb_neck_probe.py` kanıtı.
-- T-012 (#47) main'de (R-011 ONAY). T-013 (dal): `pcb_setup.py` (pcbnew) + `pcb_rules.py` + `pcb_drc.py`; netclass routing-g2'ye eşitlendi; kaba bölge yerleşimi; iz yok.
 
 ## Sonraki adım
-Codex: R-020 Tur 2 (faz 1 Kelvin kararı dahil). ONAY → Claude Code: adım 3. T-026 standardı ayrı PR.
+Codex: T-023 adım 2 doğrulaması. PR #73 birleşince sıradaki T-027. Adım 3 ancak THINKER onayıyla.
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).

@@ -175,7 +175,8 @@ class Board:
 
 
 # R-018: TP_SW next to its SW node; U4 +1.15 mm east so CEFIN2 sits at the U4 IN/GND pins exactly like CEFIN1 at U3.
-MOVES = [("TP_SW1", 45.4, 71.6, None), ("TP_SW2", 38.1, 12.4, None), ("U4", 108.385, 40.925, None), ("CEFIN2", 104.99, 41.2, 270)]
+# R-020 Tur 2: RS1 at 180 deg gives RS1.2 (VOUT) west and RS1.1 (ISNS1) east, the same order as U11 IN-/IN+ seen from RS1, so both Kelvin arms run parallel on F.Cu.
+MOVES = [("TP_SW1", 45.4, 71.6, None), ("TP_SW2", 38.1, 12.4, None), ("U4", 108.385, 40.925, None), ("CEFIN2", 104.99, 41.2, 270), ("RS1", 35.0, 67.6, 180)]
 
 
 # reference text only, so the moved parts leave no silkscreen warning: (ref, x, y, angle)
@@ -260,21 +261,21 @@ def vout(B):
         else:
             B.via("/GND", rx, ry, f"COUT{ref}.2")
     # Phase outputs: RS.2 -> F.Cu bus -> via field -> B.Cu bus -> COUT pin 1 + L3
-    B.track("/VOUT", "F", 5.5, [(37.963, 67.6), (41.4, 67.6)], "RS1.2 output")
-    for x in (39.4, 40.2, 41.0, 41.8):
-        for y in (66.4, 67.2, 68.0, 68.8):
+    B.zone("F_VOUT_RS1", "/VOUT", "F", [(29.3, 68.9), (34.8, 68.9), (34.8, 72.9), (29.3, 72.9)], tag="RS1.2 output, leaves the pad north; its south edge stays free for the Kelvin arm")
+    for x in (29.8, 30.6, 31.4, 32.2):
+        for y in (70.0, 70.8, 71.6, 72.4):
             B.via("/VOUT", x, y, "RS1 output field")
-    B.track("/VOUT", "B", 5.5, [(40.6, 67.6), (40.6, 60.0), (43.0, 57.0), (43.0, 47.4)], "RS1 output -> bank")
+    B.track("/VOUT", "B", 5.5, [(32.2, 71.0), (27.5, 71.0), (27.5, 60.0), (34.9, 57.0), (34.9, 47.4)], "RS1 output -> bank, clear of the RS1.2 sense via")
     B.zone("F_VOUT_RS2", "/VOUT", "F", [(48.9, 14.4), (55.9, 14.4), (55.9, 19.9), (48.9, 19.9)], tag="RS2.2 output, 5.5 mm tall")
     for x in (51.8, 52.6, 53.4, 54.2):
         for y in (15.4, 16.2, 17.0, 17.8):
             B.via("/VOUT", x, y, "RS2 output field")
     B.track("/VOUT", "B", 5.5, [(53.0, 16.6), (53.0, 28.0), (51.0, 31.0), (51.0, 41.0)], "RS2 output -> bank")
     for y in (47.2, 48.8, 50.4, 52.0, 53.6, 55.2, 56.2):
-        B.via("/VOUT", 44.6, y, "RS1 bank transfer")
+        B.via("/VOUT", 36.5, y, "RS1 bank transfer")
     for y in (31.5, 33.1, 34.7, 36.3, 37.9, 39.5, 40.9):
         B.via("/VOUT", 52.6, y, "RS2 bank transfer")
-    for ref, x, ys in (("COUT11", 41.775, (52.05, 53.25, 54.45, 55.65)), ("COUT19", 41.775, (45.6, 46.8, 48.0, 49.2)),
+    for ref, x, ys in (("COUT10", 33.685, (52.05, 53.25, 54.45, 55.65)), ("COUT18", 33.685, (45.6, 46.8, 48.0, 49.2)),
                        ("COUT5", 49.865, (32.7, 33.9, 35.1, 36.3)), ("COUT27", 49.865, (39.15, 40.35, 41.55, 42.75))):
         for y in ys:
             B.via("/VOUT", x, y, f"{ref}.1 phase")
@@ -429,12 +430,12 @@ def controller_sense(B):
     """LM70880 ISNS/VOUT pins to the inner edge of RS1/RS2: separate pair, zero power current, HV 0.6 mm kept between the two taps."""
     B.track("/ISNS1", "F", 0.25, [(50.0, 79.65), (50.1, 80.95)], "U1.11 neck")
     B.via("/ISNS1", 50.1, 80.95, "U1.11")
-    B.tap("TAP_ISNS1", "/ISNS1", "B", [(50.1, 80.95), (50.1, 82.6), (33.9, 82.6), (33.9, 68.3), (32.3, 66.4)])
-    B.via("/ISNS1", 32.3, 66.4, "RS1.1 inner edge")
+    B.tap("TAP_ISNS1", "/ISNS1", "B", [(50.1, 80.95), (50.1, 79.1), (37.6, 79.1), (37.6, 68.3)])
+    B.via("/ISNS1", 37.6, 68.3, "RS1.1 inner edge")
     B.track("/VOUT", "F", 0.25, [(49.0, 79.65), (49.0, 80.4)], "U1.12 neck")
     B.via("/VOUT", 49.0, 80.4, "U1.12")
-    B.tap("TAP_U1_VOUT", "/VOUT", "B", [(49.0, 80.4), (45.0, 79.6), (35.4, 79.6), (35.4, 68.3), (37.6, 68.3)])
-    B.via("/VOUT", 37.6, 68.3, "RS1.2 inner edge")
+    B.tap("TAP_U1_VOUT", "/VOUT", "B", [(49.0, 80.4), (49.0, 82.6), (35.7, 82.6), (35.7, 67.0), (32.3, 66.4)])
+    B.via("/VOUT", 32.3, 66.4, "RS1.2 inner edge")
     B.track("/ISNS2", "F", 0.25, [(33.5, 4.35), (33.4, 3.6)], "U2.11 neck")
     B.via("/ISNS2", 33.4, 3.6, "U2.11")
     B.tap("TAP_ISNS2", "/ISNS2", "B", [(33.4, 3.6), (33.4, 4.6), (43.8, 4.6), (43.8, 15.6)])
@@ -446,7 +447,7 @@ def controller_sense(B):
 
 
 def phase(B):
-    B.track("/ISNS1", "F", 2.6, [(33.0, 74.5), (33.0, 71.0), (32.04, 69.0)], "L1.2 -> RS1.1")
+    B.track("/ISNS1", "F", 2.6, [(34.4, 75.6), (37.96, 71.2), (37.96, 69.0)], "L1.2 -> RS1.1")
     B.track("/ISNS2", "F", 2.6, [(50.0, 10.8), (47.0, 13.0), (44.2, 14.6), (43.7, 15.4)], "L2.2 -> RS2.1")
 
 
@@ -490,7 +491,7 @@ VIA_TARGETS = {"Q2 drain (/VOUT)": (("Q2.5 drain field",), 15, 9), "Q2 source (/
 SECTIONS = [("/S2E_11V U4 -> D3 channel", "/S2E_11V", "F", (104.0, 51.0), "y", 2.97), ("/S2E_11V east drop", "/S2E_11V", "F", (110.5, 46.5), "x", 2.97),
             ("/O1_11V pins -> field", "/O1_11V", "F", (103.0, 44.0), "x", 4.76), ("/VIN CIN3/4 -> U1", "/VIN", "F", (56.0, 74.5), "y", 2.94),
             ("/VIN CIN7/8 -> U2", "/VIN", "F", (27.5, 9.5), "y", 2.94), ("/SW_PH1 U1 -> L1", "/SW_PH1", "F", (44.5, 75.0), "y", 2.35),
-            ("/SW_PH2 U2 -> L2", "/SW_PH2", "F", (39.0, 8.9), "y", 2.35), ("/VOUT RS2.2 -> field", "/VOUT", "F", (50.5, 17.1), "y", 4.92),
+            ("/SW_PH2 U2 -> L2", "/SW_PH2", "F", (39.0, 8.9), "y", 2.35), ("/VOUT RS2.2 -> field", "/VOUT", "F", (50.5, 17.1), "y", 4.92), ("/VOUT RS1.2 -> field", "/VOUT", "F", (32.0, 69.4), "x", 4.92),
             ("/VSAFE under U3 -> U4", "/VSAFE", "B", (103.4, 41.5), "y", 4.92),
             ("/VSAFE around CEFIN2 GND via (sum of both sides)", "/VSAFE", "B", [(104.99, 38.0), (104.99, 42.2)], "y", 4.92),
             ("/O1_11V D_REV1 branch", "/O1_11V", "B", (112.0, 40.0), "x", 1.0), ("/S2E_11V D_REV2 branch", "/S2E_11V", "F", (114.0, 27.2), "y", 1.0)]
