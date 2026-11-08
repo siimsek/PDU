@@ -5,6 +5,7 @@ Step 1 (D-012, read-only for PDU.kicad_pcb):
     "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe" scripts/pcb_route_signals.py --step1
     ...python.exe scripts/pcb_route_signals.py --step2      # writes PDU.kicad_pcb: run on the T-022 board only (it refuses a board that already has T023_ zones)
     ...python.exe scripts/pcb_route_signals.py --audit2     # step 2 evidence: DRC, Kelvin lengths, SW distance, L2
+    ...python.exe scripts/pcb_route_signals.py --audit-ref [--before <board>] / --probe-map   # R-022 Tur 3: reference-net geometry, board-bound probe map
     ...python.exe scripts/pcb_route_signals.py --step3 / --gnd / --audit3    # order after --step2: signals, then GND returns in the room left, then evidence
 
 Writes reports/g5/T-023/: step1-baseline.json (refill + DRC + parity), step1-inventory.json (every open pair by net/ref/pin, D-012 classes,
@@ -359,7 +360,7 @@ KELVIN = {
                             "tp": ("F", 0.4, [(45.6, 20.477), (45.6, 19.6)])},
 }
 # R-020: test pads beside their Kelvin arm (search starts from R-020's coordinates, then checked against the new route).
-TP_MOVES = [("TP_OC_SENSE1", 33.0, 59.5), ("TP_OC_SENSE2", 38.5, 27.0), ("TP_GND_OC", 50.5, 22.0), ("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
+TP_MOVES = [("TP_OVP_REF", 92.0, 71.85), ("TP_OC_REF", 93.5, 62.7), ("TP_OC_SENSE1", 33.0, 59.5), ("TP_OC_SENSE2", 38.5, 27.0), ("TP_GND_OC", 50.5, 22.0), ("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
 GATE_W = 0.4
 TP_GATE = (97.4, 44.6)
 TP_BRANCH = [(94.8, 47.49), (96.2, 46.5), (96.2, 44.6), (97.4, 44.6)]
@@ -368,8 +369,8 @@ R_GS_LINK = [(95.9, 49.3), (96.675, 49.3)]
 R_GS_VIA = (98.325, 49.3)
 OLD_R_GS_VIA = (92.85, 36.645)
 REFDES = [("C_ISO_VCAP", 92.6, 44.6, 0), ("R_GS", 97.5, 47.6, 0), ("TP_ISNS1P", 41.5, 69.2, 0), ("RS1", 35.9, 70.2, 0), ("U11", 28.2, 59.4, 0), ("TP_ISNS1N", 26.0, 68.0, 90),
-          ("TP_ISNS2P", 36.6, 21.6, 90), ("TP_OC_SENSE1", 33.0, 57.9, 0), ("RS2", 53.4, 21.0, 0)]
-HIDE_REF = ("TP_ISO_GATE", "TP_GND_OC", "TP_ISNS2N")       # no silk-free spot beside these pads; they stay identified in D-008 and the assembly drawing
+          ("TP_ISNS2P", 36.6, 21.6, 90), ("TP_OC_REF", 93.5, 60.8, 0), ("TP_OC_SENSE1", 33.0, 57.9, 0), ("RS2", 53.4, 21.0, 0)]
+HIDE_REF = ("TP_ISO_GATE", "TP_GND_OC", "TP_ISNS2N", "TP_OVP_REF")       # no silk-free spot beside these pads; they stay identified in D-008 and the assembly drawing
 KELVIN_LIMIT = 15.0
 # R-021: the real sense vias on the shunt pads (not the pad centres)
 SENSE_VIAS = {"RS1.1": (37.7, 66.4), "RS1.2": (32.3, 66.4), "RS2.1": (43.9, 17.7), "RS2.2": (49.1, 15.6)}
@@ -541,7 +542,11 @@ def gnd_returns():
             t_track(b, "/GND", P.F_Cu, ROUTE_W, [pin[1], ex, xy[0]])
             if len(xy) > 1:
                 t_track(b, "/GND", P.F_Cu, ROUTE_W, xy)
-            if xy[-1] not in shared:            # several searched pads can end on one via; drill it once
+            near_via = min((q for q, n_ in g2.vias if n_ == "/GND"), key=lambda q: math.dist(q, xy[-1]), default=None)
+            if near_via is not None and math.dist(near_via, xy[-1]) < 0.7:     # join a via already there instead of drilling beside it
+                t_track(b, "/GND", P.F_Cu, ROUTE_W, [xy[-1], near_via])
+                xy = xy + [near_via]
+            elif xy[-1] not in shared:          # several searched pads can end on one via; drill it once
                 t_via(b, "/GND", xy[-1])
                 shared.add(xy[-1])
             c.update({"via": list(xy[-1]), "from": pin[0], "stub_mm": round(polylen([pin[1], ex] + xy), 2), "path": "searched"})
@@ -715,7 +720,13 @@ def probe_phase1():
 # --------------------------------------------------------------------------- step 3 (D-012): bounded deterministic router for FB/COMP/OVP/OC
 STEP3_NETS = ("/FB", "/FB_TRIM", "/FB_INJ", "/COMP", "/COMP_MID", "/OVP_SENSE", "/OVP_REF", "/OVP_TRIP_N", "/OVP_Q", "/OVP_BUS_N", "/OC_SENSE1", "/OC_SENSE2", "/OC_REF", "/OC_TRIP1_N", "/OC_TRIP2_N", "/CLR_N", "/ISO_EN", "/ISO_OV")
 HV_NETS = ("/ANODE", "/VIN", "/VOUT", "/VSAFE")
-STEP3_FIRST = ("/COMP", "/FB", "/OC_TRIP2_N")   # routed in this order, before the span-sorted rest
+STEP3_FIRST = ("/COMP", "/FB", "/OVP_REF", "/OC_REF", "/OC_TRIP2_N")   # routed in this order, before the span-sorted rest
+SENSITIVE = ("/COMP", "/FB", "/OVP_REF", "/OC_REF")   # R-022 Tur 3: F.Cu over L2 first, few layer changes, away from SW
+SENS_FAR = ("/OVP_REF", "/OC_REF")   # PCB-HANDOFF §3 item 5 group: the 10 mm cost applies to these only; /FB and /COMP must stay at U1
+STEP3_ROOT = {"/OVP_REF": "U8.6", "/OC_REF": "R_OCB.1"}   # tree grows out from the source/divider so probes and branches stay local
+SENS_KEEP = 10.0       # mm: PCB-HANDOFF §3 item 5; a routing cost, not a pass/fail limit
+SENS_B_COST = 2.0
+SENS_VIA_COST = 24.0
 STEP3_PREFIX = {"/GND": {"U6.2": [(91.457, 48.14), (88.8, 48.14)], "U15.2": [(91.698, 81.055), (92.72, 81.29)], "U11.2": [(26.112, 61.03), (26.112, 62.33), (24.2, 62.33)]}, "/OVP_BUS_N": {"U7.1": [(103.395, 76.365), (102.6, 76.365), (102.6, 77.4)]}, "/COMP": {"U1.15": [(47.5, 79.4), (47.5, 80.7), (44.7, 80.7)]}, "/FB": {"U1.16": [(47.0, 79.4), (47.0, 80.25), (45.4, 80.25)]},
                 "/ISO_OV": {"U6.7": [(93.733, 48.14), (92.5, 48.14), (92.5, 45.4)]}, "/OVP_Q": {"U9.5": [(104.445, 80.755), (105.4, 80.755), (105.4, 80.0)]},
                 "/OVP_REF": {"U7.3": [(103.395, 75.065), (102.5, 75.065), (102.5, 74.2)]}, "/OC_TRIP2_N": {"U14.1": [(44.757, 25.105), (44.0, 25.105), (44.0, 26.2)]}}
@@ -745,6 +756,7 @@ class Grid:
         ys, xs = np.mgrid[0:self.ny, 0:self.nx]
         self.xs, self.ys = xs * GRID, ys * GRID
         self.sw = np.zeros((self.ny, self.nx), float)
+        self.sw10 = np.zeros((self.ny, self.nx), float)
         edge = (self.xs < EDGE_CLR + ROUTE_W / 2) | (self.xs > W - EDGE_CLR - ROUTE_W / 2) | (self.ys < EDGE_CLR + ROUTE_W / 2) | (self.ys > H - EDGE_CLR - ROUTE_W / 2)
         vedge = (self.xs < EDGE_CLR + VIA_R) | (self.xs > W - EDGE_CLR - VIA_R) | (self.ys < EDGE_CLR + VIA_R) | (self.ys > H - EDGE_CLR - VIA_R)
         for L in range(3):
@@ -866,10 +878,11 @@ def build_grid(b, geo, netcode):
         dx = np.maximum(np.maximum(r["rect"][0] - G.xs, 0), G.xs - r["rect"][2])
         dy = np.maximum(np.maximum(r["rect"][1] - G.ys, 0), G.ys - r["rect"][3])
         G.sw = np.maximum(G.sw, np.clip(1 - np.hypot(dx, dy) / SW_KEEP, 0, 1))
+        G.sw10 = np.maximum(G.sw10, np.clip(1 - np.hypot(dx, dy) / SENS_KEEP, 0, 1))
     return G
 
 
-def astar(G, net, sources, goal, goal_layer=0):
+def astar(G, net, sources, goal, goal_layer=0, sensitive=False):
     import heapq
     np = G.np
     free = [G.free(0, net), G.free(1, net)]
@@ -897,15 +910,17 @@ def astar(G, net, sources, goal, goal_layer=0):
         for dj, di, w in N8:
             a, c = j + dj, i + di
             if 0 <= a < G.ny and 0 <= c < G.nx and free[L][a, c]:
-                nd = d0 + w * LAYER_COST[L] * (1.0 + 3.0 * float(G.sw[a, c]))
+                lc = SENS_B_COST if (sensitive and L == 1) else LAYER_COST[L]
+                nd = d0 + w * lc * (1.0 + 3.0 * float(G.sw[a, c]) + (3.0 * float(G.sw10[a, c]) if sensitive == "far" else 0.0))
                 if nd < dist.get((a, c, L), 1e18):
                     dist[(a, c, L)] = nd
                     prev[(a, c, L)] = (j, i, L)
                     heapq.heappush(heap, (nd + h(a, c), nd, a, c, L))
         if via[j, i]:
             k = (j, i, 1 - L)
-            if free[1 - L][j, i] and d0 + VIA_COST < dist.get(k, 1e18):
-                dist[k] = d0 + VIA_COST
+            vc = SENS_VIA_COST if sensitive else VIA_COST
+            if free[1 - L][j, i] and d0 + vc < dist.get(k, 1e18):
+                dist[k] = d0 + vc
                 prev[k] = (j, i, L)
                 heapq.heappush(heap, (dist[k] + h(j, i), dist[k], j, i, 1 - L))
     return None, n
@@ -1026,8 +1041,9 @@ def step3():
 
     for net in sorted(STEP3_NETS, key=lambda n: (STEP3_FIRST.index(n) if n in STEP3_FIRST else len(STEP3_FIRST), span(n))):
         code = netcode[net]
-        done = [pins[net][0]]
-        todo = list(pins[net][1:])
+        root = next((q for q in pins[net] if q[0] == STEP3_ROOT.get(net)), pins[net][0])
+        done = [root]
+        todo = [q for q in pins[net] if q is not root]
         seen = set()
         exits = {}
 
@@ -1049,7 +1065,7 @@ def step3():
             if not cell or not seen:
                 log["failed"].append({"net": net, "pin": q[0], "why": "no free grid cell at the pad"})
                 continue
-            path, n = astar(G, code, sorted(seen), cell, L)
+            path, n = astar(G, code, sorted(seen), cell, L, sensitive=("far" if net in SENS_FAR else net in SENSITIVE))
             if not path:
                 log["failed"].append({"net": net, "pin": q[0], "why": f"no route ({n} expansions)"})
                 continue
@@ -1075,7 +1091,7 @@ def step3():
             pad_stub(q, xy[-1])
             src_cell = (xy[0][1], xy[0][0])
             near = min(done, key=lambda d: math.dist(d[1], xy[0][:2]))
-            if math.dist(prefix_end.get(near[0], near[1]), xy[0][:2]) < 0.9 and xy[0][2] == (1 if (near[3] is False and near[2] is False) else 0):
+            if math.dist(prefix_end.get(near[0], near[1]), xy[0][:2]) < max(0.9, max(near[4][2] - near[4][0], near[4][3] - near[4][1]) / 2 + 0.3) and xy[0][2] == (1 if (near[3] is False and near[2] is False) else 0):
                 pad_stub(near, xy[0])          # only on the pad's own layer
             seen.update(path)
             done.append(q)
@@ -1124,6 +1140,206 @@ def step3_audit():
     return 0
 
 
+# --------------------------------------------------------------------------- R-022 Tur 3: reference-net evidence and the board-bound probe map
+REF_PAIRS = {"/OVP_REF": ("U8.6", ("U7.3", "R_OCT.1", "C_REF_OUT.1", "TP_OVP_REF.1")), "/OC_REF": ("R_OCB.1", ("U13.3", "U14.3", "R_OCT.2", "TP_OC_REF.1")),
+             "/FB": ("U1.16", ("RFB2.1", "RFB1.2")), "/COMP": ("U1.15", ("RCOMP.1", "CHF.1", "U2.15", "TP_COMP.1"))}
+RETURN_PAIRS = (("U1.17", "R_TRIM.2"), ("U1.17", "CHF.2"), ("U1.17", "CCOMP.2"), ("R_OCB.2", "U13.2"), ("R_OCB.2", "U14.2"), ("C_REF_OUT.2", "U7.2"), ("C_REF_OUT.2", "R_OCB.2"))
+SW_BANDS = (2.0, 3.0, 5.0, 10.0)
+
+
+def inside_poly(o, q):
+    hit = False
+    for u, v in zip(o, o[1:] + o[:1]):
+        if (u[1] > q[1]) != (v[1] > q[1]) and q[0] < u[0] + (q[1] - u[1]) * (v[0] - u[0]) / (v[1] - u[1]):
+            hit = not hit
+    return hit
+
+
+def net_paths(geo, net, root, targets):
+    """Shortest centre-line path over the net's own copper; T-junctions are split, a via or a pad joins layers at zero length."""
+    import heapq
+    segs = [s_ for s_ in geo.segs if s_[3] == net]
+    vias = [q for q, n_ in geo.vias if n_ == net]
+    pads = {f"{p_['ref']}.{p_['pin']}": p_ for p_ in geo.pads if p_["net"] == net}
+    key = lambda q: (round(q[0], 3), round(q[1], 3))
+    by_layer = collections.defaultdict(set)
+    for a0, c0, _, _, lay in segs:
+        by_layer[lay].update((key(a0), key(c0)))
+    for lay in (P.F_Cu, P.B_Cu):
+        by_layer[lay].update(key(q) for q in vias)
+    for p_ in pads.values():
+        for lay in ((P.F_Cu, P.B_Cu) if p_["th"] else ((P.F_Cu,) if p_["front"] else (P.B_Cu,))):
+            by_layer[lay].add(key(centre(p_)))
+    adj = collections.defaultdict(list)
+    for a0, c0, half, _, lay in segs:
+        ln = math.dist(a0, c0)
+        if ln == 0:
+            continue
+        on = sorted((((q[0] - a0[0]) * (c0[0] - a0[0]) + (q[1] - a0[1]) * (c0[1] - a0[1])) / ln, q) for q in by_layer[lay] if Geo.seg_dist(a0, c0, q) <= half + 0.02)
+        for (t0, q0), (t1, q1) in zip(on, on[1:]):
+            adj[q0].append((q1, t1 - t0, lay))
+            adj[q1].append((q0, t1 - t0, lay))
+    for p_ in pads.values():
+        c_ = key(centre(p_))
+        for lay in ((P.F_Cu, P.B_Cu) if p_["th"] else ((P.F_Cu,) if p_["front"] else (P.B_Cu,))):
+            for q in by_layer[lay]:
+                if q != c_ and Geo.rect_dist(p_["rect"], *q) <= 0.01:
+                    adj[c_].append((q, 0.0, None))
+                    adj[q].append((c_, 0.0, None))
+    src = key(centre(pads[root]))
+    dist, prev, heap = {src: 0.0}, {}, [(0.0, src)]
+    while heap:
+        d0, u = heapq.heappop(heap)
+        if d0 > dist[u]:
+            continue
+        for v, w, lay in adj[u]:
+            if d0 + w < dist.get(v, 1e18):
+                dist[v] = d0 + w
+                prev[v] = (u, lay, w)
+                heapq.heappush(heap, (d0 + w, v))
+    out = {}
+    for t in targets:
+        v = key(centre(pads[t]))
+        if v not in dist:
+            out[t] = {"connected": False}
+            continue
+        mm = {P.F_Cu: 0.0, P.B_Cu: 0.0}
+        seq = []
+        while v in prev:
+            v, lay, w = prev[v]
+            if lay is not None:
+                mm[lay] += w
+                seq.append(lay)
+        out[t] = {"connected": True, "path_mm": round(mm[P.F_Cu] + mm[P.B_Cu], 3), "f_mm": round(mm[P.F_Cu], 3), "b_mm": round(mm[P.B_Cu], 3), "layer_changes": sum(1 for x, y in zip(seq, seq[1:]) if x != y), "straight_mm": round(math.dist(centre(pads[root]), centre(pads[t])), 3)}
+    return out
+
+
+def ref_audit_board(path):
+    b = P.LoadBoard(str(path))
+    P.ZONE_FILLER(b).Fill(b.Zones())
+    b.BuildConnectivity()
+    geo = Geo(b)
+    sw_pads = [r for r in geo.pads if r["net"].startswith(("/SW_PH", "/SW4_PH"))]
+    sw_zones = [outline_pts(z) for z in b.Zones() if z.GetNetname().startswith(("/SW_PH", "/SW4_PH"))]
+    def sw_dist(q):
+        d = min(Geo.rect_dist(r["rect"], *q) for r in sw_pads)
+        for o in sw_zones:
+            d = min(d, 0.0 if inside_poly(o, q) else min(Geo.seg_dist(u, v, q) for u, v in zip(o, o[1:] + o[:1])))
+        return d
+    l2 = next(z for z in b.Zones() if z.GetZoneName() == "L2_GND")
+    l3 = [z for z in b.Zones() if z.IsOnLayer(P.In2_Cu)]
+    gnd_vias = [q for q, n_ in geo.vias if n_ == "/GND"]
+    out = {"nets": {}, "returns": {}}
+    for net, (root, targets) in REF_PAIRS.items():
+        segs = [s_ for s_ in geo.segs if s_[3] == net]
+        bands = {str(d): 0.0 for d in SW_BANDS}
+        mn = (1e9, None)
+        f_mm = b_mm = uncovered = 0.0
+        gaps = 0
+        l3_mm = collections.Counter()
+        for a0, c0, half, _, lay in segs:
+            ln = math.dist(a0, c0)
+            if ln == 0:
+                continue
+            qs = sample([a0, c0], 0.2)
+            dl = ln / len(qs)
+            in_gap = False
+            for q in qs:
+                d = max(0.0, sw_dist(q) - half)
+                if d < mn[0]:
+                    mn = (d, [round(q[0], 2), round(q[1], 2)])
+                for t in SW_BANDS:
+                    if d <= t:
+                        bands[str(t)] += dl
+                if lay == P.F_Cu:
+                    if not l2.HitTestFilledArea(P.In1_Cu, kp(*q), 0):
+                        uncovered += dl
+                        gaps += 0 if in_gap else 1
+                        in_gap = True
+                    else:
+                        in_gap = False
+                else:
+                    z_ = next((z for z in l3 if z.HitTestFilledArea(P.In2_Cu, kp(*q), 0)), None)
+                    l3_mm[z_.GetNetname() if z_ else "(boş)"] += dl
+            f_mm += ln if lay == P.F_Cu else 0.0
+            b_mm += ln if lay != P.F_Cu else 0.0
+        vias = [q for q, n_ in geo.vias if n_ == net]
+        out["nets"][net] = {"track_mm": round(f_mm + b_mm, 3), "f_mm": round(f_mm, 3), "b_mm": round(b_mm, 3), "vias": len(vias), "paths_from": root, "paths": net_paths(geo, net, root, targets),
+                            "sw_min_edge_mm": round(mn[0], 3), "sw_min_at_d6": mn[1], "track_mm_within_edge_distance_of_sw": {k: round(v, 2) for k, v in bands.items()},
+                            "f_samples_without_l2_mm": round(uncovered, 2), "f_l2_gap_runs": gaps, "b_mm_by_adjacent_l3_net": {k: round(v, 2) for k, v in l3_mm.items()},
+                            "signal_via_to_nearest_gnd_via_mm": [round(min(math.dist(q, g) for g in gnd_vias), 2) for q in vias]}
+    pads = {f"{p_['ref']}.{p_['pin']}": p_ for p_ in geo.pads}
+    for x, y in RETURN_PAIRS:
+        if x not in pads or y not in pads or pads[x]["net"] != "/GND" or pads[y]["net"] != "/GND":
+            out["returns"][f"{x}-{y}"] = None
+            continue
+        u, v = centre(pads[x]), centre(pads[y])
+        qs = sample([u, v], 0.25)
+        hit = sum(1 for q in qs if l2.HitTestFilledArea(P.In1_Cu, kp(*q), 0))
+        out["returns"][f"{x}-{y}"] = {"straight_mm": round(math.dist(u, v), 3), "l2_filled_share_of_straight_line": round(hit / len(qs), 3)}
+    return out
+
+
+def ref_audit():
+    res = {"kicad": P.GetBuildVersion(), "method": "Centre-line geometry on the saved board after refill: samples every 0.2 mm, paths over the net's own copper. Geometry only; no coupling, return-current or noise solution.", "after": ref_audit_board(PCB)}
+    if "--before" in sys.argv:
+        res["before"] = ref_audit_board(sys.argv[sys.argv.index("--before") + 1])
+    with (OUT / "step3-ref-audit.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump(res, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    print(json.dumps({k: {n: {x: v[x] for x in ("track_mm", "vias", "sw_min_edge_mm")} for n, v in res[k]["nets"].items()} for k in res if k in ("before", "after")}, ensure_ascii=False))
+    return 0
+
+
+def probe_map():
+    import hashlib
+    sha = hashlib.sha256(PCB.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    b = P.LoadBoard(str(PCB))
+    rows = []
+    for fp in b.GetFootprints():
+        ref = fp.GetReference()
+        if not ref.startswith("TP_"):
+            continue
+        p_ = next(iter(fp.Pads()))
+        q = p_.GetPosition()
+        rows.append({"ref": ref, "net": p_.GetNetname(), "d6_mm": [round(P.ToMM(q.x) - 30, 3), round(115 - P.ToMM(q.y), 3)], "pcb_mm": [round(P.ToMM(q.x), 3), round(P.ToMM(q.y), 3)], "side": "F" if fp.GetLayer() == P.F_Cu else "B", "pad_mm": round(P.ToMM(p_.GetSizeX()), 2), "silk_ref_visible": bool(fp.Reference().IsVisible())})
+    rows.sort(key=lambda r: r["ref"])
+    gnds = [r for r in rows if r["net"] == "/GND"]
+    for r in rows:
+        g = min((x for x in gnds if x is not r), key=lambda x: math.dist(x["d6_mm"], r["d6_mm"]), default=None)
+        r["nearest_probe_gnd"] = g["ref"] if g else None
+        r["nearest_probe_gnd_mm"] = round(math.dist(g["d6_mm"], r["d6_mm"]), 2) if g else None
+    out = {"board": "PDU.kicad_pcb", "board_sha256_lf": sha, "kicad": P.GetBuildVersion(), "rows": rows}
+    with (OUT / "probe-map.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump(out, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    fmt = lambda v: f"{v:.3f}".replace(".", ",")
+    line = lambda r: f"| {r['ref']} | `{r['net']}` | {fmt(r['d6_mm'][0])} ; {fmt(r['d6_mm'][1])} | {fmt(r['pcb_mm'][0])} ; {fmt(r['pcb_mm'][1])} | {r['side']} | {str(r['pad_mm']).replace('.', ',')} | {r['nearest_probe_gnd'] or '—'} ({str(r['nearest_probe_gnd_mm']).replace('.', ',')} mm) |"
+    head = "| Ref | Ağ | D-006 x ; y (mm) | PCB x ; y (mm) | Yüz | Pad Ø (mm) | En yakın prob GND |\n|---|---|---|---|---|---:|---|\n"
+    hidden = [r for r in rows if not r["silk_ref_visible"]]
+    txt = f"""# T-023 prob haritası
+
+**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `{sha}`. KiCad {P.GetBuildVersion()}. Kart değişirse `--probe-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın.
+
+Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y yukarı. PCB: KiCad pafta koordinatı, D-006 x+30, 115−y. Mesafeler düz çizgidir.
+
+## Silk etiketi gizli test noktaları ({len(hidden)})
+
+{head}{chr(10).join(line(r) for r in hidden)}
+
+## Tüm test noktaları ({len(rows)})
+
+{head}{chr(10).join(line(r) for r in rows)}
+
+## Doğrulanamayanlar
+
+Fiziksel prob erişimi ve yerinde tanıma doğrulanmadı. Bu dosya montaj çizimi değildir. Fiziksel test veya üretimden önce basılı kopya kart üzerinde yerinde doğrulanmalıdır.
+"""
+    (OUT / "probe-map.md").write_text(txt, encoding="utf-8", newline="\n")
+    print(json.dumps({"sha": sha, "rows": len(rows), "hidden": [r["ref"] for r in hidden]}, ensure_ascii=False))
+    return 0
+
+
 if __name__ == "__main__":
     if "--step1" in sys.argv:
         sys.exit(step1())
@@ -1137,6 +1353,10 @@ if __name__ == "__main__":
         sys.exit(step3())
     if "--gnd" in sys.argv:
         sys.exit(gnd_returns())
+    if "--audit-ref" in sys.argv:
+        sys.exit(ref_audit())
+    if "--probe-map" in sys.argv:
+        sys.exit(probe_map())
     if "--audit3" in sys.argv:
         sys.exit(step3_audit())
     raise SystemExit(__doc__)

@@ -14,6 +14,7 @@ Kullanıcıya soru sorulmaz (2026-11-07): kararları THINKER verir. Burada yaln�
 | U-008 | R-020 ikinci turda kalan faz 1 Kelvin paralelliği; R-021 geometrik olarak doğruladı (RS1 180°) | T-023 adım 3 | Done (R-021) |
 | U-009 | R-021: dört sense viasının güç bakırıyla teması; R-021 Tur 2 kapanışı (yalnız bu dar kapsam) | T-023 adım 3 | Done (R-021 Tur 2) |
 | U-010 | R-021 ikinci turda kalan RS2.2 pad çıkış kesiti; R-022 doğruladı (5,50 mm) | T-023 adım 3 | Done (R-022) |
+| U-011 | R-022 Tur 3: /OVP_REF ve /OC_REF hassas referans yolları, /FB-/COMP SW yakınlığı. BUILDER kısaltma ve ölçümü yaptı (`reports/g5/T-023/step3-ref-audit.json`); THINKER doğrulaması gerekir. Gizli TP etiketleri için `probe-map.md` yerinde doğrulaması fiziksel test öncesi yapılacak | T-023 adım 4 | Beklemede (R-022 Tur 4) |
 
 ## U-001 prosedürü — O1/S2E gerçek akımı (kart gelmeden)
 

@@ -57,20 +57,94 @@
 ]
 },
 {
-"net": "/OC_TRIP2_N",
-"pin": "U14.1",
-"length_mm": 84.29,
+"net": "/OVP_REF",
+"pin": "TP_OVP_REF.1",
+"length_mm": 14.35,
 "vias": 0,
 "layers": [
 "F"
 ]
 },
 {
-"net": "/OC_SENSE1",
-"pin": "TP_OC_SENSE1.1",
-"length_mm": 2.96,
+"net": "/OVP_REF",
+"pin": "C_REF_OUT.1",
+"length_mm": 1.84,
 "vias": 0,
 "layers": [
+"F"
+]
+},
+{
+"net": "/OVP_REF",
+"pin": "R_OCT.1",
+"length_mm": 8.69,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OVP_REF",
+"pin": "U7.3",
+"length_mm": 8.45,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_REF",
+"pin": "TP_OC_REF.1",
+"length_mm": 2.44,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_REF",
+"pin": "R_OCT.2",
+"length_mm": 6.13,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_REF",
+"pin": "U13.3",
+"length_mm": 61.98,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_REF",
+"pin": "U14.3",
+"length_mm": 39.27,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_TRIP2_N",
+"pin": "U14.1",
+"length_mm": 84.29,
+"vias": 6,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OC_SENSE1",
+"pin": "TP_OC_SENSE1.1",
+"length_mm": 5.34,
+"vias": 2,
+"layers": [
+"B",
 "F"
 ]
 },
@@ -95,7 +169,7 @@
 {
 "net": "/OC_SENSE2",
 "pin": "U12.5",
-"length_mm": 8.17,
+"length_mm": 8.79,
 "vias": 2,
 "layers": [
 "B",
@@ -133,17 +207,18 @@
 {
 "net": "/ISO_EN",
 "pin": "U6.1",
-"length_mm": 18.45,
-"vias": 0,
+"length_mm": 18.57,
+"vias": 2,
 "layers": [
+"B",
 "F"
 ]
 },
 {
 "net": "/OC_TRIP1_N",
 "pin": "U15.3",
-"length_mm": 67.5,
-"vias": 2,
+"length_mm": 67.59,
+"vias": 4,
 "layers": [
 "B",
 "F"
@@ -153,8 +228,9 @@
 "net": "/OVP_SENSE",
 "pin": "R_OVB.1",
 "length_mm": 66.77,
-"vias": 0,
+"vias": 4,
 "layers": [
+"B",
 "F"
 ]
 },
@@ -170,7 +246,7 @@
 {
 "net": "/OVP_SENSE",
 "pin": "U7.4",
-"length_mm": 7.08,
+"length_mm": 7.84,
 "vias": 0,
 "layers": [
 "F"
@@ -180,7 +256,7 @@
 "net": "/OVP_TRIP_N",
 "pin": "U15.4",
 "length_mm": 67.91,
-"vias": 2,
+"vias": 4,
 "layers": [
 "B",
 "F"
@@ -199,7 +275,7 @@
 {
 "net": "/CLR_N",
 "pin": "R_CLR.2",
-"length_mm": 65.25,
+"length_mm": 65.86,
 "vias": 2,
 "layers": [
 "B",
@@ -209,8 +285,8 @@
 {
 "net": "/CLR_N",
 "pin": "C_CLR.1",
-"length_mm": 24.91,
-"vias": 2,
+"length_mm": 24.56,
+"vias": 4,
 "layers": [
 "B",
 "F"
@@ -219,7 +295,7 @@
 {
 "net": "/CLR_N",
 "pin": "SW1.1",
-"length_mm": 8.88,
+"length_mm": 8.58,
 "vias": 1,
 "layers": [
 "B",
@@ -247,7 +323,7 @@
 {
 "net": "/OVP_BUS_N",
 "pin": "U15.1",
-"length_mm": 13.13,
+"length_mm": 12.67,
 "vias": 2,
 "layers": [
 "B",
@@ -257,8 +333,8 @@
 {
 "net": "/OVP_BUS_N",
 "pin": "TP_OVP_BUS_N.1",
-"length_mm": 75.25,
-"vias": 1,
+"length_mm": 80.38,
+"vias": 3,
 "layers": [
 "B",
 "F"
@@ -268,16 +344,17 @@
 "net": "/ISO_OV",
 "pin": "R_OV2T.2",
 "length_mm": 14.33,
-"vias": 0,
+"vias": 2,
 "layers": [
+"B",
 "F"
 ]
 },
 {
 "net": "/ISO_OV",
 "pin": "R_OV2B.1",
-"length_mm": 48.36,
-"vias": 4,
+"length_mm": 63.71,
+"vias": 6,
 "layers": [
 "B",
 "F"
@@ -286,7 +363,7 @@
 {
 "net": "/ISO_OV",
 "pin": "U6.7",
-"length_mm": 37.49,
+"length_mm": 39.83,
 "vias": 3,
 "layers": [
 "B",
@@ -296,7 +373,7 @@
 {
 "net": "/ISO_OV",
 "pin": "TP_ISO_OV.1",
-"length_mm": 44.18,
+"length_mm": 44.07,
 "vias": 0,
 "layers": [
 "F"
@@ -315,7 +392,7 @@
 {
 "net": "/FB_INJ",
 "pin": "TP_FB_INJ_B.1",
-"length_mm": 85.97,
+"length_mm": 86.32,
 "vias": 6,
 "layers": [
 "B",
@@ -325,7 +402,7 @@
 {
 "net": "/OVP_Q",
 "pin": "U9.5",
-"length_mm": 17.24,
+"length_mm": 17.61,
 "vias": 2,
 "layers": [
 "B",
@@ -335,85 +412,7 @@
 {
 "net": "/OVP_Q",
 "pin": "TP_OVP_Q.1",
-"length_mm": 115.25,
-"vias": 0,
-"layers": [
-"F"
-]
-},
-{
-"net": "/OC_REF",
-"pin": "U14.3",
-"length_mm": 48.04,
-"vias": 4,
-"layers": [
-"B",
-"F"
-]
-},
-{
-"net": "/OC_REF",
-"pin": "TP_OC_REF.1",
-"length_mm": 28.35,
-"vias": 1,
-"layers": [
-"B",
-"F"
-]
-},
-{
-"net": "/OC_REF",
-"pin": "R_OCB.1",
-"length_mm": 91.89,
-"vias": 6,
-"layers": [
-"B",
-"F"
-]
-},
-{
-"net": "/OC_REF",
-"pin": "R_OCT.2",
-"length_mm": 5.0,
-"vias": 0,
-"layers": [
-"F"
-]
-},
-{
-"net": "/OVP_REF",
-"pin": "C_REF_OUT.1",
-"length_mm": 10.48,
-"vias": 2,
-"layers": [
-"B",
-"F"
-]
-},
-{
-"net": "/OVP_REF",
-"pin": "U7.3",
-"length_mm": 11.95,
-"vias": 1,
-"layers": [
-"B",
-"F"
-]
-},
-{
-"net": "/OVP_REF",
-"pin": "U8.6",
-"length_mm": 246.94,
-"vias": 14,
-"layers": [
-"B",
-"F"
-]
-},
-{
-"net": "/OVP_REF",
-"pin": "TP_OVP_REF.1",
-"length_mm": 47.52,
+"length_mm": 115.38,
 "vias": 2,
 "layers": [
 "B",

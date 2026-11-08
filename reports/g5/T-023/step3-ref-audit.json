@@ -1,0 +1,530 @@
+{
+ "kicad": "10.0.7",
+ "method": "Centre-line geometry on the saved board after refill: samples every 0.2 mm, paths over the net's own copper. Geometry only; no coupling, return-current or noise solution.",
+ "after": {
+  "nets": {
+   "/OVP_REF": {
+    "track_mm": 39.04,
+    "f_mm": 39.04,
+    "b_mm": 0.0,
+    "vias": 0,
+    "paths_from": "U8.6",
+    "paths": {
+     "U7.3": {
+      "connected": true,
+      "path_mm": 28.087,
+      "f_mm": 28.087,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 21.944
+     },
+     "R_OCT.1": {
+      "connected": true,
+      "path_mm": 24.305,
+      "f_mm": 24.305,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 22.437
+     },
+     "C_REF_OUT.1": {
+      "connected": true,
+      "path_mm": 15.988,
+      "f_mm": 15.988,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 14.935
+     },
+     "TP_OVP_REF.1": {
+      "connected": true,
+      "path_mm": 14.328,
+      "f_mm": 14.328,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 13.271
+     }
+    },
+    "sw_min_edge_mm": 25.558,
+    "sw_min_at_d6": [
+     82.22,
+     80.82
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.0,
+     "3.0": 0.0,
+     "5.0": 0.0,
+     "10.0": 0.0
+    },
+    "f_samples_without_l2_mm": 0.0,
+    "f_l2_gap_runs": 0,
+    "b_mm_by_adjacent_l3_net": {},
+    "signal_via_to_nearest_gnd_via_mm": []
+   },
+   "/OC_REF": {
+    "track_mm": 113.208,
+    "f_mm": 113.208,
+    "b_mm": 0.0,
+    "vias": 0,
+    "paths_from": "R_OCB.1",
+    "paths": {
+     "U13.3": {
+      "connected": true,
+      "path_mm": 63.496,
+      "f_mm": 63.496,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 61.03
+     },
+     "U14.3": {
+      "connected": true,
+      "path_mm": 89.145,
+      "f_mm": 89.145,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 63.553
+     },
+     "R_OCT.2": {
+      "connected": true,
+      "path_mm": 7.247,
+      "f_mm": 7.247,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 5.78
+     },
+     "TP_OC_REF.1": {
+      "connected": true,
+      "path_mm": 2.074,
+      "f_mm": 2.074,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 1.845
+     }
+    },
+    "sw_min_edge_mm": 9.775,
+    "sw_min_at_d6": [
+     45.79,
+     61.2
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.0,
+     "3.0": 0.0,
+     "5.0": 0.0,
+     "10.0": 8.46
+    },
+    "f_samples_without_l2_mm": 0.0,
+    "f_l2_gap_runs": 0,
+    "b_mm_by_adjacent_l3_net": {},
+    "signal_via_to_nearest_gnd_via_mm": []
+   },
+   "/FB": {
+    "track_mm": 64.529,
+    "f_mm": 64.529,
+    "b_mm": 0.0,
+    "vias": 0,
+    "paths_from": "U1.16",
+    "paths": {
+     "RFB2.1": {
+      "connected": true,
+      "path_mm": 51.867,
+      "f_mm": 51.867,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 20.403
+     },
+     "RFB1.2": {
+      "connected": true,
+      "path_mm": 62.608,
+      "f_mm": 62.608,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 27.542
+     }
+    },
+    "sw_min_edge_mm": 1.175,
+    "sw_min_at_d6": [
+     44.55,
+     80.1
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 2.65,
+     "3.0": 9.6,
+     "5.0": 31.92,
+     "10.0": 49.11
+    },
+    "f_samples_without_l2_mm": 0.0,
+    "f_l2_gap_runs": 0,
+    "b_mm_by_adjacent_l3_net": {},
+    "signal_via_to_nearest_gnd_via_mm": []
+   },
+   "/COMP": {
+    "track_mm": 151.941,
+    "f_mm": 151.941,
+    "b_mm": 0.0,
+    "vias": 0,
+    "paths_from": "U1.15",
+    "paths": {
+     "RCOMP.1": {
+      "connected": true,
+      "path_mm": 29.442,
+      "f_mm": 29.442,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 17.52
+     },
+     "CHF.1": {
+      "connected": true,
+      "path_mm": 34.57,
+      "f_mm": 34.57,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 22.212
+     },
+     "U2.15": {
+      "connected": true,
+      "path_mm": 119.809,
+      "f_mm": 119.809,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 75.679
+     },
+     "TP_COMP.1": {
+      "connected": true,
+      "path_mm": 45.55,
+      "f_mm": 45.55,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 36.667
+     }
+    },
+    "sw_min_edge_mm": 1.777,
+    "sw_min_at_d6": [
+     44.7,
+     80.7
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.98,
+     "3.0": 4.25,
+     "5.0": 43.6,
+     "10.0": 94.5
+    },
+    "f_samples_without_l2_mm": 0.0,
+    "f_l2_gap_runs": 0,
+    "b_mm_by_adjacent_l3_net": {},
+    "signal_via_to_nearest_gnd_via_mm": []
+   }
+  },
+  "returns": {
+   "U1.17-R_TRIM.2": {
+    "straight_mm": 20.779,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "U1.17-CHF.2": {
+    "straight_mm": 24.681,
+    "l2_filled_share_of_straight_line": 0.848
+   },
+   "U1.17-CCOMP.2": {
+    "straight_mm": 25.166,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "R_OCB.2-U13.2": {
+    "straight_mm": 62.656,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "R_OCB.2-U14.2": {
+    "straight_mm": 64.422,
+    "l2_filled_share_of_straight_line": 0.934
+   },
+   "C_REF_OUT.2-U7.2": {
+    "straight_mm": 8.608,
+    "l2_filled_share_of_straight_line": 0.857
+   },
+   "C_REF_OUT.2-R_OCB.2": {
+    "straight_mm": 7.319,
+    "l2_filled_share_of_straight_line": 0.867
+   }
+  }
+ },
+ "before": {
+  "nets": {
+   "/OVP_REF": {
+    "track_mm": 321.921,
+    "f_mm": 237.539,
+    "b_mm": 84.382,
+    "vias": 19,
+    "paths_from": "U8.6",
+    "paths": {
+     "U7.3": {
+      "connected": true,
+      "path_mm": 261.865,
+      "f_mm": 187.902,
+      "b_mm": 73.964,
+      "layer_changes": 16,
+      "straight_mm": 21.944
+     },
+     "R_OCT.1": {
+      "connected": true,
+      "path_mm": 246.774,
+      "f_mm": 184.544,
+      "b_mm": 62.23,
+      "layer_changes": 14,
+      "straight_mm": 22.437
+     },
+     "C_REF_OUT.1": {
+      "connected": true,
+      "path_mm": 256.703,
+      "f_mm": 189.187,
+      "b_mm": 67.516,
+      "layer_changes": 16,
+      "straight_mm": 14.935
+     },
+     "TP_OVP_REF.1": {
+      "connected": true,
+      "path_mm": 126.433,
+      "f_mm": 95.34,
+      "b_mm": 31.093,
+      "layer_changes": 6,
+      "straight_mm": 94.113
+     }
+    },
+    "sw_min_edge_mm": 4.736,
+    "sw_min_at_d6": [
+     58.05,
+     83.25
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.0,
+     "3.0": 0.0,
+     "5.0": 6.48,
+     "10.0": 36.73
+    },
+    "f_samples_without_l2_mm": 12.09,
+    "f_l2_gap_runs": 24,
+    "b_mm_by_adjacent_l3_net": {
+     "/VOUT": 24.19,
+     "(boş)": 12.03,
+     "/VSAFE": 20.55,
+     "/VIN": 27.62
+    },
+    "signal_via_to_nearest_gnd_via_mm": [
+     1.61,
+     1.64,
+     3.65,
+     2.0,
+     2.89,
+     11.03,
+     1.3,
+     3.4,
+     7.56,
+     2.73,
+     8.72,
+     1.91,
+     5.94,
+     5.19,
+     1.87,
+     0.85,
+     2.85,
+     8.28,
+     10.56
+    ]
+   },
+   "/OC_REF": {
+    "track_mm": 176.125,
+    "f_mm": 119.459,
+    "b_mm": 56.667,
+    "vias": 11,
+    "paths_from": "R_OCB.1",
+    "paths": {
+     "U13.3": {
+      "connected": true,
+      "path_mm": 102.599,
+      "f_mm": 60.219,
+      "b_mm": 42.38,
+      "layer_changes": 6,
+      "straight_mm": 61.03
+     },
+     "U14.3": {
+      "connected": true,
+      "path_mm": 129.102,
+      "f_mm": 75.435,
+      "b_mm": 53.667,
+      "layer_changes": 10,
+      "straight_mm": 63.553
+     },
+     "R_OCT.2": {
+      "connected": true,
+      "path_mm": 6.652,
+      "f_mm": 6.652,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 5.78
+     },
+     "TP_OC_REF.1": {
+      "connected": true,
+      "path_mm": 156.215,
+      "f_mm": 99.548,
+      "b_mm": 56.667,
+      "layer_changes": 10,
+      "straight_mm": 68.487
+     }
+    },
+    "sw_min_edge_mm": 6.554,
+    "sw_min_at_d6": [
+     47.25,
+     15.75
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.0,
+     "3.0": 0.0,
+     "5.0": 0.0,
+     "10.0": 14.21
+    },
+    "f_samples_without_l2_mm": 7.41,
+    "f_l2_gap_runs": 17,
+    "b_mm_by_adjacent_l3_net": {
+     "(boş)": 32.24,
+     "/VOUT": 6.23,
+     "/VIN": 5.22,
+     "/VSAFE": 12.97
+    },
+    "signal_via_to_nearest_gnd_via_mm": [
+     3.35,
+     1.46,
+     2.83,
+     1.76,
+     1.97,
+     1.98,
+     4.6,
+     5.03,
+     1.02,
+     2.84,
+     2.86
+    ]
+   },
+   "/FB": {
+    "track_mm": 64.529,
+    "f_mm": 64.529,
+    "b_mm": 0.0,
+    "vias": 0,
+    "paths_from": "U1.16",
+    "paths": {
+     "RFB2.1": {
+      "connected": true,
+      "path_mm": 51.867,
+      "f_mm": 51.867,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 20.403
+     },
+     "RFB1.2": {
+      "connected": true,
+      "path_mm": 62.608,
+      "f_mm": 62.608,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 27.542
+     }
+    },
+    "sw_min_edge_mm": 1.175,
+    "sw_min_at_d6": [
+     44.55,
+     80.1
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 2.65,
+     "3.0": 9.6,
+     "5.0": 31.92,
+     "10.0": 49.11
+    },
+    "f_samples_without_l2_mm": 0.0,
+    "f_l2_gap_runs": 0,
+    "b_mm_by_adjacent_l3_net": {},
+    "signal_via_to_nearest_gnd_via_mm": []
+   },
+   "/COMP": {
+    "track_mm": 151.941,
+    "f_mm": 151.941,
+    "b_mm": 0.0,
+    "vias": 0,
+    "paths_from": "U1.15",
+    "paths": {
+     "RCOMP.1": {
+      "connected": true,
+      "path_mm": 29.442,
+      "f_mm": 29.442,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 17.52
+     },
+     "CHF.1": {
+      "connected": true,
+      "path_mm": 34.57,
+      "f_mm": 34.57,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 22.212
+     },
+     "U2.15": {
+      "connected": true,
+      "path_mm": 119.809,
+      "f_mm": 119.809,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 75.679
+     },
+     "TP_COMP.1": {
+      "connected": true,
+      "path_mm": 45.55,
+      "f_mm": 45.55,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 36.667
+     }
+    },
+    "sw_min_edge_mm": 1.777,
+    "sw_min_at_d6": [
+     44.7,
+     80.7
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.98,
+     "3.0": 4.25,
+     "5.0": 43.6,
+     "10.0": 94.5
+    },
+    "f_samples_without_l2_mm": 0.0,
+    "f_l2_gap_runs": 0,
+    "b_mm_by_adjacent_l3_net": {},
+    "signal_via_to_nearest_gnd_via_mm": []
+   }
+  },
+  "returns": {
+   "U1.17-R_TRIM.2": {
+    "straight_mm": 20.779,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "U1.17-CHF.2": {
+    "straight_mm": 24.681,
+    "l2_filled_share_of_straight_line": 0.848
+   },
+   "U1.17-CCOMP.2": {
+    "straight_mm": 25.166,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "R_OCB.2-U13.2": {
+    "straight_mm": 62.656,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "R_OCB.2-U14.2": {
+    "straight_mm": 64.422,
+    "l2_filled_share_of_straight_line": 0.934
+   },
+   "C_REF_OUT.2-U7.2": {
+    "straight_mm": 8.608,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "C_REF_OUT.2-R_OCB.2": {
+    "straight_mm": 7.319,
+    "l2_filled_share_of_straight_line": 0.9
+   }
+  }
+ }
+}
