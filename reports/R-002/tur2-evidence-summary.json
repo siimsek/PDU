@@ -1,0 +1,81 @@
+{
+  "review_round": 2,
+  "t014_source_commit": "5a2985cc18d0867dc3030feb3117807254bd96ef",
+  "builder_evidence_commit": "1c38917 (wp/T-014)",
+  "source_blob_hashes": {
+    "PDU.kicad_sch": "1f64061d70fe581617f2544f67ec8f8d7eaf5a15",
+    "PDU.kicad_pro": "1b1ffa6f0ac0a5d31daa7c76da202a776a0fbe71",
+    "design/pdu_v2_spec.yaml": "88497c83ce83f786b1c94283a9bb357d5e6d3b53"
+  },
+  "local_native_kicad_run": {
+    "version": "9.0.2",
+    "status": "doğrulanamadı",
+    "erc_attempt_exit": 3,
+    "erc_output": "Failed to load schematic",
+    "netlist_attempt_exit": 3,
+    "netlist_output": "Failed to load schematic"
+  },
+  "builder_erc_artifact": {
+    "kicad_version": "10.0.7",
+    "source": "PDU.kicad_sch",
+    "root_sheet_violations": 0,
+    "ignored_checks": [
+      "single_global_label",
+      "four_way_junction",
+      "simulation_model_issue",
+      "footprint_filter"
+    ]
+  },
+  "own_py_yaml_comparison": {
+    "python": "3.12.14",
+    "pyyaml": "6.0.3",
+    "script_blob_sha": "aa3f582a9ec116b3f72ee16a5bfe6b05b8808a06",
+    "spec_rows_total": 187,
+    "pcb_refs": 180,
+    "netlist_components": 180,
+    "value_mpn_footprint_checked": 180,
+    "spec_pin_keys_checked": 422,
+    "netlist_nodes_checked": 488,
+    "nodes_without_spec_pin_key": 26,
+    "mismatches": 0,
+    "matches_builder_output_excluding_path_note": true
+  },
+  "netlist_diff": {
+    "old_blob_sha": "219377bfa7e303d0de73a8c6afcac1824bb0a96f",
+    "new_blob_sha": "c141f644a8a2eb69cbb799d087f89063b76e6e0e",
+    "old_line_count": 16008,
+    "new_line_count": 16008,
+    "changed_lines": [
+      4,
+      5
+    ],
+    "only_differences": [
+      "line 4: old absolute local source path -> PDU.kicad_sch",
+      "line 5: generated timestamp changed"
+    ],
+    "all_other_lines_identical": true
+  },
+  "commit_diff": {
+    "base": "5a2985cc18d0867dc3030feb3117807254bd96ef",
+    "head": "1c38917",
+    "changed_files": [
+      "HANDOFF.md",
+      "reports/g5/T-014/R-002-tur2/RESULT.md",
+      "reports/g5/T-014/R-002-tur2/check-B1-B7.txt",
+      "reports/g5/T-014/R-002-tur2/erc.json",
+      "reports/g5/T-014/R-002-tur2/netlist-spec-check.json",
+      "reports/g5/T-014/R-002-tur2/netlist.net"
+    ],
+    "kicad_design_files_changed": false
+  },
+  "tps25982_datasheet": {
+    "document": "TPS25982 datasheet Rev. D (SLVSEI3D, revised May 2026), Table 5-1, printed p. 5",
+    "url": "https://www.ti.com/lit/ds/symlink/tps25982.pdf",
+    "LDSTRT_pin_12": "/GND is correct when load-detect/handshake is unused; pin must not float",
+    "ITIMER_pin_7": "Open is explicitly specified for fastest overcurrent response; capacitor to GND sets blanking interval",
+    "both_netlist_connections_match_datasheet": true
+  },
+  "decision": "ONAY",
+  "blocking_findings": 0,
+  "blocked_on_user_recommendation": null
+}
