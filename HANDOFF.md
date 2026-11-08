@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-025 (taslak PR; **birleştirilmedi**)
-- **Aktif kart:** T-025 (Review — UTF-8). Sonra T-022 güç yolları: dış katman 5,5 mm, ≥15 via, COUT/eFuse uçları, C doğu CIN GND L2 dönüşü, gerçek döngü alanı.
+- **Dal / son commit:** wp/T-025 → main (R-017 ONAY, PR #62; R-017 PR #63)
+- **Aktif kart:** T-022 (Ready — güç yolları, başlamadı). Dış katman 5,5 mm, ≥15 via, COUT/eFuse uçları, C doğu CIN GND L2 dönüşü, gerçek döngü alanı.
 
 ## Yapılanlar
 - T-021 (#59) + R-016 (#60) main'de. T-025: UTF-8 kök neden (run_all çözme, pre_merge konsol), kural + check_workflow denetimi. Birleşmiş 61 uzak ve 37 yerel dal silindi.
@@ -27,7 +27,7 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: T-025 kontrolü. Sonra Claude Code: T-025 birleştir → T-022.
+Codex: T-022 güç yolu planı (D-010). Sonra Claude Code: T-022.
 
 ## Engeller
 Yok (yönlendirmeye). Açık koşullar: F5 iki köşe tam pencere AÇIK (kısaltılmış pencerede O1 10,92 V); 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
