@@ -1,5 +1,5 @@
 {
- "input_commit": "6ebf28bb38c7353f11749dc5758c58ce754ab277",
+ "input_commit": "bc7dc8f06ecac8494556010030c8b5645ce7f3bd",
  "kicad_cli": "10.0.7",
  "alt_pcb": "40e0a7bed18f7297445f11df8741501eedac88a8",
  "schematic_references": 180,
@@ -30,7 +30,44 @@
   "SPICE elemanı (ad eşit)": 10,
   "SPICE metninde geçiyor, eleman adı değil: doğrulanamadı": 5
  },
- "spec_pin_keys": 422,
+ "spec_node_expansion": {
+  "spec_pin_keys": 422,
+  "nodes_matched_to_a_key": 462,
+  "multi_pin_expansion": 40,
+  "nodes_without_spec_key": 26,
+  "nodes_without_spec_key_list": [
+   "U1.10",
+   "U1.17",
+   "U1.23",
+   "U1.24",
+   "U1.25",
+   "U1.26",
+   "U1.30",
+   "U2.10",
+   "U2.17",
+   "U2.23",
+   "U2.24",
+   "U2.25",
+   "U2.26",
+   "U2.30",
+   "U3.10",
+   "U3.11",
+   "U3.12",
+   "U3.25",
+   "U3.26",
+   "U3.7",
+   "U4.10",
+   "U4.11",
+   "U4.12",
+   "U4.25",
+   "U4.26",
+   "U4.7"
+  ],
+  "total_nodes": 488,
+  "keys_covering_several_pins": 11,
+  "test_injection_spec_keys_inside_the_key_count": 40,
+  "keys_with_no_node": 0
+ },
  "dnp_references": [
   "C_LDO_DELAY",
   "C_REF_NR"

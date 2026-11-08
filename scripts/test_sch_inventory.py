@@ -4,6 +4,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import sch_inventory as si  # noqa: E402
 
@@ -63,3 +65,42 @@ def test_value_mismatch_and_bom_dnp_are_recorded():
     refs, _ = run(bom=bom)
     r = next(x for x in refs if x["ref"] == "R1")
     assert r["class"] == "DNP" and "değer farkı" in r["issues"] and "DNP farkı" in r["issues"]
+
+
+def _nodes(*rows):
+    return {(r, p): {"ref": r, "pin": p, "name": n, "type": "passive", "net": "/A"} for r, p, n in rows}
+
+
+def test_expansion_one_key_covers_several_pins_and_test_pins_stay_inside_the_keys():
+    pins = _nodes(("U1", "1", "VIN_1"), ("U1", "2", "VIN_2"), ("U1", "3", "EN_3"), ("U1", "4", "SPARE_4"), ("TP_A", "1", ""))
+    x = si.spec_expansion(pins, {"U1": ["VIN", "EN"], "TP_A": ["1"]}, {"TP_A"})
+    assert x["spec_pin_keys"] == 3 and x["nodes_matched_to_a_key"] == 4 and x["multi_pin_expansion"] == 1
+    assert x["nodes_without_spec_key"] == 1 and x["nodes_without_spec_key_list"] == ["U1.4"] and x["total_nodes"] == 5
+    assert x["test_injection_spec_keys_inside_the_key_count"] == 1 and x["keys_covering_several_pins"] == 1
+
+
+def test_expansion_counts_add_up_to_all_nodes():
+    pins = _nodes(("U1", "1", "VIN_1"), ("U1", "2", "VIN_2"), ("U1", "3", "X_3"))
+    x = si.spec_expansion(pins, {"U1": ["VIN"]}, set())
+    assert x["spec_pin_keys"] + x["multi_pin_expansion"] + x["nodes_without_spec_key"] == x["total_nodes"]
+
+
+def test_spec_pin_keys_parser_stops_at_nets():
+    text = 'parts:\n  - ref: R1\n    value: "1k"\n    pins:\n      "1": "/A"\n      "2": "/B"\n  - ref: F1\n    value: "x"\nnets:\n  "/A":\n    "1": "z"\n'
+    assert si.spec_pin_keys(text) == {"R1": ["1", "2"]}
+
+
+def test_normalize_replaces_the_absolute_source_path():
+    text = '(design (source "C:\\\\Users\\\\me\\\\PDU\\\\PDU.kicad_sch") (date "d"))'
+    out = si.normalize_netlist(text, Path("D:/elsewhere"))
+    assert '(source "PDU.kicad_sch")' in out and "Users" not in out
+
+
+def test_normalize_refuses_a_personal_path_that_survives():
+    with pytest.raises(SystemExit):
+        si.normalize_netlist('(design (source "a")) (x "C:\\\\Users\\\\me\\\\f")', Path("D:/elsewhere"))
+
+
+def test_committed_netlist_has_no_personal_path():
+    assert not si.PERSONAL_PATH.search((si.OUT / "netlist.net").read_text(encoding="utf-8"))
+

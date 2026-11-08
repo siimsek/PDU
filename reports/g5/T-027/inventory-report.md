@@ -1,8 +1,8 @@
 # T-027 — Şematik referans ve pin kapsam envanteri
 
-**Durum: Review.** Envanter tasarımı değiştirmez. Kaynak commit `6ebf28bb38c7353f11749dc5758c58ce754ab277`; KiCad 10.0.7. Karşılaştırılan ikinci kart: `40e0a7bed18f7297445f11df8741501eedac88a8` (T-023 dalı).
+**Durum: Review.** Envanter tasarımı değiştirmez. Kaynak commit `bc7dc8f06ecac8494556010030c8b5645ce7f3bd`; KiCad 10.0.7. Karşılaştırılan ikinci kart: `40e0a7bed18f7297445f11df8741501eedac88a8` (T-023 dalı).
 
-Komut (depo kökünden): `python scripts/sch_inventory.py --alt-pcb <git-rev>`. Girdi: `kicad-cli sch export netlist --format kicadsexpr` ([netlist.net](netlist.net)), `design/bom-v2.csv`, `design/footprint-map.csv`, `design/pdu_v2_spec.yaml`, `PDU.kicad_pcb`, `design/pdu_v2.cir`. Defterler: [ledger-references.csv](ledger-references.csv), [ledger-pins.csv](ledger-pins.csv), özet [inventory-summary.json](inventory-summary.json).
+Komut (depo kökünden): `python scripts/sch_inventory.py --alt-pcb <git-rev>`. Girdi: `kicad-cli sch export netlist --format kicadsexpr` ([netlist.net](netlist.net)), `design/bom-v2.csv`, `design/footprint-map.csv`, `design/pdu_v2_spec.yaml`, `PDU.kicad_pcb`, `design/pdu_v2.cir`. `netlist.net` depo-göreli kaynak adıyla saklanır; betik kişisel yol kalırsa durur (R-022). Defterler: [ledger-references.csv](ledger-references.csv), [ledger-pins.csv](ledger-pins.csv), özet [inventory-summary.json](inventory-summary.json).
 
 ## Sayılar
 
@@ -28,7 +28,7 @@ Komut (depo kökünden): `python scripts/sch_inventory.py --alt-pcb <git-rev>`. 
 
 - **187 BOM satırı, 180 şema referansı:** BOM'da olup şemada olmayan 7 satırın tümü `CABLE` (kart dışı): CT1, CT2, F1, P1, P2, P3, XF1. 180 şema referansının tümü BOM'da; bunların 38'i MPN'siz test/enjeksiyon satırıdır (çıplak pad, D-008'e göre satın alınmaz). 187 = 180 + 7.
 - **184 kart ayak izi:** H1, H2, H3, H4 montaj delikleri, şemada yok.
-- **488 pin ile önceki 422 anahtar:** 422 spec pin anahtarı + 26 spec dışı düğüm + 40 test/enjeksiyon pini = 488.
+- **488 pin ile önceki 422 anahtar (R-022 düzeltmesi):** 422 spec pin **anahtarı** → 462 fiziksel düğüm (+40 çoklu pin açılımı; 11 anahtar birden çok pini kapsıyor, ör. U1 VIN) → +26 spec anahtarı olmayan düğüm = 488. 40 test/enjeksiyon pini zaten bu 422 anahtarın içindedir; ayrıca eklenmez.
 
 ## Uyuşmazlıklar
 

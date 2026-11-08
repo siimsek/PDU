@@ -29,6 +29,67 @@ CLI = os.environ.get("KICAD_CLI", r"C:\Program Files\KiCad\10.0\bin\kicad-cli.ex
 BOARD_ONLY_BOM = re.compile(r"^(TP_|J_OVP_INJ_BUS$|JP_EN_BUCK$)")     # D-008: test pads and injection/solder-jumper parts are placed but not bought
 
 
+PERSONAL_PATH = re.compile(r"[A-Za-z]:\\\\?Users\\\\?|/Users/|/home/")
+PIN_NUM_SUFFIX = re.compile(r"^(.+)\((\d+)\)$")
+
+
+def normalize_netlist(text: str, root: Path = ROOT) -> str:
+    """R-022: the committed netlist carries repository-relative names only. KiCad writes the absolute source path into (design (source ...))."""
+    out = re.sub(r'\(source "[^"]*"\)', '(source "PDU.kicad_sch")', text, count=1)
+    for form in (str(root), str(root).replace("\\", "\\\\"), root.as_posix()):
+        out = out.replace(form, ".")
+    if PERSONAL_PATH.search(out):
+        raise SystemExit("personal path left in the netlist: " + PERSONAL_PATH.search(out).group(0))
+    return out
+
+
+def spec_pin_keys(text: str) -> dict:
+    """{ref: [pin keys]} from design/pdu_v2_spec.yaml `parts:` (standard library; the file is generated with a fixed layout)."""
+    out, ref, in_pins = {}, None, False
+    for line in text.split("\nnets:")[0].splitlines():
+        m = re.match(r"\s*-\s*ref:\s*(\S+)\s*$", line)
+        if m:
+            ref, in_pins = m.group(1), False
+            continue
+        if re.match(r"\s+pins:\s*$", line):
+            in_pins = True
+            out.setdefault(ref, [])
+            continue
+        m = re.match(r'\s+"([^"]+)":\s+"[^"]*"\s*$', line)
+        if in_pins and m:
+            out[ref].append(m.group(1))
+        elif in_pins:
+            in_pins = False
+    return out
+
+
+def key_matches(key: str, pin: str, name: str, keys: list) -> bool:
+    """The R-002 comparator's rule: a spec key names one pin number, one pin name, or a numbered family of pins."""
+    m = PIN_NUM_SUFFIX.fullmatch(key)
+    if key.isdigit():
+        return key == pin
+    if m:
+        return m.group(2) == pin
+    clean, target = name.replace(" ", ""), key.replace(" ", "")
+    return clean == target or bool(name and re.fullmatch(re.escape(target) + r"\d+", clean) and name not in keys)
+
+
+def spec_expansion(pins: dict, keys_by_ref: dict, test_refs: set) -> dict:
+    """R-022: spec keys -> physical nodes. One key may cover several pins, so keys, nodes and test pins are three different counts."""
+    matched, unmapped, key_nodes = set(), [], {}
+    for (ref, pin), r in pins.items():
+        name = re.sub(rf"_{re.escape(pin)}$", "", r["name"]) if r["name"] else ""
+        keys = keys_by_ref.get(ref, [])
+        hit = [k for k in keys if key_matches(k, pin, name, keys)]
+        for k in hit:
+            key_nodes.setdefault((ref, k), set()).add(pin)
+        (matched.add((ref, pin)) if hit else unmapped.append(f"{ref}.{pin}"))
+    n_keys = sum(len(v) for v in keys_by_ref.values())
+    return {"spec_pin_keys": n_keys, "nodes_matched_to_a_key": len(matched), "multi_pin_expansion": len(matched) - n_keys, "nodes_without_spec_key": len(unmapped), "nodes_without_spec_key_list": sorted(unmapped),
+            "total_nodes": len(pins), "keys_covering_several_pins": sum(1 for v in key_nodes.values() if len(v) > 1),
+            "test_injection_spec_keys_inside_the_key_count": sum(len(v) for r, v in keys_by_ref.items() if r in test_refs), "keys_with_no_node": n_keys - len(key_nodes)}
+
+
 def field(node, head):
     n = next(node.children(head), None)
     a = n.atoms() if n is not None else []
@@ -190,6 +251,7 @@ def main(argv) -> int:
         net = Path(td) / "n.net"
         subprocess.run([CLI, "sch", "export", "netlist", "--format", "kicadsexpr", "-o", str(net), str(ROOT / "PDU.kicad_sch")], check=True, capture_output=True)
         text = net.read_text(encoding="utf-8")
+    text = normalize_netlist(text)
     (OUT / "netlist.net").write_text(text, encoding="utf-8", newline="\n")
     comps, pins = parse_netlist(text)
     pcb = parse_pcb((ROOT / "PDU.kicad_pcb").read_text(encoding="utf-8"))
@@ -204,14 +266,14 @@ def main(argv) -> int:
     cir_text = (ROOT / "design" / "pdu_v2.cir").read_text(encoding="utf-8")
     refs, pin_rows = build(comps, pins, pcb, bom_by, map_by, spec, cir, alt, cir_text)
     spec_text = (ROOT / "design" / "pdu_v2_spec.yaml").read_text(encoding="utf-8")
-    spec_pin_keys = len(re.findall(r'^\s+"[^"]+":\s+"[^"]*"\s*$', spec_text, re.M))
+    expansion = spec_expansion(pins, spec_pin_keys(spec_text), {r["ref"] for r in refs if r["class"].startswith("test")})
     known = {r["ref"] for r in refs}
     no_sch = {"bom_refs_not_in_schematic": sorted(set(bom_by) - known), "pcb_refs_not_in_schematic": sorted(set(pcb) - known), "footprint_map_refs_not_in_schematic": sorted(set(map_by) - known), "spec_refs_not_in_schematic": sorted(spec - known)}
     summary = {"input_commit": head, "kicad_cli": subprocess.run([CLI, "version"], capture_output=True, text=True, encoding="utf-8").stdout.strip(), "alt_pcb": alt_rev,
                "schematic_references": len(refs), "schematic_pins": len(pin_rows), "symbol_uuids": sum(r["units"] for r in refs), "bom_rows": len(bom), "footprint_map_rows": len(fmap), "spec_refs": len(spec), "pcb_footprints": len(pcb), "spice_element_names": len(cir),
                "references_by_class": dict(collections.Counter(r["class"] for r in refs)), "references_by_status": dict(collections.Counter(r["status"] for r in refs)), "pins_by_state": dict(collections.Counter(p["state"] for p in pin_rows)),
                "intentional_nc_pins": sum(1 for p in pin_rows if p["nc"]), "references_without_ledger_row": 0, "pins_without_ledger_row": len(set(pins) - {(p["ref"], p["pin"]) for p in pin_rows}),
-               "spice_by_state": dict(collections.Counter(r["spice"] for r in refs)), "spec_pin_keys": spec_pin_keys, "dnp_references": sorted(r["ref"] for r in refs if r["class"] == "DNP"),
+               "spice_by_state": dict(collections.Counter(r["spice"] for r in refs)), "spec_node_expansion": expansion, "dnp_references": sorted(r["ref"] for r in refs if r["class"] == "DNP"),
                "bom_only_kinds": {r: bom_by[r][0]["kind"] for r in no_sch["bom_refs_not_in_schematic"]}, **no_sch,
                "alt_pcb_pad_differences": sum(1 for p in pin_rows if p["alt_pcb"].startswith("farklı")) if alt is not None else None}
     for fn, rows in (("ledger-references.csv", refs), ("ledger-pins.csv", pin_rows)):
