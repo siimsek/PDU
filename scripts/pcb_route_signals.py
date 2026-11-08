@@ -537,7 +537,7 @@ def gnd_returns():
     P.ZONE_FILLER(b).Fill(b.Zones())
     P.SaveBoard(str(PCB), b, True)
     placed = [c for c in cands if c["via"]]
-    with (OUT / "step2-gnd-applied.json").open("w", encoding="utf-8", newline="\n") as f:
+    with (OUT / "step3-gnd-applied.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump({"groups": len(cands), "new_vias": len(placed), "no_position_found": [c["pads"] for c in cands if not c["via"]], "max_centre_to_via_mm": max((c["stub_mm"] for c in placed), default=None), "candidates": cands}, f, indent=0, ensure_ascii=False)
         f.write("\n")
     print(json.dumps({"new_gnd_vias": len(placed), "no_position": [c["pads"] for c in cands if not c["via"]]}, ensure_ascii=False))
@@ -1063,7 +1063,7 @@ def step3_audit():
     now = summary(D)
     base = json.loads((OUT / "step1-baseline.json").read_text(encoding="utf-8"))
     routes = json.loads((OUT / "step3-routes.json").read_text(encoding="utf-8"))
-    gnd = json.loads((OUT / "step2-gnd-applied.json").read_text(encoding="utf-8"))
+    gnd = json.loads((OUT / "step3-gnd-applied.json").read_text(encoding="utf-8"))
     geo = Geo(b)
     sw_pads = [r for r in geo.pads if r["net"].startswith(("/SW_PH", "/SW4_PH"))]
     sw_zones = [outline_pts(z) for z in b.Zones() if z.GetNetname().startswith("/SW_PH")]
