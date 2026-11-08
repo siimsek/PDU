@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-022 (taslak PR #66; R-018 Tur 1 RET düzeltildi). R-018 PR #68 açık.
-- **Aktif kart:** T-022 **Review** — R-018 Tur 2 bekliyor. DRC 0, parite 0, boş kart 0; güç ağı açığı yalnız T-023 Kelvin/FB/gate uçları.
+- **Dal / son commit:** wp/T-022 → main (PR #66; R-018 PR #68 Tur 2 KOŞULLU).
+- **Aktif kart:** T-023 Ready (sinyal yönlendirme, başlamadı). Kart T-022 sonrası 199 açık çift, 6 via_dangling uyarısı; devir listesi tasks/done/T-022.md.
 
 ## Yapılanlar
 - R-018 Tur 1: TP_SW1/2 SW düğümüne taşındı; U1/U2 ISNS+VOUT çiftleri bağlandı; U4 +1,15 mm, CEFIN2 U4 batısında (CEFIN1 düzeni); D_REV/CEFOUT kolları 1,5 mm.
@@ -26,10 +26,10 @@
 - T-017 (#40) main'de. T-010 + T-009 (dal): B5 30 + B4 12 parça `sch_place.py` ile (etiket-pin); ERC 0; B1–B5 fark 0; blok dışı 0. Q2 footprint TI land'den özel (R-009).
 
 ## Sonraki adım
-Codex: R-018 Tur 2. ONAY → Claude Code: T-022 birleştir, T-023.
+Codex: T-023 sinyal yönlendirme planı (D-012). Sonra Claude Code: T-023.
 
 ## Engeller
-Yok (Tur 2 bekliyor). Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
+Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
 
 ## Kullanıcıdan bekleyenler (yalnız fiziksel, engellemez)
 - U-001, U-007 tezgâh ölçümleri (kart üretilince).

@@ -1,6 +1,6 @@
 # T-022 — Güç yolları (D-010 geçerli kısımları + D-011, R-018 Tur 1 düzeltmeleri)
 
-**Durum: Review.** KiCad 10.0.7: DRC hatası **0**, parite **0**, boş kart DRC hatası **0**. Güç ağlarında açık uç yalnız T-023'e devredilen Kelvin, FB ve gate uçlarındadır.
+**Durum: Done (R-018 Tur 2 KOŞULLU, koşullar kart ve backlog'da kapatıldı).** KiCad 10.0.7: DRC hatası **0**, parite **0**, boş kart DRC hatası **0**. Güç ağlarında açık uç yalnız T-023'e devredilen Kelvin, FB ve gate uçlarındadır.
 
 Kaynak: [`scripts/pcb_route_power.py`](../../../scripts/pcb_route_power.py), T-021 kartından üretilir. Ham çıktı: [power-route-audit.json](power-route-audit.json), [route-items.json](route-items.json), [drc.json](drc.json), [drc-empty.json](drc-empty.json). Netclass, `PDU.kicad_dru` ve `PDU.kicad_pro` değişmedi.
 
