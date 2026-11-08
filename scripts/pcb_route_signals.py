@@ -360,7 +360,8 @@ KELVIN = {
                             "tp": ("F", 0.4, [(45.6, 20.477), (45.6, 19.6)])},
 }
 # R-020: test pads beside their Kelvin arm (search starts from R-020's coordinates, then checked against the new route).
-TP_MOVES = [("TP_OVP_REF", 92.0, 71.85), ("TP_OC_REF", 93.5, 62.7), ("TP_OC_SENSE1", 33.0, 59.5), ("TP_OC_SENSE2", 38.5, 27.0), ("TP_GND_OC", 50.5, 22.0), ("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
+TP_MOVES = [("RFB1", 42.55, 83.8), ("RFB2", 45.95, 83.8), ("R_TRIM", 49.15, 83.8), ("CHF", 53.6, 83.8), ("RCOMP", 57.0, 83.8), ("CCOMP", 60.4, 83.8), ("TP_COMP", 63.4, 83.7),
+            ("TP_GND_OVP", 96.2, 62.0), ("TP_OVP_REF", 98.9, 62.7), ("TP_OC_REF", 93.5, 62.7), ("TP_OC_SENSE1", 33.0, 59.5), ("TP_OC_SENSE2", 38.5, 27.0), ("TP_GND_OC", 50.5, 22.0), ("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
 GATE_W = 0.4
 TP_GATE = (97.4, 44.6)
 TP_BRANCH = [(94.8, 47.49), (96.2, 46.5), (96.2, 44.6), (97.4, 44.6)]
@@ -369,8 +370,8 @@ R_GS_LINK = [(95.9, 49.3), (96.675, 49.3)]
 R_GS_VIA = (98.325, 49.3)
 OLD_R_GS_VIA = (92.85, 36.645)
 REFDES = [("C_ISO_VCAP", 92.6, 44.6, 0), ("R_GS", 97.5, 47.6, 0), ("TP_ISNS1P", 41.5, 69.2, 0), ("RS1", 35.9, 70.2, 0), ("U11", 28.2, 59.4, 0), ("TP_ISNS1N", 26.0, 68.0, 90),
-          ("TP_ISNS2P", 36.6, 21.6, 90), ("TP_OC_REF", 93.5, 60.8, 0), ("TP_OC_SENSE1", 33.0, 57.9, 0), ("RS2", 53.4, 21.0, 0)]
-HIDE_REF = ("TP_ISO_GATE", "TP_GND_OC", "TP_ISNS2N", "TP_OVP_REF")       # no silk-free spot beside these pads; they stay identified in D-008 and the assembly drawing
+          ("TP_ISNS2P", 36.6, 21.6, 90), ("TP_OC_REF", 91.5, 60.6, 0), ("TP_OC_SENSE1", 33.0, 57.9, 0), ("RS2", 53.4, 21.0, 0)]
+HIDE_REF = ("TP_ISO_GATE", "TP_GND_OC", "TP_ISNS2N", "TP_OVP_REF", "RFB1", "RFB2", "R_TRIM", "CHF", "RCOMP", "CCOMP", "TP_COMP", "TP_GND_OVP", "CVCC1", "CVDDA1", "RT1")       # no silk-free spot beside these pads; they stay identified in D-008 and the assembly drawing
 KELVIN_LIMIT = 15.0
 # R-021: the real sense vias on the shunt pads (not the pad centres)
 SENSE_VIAS = {"RS1.1": (37.7, 66.4), "RS1.2": (32.3, 66.4), "RS2.1": (43.9, 17.7), "RS2.2": (49.1, 15.6)}
@@ -720,16 +721,22 @@ def probe_phase1():
 # --------------------------------------------------------------------------- step 3 (D-012): bounded deterministic router for FB/COMP/OVP/OC
 STEP3_NETS = ("/FB", "/FB_TRIM", "/FB_INJ", "/COMP", "/COMP_MID", "/OVP_SENSE", "/OVP_REF", "/OVP_TRIP_N", "/OVP_Q", "/OVP_BUS_N", "/OC_SENSE1", "/OC_SENSE2", "/OC_REF", "/OC_TRIP1_N", "/OC_TRIP2_N", "/CLR_N", "/ISO_EN", "/ISO_OV")
 HV_NETS = ("/ANODE", "/VIN", "/VOUT", "/VSAFE")
-STEP3_FIRST = ("/COMP", "/FB", "/OVP_REF", "/OC_REF", "/OC_TRIP2_N")   # routed in this order, before the span-sorted rest
+STEP3_FIRST = ("/COMP", "/FB", "/OVP_REF", "/OC_REF", "/OVP_BUS_N", "/ISO_EN", "/ISO_OV", "/CLR_N", "/OC_TRIP2_N")   # routed in this order, before the span-sorted rest
 SENSITIVE = ("/COMP", "/FB", "/OVP_REF", "/OC_REF")   # R-022 Tur 3: F.Cu over L2 first, few layer changes, away from SW
 SENS_FAR = ("/OVP_REF", "/OC_REF")   # PCB-HANDOFF §3 item 5 group: the 10 mm cost applies to these only; /FB and /COMP must stay at U1
 STEP3_ROOT = {"/OVP_REF": "U8.6", "/OC_REF": "R_OCB.1"}   # tree grows out from the source/divider so probes and branches stay local
 SENS_KEEP = 10.0       # mm: PCB-HANDOFF §3 item 5; a routing cost, not a pass/fail limit
 SENS_B_COST = 2.0
 SENS_VIA_COST = 24.0
-STEP3_PREFIX = {"/GND": {"U6.2": [(91.457, 48.14), (88.8, 48.14)], "U15.2": [(91.698, 81.055), (92.72, 81.29)], "U11.2": [(26.112, 61.03), (26.112, 62.33), (24.2, 62.33)]}, "/OVP_BUS_N": {"U7.1": [(103.395, 76.365), (102.6, 76.365), (102.6, 77.4)]}, "/COMP": {"U1.15": [(47.5, 79.4), (47.5, 80.7), (44.7, 80.7)]}, "/FB": {"U1.16": [(47.0, 79.4), (47.0, 80.25), (45.4, 80.25)]},
+STEP3_PREFIX = {"/GND": {"U6.2": [(91.457, 48.14), (88.8, 48.14)], "U15.2": [(91.698, 81.055), (92.72, 81.29)], "U11.2": [(26.112, 61.03), (26.112, 62.33), (24.2, 62.33)],
+                         "R_TRIM.2": [(49.975, 83.8), (50.95, 83.6)], "CHF.2": [(54.375, 83.8), (55.25, 83.8)], "CCOMP.2": [(61.175, 83.8), (62.0, 83.8)], "R_BLS.2": [(91.225, 75.685), (90.95, 74.48)], "C_LDO_DELAY.2": [(87.897, 71.845), (87.32, 72.44)], "U10.9": [(87.115, 81.005), (86.02, 79.83)]}, "/OVP_BUS_N": {"U7.1": [(103.395, 76.365), (102.6, 76.365), (102.6, 77.4)]}, "/COMP": {"U1.15": [(47.5, 79.4), (47.5, 80.7), (44.75, 80.7), (44.75, 82.95), (63.4, 82.95), (63.4, 83.7)]},
                 "/ISO_OV": {"U6.7": [(93.733, 48.14), (92.5, 48.14), (92.5, 45.4)]}, "/OVP_Q": {"U9.5": [(104.445, 80.755), (105.4, 80.755), (105.4, 80.0)]},
                 "/OVP_REF": {"U7.3": [(103.395, 75.065), (102.5, 75.065), (102.5, 74.2)]}, "/OC_TRIP2_N": {"U14.1": [(44.757, 25.105), (44.0, 25.105), (44.0, 26.2)]}}
+# R-022 Tur 4 / SNVSCD3 p.44, p.20: FB divider at the FB pin and compensation at the primary. Hand-placed copper, routed nowhere else.
+STEP3_FIXED = {"/FB": [[(47.0, 79.4), (47.0, 80.25), (44.25, 80.25), (44.25, 83.8)], [(43.375, 83.8), (45.125, 83.8)]], "/FB_TRIM": [[(46.775, 83.8), (48.325, 83.8)]],
+               "/GND": [[(84.965, 80.03), (86.02, 79.83)]], "/COMP_MID": [[(57.825, 83.8), (59.625, 83.8)]], "/COMP": [[(52.825, 82.95), (52.825, 83.8)], [(56.175, 82.95), (56.175, 83.8)]]}
+STEP3_SKIP = ("/FB", "/FB_TRIM", "/COMP_MID")
+STEP3_DONE = ("RCOMP.1", "CHF.1", "TP_COMP.1")
 YIELDING_ZONES = ("T022_F_VSAFE_Q2",)
 GRID = 0.15
 ROUTE_W = 0.25
@@ -1034,16 +1041,24 @@ def step3():
                 t_via(b, net, pts[-1])
                 G.seg([0, 1, 2], netcode[net], pts[-1], pts[-1], VIA_R + ROUTE_CLR + ROUTE_W / 2 + DIAG_MARGIN, VIA_R + ROUTE_CLR + VIA_R + DIAG_MARGIN)
 
+    for net, group in STEP3_FIXED.items():
+        for pts in group:
+            t_track(b, net, P.F_Cu, ROUTE_W, pts)
+            for a_, c_ in zip(pts, pts[1:]):
+                G.seg([0], netcode[net], a_, c_, ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+
     def exit_of(q, code, L):
         if q[0] in prefix_end:
             return snap(G, code, prefix_end[q[0]], L), prefix_end[q[0]]
         return pad_exit(G, code, q, L)
 
     for net in sorted(STEP3_NETS, key=lambda n: (STEP3_FIRST.index(n) if n in STEP3_FIRST else len(STEP3_FIRST), span(n))):
+        if net in STEP3_SKIP:
+            continue
         code = netcode[net]
         root = next((q for q in pins[net] if q[0] == STEP3_ROOT.get(net)), pins[net][0])
         done = [root]
-        todo = [q for q in pins[net] if q is not root]
+        todo = [q for q in pins[net] if q is not root and q[0] not in STEP3_DONE]
         seen = set()
         exits = {}
 
@@ -1142,7 +1157,7 @@ def step3_audit():
 
 # --------------------------------------------------------------------------- R-022 Tur 3: reference-net evidence and the board-bound probe map
 REF_PAIRS = {"/OVP_REF": ("U8.6", ("U7.3", "R_OCT.1", "C_REF_OUT.1", "TP_OVP_REF.1")), "/OC_REF": ("R_OCB.1", ("U13.3", "U14.3", "R_OCT.2", "TP_OC_REF.1")),
-             "/FB": ("U1.16", ("RFB2.1", "RFB1.2")), "/COMP": ("U1.15", ("RCOMP.1", "CHF.1", "U2.15", "TP_COMP.1"))}
+             "/FB": ("U1.16", ("RFB2.1", "RFB1.2")), "/FB_INJ": ("RFB1.1", ("R_INJ.2", "TP_FB_INJ_B.1")), "/COMP": ("U1.15", ("RCOMP.1", "CHF.1", "U2.15", "TP_COMP.1"))}
 RETURN_PAIRS = (("U1.17", "R_TRIM.2"), ("U1.17", "CHF.2"), ("U1.17", "CCOMP.2"), ("R_OCB.2", "U13.2"), ("R_OCB.2", "U14.2"), ("C_REF_OUT.2", "U7.2"), ("C_REF_OUT.2", "R_OCB.2"))
 SW_BANDS = (2.0, 3.0, 5.0, 10.0)
 

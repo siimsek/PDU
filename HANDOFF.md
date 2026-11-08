@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
-- **Tarih:** 2026-11-08
+- **Tarih:** 2026-11-09
 - **Dal / son commit:** wp/T-023 (taslak PR #70). T-027 birleşti (PR #75). R-022 kartları PR #76'da açık.
-- **Aktif kart:** T-023 **InProgress** — adım 3 hedefleri kapandı: DRC 0, parite 0, 68 açık çift (adım 4), `/GND` açık çifti yok; /OVP_REF 39,04 mm, /OC_REF 113,208 mm, 0 via. Rapor: reports/g5/T-023/step3-report.md.
+- **Aktif kart:** T-023 **InProgress** — adım 3 hedefleri kapandı: DRC 0, parite 0, 68 açık çift (adım 4), `/GND` açık çifti yok; FB/COMP U1 yanına alındı (/FB 8,9 mm). Rapor: reports/g5/T-023/step3-report.md.
 
 ## Yapılanlar
 - Adım 3 router (D-012 B): 36 bağlantı; GND vialar sinyallerden sonra.
@@ -26,7 +26,7 @@
 - R-002 tur 1 (PR #53, 1 engelleyici: Codex'te KiCad 9.0.2): 5a2985c üzerinde KiCad 10.0.7 ile ERC 0 + netlist, R-002 karşılaştırıcısı 0 fark (reports/g5/T-014/R-002-tur2/). LDSTRT/ITIMER gerekçesi AÇIK.
 
 ## Sonraki adım
-Codex: PR #70 adım 3 incelemesi (R-022 Tur 4, U-011). Onaydan sonra Claude Code: adım 4. T-028 ilk 20 ve T-032 ayrı dallarda; T-033 T-023 sonrası.
+Codex: PR #70 adım 3 incelemesi (R-022 Tur 5, U-011). Onaydan sonra Claude Code: adım 4. T-028 ilk 20 ve T-032 ayrı dallarda; T-033 T-023 sonrası.
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).

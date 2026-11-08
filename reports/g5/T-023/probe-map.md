@@ -1,17 +1,19 @@
 # T-023 prob haritası
 
-**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `9552edaf83efb56f3eba0574f11185f3d6a5e5f3dbdf9d9166b09fc24be2dd4c`. KiCad 10.0.7. Kart değişirse `--probe-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın.
+**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `0b870539a1a301b8a26882439703deece059051601f771d2794e970e566ec606`. KiCad 10.0.7. Kart değişirse `--probe-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın.
 
 Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y yukarı. PCB: KiCad pafta koordinatı, D-006 x+30, 115−y. Mesafeler düz çizgidir.
 
-## Silk etiketi gizli test noktaları (4)
+## Silk etiketi gizli test noktaları (6)
 
 | Ref | Ağ | D-006 x ; y (mm) | PCB x ; y (mm) | Yüz | Pad Ø (mm) | En yakın prob GND |
 |---|---|---|---|---|---:|---|
-| TP_GND_OC | `/GND` | 50,500 ; 22,000 | 80,500 ; 93,000 | F | 2,0 | TP_GND_OVP (11,37 mm) |
+| TP_COMP | `/COMP` | 63,400 ; 83,700 | 93,400 ; 31,300 | F | 1,0 | TP_GND_OVP (39,33 mm) |
+| TP_GND_OC | `/GND` | 50,500 ; 22,000 | 80,500 ; 93,000 | F | 2,0 | TP_GND_FB (18,73 mm) |
+| TP_GND_OVP | `/GND` | 96,200 ; 62,000 | 126,200 ; 53,000 | F | 2,0 | TP_GND_FB (46,62 mm) |
 | TP_ISNS2N | `/VOUT` | 45,600 ; 19,600 | 75,600 ; 95,400 | F | 1,0 | TP_GND_OC (5,46 mm) |
-| TP_ISO_GATE | `/ISO_GATE` | 97,400 ; 44,600 | 127,400 ; 70,400 | F | 1,0 | TP_GND_FB (34,96 mm) |
-| TP_OVP_REF | `/OVP_REF` | 92,000 ; 71,850 | 122,000 ; 43,150 | F | 1,0 | TP_GND_FB (52,99 mm) |
+| TP_ISO_GATE | `/ISO_GATE` | 97,400 ; 44,600 | 127,400 ; 70,400 | F | 1,0 | TP_GND_OVP (17,44 mm) |
+| TP_OVP_REF | `/OVP_REF` | 98,900 ; 62,700 | 128,900 ; 52,300 | F | 1,0 | TP_GND_OVP (2,79 mm) |
 
 ## Tüm test noktaları (36)
 
@@ -19,13 +21,13 @@ Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y y
 |---|---|---|---|---|---:|---|
 | TP_ANODE | `/ANODE` | 12,725 ; 34,552 | 42,725 ; 80,448 | F | 2,0 | TP_GND_POWER (7,81 mm) |
 | TP_CLR_N | `/CLR_N` | 92,745 ; 4,111 | 122,745 ; 110,889 | F | 1,0 | TP_GND_FB (30,91 mm) |
-| TP_COMP | `/COMP` | 15,753 ; 61,054 | 45,753 ; 53,946 | F | 1,0 | TP_GND_POWER (28,63 mm) |
+| TP_COMP | `/COMP` | 63,400 ; 83,700 | 93,400 ; 31,300 | F | 1,0 | TP_GND_OVP (39,33 mm) |
 | TP_EN_BUCK | `/EN_BUCK` | 12,727 ; 22,111 | 42,727 ; 92,889 | F | 1,0 | TP_GND_POWER (14,69 mm) |
 | TP_FB_INJ_A | `/VOUT` | 89,895 ; 14,664 | 119,895 ; 100,336 | F | 1,0 | TP_GND_FB (22,8 mm) |
 | TP_FB_INJ_B | `/FB_INJ` | 4,549 ; 26,054 | 34,549 ; 88,946 | F | 1,0 | TP_GND_POWER (8,51 mm) |
-| TP_GND_FB | `/GND` | 69,121 ; 24,052 | 99,121 ; 90,948 | F | 2,0 | TP_GND_OVP (7,44 mm) |
-| TP_GND_OC | `/GND` | 50,500 ; 22,000 | 80,500 ; 93,000 | F | 2,0 | TP_GND_OVP (11,37 mm) |
-| TP_GND_OVP | `/GND` | 61,679 ; 24,052 | 91,679 ; 90,948 | F | 2,0 | TP_GND_FB (7,44 mm) |
+| TP_GND_FB | `/GND` | 69,121 ; 24,052 | 99,121 ; 90,948 | F | 2,0 | TP_GND_OC (18,73 mm) |
+| TP_GND_OC | `/GND` | 50,500 ; 22,000 | 80,500 ; 93,000 | F | 2,0 | TP_GND_FB (18,73 mm) |
+| TP_GND_OVP | `/GND` | 96,200 ; 62,000 | 126,200 ; 53,000 | F | 2,0 | TP_GND_FB (46,62 mm) |
 | TP_GND_POWER | `/GND` | 4,915 ; 34,552 | 34,915 ; 80,448 | F | 2,0 | TP_GND_OC (47,28 mm) |
 | TP_IMON_O1 | `/IMON_O1` | 4,181 ; 18,169 | 34,181 ; 96,831 | F | 1,0 | TP_GND_POWER (16,4 mm) |
 | TP_IMON_S2E | `/IMON_S2E` | 13,095 ; 26,054 | 43,095 ; 88,946 | F | 1,0 | TP_GND_POWER (11,8 mm) |
@@ -33,15 +35,15 @@ Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y y
 | TP_ISNS1P | `/ISNS1` | 40,200 ; 67,600 | 70,200 ; 47,400 | F | 1,0 | TP_GND_OC (46,75 mm) |
 | TP_ISNS2N | `/VOUT` | 45,600 ; 19,600 | 75,600 ; 95,400 | F | 1,0 | TP_GND_OC (5,46 mm) |
 | TP_ISNS2P | `/ISNS2` | 38,800 ; 20,000 | 68,800 ; 95,000 | F | 1,0 | TP_GND_OC (11,87 mm) |
-| TP_ISO_GATE | `/ISO_GATE` | 97,400 ; 44,600 | 127,400 ; 70,400 | F | 1,0 | TP_GND_FB (34,96 mm) |
-| TP_ISO_OV | `/ISO_OV` | 61,313 ; 8,054 | 91,313 ; 106,946 | F | 1,0 | TP_GND_OVP (16,0 mm) |
-| TP_O1 | `/O1_11V` | 59,839 ; 19,107 | 89,839 ; 95,893 | F | 2,0 | TP_GND_OVP (5,28 mm) |
-| TP_OC_REF | `/OC_REF` | 93,500 ; 62,700 | 123,500 ; 52,300 | F | 1,0 | TP_GND_FB (45,69 mm) |
+| TP_ISO_GATE | `/ISO_GATE` | 97,400 ; 44,600 | 127,400 ; 70,400 | F | 1,0 | TP_GND_OVP (17,44 mm) |
+| TP_ISO_OV | `/ISO_OV` | 61,313 ; 8,054 | 91,313 ; 106,946 | F | 1,0 | TP_GND_OC (17,65 mm) |
+| TP_O1 | `/O1_11V` | 59,839 ; 19,107 | 89,839 ; 95,893 | F | 2,0 | TP_GND_OC (9,78 mm) |
+| TP_OC_REF | `/OC_REF` | 93,500 ; 62,700 | 123,500 ; 52,300 | F | 1,0 | TP_GND_OVP (2,79 mm) |
 | TP_OC_SENSE1 | `/OC_SENSE1` | 33,000 ; 59,500 | 63,000 ; 55,500 | F | 1,0 | TP_GND_POWER (37,57 mm) |
 | TP_OC_SENSE2 | `/OC_SENSE2` | 38,500 ; 27,000 | 68,500 ; 88,000 | F | 1,0 | TP_GND_OC (13,0 mm) |
 | TP_OVP_BUS_N | `/OVP_BUS_N` | 71,699 ; 14,664 | 101,699 ; 100,336 | F | 1,0 | TP_GND_FB (9,74 mm) |
 | TP_OVP_Q | `/OVP_Q` | 3,445 ; 61,054 | 33,445 ; 53,946 | F | 1,0 | TP_GND_POWER (26,54 mm) |
-| TP_OVP_REF | `/OVP_REF` | 92,000 ; 71,850 | 122,000 ; 43,150 | F | 1,0 | TP_GND_FB (52,99 mm) |
+| TP_OVP_REF | `/OVP_REF` | 98,900 ; 62,700 | 128,900 ; 52,300 | F | 1,0 | TP_GND_OVP (2,79 mm) |
 | TP_OVP_SENSE | `/OVP_SENSE` | 80,981 ; 14,664 | 110,981 ; 100,336 | F | 1,0 | TP_GND_FB (15,13 mm) |
 | TP_OVP_TRIP_N | `/OVP_TRIP_N` | 74,725 ; 19,609 | 104,725 ; 95,391 | F | 1,0 | TP_GND_FB (7,15 mm) |
 | TP_P5V | `/P5V_PROT` | 20,987 ; 61,054 | 50,987 ; 53,946 | F | 1,0 | TP_GND_POWER (30,99 mm) |

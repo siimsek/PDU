@@ -1,6 +1,6 @@
 {
  "board": "PDU.kicad_pcb",
- "board_sha256_lf": "9552edaf83efb56f3eba0574f11185f3d6a5e5f3dbdf9d9166b09fc24be2dd4c",
+ "board_sha256_lf": "0b870539a1a301b8a26882439703deece059051601f771d2794e970e566ec606",
  "kicad": "10.0.7",
  "rows": [
   {
@@ -41,18 +41,18 @@
    "ref": "TP_COMP",
    "net": "/COMP",
    "d6_mm": [
-    15.753,
-    61.054
+    63.4,
+    83.7
    ],
    "pcb_mm": [
-    45.753,
-    53.946
+    93.4,
+    31.3
    ],
    "side": "F",
    "pad_mm": 1.0,
-   "silk_ref_visible": true,
-   "nearest_probe_gnd": "TP_GND_POWER",
-   "nearest_probe_gnd_mm": 28.63
+   "silk_ref_visible": false,
+   "nearest_probe_gnd": "TP_GND_OVP",
+   "nearest_probe_gnd_mm": 39.33
   },
   {
    "ref": "TP_EN_BUCK",
@@ -119,8 +119,8 @@
    "side": "F",
    "pad_mm": 2.0,
    "silk_ref_visible": true,
-   "nearest_probe_gnd": "TP_GND_OVP",
-   "nearest_probe_gnd_mm": 7.44
+   "nearest_probe_gnd": "TP_GND_OC",
+   "nearest_probe_gnd_mm": 18.73
   },
   {
    "ref": "TP_GND_OC",
@@ -136,25 +136,25 @@
    "side": "F",
    "pad_mm": 2.0,
    "silk_ref_visible": false,
-   "nearest_probe_gnd": "TP_GND_OVP",
-   "nearest_probe_gnd_mm": 11.37
+   "nearest_probe_gnd": "TP_GND_FB",
+   "nearest_probe_gnd_mm": 18.73
   },
   {
    "ref": "TP_GND_OVP",
    "net": "/GND",
    "d6_mm": [
-    61.679,
-    24.052
+    96.2,
+    62.0
    ],
    "pcb_mm": [
-    91.679,
-    90.948
+    126.2,
+    53.0
    ],
    "side": "F",
    "pad_mm": 2.0,
-   "silk_ref_visible": true,
+   "silk_ref_visible": false,
    "nearest_probe_gnd": "TP_GND_FB",
-   "nearest_probe_gnd_mm": 7.44
+   "nearest_probe_gnd_mm": 46.62
   },
   {
    "ref": "TP_GND_POWER",
@@ -289,8 +289,8 @@
    "side": "F",
    "pad_mm": 1.0,
    "silk_ref_visible": false,
-   "nearest_probe_gnd": "TP_GND_FB",
-   "nearest_probe_gnd_mm": 34.96
+   "nearest_probe_gnd": "TP_GND_OVP",
+   "nearest_probe_gnd_mm": 17.44
   },
   {
    "ref": "TP_ISO_OV",
@@ -306,8 +306,8 @@
    "side": "F",
    "pad_mm": 1.0,
    "silk_ref_visible": true,
-   "nearest_probe_gnd": "TP_GND_OVP",
-   "nearest_probe_gnd_mm": 16.0
+   "nearest_probe_gnd": "TP_GND_OC",
+   "nearest_probe_gnd_mm": 17.65
   },
   {
    "ref": "TP_O1",
@@ -323,8 +323,8 @@
    "side": "F",
    "pad_mm": 2.0,
    "silk_ref_visible": true,
-   "nearest_probe_gnd": "TP_GND_OVP",
-   "nearest_probe_gnd_mm": 5.28
+   "nearest_probe_gnd": "TP_GND_OC",
+   "nearest_probe_gnd_mm": 9.78
   },
   {
    "ref": "TP_OC_REF",
@@ -340,8 +340,8 @@
    "side": "F",
    "pad_mm": 1.0,
    "silk_ref_visible": true,
-   "nearest_probe_gnd": "TP_GND_FB",
-   "nearest_probe_gnd_mm": 45.69
+   "nearest_probe_gnd": "TP_GND_OVP",
+   "nearest_probe_gnd_mm": 2.79
   },
   {
    "ref": "TP_OC_SENSE1",
@@ -415,18 +415,18 @@
    "ref": "TP_OVP_REF",
    "net": "/OVP_REF",
    "d6_mm": [
-    92.0,
-    71.85
+    98.9,
+    62.7
    ],
    "pcb_mm": [
-    122.0,
-    43.15
+    128.9,
+    52.3
    ],
    "side": "F",
    "pad_mm": 1.0,
    "silk_ref_visible": false,
-   "nearest_probe_gnd": "TP_GND_FB",
-   "nearest_probe_gnd_mm": 52.99
+   "nearest_probe_gnd": "TP_GND_OVP",
+   "nearest_probe_gnd_mm": 2.79
   },
   {
    "ref": "TP_OVP_SENSE",

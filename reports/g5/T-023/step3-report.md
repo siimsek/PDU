@@ -1,4 +1,4 @@
-# T-023 Adım 3 — FB/COMP/OVP/OC (R-022 Tur 3 sonrası)
+# T-023 Adım 3 — FB/COMP/OVP/OC (R-022 Tur 4 sonrası)
 
 **Durum: T-023 InProgress. Adım 3 hedef ağları kapandı; adım 4'e geçilmedi, THINKER onayı bekleniyor.** KiCad 10.0.7 (`--refill-zones --schematic-parity`): DRC hatası **0**, parite **0**, açık çift **199 → 68**, adım 1'e göre yeni açık ağ **0**, adım 2'ye göre yeni açık ağ **0**, L2 **1** ada. Uyarı: `{'warning:via_dangling': 6}`. Bu sayılar ara aşamadır, final kabul değildir.
 
@@ -12,9 +12,9 @@ Kaynak: [`scripts/pcb_route_signals.py`](../../../scripts/pcb_route_signals.py) 
 | TP_GND_OC yerel GND | Taşındı: (50,5; 22,0), U14 grubunun yanı | kendi via'sı [49.65, 22.85], kol 1,2 mm |
 | TP_OC_SENSE1 uzun kol | Taşındı: (33,0; 59,5) | TP kolu 5,34 mm, 2 via |
 | TP_OC_SENSE2 uzun kol | Taşındı: (38,5; 27,0) | TP kolu 2,31 mm, 0 via |
-| Kalan 8 sinyal bağlantısı | Tamamlandı. Tamamlanan bağlantı **44**, başarısız **0** | step3-routes.json |
+| Kalan 8 sinyal bağlantısı | Tamamlandı. Tamamlanan bağlantı **37**, başarısız **0** | step3-routes.json |
 
-U1 ölçüm kolları değiştirilmedi: `/COMP`, `/FB`, `/OVP_REF`, `/OC_REF`, `/OC_TRIP2_N` sırasıyla yönlendirildi ve pad çıkışları sabit waypoint ile verildi (`STEP3_PREFIX`, `STEP3_FIRST`). `/ISNS1` ve `/ISNS2` izleri önceki adım 3 kartıyla aynıdır.
+U1 ölçüm kolları değiştirilmedi: yönlendirme sırası `STEP3_FIRST` ile sabitlendi ve pad çıkışları sabit waypoint ile verildi (`STEP3_PREFIX`, `STEP3_FIRST`). `/ISNS1` ve `/ISNS2` izleri önceki adım 3 kartıyla aynıdır.
 
 ## T-022 bakırında yapılan iki küçük değişiklik
 
@@ -29,122 +29,126 @@ U1 ölçüm kolları değiştirilmedi: `/COMP`, `/FB`, `/OVP_REF`, `/OC_REF`, `/
 
 | Ağ | Açık çift | İz (mm) | Katman | Via | SW pad / SW bakır (mm) |
 |---|---:|---:|---|---:|---:|
-| `/FB` | 0 | 64,53 | F | 0 | 1,3 / 2,95 |
-| `/FB_TRIM` | 0 | 16,33 | B, F | 4 | 6,82 / 16,45 |
-| `/FB_INJ` | 0 | 94,56 | B, F | 8 | 6,59 / 7,38 |
-| `/COMP` | 0 | 151,94 | F | 0 | 1,9 / 2,65 |
-| `/COMP_MID` | 0 | 9,14 | F | 0 | 9,7 / 19,15 |
-| `/OVP_SENSE` | 0 | 87,98 | B, F | 4 | 31,88 / 40,3 |
-| `/OVP_REF` | 0 | 39,04 | F | 0 | 25,68 / 35,49 |
-| `/OVP_TRIP_N` | 0 | 84,99 | B, F | 6 | 30,46 / 35,47 |
-| `/OVP_Q` | 0 | 135,96 | B, F | 4 | 4,56 / 7,7 |
-| `/OVP_BUS_N` | 0 | 96,17 | B, F | 5 | 25,45 / 30,95 |
+| `/FB` | 0 | 8,9 | F | 0 | 1,32 / 2,95 |
+| `/FB_TRIM` | 0 | 1,55 | F | 0 | 5,62 / 7,35 |
+| `/FB_INJ` | 0 | 109,43 | B, F | 2 | 3,97 / 7,08 |
+| `/COMP` | 0 | 129,9 | F | 0 | 1,92 / 2,65 |
+| `/COMP_MID` | 0 | 1,8 | F | 0 | 5,33 / 13,08 |
+| `/OVP_SENSE` | 0 | 91,97 | B, F | 8 | 30,22 / 36,05 |
+| `/OVP_REF` | 0 | 41,51 | F | 0 | 25,68 / 35,49 |
+| `/OVP_TRIP_N` | 0 | 85,32 | B, F | 6 | 26,86 / 34,16 |
+| `/OVP_Q` | 0 | 138,41 | B, F | 10 | 6,59 / 8,3 |
+| `/OVP_BUS_N` | 0 | 91,65 | B, F | 2 | 29,35 / 31,5 |
 | `/OC_SENSE1` | 0 | 10,81 | B, F | 2 | 13,42 / 13,61 |
 | `/OC_SENSE2` | 0 | 13,87 | B, F | 2 | 9,88 / 10,47 |
-| `/OC_REF` | 0 | 113,21 | F | 0 | 9,9 / 9,9 |
-| `/OC_TRIP1_N` | 0 | 68,87 | B, F | 4 | 6,9 / 6,9 |
-| `/OC_TRIP2_N` | 0 | 86,92 | B, F | 6 | 13,35 / 13,35 |
-| `/CLR_N` | 0 | 130,24 | B, F | 7 | 27,32 / 37,13 |
+| `/OC_REF` | 0 | 118,47 | B, F | 2 | 9,9 / 9,9 |
+| `/OC_TRIP1_N` | 0 | 67,64 | B, F | 6 | 6,9 / 6,9 |
+| `/OC_TRIP2_N` | 0 | 86,84 | B, F | 6 | 13,35 / 13,35 |
+| `/CLR_N` | 0 | 131,78 | B, F | 10 | 27,07 / 36,4 |
 | `/ISO_EN` | 0 | 23,35 | B, F | 2 | 32,82 / 41,15 |
-| `/ISO_OV` | 0 | 168,16 | B, F | 11 | 18,73 / 20,81 |
+| `/ISO_OV` | 0 | 109,7 | B, F | 6 | 18,73 / 20,81 |
 
 SW mesafeleri ölçülen en küçük plan mesafesidir; gürültü kuplajı **doğrulanamadı**. HV 0,6 mm ve sınıf açıklıkları DRC ile sınandı.
 
-## R-022 Tur 3: referans yolları
+## R-022 Tur 4: U1 yakınında FB/COMP aday yerleşimi
 
-Ölçümler [step3-ref-audit.json](step3-ref-audit.json) içindedir (`--audit-ref`). Yöntem geometriktir: refill sonrası iz merkez çizgisi, 0,2 mm örnekleme. Akım çözümü, kuplaj ya da gürültü değeri **içermez**. "Önce" sütunu `888dcd9` kartıdır.
+Aday uygulandı ve kart bu durumdadır. "Önce" `69f7b7c` kartıdır. Ölçümler [step3-ref-audit.json](step3-ref-audit.json) içindedir; iz merkezi geometrisidir, kuplaj veya gürültü ölçümü **değildir**.
 
-Yapılan değişiklikler: `/OVP_REF` ve `/OC_REF` üçüncü ve dördüncü sırada yönlendi, ağaç kaynaktan (U8.6, R_OCB.1) büyüdü, bu ağlarda B.Cu ve via maliyeti artırıldı ve SW'den 10 mm içinde ek maliyet verildi. TP_OVP_REF (12,0; 18,2 → 92,0; 71,85) ve TP_OC_REF (61,3; 4,1 → 93,5; 62,7) ait oldukları gruba taşındı.
+**Değişiklik:** RFB1, RFB2, R_TRIM, CHF, RCOMP, CCOMP ve TP_COMP U1'in kuzeyindeki y=83,8 mm sırasına taşındı (`TP_MOVES`). /FB, /FB_TRIM, /COMP_MID ve /COMP gövdesi elle sabit bakırdır (`STEP3_FIXED`, `STEP3_PREFIX`). Şema, ağ, değer ve güç betiği değişmedi.
 
-| Ağ | Önce mm / via | Sonra mm / via | Sonra F / B mm | Önce SW kenar (mm) | Sonra SW kenar (mm) |
-|---|---:|---:|---:|---:|---:|
-| `/OVP_REF` | 321,921 / 19 | 39,04 / 0 | 39,04 / 0,0 | 4,736 | 25,558 |
-| `/OC_REF` | 176,125 / 11 | 113,208 / 0 | 113,208 / 0,0 | 6,554 | 9,775 |
-| `/FB` | 64,529 / 0 | 64,529 / 0 | 64,529 / 0,0 | 1,175 | 1,175 |
-| `/COMP` | 151,941 / 0 | 151,941 / 0 | 151,941 / 0,0 | 1,777 | 1,777 |
+| Ağ | Önce mm / via | Sonra mm / via | Önce SW kenar | Sonra SW kenar | Önce ≤3 mm iz | Sonra ≤3 mm iz | L2'siz F.Cu (mm) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `/FB` | 64,529 / 0 | 8,9 / 0 | 1,175 | 1,197 | 9,6 | 4,3 | 0,0 |
+| `/COMP` | 151,941 / 0 | 129,895 / 0 | 1,777 | 1,798 | 4,25 | 4,14 | 0,0 |
+| `/FB_INJ` | 94,56 / 8 | 109,429 / 2 | 6,464 | 3,848 | 0,0 | 0,0 | 2,12 |
+| `/OVP_REF` | 39,04 / 0 | 41,506 / 0 | 25,558 | 25,558 | 0,0 | 0,0 | 0,0 |
+| `/OC_REF` | 113,208 / 0 | 118,47 / 2 | 9,775 | 9,775 | 0,0 | 0,0 | 1,18 |
 
-Toplamlar dallar toplamıdır. Kaynak → kritik giriş ve TP dalları ayrı ayrı:
+| Yol | Önce mm / geçiş | Sonra mm / geçiş | Düz mesafe (mm) |
+|---|---:|---:|---:|
+| U1.16 → RFB2.1 | 51,867 / 0 | 8,025 / 0 | 4,783 |
+| U1.16 → RFB1.2 | 62,608 / 0 | 8,025 / 0 | 5,701 |
+| U1.15 → RCOMP.1 | 29,442 / 0 | 18,575 / 0 | 9,727 |
+| U1.15 → CHF.1 | 34,57 / 0 | 15,225 / 0 | 6,908 |
+| U1.15 → U2.15 | 119,809 / 0 | 125,945 / 0 | 75,679 |
+| U1.15 → TP_COMP.1 | 45,55 / 0 | 25,7 / 0 | 16,471 |
+| U8.6 → U7.3 | 28,087 / 0 | 28,279 / 0 | 21,944 |
+| U8.6 → R_OCT.1 | 24,305 / 0 | 24,373 / 0 | 22,437 |
+| U8.6 → C_REF_OUT.1 | 15,988 / 0 | 15,783 / 0 | 14,935 |
+| U8.6 → TP_OVP_REF.1 | 14,328 / 0 | 27,183 / 0 | 24,628 |
+| R_OCB.1 → U13.3 | 63,496 / 0 | 63,493 / 2 | 61,03 |
+| R_OCB.1 → U14.3 | 89,145 / 0 | 89,143 / 2 | 63,553 |
+| R_OCB.1 → R_OCT.2 | 7,247 / 0 | 12,068 / 0 | 5,78 |
+| R_OCB.1 → TP_OC_REF.1 | 2,074 / 0 | 2,072 / 0 | 1,845 |
 
-| Ağ | Yol | Önce mm / katman geçişi | Sonra mm / katman geçişi | Düz mesafe (mm) |
-|---|---|---:|---:|---:|
-| `/OVP_REF` | U8.6 → U7.3 | 261,865 / 16 | 28,087 / 0 | 21,944 |
-| `/OVP_REF` | U8.6 → R_OCT.1 | 246,774 / 14 | 24,305 / 0 | 22,437 |
-| `/OVP_REF` | U8.6 → C_REF_OUT.1 | 256,703 / 16 | 15,988 / 0 | 14,935 |
-| `/OVP_REF` | U8.6 → TP_OVP_REF.1 | 126,433 / 6 | 14,328 / 0 | 13,271 |
-| `/OC_REF` | R_OCB.1 → U13.3 | 102,599 / 6 | 63,496 / 0 | 61,03 |
-| `/OC_REF` | R_OCB.1 → U14.3 | 129,102 / 10 | 89,145 / 0 | 63,553 |
-| `/OC_REF` | R_OCB.1 → R_OCT.2 | 6,652 / 0 | 7,247 / 0 | 5,78 |
-| `/OC_REF` | R_OCB.1 → TP_OC_REF.1 | 156,215 / 10 | 2,074 / 0 | 1,845 |
-| `/FB` | U1.16 → RFB2.1 | 51,867 / 0 | 51,867 / 0 | 20,403 |
-| `/FB` | U1.16 → RFB1.2 | 62,608 / 0 | 62,608 / 0 | 27,542 |
-| `/COMP` | U1.15 → RCOMP.1 | 29,442 / 0 | 29,442 / 0 | 17,52 |
-| `/COMP` | U1.15 → CHF.1 | 34,57 / 0 | 34,57 / 0 | 22,212 |
-| `/COMP` | U1.15 → U2.15 | 119,809 / 0 | 119,809 / 0 | 75,679 |
-| `/COMP` | U1.15 → TP_COMP.1 | 45,55 / 0 | 45,55 / 0 | 36,667 |
+### TI SNVSCD3 ile karşılaştırma
 
-### Referans yollarının kalan durumu
+| Öneri (DATASHEET) | Aday | Durum |
+|---|---|---|
+| s.44: bölücü FB pinine olabildiğince yakın | U1.16→RFB2.1 8,025 mm, →RFB1.2 8,025 mm, via yok | İyileşti; "olabildiğince yakın" hesapla kanıtlanamaz |
+| s.44: VOUT tarafı daha uzun olabilir, gürültü kaynağı yanından geçmemeli | /FB_INJ 109,429 mm, en küçük SW kenarı 3,848 mm, B.Cu altında /VIN 17,97 mm | **Açık:** RFB1.1→R_INJ.2 30,702 mm oldu (önce 6,162 mm) |
+| s.20 §6.3.15: kompanzasyon primary yanında | U1.15→CHF.1 15,225 mm, →RCOMP.1 18,575 mm | İyileşti |
+| s.20 §6.3.15: EXTCOMP pinleri arasında asgari iz | U1.15→U2.15 125,945 mm, düz 75,679 mm | **Kötüleşti** (önce 119,809 mm) |
+| s.44: FB yolu SW'den ayrı | /FB en küçük kenar 1,197 mm, ≤2 mm iz 2,16 mm | Az iyileşti; kuplaj doğrulanamadı |
 
-- `/OC_REF` uzunluğu yerleşimden gelir: bölücü R_OCT/R_OCB doğuda, U13 ve U14 batıda. U13 yolu 63,5 mm (düz 61,0 mm). U14 yolu 89,1 mm (düz 63,6 mm), bu yolun U13 gövdesini paylaşan kısmı dahil. Daha kısası bölücünün taşınmasını veya yerel filtreyi gerektirir; bu kart yerleşim/şema değişikliğini kapsamıyor, yapılmadı.
-- PCB-HANDOFF §3 madde 5, OVP+OC grubu için "SW düğümlerinden ≥10 mm uzak" der. `/OC_REF` en küçük kenar mesafesi 9,775 mm (8,46 mm iz 10 mm içinde). Bu ifadenin grup izlerine uygulanıp uygulanmadığı THINKER kararıdır; **sınır karşılandı denmiyor**.
-- D-008/PCB-HANDOFF test noktalarını "kart kenarına yakın" ister. TP_OVP_REF ve TP_OC_REF R-022 Tur 3'teki yerel dal isteği için içeri alındı; iki hüküm çelişiyor, THINKER kararı gerekir.
-- Bölücü çıkış empedansı, karşılaştırıcı girişinde gürültü ve GND ofseti **doğrulanamadı**.
+Notlar:
+- /FB'nin en yakın noktası U1 çıkış cebinden batıya dönüş köşesidir, L1.1 /SW_PH1 padi köşesinin yanında (44,25; 80,25). Cep çıkışı pin sırası nedeniyle sınırlıdır; CVCC1 padleri arasındaki boşluk CVCC1.2'nin GND via'sında kaldı (TI s.44, "GND via at the return terminal").
+- EXTCOMP uzunluğu yerleşimden gelir (U1–U2 düz 75,679 mm). Batı rotası FB grubuyla çakıştığı için doğuya döndü. Daha kısası faz düzenini değiştirmeyi gerektirir; bu kartta yapılmadı.
+- Üç hedeften /OC_REF, COMP'un doğu rotasını kesmek için 2 via aldı (2,1 mm B.Cu, altında L3 dolgusu yok). Tur 3'te 0 via idi. /OC_REF F.Cu'da kalıp COMP'un geçiş yapması denenmedi.
 
-## R-022 Tur 3: /FB ve /COMP
+L2 dönüş düz hat payı (1'in altı via antipadlerini içerir):
 
-İki ağ da önceki kartla aynı rotada kaldı. Tüm uzunluk F.Cu, via ve katman geçişi yok.
-
-| Ağ | En küçük SW kenar (mm) @ D-006 | ≤2 mm iz | ≤3 mm iz | ≤5 mm iz | ≤10 mm iz | L2'siz F.Cu (mm) |
-|---|---|---:|---:|---:|---:|---:|
-| `/OVP_REF` | 25,558 @ (82,22; 80,82) | 0,0 | 0,0 | 0,0 | 0,0 | 0,0 |
-| `/OC_REF` | 9,775 @ (45,79; 61,2) | 0,0 | 0,0 | 0,0 | 8,46 | 0,0 |
-| `/FB` | 1,175 @ (44,55; 80,1) | 2,65 | 9,6 | 31,92 | 49,11 | 0,0 |
-| `/COMP` | 1,777 @ (44,7; 80,7) | 0,98 | 4,25 | 43,6 | 94,5 | 0,0 |
-
-- Değerlendirme (GEOMETRİ): en yakın nokta U1.15/U1.16 çıkış cebinde, L1.1 /SW_PH1 padi köşesinin yanındadır. `/FB` 2,65 mm, `/COMP` 0,98 mm uzunluk boyunca SW'ye 2 mm'den yakındır.
-- Cepten ikinci çıkış CVCC1 padlerinin arasındadır (x≈46,5 mm) ve tek iz sığar. Pin sırası nedeniyle /FB oraya ulaşmak için /COMP'u kesmek zorundadır ve yakında via yeri yoktur (0,15 mm ızgara haritası).
-- Denenip reddedildi: 10 mm SW maliyetini /FB ve /COMP'a da uygulamak /FB dalını 84,0 mm'ye çıkardı ve U11.5 `/OC_SENSE1` yönlenemedi.
-- Dönüş referansı: F.Cu örneklerinde L2 dolgusu altında olmayan uzunluk 0 mm. Düz hat paylarında 1'in altındaki değerler via antipadlerini de içerir:
-
-| GND pad çifti | Düz mesafe (mm) | Düz hattın L2 dolgulu payı |
+| GND pad çifti | Düz mesafe (mm) | L2 dolgulu pay |
 |---|---:|---:|
-| U1.17-R_TRIM.2 | 20,779 | 1,0 |
-| U1.17-CHF.2 | 24,681 | 0,848 |
-| U1.17-CCOMP.2 | 25,166 | 1,0 |
+| U1.17-R_TRIM.2 | 6,769 | 1,0 |
+| U1.17-CHF.2 | 9,964 | 0,75 |
+| U1.17-CCOMP.2 | 16,064 | 1,0 |
 | R_OCB.2-U13.2 | 62,656 | 1,0 |
-| R_OCB.2-U14.2 | 64,422 | 0,934 |
-| C_REF_OUT.2-U7.2 | 8,608 | 0,857 |
-| C_REF_OUT.2-R_OCB.2 | 7,319 | 0,867 |
+| R_OCB.2-U14.2 | 64,422 | 0,903 |
+| C_REF_OUT.2-U7.2 | 8,608 | 0,886 |
+| C_REF_OUT.2-R_OCB.2 | 7,319 | 0,967 |
 
+## R-022 Tur 4: referans grubu prob GND
 
+TP_GND_OVP (61,679; 24,052) → (96,2; 62,0) ve TP_OVP_REF (92,0; 71,85) → (98,9; 62,7) taşındı; TP_OVP_REF, R_OCT.1'e 3,0 mm dal ile bağlı. İki sinyal padine merkezden merkeze düz mesafe **2,79 mm** (TP_OVP_REF) ve **2,79 mm** (TP_OC_REF); önce 52,99 ve 45,69 mm idi. TP_GND_OVP'nin kendi GND via'sı [step3-gnd-applied.json](step3-gnd-applied.json) içindedir.
 
-- **Doğrulanamadı:** SW dv/dt kuplajı, FB/COMP döngü etkisi, gerçek dönüş akımı. `/COMP` U2.15 dalı 119,8 mm'dir; iki faz arasındaki ortak COMP uzunluğunun kararlılığa etkisi ölçülmedi.
+En yakın prob GND'si değişen test noktaları:
 
-## R-022 Tur 3: Kelvin, güç, HV
+| TP | Önce | Sonra |
+|---|---|---|
+| TP_COMP | TP_GND_POWER 28,63 | TP_GND_OVP 39,33 |
+| TP_ISO_GATE | TP_GND_FB 34,96 | TP_GND_OVP 17,44 |
+| TP_ISO_OV | TP_GND_OVP 16,0 | TP_GND_OC 17,65 |
+| TP_O1 | TP_GND_OVP 5,28 | TP_GND_OC 9,78 |
+| TP_OC_REF | TP_GND_FB 45,69 | TP_GND_OVP 2,79 |
+| TP_OVP_REF | TP_GND_FB 52,99 | TP_GND_OVP 2,79 |
 
-- `888dcd9` ile pcbnew karşılaştırması: `/VOUT`, `/VSAFE`, `/VIN`, `/ANODE`, `/ISO_GATE`, `/ISNS1`, `/ISNS2` izleri ve via'ları ile tüm bölge sınırları aynı.
-- Kelvin kolları 8,205 / 8,798 / 7,917 / 10,468 mm (sınır 15 mm), sense via'ları güç bakırı dışında. U6–Q2 gate 5,469 mm (sınır 10 mm). Değerler `--audit2` ile bu kartta yeniden ölçüldü, adım 2 kanıt dosyaları değiştirilmedi.
-- HV 0,6 mm ve sınıf açıklıkları: DRC hatası 0, parite 0. DRC fiziksel kanıt değildir.
+TP_O1 ve TP_ISO_OV'un en yakın prob GND mesafesi arttı. TP_COMP taşınınca en yakın atanmış GND'si 39,33 mm oldu (önce 28,63 mm); FB/COMP grubu için yerel prob GND yok, THINKER kararı gerekir. Yeni test pedi eklenmedi.
 
-## Gizli test noktaları
+## R-022 Tur 4: Kelvin, güç, HV
 
-Silk etiketi gizli olanlar: TP_GND_OC, TP_ISNS2N, TP_ISO_GATE, TP_OVP_REF. Koordinatlar, SHA-256 bağlı [probe-map.md](probe-map.md) ve [probe-map.json](probe-map.json) içindedir. Fiziksel yerinde doğrulama yapılmadı.
+- `69f7b7c` ile pcbnew karşılaştırması: /VOUT, /VSAFE, /VIN, /ANODE, /ISO_GATE, /ISNS1, /ISNS2, /O1_11V, /S2E_11V izleri ve via'ları ile tüm bölge sınırları aynı.
+- Kelvin kolları 8,205 / 8,798 / 7,917 / 10,468 mm (sınır 15 mm), sense via'ları güç bakırı dışında. U6–Q2 gate 5,469 mm (sınır 10 mm). `--audit2` ile bu kartta ölçüldü, adım 2 dosyaları değiştirilmedi.
+- HV 0,6 mm ve sınıf açıklıkları: DRC hatası 0, parite 0, açık çift 68. DRC fiziksel kanıt değildir.
+- /OC_REF izi 9,775 mm: R-022 Tur 4 gereği bileşen 10 mm kuralının otomatik ihlali sayılmadı.
 
-## Diğer uzun ağlar
+## Kapsam dışı bırakılanlar
 
-En uzun üç ağ: `/ISO_OV` 168,16 mm, 11 via; `/COMP` 151,94 mm, 0 via; `/OVP_Q` 135,96 mm, 4 via. Bunlar R-022 Tur 3 kapsamında kısaltılmadı.
+Şema değişikliği, filtre eklenmesi ve bölücü taşınması yapılmadı; ölçüm/model bunları gösterirse [T-034](../../../tasks/T-034.md) kullanılacak.
 
 ## Silk etiketi ve GND rezervasyonu
 
-- `TP_GND_OC`, `TP_ISNS2N` ve `TP_OVP_REF` için silk'te boş yer bulunamadı, referans gizlendi (`TP_ISO_GATE` ile aynı yöntem). `TP_ISNS2N` için beş, `TP_OVP_REF` için dört konum denendi.
-- U6.2, U15.2 ve U11.2/3/4 GND via'ları sinyallerden önce rezerve edildi (`STEP3_PREFIX`).
+- Silk referansı gizli test noktaları: TP_COMP, TP_GND_OC, TP_GND_OVP, TP_ISNS2N, TP_ISO_GATE, TP_OVP_REF. Koordinatlar [probe-map.md](probe-map.md) içinde; kart SHA-256'sına bağlı.
+- Sıraya alınan pasiflerde RFB1, RFB2, R_TRIM, CHF, RCOMP, CCOMP, CVCC1, CVDDA1, RT1 referansları gizli; yer yok.
+- U6.2, U15.2, U11.2/3/4, R_TRIM.2, CHF.2, CCOMP.2, R_BLS.2, C_LDO_DELAY.2 ve U10.9 GND via'ları sinyallerden önce rezerve edildi (`STEP3_PREFIX`).
 
 ## GND
 
-Yeni GND via **67**, 7 tanesi aranmış F.Cu yolla. L2'ye bağlı olmayan GND padi: **yok**. `/GND` açık çifti **0**.
+Yeni GND via **60**, 4 tanesi aranmış F.Cu yolla. L2'ye bağlı olmayan GND padi: **yok**. `/GND` açık çifti **0**.
 
 ## Kalanlar
 
-BLOCKED-ON-USER: R-022 Tur 3 için `U-011` eklendi; THINKER doğrulaması bekliyor. Toplam 68 açık çift adım 4 kapsamındadır; en çok: `/P5V_PROT` 22, `/EN_BUCK` 5, `/EN_EFUSE` 3, `/PG_O1` 3, `/PG_S2E` 3, `/IMON_O1` 2, `/IMON_S2E` 2, `/SYNC` 2, `/VDDA1` 2, `/VOUT` 2. `/VOUT` 2 açık çift önceki adım 3 kartında da vardı (adım 1'de 6).
+BLOCKED-ON-USER: `U-011` açık; THINKER doğrulaması bekliyor. Toplam 68 açık çift adım 4 kapsamındadır; en çok: `/P5V_PROT` 22, `/EN_BUCK` 5, `/EN_EFUSE` 3, `/PG_O1` 3, `/PG_S2E` 3, `/IMON_O1` 2, `/IMON_S2E` 2, `/SYNC` 2, `/VDDA1` 2, `/VOUT` 2. `/VOUT` 2 açık çift önceki adım 3 kartında da vardı (adım 1'de 6).
 
 ## Doğrulanamayanlar
 
