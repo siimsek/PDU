@@ -5,6 +5,7 @@ Step 1 (D-012, read-only for PDU.kicad_pcb):
     "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe" scripts/pcb_route_signals.py --step1
     ...python.exe scripts/pcb_route_signals.py --step2      # writes PDU.kicad_pcb: run on the T-022 board only (it refuses a board that already has T023_ zones)
     ...python.exe scripts/pcb_route_signals.py --audit2     # step 2 evidence: DRC, Kelvin lengths, SW distance, L2
+    ...python.exe scripts/pcb_route_signals.py --step3 / --gnd / --audit3    # order after --step2: signals, then GND returns in the room left, then evidence
 
 Writes reports/g5/T-023/: step1-baseline.json (refill + DRC + parity), step1-inventory.json (every open pair by net/ref/pin, D-012 classes,
 every /GND pad with its L2 state), gnd-via-candidates.json (local F.Cu stub + through via candidates), and proves them on a temporary copy.
@@ -489,19 +490,57 @@ def step2():
     t_track(b, "/ISO_GATE", P.F_Cu, GATE_W, R_GS_LINK)
     t_track(b, "/GND", P.F_Cu, 0.25, [(31.0, 62.33), (32.1, 62.62)])       # U11.7 has no room for its own via beside the RS1 Kelvin arm; it shares U13.2's via
     P.ZONE_FILLER(b).Fill(b.Zones())
+    P.SaveBoard(str(PCB), b, True)
+    print(json.dumps({"kelvin_mm": {k: round(conductor_mm(v), 3) for k, v in KELVIN.items()}}, ensure_ascii=False))
+    return 0
+
+
+def gnd_returns():
+    """Run after the signal router: every /GND pad not yet on L2 gets a local stub and via in the room the signals left."""
+    b = P.LoadBoard(str(PCB))
+    P.ZONE_FILLER(b).Fill(b.Zones())
     b.BuildConnectivity()
     geo = Geo(b)
     state = l2_state(b)
     by = {f"{p['ref']}.{p['pin']}": p for p in geo.pads if p["net"] == "/GND"}
     cands = candidates(geo, state, frozenset())
     apply_candidates(b, cands, by)
+    # A pad with no straight stub to a free via position gets a searched F.Cu path to the nearest one.
+    open_groups = [c for c in cands if not c["via"]]
+    if open_groups:
+        P.ZONE_FILLER(b).Fill(b.Zones())
+        g2 = Geo(b)
+        netcode = {n: i + 1 for i, n in enumerate(sorted({p["net"] for p in g2.pads} | {s_[3] for s_ in g2.segs} | {v[1] for v in g2.vias} | {z.GetNetname() for z in b.Zones()}))}
+        G = build_grid(b, g2, netcode)
+        code = netcode["/GND"]
+        for c in open_groups:
+            pad_rec = next(p for p in g2.pads if f"{p['ref']}.{p['pin']}" == c["pads"][0])
+            pin = (c["pads"][0], centre(pad_rec), pad_rec["front"], pad_rec["th"], pad_rec["rect"])
+            cell, ex = pad_exit(G, code, pin, 0)
+            if not cell:
+                c["reason"] = "no free exit at the pad"
+                continue
+            found = nearest_via(G, code, cell)
+            if not found:
+                c["reason"] = "no via position reachable on F.Cu"
+                continue
+            path = simplify(found)
+            xy = [(i * GRID, j * GRID) for j, i, _ in path]
+            t_track(b, "/GND", P.F_Cu, ROUTE_W, [pin[1], ex, xy[0]])
+            if len(xy) > 1:
+                t_track(b, "/GND", P.F_Cu, ROUTE_W, xy)
+            t_via(b, "/GND", xy[-1])
+            c.update({"via": list(xy[-1]), "from": pin[0], "stub_mm": round(polylen([pin[1], ex] + xy), 2), "path": "searched"})
+            for a_, c_ in zip([pin[1], ex] + xy, ([pin[1], ex] + xy)[1:]):
+                G.seg([0], code, a_, c_, ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+            G.seg([0, 1, 2], code, xy[-1], xy[-1], VIA_R + ROUTE_CLR + ROUTE_W / 2 + DIAG_MARGIN, VIA_R + ROUTE_CLR + VIA_R + DIAG_MARGIN)
     P.ZONE_FILLER(b).Fill(b.Zones())
     P.SaveBoard(str(PCB), b, True)
     placed = [c for c in cands if c["via"]]
     with (OUT / "step2-gnd-applied.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump({"groups": len(cands), "new_vias": len(placed), "no_position_found": [c["pads"] for c in cands if not c["via"]], "max_centre_to_via_mm": max((c["stub_mm"] for c in placed), default=None), "candidates": cands}, f, indent=0, ensure_ascii=False)
         f.write("\n")
-    print(json.dumps({"kelvin_mm": {k: round(conductor_mm(v), 3) for k, v in KELVIN.items()}, "new_gnd_vias": len(placed), "no_position": [c["pads"] for c in cands if not c["via"]]}, ensure_ascii=False))
+    print(json.dumps({"new_gnd_vias": len(placed), "no_position": [c["pads"] for c in cands if not c["via"]]}, ensure_ascii=False))
     return 0
 
 
@@ -659,6 +698,396 @@ def probe_phase1():
     return 0
 
 
+# --------------------------------------------------------------------------- step 3 (D-012): bounded deterministic router for FB/COMP/OVP/OC
+STEP3_NETS = ("/FB", "/FB_TRIM", "/FB_INJ", "/COMP", "/COMP_MID", "/OVP_SENSE", "/OVP_REF", "/OVP_TRIP_N", "/OVP_Q", "/OVP_BUS_N", "/OC_SENSE1", "/OC_SENSE2", "/OC_REF", "/OC_TRIP1_N", "/OC_TRIP2_N", "/CLR_N", "/ISO_EN", "/ISO_OV")
+HV_NETS = ("/ANODE", "/VIN", "/VOUT", "/VSAFE")
+YIELDING_ZONES = ("T022_F_VSAFE_Q2",)
+GRID = 0.15
+ROUTE_W = 0.25
+ROUTE_CLR = 0.2
+HV_CLR = 0.6
+EDGE_CLR = 0.5
+HOLE_CLR = 0.25
+SW_KEEP = 4.0          # mm: cost grows inside this distance of switch copper (PCB-HANDOFF §3, standard L14)
+LAYER_COST = {0: 1.0, 1: 1.3}   # F.Cu first: L2 GND is its reference
+VIA_COST = 8.0
+MAX_EXPAND = 900000
+DIAG_MARGIN = 0.06     # mm: a diagonal step between two free cell centres passes this much closer to a corner
+
+
+class Grid:
+    def __init__(self):
+        import numpy as np
+        self.np = np
+        self.nx, self.ny = int(W / GRID) + 1, int(H / GRID) + 1
+        self.cnt = [np.zeros((self.ny, self.nx), np.uint8) for _ in range(3)]      # F, B, In2 (via only)
+        self.own = [np.full((self.ny, self.nx), -1, np.int32) for _ in range(3)]
+        self.vcnt = [np.zeros((self.ny, self.nx), np.uint8) for _ in range(3)]
+        self.vown = [np.full((self.ny, self.nx), -1, np.int32) for _ in range(3)]
+        ys, xs = np.mgrid[0:self.ny, 0:self.nx]
+        self.xs, self.ys = xs * GRID, ys * GRID
+        self.sw = np.zeros((self.ny, self.nx), float)
+        edge = (self.xs < EDGE_CLR + ROUTE_W / 2) | (self.xs > W - EDGE_CLR - ROUTE_W / 2) | (self.ys < EDGE_CLR + ROUTE_W / 2) | (self.ys > H - EDGE_CLR - ROUTE_W / 2)
+        vedge = (self.xs < EDGE_CLR + VIA_R) | (self.xs > W - EDGE_CLR - VIA_R) | (self.ys < EDGE_CLR + VIA_R) | (self.ys > H - EDGE_CLR - VIA_R)
+        for L in range(3):
+            self.cnt[L][edge] = 2
+            self.vcnt[L][vedge] = 2
+
+    def _apply(self, cnt, own, sel, net):
+        np = self.np
+        free = sel & (own == -1)
+        own[free] = net
+        cnt[free] = np.maximum(cnt[free], 1)
+        other = sel & (own != -1) & (own != net)
+        cnt[other] = 2
+
+    def window(self, x0, y0, x1, y1, m):
+        i0, i1 = max(0, int((x0 - m) / GRID)), min(self.nx - 1, int((x1 + m) / GRID) + 1)
+        j0, j1 = max(0, int((y0 - m) / GRID)), min(self.ny - 1, int((y1 + m) / GRID) + 1)
+        return j0, j1 + 1, i0, i1 + 1
+
+    def mark_dist(self, layers, net, bbox, dist_fn, track_m, via_m):
+        m = max(track_m, via_m)
+        j0, j1, i0, i1 = self.window(*bbox, m)
+        X, Y = self.xs[j0:j1, i0:i1], self.ys[j0:j1, i0:i1]
+        d = dist_fn(X, Y)
+        for L in layers:
+            self._apply(self.cnt[L][j0:j1, i0:i1], self.own[L][j0:j1, i0:i1], d <= track_m, net)
+            self._apply(self.vcnt[L][j0:j1, i0:i1], self.vown[L][j0:j1, i0:i1], d <= via_m, net)
+
+    def rect(self, layers, net, r, track_m, via_m):
+        np = self.np
+        def f(X, Y):
+            dx = np.maximum(np.maximum(r[0] - X, 0), X - r[2])
+            dy = np.maximum(np.maximum(r[1] - Y, 0), Y - r[3])
+            return np.hypot(dx, dy)
+        self.mark_dist(layers, net, r, f, track_m, via_m)
+
+    def seg(self, layers, net, a, c, track_m, via_m):
+        np = self.np
+        vx, vy = c[0] - a[0], c[1] - a[1]
+        ln2 = vx * vx + vy * vy
+        def f(X, Y):
+            t = np.clip(((X - a[0]) * vx + (Y - a[1]) * vy) / ln2, 0, 1) if ln2 else 0
+            return np.hypot(X - a[0] - t * vx, Y - a[1] - t * vy)
+        self.mark_dist(layers, net, (min(a[0], c[0]), min(a[1], c[1]), max(a[0], c[0]), max(a[1], c[1])), f, track_m, via_m)
+
+    def poly(self, layers, net, pts, track_m, via_m):
+        np = self.np
+        xs_, ys_ = [p[0] for p in pts], [p[1] for p in pts]
+        def f(X, Y):
+            d = np.full(X.shape, 1e9)
+            inside = np.zeros(X.shape, bool)
+            n = len(pts)
+            for i in range(n):
+                a, c = pts[i], pts[(i + 1) % n]
+                vx, vy = c[0] - a[0], c[1] - a[1]
+                ln2 = vx * vx + vy * vy or 1e-12
+                t = np.clip(((X - a[0]) * vx + (Y - a[1]) * vy) / ln2, 0, 1)
+                d = np.minimum(d, np.hypot(X - a[0] - t * vx, Y - a[1] - t * vy))
+                cond = (a[1] > Y) != (c[1] > Y)
+                with np.errstate(divide="ignore", invalid="ignore"):
+                    xc = a[0] + (Y - a[1]) * vx / (vy if vy else 1e-12)
+                inside ^= cond & (X < xc)
+            d[inside] = 0
+            return d
+        self.mark_dist(layers, net, (min(xs_), min(ys_), max(xs_), max(ys_)), f, track_m, via_m)
+
+    def free(self, L, net):
+        return (self.cnt[L] == 0) | ((self.cnt[L] == 1) & (self.own[L] == net))
+
+    def via_free(self, net):
+        np = self.np
+        out = np.ones((self.ny, self.nx), bool)
+        for L in range(3):
+            out &= (self.vcnt[L] == 0) | ((self.vcnt[L] == 1) & (self.vown[L] == net))
+        return out
+
+
+def clearances(net, other, item, fine=False):
+    """(track margin, via margin) from an item's edge to a new 0.25 mm track centre / 0.6 mm via centre.
+
+    INPUT_POWER nets carry a 0.3 mm class clearance. Fine-pitch pads take no diagonal margin: a 0.5 mm pitch leaves no room for it, and the board DRC is the judge.
+    """
+    hv = other in HV_NETS and item != "pad"
+    clr = HV_CLR if hv else (0.3 if other in ("/ANODE", "/VIN") else ROUTE_CLR)
+    if item == "zone":
+        clr = max(clr, 0.3)
+    extra = 0.0 if fine else DIAG_MARGIN
+    return clr + ROUTE_W / 2 + extra, clr + VIA_R + extra
+
+
+def build_grid(b, geo, netcode):
+    G = Grid()
+    for p in geo.pads:
+        code = netcode.get(p["net"], -2 - len(p["ref"]))
+        layers = [0, 1, 2] if p["th"] else ([0] if p["front"] else [1])
+        t, v = clearances(None, p["net"], "pad", fine=min(p["rect"][2] - p["rect"][0], p["rect"][3] - p["rect"][1]) <= 0.65)
+        G.rect(layers, code, p["rect"], t, v)
+        if p["th"]:                                      # hole clearance applies to every net, including the routed net's own via
+            G.rect([0, 1, 2], -9, ((p["rect"][0] + p["rect"][2]) / 2, (p["rect"][1] + p["rect"][3]) / 2, (p["rect"][0] + p["rect"][2]) / 2, (p["rect"][1] + p["rect"][3]) / 2), 0.0, 0.0)
+    for a, c, half, net, lay in geo.segs:
+        t, v = clearances(None, net, "track")
+        L = {P.F_Cu: 0, P.B_Cu: 1}.get(lay)
+        if L is not None:
+            G.seg([L], netcode.get(net, -3), a, c, half + t, half + v)
+    for q, net in geo.vias:
+        t, v = clearances(None, net, "via")
+        code = netcode.get(net, -3)
+        G.seg([0, 1, 2], code, q, q, VIA_R + t, max(VIA_R + v, 2 * DRILL_R + HOLE_CLR))
+    for z in b.Zones():
+        name, net = z.GetZoneName(), z.GetNetname()
+        if not name.startswith(("T022_", "T023_")) or name.startswith(YIELDING_ZONES):
+            continue
+        L = 0 if z.IsOnLayer(P.F_Cu) else (1 if z.IsOnLayer(P.B_Cu) else 2)
+        t, v = clearances(None, net, "zone")
+        G.poly([L], netcode.get(net, -3), outline_pts(z), t, v)
+    sw_cells = [r for r in geo.pads if r["net"].startswith(("/SW_PH", "/SW4_PH"))]
+    np = G.np
+    for r in sw_cells:
+        dx = np.maximum(np.maximum(r["rect"][0] - G.xs, 0), G.xs - r["rect"][2])
+        dy = np.maximum(np.maximum(r["rect"][1] - G.ys, 0), G.ys - r["rect"][3])
+        G.sw = np.maximum(G.sw, np.clip(1 - np.hypot(dx, dy) / SW_KEEP, 0, 1))
+    return G
+
+
+def astar(G, net, sources, goal, goal_layer=0):
+    import heapq
+    np = G.np
+    free = [G.free(0, net), G.free(1, net)]
+    via = G.via_free(net)
+    N8 = [(0, 1, 1.0), (0, -1, 1.0), (1, 0, 1.0), (-1, 0, 1.0), (1, 1, 1.414), (1, -1, 1.414), (-1, 1, 1.414), (-1, -1, 1.414)]
+    gj, gi = goal
+    def h(j, i):
+        dx, dy = abs(i - gi), abs(j - gj)
+        return (max(dx, dy) + 0.414 * min(dx, dy))
+    dist, prev, heap = {}, {}, []
+    for (j, i, L) in sources:
+        dist[(j, i, L)] = 0.0
+        heapq.heappush(heap, (h(j, i), 0.0, j, i, L))
+    n = 0
+    while heap and n < MAX_EXPAND:
+        f0, d0, j, i, L = heapq.heappop(heap)
+        if d0 > dist.get((j, i, L), 1e18):
+            continue
+        n += 1
+        if (j, i) == (gj, gi) and L == goal_layer:
+            path = [(j, i, L)]
+            while path[-1] in prev:
+                path.append(prev[path[-1]])
+            return path[::-1], n
+        for dj, di, w in N8:
+            a, c = j + dj, i + di
+            if 0 <= a < G.ny and 0 <= c < G.nx and free[L][a, c]:
+                nd = d0 + w * LAYER_COST[L] * (1.0 + 3.0 * float(G.sw[a, c]))
+                if nd < dist.get((a, c, L), 1e18):
+                    dist[(a, c, L)] = nd
+                    prev[(a, c, L)] = (j, i, L)
+                    heapq.heappush(heap, (nd + h(a, c), nd, a, c, L))
+        if via[j, i]:
+            k = (j, i, 1 - L)
+            if free[1 - L][j, i] and d0 + VIA_COST < dist.get(k, 1e18):
+                dist[k] = d0 + VIA_COST
+                prev[k] = (j, i, L)
+                heapq.heappush(heap, (dist[k] + h(j, i), dist[k], j, i, 1 - L))
+    return None, n
+
+
+def snap(G, net, xy, L):
+    free = G.free(L, net)
+    j0, i0 = int(round(xy[1] / GRID)), int(round(xy[0] / GRID))
+    for rad in range(0, 6):
+        best = None
+        for j in range(j0 - rad, j0 + rad + 1):
+            for i in range(i0 - rad, i0 + rad + 1):
+                if 0 <= j < G.ny and 0 <= i < G.nx and free[j, i]:
+                    d = (j * GRID - xy[1]) ** 2 + (i * GRID - xy[0]) ** 2
+                    if best is None or d < best[0]:
+                        best = (d, j, i)
+        if best:
+            return best[1], best[2]
+    return None
+
+
+def stub_clear(free, a, c):
+    """The short exit stub from the pad axis to its grid cell must stay in free cells too."""
+    n = max(1, int(math.dist(a, c) / (GRID / 2)))
+    for k in range(n + 1):
+        x, y = a[0] + (c[0] - a[0]) * k / n, a[1] + (c[1] - a[1]) * k / n
+        j, i = int(round(y / GRID)), int(round(x / GRID))
+        if not (0 <= j < free.shape[0] and 0 <= i < free.shape[1]) or not free[j, i]:
+            return False
+    return True
+
+
+def pad_exit(G, net, pin, L):
+    """Leave a pad along its long axis (a fine-pitch pad has no sideways room): returns (grid cell, exact axis point) or (None, None)."""
+    r = pin[4]
+    cx, cy = pin[1]
+    w, h = r[2] - r[0], r[3] - r[1]
+    free = G.free(L, net)
+    dirs = [(1, 0), (-1, 0)] if w >= h else [(0, 1), (0, -1)]
+    dirs += [(0, 1), (0, -1)] if w >= h else [(1, 0), (-1, 0)]
+    best = None
+    for rank, (dx, dy) in enumerate(dirs):
+        for k in range(0, 8):
+            ex, ey = cx + dx * (w / 2 + 0.05 * k), cy + dy * (h / 2 + 0.05 * k)
+            ex, ey = (ex, cy) if dx else (cx, ey)
+            for j in range(int(ey / GRID) - 1, int(ey / GRID) + 3):
+                for i in range(int(ex / GRID) - 1, int(ex / GRID) + 3):
+                    if 0 <= j < G.ny and 0 <= i < G.nx and free[j, i] and stub_clear(free, (ex, ey), (i * GRID, j * GRID)):
+                        d = math.hypot(j * GRID - ey, i * GRID - ex) + 0.05 * k + rank * 0.2
+                        if best is None or d < best[0]:
+                            best = (d, (j, i), (ex, ey))
+        if best and rank in (0, 1) and best[0] < 0.5 + rank * 0.2:
+            break
+    return (best[1], best[2]) if best else (None, None)
+
+
+def nearest_via(G, net, start):
+    """Breadth-first F.Cu search from a pad exit to the nearest cell where a via fits."""
+    import collections as c_
+    free, via = G.free(0, net), G.via_free(net)
+    q, prev = c_.deque([start]), {start: None}
+    while q:
+        cur = q.popleft()
+        if via[cur] and cur != start:
+            path = [(cur[0], cur[1], 0)]
+            while prev[(path[-1][0], path[-1][1])] is not None:
+                u = prev[(path[-1][0], path[-1][1])]
+                path.append((u[0], u[1], 0))
+            return path[::-1]
+        for dj, di in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+            nx_ = (cur[0] + dj, cur[1] + di)
+            if nx_ not in prev and 0 <= nx_[0] < G.ny and 0 <= nx_[1] < G.nx and free[nx_]:
+                prev[nx_] = cur
+                q.append(nx_)
+                if len(prev) > 60000:
+                    return None
+    return None
+
+
+def simplify(cells):
+    out = [cells[0]]
+    for k in range(1, len(cells) - 1):
+        a, b, c = out[-1], cells[k], cells[k + 1]
+        if a[2] != b[2] or b[2] != c[2] or (b[0] - a[0]) * (c[1] - b[1]) != (b[1] - a[1]) * (c[0] - b[0]):
+            out.append(b)
+    out.append(cells[-1])
+    return out
+
+
+def step3():
+    if P.GetBuildVersion().split("-")[0] != "10.0.7":
+        raise SystemExit("KiCad 10.0.7 required (D-009): " + P.GetBuildVersion())
+    b = P.LoadBoard(str(PCB))
+    P.ZONE_FILLER(b).Fill(b.Zones())
+    geo = Geo(b)
+    netcode = {n: i + 1 for i, n in enumerate(sorted({p["net"] for p in geo.pads} | {s_[3] for s_ in geo.segs} | {v[1] for v in geo.vias} | {z.GetNetname() for z in b.Zones()}))}
+    G = build_grid(b, geo, netcode)
+    pins = {n: [(f"{p['ref']}.{p['pin']}", centre(p), p["front"], p["th"], p["rect"]) for p in geo.pads if p["net"] == n] for n in STEP3_NETS}
+    def span(n):
+        c = [q[1] for q in pins[n]]
+        return (max(x[0] for x in c) - min(x[0] for x in c)) + (max(x[1] for x in c) - min(x[1] for x in c))
+    log = {"routed": [], "failed": []}
+    for net in sorted(STEP3_NETS, key=span):
+        code = netcode[net]
+        done = [pins[net][0]]
+        todo = list(pins[net][1:])
+        seen = set()
+        exits = {}
+
+        def add_src(q):
+            L = 1 if (q[3] is False and q[2] is False) else 0
+            cell, ex = pad_exit(G, code, q, L)
+            if cell:
+                exits[q[0]] = ex
+                seen.add((cell[0], cell[1], L))
+            return cell, L
+        add_src(done[0])
+        while todo:
+            todo.sort(key=lambda q: min(math.dist(q[1], d[1]) for d in done))
+            q = todo.pop(0)
+            L = 1 if (q[3] is False and q[2] is False) else 0
+            cell, ex = pad_exit(G, code, q, L)
+            if cell:
+                exits[q[0]] = ex
+            if not cell or not seen:
+                log["failed"].append({"net": net, "pin": q[0], "why": "no free grid cell at the pad"})
+                continue
+            path, n = astar(G, code, sorted(seen), cell, L)
+            if not path:
+                log["failed"].append({"net": net, "pin": q[0], "why": f"no route ({n} expansions)"})
+                continue
+            pts = simplify(path)
+            xy = [(i * GRID, j * GRID, L2) for j, i, L2 in pts]
+            net_len = 0.0
+            for (x0, y0, L0), (x1, y1, L1) in zip(xy, xy[1:]):
+                if L0 != L1:
+                    t_via(b, net, (x0, y0))
+                    G.seg([0, 1, 2], code, (x0, y0), (x0, y0), VIA_R + ROUTE_CLR + ROUTE_W / 2 + DIAG_MARGIN, VIA_R + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+                    continue
+                if (x0, y0) != (x1, y1):
+                    t_track(b, net, LAYERS["F"] if L0 == 0 else LAYERS["B"], ROUTE_W, [(x0, y0), (x1, y1)])
+                    net_len += math.dist((x0, y0), (x1, y1))
+                    G.seg([L0], code, (x0, y0), (x1, y1), ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+            def pad_stub(pin, end):
+                layer = LAYERS["F"] if end[2] == 0 else LAYERS["B"]
+                pts_ = [pin[1], exits.get(pin[0], pin[1]), end[:2]]
+                for a_, c_ in zip(pts_, pts_[1:]):
+                    if math.dist(a_, c_) > 1e-6:
+                        t_track(b, net, layer, ROUTE_W, [a_, c_])
+                        G.seg([end[2]], code, a_, c_, ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+            pad_stub(q, xy[-1])
+            src_cell = (xy[0][1], xy[0][0])
+            near = min(done, key=lambda d: math.dist(d[1], xy[0][:2]))
+            if math.dist(near[1], xy[0][:2]) < 0.9 and xy[0][2] == (1 if (near[3] is False and near[2] is False) else 0):
+                pad_stub(near, xy[0])          # only on the pad's own layer
+            seen.update(path)
+            done.append(q)
+            log["routed"].append({"net": net, "pin": q[0], "length_mm": round(net_len, 2), "vias": sum(1 for a0, c0 in zip(xy, xy[1:]) if a0[2] != c0[2]), "layers": sorted({"F" if x[2] == 0 else "B" for x in xy})})
+    P.ZONE_FILLER(b).Fill(b.Zones())
+    P.SaveBoard(str(PCB), b, True)
+    with (OUT / "step3-routes.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump({"grid_mm": GRID, "route_width_mm": ROUTE_W, **log}, f, indent=0, ensure_ascii=False)
+        f.write("\n")
+    print(json.dumps({"routed": len(log["routed"]), "failed": log["failed"], "vias": sum(r["vias"] for r in log["routed"]), "total_mm": round(sum(r["length_mm"] for r in log["routed"]), 1)}, ensure_ascii=False))
+    return 0
+
+
+def step3_audit():
+    b = P.LoadBoard(str(PCB))
+    P.ZONE_FILLER(b).Fill(b.Zones())
+    b.BuildConnectivity()
+    D = drc(PCB, OUT / "drc-step3.json")
+    now = summary(D)
+    base = json.loads((OUT / "step1-baseline.json").read_text(encoding="utf-8"))
+    routes = json.loads((OUT / "step3-routes.json").read_text(encoding="utf-8"))
+    gnd = json.loads((OUT / "step2-gnd-applied.json").read_text(encoding="utf-8"))
+    geo = Geo(b)
+    sw_pads = [r for r in geo.pads if r["net"].startswith(("/SW_PH", "/SW4_PH"))]
+    sw_zones = [outline_pts(z) for z in b.Zones() if z.GetNetname().startswith("/SW_PH")]
+    per = {}
+    for n in STEP3_NETS:
+        segs = [(a0, c0, L) for a0, c0, _, net, L in geo.segs if net == n]
+        pts = [q for a0, c0, _ in segs for q in sample([a0, c0], 0.2)]
+        d_pad = min((geo.rect_dist(r["rect"], *q) for r in sw_pads for q in pts), default=None)
+        d_zone = min((min(geo.seg_dist(u, v, q) for u, v in zip(o, o[1:] + o[:1])) for o in sw_zones for q in pts), default=None)
+        per[n] = {"open_pairs": now["pairs_by_net"].get(n, 0), "track_mm": round(sum(math.dist(a0, c0) for a0, c0, _ in segs), 2), "layers": sorted({"F" if L == P.F_Cu else "B" for _, _, L in segs}),
+                  "vias": sum(1 for _, net in geo.vias if net == n), "min_distance_to_sw_pad_mm": round(d_pad, 2) if d_pad is not None else None, "min_distance_to_sw_copper_outline_mm": round(d_zone, 2) if d_zone is not None else None}
+    l2 = next(z for z in b.Zones() if z.GetZoneName() == "L2_GND").GetFilledPolysList(P.In1_Cu)
+    state = l2_state(b)
+    out = {"kicad": P.GetBuildVersion(), "step1_baseline": {k: base[k] for k in ("errors", "unconnected_pairs", "schematic_parity_issues")}, "after": {k: now[k] for k in ("errors", "by_type", "schematic_parity_issues", "unconnected_pairs", "pairs_by_net")},
+           "new_opens_vs_step1": {n: now["pairs_by_net"].get(n, 0) - v for n, v in base["pairs_by_net"].items() if now["pairs_by_net"].get(n, 0) > v},
+           "router": {"grid_mm": routes["grid_mm"], "route_width_mm": routes["route_width_mm"], "connections_routed": len(routes["routed"]), "connections_failed": routes["failed"]}, "nets": per,
+           "gnd": {"new_vias": gnd["new_vias"], "no_position": gnd["no_position_found"], "searched_paths": sum(1 for c in gnd["candidates"] if c.get("path") == "searched"), "pads_not_on_L2": [k for k, v in state.items() if not v["on_L2"]]}, "l2_islands": l2.OutlineCount()}
+    with (OUT / "step3-audit.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump(out, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    print(json.dumps({k: out[k] for k in ("after", "new_opens_vs_step1", "gnd", "l2_islands")} | {"router": {k: out["router"][k] for k in ("connections_routed",)}, "failed": out["router"]["connections_failed"], "nets": {k: (v["open_pairs"], v["track_mm"], v["vias"], v["min_distance_to_sw_pad_mm"]) for k, v in per.items()}}, ensure_ascii=False))
+    return 0
+
+
 if __name__ == "__main__":
     if "--step1" in sys.argv:
         sys.exit(step1())
@@ -668,4 +1097,10 @@ if __name__ == "__main__":
         sys.exit(step2_audit())
     if "--probe1" in sys.argv:
         sys.exit(probe_phase1())
+    if "--step3" in sys.argv:
+        sys.exit(step3())
+    if "--gnd" in sys.argv:
+        sys.exit(gnd_returns())
+    if "--audit3" in sys.argv:
+        sys.exit(step3_audit())
     raise SystemExit(__doc__)

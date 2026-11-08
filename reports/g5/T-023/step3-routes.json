@@ -1,0 +1,389 @@
+{
+"grid_mm": 0.15,
+"route_width_mm": 0.25,
+"routed": [
+{
+"net": "/COMP_MID",
+"pin": "RCOMP.2",
+"length_mm": 8.12,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/FB_TRIM",
+"pin": "RFB2.2",
+"length_mm": 15.14,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/ISO_EN",
+"pin": "R_EN2.1",
+"length_mm": 2.4,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/ISO_EN",
+"pin": "U6.1",
+"length_mm": 18.45,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_SENSE2",
+"pin": "U12.5",
+"length_mm": 10.17,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_SENSE2",
+"pin": "TP_OC_SENSE2.1",
+"length_mm": 20.04,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/FB",
+"pin": "RFB2.1",
+"length_mm": 31.42,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/FB",
+"pin": "RFB1.2",
+"length_mm": 13.06,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_TRIP1_N",
+"pin": "U15.3",
+"length_mm": 67.5,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OVP_SENSE",
+"pin": "R_OVB.1",
+"length_mm": 66.77,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OVP_SENSE",
+"pin": "R_OVT.2",
+"length_mm": 8.32,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OVP_SENSE",
+"pin": "U7.4",
+"length_mm": 5.55,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OVP_TRIP_N",
+"pin": "U15.4",
+"length_mm": 68.47,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OVP_TRIP_N",
+"pin": "U9.7",
+"length_mm": 12.73,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_SENSE1",
+"pin": "U11.5",
+"length_mm": 3.97,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_SENSE1",
+"pin": "TP_OC_SENSE1.1",
+"length_mm": 75.89,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/CLR_N",
+"pin": "R_CLR.2",
+"length_mm": 65.25,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/CLR_N",
+"pin": "C_CLR.1",
+"length_mm": 24.73,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/CLR_N",
+"pin": "SW1.1",
+"length_mm": 8.88,
+"vias": 1,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/CLR_N",
+"pin": "U9.6",
+"length_mm": 8.67,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/CLR_N",
+"pin": "U10.3",
+"length_mm": 16.45,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OVP_BUS_N",
+"pin": "U15.1",
+"length_mm": 14.61,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OVP_BUS_N",
+"pin": "TP_OVP_BUS_N.1",
+"length_mm": 76.53,
+"vias": 3,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/ISO_OV",
+"pin": "R_OV2T.2",
+"length_mm": 14.33,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/ISO_OV",
+"pin": "R_OV2B.1",
+"length_mm": 39.2,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/ISO_OV",
+"pin": "TP_ISO_OV.1",
+"length_mm": 70.37,
+"vias": 3,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/FB_INJ",
+"pin": "R_INJ.2",
+"length_mm": 6.07,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/FB_INJ",
+"pin": "TP_FB_INJ_B.1",
+"length_mm": 85.95,
+"vias": 6,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OVP_Q",
+"pin": "TP_OVP_Q.1",
+"length_mm": 122.08,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OC_REF",
+"pin": "U14.3",
+"length_mm": 47.72,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OC_REF",
+"pin": "TP_OC_REF.1",
+"length_mm": 30.15,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OC_REF",
+"pin": "R_OCB.1",
+"length_mm": 95.77,
+"vias": 5,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OC_REF",
+"pin": "R_OCT.2",
+"length_mm": 0.0,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OVP_REF",
+"pin": "C_REF_OUT.1",
+"length_mm": 9.08,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OVP_REF",
+"pin": "U8.6",
+"length_mm": 41.29,
+"vias": 1,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OVP_REF",
+"pin": "TP_OVP_REF.1",
+"length_mm": 100.81,
+"vias": 4,
+"layers": [
+"B",
+"F"
+]
+}
+],
+"failed": [
+{
+"net": "/ISO_OV",
+"pin": "U6.7",
+"why": "no route (599971 expansions)"
+},
+{
+"net": "/OC_TRIP2_N",
+"pin": "U14.1",
+"why": "no route (88 expansions)"
+},
+{
+"net": "/OVP_Q",
+"pin": "U9.5",
+"why": "no free grid cell at the pad"
+},
+{
+"net": "/COMP",
+"pin": "RCOMP.1",
+"why": "no route (19 expansions)"
+},
+{
+"net": "/COMP",
+"pin": "CHF.1",
+"why": "no route (19 expansions)"
+},
+{
+"net": "/COMP",
+"pin": "TP_COMP.1",
+"why": "no route (19 expansions)"
+},
+{
+"net": "/COMP",
+"pin": "U2.15",
+"why": "no route (19 expansions)"
+},
+{
+"net": "/OVP_REF",
+"pin": "U7.3",
+"why": "no free grid cell at the pad"
+}
+]
+}

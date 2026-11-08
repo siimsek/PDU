@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-023 (taslak PR #70; R-021 Tur 2 RED düzeltildi). R-021 PR #74 açık.
-- **Aktif kart:** T-023 **InProgress** — THINKER doğrulaması bekliyor (U-010). DRC 0, parite 0, 112 açık çift. T-027 ayrı dalda.
+- **Dal / son commit:** wp/T-023 (taslak PR #70; adım 3 başladı). T-027 PR #75 Tur 2 bekliyor; R-022 PR #76 açık.
+- **Aktif kart:** T-023 **InProgress** — adım 3 kısmi: DRC 0, parite 0, 77 açık çift; 8 bağlantı ve U14.2 kaldı. Rapor: reports/g5/T-023/step3-report.md.
 
 ## Yapılanlar
+- Adım 3 router (D-012 B): 36 bağlantı; GND vialar sinyallerden sonra.
 - R-021 Tur 2: RS2.2 pad çıkışı 5,52 mm; U-009 kapandı, U-010 açıldı.
 - R-021: sense vialar güç bakırından ayrıldı (RS1.1, RS2.1, RS2.2); audit pad merkezi ile sense via'yı ayırıyor.
 - R-020 Tur 2: faz 1 alternatifleri ölçüldü (phase1-alternatives.json); RS1 180° + T-022 RS1 güç yolu yeniden üretildi; iki faz Kelvin F.Cu paralel.
@@ -23,10 +24,9 @@
 - T-018: START-HERE G5'e, VERIFY.md T-014 koşusuna (F5 47/49 + iki eksik isim) eşitlendi; KICAD-CHANGE-LIST'e T-013. sim-results.json zaten doğruydu, değişmedi.
 - R-002 (#53) Tur 2 ONAY, 0 engelleyici; T-014 (#52) Done. Koşullar korundu: F5 47/49, belge eşitleme. THINKER'ın kendi KiCad 10 koşusu doğrulanamadı (KiCad 9.0.2); onay BUILDER ham çıktıları + bağımsız karşılaştırmayla.
 - R-002 tur 1 (PR #53, 1 engelleyici: Codex'te KiCad 9.0.2): 5a2985c üzerinde KiCad 10.0.7 ile ERC 0 + netlist, R-002 karşılaştırıcısı 0 fark (reports/g5/T-014/R-002-tur2/). LDSTRT/ITIMER gerekçesi AÇIK.
-- T-013 (#49) + R-012 (#50) + R-013 (#51) main'de. T-014: 9 maddeden 8 GEÇTİ, 1 KALDI (belge: START-HERE, VERIFY.md eski). run_all exit 0, F5 47/49 (bilinen 2 köşe AÇIK).
 
 ## Sonraki adım
-Codex: R-021 sonrası doğrulama (PR #70, U-010). Adım 3 ancak onayla. T-027 ayrı dal.
+Codex: PR #70 adım 3 ara incelemesi ve PR #75 Tur 2. Sonra Claude Code: adım 3 kalanı, adım 4, T-028/T-032/T-033.
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
