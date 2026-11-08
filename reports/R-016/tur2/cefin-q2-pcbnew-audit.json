@@ -1,0 +1,459 @@
+{
+  "method": "KiCad pcbnew global pad centers, pad bounding boxes, via coordinates; no PCB save",
+  "cefin_pair_distances": [
+    {
+      "capacitor": "CEFIN1",
+      "efuse": "U3",
+      "value": "100n",
+      "efuse_rotation_deg": 0.0,
+      "cap_in": {
+        "ref": "CEFIN1",
+        "number": "1",
+        "net": "/VSAFE",
+        "center_mm": [
+          130.433,
+          101.155
+        ],
+        "size_mm": [
+          0.9,
+          0.95
+        ],
+        "rotation_deg": 0.0,
+        "bbox_mm": [
+          129.983,
+          100.68,
+          0.9,
+          0.95
+        ]
+      },
+      "cap_gnd": {
+        "ref": "CEFIN1",
+        "number": "2",
+        "net": "/GND",
+        "center_mm": [
+          131.983,
+          101.155
+        ],
+        "size_mm": [
+          0.9,
+          0.95
+        ],
+        "rotation_deg": 0.0,
+        "bbox_mm": [
+          131.533,
+          100.68,
+          0.9,
+          0.95
+        ]
+      },
+      "per_pin_gaps": [
+        {
+          "signal": "IN",
+          "pin": "1",
+          "pad": {
+            "ref": "U3",
+            "number": "1",
+            "net": "/VSAFE",
+            "center_mm": [
+              129.6825,
+              72.825
+            ],
+            "size_mm": [
+              0.575,
+              0.24
+            ],
+            "rotation_deg": 0.0,
+            "bbox_mm": [
+              129.395,
+              72.705,
+              0.575,
+              0.24
+            ]
+          },
+          "edge_gap_mm": 27.73500304669175,
+          "center_mm": 28.339939136314317
+        },
+        {
+          "signal": "IN",
+          "pin": "2",
+          "pad": {
+            "ref": "U3",
+            "number": "2",
+            "net": "/VSAFE",
+            "center_mm": [
+              129.6825,
+              73.325
+            ],
+            "size_mm": [
+              0.575,
+              0.24
+            ],
+            "rotation_deg": 0.0,
+            "bbox_mm": [
+              129.395,
+              73.205,
+              0.575,
+              0.24
+            ]
+          },
+          "edge_gap_mm": 27.235003102625136,
+          "center_mm": 27.84011764073564
+        },
+        {
+          "signal": "IN",
+          "pin": "3",
+          "pad": {
+            "ref": "U3",
+            "number": "3",
+            "net": "/VSAFE",
+            "center_mm": [
+              129.6825,
+              73.825
+            ],
+            "size_mm": [
+              0.575,
+              0.24
+            ],
+            "rotation_deg": 0.0,
+            "bbox_mm": [
+              129.395,
+              73.705,
+              0.575,
+              0.24
+            ]
+          },
+          "edge_gap_mm": 26.73500316065066,
+          "center_mm": 27.34030267297712
+        },
+        {
+          "signal": "GND",
+          "pin": "4",
+          "pad": {
+            "ref": "U3",
+            "number": "4",
+            "net": "/GND",
+            "center_mm": [
+              129.6825,
+              74.325
+            ],
+            "size_mm": [
+              0.575,
+              0.24
+            ],
+            "rotation_deg": 0.0,
+            "bbox_mm": [
+              129.395,
+              74.205,
+              0.575,
+              0.24
+            ]
+          },
+          "edge_gap_mm": 26.28151810683699,
+          "center_mm": 26.92844593083678
+        },
+        {
+          "signal": "GND",
+          "pin": "5",
+          "pad": {
+            "ref": "U3",
+            "number": "5",
+            "net": "/GND",
+            "center_mm": [
+              129.6825,
+              74.825
+            ],
+            "size_mm": [
+              0.575,
+              0.24
+            ],
+            "rotation_deg": 0.0,
+            "bbox_mm": [
+              129.395,
+              74.705,
+              0.575,
+              0.24
+            ]
+          },
+          "edge_gap_mm": 25.782420251016013,
+          "center_mm": 26.43030836464077
+        }
+      ],
+      "max_edge_gap_mm": 27.73500304669175,
+      "meets_1_50mm": false
+    },
+    {
+      "capacitor": "CEFIN2",
+      "efuse": "U4",
+      "value": "100n",
+      "efuse_rotation_deg": 0.0,
+      "cap_in": {
+        "ref": "CEFIN2",
+        "number": "1",
+        "net": "/VSAFE",
+        "center_mm": [
+          135.299,
+          101.155
+        ],
+        "size_mm": [
+          0.9,
+          0.95
+        ],
+        "rotation_deg": 0.0,
+        "bbox_mm": [
+          134.849,
+          100.68,
+          0.9,
+          0.95
+        ]
+      },
+      "cap_gnd": {
+        "ref": "CEFIN2",
+        "number": "2",
+        "net": "/GND",
+        "center_mm": [
+          136.849,
+          101.155
+        ],
+        "size_mm": [
+          0.9,
+          0.95
+        ],
+        "rotation_deg": 0.0,
+        "bbox_mm": [
+          136.399,
+          100.68,
+          0.9,
+          0.95
+        ]
+      },
+      "per_pin_gaps": [
+        {
+          "signal": "IN",
+          "pin": "16",
+          "pad": {
+            "ref": "U4",
+            "number": "16",
+            "net": "/VSAFE",
+            "center_mm": [
+              139.1475,
+              73.825
+            ],
+            "size_mm": [
+              0.575,
+              0.24
+            ],
+            "rotation_deg": 0.0,
+            "bbox_mm": [
+              138.86,
+              73.705,
+              0.575,
+              0.24
+            ]
+          },
+          "edge_gap_mm": 26.915396077338354,
+          "center_mm": 27.599635002115516
+        },
+        {
+          "signal": "GND",
+          "pin": "14",
+          "pad": {
+            "ref": "U4",
+            "number": "14",
+            "net": "/GND",
+            "center_mm": [
+              139.1475,
+              74.825
+            ],
+            "size_mm": [
+              0.575,
+              0.24
+            ],
+            "rotation_deg": 0.0,
+            "bbox_mm": [
+              138.86,
+              74.705,
+              0.575,
+              0.24
+            ]
+          },
+          "edge_gap_mm": 25.782299082897953,
+          "center_mm": 26.430134359287695
+        }
+      ],
+      "max_edge_gap_mm": 26.915396077338354,
+      "meets_1_50mm": false
+    }
+  ],
+  "via_count": 0,
+  "via_net_counts": {},
+  "q2_drain_pad5_vias_in_pad": 0,
+  "q2_source_pad1_3_vias_in_pads": 0,
+  "endpoint_via_counts": {
+    "COUT1.1:/VOUT": 0,
+    "COUT2.1:/VOUT": 0,
+    "COUT3.1:/VOUT": 0,
+    "COUT4.1:/VOUT": 0,
+    "COUT5.1:/VOUT": 0,
+    "COUT6.1:/VOUT": 0,
+    "COUT7.1:/VOUT": 0,
+    "COUT8.1:/VOUT": 0,
+    "COUT9.1:/VOUT": 0,
+    "COUT10.1:/VOUT": 0,
+    "COUT11.1:/VOUT": 0,
+    "COUT12.1:/VOUT": 0,
+    "COUT13.1:/VOUT": 0,
+    "COUT14.1:/VOUT": 0,
+    "COUT15.1:/VOUT": 0,
+    "COUT16.1:/VOUT": 0,
+    "COUT17.1:/VOUT": 0,
+    "COUT18.1:/VOUT": 0,
+    "COUT19.1:/VOUT": 0,
+    "COUT20.1:/VOUT": 0,
+    "COUT21.1:/VOUT": 0,
+    "COUT22.1:/VOUT": 0,
+    "COUT23.1:/VOUT": 0,
+    "COUT24.1:/VOUT": 0,
+    "COUT25.1:/VOUT": 0,
+    "COUT26.1:/VOUT": 0,
+    "COUT27.1:/VOUT": 0,
+    "COUT28.1:/VOUT": 0,
+    "COUT29.1:/VOUT": 0,
+    "COUT30.1:/VOUT": 0,
+    "COUT31.1:/VOUT": 0,
+    "COUT32.1:/VOUT": 0,
+    "U3.1:/VSAFE": 0,
+    "U3.2:/VSAFE": 0,
+    "U3.3:/VSAFE": 0,
+    "U3.4:/GND": 0,
+    "U3.5:/GND": 0,
+    "U4.14:/GND": 0,
+    "U4.16:/VSAFE": 0,
+    "CEFIN1.1:/VSAFE": 0,
+    "CEFIN1.2:/GND": 0,
+    "CEFIN2.1:/VSAFE": 0,
+    "CEFIN2.2:/GND": 0
+  },
+  "q2": {
+    "orientation_deg": 0.0,
+    "drain_pad5": {
+      "ref": "Q2",
+      "number": "5",
+      "net": "/VOUT",
+      "center_mm": [
+        124.32,
+        60.795
+      ],
+      "size_mm": [
+        4.295,
+        4.51
+      ],
+      "rotation_deg": 0.0,
+      "bbox_mm": [
+        122.1725,
+        58.54,
+        4.295,
+        4.51
+      ]
+    },
+    "source_pads1_3": [
+      {
+        "ref": "Q2",
+        "number": "1",
+        "net": "/VSAFE",
+        "center_mm": [
+          121.2425,
+          58.89
+        ],
+        "size_mm": [
+          0.75,
+          0.66
+        ],
+        "rotation_deg": 0.0,
+        "bbox_mm": [
+          120.8675,
+          58.56,
+          0.75,
+          0.66
+        ]
+      },
+      {
+        "ref": "Q2",
+        "number": "2",
+        "net": "/VSAFE",
+        "center_mm": [
+          121.2425,
+          60.16
+        ],
+        "size_mm": [
+          0.75,
+          0.66
+        ],
+        "rotation_deg": 0.0,
+        "bbox_mm": [
+          120.8675,
+          59.83,
+          0.75,
+          0.66
+        ]
+      },
+      {
+        "ref": "Q2",
+        "number": "3",
+        "net": "/VSAFE",
+        "center_mm": [
+          121.2425,
+          61.43
+        ],
+        "size_mm": [
+          0.75,
+          0.66
+        ],
+        "rotation_deg": 0.0,
+        "bbox_mm": [
+          120.8675,
+          61.1,
+          0.75,
+          0.66
+        ]
+      }
+    ],
+    "gate_pad4": {
+      "ref": "Q2",
+      "number": "4",
+      "net": "/ISO_GATE",
+      "center_mm": [
+        121.2425,
+        62.7
+      ],
+      "size_mm": [
+        0.75,
+        0.66
+      ],
+      "rotation_deg": 0.0,
+      "bbox_mm": [
+        120.8675,
+        62.37,
+        0.75,
+        0.66
+      ]
+    },
+    "gate_U6_center_distance_mm": 5.416290243330761,
+    "flip180_gate_center": [
+      126.7475,
+      58.89
+    ],
+    "flip180_gate_to_U6_center_mm": 9.13206575753811,
+    "direct_to_drain_centroid_COUT_mm": 41.63133675490137,
+    "nearest_COUT_pad": {
+      "ref": "COUT16",
+      "mm": 12.100063016364832
+    },
+    "farthest_COUT_pad_straight": {
+      "ref": "COUT31",
+      "mm": 71.48450548895194
+    }
+  },
+  "footprint_component_count": 184,
+  "routed_tracks_excluding_vias": 0,
+  "through_vias": []
+}
