@@ -10,6 +10,7 @@ Edge-pinned connectors (T-013) and H1-H4 do not move.
 from __future__ import annotations
 
 import json
+import os
 import math
 import re
 import sys
@@ -31,26 +32,35 @@ HOLE_KEEP = 4.2
 
 # ref -> (x, y, rot|None). Hot loops: CIN column on the LM70880 VIN-PGND edge (HANDOFF §3.2).
 FIXED = {
-    "U1": (49.0, 76.5, 180), "L1": (37.8, 76.5, None), "RS1": (35.0, 67.6, None),
+    "U1": (49.0, 76.5, 180), "L1": (37.8, 76.5, 180), "RS1": (35.0, 67.6, None),
     "U2": (34.5, 7.5, 0), "L2": (45.5, 8.5, None), "RS2": (46.5, 16.6, None),
     "D1": (6.0, 51.0, None), "Q1": (17.0, 51.0, None), "U5": (19.5, 42.5, None),
 }
 HOT = {"U1": ["CIN1", "CIN2", "CIN3", "CIN4"], "U2": ["CIN5", "CIN6", "CIN7", "CIN8"]}
-HOT_GAP = 0.25
+# R-015: CIN layouts, offsets (dx, dy, rotation) relative to U1 at 180 deg; U2 is the same layout turned 180 deg.
+# Rotation 180 = /VIN pad east, /GND pad west; 270 = /VIN pad north, /GND pad south.
+# West (SW pads 20-22, L1) and north (control pins 9-16) of U1 carry no VIN/PGND pads; board bottom is excluded by D-006.
+CIN_VARIANTS = {
+    "A_tek_sutun": [(0, -5.59, 180), (0, -9.13, 180), (0, -12.67, 180), (0, -16.21, 180)],
+    "B_2x2_guney": [(-2.45, -5.59, 180), (2.45, -5.59, 180), (-2.45, -9.13, 180), (2.45, -9.13, 180)],
+    "C_guney_dogu_yan": [(0, -5.59, 180), (0, -9.13, 180), (5.55, -3.2, 270), (9.1, -3.2, 270)],
+    "D_guney_dogu_alt": [(0, -5.59, 180), (0, -9.13, 180), (4.25, -6.25, 270), (7.8, -6.25, 270)],
+}
+CIN_VARIANT = os.environ.get("PDU_CIN_VARIANT", "C_guney_dogu_yan")
 PINNED = {"J1", "J2", "J3", "J_OVP_INJ_BUS", "H1", "H2", "H3", "H4"}
 
 SLOTS = [
     # (rectangles, ref regex) — first match wins; rectangles filled in order
     ([(44.7, 80.7, 59.5, 84.2)], r"^(CVCC1|CVDDA1|RT1)$"),                 # U1 north side (control side, away from SW)
-    ([(53.2, 58.0, 59.5, 80.3)], r"^(CBOOT1|RBOOT1)$"),                   # U1 pin 4 side
+    ([(53.2, 75.9, 63.0, 80.3)], r"^(CBOOT1|RBOOT1)$"),                   # U1 pin 4 side
     ([(25.0, 58.0, 45.0, 65.2)], r"^(U11|C_INA1|U13|C_OCC1)$"),           # next to RS1, >= 10 mm from SW1 (HANDOFF 5b)
     ([(25.0, 0.5, 39.0, 3.7)], r"^(CVDDA2|RT2)$"),                  # U2 south side
     ([(37.1, 14.2, 42.0, 19.0)], r"^CVCC2$"),
-    ([(25.0, 4.2, 30.6, 27.0)], r"^(CBOOT2|RBOOT2)$"),                    # U2 pin 4 side
+    ([(25.0, 13.5, 30.6, 27.0)], r"^(CBOOT2|RBOOT2)$"),                    # U2 pin 4 side
     ([(37.2, 19.2, 57.0, 27.0)], r"^(U12|C_INA2|U14|C_OCC2)$"),           # next to RS2, >= 10 mm from SW2
     ([(0.5, 64.0, 24.0, 72.0)], r"^(CIN_U5|CVCAP|CBIN\d)$"),
     ([(0.5, 29.0, 24.0, 37.5)], r"^(TP_ANODE|TP_VIN|TP_GATE.*|TP_GND_POWER)$"),
-    ([(60.0, 58.0, 75.0, 84.2)], r"^(RCFG\d|RSYNC|RFB\d|R_INJ|R_TRIM|RCOMP|CCOMP|CHF|RUV\d)$"),
+    ([(63.5, 58.0, 75.0, 84.2)], r"^(RCFG\d|RSYNC|RFB\d|R_INJ|R_TRIM|RCOMP|CCOMP|CHF|RUV\d)$"),
     ([(24.5, 28.5, 90.0, 57.0)], r"^(COUT\d+|RRAWBL)$"),
     ([(90.5, 28.5, 98.5, 57.0)], r"^(U6|Q2|R_GS|C_ISO_.*)$"),
     ([(76.0, 58.0, 108.0, 84.2)], r"^(R_OV.*|U7|U8|U9|U10|U15|C_AND|R_OC[TB]|C_CMP|C_REF_.*|C_LAT|R_CLR|C_CLR|SW1|R_Q|R_EN\d|C_LDO_.*|R_BL5|R_BLS)$"),
@@ -116,16 +126,10 @@ def main() -> int:
         placed[ref] = (x, y)
     for ic, caps in HOT.items():
         x, y, rot = FIXED[ic]
-        fps[ic].SetPosition(kpos(x, y))
-        w, h, dx, dy = courtyard(fps[ic])
-        sign = -1 if rot == 180 else 1
-        cur = (y + dy + HOT_GAP) if sign > 0 else (y + dy - h - HOT_GAP)
-        for c in caps:
-            fps[c].SetOrientationDegrees(rot)
-            cw, ch, cdx, cdy = courtyard(fps[c])
-            ctop = cur + ch if sign > 0 else cur
-            placed[c] = (x - cw / 2 + cdx, ctop - cdy)
-            cur = ctop + HOT_GAP if sign > 0 else ctop - ch - HOT_GAP
+        sign = 1 if rot == 180 else -1                  # U2 = U1 layout turned 180 deg
+        for c, (dx, dy, r) in zip(caps, CIN_VARIANTS[CIN_VARIANT]):
+            fps[c].SetOrientationDegrees((r + (0 if rot == 180 else 180)) % 360)
+            placed[c] = (x + sign * dx, y + sign * dy)
 
     for ref, (x, y) in placed.items():
         fps[ref].SetPosition(kpos(x, y))
@@ -226,6 +230,34 @@ def main() -> int:
         return (P.ToMM(p.x), P.ToMM(p.y))
 
     pos = {r: d006(fps[r]) for r in sorted(fps)}
+
+    def edges(pd):
+        return box_mm(pd.GetBoundingBox())
+
+    def gap(a_, b_):
+        return math.hypot(max(a_[0] - b_[2], b_[0] - a_[2], 0.0), max(a_[1] - b_[3], b_[1] - a_[3], 0.0))
+
+    def ctr(e):
+        return ((e[0] + e[2]) / 2, (e[1] + e[3]) / 2)
+
+    hot_loop = {"variant": CIN_VARIANT, "basis": "HESAP: edge gaps cap /VIN pad - nearest IC /VIN pad + cap /GND pad - nearest IC PGND pad 23-26; "
+                "bbox of the four pad centres; not a routed loop"}
+    for ic, caps in HOT.items():
+        v_ic = [edges(x) for x in fps[ic].Pads() if x.GetNetname() == "/VIN"]
+        g_ic = [edges(x) for x in fps[ic].Pads() if x.GetNumber() in ("23", "24", "25", "26")]
+        rows = []
+        for c in caps:
+            cv = edges(next(x for x in fps[c].Pads() if x.GetNetname() == "/VIN"))
+            cg = edges(next(x for x in fps[c].Pads() if x.GetNetname() == "/GND"))
+            nv, ng = min(v_ic, key=lambda e: gap(cv, e)), min(g_ic, key=lambda e: gap(cg, e))
+            pts = [ctr(cv), ctr(cg), ctr(nv), ctr(ng)]
+            xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+            rows.append({"cap": c, "vin_gap_mm": round(gap(cv, nv), 3), "gnd_gap_mm": round(gap(cg, ng), 3),
+                         "path_mm": round(gap(cv, nv) + gap(cg, ng), 3),
+                         "bbox_mm2": round((max(xs) - min(xs)) * (max(ys) - min(ys)), 2),
+                         "center_mm": round(math.dist(pos[ic], pos[c]), 2)})
+        hot_loop[ic] = {"caps": rows, "path_sum_mm": round(sum(r["path_mm"] for r in rows), 3),
+                        "path_max_mm": max(r["path_mm"] for r in rows), "bbox_sum_mm2": round(sum(r["bbox_mm2"] for r in rows), 2)}
     metrics = {
         "U6.GATE-Q2.G_pad_mm": None, "CIN_center_to_IC_mm": {
             ic: [round(math.dist(pos[ic], pos[c]), 2) for c in caps] for ic, caps in HOT.items()},
@@ -242,7 +274,7 @@ def main() -> int:
     metrics["U6.GATE-Q2.G_pad_mm"] = round(math.dist(gate["U6"], gate["Q2"]), 2)
     moved = sum(1 for r in fps if fps[r].GetPosition() != before[r])
     res = {"generator": "scripts/pcb_place.py", "kicad": P.GetBuildVersion(), "footprints": len(fps), "moved": moved,
-           "overflow": overflow, "missing": missing, "unplaced_refdes": unplaced, "metrics": metrics,
+           "overflow": overflow, "missing": missing, "unplaced_refdes": unplaced, "metrics": metrics, "hot_loop": hot_loop,
            "positions_d006": pos, "refdes": labels}
     OUT.mkdir(parents=True, exist_ok=True)
     with (OUT / "placement.json").open("w", encoding="utf-8", newline="\n") as f:

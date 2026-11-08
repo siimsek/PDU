@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-020 (taslak PR; **birleştirilmedi** — R-015 bekliyor)
+- **Dal / son commit:** wp/T-020 (PR #57 taslak; R-015 tur 1 KOŞULLU → CIN alternatifleri eklendi, tur 2 bekliyor; **birleştirilmedi**)
 - **Aktif kart:** T-020 (Review — ayrıntılı yerleşim). T-021…T-024 Draft; T-019 bekliyor.
 
 ## Yapılanlar
+- R-015 tur 1 (PR #58, 1 engelleyici): CIN 4 alternatif ölçüldü, C (2 güney + 2 doğu) seçildi, yol toplamı 50,8 → 29,63 mm; L1 180° düzeltildi (SW padi U1 tarafına). reports/g5/T-020/cin-alternatives.json.
 - T-020 (dal): `scripts/pcb_place.py`; DRC ihlal/uyarı 0, parite 0, 402 unconnected (iz yok); CIN U1/U2 kenarında, RS–INA296 ≤9,5 mm. Sınırlar: reports/g5/T-020/placement-review.md.
 - R-014 (#56) ONAY: yerel KiCad 10.0.7 ile ERC 0, 180 ref, 422 pin, 0 fark, parite 0. D-009: bundled pcbnew API; gerçek bağlantı, refill ve parite T-020…T-024 aday kartında doğrulanacak.
 - T-018: START-HERE G5'e, VERIFY.md T-014 koşusuna (F5 47/49 + iki eksik isim) eşitlendi; KICAD-CHANGE-LIST'e T-013. sim-results.json zaten doğruydu, değişmedi.
@@ -23,7 +24,7 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: R-015. ONAY → Claude Code: T-020 birleştir → T-021 (L2/L3 dökümleri, refill + parite aday kartta).
+Codex: R-015 tur 2. ONAY → Claude Code: T-020 birleştir → T-021. Önce T-021'e başlama.
 
 ## Engeller
 Yok (yönlendirmeye). Açık koşullar: F5 iki köşe tam pencere AÇIK (kısaltılmış pencerede O1 10,92 V); 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
