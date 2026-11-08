@@ -41,7 +41,7 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-013](done/T-013.md) | BUILDER | M | T-012, D-006 | Done |
 | [R-012](done/R-012.md) | THINKER | S | T-013 | Done |
 | [R-013](done/R-013.md) | THINKER | S | T-013, R-012 | Done |
-| [T-014](T-014.md) | BUILDER | S | T-013, T-005a, T-005b | InProgress |
-| [R-002](R-002.md) | THINKER | M | T-014 | Draft |
+| [T-014](done/T-014.md) | BUILDER | S | T-013, T-005a, T-005b | Done |
+| [R-002](done/R-002.md) | THINKER | M | T-014 | Done |
 
 Paralel yürütülebilir: THINKER kartları birbirinden ve BUILDER kartlarından bağımsız. THINKER `queue.md`'yi değiştirmez (paralel PR çakışması); yalnız kendi kartının Durum'unu yazar, BUILDER birleştirirken kuyruğu eşitler.
