@@ -40,6 +40,8 @@ G5 T-011: B6 — U3/U4 IN ve CEFIN1/2, REN1 → /VSAFE; D_REV1/2 eklendi; RILIM 
 
 G5 T-012: B7 — D-008 test padleri (36), J_OVP_INJ_BUS, JP_EN_BUCK (in_bom no), notlar ve antet (scripts/sch_edit_b7.py). Şema 180 ref ile spec'e birebir.
 
+G5 T-013: PCB kurulumu (iz/via/döküm yok; kanıt [`reports/g5/PCB-SETUP.md`](../g5/PCB-SETUP.md)): 120 × 85 mm, 4 katman; netlistten 180 ayak izi (parite 0); netclass adları O1_POWER → O1_PORT, S2E_POWER → S2E_PORT ve genişlikler `routing-g2.json` ile aynı; yerleşim grupları, sıcak döngü ve HV boşluğu [`PCB-HANDOFF.md`](PCB-HANDOFF.md) §3–§5'e göre.
+
 Test noktası ekleri: TP_OC_SENSE1, TP_OC_SENSE2, TP_OC_REF, TP_OVP_BUS_N; faz şöntü akım enjeksiyonu için RS1/RS2 Kelvin padleri (BENCH T5g).
 
 ## 1. Değişen referanslar (G2)

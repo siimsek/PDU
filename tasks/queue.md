@@ -44,7 +44,7 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-014](done/T-014.md) | BUILDER | S | T-013, T-005a, T-005b | Done |
 | [R-002](done/R-002.md) | THINKER | M | T-014 | Done |
 | [D-009](D-009.md) | THINKER | S | T-013, T-014 | Review |
-| [T-018](T-018.md) | BUILDER | S | T-014 | Draft |
+| [T-018](T-018.md) | BUILDER | S | T-014 | Review |
 | [T-019](T-019.md) | BUILDER | M | T-014 | Draft |
 | [T-020](T-020.md) | BUILDER | M | T-013, D-009 | Draft |
 | [T-021](T-021.md) | BUILDER | M | T-020 | Draft |

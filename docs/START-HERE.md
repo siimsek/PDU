@@ -4,7 +4,7 @@
 
 **Hedef:** 20–26 V girişten 2 fazlı LM70880 buck ile 11 V ortak bara; 2× TPS259824L eFuse ile O1 ve S2E portları. Sert kriterler: O1 anlık ≤12,0 V, kararlı bara ≤11,1605 V, yük adımında bara ≥10,78 V, eFuse IN <30 V.
 
-**Durum (G4 → main, 2026-11-07):** devre tasarımı hesap + SPICE + parça seviyesinde kapandı; kapı **PCB-HAZIR (koşullu)** ([`PCB-READY-v2.md`](../reports/g4/PCB-READY-v2.md)). Fiziksel ölçüm yok. KiCad dosyaları G2–G4 değişikliklerini henüz içermiyor — **sıradaki faz KiCad (G5)**, kartlar T-001…T-014.
+**Durum (G5 → main, 2026-11-08):** KiCad kapısı **PCB-YÖNLENDİRMEYE-HAZIR (koşullu)** ([`KICAD-READY.md`](../reports/g5/KICAD-READY.md)). KiCad dosyaları G2–G5 değişikliklerini içeriyor: şema 180 ref ile spec'e birebir (ERC 0); kart 120 × 85 mm, 4 katman, kaba yerleşimli ve izsiz ([`PCB-SETUP.md`](../reports/g5/PCB-SETUP.md)). **Sıradaki aşama yönlendirme.** Koşullar: F5 47/49 tamamlandı, iki köşe AÇIK; SPICE davranışsal modeldir ve fiziksel ölçüm yoktur.
 
 ## Geçerli mimari
 Buck COUT (32×, `/VOUT`) → ortak bara seri ayırıcı (CSD19531Q5A + LM74502H; SN74LVC1G74 mandal) → `/VSAFE` → U3/U4. Mandalı üç tetik kurar (SN74LVC1G11): hassas bara OV (TLV3601 + REF5025A) ve faz 1/2 aşırı akım (INA296A2 + TLV3601, 12,97–13,60 A). Kaba OV bölücüsü LM74502H OV pininde. VOUT kart başı trim (R_TRIM). Gerekçe: [`PROTECTION-DECISION.md`](../reports/g2/PROTECTION-DECISION.md) §0.
