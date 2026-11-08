@@ -6,7 +6,6 @@
 
 ## Yapılanlar
 - R-020 Tur 2: faz 1 alternatifleri ölçüldü (phase1-alternatives.json); RS1 180° + T-022 RS1 güç yolu yeniden üretildi; iki faz Kelvin F.Cu paralel.
-- R-020 Tur 2: faz 1 alternatifleri ölçüldü (phase1-alternatives.json); RS1 180° + T-022 RS1 güç yolu yeniden üretildi; iki faz Kelvin F.Cu paralel.
 - R-020 Tur 1: Kelvin yeniden (U12 180°, ayrı RS via'ları), R_GS Q2 yanına, TP_ISNS1P/1N/2P/2N kola 1,3–1,9 mm.
 - T-023 adım 2: 71 GND via, INA296 Kelvin (zone tap), R_GS kolu, TP_ISO_GATE taşındı.
 - T-023 adım 1: envanter ve GND via adayları; repo kartına yazılmadı.
