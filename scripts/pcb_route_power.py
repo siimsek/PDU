@@ -2,6 +2,7 @@
 
     git checkout <T-021 board> -- PDU.kicad_pcb      # the script only adds/moves items; it refuses a board already routed
     "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe" scripts/pcb_route_power.py
+    ...python.exe scripts/pcb_route_power.py --audit [--empty-board <file>]     # writes reports/g5/T-022 evidence; optional empty-board copy for independent DRC
 
 Coordinates: D-006 (origin lower-left, y up). Widths and via targets: reports/g2/routing-g2.json. Vias 0.6/0.3 (VARSAYIM, PCB-HANDOFF §7).
 Long runs are tracks (checked by the class width rules). Tight pad groups and milliamp taps are filled zones (PCB-HANDOFF §1 L1 power
@@ -24,6 +25,7 @@ VIA_D, VIA_DRILL = 0.6, 0.3
 E = 0.7
 LAY = {"F": P.F_Cu, "In1": P.In1_Cu, "In2": P.In2_Cu, "B": P.B_Cu}
 TAP = 0.8           # mm, milliamp zone taps; must exceed the 0.6 mm via land or KiCad does not connect the via to the fill
+BRANCH = 1.5        # mm: D_REV and CEFOUT branches (R-018), sized in the audit for the 3 A diode rating
 Q2_ROT = 90.0
 GATE_W = 0.4
 
@@ -172,6 +174,25 @@ class Board:
             ol.Append(q.x, q.y)
 
 
+# R-018: TP_SW next to its SW node; U4 +1.15 mm east so CEFIN2 sits at the U4 IN/GND pins exactly like CEFIN1 at U3.
+MOVES = [("TP_SW1", 45.4, 71.6, None), ("TP_SW2", 38.1, 12.4, None), ("U4", 108.385, 40.925, None), ("CEFIN2", 104.99, 41.2, 270)]
+
+
+# reference text only, so the moved parts leave no silkscreen warning: (ref, x, y, angle)
+REFDES = [("TP_SW1", 45.4, 68.4, 90), ("CIN1", 52.2, 68.9, 90), ("TP_SW2", 40.2, 14.6, 0), ("CIN5", 31.3, 15.1, 90), ("CEFIN2", 104.99, 37.7, 90)]
+
+
+def placement(B):
+    for ref, x, y, rot in MOVES:
+        if rot is not None:
+            B.fp[ref].SetOrientationDegrees(rot)
+        B.fp[ref].SetPosition(kp(x, y))
+    for ref, x, y, ang in REFDES:
+        t = B.fp[ref].Reference()
+        t.SetPosition(kp(x, y))
+        t.SetTextAngle(P.EDA_ANGLE(float(ang), P.DEGREES_T))
+
+
 def rotate_q2(B):
     f = B.fp["Q2"]
     if abs(f.GetOrientationDegrees()) > 1e-6:
@@ -274,17 +295,18 @@ def vout(B):
 
 def vsafe(B):
     B.track("/VSAFE", "B", 5.5, [(92.0, 49.0), (98.5, 49.0), (98.5, 43.75)], "Q2 source -> eFuse")
-    B.zone("B_VSAFE_EFUSE", "/VSAFE", "B", [(95.75, 37.8), (110.75, 37.8), (110.75, 43.25), (95.75, 43.25)], tag="under U3/U4; GND vias punch through")
+    B.zone("B_VSAFE_EFUSE", "/VSAFE", "B", [(95.75, 36.5), (110.6, 36.5), (110.6, 43.25), (95.75, 43.25)], tag="under U3/U4; GND vias punch through")
     B.zone("F_VSAFE_U3", "/VSAFE", "F", [(97.7, 41.06), (100.6, 41.06), (100.6, 42.42), (97.7, 42.42)], tag="CEFIN1 + IN 1-3 + EP")
-    B.track("/VSAFE", "F", 0.25, [(105.322, 41.175), (105.322, 42.175)], "U4 IN 1-3")
-    B.track("/VSAFE", "F", 0.25, [(105.322, 41.675), (106.0, 41.675)], "U4 IN -> EP")
+    B.track("/VSAFE", "F", 0.25, [(106.472, 41.175), (106.472, 42.175)], "U4 IN 1-3")
+    B.track("/VSAFE", "F", 0.25, [(106.472, 41.675), (107.15, 41.675)], "U4 IN -> EP")
+    B.zone("F_VSAFE_U4", "/VSAFE", "F", [(104.6, 41.06), (106.8, 41.06), (106.8, 42.42), (104.6, 42.42)], tag="CEFIN2 + IN 1-3")
     B.track("/VSAFE", "F", 0.25, [(103.225, 41.12), (102.8, 41.12)], "U3.16 -> EP (anchor kept >= 0.6 mm from U3.17 O1 copper)")
-    B.track("/VSAFE", "F", 0.25, [(108.865, 41.12), (108.45, 41.12)], "U4.16 -> EP (anchor kept >= 0.6 mm from U4.17 S2E copper)")
+    B.track("/VSAFE", "F", 0.25, [(110.015, 41.12), (109.6, 41.12)], "U4.16 -> EP (anchor kept >= 0.6 mm from U4.17 S2E copper)")
     EP = tuple((x, y) for x in (-1.0, 0.0, 1.0) for y in (-0.35, 0.35))
     B.via_on("U3", 25, "/VSAFE", EP)
     B.via_on("U4", 25, "/VSAFE", EP)
     B.via_on("CEFIN1", 1, "/VSAFE")
-    B.via("/VSAFE", 110.48, 41.445, "CEFIN2.1")
+    B.via_on("CEFIN2", 1, "/VSAFE")
     B.via("/VSAFE", 98.95, 41.75, "U3 IN field")
     B.via_on("D_REV1", 1, "/VSAFE", QUAD)
     B.via_on("D_REV2", 1, "/VSAFE", QUAD)
@@ -298,7 +320,7 @@ def vsafe(B):
 
 
 def o1(B):
-    B.zone("F_O1_U3", "/O1_11V", "F", [(100.1, 42.62), (103.1, 42.62), (103.1, 41.6), (104.6, 41.6), (104.6, 43.45), (105.55, 43.45), (105.55, 48.8), (102.1, 48.8), (102.1, 45.4), (100.1, 45.4)], tag="U3 OUT pins -> via field")
+    B.zone("F_O1_U3", "/O1_11V", "F", [(100.1, 42.62), (103.1, 42.62), (103.1, 41.6), (104.2, 41.6), (104.2, 43.45), (105.55, 43.45), (105.55, 48.8), (102.1, 48.8), (102.1, 45.4), (100.1, 45.4)], tag="U3 OUT pins -> via field")
     for x in (102.6, 103.4, 104.2, 105.0):
         for y in (44.3, 45.1, 45.9, 46.7, 47.5, 48.3):
             B.via("/O1_11V", x, y, "U3 OUT field")
@@ -307,9 +329,9 @@ def o1(B):
     B.track("/O1_11V", "F", 0.25, [(103.77, 41.775), (103.77, 42.175)], "U3.17-18")
     B.via_on("D2", 1, "/O1_11V", QUAD)
     B.via("/O1_11V", 112.0, 49.6, "O1 south tap anchor")
-    B.tap("TAP_O1_DREV", "/O1_11V", "B", [(112.0, 49.6), (112.0, 27.5), (108.5, 26.6), (108.045, 24.905)], w=1.0)
+    B.tap("TAP_O1_DREV", "/O1_11V", "B", [(112.0, 49.6), (112.0, 27.5), (108.5, 26.6), (108.045, 24.905)], w=BRANCH)
     B.via_on("D_REV1", 2, "/O1_11V", QUAD)
-    B.tap("TAP_O1_CEFOUT", "/O1_11V", "B", [(106.645, 23.305), (107.0, 20.0), (100.1, 19.5), (100.101, 17.665)], w=1.0)
+    B.tap("TAP_O1_CEFOUT", "/O1_11V", "B", [(106.645, 23.305), (107.0, 20.0), (100.1, 19.5), (100.101, 17.665)], w=BRANCH)
     B.via_on("CEFOUT1", 1, "/O1_11V", tag="CEFOUT1")
     B.tap("TAP_O1_RPG", "/O1_11V", "B", [(100.101, 17.665), (101.35, 3.0), (101.35, 1.725)])
     B.via_on("RPG1", 2, "/O1_11V", tag="RPG1")
@@ -320,12 +342,12 @@ def o1(B):
 
 
 def s2e(B):
-    B.zone("F_S2E_U4", "/S2E_11V", "F", [(105.85, 42.6), (108.75, 42.6), (108.75, 41.6), (110.0, 41.6), (110.0, 45.4), (105.85, 45.4)], tag="U4 OUT pins")
+    B.zone("F_S2E_U4", "/S2E_11V", "F", [(107.0, 42.6), (109.9, 42.6), (109.9, 41.6), (111.15, 41.6), (111.15, 45.4), (107.0, 45.4)], tag="U4 OUT pins")
     B.track("/S2E_11V", "F", 3.3, [(110.8, 44.3), (113.05, 44.3), (113.05, 37.5), (110.035, 34.5), (110.035, 32.6)], "U4 OUT -> J3.1")
     B.zone("F_S2E_D3", "/S2E_11V", "F", [(100.2, 48.6), (101.4, 48.6), (101.4, 49.3), (108.95, 49.3), (108.95, 43.0), (113.0, 43.0), (113.0, 52.65), (99.5, 52.65), (99.5, 49.3), (100.2, 49.3)], tag="U4 OUT -> D3 TVS, D3-D2 channel")
-    B.track("/S2E_11V", "F", 0.25, [(109.41, 41.775), (109.41, 42.175)], "U4.17-18")
-    B.tap("TAP_S2E_DREV", "/S2E_11V", "F", [(110.035, 31.5), (110.035, 27.2), (117.685, 27.2), (117.685, 25.0)], w=1.0)
-    B.tap("TAP_S2E_CEFOUT", "/S2E_11V", "F", [(110.035, 27.2), (104.4, 27.2), (104.4, 19.2), (105.703, 18.6), (105.703, 17.665)], w=1.0)
+    B.track("/S2E_11V", "F", 0.25, [(110.56, 41.775), (110.56, 42.175)], "U4.17-18")
+    B.tap("TAP_S2E_DREV", "/S2E_11V", "F", [(110.035, 31.5), (110.035, 27.2), (117.685, 27.2), (117.685, 25.0)], w=BRANCH)
+    B.tap("TAP_S2E_CEFOUT", "/S2E_11V", "F", [(110.035, 27.2), (104.4, 27.2), (104.4, 19.2), (105.703, 18.6), (105.703, 17.665)], w=BRANCH)
     B.tap("TAP_S2E_RPG", "/S2E_11V", "F", [(105.703, 17.665), (105.703, 16.0), (106.9, 15.0), (106.9, 3.0), (105.6, 2.2), (104.85, 1.725)], w=0.5)
     B.via("/S2E_11V", 104.0, 26.2, "TP_S2E layer change")
     B.tap("TAP_S2E_TP", "/S2E_11V", "B", [(104.0, 26.2), (94.105, 26.2), (94.105, 24.052)])
@@ -333,7 +355,7 @@ def s2e(B):
 
 
 def efuse_gnd(B):
-    for u, ox in (("U3", 0.0), ("U4", 5.64)):
+    for u, ox in (("U3", 0.0), ("U4", 6.79)):
         B.via_on(u, 26, "/GND", ((-1.0, 0.0), (0.0, 0.0), (1.0, 0.0)))
         B.track("/GND", "F", 0.25, [(99.683 + ox, 40.675), (99.683 + ox, 40.175), (100.4 + ox, 40.175)], f"{u} GND 4/5 -> EP")
         B.track("/GND", "F", 0.25, [(103.507 + ox, 40.175), (102.8 + ox, 40.175)], f"{u} GND 14 -> EP")
@@ -341,7 +363,7 @@ def efuse_gnd(B):
             x, _, _, _ = B.pad(u, pin)
             B.track("/GND", "F", 0.25, [(x, 39.013), (x, 39.7)], f"{u} GND {pin} -> EP")
     B.track("/GND", "F", 0.3, [(98.2, 40.3), (99.683, 40.3)], "CEFIN1 GND")
-    B.track("/GND", "F", 0.25, [(109.148, 40.175), (110.2, 40.1)], "CEFIN2 GND")
+    B.track("/GND", "F", 0.3, [(104.99, 40.3), (106.473, 40.3)], "CEFIN2 GND")
     B.via_on("CEFIN1", 2, "/GND")
     B.via_on("CEFIN2", 2, "/GND")
     B.via_on("D1", 2, "/GND", ((-1.0, -0.8), (0.0, -0.8), (-1.0, 0.8), (0.0, 0.8)), tag="D1 TVS return")
@@ -359,6 +381,7 @@ def buck(B, u, mirror):
     B.zone(f"F_VIN_{tag}", "/VIN", "F", [t(*p) for p in ((49.75, 65.9), (51.2, 65.9), (51.2, 72.7), (60.0, 72.7), (60.0, 76.5), (52.9, 76.5), (52.9, 75.6), (52.35, 75.6), (52.35, 75.42), (49.75, 75.42))], tag="hot loop VIN")
     B.zone(f"F_PGND_{tag}", "/GND", "F", [t(*p) for p in ((46.75, 65.9), (48.75, 65.9), (48.75, 73.75), (46.75, 73.75))], prio=5, tag="hot loop PGND")
     B.zone(f"F_{sw}", f"/{sw}", "F", [t(*p) for p in ((43.0, 73.7), (46.6, 73.7), (46.6, 75.0), (47.0, 75.0), (47.0, 76.45), (43.0, 76.45))], tag="SW node")
+    B.zone(f"F_{sw}_TP", f"/{sw}", "F", [t(*p) for p in ((44.9, 71.1), (45.9, 71.1), (45.9, 73.75), (44.9, 73.75))], tag="short lobe to the moved TP_SW pad")
     B.track("/VIN", "F", 0.25, [t(51.9, 74.25), t(51.9, 75.25)], f"{tag} VIN pins 1-3")
     B.track("/VIN", "F", 0.25, [t(50.5, 73.3), t(50.5, 74.79)], f"{tag} VIN pad 29")
     for ref, off in ((c1, COL3), (c2, COL3), (c3, ROW3), (c4, ROW3)):
@@ -402,6 +425,26 @@ def input_side(B):
         B.via("/VIN", 90.35, vy, f"U10.{pin}")
 
 
+def controller_sense(B):
+    """LM70880 ISNS/VOUT pins to the inner edge of RS1/RS2: separate pair, zero power current, HV 0.6 mm kept between the two taps."""
+    B.track("/ISNS1", "F", 0.25, [(50.0, 79.65), (50.1, 80.95)], "U1.11 neck")
+    B.via("/ISNS1", 50.1, 80.95, "U1.11")
+    B.tap("TAP_ISNS1", "/ISNS1", "B", [(50.1, 80.95), (50.1, 82.6), (33.9, 82.6), (33.9, 68.3), (32.3, 66.4)])
+    B.via("/ISNS1", 32.3, 66.4, "RS1.1 inner edge")
+    B.track("/VOUT", "F", 0.25, [(49.0, 79.65), (49.0, 80.4)], "U1.12 neck")
+    B.via("/VOUT", 49.0, 80.4, "U1.12")
+    B.tap("TAP_U1_VOUT", "/VOUT", "B", [(49.0, 80.4), (45.0, 79.6), (35.4, 79.6), (35.4, 68.3), (37.6, 68.3)])
+    B.via("/VOUT", 37.6, 68.3, "RS1.2 inner edge")
+    B.track("/ISNS2", "F", 0.25, [(33.5, 4.35), (33.4, 3.6)], "U2.11 neck")
+    B.via("/ISNS2", 33.4, 3.6, "U2.11")
+    B.tap("TAP_ISNS2", "/ISNS2", "B", [(33.4, 3.6), (33.4, 4.6), (43.8, 4.6), (43.8, 15.6)])
+    B.via("/ISNS2", 43.8, 15.6, "RS2.1 inner edge")
+    B.track("/VOUT", "F", 0.25, [(34.5, 4.35), (34.5, 2.9)], "U2.12 neck")
+    B.via("/VOUT", 34.5, 2.9, "U2.12")
+    B.tap("TAP_U2_VOUT", "/VOUT", "B", [(34.5, 2.9), (34.5, 1.4), (49.1, 1.4), (49.1, 15.6)])
+    B.via("/VOUT", 49.1, 15.6, "RS2.2 inner edge")
+
+
 def phase(B):
     B.track("/ISNS1", "F", 2.6, [(33.0, 74.5), (33.0, 71.0), (32.04, 69.0)], "L1.2 -> RS1.1")
     B.track("/ISNS2", "F", 2.6, [(50.0, 10.8), (47.0, 13.0), (44.2, 14.6), (43.7, 15.4)], "L2.2 -> RS2.1")
@@ -411,6 +454,7 @@ def main():
     if P.GetBuildVersion().split("-")[0] != "10.0.7":
         raise SystemExit("KiCad 10.0.7 required (D-009): " + P.GetBuildVersion())
     B = Board(PCB)
+    placement(B)
     moved = isolator(B)
     vout(B)
     vsafe(B)
@@ -421,6 +465,7 @@ def main():
     buck(B, "U2", True)
     input_side(B)
     phase(B)
+    controller_sense(B)
     B.build_zones()
     P.ZONE_FILLER(B.b).Fill(B.b.Zones())
     B.b.BuildConnectivity()
@@ -436,8 +481,8 @@ def main():
 
 # --------------------------------------------------------------------------- audit (--audit, on the routed board)
 AUDIT_NETS = ["/ANODE", "/VIN", "/VOUT", "/VSAFE", "/O1_11V", "/S2E_11V", "/SW_PH1", "/SW_PH2", "/ISNS1", "/ISNS2", "/ISO_GATE"]
-LATER = {"/ISNS1": "T-023 Kelvin / test pad", "/ISNS2": "T-023 Kelvin / test pad", "/ISO_GATE": "T-023 R_GS and TP_ISO_GATE (Q2-U6 gate itself is routed)",
-         "/VOUT": "T-023 Kelvin and feedback sense pads", "/SW_PH1": "TP_SW1 placement decision", "/SW_PH2": "TP_SW2 placement decision"}
+LATER = {"/ISNS1": "T-023: U11.8 INA296 Kelvin and TP_ISNS1P", "/ISNS2": "T-023: U12.8 INA296 Kelvin and TP_ISNS2P", "/ISO_GATE": "T-023 R_GS and TP_ISO_GATE (Q2-U6 gate itself is routed)",
+         "/VOUT": "T-023: U11.1/U12.1 INA296 Kelvin, TP_ISNS1N/2N, R_INJ, TP_FB_INJ_A"}
 VIA_TARGETS = {"Q2 drain (/VOUT)": (("Q2.5 drain field",), 15, 9), "Q2 source (/VSAFE)": (("Q2 source field",), 15, 3),
                "U3 OUT -> B.Cu (/O1_11V)": (("U3 OUT field",), 19, 0), "J1/Q1 (/ANODE)": (("Q1 source field",), 9, 0),
                "RS1 output (/VOUT)": (("RS1 output field",), 15, 0), "RS2 output (/VOUT)": (("RS2 output field",), 15, 0)}
@@ -446,7 +491,9 @@ SECTIONS = [("/S2E_11V U4 -> D3 channel", "/S2E_11V", "F", (104.0, 51.0), "y", 2
             ("/O1_11V pins -> field", "/O1_11V", "F", (103.0, 44.0), "x", 4.76), ("/VIN CIN3/4 -> U1", "/VIN", "F", (56.0, 74.5), "y", 2.94),
             ("/VIN CIN7/8 -> U2", "/VIN", "F", (27.5, 9.5), "y", 2.94), ("/SW_PH1 U1 -> L1", "/SW_PH1", "F", (44.5, 75.0), "y", 2.35),
             ("/SW_PH2 U2 -> L2", "/SW_PH2", "F", (39.0, 8.9), "y", 2.35), ("/VOUT RS2.2 -> field", "/VOUT", "F", (50.5, 17.1), "y", 4.92),
-            ("/VSAFE under U3 -> U4", "/VSAFE", "B", (104.5, 41.5), "y", 4.92)]
+            ("/VSAFE under U3 -> U4", "/VSAFE", "B", (103.4, 41.5), "y", 4.92),
+            ("/VSAFE around CEFIN2 GND via (sum of both sides)", "/VSAFE", "B", [(104.99, 38.0), (104.99, 42.2)], "y", 4.92),
+            ("/O1_11V D_REV1 branch", "/O1_11V", "B", (112.0, 40.0), "x", 1.0), ("/S2E_11V D_REV2 branch", "/S2E_11V", "F", (114.0, 27.2), "y", 1.0)]
 
 
 def run_drc(pcb, out, parity):
@@ -457,6 +504,76 @@ def run_drc(pcb, out, parity):
         cmd.insert(3, "--schematic-parity")
     subprocess.run(cmd, check=True, capture_output=True)
     return json.loads(Path(out).read_text(encoding="utf-8"))
+
+
+def shoelace(pts):
+    return abs(sum(a[0] * c[1] - c[0] * a[1] for a, c in zip(pts, pts[1:] + pts[:1]))) / 2
+
+
+def loops(b):
+    """Geometric approximation (R-018 allows it in T-022): F.Cu conductor corners of each input-capacitor loop, plan view. Not a current solution."""
+    fp = {f.GetReference(): f for f in b.GetFootprints()}
+
+    def pad(ref, num):
+        ps = [p for p in fp[ref].Pads() if p.GetNumber() == str(num)]
+        q = max(ps, key=lambda x: x.GetBoundingBox().GetWidth() * x.GetBoundingBox().GetHeight())
+        return d6(q.GetBoundingBox().GetCenter())
+
+    def mid(*ps):
+        return (sum(p[0] for p in ps) / len(ps), sum(p[1] for p in ps) / len(ps))
+    out = {}
+    for u, caps, vin_near, vin_far, gnd in (("U1", ("CIN1", "CIN2", "CIN3", "CIN4"), (27, 28), (1, 2, 3), (23, 24, 25, 26)), ("U2", ("CIN5", "CIN6", "CIN7", "CIN8"), (27, 28), (1, 2, 3), (23, 24, 25, 26))):
+        pv_n, pv_f, pg = mid(*[pad(u, n) for n in vin_near]), mid(*[pad(u, n) for n in vin_far]), mid(*[pad(u, n) for n in gnd])
+        for i, c in enumerate(caps):
+            v = pv_n if i < 2 else pv_f
+            cv, cg = pad(c, 1), pad(c, 2)
+            out[f"{u}/{c}"] = {"area_mm2": round(shoelace([v, cv, cg, pg]), 2), "vin_pin_to_cap_mm": round(math.dist(v, cv), 2), "cap_gnd_to_pgnd_pin_mm": round(math.dist(cg, pg), 2),
+                               "return_layer": "F.Cu PGND pour" if i < 2 else "L2 GND via (F.Cu cap pad to L2)"}
+    for u, c, inn, gn in (("U3", "CEFIN1", (1, 2, 3), (4, 5)), ("U4", "CEFIN2", (1, 2, 3), (4, 5))):
+        v, g = mid(*[pad(u, n) for n in inn]), mid(*[pad(u, n) for n in gn])
+        cv, cg = pad(c, 1), pad(c, 2)
+        out[f"{u}/{c}"] = {"area_mm2": round(shoelace([v, cv, cg, g]), 2), "vin_pin_to_cap_mm": round(math.dist(v, cv), 2), "cap_gnd_to_pgnd_pin_mm": round(math.dist(cg, g), 2),
+                           "return_layer": "F.Cu track to GND pins 4/5", "in_path": "F.Cu pour, no via"}
+    return {"basis": "geometrik yaklaşık: pad merkezleri arası düzlem poligonu, shoelace; akım çözümü değil", "loops": out}
+
+
+def branch_check():
+    """IPC-2221 fit used by routing-g2 (k 0.048, b 0.44, c 0.725, 31.5 um outer), for the 3 A D_REV rating. Screening, not IPC-2152."""
+    rows = {}
+    k, b, c, t_mil = 0.048, 0.44, 0.725, 31.5 / 25.4
+    for name, amps, length in (("D_REV/CEFOUT branch, D_REV 3 A rating", 3.0, 40.0),):
+        area = (amps / (k * 20.0 ** b)) ** (1 / c)
+        need_mm = area / t_mil * 0.0254
+        ohm = 1.72e-5 * length / (BRANCH * 0.0315)
+        rows[name] = {"current_A": amps, "ipc_width_for_20C_mm": round(need_mm, 2), "branch_width_mm": BRANCH, "pass": BRANCH >= need_mm, "length_used_mm": length, "resistance_mohm": round(ohm * 1000, 1), "drop_mV": round(ohm * amps * 1000, 1),
+                     "basis": "HESAP; CEFOUT transient current not simulated (doğrulanamadı)"}
+    return rows
+
+
+def neck_clearances(b):
+    """Real minimum edge gaps for the tight neck tracks at the eFuse IN/OUT pins (track centre-line distance minus half widths; pad edges from pad bounding boxes)."""
+    def seg_dist(a, c, q):
+        vx, vy = c[0] - a[0], c[1] - a[1]
+        ln2 = vx * vx + vy * vy
+        t = 0.0 if ln2 == 0 else max(0.0, min(1.0, ((q[0] - a[0]) * vx + (q[1] - a[1]) * vy) / ln2))
+        return math.dist((a[0] + t * vx, a[1] + t * vy), q)
+
+    def seg_seg(s1, s2):
+        return min(seg_dist(s1[0], s1[1], s2[0]), seg_dist(s1[0], s1[1], s2[1]), seg_dist(s2[0], s2[1], s1[0]), seg_dist(s2[0], s2[1], s1[1]))
+
+    tr = [t for t in b.GetTracks() if t.Type() != P.PCB_VIA_T and P.ToMM(t.GetWidth()) < 0.6]
+
+    def seg(t):
+        return d6(t.GetStart()), d6(t.GetEnd())
+    pairs = {"U3.16 VSAFE neck <-> U3.17 O1 stub": ("/VSAFE", "/O1_11V", 103.5), "U4.16 VSAFE neck <-> U4.17 S2E stub": ("/VSAFE", "/S2E_11V", 110.3)}
+    out = {}
+    for name, (n1, n2, xc) in pairs.items():
+        t1 = [t for t in tr if t.GetNetname() == n1 and abs(seg(t)[0][0] - xc) < 1.2 and abs(seg(t)[0][1] - 41.12) < 0.02]
+        t2 = [t for t in tr if t.GetNetname() == n2 and abs(seg(t)[0][0] - xc) < 1.2 and abs(seg(t)[0][1] - 41.775) < 0.02]
+        if t1 and t2:
+            g = seg_seg(seg(t1[0]), seg(t2[0])) - P.ToMM(t1[0].GetWidth()) / 2 - P.ToMM(t2[0].GetWidth()) / 2
+            out[name] = {"edge_gap_mm": round(g, 3), "hv_rule_mm": 0.6, "manufacturer_tolerance": "doğrulanamadı (üretici DFM yok; PCB-HANDOFF §7 min 0.15/0.15 VARSAYIM)"}
+    return out
 
 
 def audit():
@@ -483,6 +600,8 @@ def audit():
             for node in list(top.children(head)):
                 ks.remove_node(top, node)
         (t / "PDU.kicad_pcb").write_bytes(ks.dumps(root).encode("utf-8"))
+        if "--empty-board" in sys.argv:           # hand a reviewer the exact file that this audit's DRC checks
+            shutil.copy(t / "PDU.kicad_pcb", sys.argv[sys.argv.index("--empty-board") + 1])
         E = run_drc(t / "PDU.kicad_pcb", OUT / "drc-empty.json", False)
 
     def count(d):
@@ -524,15 +643,16 @@ def audit():
             return any(z.HitTestFilledArea(LAY[lay], q, 0) for z in zs) or any(t.HitTest(q, 0) for t in trs)
 
         span = []
-        for sign in (-1, 1):
-            k, step = 0, 0.02
-            while k < 2000:
-                x, y = (c[0] + sign * k * step, c[1]) if axis == "x" else (c[0], c[1] + sign * k * step)
-                if not cu(x, y):
-                    break
-                k += 1
-            span.append(k * step)
-        w = round(span[0] + span[1], 2)
+        for c0 in (c if isinstance(c, list) else [c]):
+            for sign in (-1, 1):
+                k, step = 0, 0.02
+                while k < 2000:
+                    x, y = (c0[0] + sign * k * step, c0[1]) if axis == "x" else (c0[0], c0[1] + sign * k * step)
+                    if not cu(x, y):
+                        break
+                    k += 1
+                span.append(k * step)
+        w = round(sum(span), 2)
         widths[what] = {"centre": c, "cut_axis": axis, "copper_width_mm": w, "class_min_mm": mn, "meets_min": w >= mn, "basis": "HESAP: copper span through this point, 0.02 mm steps"}
     area = {}
     for name in ("L2_GND", "L4_GND", "L3_VIN", "L3_VOUT", "L3_VSAFE"):
@@ -551,7 +671,8 @@ def audit():
            "empty_board_drc": {"errors": errs(E), "by_type": count(E)}, "neck_audit_violations": neck, "rules_check": pr.check(), "q2": log["q2"],
            "gate_q2_u6": {"centre_line_mm": round(gate_mm, 3), "limit_mm": 10.0, "width_mm": gate["width_mm"], "layer": gate["layer"], "basis": "from U6.6 pad centre to Q2.4 pad centre"},
            "nets": nets, "via_targets": via_tgt, "zone_widths": widths, "plane_areas": area,
-           "not_measured": {"VIN_CIN_PGND_loop_area": "doğrulanamadı: D-010 yöntemi akım çözümü ister; pad merkezi yerine kullanılmadı"},
+           "loop_geometry": loops(b), "branch_current": branch_check(), "neck_clearance": neck_clearances(b),
+           "not_measured": {"VIN_CIN_PGND_current_solved_loop": "doğrulanamadı: D-010 yöntemi akım çözümü ister; loop_geometry yalnız geometrik yaklaşıktır"},
            "assumptions": ["1 oz all layers, via 0.6/0.3 and via-in-pad filled/capped: manufacturer confirmation AÇIK (PCB-HANDOFF §7)"]}
     with (OUT / "power-route-audit.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump(res, f, indent=1, ensure_ascii=False)

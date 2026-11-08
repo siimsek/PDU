@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-022 (taslak PR #66). D-010 (#65), D-011 (#67) main'de.
-- **Aktif kart:** T-022 **InProgress** — ana güç yolları yönlendirildi; DRC 0, parite 0, boş kart 0. Açık uçlar: reports/g5/T-022/route-review.md.
+- **Dal / son commit:** wp/T-022 (taslak PR #66; R-018 Tur 1 RET düzeltildi). R-018 PR #68 açık.
+- **Aktif kart:** T-022 **Review** — R-018 Tur 2 bekliyor. DRC 0, parite 0, boş kart 0; güç ağı açığı yalnız T-023 Kelvin/FB/gate uçları.
 
 ## Yapılanlar
+- R-018 Tur 1: TP_SW1/2 SW düğümüne taşındı; U1/U2 ISNS+VOUT çiftleri bağlandı; U4 +1,15 mm, CEFIN2 U4 batısında (CEFIN1 düzeni); D_REV/CEFOUT kolları 1,5 mm.
 - T-022 (dal): Q2 90° + L3_VSAFE, B.Cu /VOUT 7,0 ve /VSAFE 5,5, O1/S2E/ANODE/VIN, gate 5,469 mm. `pcb_route_power.py` yalnız T-021 kartından koşar. /VIN, /ANODE, /VSAFE, /O1, /S2E açık uç 0.
 - T-022 sığma denemesi (geçici kopyalar, KiCad DRC): Q2 180° gate 11,562 mm; 7,0 mm güney şeridi TP_VSAFE ile kısa devre, 5,5 mm temiz; Q2 90° gate 5,469 mm + iki B.Cu bara + 20 via 0 hata.
 - T-021 (#59) + R-016 (#60) main'de. T-025: UTF-8 kök neden (run_all çözme, pre_merge konsol), kural + check_workflow denetimi. Birleşmiş 61 uzak ve 37 yerel dal silindi.
@@ -23,13 +24,12 @@
 - T-011 (#44) main'de (R-010: kanonik Value kuralı). T-012 (dal): D-008 test padleri + J_OVP_INJ_BUS + JP_EN_BUCK (BOM dışı), notlar/antet; ERC 0, B1–B7 fark 0.
 - T-010 + T-009 (#42) main'de (R-009: Q2 TI land footprint). T-011 (dal): B6 tamam; şemadaki 142 PCB parçasının tamamı spec ile birebir, ERC 0.
 - T-017 (#40) main'de. T-010 + T-009 (dal): B5 30 + B4 12 parça `sch_place.py` ile (etiket-pin); ERC 0; B1–B5 fark 0; blok dışı 0. Q2 footprint TI land'den özel (R-009).
-- T-008 (#38) main'de (R-007 ONAY). B5 bloğu şemada yok → T-009 öncesi T-010; stokta olmayan 5 sembol T-017 ile üretildi (make_symbols.py; datasheet sayfaları görsel okundu).
 
 ## Sonraki adım
-Codex: T-022 incelemesi (R-kartı) ve TP_SW kararı. Sonra Claude Code: T-022 kapat, T-023.
+Codex: R-018 Tur 2. ONAY → Claude Code: T-022 birleştir, T-023.
 
 ## Engeller
-T-022 kapanışı: TP_SW1/2 yerleşim kararı; CEFIN2 yerel döngü değerlendirmesi. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
+Yok (Tur 2 bekliyor). Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
 
 ## Kullanıcıdan bekleyenler (yalnız fiziksel, engellemez)
 - U-001, U-007 tezgâh ölçümleri (kart üretilince).

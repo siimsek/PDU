@@ -6,7 +6,7 @@
    "warning:via_dangling": 6
   },
   "schematic_parity_issues": 0,
-  "unconnected_total": 205
+  "unconnected_total": 199
  },
  "empty_board_drc": {
   "errors": 0,
@@ -67,60 +67,54 @@
    "deferred_to": ""
   },
   "/VOUT": {
-   "tracks": 14,
+   "tracks": 16,
    "track_layers": [
     "B.Cu",
     "F.Cu"
    ],
-   "track_length_mm": 128.49,
+   "track_length_mm": 130.69,
    "track_widths_mm": [
     0.25,
     5.5,
     7.0
    ],
-   "vias": 128,
+   "vias": 132,
    "zones": [
     "L3_VOUT",
     "T022_F_VOUT_RS2_0",
     "T022_TAP_TP_VOUT_0",
-    "T022_TAP_TP_VOUT_1"
+    "T022_TAP_TP_VOUT_1",
+    "T022_TAP_TP_VOUT_2",
+    "T022_TAP_TP_VOUT_3"
    ],
-   "open_pairs": 8,
+   "open_pairs": 6,
    "open_pairs_detail": [
     [
-     "1 için [/VOUT] TP_ISNS1N ayak F.Cu",
-     "1 için [/VOUT] TP_ISNS2N ayak F.Cu"
+     "1 için [/VOUT] TP_ISNS2N ayak F.Cu",
+     "1 için [/VOUT] TP_ISNS1N ayak F.Cu"
     ],
     [
      "1 için [/VOUT] TP_ISNS1N ayak F.Cu",
      "Geçit [/VOUT] F.Cu - B.Cu üzerinde"
     ],
     [
-     "1 için [/VOUT] U11 ayak F.Cu",
-     "Geçit [/VOUT] F.Cu - B.Cu üzerinde"
+     "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
+     "1 için [/VOUT] U11 ayak F.Cu"
     ],
     [
-     "1 için [/VOUT] U12 ayak F.Cu",
-     "Geçit [/VOUT] F.Cu - B.Cu üzerinde"
-    ],
-    [
-     "Bölge 'T022_F_VOUT_RS2_0' [/VOUT] F.Cu üzerinde, öncelik 5",
-     "12 için [/VOUT] U2 ayak F.Cu"
+     "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
+     "1 için [/VOUT] U12 ayak F.Cu"
     ],
     [
      "12 için [/VOUT] U1 ayak F.Cu",
-     "Geçit [/VOUT] F.Cu - B.Cu üzerinde"
+     "1 için [/VOUT] R_INJ ayak F.Cu"
     ],
     [
-     "1 için [/VOUT] R_INJ ayak F.Cu",
-     "12 için [/VOUT] U1 ayak F.Cu"
-    ],
-    [
-     "1 için [/VOUT] TP_FB_INJ_A ayak F.Cu",
-     "Geçit [/VOUT] F.Cu - B.Cu üzerinde"
+     "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
+     "1 için [/VOUT] TP_FB_INJ_A ayak F.Cu"
     ]
    ],
-   "deferred_to": "T-023 Kelvin and feedback sense pads"
+   "deferred_to": "T-023: U11.1/U12.1 INA296 Kelvin, TP_ISNS1N/2N, R_INJ, TP_FB_INJ_A"
   },
   "/VSAFE": {
    "tracks": 7,
@@ -139,6 +133,7 @@
     "T022_B_VSAFE_EFUSE_0",
     "T022_F_VSAFE_Q2_0",
     "T022_F_VSAFE_Q2_1",
+    "T022_F_VSAFE_Q2_2",
     "T022_TAP_R_GS_0",
     "T022_TAP_TP_VSAFE_0"
    ],
@@ -197,14 +192,9 @@
    "zones": [
     "T022_F_SW_PH1_0"
    ],
-   "open_pairs": 1,
-   "open_pairs_detail": [
-    [
-     "1 için [/SW_PH1] L1 ayak F.Cu",
-     "1 için [/SW_PH1] TP_SW1 ayak F.Cu"
-    ]
-   ],
-   "deferred_to": "TP_SW1 placement decision"
+   "open_pairs": 0,
+   "open_pairs_detail": [],
+   "deferred_to": ""
   },
   "/SW_PH2": {
    "tracks": 0,
@@ -215,70 +205,63 @@
    "zones": [
     "T022_F_SW_PH2_0"
    ],
-   "open_pairs": 1,
-   "open_pairs_detail": [
-    [
-     "22 için [/SW_PH2] U2 ayak F.Cu",
-     "1 için [/SW_PH2] TP_SW2 ayak F.Cu"
-    ]
-   ],
-   "deferred_to": "TP_SW2 placement decision"
+   "open_pairs": 0,
+   "open_pairs_detail": [],
+   "deferred_to": ""
   },
   "/ISNS1": {
-   "tracks": 2,
-   "track_layers": [
-    "F.Cu"
-   ],
-   "track_length_mm": 5.72,
-   "track_widths_mm": [
-    2.6
-   ],
-   "vias": 0,
-   "zones": [],
-   "open_pairs": 3,
-   "open_pairs_detail": [
-    [
-     "8 için [/ISNS1] U11 ayak F.Cu",
-     "1 için [/ISNS1] RS1 ayak F.Cu"
-    ],
-    [
-     "8 için [/ISNS1] U11 ayak F.Cu",
-     "1 için [/ISNS1] TP_ISNS1P ayak F.Cu"
-    ],
-    [
-     "11 için [/ISNS1] U1 ayak F.Cu",
-     "2 için [/ISNS1] L1 ayak F.Cu"
-    ]
-   ],
-   "deferred_to": "T-023 Kelvin / test pad"
-  },
-  "/ISNS2": {
    "tracks": 3,
    "track_layers": [
     "F.Cu"
    ],
-   "track_length_mm": 7.89,
+   "track_length_mm": 7.02,
    "track_widths_mm": [
+    0.25,
     2.6
    ],
-   "vias": 0,
-   "zones": [],
-   "open_pairs": 3,
+   "vias": 2,
+   "zones": [
+    "T022_TAP_ISNS1_0"
+   ],
+   "open_pairs": 2,
+   "open_pairs_detail": [
+    [
+     "1 için [/ISNS1] TP_ISNS1P ayak F.Cu",
+     "8 için [/ISNS1] U11 ayak F.Cu"
+    ],
+    [
+     "8 için [/ISNS1] U11 ayak F.Cu",
+     "Geçit [/ISNS1] F.Cu - B.Cu üzerinde"
+    ]
+   ],
+   "deferred_to": "T-023: U11.8 INA296 Kelvin and TP_ISNS1P"
+  },
+  "/ISNS2": {
+   "tracks": 4,
+   "track_layers": [
+    "F.Cu"
+   ],
+   "track_length_mm": 8.65,
+   "track_widths_mm": [
+    0.25,
+    2.6
+   ],
+   "vias": 2,
+   "zones": [
+    "T022_TAP_ISNS2_0"
+   ],
+   "open_pairs": 2,
    "open_pairs_detail": [
     [
      "1 için [/ISNS2] TP_ISNS2P ayak F.Cu",
      "11 için [/ISNS2] U2 ayak F.Cu"
     ],
     [
-     "11 için [/ISNS2] U2 ayak F.Cu",
-     "Yol [/ISNS2] F.Cu üzerinde, uzunluk 3.2249 mm"
-    ],
-    [
      "8 için [/ISNS2] U12 ayak F.Cu",
      "1 için [/ISNS2] RS2 ayak F.Cu"
     ]
    ],
-   "deferred_to": "T-023 Kelvin / test pad"
+   "deferred_to": "T-023: U12.8 INA296 Kelvin and TP_ISNS2P"
   },
   "/ISO_GATE": {
    "tracks": 3,
@@ -440,12 +423,51 @@
   },
   "/VSAFE under U3 -> U4": {
    "centre": [
-    104.5,
+    103.4,
     41.5
    ],
    "cut_axis": "y",
-   "copper_width_mm": 5.08,
+   "copper_width_mm": 6.56,
    "class_min_mm": 4.92,
+   "meets_min": true,
+   "basis": "HESAP: copper span through this point, 0.02 mm steps"
+  },
+  "/VSAFE around CEFIN2 GND via (sum of both sides)": {
+   "centre": [
+    [
+     104.99,
+     38.0
+    ],
+    [
+     104.99,
+     42.2
+    ]
+   ],
+   "cut_axis": "y",
+   "copper_width_mm": 5.24,
+   "class_min_mm": 4.92,
+   "meets_min": true,
+   "basis": "HESAP: copper span through this point, 0.02 mm steps"
+  },
+  "/O1_11V D_REV1 branch": {
+   "centre": [
+    112.0,
+    40.0
+   ],
+   "cut_axis": "x",
+   "copper_width_mm": 1.52,
+   "class_min_mm": 1.0,
+   "meets_min": true,
+   "basis": "HESAP: copper span through this point, 0.02 mm steps"
+  },
+  "/S2E_11V D_REV2 branch": {
+   "centre": [
+    114.0,
+    27.2
+   ],
+   "cut_axis": "y",
+   "copper_width_mm": 1.52,
+   "class_min_mm": 1.0,
    "meets_min": true,
    "basis": "HESAP: copper span through this point, 0.02 mm steps"
   }
@@ -454,14 +476,13 @@
   "L2_GND": {
    "islands": 1,
    "fill_area_mm2": [
-    9296.32
+    9287.11
    ]
   },
   "L4_GND": {
    "islands": 10,
    "fill_area_mm2": [
-    7835.89,
-    0.62,
+    7609.76,
     0.32,
     0.37,
     0.32,
@@ -469,13 +490,14 @@
     0.37,
     0.32,
     0.27,
-    21.11
+    0.27,
+    19.74
    ]
   },
   "L3_VIN": {
    "islands": 1,
    "fill_area_mm2": [
-    3584.16
+    3571.31
    ]
   },
   "L3_VOUT": {
@@ -491,8 +513,99 @@
    ]
   }
  },
+ "loop_geometry": {
+  "basis": "geometrik yaklaşık: pad merkezleri arası düzlem poligonu, shoelace; akım çözümü değil",
+  "loops": {
+   "U1/CIN1": {
+    "area_mm2": 7.33,
+    "vin_pin_to_cap_mm": 2.7,
+    "cap_gnd_to_pgnd_pin_mm": 2.7,
+    "return_layer": "F.Cu PGND pour"
+   },
+   "U1/CIN2": {
+    "area_mm2": 16.98,
+    "vin_pin_to_cap_mm": 6.23,
+    "cap_gnd_to_pgnd_pin_mm": 6.23,
+    "return_layer": "F.Cu PGND pour"
+   },
+   "U1/CIN3": {
+    "area_mm2": 11.5,
+    "vin_pin_to_cap_mm": 2.65,
+    "cap_gnd_to_pgnd_pin_mm": 7.03,
+    "return_layer": "L2 GND via (F.Cu cap pad to L2)"
+   },
+   "U1/CIN4": {
+    "area_mm2": 18.78,
+    "vin_pin_to_cap_mm": 6.2,
+    "cap_gnd_to_pgnd_pin_mm": 10.5,
+    "return_layer": "L2 GND via (F.Cu cap pad to L2)"
+   },
+   "U2/CIN5": {
+    "area_mm2": 7.33,
+    "vin_pin_to_cap_mm": 2.7,
+    "cap_gnd_to_pgnd_pin_mm": 2.7,
+    "return_layer": "F.Cu PGND pour"
+   },
+   "U2/CIN6": {
+    "area_mm2": 16.98,
+    "vin_pin_to_cap_mm": 6.23,
+    "cap_gnd_to_pgnd_pin_mm": 6.23,
+    "return_layer": "F.Cu PGND pour"
+   },
+   "U2/CIN7": {
+    "area_mm2": 11.5,
+    "vin_pin_to_cap_mm": 2.65,
+    "cap_gnd_to_pgnd_pin_mm": 7.03,
+    "return_layer": "L2 GND via (F.Cu cap pad to L2)"
+   },
+   "U2/CIN8": {
+    "area_mm2": 18.78,
+    "vin_pin_to_cap_mm": 6.2,
+    "cap_gnd_to_pgnd_pin_mm": 10.5,
+    "return_layer": "L2 GND via (F.Cu cap pad to L2)"
+   },
+   "U3/CEFIN1": {
+    "area_mm2": 2.08,
+    "vin_pin_to_cap_mm": 1.51,
+    "cap_gnd_to_pgnd_pin_mm": 1.48,
+    "return_layer": "F.Cu track to GND pins 4/5",
+    "in_path": "F.Cu pour, no via"
+   },
+   "U4/CEFIN2": {
+    "area_mm2": 2.08,
+    "vin_pin_to_cap_mm": 1.51,
+    "cap_gnd_to_pgnd_pin_mm": 1.48,
+    "return_layer": "F.Cu track to GND pins 4/5",
+    "in_path": "F.Cu pour, no via"
+   }
+  }
+ },
+ "branch_current": {
+  "D_REV/CEFOUT branch, D_REV 3 A rating": {
+   "current_A": 3.0,
+   "ipc_width_for_20C_mm": 1.0,
+   "branch_width_mm": 1.5,
+   "pass": true,
+   "length_used_mm": 40.0,
+   "resistance_mohm": 14.6,
+   "drop_mV": 43.7,
+   "basis": "HESAP; CEFOUT transient current not simulated (doğrulanamadı)"
+  }
+ },
+ "neck_clearance": {
+  "U3.16 VSAFE neck <-> U3.17 O1 stub": {
+   "edge_gap_mm": 0.602,
+   "hv_rule_mm": 0.6,
+   "manufacturer_tolerance": "doğrulanamadı (üretici DFM yok; PCB-HANDOFF §7 min 0.15/0.15 VARSAYIM)"
+  },
+  "U4.16 VSAFE neck <-> U4.17 S2E stub": {
+   "edge_gap_mm": 0.602,
+   "hv_rule_mm": 0.6,
+   "manufacturer_tolerance": "doğrulanamadı (üretici DFM yok; PCB-HANDOFF §7 min 0.15/0.15 VARSAYIM)"
+  }
+ },
  "not_measured": {
-  "VIN_CIN_PGND_loop_area": "doğrulanamadı: D-010 yöntemi akım çözümü ister; pad merkezi yerine kullanılmadı"
+  "VIN_CIN_PGND_current_solved_loop": "doğrulanamadı: D-010 yöntemi akım çözümü ister; loop_geometry yalnız geometrik yaklaşıktır"
  },
  "assumptions": [
   "1 oz all layers, via 0.6/0.3 and via-in-pad filled/capped: manufacturer confirmation AÇIK (PCB-HANDOFF §7)"

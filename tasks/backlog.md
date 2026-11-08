@@ -22,3 +22,4 @@ Tek satır: `- [kaynak] konu — neden engelleyici değil — önerilen kart/rol
 - [R-015] T-013'ten kalan 30 Dwgs.User bölge işareti ayrıntılı gruplarla örtüşmüyor; üretim katmanı değil ve T-020 DRC/kabulünü etkilemiyor — üretim öncesi güncelle veya kaldır — BUILDER (yerleşim/DFM).
 - [R-015] TP_OVP_REF metin ankrajı kendi footprint merkezine 9,121 mm, TP_ISNS2P merkezine 4,964 mm; elektriksel DRC temiz ancak etiket ilişkilendirmesi silk/test noktası DFM'inde teyit edilmeli — T-020 yerleşim aşamasında engelleyici değil — BUILDER.
 - [R-016] PR #59 açıklamasındaki T-021 L3 alanları eski; Q1/Q2 3654,79 / 2107,6 mm² yerine güncel 3654,438 / 2067,131 mm² kullan — kabul hedefi yine geçiyor ve kanıt dosyaları güncel — BUILDER (PR özeti eşitlemesi).
+- [T-022 / R-018] Akım çözümlü VIN–CIN–PGND döngü alanı (D-010 yöntemi) T-024 kabul kriterine eklenmeli; T-022'de yalnız geometrik yaklaşık raporlandı — THINKER (T-024 kartı).

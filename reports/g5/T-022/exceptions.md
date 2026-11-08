@@ -1,30 +1,34 @@
 # T-022 — İstisnalar
 
-**DRC istisnası: 0.** `PDU.kicad_dru`, `PDU.kicad_pro`, netclass ve UUID hariç tutma değişmedi.
+**DRC istisnası: 0.** `PDU.kicad_dru`, `PDU.kicad_pro`, netclass değişmedi; `drc_exclusions` eklenmedi.
 
-Güç ağı ölçüm ve küçük besleme uçları dar **zone tap** ile bağlandı (T-022 kabulü: öncelik zone tap). Bu 22 şerit mA seviyesi uçlar içindir, güç akımı taşımaları amaçlanmadı. `track_width` kuralı zone görmediği için bu genişlikler tasarımda sabitlendi: 0,8 mm (via'lı uçlar; 0,6 mm via'dan geniş olmalı), bir kolda 0,5 mm ve D_REV/CEFOUT kollarında 1,0 mm.
+Dar uçlar **zone tap** ile bağlandı (T-022 kabulü). `track_width` kuralı zone görmediği için genişlikler tasarımda sabit: 0,8 mm (via'lı uçlar, 0,6 mm viadan geniş olmalı), bir kolda 0,5 mm, D_REV/CEFOUT kollarında 1,5 mm. Kesit ölçümü ve IPC taraması: route-review.md.
 
-| Şerit | Net | Katman |
-|---|---|---|
-| TAP_TP_VOUT | `/VOUT` | B |
-| TAP_R_OV | `/VOUT` | B |
-| TAP_R_GS | `/VSAFE` | B |
-| TAP_TP_VSAFE | `/VSAFE` | In2 |
-| TAP_O1_DREV | `/O1_11V` | B |
-| TAP_O1_CEFOUT | `/O1_11V` | B |
-| TAP_O1_RPG | `/O1_11V` | B |
-| TAP_O1_TP_A | `/O1_11V` | B |
-| TAP_O1_TP_B | `/O1_11V` | In2 |
-| TAP_S2E_DREV | `/S2E_11V` | F |
-| TAP_S2E_CEFOUT | `/S2E_11V` | F |
-| TAP_S2E_RPG | `/S2E_11V` | F |
-| TAP_S2E_TP | `/S2E_11V` | B |
-| TAP_TP_ANODE | `/ANODE` | B |
-| TAP_U5 | `/ANODE` | B |
-| TAP_U5B | `/ANODE` | B |
-| TAP_U5A | `/ANODE` | B |
-| TAP_ANODE_N | `/ANODE` | B |
-| TAP_ANODE_NW | `/ANODE` | B |
-| TAP_VIN_E | `/VIN` | B |
-| TAP_VIN_E2 | `/VIN` | B |
-| TAP_VIN_E3 | `/VIN` | B |
+| Şerit | Net | Katman | Akım sınıfı |
+|---|---|---|---|
+| TAP_TP_VOUT | `/VOUT` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_R_OV | `/VOUT` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_R_GS | `/VSAFE` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_TP_VSAFE | `/VSAFE` | In2 | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_O1_DREV | `/O1_11V` | B | D_REV1 diyot akımı, 3 A değer |
+| TAP_O1_CEFOUT | `/O1_11V` | B | CEFOUT1 kapasitif, geçici akım doğrulanamadı |
+| TAP_O1_RPG | `/O1_11V` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_O1_TP_A | `/O1_11V` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_O1_TP_B | `/O1_11V` | In2 | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_S2E_DREV | `/S2E_11V` | F | D_REV2 diyot akımı, 3 A değer |
+| TAP_S2E_CEFOUT | `/S2E_11V` | F | CEFOUT2 kapasitif, geçici akım doğrulanamadı |
+| TAP_S2E_RPG | `/S2E_11V` | F | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_S2E_TP | `/S2E_11V` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_TP_ANODE | `/ANODE` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_U5 | `/ANODE` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_U5B | `/ANODE` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_U5A | `/ANODE` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_ANODE_N | `/ANODE` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_ANODE_NW | `/ANODE` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_VIN_E | `/VIN` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_VIN_E2 | `/VIN` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_VIN_E3 | `/VIN` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_ISNS1 | `/ISNS1` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_U1_VOUT | `/VOUT` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_ISNS2 | `/ISNS2` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
+| TAP_U2_VOUT | `/VOUT` | B | mA seviyesi uç (VARSAYIM): TP, bölücü, LDO, pull-up veya Kelvin |
