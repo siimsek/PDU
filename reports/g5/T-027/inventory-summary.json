@@ -1,0 +1,73 @@
+{
+ "input_commit": "90cff8bb7e4e0b0373a5e39ab01847637c98557e",
+ "kicad_cli": "10.0.7",
+ "alt_pcb": "40e0a7bed18f7297445f11df8741501eedac88a8",
+ "schematic_references": 180,
+ "schematic_pins": 488,
+ "symbol_uuids": 180,
+ "bom_rows": 187,
+ "footprint_map_rows": 180,
+ "spec_refs": 187,
+ "pcb_footprints": 184,
+ "spice_element_names": 75,
+ "references_by_class": {
+  "elektriksel parça": 140,
+  "DNP": 2,
+  "test/injection (BOM dışı, D-008)": 38
+ },
+ "references_by_status": {
+  "KAYITLI": 178,
+  "UYUŞMAZ": 2
+ },
+ "pins_by_state": {
+  "EŞLEŞTİ": 488
+ },
+ "intentional_nc_pins": 13,
+ "references_without_ledger_row": 0,
+ "pins_without_ledger_row": 0,
+ "spice_by_state": {
+  "SPICE'ta ad eşleşmesi yok: doğrulanamadı": 165,
+  "SPICE elemanı (ad eşit)": 10,
+  "SPICE metninde geçiyor, eleman adı değil: doğrulanamadı": 5
+ },
+ "spec_pin_keys": 422,
+ "dnp_references": [
+  "C_LDO_DELAY",
+  "C_REF_NR"
+ ],
+ "bom_only_kinds": {
+  "CT1": "CABLE",
+  "CT2": "CABLE",
+  "F1": "CABLE",
+  "P1": "CABLE",
+  "P2": "CABLE",
+  "P3": "CABLE",
+  "XF1": "CABLE"
+ },
+ "bom_refs_not_in_schematic": [
+  "CT1",
+  "CT2",
+  "F1",
+  "P1",
+  "P2",
+  "P3",
+  "XF1"
+ ],
+ "pcb_refs_not_in_schematic": [
+  "H1",
+  "H2",
+  "H3",
+  "H4"
+ ],
+ "footprint_map_refs_not_in_schematic": [],
+ "spec_refs_not_in_schematic": [
+  "CT1",
+  "CT2",
+  "F1",
+  "P1",
+  "P2",
+  "P3",
+  "XF1"
+ ],
+ "alt_pcb_pad_differences": 0
+}
