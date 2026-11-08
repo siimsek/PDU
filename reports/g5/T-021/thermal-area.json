@@ -4,7 +4,7 @@
   "layer": "In2.Cu",
   "zone": "L3_VIN",
   "connected_by": "9 vias on pad 5",
-  "connected_fill_area_mm2": 3654.79,
+  "connected_fill_area_mm2": 3654.44,
   "required_mm2": 645.16,
   "pass": true
  },
@@ -13,7 +13,7 @@
   "layer": "In2.Cu",
   "zone": "L3_VOUT",
   "connected_by": "9 vias on pad 5",
-  "connected_fill_area_mm2": 2107.6,
+  "connected_fill_area_mm2": 2067.13,
   "required_mm2": 645.16,
   "pass": true
  }
