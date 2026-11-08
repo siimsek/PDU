@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-023 (taslak PR; yalnız adım 1, PDU.kicad_pcb değişmedi). D-012 (#69) main'de.
-- **Aktif kart:** T-023 **InProgress** — adım 1 bitti: taban DRC 0, parite 0, 199 açık çift; 72 yeni GND via ile 77 GND çifti geçici kopyada kapandı. Rapor: reports/g5/T-023/step1-report.md.
+- **Dal / son commit:** wp/T-023 (taslak PR #70; adım 2). R-019 (#71) main'de.
+- **Aktif kart:** T-023 **InProgress** — adım 2 bitti: DRC 0, parite 0, 199→116 açık çift, /GND 0. Kelvin 4 kol ≤15 mm ama paralel değil. Rapor: reports/g5/T-023/step2-report.md.
 
 ## Yapılanlar
+- T-023 adım 2: 71 GND via, INA296 Kelvin (zone tap), R_GS kolu, TP_ISO_GATE taşındı.
 - T-023 adım 1: envanter ve GND via adayları; repo kartına yazılmadı.
 - R-018 Tur 1: TP_SW1/2 SW düğümüne taşındı; U1/U2 ISNS+VOUT çiftleri bağlandı; U4 +1,15 mm, CEFIN2 U4 batısında (CEFIN1 düzeni); D_REV/CEFOUT kolları 1,5 mm.
 - T-022 (dal): Q2 90° + L3_VSAFE, B.Cu /VOUT 7,0 ve /VSAFE 5,5, O1/S2E/ANODE/VIN, gate 5,469 mm. `pcb_route_power.py` yalnız T-021 kartından koşar. /VIN, /ANODE, /VSAFE, /O1, /S2E açık uç 0.
@@ -23,10 +24,9 @@
 - R-012 tur 1 (2 engelleyici) düzeltildi: CIN1–4/5–8 U1/U2 VIN–PGND kenarında (5,6–16,4 mm); darboğaz DRU kuralı ince adımlı padli ayak izleriyle sınırlı + `pcb_drc.py` uzunluk denetimi (≤1,5 mm), `pcb_neck_probe.py` kanıtı.
 - T-012 (#47) main'de (R-011 ONAY). T-013 (dal): `pcb_setup.py` (pcbnew) + `pcb_rules.py` + `pcb_drc.py`; netclass routing-g2'ye eşitlendi; kaba bölge yerleşimi; iz yok.
 - T-011 (#44) main'de (R-010: kanonik Value kuralı). T-012 (dal): D-008 test padleri + J_OVP_INJ_BUS + JP_EN_BUCK (BOM dışı), notlar/antet; ERC 0, B1–B7 fark 0.
-- T-010 + T-009 (#42) main'de (R-009: Q2 TI land footprint). T-011 (dal): B6 tamam; şemadaki 142 PCB parçasının tamamı spec ile birebir, ERC 0.
 
 ## Sonraki adım
-Claude Code: T-023 adım 2 (GND uygula, Kelvin, gate), her adımda refill/DRC/parite.
+Codex: adım 2 incelemesi; Kelvin paralellik, R_GS ve TP_ISNS kararları. Sonra Claude Code: adım 3 (FB/COMP/OVP/OC).
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).

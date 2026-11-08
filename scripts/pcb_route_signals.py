@@ -3,6 +3,8 @@
 Step 1 (D-012, read-only for PDU.kicad_pcb):
 
     "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe" scripts/pcb_route_signals.py --step1
+    ...python.exe scripts/pcb_route_signals.py --step2      # writes PDU.kicad_pcb: run on the T-022 board only (it refuses a board that already has T023_ zones)
+    ...python.exe scripts/pcb_route_signals.py --audit2     # step 2 evidence: DRC, Kelvin lengths, SW distance, L2
 
 Writes reports/g5/T-023/: step1-baseline.json (refill + DRC + parity), step1-inventory.json (every open pair by net/ref/pin, D-012 classes,
 every /GND pad with its L2 state), gnd-via-candidates.json (local F.Cu stub + through via candidates), and proves them on a temporary copy.
@@ -94,7 +96,7 @@ class Geo:
                 self.vias.append((d6(t.GetPosition()), t.GetNetname()))
             else:
                 self.segs.append((d6(t.GetStart()), d6(t.GetEnd()), P.ToMM(t.GetWidth()) / 2, t.GetNetname(), t.GetLayer()))
-        self.keep = [z for z in b.Zones() if z.GetZoneName().startswith("T022_") and z.GetNetname() != "/GND"]
+        self.keep = [z for z in b.Zones() if z.GetZoneName().startswith(("T022_", "T023_")) and z.GetNetname() != "/GND"]
 
     @staticmethod
     def rect_dist(r, x, y):
@@ -196,8 +198,12 @@ def candidates(geo, state, banned=frozenset()):
     res, placed = [], []
     for g in groups:
         links = []
+        origin = {x: tuple(state[x]["cluster"]) for x in g}
         for a in g[1:]:
-            near = min(g[:g.index(a)], key=lambda c: math.dist(centre(by[a]), centre(by[c])))
+            before = g[:g.index(a)]
+            if any(origin[c] == origin[a] for c in before):
+                continue              # already joined by copper (one KiCad cluster): no extra link
+            near = min(before, key=lambda c: math.dist(centre(by[a]), centre(by[c])))
             links.append([near, a])
         pad = by[g[0]]
         best = None
@@ -334,7 +340,189 @@ def step1():
     return 0
 
 
+# --------------------------------------------------------------------------- step 2 (D-012, R-019): GND returns, INA296 Kelvin, gate return
+# Kelvin arms are power-class nets (/ISNSx PHASE, /VOUT BUS): zone taps carrying no load current, 0.25 mm necks only inside the INA296 courtyard.
+KELVIN = {
+    "RS1-U11 IN+ (/ISNS1)": {"net": "/ISNS1", "layer": "F", "w": 0.4, "pts": [(32.3, 66.4), (31.6, 64.4), (30.9, 63.2), (30.337, 62.98)], "stub": []},
+    "RS1-U11 IN- (/VOUT)": {"net": "/VOUT", "layer": "B", "w": 0.8, "pts": [(26.1, 64.0), (32.0, 65.0), (37.6, 68.3)], "stub": [(26.1, 63.1), (26.1, 64.0)], "via": (26.1, 64.0)},
+    "RS2-U12 IN+ (/ISNS2)": {"net": "/ISNS2", "layer": "F", "w": 0.4, "pts": [(43.8, 15.6), (44.0, 18.4), (41.0, 20.5), (41.0, 24.85), (42.537, 24.8)], "stub": []},
+    "RS2-U12 IN- (/VOUT)": {"net": "/VOUT", "layer": "B", "w": 0.8, "pts": [(39.5, 25.2), (49.1, 15.6)], "stub": [(39.05, 24.85), (39.5, 25.2)], "via": (39.5, 25.2)},
+}
+GATE_W = 0.4
+GATE_BRANCH = [(94.8, 47.49), (96.2, 46.5), (96.2, 44.6), (96.2, 41.3), (91.5, 41.3), (91.5, 36.9)]
+TP_LINK = [(96.2, 44.6), (97.4, 44.6)]
+TP_GATE = (97.4, 44.6)
+REFDES = [("TP_ISO_GATE", 98.4, 48.9, 90), ("C_ISO_VCAP", 92.6, 44.6, 0)]
+KELVIN_LIMIT = 15.0
+
+
+def polylen(pts):
+    return sum(math.dist(a, c) for a, c in zip(pts, pts[1:]))
+
+
+def t_track(b, net, lay, w, pts):
+    for a, c in zip(pts, pts[1:]):
+        t = P.PCB_TRACK(b)
+        t.SetStart(kp(*a))
+        t.SetEnd(kp(*c))
+        t.SetWidth(P.FromMM(w))
+        t.SetLayer(lay)
+        t.SetNet(b.GetNetInfo().GetNetItem(net))
+        b.Add(t)
+
+
+def t_via(b, net, xy):
+    v = P.PCB_VIA(b)
+    v.SetPosition(kp(*xy))
+    v.SetViaType(P.VIATYPE_THROUGH)
+    v.SetLayerPair(P.F_Cu, P.B_Cu)
+    v.SetDrill(P.FromMM(DRILL_R * 2))
+    v.SetWidth(P.F_Cu, P.FromMM(VIA_R * 2))
+    v.SetNet(b.GetNetInfo().GetNetItem(net))
+    b.Add(v)
+
+
+def t_zone(b, name, net, lay, poly):
+    z = P.ZONE(b)
+    z.SetZoneName(name)
+    z.SetNet(b.GetNetInfo().GetNetItem(net))
+    z.SetLayer(lay)
+    z.SetAssignedPriority(7)
+    z.SetMinThickness(P.FromMM(0.25))
+    z.SetLocalClearance(P.FromMM(0.3))
+    z.SetThermalReliefGap(P.FromMM(0.3))
+    z.SetThermalReliefSpokeWidth(P.FromMM(0.5))
+    z.SetPadConnection(P.ZONE_CONNECTION_FULL)
+    z.SetIslandRemovalMode(P.ISLAND_REMOVAL_MODE_NEVER)
+    ol = z.Outline()
+    idx = ol.NewOutline()
+    for x, y in poly:
+        q = kp(x, y)
+        ol.Append(q.x, q.y, idx)
+    b.Add(z)
+
+
+def step2():
+    if P.GetBuildVersion().split("-")[0] != "10.0.7":
+        raise SystemExit("KiCad 10.0.7 required (D-009): " + P.GetBuildVersion())
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from pcb_route_power import ribbon
+    b = P.LoadBoard(str(PCB))
+    if any(z.GetZoneName().startswith("T023_") for z in b.Zones()):
+        raise SystemExit("Board already has T023_ zones: start from the T-022 board.")
+    fp = {f.GetReference(): f for f in b.GetFootprints()}
+    fp["TP_ISO_GATE"].SetPosition(kp(*TP_GATE))
+    for ref, x, y, ang in REFDES:
+        t = fp[ref].Reference()
+        t.SetPosition(kp(x, y))
+        t.SetTextAngle(P.EDA_ANGLE(float(ang), P.DEGREES_T))
+    t_track(b, "/GND", P.F_Cu, 0.25, [(43.25, 24.1), (44.35, 24.45)])       # R-019: U12.7 returns through U14.2's via; no room for its own via beside the RS2 Kelvin arm
+    LAY = {"F": P.F_Cu, "B": P.B_Cu}
+    lengths = {}
+    for i, (name, k) in enumerate(KELVIN.items()):
+        q = list(k["pts"])
+        ln = math.dist(q[0], q[1])
+        q[0] = (q[0][0] + (q[0][0] - q[1][0]) / ln * 0.4, q[0][1] + (q[0][1] - q[1][1]) / ln * 0.4)
+        ln = math.dist(q[-1], q[-2])
+        q[-1] = (q[-1][0] + (q[-1][0] - q[-2][0]) / ln * 0.4, q[-1][1] + (q[-1][1] - q[-2][1]) / ln * 0.4)
+        from_pcb = ribbon(q, k["w"])
+        t_zone(b, f"T023_KELVIN_{i}", k["net"], LAY[k["layer"]], from_pcb)
+        if k.get("via"):
+            t_via(b, k["net"], k["via"])
+            t_track(b, k["net"], P.F_Cu, 0.25, k["stub"])
+        lengths[name] = round(polylen(k["pts"]) + polylen(k["stub"]), 3)
+    t_track(b, "/ISO_GATE", P.F_Cu, GATE_W, GATE_BRANCH)
+    t_track(b, "/ISO_GATE", P.F_Cu, GATE_W, TP_LINK)
+    P.ZONE_FILLER(b).Fill(b.Zones())
+    b.BuildConnectivity()
+    geo = Geo(b)
+    state = l2_state(b)
+    by = {f"{p['ref']}.{p['pin']}": p for p in geo.pads if p["net"] == "/GND"}
+    cands = candidates(geo, state, frozenset())
+    apply_candidates(b, cands, by)
+    P.ZONE_FILLER(b).Fill(b.Zones())
+    P.SaveBoard(str(PCB), b, True)
+    placed = [c for c in cands if c["via"]]
+    with (OUT / "step2-gnd-applied.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump({"groups": len(cands), "new_vias": len(placed), "no_position_found": [c["pads"] for c in cands if not c["via"]], "max_centre_to_via_mm": max((c["stub_mm"] for c in placed), default=None), "candidates": cands}, f, indent=0, ensure_ascii=False)
+        f.write("\n")
+    with (OUT / "step2-kelvin-lengths.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump(lengths, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    print(json.dumps({"kelvin_mm": lengths, "new_gnd_vias": len(placed), "no_position": [c["pads"] for c in cands if not c["via"]]}, ensure_ascii=False))
+    return 0
+
+
+def sample(pts, step=0.1):
+    out = []
+    for a, c in zip(pts, pts[1:]):
+        n = max(1, int(math.dist(a, c) / step))
+        out += [(a[0] + (c[0] - a[0]) * i / n, a[1] + (c[1] - a[1]) * i / n) for i in range(n + 1)]
+    return out
+
+
+def outline_pts(z):
+    ol = z.Outline().COutline(0)
+    return [d6(ol.CPoint(i)) for i in range(ol.PointCount())]
+
+
+HV = ("/ANODE", "/VIN", "/VOUT", "/VSAFE")
+PAIRS = {"RS1-U11 IN+ (/ISNS1)": ("U11.8", "RS1.1"), "RS1-U11 IN- (/VOUT)": ("U11.1", "RS1.2"), "RS2-U12 IN+ (/ISNS2)": ("U12.8", "RS2.1"), "RS2-U12 IN- (/VOUT)": ("U12.1", "RS2.2")}
+
+
+def step2_audit():
+    b = P.LoadBoard(str(PCB))
+    P.ZONE_FILLER(b).Fill(b.Zones())
+    b.BuildConnectivity()
+    D = drc(PCB, OUT / "drc-step2.json")
+    base = json.loads((OUT / "step1-baseline.json").read_text(encoding="utf-8"))
+    now = summary(D)
+    geo = Geo(b)
+    conn = b.GetConnectivity()
+    pads = {f"{f.GetReference()}.{p.GetNumber()}": p for f in b.GetFootprints() for p in f.Pads()}
+    sw = [r for r in geo.pads if r["net"].startswith("/SW_PH")]
+    swz = [outline_pts(z) for z in b.Zones() if z.GetNetname().startswith("/SW_PH")]
+    l2 = next(z for z in b.Zones() if z.GetZoneName() == "L2_GND")
+    res = {}
+    for name, k in KELVIN.items():
+        a, c = PAIRS[name]
+        items = conn.GetConnectedItems(pads[a])
+        linked = any(x.GetClass() == "PAD" and f"{x.GetParentFootprint().GetReference()}.{x.GetNumber()}" == c for x in items)
+        pts = sample(k["pts"] + ([] if not k.get("stub") else []))
+        full = k["stub"] + k["pts"] if k.get("stub") else k["pts"]
+        sw_pad = min(geo.rect_dist(r["rect"], *q) for r in sw for q in pts)
+        sw_zone = min(min(geo.seg_dist(u, v, q) for u, v in zip(o, o[1:] + o[:1])) for o in swz for q in pts)
+        lay = {"F": P.F_Cu, "B": P.B_Cu}[k["layer"]]
+        others = [(u, v, h, n) for u, v, h, n, l in geo.segs if l == lay and n != k["net"] and n != "/GND"]
+        near = min(((geo.seg_dist(u, v, q) - h - k["w"] / 2, n) for u, v, h, n in others for q in pts), default=(None, ""))
+        res[name] = {"route_centreline_mm": round(polylen(full), 3), "limit_mm": KELVIN_LIMIT, "meets_limit": polylen(full) <= KELVIN_LIMIT, "layer": k["layer"] + ".Cu", "ribbon_width_mm": k["w"], "stub_width_mm": 0.25 if k.get("stub") else None,
+                     "kicad_connected": linked, "from": a, "to": c, "min_distance_to_sw_pad_mm": round(sw_pad, 2), "min_distance_to_sw_copper_outline_mm": round(sw_zone, 2),
+                     "nearest_other_net_track_gap_mm": round(near[0], 3) if near[0] is not None else None, "nearest_other_net": near[1],
+                     "l2_under_route_fraction": round(sum(1 for q in pts if l2.HitTestFilledArea(P.In1_Cu, kp(*q), 0)) / len(pts), 3)}
+    gp = {"main_U6_Q2_mm": round(polylen([(93.733, 47.49), (94.2, 47.49), (94.8, 47.49), (95.9, 48.65), (95.9, 51.453)]), 3), "limit_mm": 10.0, "branch_to_R_GS_mm": round(polylen(GATE_BRANCH), 3), "tp_link_mm": round(polylen(TP_LINK), 3), "width_mm": GATE_W, "layer": "F.Cu", "r_gs_note": "R_GS placed 11 mm south of Q2 (T-020): branch length reported, placement not changed"}
+    l2f = l2.GetFilledPolysList(P.In1_Cu)
+    area = 0.0
+    for i in range(l2f.OutlineCount()):
+        area += abs(l2f.COutline(i).Area())
+        for h in range(l2f.HoleCount(i)):
+            area -= abs(l2f.CHole(i, h).Area())
+    gapp = json.loads((OUT / "step2-gnd-applied.json").read_text(encoding="utf-8"))
+    opened = {n: now["pairs_by_net"].get(n, 0) - v for n, v in base["pairs_by_net"].items() if now["pairs_by_net"].get(n, 0) > v}
+    gnd_left = [k for k, v in l2_state(b).items() if not v["on_L2"]]
+    out = {"kicad": P.GetBuildVersion(), "baseline": {k: base[k] for k in ("errors", "unconnected_pairs", "schematic_parity_issues")}, "after": {k: now[k] for k in ("errors", "by_type", "schematic_parity_issues", "unconnected_pairs", "pairs_by_net")},
+           "new_opens_vs_step1": opened, "kelvin": res, "gate": gp, "l2": {"islands": l2f.OutlineCount(), "fill_area_mm2": round(area / P.FromMM(1.0) ** 2, 2)}, "gnd_vias": {"new": gapp["new_vias"], "groups": gapp["groups"], "max_centre_to_via_mm": gapp["max_centre_to_via_mm"], "gnd_pads_not_on_L2": gnd_left}}
+    with (OUT / "step2-audit.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump(out, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    print(json.dumps({k: out[k] for k in ("after", "new_opens_vs_step1", "kelvin", "gate", "l2", "gnd_vias")}, ensure_ascii=False, indent=0))
+    return 0
+
+
 if __name__ == "__main__":
     if "--step1" in sys.argv:
         sys.exit(step1())
+    if "--step2" in sys.argv:
+        sys.exit(step2())
+    if "--audit2" in sys.argv:
+        sys.exit(step2_audit())
     raise SystemExit(__doc__)
