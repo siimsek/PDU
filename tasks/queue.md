@@ -53,6 +53,7 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [D-010](done/D-010.md) | THINKER | M | T-021 | Done |
 | [D-011](done/D-011.md) | THINKER | M | T-021 | Done |
 | [T-022](done/T-022.md) | BUILDER | M | T-021, D-011 | Done |
+| [R-018](done/R-018.md) | THINKER | M | T-022 | Done |
 | [T-023](T-023.md) | BUILDER | M | T-022 | Ready |
 | [T-024](T-024.md) | BUILDER | M | T-023 | Draft |
 
