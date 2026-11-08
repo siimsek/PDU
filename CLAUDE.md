@@ -19,6 +19,9 @@ Görev kartını uygularsın: KiCad, betik, SPICE, BOM, test, belge; commit, pus
 ## Model rehberi
 Opus: mimari karar, zor hata ayıklama. Sonnet: uygulama, betik, ERC döngüsü, belge. Haiku: toplu/mekanik iş. Kartın **Model önerisi** alanına uy.
 
+## Mühendislik standardı (zorunlu)
+- Şematik ve PCB'ye dokunan her kart [`docs/POWER-PCB-ENGINEERING-STANDARD.md`](docs/POWER-PCB-ENGINEERING-STANDARD.md) standardına uyar; çelişkide daha kısıtlayıcı olan geçerlidir, sessiz düzeltme yok. Kart izni olmadan belgeyi değiştirme.
+
 ## Kanıt ve kriterler
 - Etiketler HESAP / DATASHEET(sayfa) / SİM / VARSAYIM / AÇIK; simülasyon fiziksel kanıt değildir.
 - Kriterler gevşetilmez: O1 ≤12,0 V; kararlı bara ≤11,1605 V; bara min ≥10,78 V; U3/U4 IN <30 V. FAIL silinmez; tamamlanmayan koşu PASS değildir.

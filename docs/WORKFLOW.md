@@ -48,6 +48,9 @@ THINKER salt-okunur komut çalıştırabilir (pytest, kicad-cli ERC/DRC, ngspice
 
 Sayı doğrulayan THINKER, BUILDER'ın sonucunu görmez: yalnız girdi tablosu + kriter alır, kendi hesaplar, sonra karşılaştırılır. `scripts/make_pack.py --for codex|chatgpt` sonuç dosyalarını varsayılan olarak çıkarır (`--include-results` yalnız karşılaştırma turunda).
 
+## Mühendislik standardı
+Şematik ve PCB aşamalarının tümü [`POWER-PCB-ENGINEERING-STANDARD.md`](POWER-PCB-ENGINEERING-STANDARD.md) standardına uyar. THINKER R-/D-kartıyla denetler, BUILDER yalnız kart izniyle uygular; iki rolün yazma sınırları değişmez. Çelişkide daha kısıtlayıcı olan geçerlidir; fark D-kararına taşınır. Kaynak: `decisions/R-020-engineering-standard-source.md`.
+
 ## Kanıt ve kriterler (değişmez)
 
 Kanıt sırası: tezgâh ölçümü > komut çıktısı/log > hesap > yorum. Etiketler HESAP / DATASHEET(sayfa) / SİM / VARSAYIM / AÇIK; simülasyon fiziksel kanıt değildir. FAIL silinmez, kriter gevşetilmez: O1 ≤12,0 V; kararlı bara ≤11,1605 V; bara min ≥10,78 V; U3/U4 IN <30 V. MPN/değer/stok uydurulmaz; okunamayan belge → "doğrulanamadı". Tipik değer garanti gibi kullanılmaz. Aynı araç hatası 2 denemede aşılmazsa dur, "kanıt yok" yaz. Raporlardaki sayılar JSON/hesap çıktısından gelir.
