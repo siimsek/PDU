@@ -78,7 +78,7 @@
   },
   "/FB_INJ": {
    "open_pairs": 0,
-   "track_mm": 109.43,
+   "track_mm": 108.92,
    "layers": [
     "B",
     "F"
@@ -89,7 +89,7 @@
   },
   "/COMP": {
    "open_pairs": 0,
-   "track_mm": 131.15,
+   "track_mm": 130.58,
    "layers": [
     "F"
    ],
@@ -109,7 +109,7 @@
   },
   "/OVP_SENSE": {
    "open_pairs": 0,
-   "track_mm": 91.97,
+   "track_mm": 91.01,
    "layers": [
     "B",
     "F"
@@ -120,7 +120,7 @@
   },
   "/OVP_REF": {
    "open_pairs": 0,
-   "track_mm": 41.51,
+   "track_mm": 40.44,
    "layers": [
     "F"
    ],
@@ -130,7 +130,7 @@
   },
   "/OVP_TRIP_N": {
    "open_pairs": 0,
-   "track_mm": 85.32,
+   "track_mm": 84.65,
    "layers": [
     "B",
     "F"
@@ -141,7 +141,7 @@
   },
   "/OVP_Q": {
    "open_pairs": 0,
-   "track_mm": 137.64,
+   "track_mm": 137.57,
    "layers": [
     "B",
     "F"
@@ -163,7 +163,7 @@
   },
   "/OC_SENSE1": {
    "open_pairs": 0,
-   "track_mm": 10.81,
+   "track_mm": 10.24,
    "layers": [
     "B",
     "F"
@@ -174,7 +174,7 @@
   },
   "/OC_SENSE2": {
    "open_pairs": 0,
-   "track_mm": 13.87,
+   "track_mm": 13.02,
    "layers": [
     "B",
     "F"
@@ -185,7 +185,7 @@
   },
   "/OC_REF": {
    "open_pairs": 0,
-   "track_mm": 118.47,
+   "track_mm": 117.42,
    "layers": [
     "B",
     "F"
@@ -218,7 +218,7 @@
   },
   "/CLR_N": {
    "open_pairs": 0,
-   "track_mm": 131.78,
+   "track_mm": 131.23,
    "layers": [
     "B",
     "F"
@@ -229,7 +229,7 @@
   },
   "/ISO_EN": {
    "open_pairs": 0,
-   "track_mm": 23.35,
+   "track_mm": 22.8,
    "layers": [
     "B",
     "F"
@@ -240,7 +240,7 @@
   },
   "/ISO_OV": {
    "open_pairs": 0,
-   "track_mm": 109.7,
+   "track_mm": 108.65,
    "layers": [
     "B",
     "F"
@@ -251,7 +251,7 @@
   }
  },
  "gnd": {
-  "new_vias": 60,
+  "new_vias": 59,
   "no_position": [],
   "searched_paths": 4,
   "pads_not_on_L2": []

@@ -26,7 +26,7 @@
 - R-002 tur 1 (PR #53, 1 engelleyici: Codex'te KiCad 9.0.2): 5a2985c üzerinde KiCad 10.0.7 ile ERC 0 + netlist, R-002 karşılaştırıcısı 0 fark (reports/g5/T-014/R-002-tur2/). LDSTRT/ITIMER gerekçesi AÇIK.
 
 ## Sonraki adım
-Codex: PR #70 adım 3 incelemesi (R-022 Tur 6, U-011). Onaydan sonra Claude Code: adım 4. T-028 ilk 20 ve T-032 ayrı dallarda; T-033 T-023 sonrası.
+Codex: PR #70 adım 3 incelemesi (R-022 Tur 7, U-011). Onaydan sonra Claude Code: adım 4. T-028 ilk 20 ve T-032 ayrı dallarda; T-033 T-023 sonrası.
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).

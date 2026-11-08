@@ -1,6 +1,6 @@
 # T-023 montaj haritası: silk referansı gizli pasifler
 
-**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `30ff7da04f06ce4a02b83f4d7c51442ffdb83dcce3313e97b6418d538fab5ec8`. KiCad 10.0.7. BOM: `design/bom-v2.csv`. Kart değişirse `--assembly-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın. T-024 imalat kapısı bu eşleşmeyi ister.
+**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `d87bd7bfd03822d8bd34220172c75ac1819cf0bc79d101ac30ca7380df9b649e`. KiCad 10.0.7. BOM: `design/bom-v2.csv`. Kart değişirse `--assembly-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın. T-024 imalat kapısı bu eşleşmeyi ister.
 
 Konum, yön, değer ve ağlar karttan betikle alındı; değerler BOM ile karşılaştırıldı. D-006: orijin sol alt, y yukarı. PCB: KiCad pafta koordinatı. Dönme KiCad açısıdır.
 

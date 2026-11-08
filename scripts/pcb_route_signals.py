@@ -361,7 +361,7 @@ KELVIN = {
                             "tp": ("F", 0.4, [(45.6, 20.477), (45.6, 19.6)])},
 }
 # R-020: test pads beside their Kelvin arm (search starts from R-020's coordinates, then checked against the new route).
-TP_MOVES = [("RFB1", 42.55, 83.8), ("RFB2", 45.95, 83.8), ("R_TRIM", 49.15, 83.8), ("CHF", 53.6, 83.8), ("RCOMP", 57.0, 83.8), ("CCOMP", 60.4, 83.8), ("TP_COMP", 54.3, 22.7),
+TP_MOVES = [("RFB1", 42.55, 83.8), ("RFB2", 45.95, 83.8), ("R_TRIM", 49.15, 83.8), ("CHF", 53.6, 83.8), ("RCOMP", 57.0, 83.8), ("CCOMP", 60.4, 83.8), ("TP_COMP", 54.3, 22.7), ("TP_GND_FB", 65.6, 83.45),
             ("TP_GND_OVP", 96.2, 62.0), ("TP_OVP_REF", 98.9, 62.7), ("TP_OC_REF", 93.5, 62.7), ("TP_OC_SENSE1", 33.0, 59.5), ("TP_OC_SENSE2", 38.5, 27.0), ("TP_GND_OC", 50.5, 22.0), ("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
 GATE_W = 0.4
 TP_GATE = (97.4, 44.6)
@@ -735,7 +735,7 @@ STEP3_PREFIX = {"/GND": {"U6.2": [(91.457, 48.14), (88.8, 48.14)], "U15.2": [(91
                 "/OVP_REF": {"U7.3": [(103.395, 75.065), (102.5, 75.065), (102.5, 74.2)]}, "/OC_TRIP2_N": {"U14.1": [(44.757, 25.105), (44.0, 25.105), (44.0, 26.2)]}}
 # R-022 Tur 4 / SNVSCD3 p.44, p.20: FB divider at the FB pin and compensation at the primary. Hand-placed copper, routed nowhere else.
 STEP3_FIXED = {"/FB": [[(47.0, 79.4), (47.0, 80.25), (44.25, 80.25), (44.25, 83.8)], [(43.375, 83.8), (45.125, 83.8)]], "/FB_TRIM": [[(46.775, 83.8), (48.325, 83.8)]],
-               "/GND": [[(84.965, 80.03), (86.02, 79.83)]], "/COMP_MID": [[(57.825, 83.8), (59.625, 83.8)]], "/COMP": [[(52.825, 82.95), (52.825, 83.8)], [(56.175, 82.95), (56.175, 83.8)]]}
+               "/GND": [[(84.965, 80.03), (86.02, 79.83)], [(65.6, 83.45), (62.0, 83.8)]], "/COMP_MID": [[(57.825, 83.8), (59.625, 83.8)]], "/COMP": [[(52.825, 82.95), (52.825, 83.8)], [(56.175, 82.95), (56.175, 83.8)]]}
 STEP3_SKIP = ("/FB", "/FB_TRIM", "/COMP_MID")
 STEP3_DONE = ("RCOMP.1", "CHF.1")
 YIELDING_ZONES = ("T022_F_VSAFE_Q2",)
@@ -1032,6 +1032,7 @@ def step3():
         return (max(x[0] for x in c) - min(x[0] for x in c)) + (max(x[1] for x in c) - min(x[1] for x in c))
     log = {"routed": [], "failed": []}
     prefix_end = {}
+    stubs_drawn = set()
     for net, group in STEP3_PREFIX.items():
         for pin, pts in group.items():
             t_track(b, net, P.F_Cu, ROUTE_W, pts)
@@ -1101,7 +1102,9 @@ def step3():
                 layer = LAYERS["F"] if end[2] == 0 else LAYERS["B"]
                 pts_ = [exits[pin[0]], end[:2]] if pin[0] in prefix_end else [pin[1], exits.get(pin[0], pin[1]), end[:2]]
                 for a_, c_ in zip(pts_, pts_[1:]):
-                    if math.dist(a_, c_) > 1e-6:
+                    key_ = (net, layer, *sorted(((round(a_[0], 4), round(a_[1], 4)), (round(c_[0], 4), round(c_[1], 4)))))
+                    if math.dist(a_, c_) > 1e-6 and key_ not in stubs_drawn:
+                        stubs_drawn.add(key_)
                         t_track(b, net, layer, ROUTE_W, [a_, c_])
                         G.seg([end[2]], code, a_, c_, ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
             pad_stub(q, xy[-1])
@@ -1310,6 +1313,7 @@ def ref_audit():
     return 0
 
 
+FB_LOOP_ANCHORS = ("U1.16", "U1.15", "RFB2.1", "RFB1.2", "R_TRIM.2", "CHF.2", "RCOMP.1", "CCOMP.2")
 ASSIGNED_PROBE_GND = {"TP_COMP": "TP_GND_OC", "TP_OVP_REF": "TP_GND_OVP", "TP_OC_REF": "TP_GND_OVP"}    # R-022 Tur 4-5
 HIDDEN_PASSIVES = ("RFB1", "RFB2", "R_TRIM", "CHF", "RCOMP", "CCOMP", "CVCC1", "CVDDA1", "RT1")
 
@@ -1379,7 +1383,11 @@ def probe_map():
             a_ = next(x for x in gnds if x["ref"] == ASSIGNED_PROBE_GND[r["ref"]])
             r["assigned_probe_gnd"] = a_["ref"]
             r["assigned_probe_gnd_mm"] = round(math.dist(a_["d6_mm"], r["d6_mm"]), 2)
-    out = {"board": "PDU.kicad_pcb", "board_sha256_lf": sha, "kicad": P.GetBuildVersion(), "rows": rows}
+    pads_ = {f"{f.GetReference()}.{q_.GetNumber()}": q_ for f in b.GetFootprints() for q_ in f.Pads()}
+    anchor = {k: (round(P.ToMM(pads_[k].GetPosition().x) - 30, 3), round(115 - P.ToMM(pads_[k].GetPosition().y), 3)) for k in FB_LOOP_ANCHORS}
+    fb_gnd = next(r for r in rows if r["ref"] == "TP_GND_FB")["d6_mm"]
+    fb_loop = {k: round(math.dist(fb_gnd, v), 3) for k, v in anchor.items()}
+    out = {"board": "PDU.kicad_pcb", "board_sha256_lf": sha, "kicad": P.GetBuildVersion(), "tp_gnd_fb_to_fb_loop_mm": fb_loop, "rows": rows}
     with (OUT / "probe-map.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump(out, f, indent=1, ensure_ascii=False)
         f.write("\n")
@@ -1400,6 +1408,10 @@ Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y y
 ## Tüm test noktaları ({len(rows)})
 
 {head}{chr(10).join(line(r) for r in rows)}
+
+## TP_GND_FB ile FB/loop grubu (pad merkezleri, mm)
+
+{chr(10).join(f"- {k}: {str(v).replace('.', ',')}" for k, v in fb_loop.items())}
 
 ## Atanmış prob GND
 

@@ -1,4 +1,4 @@
-# T-023 Adım 3 — FB/COMP/OVP/OC (R-022 Tur 5 sonrası)
+# T-023 Adım 3 — FB/COMP/OVP/OC (R-022 Tur 6 sonrası)
 
 **Durum: T-023 InProgress. Adım 3 hedef ağları kapandı; adım 4'e geçilmedi, THINKER onayı bekleniyor.** KiCad 10.0.7 (`--refill-zones --schematic-parity`): DRC hatası **0**, parite **0**, açık çift **199 → 68**, adım 1'e göre yeni açık ağ **0**, adım 2'ye göre yeni açık ağ **0**, L2 **1** ada. Uyarı: `{'warning:via_dangling': 6}`. Bu sayılar ara aşamadır, final kabul değildir.
 
@@ -31,22 +31,22 @@ U1 ölçüm kolları değiştirilmedi: yönlendirme sırası `STEP3_FIRST` ile s
 |---|---:|---:|---|---:|---:|
 | `/FB` | 0 | 8,9 | F | 0 | 1,32 / 2,95 |
 | `/FB_TRIM` | 0 | 1,55 | F | 0 | 5,62 / 7,35 |
-| `/FB_INJ` | 0 | 109,43 | B, F | 2 | 3,97 / 7,08 |
-| `/COMP` | 0 | 131,15 | F | 0 | 1,92 / 2,65 |
+| `/FB_INJ` | 0 | 108,92 | B, F | 2 | 3,97 / 7,08 |
+| `/COMP` | 0 | 130,58 | F | 0 | 1,92 / 2,65 |
 | `/COMP_MID` | 0 | 1,8 | F | 0 | 5,33 / 13,08 |
-| `/OVP_SENSE` | 0 | 91,97 | B, F | 8 | 30,22 / 36,05 |
-| `/OVP_REF` | 0 | 41,51 | F | 0 | 25,68 / 35,49 |
-| `/OVP_TRIP_N` | 0 | 85,32 | B, F | 6 | 26,86 / 34,16 |
-| `/OVP_Q` | 0 | 137,64 | B, F | 10 | 8,4 / 8,4 |
+| `/OVP_SENSE` | 0 | 91,01 | B, F | 8 | 30,22 / 36,05 |
+| `/OVP_REF` | 0 | 40,44 | F | 0 | 25,68 / 35,49 |
+| `/OVP_TRIP_N` | 0 | 84,65 | B, F | 6 | 26,86 / 34,16 |
+| `/OVP_Q` | 0 | 137,57 | B, F | 10 | 8,4 / 8,4 |
 | `/OVP_BUS_N` | 0 | 91,65 | B, F | 2 | 29,35 / 31,5 |
-| `/OC_SENSE1` | 0 | 10,81 | B, F | 2 | 13,42 / 13,61 |
-| `/OC_SENSE2` | 0 | 13,87 | B, F | 2 | 9,88 / 10,47 |
-| `/OC_REF` | 0 | 118,47 | B, F | 2 | 9,9 / 9,9 |
+| `/OC_SENSE1` | 0 | 10,24 | B, F | 2 | 13,42 / 13,61 |
+| `/OC_SENSE2` | 0 | 13,02 | B, F | 2 | 9,88 / 10,47 |
+| `/OC_REF` | 0 | 117,42 | B, F | 2 | 9,9 / 9,9 |
 | `/OC_TRIP1_N` | 0 | 67,64 | B, F | 6 | 6,9 / 6,9 |
 | `/OC_TRIP2_N` | 0 | 86,84 | B, F | 6 | 13,35 / 13,35 |
-| `/CLR_N` | 0 | 131,78 | B, F | 10 | 27,07 / 36,4 |
-| `/ISO_EN` | 0 | 23,35 | B, F | 2 | 32,82 / 41,15 |
-| `/ISO_OV` | 0 | 109,7 | B, F | 6 | 18,73 / 20,81 |
+| `/CLR_N` | 0 | 131,23 | B, F | 10 | 27,07 / 36,4 |
+| `/ISO_EN` | 0 | 22,8 | B, F | 2 | 32,82 / 41,15 |
+| `/ISO_OV` | 0 | 108,65 | B, F | 6 | 18,73 / 20,81 |
 
 SW mesafeleri ölçülen en küçük plan mesafesidir; gürültü kuplajı **doğrulanamadı**. HV 0,6 mm ve sınıf açıklıkları DRC ile sınandı.
 
@@ -150,7 +150,7 @@ Karşılaştırılan seçenek: TP_GND_FB'yi kuzeye (66,2; 83,4) almak. Yönlendi
 | TP_S2E | 24,98 | 38,01 |
 | TP_OVP_BUS_N | 9,74 | 22,43 |
 
-Bu nedenle hiçbir atanmış GND padi taşınmadı. Diğer test noktalarının en yakın prob GND'si ve mesafesi `7a37b1f` ile **aynı** (betikle karşılaştırıldı, tek fark TP_COMP).
+Tur 5'te bu nedenle hiçbir atanmış GND padi taşınmadı; Tur 6'da TP_GND_FB taşındı (aşağıda). Diğer test noktalarının en yakın prob GND'si ve mesafesi `7a37b1f` ile **aynı** (betikle karşılaştırıldı, tek fark TP_COMP).
 
 **Elektriksel etki (GEOMETRİ):**
 - TP_COMP ayrı dal değil, COMP hattı pad üzerinden geçiyor: dal uzunluğu 0,0 mm (önce 0,75 mm).
@@ -168,6 +168,61 @@ Bu nedenle hiçbir atanmış GND padi taşınmadı. Diğer test noktalarının e
 - `7a37b1f` ile pcbnew karşılaştırması: /VOUT, /VSAFE, /VIN, /ANODE, /ISO_GATE, /ISNS1, /ISNS2, /O1_11V, /S2E_11V izleri ve via'ları ile tüm bölge sınırları aynı.
 - Kelvin 8,205 / 8,798 / 7,917 / 10,468 mm, U6–Q2 gate 5,469 mm. `--audit2` ile bu kartta ölçüldü.
 - FB/COMP ve /OC_REF R-022 Tur 5 gereği koşullu ara kabul; SI ve kararlılık **doğrulanamadı**.
+
+## R-022 Tur 6: TP_GND_FB ve FB/loop grubu
+
+**Uygulandı:** TP_GND_FB (69,121; 24,052) → (65,6; 83,45); CCOMP.2'nin GND via'sına (62,0; 83,8) F.Cu ile bağlı. TP_COMP–TP_GND_OC paylaşımı korundu. D-008 ve DRC kriterleri değişmedi.
+
+Pad merkezinden merkeze mesafe (HESAP, mekanik erişim kanıtı değildir):
+
+| FB/loop noktası | TP_GND_FB (mm) |
+|---|---:|
+| U1.16 | 19,036 |
+| U1.15 | 18,548 |
+| RFB2.1 | 20,478 |
+| RFB1.2 | 22,228 |
+| R_TRIM.2 | 15,629 |
+| CHF.2 | 11,23 |
+| RCOMP.1 | 9,431 |
+| CCOMP.2 | 4,439 |
+
+Önceki konumda U1.16 59,604 mm, RCOMP.1 61,134 mm idi (R-022 Tur 6 ölçümü). Karşılaştırılan batı adayı (39,2; 83,5) yönlendirilmedi: U1.16 8,812 mm, RCOMP.1 16,978 mm. Doğu adayı komp. dönüş via'sını paylaştığı ve L1 yanına via gerektirmediği için seçildi; bu bir tercih gerekçesidir, ölçülmüş dönüş kanıtı değildir.
+
+### Diğer prob GND mesafeleri
+
+Kuzeye taşıma, güney-orta bölgenin yerel prob GND'sini kaldırdı. Değişen test noktaları (`8f8b4e1` ile, en büyük fark önce):
+
+| TP | Önce | Sonra | Fark (mm) |
+|---|---|---|---:|
+| TP_VSAFE | TP_GND_FB 13,78 | TP_GND_OC 32,47 | 18,69 |
+| TP_VOUT | TP_GND_FB 19,75 | TP_GND_OC 38,43 | 18,68 |
+| TP_FB_INJ_A | TP_GND_FB 22,8 | TP_GND_OC 40,07 | 17,27 |
+| TP_OVP_TRIP_N | TP_GND_FB 7,15 | TP_GND_OC 24,34 | 17,19 |
+| TP_OVP_SENSE | TP_GND_FB 15,13 | TP_GND_OC 31,35 | 16,22 |
+| TP_PG_S2E | TP_GND_FB 28,84 | TP_GND_OC 44,84 | 16,0 |
+| TP_CLR_N | TP_GND_FB 30,91 | TP_GND_OC 45,88 | 14,97 |
+| TP_S2E | TP_GND_FB 24,98 | TP_GND_OVP 38,01 | 13,03 |
+| TP_OVP_BUS_N | TP_GND_FB 9,74 | TP_GND_OC 22,43 | 12,69 |
+| TP_ISNS1N | TP_GND_POWER 41,09 | TP_GND_FB 39,42 | -1,67 |
+| TP_ISNS1P | TP_GND_OC 46,75 | TP_GND_FB 29,94 | -16,81 |
+| TP_SW1 | TP_GND_OC 49,86 | TP_GND_FB 23,42 | -26,44 |
+
+**Kötüleşen 9 test noktası var, iyileşen 3.** Atanmış GND padinin kaldığı TP_GND_OVP, TP_GND_OC ve TP_GND_POWER yerinde. Bu bölgeyi yeniden kapsamak yeni bir test padi ister; şema/D-008 yetkisi gerektirdiği için burada yapılmadı.
+
+### Kopya segment düzeltmesi
+
+R-022 Tur 6'nın gördüğü tekrarlı segmentler router'ın aynı pad çıkışını yeniden çizmesindendi; `stubs_drawn` ile engellendi. Kartta kopya iz sayısı 0 (betikle sayıldı). Bu yüzden toplam uzunluklar önceki turlara göre biraz düştü: /OC_REF 118,47 → 117,42 mm, /OVP_REF 41,506 → 40,437 mm. Bakır geometrisi değişmedi.
+
+### Doğrulama
+
+- KiCad 10.0.7: DRC hatası 0, parite 0, açık çift 68 (adım 4), L2 1 ada, uyarı `{'warning:via_dangling': 6}`.
+- `8f8b4e1` ile pcbnew karşılaştırması: /VOUT, /VSAFE, /VIN, /ANODE, /ISO_GATE, /ISNS1, /ISNS2, /O1_11V, /S2E_11V izleri ve via'ları ile tüm bölge sınırları aynı.
+- Kelvin 8,205 / 8,798 / 7,917 / 10,468 mm, U6–Q2 gate 5,469 mm. `--audit2` ile bu kartta ölçüldü.
+- SI, kararlılık, kuplaj ve fiziksel erişim **doğrulanamadı**.
+
+### Tur 6 dışında gözlem
+
+D-008, TP_FB_INJ_A'yı "R_INJ yanında" tanımlar; pad (89,895; 14,664), R_INJ (65,34; 71,825) konumunda. Bu tur değiştirilmedi, açık kalan `/VOUT` çifti adım 4 kapsamındadır.
 
 ## Kapsam dışı bırakılanlar
 

@@ -1,6 +1,6 @@
 {
-"groups": 60,
-"new_vias": 60,
+"groups": 59,
+"new_vias": 59,
 "no_position_found": [],
 "max_centre_to_via_mm": 7.63,
 "candidates": [
@@ -689,22 +689,6 @@
 81.105
 ],
 "stub_mm": 0.95
-},
-{
-"pads": [
-"TP_GND_FB.1"
-],
-"links": [],
-"via": [
-70.62,
-24.05
-],
-"from": "TP_GND_FB.1",
-"start": [
-69.201,
-24.052
-],
-"stub_mm": 1.5
 },
 {
 "pads": [
