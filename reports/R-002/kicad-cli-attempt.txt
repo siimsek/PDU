@@ -15,3 +15,22 @@ exit code: 3
 Failed to load schematic
 
 No fresh ERC or netlist file was produced. The available CLI is 9.0.2 while the source is KiCad 10 format; this tool/version limitation does not prove a schematic defect. The reported KiCad 10.0.7 raw artifacts were audited separately.
+
+
+Tur 2 yeniden denemesi (aynı kaynak, arşivden alınmış KiCad 10 şema/proje; blob'lar kaynak commit'iyle eşleşiyor):
+- PDU.kicad_sch SHA-1: 1f64061d70fe581617f2544f67ec8f8d7eaf5a15
+- PDU.kicad_pro SHA-1: 1b1ffa6f0ac0a5d31daa7c76da202a776a0fbe71
+- design/pdu_v2_spec.yaml SHA-1: 88497c83ce83f786b1c94283a9bb357d5e6d3b53
+
+$ kicad-cli version
+9.0.2
+
+$ kicad-cli sch erc --format json --severity-all --output reports/R-002/tur2-local-erc.json PDU.kicad_sch
+exit code: 3
+Failed to load schematic
+
+$ kicad-cli sch export netlist --format kicadsexpr --output reports/R-002/tur2-local-netlist.net PDU.kicad_sch
+exit code: 3
+Failed to load schematic
+
+Tur 2 yerel KiCad 10.0.7 koşumu doğrulanamadı. Bu araç sınırı Tur 1 engelinin değerlendirmesinde BUILDER'ın aynı kaynak commit'inden ürettiği KiCad 10.0.7 ham ERC/netlist çıktıları ve bağımsız gerçek-PyYAML karşılaştırmasıyla ele alındı.
