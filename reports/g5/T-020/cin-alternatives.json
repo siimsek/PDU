@@ -1,0 +1,518 @@
+{
+ "A_tek_sutun": {
+  "drc": {
+   "violations": {},
+   "unconnected_items": {
+    "error:unconnected_items": 402
+   },
+   "schematic_parity": {}
+  },
+  "overflow": {},
+  "U1": {
+   "caps": [
+    {
+     "cap": "CIN1",
+     "vin_gap_mm": 1.04,
+     "gnd_gap_mm": 1.04,
+     "path_mm": 2.08,
+     "bbox_mm2": 9.35,
+     "center_mm": 5.59
+    },
+    {
+     "cap": "CIN2",
+     "vin_gap_mm": 4.58,
+     "gnd_gap_mm": 4.58,
+     "path_mm": 9.16,
+     "bbox_mm2": 21.65,
+     "center_mm": 9.13
+    },
+    {
+     "cap": "CIN3",
+     "vin_gap_mm": 8.12,
+     "gnd_gap_mm": 8.12,
+     "path_mm": 16.24,
+     "bbox_mm2": 33.95,
+     "center_mm": 12.67
+    },
+    {
+     "cap": "CIN4",
+     "vin_gap_mm": 11.66,
+     "gnd_gap_mm": 11.66,
+     "path_mm": 23.32,
+     "bbox_mm2": 46.25,
+     "center_mm": 16.21
+    }
+   ],
+   "path_sum_mm": 50.8,
+   "path_max_mm": 23.32,
+   "bbox_sum_mm2": 111.2
+  },
+  "U2": {
+   "caps": [
+    {
+     "cap": "CIN5",
+     "vin_gap_mm": 1.04,
+     "gnd_gap_mm": 1.04,
+     "path_mm": 2.08,
+     "bbox_mm2": 9.35,
+     "center_mm": 5.59
+    },
+    {
+     "cap": "CIN6",
+     "vin_gap_mm": 4.58,
+     "gnd_gap_mm": 4.58,
+     "path_mm": 9.16,
+     "bbox_mm2": 21.65,
+     "center_mm": 9.13
+    },
+    {
+     "cap": "CIN7",
+     "vin_gap_mm": 8.12,
+     "gnd_gap_mm": 8.12,
+     "path_mm": 16.24,
+     "bbox_mm2": 33.95,
+     "center_mm": 12.67
+    },
+    {
+     "cap": "CIN8",
+     "vin_gap_mm": 11.66,
+     "gnd_gap_mm": 11.66,
+     "path_mm": 23.32,
+     "bbox_mm2": 46.25,
+     "center_mm": 16.21
+    }
+   ],
+   "path_sum_mm": 50.8,
+   "path_max_mm": 23.32,
+   "bbox_sum_mm2": 111.2
+  },
+  "cin_positions": {
+   "CIN1": [
+    49.0,
+    70.91
+   ],
+   "CIN2": [
+    49.0,
+    67.37
+   ],
+   "CIN3": [
+    49.0,
+    63.83
+   ],
+   "CIN4": [
+    49.0,
+    60.29
+   ],
+   "CIN5": [
+    34.5,
+    13.09
+   ],
+   "CIN6": [
+    34.5,
+    16.63
+   ],
+   "CIN7": [
+    34.5,
+    20.17
+   ],
+   "CIN8": [
+    34.5,
+    23.71
+   ]
+  }
+ },
+ "B_2x2_guney": {
+  "drc": {
+   "violations": {
+    "error:shorting_items": 1,
+    "error:courtyards_overlap": 1,
+    "error:solder_mask_bridge": 1,
+    "warning:silk_over_copper": 2
+   },
+   "unconnected_items": {
+    "error:unconnected_items": 402
+   },
+   "schematic_parity": {}
+  },
+  "overflow": {},
+  "U1": {
+   "caps": [
+    {
+     "cap": "CIN1",
+     "vin_gap_mm": 1.645,
+     "gnd_gap_mm": 1.607,
+     "path_mm": 3.252,
+     "bbox_mm2": 13.25,
+     "center_mm": 6.1
+    },
+    {
+     "cap": "CIN2",
+     "vin_gap_mm": 1.607,
+     "gnd_gap_mm": 1.297,
+     "path_mm": 2.904,
+     "bbox_mm2": 11.9,
+     "center_mm": 6.1
+    },
+    {
+     "cap": "CIN3",
+     "vin_gap_mm": 4.754,
+     "gnd_gap_mm": 4.741,
+     "path_mm": 9.495,
+     "bbox_mm2": 30.68,
+     "center_mm": 9.45
+    },
+    {
+     "cap": "CIN4",
+     "vin_gap_mm": 4.741,
+     "gnd_gap_mm": 4.645,
+     "path_mm": 9.386,
+     "bbox_mm2": 27.57,
+     "center_mm": 9.45
+    }
+   ],
+   "path_sum_mm": 25.037,
+   "path_max_mm": 9.495,
+   "bbox_sum_mm2": 83.4
+  },
+  "U2": {
+   "caps": [
+    {
+     "cap": "CIN5",
+     "vin_gap_mm": 1.645,
+     "gnd_gap_mm": 1.607,
+     "path_mm": 3.252,
+     "bbox_mm2": 13.25,
+     "center_mm": 6.1
+    },
+    {
+     "cap": "CIN6",
+     "vin_gap_mm": 1.607,
+     "gnd_gap_mm": 1.297,
+     "path_mm": 2.904,
+     "bbox_mm2": 11.9,
+     "center_mm": 6.1
+    },
+    {
+     "cap": "CIN7",
+     "vin_gap_mm": 4.754,
+     "gnd_gap_mm": 4.741,
+     "path_mm": 9.495,
+     "bbox_mm2": 30.68,
+     "center_mm": 9.45
+    },
+    {
+     "cap": "CIN8",
+     "vin_gap_mm": 4.741,
+     "gnd_gap_mm": 4.645,
+     "path_mm": 9.386,
+     "bbox_mm2": 27.57,
+     "center_mm": 9.45
+    }
+   ],
+   "path_sum_mm": 25.037,
+   "path_max_mm": 9.495,
+   "bbox_sum_mm2": 83.4
+  },
+  "cin_positions": {
+   "CIN1": [
+    46.55,
+    70.91
+   ],
+   "CIN2": [
+    51.45,
+    70.91
+   ],
+   "CIN3": [
+    46.55,
+    67.37
+   ],
+   "CIN4": [
+    51.45,
+    67.37
+   ],
+   "CIN5": [
+    36.95,
+    13.09
+   ],
+   "CIN6": [
+    32.05,
+    13.09
+   ],
+   "CIN7": [
+    36.95,
+    16.63
+   ],
+   "CIN8": [
+    32.05,
+    16.63
+   ]
+  }
+ },
+ "C_guney_dogu_yan": {
+  "drc": {
+   "violations": {},
+   "unconnected_items": {
+    "error:unconnected_items": 402
+   },
+   "schematic_parity": {}
+  },
+  "overflow": {},
+  "U1": {
+   "caps": [
+    {
+     "cap": "CIN1",
+     "vin_gap_mm": 1.04,
+     "gnd_gap_mm": 1.04,
+     "path_mm": 2.08,
+     "bbox_mm2": 9.35,
+     "center_mm": 5.59
+    },
+    {
+     "cap": "CIN2",
+     "vin_gap_mm": 4.58,
+     "gnd_gap_mm": 4.58,
+     "path_mm": 9.16,
+     "bbox_mm2": 21.65,
+     "center_mm": 9.13
+    },
+    {
+     "cap": "CIN3",
+     "vin_gap_mm": 0.999,
+     "gnd_gap_mm": 4.663,
+     "path_mm": 5.662,
+     "bbox_mm2": 17.85,
+     "center_mm": 6.41
+    },
+    {
+     "cap": "CIN4",
+     "vin_gap_mm": 4.549,
+     "gnd_gap_mm": 8.175,
+     "path_mm": 12.724,
+     "bbox_mm2": 28.32,
+     "center_mm": 9.65
+    }
+   ],
+   "path_sum_mm": 29.626,
+   "path_max_mm": 12.724,
+   "bbox_sum_mm2": 77.17
+  },
+  "U2": {
+   "caps": [
+    {
+     "cap": "CIN5",
+     "vin_gap_mm": 1.04,
+     "gnd_gap_mm": 1.04,
+     "path_mm": 2.08,
+     "bbox_mm2": 9.35,
+     "center_mm": 5.59
+    },
+    {
+     "cap": "CIN6",
+     "vin_gap_mm": 4.58,
+     "gnd_gap_mm": 4.58,
+     "path_mm": 9.16,
+     "bbox_mm2": 21.65,
+     "center_mm": 9.13
+    },
+    {
+     "cap": "CIN7",
+     "vin_gap_mm": 0.999,
+     "gnd_gap_mm": 4.663,
+     "path_mm": 5.662,
+     "bbox_mm2": 17.85,
+     "center_mm": 6.41
+    },
+    {
+     "cap": "CIN8",
+     "vin_gap_mm": 4.549,
+     "gnd_gap_mm": 8.175,
+     "path_mm": 12.724,
+     "bbox_mm2": 28.32,
+     "center_mm": 9.65
+    }
+   ],
+   "path_sum_mm": 29.626,
+   "path_max_mm": 12.724,
+   "bbox_sum_mm2": 77.17
+  },
+  "cin_positions": {
+   "CIN1": [
+    49.0,
+    70.91
+   ],
+   "CIN2": [
+    49.0,
+    67.37
+   ],
+   "CIN3": [
+    54.55,
+    73.3
+   ],
+   "CIN4": [
+    58.1,
+    73.3
+   ],
+   "CIN5": [
+    34.5,
+    13.09
+   ],
+   "CIN6": [
+    34.5,
+    16.63
+   ],
+   "CIN7": [
+    28.95,
+    10.7
+   ],
+   "CIN8": [
+    25.4,
+    10.7
+   ]
+  }
+ },
+ "D_guney_dogu_alt": {
+  "drc": {
+   "violations": {},
+   "unconnected_items": {
+    "error:unconnected_items": 402
+   },
+   "schematic_parity": {}
+  },
+  "overflow": {},
+  "U1": {
+   "caps": [
+    {
+     "cap": "CIN1",
+     "vin_gap_mm": 1.04,
+     "gnd_gap_mm": 1.04,
+     "path_mm": 2.08,
+     "bbox_mm2": 9.35,
+     "center_mm": 5.59
+    },
+    {
+     "cap": "CIN2",
+     "vin_gap_mm": 4.58,
+     "gnd_gap_mm": 4.58,
+     "path_mm": 9.16,
+     "bbox_mm2": 21.65,
+     "center_mm": 9.13
+    },
+    {
+     "cap": "CIN3",
+     "vin_gap_mm": 1.265,
+     "gnd_gap_mm": 5.131,
+     "path_mm": 6.396,
+     "bbox_mm2": 22.92,
+     "center_mm": 7.56
+    },
+    {
+     "cap": "CIN4",
+     "vin_gap_mm": 3.727,
+     "gnd_gap_mm": 7.886,
+     "path_mm": 11.613,
+     "bbox_mm2": 45.44,
+     "center_mm": 10.0
+    }
+   ],
+   "path_sum_mm": 29.249,
+   "path_max_mm": 11.613,
+   "bbox_sum_mm2": 99.36
+  },
+  "U2": {
+   "caps": [
+    {
+     "cap": "CIN5",
+     "vin_gap_mm": 1.04,
+     "gnd_gap_mm": 1.04,
+     "path_mm": 2.08,
+     "bbox_mm2": 9.35,
+     "center_mm": 5.59
+    },
+    {
+     "cap": "CIN6",
+     "vin_gap_mm": 4.58,
+     "gnd_gap_mm": 4.58,
+     "path_mm": 9.16,
+     "bbox_mm2": 21.65,
+     "center_mm": 9.13
+    },
+    {
+     "cap": "CIN7",
+     "vin_gap_mm": 1.265,
+     "gnd_gap_mm": 5.131,
+     "path_mm": 6.396,
+     "bbox_mm2": 22.92,
+     "center_mm": 7.56
+    },
+    {
+     "cap": "CIN8",
+     "vin_gap_mm": 3.727,
+     "gnd_gap_mm": 7.886,
+     "path_mm": 11.613,
+     "bbox_mm2": 45.44,
+     "center_mm": 10.0
+    }
+   ],
+   "path_sum_mm": 29.249,
+   "path_max_mm": 11.613,
+   "bbox_sum_mm2": 99.36
+  },
+  "cin_positions": {
+   "CIN1": [
+    49.0,
+    70.91
+   ],
+   "CIN2": [
+    49.0,
+    67.37
+   ],
+   "CIN3": [
+    53.25,
+    70.25
+   ],
+   "CIN4": [
+    56.8,
+    70.25
+   ],
+   "CIN5": [
+    34.5,
+    13.09
+   ],
+   "CIN6": [
+    34.5,
+    16.63
+   ],
+   "CIN7": [
+    30.25,
+    13.75
+   ],
+   "CIN8": [
+    26.7,
+    13.75
+   ]
+  }
+ },
+ "basis": "HESAP, routed loop değil. Yol = kondansatör /VIN padi – en yakın IC /VIN padi + kondansatör /GND padi – en yakın IC PGND padi (23–26) kenar aralığı; kutu = bu dört pad merkezinin kapsayan dikdörtgeni.",
+ "polarity_check_U1_x_mm": {
+  "IC_south_edge": {
+   "PGND_23_26": [
+    47.0,
+    48.5
+   ],
+   "VIN_27_29": [
+    50.0,
+    51.0
+   ]
+  },
+  "A_C_D_CIN1": {
+   "GND": 47.53,
+   "VIN": 50.47
+  },
+  "B_row1": {
+   "west_cap_GND": 45.08,
+   "west_cap_VIN": 48.02,
+   "east_cap_GND": 49.98,
+   "east_cap_VIN": 52.92
+  }
+ }
+}
