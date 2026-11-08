@@ -1,0 +1,220 @@
+{
+  "method": "Independent pcbnew 10.0.7 re-read compared with T-021 evidence after independent calculation. Builder path is a rasterized copper-zone analysis with hypothetical endpoint vias.",
+  "tool_output": {
+    "version": "10.0.7",
+    "violations": 0,
+    "parity_differences": 0,
+    "unconnected_items": 395,
+    "pcb_rules": "pass=true; errors=[]"
+  },
+  "zone_area_comparison": [
+    {
+      "zone": "L2_GND",
+      "independent_mm2": 9535.900178158892,
+      "builder_mm2": 9535.9,
+      "difference_pct": 1.8682965697531725e-06
+    },
+    {
+      "zone": "L4_GND",
+      "independent_mm2": 9535.900178158892,
+      "builder_mm2": 9535.9,
+      "difference_pct": 1.8682965697531725e-06
+    },
+    {
+      "zone": "L3_VIN",
+      "independent_mm2": 3654.437899763773,
+      "builder_mm2": 3654.44,
+      "difference_pct": 5.747080884764418e-05
+    },
+    {
+      "zone": "L3_VOUT",
+      "independent_mm2": 2067.1309366497903,
+      "builder_mm2": 2067.13,
+      "difference_pct": 4.531160547325205e-05
+    },
+    {
+      "zone": "L3_VSAFE",
+      "independent_mm2": 1690.4231689501164,
+      "builder_mm2": 1690.42,
+      "difference_pct": 0.00018746525220553355
+    },
+    {
+      "zone": "L3_GND_U1",
+      "independent_mm2": 48.984522120362,
+      "builder_mm2": 48.98,
+      "difference_pct": 0.00923258546754696
+    },
+    {
+      "zone": "L3_GND_U2",
+      "independent_mm2": 48.984522120362,
+      "builder_mm2": 48.98,
+      "difference_pct": 0.00923258546754696
+    }
+  ],
+  "via_inventory_comparison": {
+    "independent_count": 33,
+    "builder_count": 33,
+    "matches_with_0p00051mm_tolerance": 33,
+    "max_coordinate_rounding_delta_mm": 0.0004999999999881766,
+    "all_match_after_rounding": true,
+    "tolerance_reason": "zone-audit.json rounds transformed D-006 coordinates to 0.001mm"
+  },
+  "thermal_area_comparison": [
+    {
+      "component": "Q1",
+      "independent_mm2": 3654.437899763773,
+      "builder_mm2": 3654.44,
+      "difference_pct": 5.747080884764418e-05
+    },
+    {
+      "component": "Q2 drain",
+      "independent_mm2": 2067.1309366497903,
+      "builder_mm2": 2067.13,
+      "difference_pct": 4.531160547325205e-05
+    },
+    {
+      "component": "Q2 source",
+      "independent_mm2": 1690.4231689501164,
+      "builder_mm2": 1690.42,
+      "difference_pct": 0.00018746525220553355,
+      "builder_separate_thermal_row": false
+    }
+  ],
+  "cefin_pad_gaps": [
+    {
+      "capacitor": "CEFIN1",
+      "efuse": "U3",
+      "max_edge_gap_mm": 0.755844851805601,
+      "max_center_distance_mm": 1.6845798333712283,
+      "per_pin": [
+        {
+          "signal": "IN",
+          "pin": "1",
+          "edge_gap_mm": 0.7200010000000248,
+          "center_distance_mm": 1.4959308857701417
+        },
+        {
+          "signal": "IN",
+          "pin": "2",
+          "edge_gap_mm": 0.7200010000000248,
+          "center_distance_mm": 1.5125505660972258
+        },
+        {
+          "signal": "IN",
+          "pin": "3",
+          "edge_gap_mm": 0.755844851805601,
+          "center_distance_mm": 1.6845798333712283
+        },
+        {
+          "signal": "GND",
+          "pin": "4",
+          "edge_gap_mm": 0.7200010000000248,
+          "center_distance_mm": 1.5034324776992944
+        },
+        {
+          "signal": "GND",
+          "pin": "5",
+          "edge_gap_mm": 0.7200010000000248,
+          "center_distance_mm": 1.5034324776992944
+        }
+      ]
+    },
+    {
+      "capacitor": "CEFIN2",
+      "efuse": "U4",
+      "max_edge_gap_mm": 0.6899999999999977,
+      "max_center_distance_mm": 1.4792417821302781,
+      "per_pin": [
+        {
+          "signal": "IN",
+          "pin": "16",
+          "edge_gap_mm": 0.6899999999999977,
+          "center_distance_mm": 1.477381551935707
+        },
+        {
+          "signal": "GND",
+          "pin": "14",
+          "edge_gap_mm": 0.6899999999999977,
+          "center_distance_mm": 1.4792417821302781
+        }
+      ]
+    }
+  ],
+  "q2_path_builder_metrics": {
+    "bus_inner_min_width_mm": 18.36,
+    "bus_vias_min_each": 15,
+    "VOUT_len_min_mm": 11.63,
+    "VOUT_len_max_mm": 75.3,
+    "VOUT_bottleneck_min_mm": 6.0,
+    "VSAFE_len_max_mm": 27.03,
+    "VSAFE_bottleneck_min_mm": 6.0,
+    "Q2_drain_vias": 9,
+    "Q2_source_vias": 3,
+    "unreachable_VOUT": [],
+    "unreachable_VSAFE": []
+  },
+  "independent_path_facts": {
+    "physical_routed_tracks": 0,
+    "COUT_eFuse_CEFIN_endpoint_L3_vias": 0,
+    "endpoint_pads_checked": 43,
+    "Q2_drain_to_farthest_COUT31_straight_lower_bound_mm": 71.48450548895194,
+    "builder_raster_path_mm": 75.3,
+    "raster_path_vs_straight_lower_bound_pct": 5.3375126329128,
+    "L3_VSAFE_Q2_source_scanline_neck_mm": [
+      5.8,
+      5.8,
+      5.8
+    ],
+    "L3_VSAFE_source_neck_vs_builder_bottleneck_pct": 3.4482758620689724
+  },
+  "endpoints_without_current_l3_via": {
+    "COUT1.1:/VOUT": 0,
+    "COUT2.1:/VOUT": 0,
+    "COUT3.1:/VOUT": 0,
+    "COUT4.1:/VOUT": 0,
+    "COUT5.1:/VOUT": 0,
+    "COUT6.1:/VOUT": 0,
+    "COUT7.1:/VOUT": 0,
+    "COUT8.1:/VOUT": 0,
+    "COUT9.1:/VOUT": 0,
+    "COUT10.1:/VOUT": 0,
+    "COUT11.1:/VOUT": 0,
+    "COUT12.1:/VOUT": 0,
+    "COUT13.1:/VOUT": 0,
+    "COUT14.1:/VOUT": 0,
+    "COUT15.1:/VOUT": 0,
+    "COUT16.1:/VOUT": 0,
+    "COUT17.1:/VOUT": 0,
+    "COUT18.1:/VOUT": 0,
+    "COUT19.1:/VOUT": 0,
+    "COUT20.1:/VOUT": 0,
+    "COUT21.1:/VOUT": 0,
+    "COUT22.1:/VOUT": 0,
+    "COUT23.1:/VOUT": 0,
+    "COUT24.1:/VOUT": 0,
+    "COUT25.1:/VOUT": 0,
+    "COUT26.1:/VOUT": 0,
+    "COUT27.1:/VOUT": 0,
+    "COUT28.1:/VOUT": 0,
+    "COUT29.1:/VOUT": 0,
+    "COUT30.1:/VOUT": 0,
+    "COUT31.1:/VOUT": 0,
+    "COUT32.1:/VOUT": 0,
+    "U3.1:/VSAFE": 0,
+    "U3.2:/VSAFE": 0,
+    "U3.3:/VSAFE": 0,
+    "U3.4:/GND": 0,
+    "U3.5:/GND": 0,
+    "U4.14:/GND": 0,
+    "U4.16:/VSAFE": 0,
+    "CEFIN1.1:/VSAFE": 0,
+    "CEFIN1.2:/GND": 0,
+    "CEFIN2.1:/VSAFE": 0,
+    "CEFIN2.2:/GND": 0
+  },
+  "decision_context": {
+    "Q2_gate_current_center_mm": 5.416290243330761,
+    "Q2_gate_if_rotated_180_center_mm": 9.13206575753811,
+    "T022_requires_actual_outer_route_and_via_target": true
+  }
+}

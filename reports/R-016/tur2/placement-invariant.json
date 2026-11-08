@@ -1,0 +1,10 @@
+{
+  "method": "pcbnew 10.0.7 loaded PR #59 and main read-only; footprint reference, value, library id, origin, rotation, pad nets/positions/sizes",
+  "candidate_footprints": 184,
+  "main_footprints": 184,
+  "changed_or_missing_refs": [
+    "CEFIN1",
+    "CEFIN2"
+  ],
+  "all_footprints_equal": false
+}
