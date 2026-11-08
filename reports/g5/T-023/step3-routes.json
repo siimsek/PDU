@@ -3,6 +3,87 @@
 "route_width_mm": 0.25,
 "routed": [
 {
+"net": "/COMP",
+"pin": "RCOMP.1",
+"length_mm": 25.3,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/COMP",
+"pin": "CHF.1",
+"length_mm": 5.5,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/COMP",
+"pin": "TP_COMP.1",
+"length_mm": 39.39,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/COMP",
+"pin": "U2.15",
+"length_mm": 74.64,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/FB",
+"pin": "RFB2.1",
+"length_mm": 49.47,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/FB",
+"pin": "RFB1.2",
+"length_mm": 10.9,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_TRIP2_N",
+"pin": "U14.1",
+"length_mm": 84.29,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_SENSE1",
+"pin": "TP_OC_SENSE1.1",
+"length_mm": 2.96,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/OC_SENSE1",
+"pin": "U11.5",
+"length_mm": 2.87,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
 "net": "/COMP_MID",
 "pin": "RCOMP.2",
 "length_mm": 8.12,
@@ -12,11 +93,31 @@
 ]
 },
 {
-"net": "/FB_TRIM",
-"pin": "RFB2.2",
-"length_mm": 15.14,
+"net": "/OC_SENSE2",
+"pin": "U12.5",
+"length_mm": 8.17,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OC_SENSE2",
+"pin": "TP_OC_SENSE2.1",
+"length_mm": 2.31,
 "vias": 0,
 "layers": [
+"F"
+]
+},
+{
+"net": "/FB_TRIM",
+"pin": "RFB2.2",
+"length_mm": 15.27,
+"vias": 4,
+"layers": [
+"B",
 "F"
 ]
 },
@@ -33,42 +134,6 @@
 "net": "/ISO_EN",
 "pin": "U6.1",
 "length_mm": 18.45,
-"vias": 0,
-"layers": [
-"F"
-]
-},
-{
-"net": "/OC_SENSE2",
-"pin": "U12.5",
-"length_mm": 10.17,
-"vias": 0,
-"layers": [
-"F"
-]
-},
-{
-"net": "/OC_SENSE2",
-"pin": "TP_OC_SENSE2.1",
-"length_mm": 20.04,
-"vias": 0,
-"layers": [
-"F"
-]
-},
-{
-"net": "/FB",
-"pin": "RFB2.1",
-"length_mm": 31.42,
-"vias": 0,
-"layers": [
-"F"
-]
-},
-{
-"net": "/FB",
-"pin": "RFB1.2",
-"length_mm": 13.06,
 "vias": 0,
 "layers": [
 "F"
@@ -105,7 +170,7 @@
 {
 "net": "/OVP_SENSE",
 "pin": "U7.4",
-"length_mm": 5.55,
+"length_mm": 7.08,
 "vias": 0,
 "layers": [
 "F"
@@ -114,34 +179,17 @@
 {
 "net": "/OVP_TRIP_N",
 "pin": "U15.4",
-"length_mm": 68.47,
-"vias": 0,
+"length_mm": 67.91,
+"vias": 2,
 "layers": [
+"B",
 "F"
 ]
 },
 {
 "net": "/OVP_TRIP_N",
 "pin": "U9.7",
-"length_mm": 12.73,
-"vias": 0,
-"layers": [
-"F"
-]
-},
-{
-"net": "/OC_SENSE1",
-"pin": "U11.5",
-"length_mm": 3.97,
-"vias": 0,
-"layers": [
-"F"
-]
-},
-{
-"net": "/OC_SENSE1",
-"pin": "TP_OC_SENSE1.1",
-"length_mm": 75.89,
+"length_mm": 14.44,
 "vias": 2,
 "layers": [
 "B",
@@ -161,7 +209,7 @@
 {
 "net": "/CLR_N",
 "pin": "C_CLR.1",
-"length_mm": 24.73,
+"length_mm": 24.91,
 "vias": 2,
 "layers": [
 "B",
@@ -181,7 +229,7 @@
 {
 "net": "/CLR_N",
 "pin": "U9.6",
-"length_mm": 8.67,
+"length_mm": 8.57,
 "vias": 0,
 "layers": [
 "F"
@@ -199,7 +247,7 @@
 {
 "net": "/OVP_BUS_N",
 "pin": "U15.1",
-"length_mm": 14.61,
+"length_mm": 13.13,
 "vias": 2,
 "layers": [
 "B",
@@ -209,8 +257,8 @@
 {
 "net": "/OVP_BUS_N",
 "pin": "TP_OVP_BUS_N.1",
-"length_mm": 76.53,
-"vias": 3,
+"length_mm": 75.25,
+"vias": 1,
 "layers": [
 "B",
 "F"
@@ -228,8 +276,18 @@
 {
 "net": "/ISO_OV",
 "pin": "R_OV2B.1",
-"length_mm": 39.2,
-"vias": 2,
+"length_mm": 48.36,
+"vias": 4,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/ISO_OV",
+"pin": "U6.7",
+"length_mm": 37.49,
+"vias": 3,
 "layers": [
 "B",
 "F"
@@ -238,17 +296,7 @@
 {
 "net": "/ISO_OV",
 "pin": "TP_ISO_OV.1",
-"length_mm": 70.37,
-"vias": 3,
-"layers": [
-"B",
-"F"
-]
-},
-{
-"net": "/FB_INJ",
-"pin": "R_INJ.2",
-"length_mm": 6.07,
+"length_mm": 44.18,
 "vias": 0,
 "layers": [
 "F"
@@ -256,8 +304,18 @@
 },
 {
 "net": "/FB_INJ",
+"pin": "R_INJ.2",
+"length_mm": 6.2,
+"vias": 2,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/FB_INJ",
 "pin": "TP_FB_INJ_B.1",
-"length_mm": 85.95,
+"length_mm": 85.97,
 "vias": 6,
 "layers": [
 "B",
@@ -266,8 +324,8 @@
 },
 {
 "net": "/OVP_Q",
-"pin": "TP_OVP_Q.1",
-"length_mm": 122.08,
+"pin": "U9.5",
+"length_mm": 17.24,
 "vias": 2,
 "layers": [
 "B",
@@ -275,10 +333,19 @@
 ]
 },
 {
+"net": "/OVP_Q",
+"pin": "TP_OVP_Q.1",
+"length_mm": 115.25,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
 "net": "/OC_REF",
 "pin": "U14.3",
-"length_mm": 47.72,
-"vias": 2,
+"length_mm": 48.04,
+"vias": 4,
 "layers": [
 "B",
 "F"
@@ -287,8 +354,8 @@
 {
 "net": "/OC_REF",
 "pin": "TP_OC_REF.1",
-"length_mm": 30.15,
-"vias": 2,
+"length_mm": 28.35,
+"vias": 1,
 "layers": [
 "B",
 "F"
@@ -297,8 +364,8 @@
 {
 "net": "/OC_REF",
 "pin": "R_OCB.1",
-"length_mm": 95.77,
-"vias": 5,
+"length_mm": 91.89,
+"vias": 6,
 "layers": [
 "B",
 "F"
@@ -307,7 +374,7 @@
 {
 "net": "/OC_REF",
 "pin": "R_OCT.2",
-"length_mm": 0.0,
+"length_mm": 5.0,
 "vias": 0,
 "layers": [
 "F"
@@ -316,7 +383,7 @@
 {
 "net": "/OVP_REF",
 "pin": "C_REF_OUT.1",
-"length_mm": 9.08,
+"length_mm": 10.48,
 "vias": 2,
 "layers": [
 "B",
@@ -325,8 +392,8 @@
 },
 {
 "net": "/OVP_REF",
-"pin": "U8.6",
-"length_mm": 41.29,
+"pin": "U7.3",
+"length_mm": 11.95,
 "vias": 1,
 "layers": [
 "B",
@@ -335,55 +402,24 @@
 },
 {
 "net": "/OVP_REF",
+"pin": "U8.6",
+"length_mm": 246.94,
+"vias": 14,
+"layers": [
+"B",
+"F"
+]
+},
+{
+"net": "/OVP_REF",
 "pin": "TP_OVP_REF.1",
-"length_mm": 100.81,
-"vias": 4,
+"length_mm": 47.52,
+"vias": 2,
 "layers": [
 "B",
 "F"
 ]
 }
 ],
-"failed": [
-{
-"net": "/ISO_OV",
-"pin": "U6.7",
-"why": "no route (599971 expansions)"
-},
-{
-"net": "/OC_TRIP2_N",
-"pin": "U14.1",
-"why": "no route (88 expansions)"
-},
-{
-"net": "/OVP_Q",
-"pin": "U9.5",
-"why": "no free grid cell at the pad"
-},
-{
-"net": "/COMP",
-"pin": "RCOMP.1",
-"why": "no route (19 expansions)"
-},
-{
-"net": "/COMP",
-"pin": "CHF.1",
-"why": "no route (19 expansions)"
-},
-{
-"net": "/COMP",
-"pin": "TP_COMP.1",
-"why": "no route (19 expansions)"
-},
-{
-"net": "/COMP",
-"pin": "U2.15",
-"why": "no route (19 expansions)"
-},
-{
-"net": "/OVP_REF",
-"pin": "U7.3",
-"why": "no free grid cell at the pad"
-}
-]
+"failed": []
 }

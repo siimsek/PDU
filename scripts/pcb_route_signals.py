@@ -359,7 +359,7 @@ KELVIN = {
                             "tp": ("F", 0.4, [(45.6, 20.477), (45.6, 19.6)])},
 }
 # R-020: test pads beside their Kelvin arm (search starts from R-020's coordinates, then checked against the new route).
-TP_MOVES = [("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
+TP_MOVES = [("TP_OC_SENSE1", 33.0, 59.5), ("TP_OC_SENSE2", 38.5, 27.0), ("TP_GND_OC", 50.5, 22.0), ("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
 GATE_W = 0.4
 TP_GATE = (97.4, 44.6)
 TP_BRANCH = [(94.8, 47.49), (96.2, 46.5), (96.2, 44.6), (97.4, 44.6)]
@@ -368,8 +368,8 @@ R_GS_LINK = [(95.9, 49.3), (96.675, 49.3)]
 R_GS_VIA = (98.325, 49.3)
 OLD_R_GS_VIA = (92.85, 36.645)
 REFDES = [("C_ISO_VCAP", 92.6, 44.6, 0), ("R_GS", 97.5, 47.6, 0), ("TP_ISNS1P", 41.5, 69.2, 0), ("RS1", 35.9, 70.2, 0), ("U11", 28.2, 59.4, 0), ("TP_ISNS1N", 26.0, 68.0, 90),
-          ("TP_ISNS2P", 36.6, 21.6, 90), ("TP_ISNS2N", 48.4, 21.6, 0), ("RS2", 52.5, 21.0, 0)]
-HIDE_REF = ("TP_ISO_GATE",)       # no silk-free spot beside the gate pad; the pad stays identified in D-008 and the assembly drawing
+          ("TP_ISNS2P", 36.6, 21.6, 90), ("TP_OC_SENSE1", 33.0, 57.9, 0), ("RS2", 53.4, 21.0, 0)]
+HIDE_REF = ("TP_ISO_GATE", "TP_GND_OC", "TP_ISNS2N")       # no silk-free spot beside these pads; they stay identified in D-008 and the assembly drawing
 KELVIN_LIMIT = 15.0
 # R-021: the real sense vias on the shunt pads (not the pad centres)
 SENSE_VIAS = {"RS1.1": (37.7, 66.4), "RS1.2": (32.3, 66.4), "RS2.1": (43.9, 17.7), "RS2.2": (49.1, 15.6)}
@@ -488,6 +488,17 @@ def step2():
             t_track(b, k["net"], P.F_Cu, 0.25, k["neck"])
     t_track(b, "/ISO_GATE", P.F_Cu, GATE_W, TP_BRANCH)
     t_track(b, "/ISO_GATE", P.F_Cu, GATE_W, R_GS_LINK)
+    t_track(b, "/GND", P.F_Cu, 0.25, [(43.3, 24.7), (44.35, 24.455)])       # R-022 Tur 2: U14.2 joins U12.4's local GND before the signals take the room
+    # R-022 Tur 2: the U6.5 tap moves 0.35 mm east so /ISO_OV can pass under U6 with 0.6 mm to /VOUT (positions only)
+    tap = next(t for t in b.GetTracks() if t.Type() == P.PCB_VIA_T and t.GetNetname() == "/VOUT" and math.dist(d6(t.GetPosition()), (93.4, 45.75)) < 0.01)
+    tap.SetPosition(kp(93.75, 45.75))
+    neck = next(t for t in b.GetTracks() if t.Type() != P.PCB_VIA_T and t.GetNetname() == "/VOUT" and math.dist(d6(t.GetStart()), (93.4, 46.7)) < 0.01)
+    neck.SetEnd(kp(93.75, 45.75))
+    stub = next(t for t in b.GetTracks() if t.Type() != P.PCB_VIA_T and t.GetNetname() == "/VSAFE" and math.dist(d6(t.GetStart()) if math.dist(d6(t.GetStart()), (93.733, 49.3)) < 0.01 else d6(t.GetEnd()), (93.733, 49.3)) < 0.01 and min(math.dist(d6(t.GetStart()), (93.733, 48.79)), math.dist(d6(t.GetEnd()), (93.733, 48.79))) < 0.01)
+    if math.dist(d6(stub.GetEnd()), (93.733, 48.79)) < 0.01:
+        stub.SetEnd(kp(93.733, 49.0))
+    else:
+        stub.SetStart(kp(93.733, 49.0))
     t_track(b, "/GND", P.F_Cu, 0.25, [(31.0, 62.33), (32.1, 62.62)])       # U11.7 has no room for its own via beside the RS1 Kelvin arm; it shares U13.2's via
     P.ZONE_FILLER(b).Fill(b.Zones())
     P.SaveBoard(str(PCB), b, True)
@@ -513,6 +524,7 @@ def gnd_returns():
         netcode = {n: i + 1 for i, n in enumerate(sorted({p["net"] for p in g2.pads} | {s_[3] for s_ in g2.segs} | {v[1] for v in g2.vias} | {z.GetNetname() for z in b.Zones()}))}
         G = build_grid(b, g2, netcode)
         code = netcode["/GND"]
+        shared = set()
         for c in open_groups:
             pad_rec = next(p for p in g2.pads if f"{p['ref']}.{p['pin']}" == c["pads"][0])
             pin = (c["pads"][0], centre(pad_rec), pad_rec["front"], pad_rec["th"], pad_rec["rect"])
@@ -529,7 +541,9 @@ def gnd_returns():
             t_track(b, "/GND", P.F_Cu, ROUTE_W, [pin[1], ex, xy[0]])
             if len(xy) > 1:
                 t_track(b, "/GND", P.F_Cu, ROUTE_W, xy)
-            t_via(b, "/GND", xy[-1])
+            if xy[-1] not in shared:            # several searched pads can end on one via; drill it once
+                t_via(b, "/GND", xy[-1])
+                shared.add(xy[-1])
             c.update({"via": list(xy[-1]), "from": pin[0], "stub_mm": round(polylen([pin[1], ex] + xy), 2), "path": "searched"})
             for a_, c_ in zip([pin[1], ex] + xy, ([pin[1], ex] + xy)[1:]):
                 G.seg([0], code, a_, c_, ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
@@ -701,6 +715,10 @@ def probe_phase1():
 # --------------------------------------------------------------------------- step 3 (D-012): bounded deterministic router for FB/COMP/OVP/OC
 STEP3_NETS = ("/FB", "/FB_TRIM", "/FB_INJ", "/COMP", "/COMP_MID", "/OVP_SENSE", "/OVP_REF", "/OVP_TRIP_N", "/OVP_Q", "/OVP_BUS_N", "/OC_SENSE1", "/OC_SENSE2", "/OC_REF", "/OC_TRIP1_N", "/OC_TRIP2_N", "/CLR_N", "/ISO_EN", "/ISO_OV")
 HV_NETS = ("/ANODE", "/VIN", "/VOUT", "/VSAFE")
+STEP3_FIRST = ("/COMP", "/FB", "/OC_TRIP2_N")   # routed in this order, before the span-sorted rest
+STEP3_PREFIX = {"/GND": {"U6.2": [(91.457, 48.14), (88.8, 48.14)], "U15.2": [(91.698, 81.055), (92.72, 81.29)], "U11.2": [(26.112, 61.03), (26.112, 62.33), (24.2, 62.33)]}, "/OVP_BUS_N": {"U7.1": [(103.395, 76.365), (102.6, 76.365), (102.6, 77.4)]}, "/COMP": {"U1.15": [(47.5, 79.4), (47.5, 80.7), (44.7, 80.7)]}, "/FB": {"U1.16": [(47.0, 79.4), (47.0, 80.25), (45.4, 80.25)]},
+                "/ISO_OV": {"U6.7": [(93.733, 48.14), (92.5, 48.14), (92.5, 45.4)]}, "/OVP_Q": {"U9.5": [(104.445, 80.755), (105.4, 80.755), (105.4, 80.0)]},
+                "/OVP_REF": {"U7.3": [(103.395, 75.065), (102.5, 75.065), (102.5, 74.2)]}, "/OC_TRIP2_N": {"U14.1": [(44.757, 25.105), (44.0, 25.105), (44.0, 26.2)]}}
 YIELDING_ZONES = ("T022_F_VSAFE_Q2",)
 GRID = 0.15
 ROUTE_W = 0.25
@@ -990,7 +1008,23 @@ def step3():
         c = [q[1] for q in pins[n]]
         return (max(x[0] for x in c) - min(x[0] for x in c)) + (max(x[1] for x in c) - min(x[1] for x in c))
     log = {"routed": [], "failed": []}
-    for net in sorted(STEP3_NETS, key=span):
+    prefix_end = {}
+    for net, group in STEP3_PREFIX.items():
+        for pin, pts in group.items():
+            t_track(b, net, P.F_Cu, ROUTE_W, pts)
+            for a_, c_ in zip(pts, pts[1:]):
+                G.seg([0], netcode[net], a_, c_, ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+            prefix_end[pin] = pts[-1]
+            if net == "/GND":                 # U6.2 is walled in by /ISO_OV if its via waits for --gnd
+                t_via(b, net, pts[-1])
+                G.seg([0, 1, 2], netcode[net], pts[-1], pts[-1], VIA_R + ROUTE_CLR + ROUTE_W / 2 + DIAG_MARGIN, VIA_R + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+
+    def exit_of(q, code, L):
+        if q[0] in prefix_end:
+            return snap(G, code, prefix_end[q[0]], L), prefix_end[q[0]]
+        return pad_exit(G, code, q, L)
+
+    for net in sorted(STEP3_NETS, key=lambda n: (STEP3_FIRST.index(n) if n in STEP3_FIRST else len(STEP3_FIRST), span(n))):
         code = netcode[net]
         done = [pins[net][0]]
         todo = list(pins[net][1:])
@@ -999,7 +1033,7 @@ def step3():
 
         def add_src(q):
             L = 1 if (q[3] is False and q[2] is False) else 0
-            cell, ex = pad_exit(G, code, q, L)
+            cell, ex = exit_of(q, code, L)
             if cell:
                 exits[q[0]] = ex
                 seen.add((cell[0], cell[1], L))
@@ -1009,7 +1043,7 @@ def step3():
             todo.sort(key=lambda q: min(math.dist(q[1], d[1]) for d in done))
             q = todo.pop(0)
             L = 1 if (q[3] is False and q[2] is False) else 0
-            cell, ex = pad_exit(G, code, q, L)
+            cell, ex = exit_of(q, code, L)
             if cell:
                 exits[q[0]] = ex
             if not cell or not seen:
@@ -1033,7 +1067,7 @@ def step3():
                     G.seg([L0], code, (x0, y0), (x1, y1), ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
             def pad_stub(pin, end):
                 layer = LAYERS["F"] if end[2] == 0 else LAYERS["B"]
-                pts_ = [pin[1], exits.get(pin[0], pin[1]), end[:2]]
+                pts_ = [exits[pin[0]], end[:2]] if pin[0] in prefix_end else [pin[1], exits.get(pin[0], pin[1]), end[:2]]
                 for a_, c_ in zip(pts_, pts_[1:]):
                     if math.dist(a_, c_) > 1e-6:
                         t_track(b, net, layer, ROUTE_W, [a_, c_])
@@ -1041,7 +1075,7 @@ def step3():
             pad_stub(q, xy[-1])
             src_cell = (xy[0][1], xy[0][0])
             near = min(done, key=lambda d: math.dist(d[1], xy[0][:2]))
-            if math.dist(near[1], xy[0][:2]) < 0.9 and xy[0][2] == (1 if (near[3] is False and near[2] is False) else 0):
+            if math.dist(prefix_end.get(near[0], near[1]), xy[0][:2]) < 0.9 and xy[0][2] == (1 if (near[3] is False and near[2] is False) else 0):
                 pad_stub(near, xy[0])          # only on the pad's own layer
             seen.update(path)
             done.append(q)
@@ -1064,6 +1098,7 @@ def step3_audit():
     base = json.loads((OUT / "step1-baseline.json").read_text(encoding="utf-8"))
     routes = json.loads((OUT / "step3-routes.json").read_text(encoding="utf-8"))
     gnd = json.loads((OUT / "step3-gnd-applied.json").read_text(encoding="utf-8"))
+    step2 = json.loads((OUT / "step2-audit.json").read_text(encoding="utf-8"))["after"]
     geo = Geo(b)
     sw_pads = [r for r in geo.pads if r["net"].startswith(("/SW_PH", "/SW4_PH"))]
     sw_zones = [outline_pts(z) for z in b.Zones() if z.GetNetname().startswith("/SW_PH")]
@@ -1079,12 +1114,13 @@ def step3_audit():
     state = l2_state(b)
     out = {"kicad": P.GetBuildVersion(), "step1_baseline": {k: base[k] for k in ("errors", "unconnected_pairs", "schematic_parity_issues")}, "after": {k: now[k] for k in ("errors", "by_type", "schematic_parity_issues", "unconnected_pairs", "pairs_by_net")},
            "new_opens_vs_step1": {n: now["pairs_by_net"].get(n, 0) - v for n, v in base["pairs_by_net"].items() if now["pairs_by_net"].get(n, 0) > v},
+           "new_opens_vs_step2": {n: v - step2["pairs_by_net"].get(n, 0) for n, v in now["pairs_by_net"].items() if v > step2["pairs_by_net"].get(n, 0)},
            "router": {"grid_mm": routes["grid_mm"], "route_width_mm": routes["route_width_mm"], "connections_routed": len(routes["routed"]), "connections_failed": routes["failed"]}, "nets": per,
            "gnd": {"new_vias": gnd["new_vias"], "no_position": gnd["no_position_found"], "searched_paths": sum(1 for c in gnd["candidates"] if c.get("path") == "searched"), "pads_not_on_L2": [k for k, v in state.items() if not v["on_L2"]]}, "l2_islands": l2.OutlineCount()}
     with (OUT / "step3-audit.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump(out, f, indent=1, ensure_ascii=False)
         f.write("\n")
-    print(json.dumps({k: out[k] for k in ("after", "new_opens_vs_step1", "gnd", "l2_islands")} | {"router": {k: out["router"][k] for k in ("connections_routed",)}, "failed": out["router"]["connections_failed"], "nets": {k: (v["open_pairs"], v["track_mm"], v["vias"], v["min_distance_to_sw_pad_mm"]) for k, v in per.items()}}, ensure_ascii=False))
+    print(json.dumps({k: out[k] for k in ("after", "new_opens_vs_step1", "new_opens_vs_step2", "gnd", "l2_islands")} | {"router": {k: out["router"][k] for k in ("connections_routed",)}, "failed": out["router"]["connections_failed"], "nets": {k: (v["open_pairs"], v["track_mm"], v["vias"], v["min_distance_to_sw_pad_mm"]) for k, v in per.items()}}, ensure_ascii=False))
     return 0
 
 
