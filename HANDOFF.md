@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-07
-- **Dal / son commit:** wp/T-014 (taslak PR; **birleştirilmedi** — R-002 bekliyor)
+- **Dal / son commit:** wp/T-014 (PR #52 taslak; R-002 tur 1 KOŞULLU, tur 2 bekliyor; **birleştirilmedi**)
 - **Aktif kart:** T-014 (Review). Kapı: **PCB-YÖNLENDİRMEYE-HAZIR (koşullu)** — reports/g5/KICAD-READY.md.
 
 ## Yapılanlar
+- R-002 tur 1 (PR #53, 1 engelleyici: Codex'te KiCad 9.0.2): 5a2985c üzerinde KiCad 10.0.7 ile ERC 0 + netlist, R-002 karşılaştırıcısı 0 fark (reports/g5/T-014/R-002-tur2/). LDSTRT/ITIMER gerekçesi AÇIK.
 - T-013 (#49) + R-012 (#50) + R-013 (#51) main'de. T-014: 9 maddeden 8 GEÇTİ, 1 KALDI (belge: START-HERE, VERIFY.md eski). run_all exit 0, F5 47/49 (bilinen 2 köşe AÇIK).
 - R-012 tur 2 (1 engelleyici): `neck_audit` yayda gerçek yay uzunluğu (start/mid/end); prob E/F yayları + testler. Doğrulama kartı tasks/R-013.md (queue: yalnız R-013 satırı — check_workflow kapısı için).
 - R-012 tur 1 (2 engelleyici) düzeltildi: CIN1–4/5–8 U1/U2 VIN–PGND kenarında (5,6–16,4 mm); darboğaz DRU kuralı ince adımlı padli ayak izleriyle sınırlı + `pcb_drc.py` uzunluk denetimi (≤1,5 mm), `pcb_neck_probe.py` kanıtı.
@@ -18,7 +19,7 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: R-002 (KICAD-READY bağımsız incelemesi). Sonra Claude Code: T-014 birleştir; belge eşitleme kartı (backlog [T-014]); yönlendirme fazı kartları.
+Codex: R-002 tur 2. ONAY → Claude Code: #52 + #53 birleştir.
 
 ## Engeller
 F5 iki köşe: kısaltılmış pencere kanıtı var (O1 10,92 V), tam pencere AÇIK (backlog).
@@ -28,4 +29,5 @@ F5 iki köşe: kısaltılmış pencere kanıtı var (O1 10,92 V), tam pencere A�
 - **Birleştirme yetkisi: VERİLDİ (2026-11-07).** KiCad/tasarım PR'ı için THINKER onayı yeterli (WORKFLOW kural 6).
 
 ## Okuma gerektirmeyen notlar
+- Çalışma ağacında `PDU.kicad_pro` commit dışı (2026-11-08 00:08, eski netclass: BUS 6,0 mm vb.; muhtemelen açık kalan KiCad GUI kaydı — doğrulanmadı). `git add -A` KULLANMA; birleştirmeden önce commit'teki sürümle eşitle.
 - KiCad GUI açıksa şemayı/PCB'yi GUI'den kaydetmeyin; şema `scripts/sch_edit_b*.py`, PCB `scripts/pcb_setup.py` + `pcb_rules.py` ile yeniden üretilir.
