@@ -94,3 +94,6 @@ CLAUDE.md, docs/START-HERE.md ve HANDOFF.md'yi oku. <Codex PR #n / dal wp/<ID>> 
 Aktif kart: tasks/<ID>.md. Kabul kriterlerini sağla; her kilometre taşında commit + HANDOFF; taslak PR.
 Sonunda "SONRAKİ PROMPT → Codex" bloğu yaz (veya kullanıcıya tek soru).
 ```
+
+## Metin kodlaması
+Depodaki her metin dosyası BOM'suz UTF-8'dir; Türkçe karakterler okuma, yazma, alt süreç ve üretilen çıktı boyunca korunur. Her araç UTF-8 ile okur ve yazar (ayrıntı `AGENTS.md`, `CLAUDE.md`). `scripts/check_workflow.py` geçersiz UTF-8, BOM, bozuk karakter dizileri ve kelime içi soru imini hata sayar; `archive/`, `design/`, KiCad dosyaları, `.net` çıktıları ve ikili dosyalar kapsam dışıdır. Yanlış alarm yalnız URL sorgu ayıracıdır (`reports/R-003/land-data.md`, `decisions/D-001-F1.md`).

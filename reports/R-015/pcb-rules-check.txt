@@ -1,1 +1,1 @@
-﻿{"pass": true, "errors": []}
+{"pass": true, "errors": []}

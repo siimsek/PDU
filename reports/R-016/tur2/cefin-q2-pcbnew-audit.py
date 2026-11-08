@@ -1,4 +1,4 @@
-﻿import json, math
+import json, math
 from pathlib import Path
 import pcbnew
 

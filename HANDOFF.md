@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-021 (PR #59 taslak; R-016 Tur 1 KOŞULLU → düzeltildi, Tur 2 bekliyor; **birleştirilmedi**)
-- **Aktif kart:** T-021 (Review). T-022'de C doğu CIN GND L2 via dönüşleri ve gerçek VIN–CIN–PGND döngü alanı ölçülecek.
+- **Dal / son commit:** wp/T-025 (taslak PR; **birleştirilmedi**)
+- **Aktif kart:** T-025 (Review — UTF-8). Sonra T-022 güç yolları: dış katman 5,5 mm, ≥15 via, COUT/eFuse uçları, C doğu CIN GND L2 dönüşü, gerçek döngü alanı.
 
 ## Yapılanlar
+- T-021 (#59) + R-016 (#60) main'de. T-025: UTF-8 kök neden (run_all çözme, pre_merge konsol), kural + check_workflow denetimi. Birleşmiş 61 uzak ve 37 yerel dal silindi.
 - R-016 Tur 1 (PR #60, 1 engelleyici): CEFIN1/2 U3/U4 IN–GND çiftlerinde (≤1,50 mm); L3 /VSAFE şeridi genişletildi; q2-path.json: L3 darboğazı 6.0 mm < 18.36 mm, Q2 via 9/3 < 15 → T-022 kapısı.
 - T-020 (#57) + R-015 (#58) main'de; R-015 kartı main'e alınmadı. T-021 (dal): `scripts/pcb_zones.py`; L2/L4 GND, L3 /VIN /VOUT /VSAFE, 33 via-in-pad; DRC 0, parite 0. Sınırlar: reports/g5/T-021/zones-review.md.
 - R-015 tur 1 (PR #58, 1 engelleyici): CIN 4 alternatif ölçüldü, C (2 güney + 2 doğu) seçildi, yol toplamı 50,8 → 29,63 mm; L1 180° düzeltildi (SW padi U1 tarafına). reports/g5/T-020/cin-alternatives.json.
@@ -26,7 +27,7 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: R-016 Tur 2. ONAY → Claude Code: T-021 birleştir → T-022.
+Codex: T-025 kontrolü. Sonra Claude Code: T-025 birleştir → T-022.
 
 ## Engeller
 Yok (yönlendirmeye). Açık koşullar: F5 iki köşe tam pencere AÇIK (kısaltılmış pencerede O1 10,92 V); 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).

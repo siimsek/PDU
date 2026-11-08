@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import os
 import subprocess
 import sys
 import time
@@ -35,6 +36,7 @@ STEPS = [
 
 
 def main(argv):
+    sys.stdout.reconfigure(encoding="utf-8")   # T-025: never print through the console code page
     skip_sim = "--skip-sim" in argv
     rows = []
     for name, cmd in STEPS:
@@ -42,7 +44,8 @@ def main(argv):
             rows.append((name, "skipped (--skip-sim)", 0.0, ""))
             continue
         t = time.time()
-        p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+        p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                           env={**os.environ, "PYTHONUTF8": "1"})   # T-025: children write UTF-8, decoded as UTF-8
         tail = (p.stdout.strip().splitlines() or [""])[-1][:200]
         rows.append((name, p.returncode, time.time() - t, tail))
         print(f"{name}: exit {p.returncode} ({time.time() - t:.1f} s) {tail}", flush=True)

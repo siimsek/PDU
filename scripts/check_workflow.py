@@ -136,9 +136,47 @@ def permission_warnings(root: Path) -> list[str]:
     return out
 
 
+# T-025: text encoding gate. Markers are built from code points so this file does not flag itself.
+BOM = b"\xef\xbb\xbf"
+MOJIBAKE = (chr(0xC3), chr(0xC4) + chr(0xB1), chr(0xC5) + chr(0x178), chr(0xE2) + chr(0x20AC))
+LOST_LETTER = re.compile(r"(?<=[^\W_])\?(?=[^\W_])")     # ASCII "?" between letters/digits = a Turkish letter was lost
+URL = re.compile(r"https?://\S+")                         # known false alarm: query separators (reports/R-003/land-data.md, decisions/D-001-F1.md)
+ENCODING_SKIP = re.compile(r"^(archive|design)/|\.kicad_|\.net$")   # historic evidence, design and KiCad output are out of scope
+
+
+def tracked_files(root: Path) -> list[str]:
+    out = git("ls-files", "-z", root=root)
+    return [f for f in out.split("\0") if f]
+
+
+def check_encoding(root: Path) -> list[str]:
+    errs = []
+    for rel in tracked_files(root):
+        p = root / rel
+        if ENCODING_SKIP.search(rel) or not p.is_file():
+            continue
+        data = p.read_bytes()
+        if b"\0" in data:                                  # binary
+            continue
+        if data.startswith(BOM):
+            errs.append(f"{rel}: UTF-8 BOM var")
+        try:
+            text = data.decode("utf-8")
+        except UnicodeDecodeError as e:
+            errs.append(f"{rel}: geçersiz UTF-8 (bayt {e.start})")
+            continue
+        for n, line in enumerate(text.splitlines(), 1):
+            if any(m in line for m in MOJIBAKE):
+                errs.append(f"{rel}:{n}: bozuk Türkçe karakter (mojibake)")
+            bare = URL.sub("", line)
+            if LOST_LETTER.search(bare):
+                errs.append(f"{rel}:{n}: kelime içinde '?' (kaybolmuş Türkçe harf)")
+    return errs
+
+
 def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
     errs, status = check_cards(root)
-    errs += check_queue(root, status) + check_handoff(root) + check_lines(root) + check_links(root)
+    errs += check_queue(root, status) + check_handoff(root) + check_lines(root) + check_links(root) + check_encoding(root)
     return errs, permission_warnings(root)
 
 
