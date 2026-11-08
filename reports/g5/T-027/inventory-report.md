@@ -1,6 +1,6 @@
 # T-027 — Şematik referans ve pin kapsam envanteri
 
-**Durum: Review.** Envanter tasarımı değiştirmez. Kaynak commit `90cff8bb7e4e0b0373a5e39ab01847637c98557e`; KiCad 10.0.7. Karşılaştırılan ikinci kart: `40e0a7bed18f7297445f11df8741501eedac88a8` (T-023 dalı).
+**Durum: Review.** Envanter tasarımı değiştirmez. Kaynak commit `6ebf28bb38c7353f11749dc5758c58ce754ab277`; KiCad 10.0.7. Karşılaştırılan ikinci kart: `40e0a7bed18f7297445f11df8741501eedac88a8` (T-023 dalı).
 
 Komut (depo kökünden): `python scripts/sch_inventory.py --alt-pcb <git-rev>`. Girdi: `kicad-cli sch export netlist --format kicadsexpr` ([netlist.net](netlist.net)), `design/bom-v2.csv`, `design/footprint-map.csv`, `design/pdu_v2_spec.yaml`, `PDU.kicad_pcb`, `design/pdu_v2.cir`. Defterler: [ledger-references.csv](ledger-references.csv), [ledger-pins.csv](ledger-pins.csv), özet [inventory-summary.json](inventory-summary.json).
 
@@ -22,11 +22,11 @@ Komut (depo kökünden): `python scripts/sch_inventory.py --alt-pcb <git-rev>`. 
 |---|---:|
 | elektriksel parça | 140 |
 | DNP | 2 |
-| test/injection (BOM dışı, D-008) | 38 |
+| test/injection (satın alınmayan pad, D-008) | 38 |
 
 ## Sayı farklarının nedeni
 
-- **187 BOM satırı, 180 şema referansı:** BOM'da olup şemada olmayan 7 satırın tümü `CABLE` (kart dışı): CT1, CT2, F1, P1, P2, P3, XF1. Şemada olup BOM'da olmayanlar 38 test/enjeksiyon referansı (D-008).
+- **187 BOM satırı, 180 şema referansı:** BOM'da olup şemada olmayan 7 satırın tümü `CABLE` (kart dışı): CT1, CT2, F1, P1, P2, P3, XF1. 180 şema referansının tümü BOM'da; bunların 38'i MPN'siz test/enjeksiyon satırıdır (çıplak pad, D-008'e göre satın alınmaz). 187 = 180 + 7.
 - **184 kart ayak izi:** H1, H2, H3, H4 montaj delikleri, şemada yok.
 - **488 pin ile önceki 422 anahtar:** 422 spec pin anahtarı + 26 spec dışı düğüm + 40 test/enjeksiyon pini = 488.
 

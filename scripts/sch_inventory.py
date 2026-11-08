@@ -113,7 +113,7 @@ def sch_dnp(comp: dict) -> bool:
 
 def classify(ref: str, comp: dict, pcb_refs: set, bom_dnp: bool = False) -> str:
     if BOARD_ONLY_BOM.match(ref):
-        return "test/injection (BOM dışı, D-008)"
+        return "test/injection (satın alınmayan pad, D-008)"
     if bom_dnp or sch_dnp(comp):
         return "DNP"
     if ref not in pcb_refs:

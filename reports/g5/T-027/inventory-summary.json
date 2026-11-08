@@ -1,5 +1,5 @@
 {
- "input_commit": "90cff8bb7e4e0b0373a5e39ab01847637c98557e",
+ "input_commit": "6ebf28bb38c7353f11749dc5758c58ce754ab277",
  "kicad_cli": "10.0.7",
  "alt_pcb": "40e0a7bed18f7297445f11df8741501eedac88a8",
  "schematic_references": 180,
@@ -13,7 +13,7 @@
  "references_by_class": {
   "elektriksel parça": 140,
   "DNP": 2,
-  "test/injection (BOM dışı, D-008)": 38
+  "test/injection (satın alınmayan pad, D-008)": 38
  },
  "references_by_status": {
   "KAYITLI": 178,
