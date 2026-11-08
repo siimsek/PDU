@@ -25,6 +25,10 @@ Opus: mimari karar, zor hata ayıklama. Sonnet: uygulama, betik, ERC döngüsü,
 - MPN/değer uydurma. Raporlardaki sayılar JSON/hesap çıktısından gelir; üretici betiği çalıştır, elle sayı yazma.
 - Tasarım değeri değişirse aynı committe yay: `params.py`/`design.py` → `bom.py` → `pdu_v2.cir`/`sim_runner.py` → KICAD-CHANGE-LIST-FINAL, PCB-HANDOFF, BENCH-ACCEPTANCE, DESIGN-RULES, START-HERE; sonra `python analysis/check_consistency.py`.
 
+## Doğruluk
+- Commit, PR, dosya ve sayıyı bellekten yazma: bu oturumda koşulan komuttan veya adı verilen commit'teki dosyadan al; yoksa "doğrulanamadı". Olgu/hesap/varsayımı ayır, henüz olmayanı var gibi anlatma.
+- Son mesajdan önce verilen her PR/commit numarası ve durum komutla yeniden kontrol edilir. İnceleme PR'ları dahil her birleştirmeden önce o PR'ın içeriğiyle `pre_merge` koşulur.
+
 ## KiCad
 - KiCad dosyası (`*.kicad_sch/pcb/pro/sym/mod/dru`) **yalnız kart izin veriyorsa**: blok öncesi commit, blok sonrası ERC (yeni ihlal yok) + tutarlılık fark=0; bozulursa `git checkout -- <dosya>` ile geri al.
 - kicad-cli PATH'te değil: `"C:\Program Files\KiCad\10.0\bin\kicad-cli.exe"`. ERC/DRC çıktısını yalnız `reports/<faz>/` altına yaz.

@@ -44,3 +44,10 @@ Gerekmedikçe okuma: `archive/**` (yalnız `archive/INDEX.md`), `reports/*/sim/*
 
 ## Metin kodlaması (zorunlu)
 Her metin dosyası **BOM'suz UTF-8**; Türkçe karakterler okuma, yazma, alt süreç ve üretilen çıktı boyunca bozulmaz. Windows PowerShell'de önce `chcp 65001; [Console]::OutputEncoding=[Text.UTF8Encoding]::new(); $OutputEncoding=[Text.UTF8Encoding]::new(); $env:PYTHONUTF8='1'`; okurken `Get-Content -Encoding UTF8`, yazarken `[IO.File]::WriteAllText(yol, metin, [Text.UTF8Encoding]::new($false))` veya Python `encoding="utf-8", newline="\n"`. `Set-Content`/`Out-File` varsayılanını kullanma. Ekranda bozuk görünen metinde önce baytları kontrol et. `scripts/check_workflow.py` bozuk kodlamayı hata sayar.
+
+## Kanıt disiplini (zorunlu)
+- Başlarken `git rev-parse HEAD` ve `gh pr view <no>` ile dal, commit ve PR'ı doğrula. Commit, PR, dosya veya sayıyı bellekten yazma.
+- Her sayı, durum ve "geçti" iddiasının kaynağı bu oturumda koşulan komut veya adı verilen commit'te okunan dosyadır. Kaynak yoksa "doğrulanamadı" yaz.
+- Olgu, hesap ve varsayımı ayır; tahmini olgu gibi yazma. Henüz var olmayan PR, dal veya dosyayı var gibi anlatma.
+- Prompttaki bir iddia repoyla çelişirse tahmin etme: farkı komut çıktısıyla yaz.
+- Son mesajdan önce verdiğin her PR/commit numarasını ve sonucu komutla yeniden kontrol et.
