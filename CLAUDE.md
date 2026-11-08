@@ -32,7 +32,7 @@ Opus: mimari karar, zor hata ayıklama. Sonnet: uygulama, betik, ERC döngüsü,
 
 ## Araçlar
 - ngspice: `PDU_NGSPICE` veya `F:\Spice64\bin\ngspice_con.exe`. `python analysis/run_all.py` ~6 dk → arka planda koş.
-- Windows'ta Python dosya yazarken `newline="\n"` (repo LF; `.gitattributes`).
+- Metin: her yerde **BOM'suz UTF-8**, Türkçe karakter bozulmaz (okuma, yazma, alt süreç, üretilen çıktı). Python: `encoding="utf-8", newline="\n"` (repo LF; `.gitattributes`); alt süreç `encoding="utf-8"` + `PYTHONUTF8=1`. `check_workflow` bozuk kodlamayı hata sayar.
 - `.claude/settings.json` `archive/**`, `reports/*/sim/**` ve büyük JSON/log için onay ister; özetler `archive/INDEX.md`, `reports/g2/SIM-RESULTS.md`.
 - Paket üretimi: `python scripts/make_pack.py --task <ID> --for {codex|chatgpt|checker}` → `packs/` (git'te yok).
 

@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 import json, math, subprocess, sys
 from pathlib import Path
 sys.path.insert(0, 'scripts')

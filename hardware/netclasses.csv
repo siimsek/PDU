@@ -1,4 +1,4 @@
-﻿Netclass,Track_mm,Clearance_mm,ViaPad_mm,ViaDrill_mm,SizingEnvelope_A_NotMeasuredLoad,MaxReferenceLength_mm,ExactNets,Purpose
+Netclass,Track_mm,Clearance_mm,ViaPad_mm,ViaDrill_mm,SizingEnvelope_A_NotMeasuredLoad,MaxReferenceLength_mm,ExactNets,Purpose
 Default,0.25,0.2,0.8,0.4,,,,Unclassified signal fallback; must not carry a power trunk.
 INPUT_POWER,4.5,0.3,1.2,0.6,6,50,/VBAT; /ANODE; /VIN,Input continuous routing envelope; not fuse clearing/fault approval.
 BUS_POWER,6,0.2,1.2,0.6,8,50,/VOUT; /GND,Common 11V trunk and power-return equivalent cross-section. GND plane preferred; analog taps are exceptions.

@@ -120,3 +120,51 @@ def test_all_cards_parse_with_required_fields():
     for p in iter_cards(ROOT):
         c = parse_card(p.read_text(encoding="utf-8"))
         assert c["scalars"]["ID"] == p.stem
+
+
+def _enc_repo(tmp_path, name, data):
+    import subprocess
+    (tmp_path / name).write_bytes(data)
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "add", "-A"], cwd=tmp_path, check=True)
+    return cw.check_encoding(tmp_path)
+
+
+def test_encoding_clean_turkish_and_url_query_pass(tmp_path):
+    good = ("Türkçe açıklama: şğıöüç İ\nkaynak https://example.com/a?b=1&c=2\nSoru mu? Evet.\n").encode("utf-8")
+    assert _enc_repo(tmp_path, "ok.md", good) == []
+
+
+def test_encoding_invalid_utf8_fails(tmp_path):
+    errs = _enc_repo(tmp_path, "bad.md", b"uyar\xfd\n")
+    assert len(errs) == 1 and "UTF-8" in errs[0]
+
+
+def test_encoding_bom_fails(tmp_path):
+    errs = _enc_repo(tmp_path, "bom.md", cw.BOM + "metin\n".encode("utf-8"))
+    assert len(errs) == 1 and "BOM" in errs[0]
+
+
+def test_encoding_each_mojibake_marker_fails(tmp_path):
+    for i, m in enumerate(cw.MOJIBAKE):
+        d = tmp_path / str(i)
+        d.mkdir()
+        errs = _enc_repo(d, "m.md", ("uyar" + m + "\n").encode("utf-8"))
+        assert len(errs) == 1 and "mojibake" in errs[0], m
+
+
+def test_encoding_lost_turkish_letter_fails(tmp_path):
+    errs = _enc_repo(tmp_path, "q.md", "g\x3fvdesi\n".encode("utf-8"))
+    assert len(errs) == 1 and "harf" in errs[0]
+
+
+def test_encoding_scope_skips_archive_kicad_and_binary(tmp_path):
+    (tmp_path / "archive").mkdir()
+    (tmp_path / "archive" / "old.md").write_bytes(b"uyar\xfd\n")
+    (tmp_path / "x.kicad_sch").write_bytes(cw.BOM + b"x\n")
+    (tmp_path / "x.net").write_bytes(("SOT" + chr(63) + "23\n").encode("ascii"))
+    assert _enc_repo(tmp_path, "b.bin", b"a\0" + b"\xff") == []
+
+
+def test_repository_encoding_is_clean():
+    assert cw.check_encoding(ROOT) == []

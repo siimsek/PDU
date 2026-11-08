@@ -7,6 +7,7 @@ Added after PR #33 was merged while `check_workflow | tail -1` hid a non-zero ex
 """
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -15,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main(argv=None) -> int:
+    sys.stdout.reconfigure(encoding="utf-8")   # T-025: the Windows console code page turned "ı" into a 0xFD byte
     argv = list(sys.argv[1:] if argv is None else argv)
     steps = [
         ("pytest", [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider"]),
@@ -26,7 +28,8 @@ def main(argv=None) -> int:
         steps.append(("schematic " + " ".join(blocks), [sys.executable, "analysis/check_consistency.py", "--schematic", *blocks]))
     bad = []
     for name, cmd in steps:
-        p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                           env={**os.environ, "PYTHONUTF8": "1"})
         last = (p.stdout.strip().splitlines() or [""])[-1]
         print(f"[{'OK' if p.returncode == 0 else 'FAIL'}] {name}: {last[:160]}")
         if p.returncode != 0:

@@ -14,7 +14,7 @@ Tarih: 2026-11-07T23:41:56. Komut: `python analysis/run_all.py`.
 | BOM v2 / spec / footprint map (Stage 6, G4 C) | 0 | 0.1 | `{"rows": 187, "mpn": 187, "open": 0, "over_derating": 0}` |
 | spec <-> BOM <-> SPICE consistency (G4 C3) | 0 | 0.1 | `{"pass": true, "n_errors": 0}` |
 | full-system ngspice families F1-F5 (Stage 5) | 0 | 2222.3 | `{"F1": {"runs": 7, "completed": 7, "pass": 6}, "F2": {"runs": 4, "completed": 4, "pass": 4}, "F3": {"runs": 13, "completed": 13, "pass": 11}, "F4": {"runs": 3, "completed": 3, "pass": 2}, "F5": {"runs` |
-| workflow check (W0) | 0 | 0.2 | `check_workflow: 0 hata, 1 uyarÄ±` |
+| workflow check (W0) | 0 | 0.2 | `check_workflow: 0 hata, 1 uyarı` |
 | pytest (all) | 0 | 11.4 | `133 passed in 10.88s` |
 
 ## Simülasyon aile özeti (`reports/g2/sim-results.json`)

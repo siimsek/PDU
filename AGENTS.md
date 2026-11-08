@@ -41,3 +41,6 @@ Sayı doğrularken BUILDER'ın sonuç dosyalarını (`*results*.json`, `SIM-RESU
 
 ## Okuma bütçesi
 Gerekmedikçe okuma: `archive/**` (yalnız `archive/INDEX.md`), `reports/*/sim/**`, `reports/g1/*.json`, `reports/g3/**`, `*.log`, `*.net`, `*.kicad_*`. Büyük JSON'dan yalnız gereken anahtarı çek.
+
+## Metin kodlaması (zorunlu)
+Her metin dosyası **BOM'suz UTF-8**; Türkçe karakterler okuma, yazma, alt süreç ve üretilen çıktı boyunca bozulmaz. Windows PowerShell'de önce `chcp 65001; [Console]::OutputEncoding=[Text.UTF8Encoding]::new(); $OutputEncoding=[Text.UTF8Encoding]::new(); $env:PYTHONUTF8='1'`; okurken `Get-Content -Encoding UTF8`, yazarken `[IO.File]::WriteAllText(yol, metin, [Text.UTF8Encoding]::new($false))` veya Python `encoding="utf-8", newline="\n"`. `Set-Content`/`Out-File` varsayılanını kullanma. Ekranda bozuk görünen metinde önce baytları kontrol et. `scripts/check_workflow.py` bozuk kodlamayı hata sayar.
