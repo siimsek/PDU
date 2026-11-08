@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-014 → main (R-002 Tur 2 ONAY; PR #52, #53)
-- **Aktif kart:** yok — G5 KiCad kapısı kapandı: **PCB-YÖNLENDİRMEYE-HAZIR (koşullu)** (reports/g5/KICAD-READY.md). Yönlendirme kartları henüz yazılmadı.
+- **Dal / son commit:** wp/T-018 (taslak PR; **birleştirilmedi**)
+- **Aktif kart:** T-018 (Review — G5 belge eşitlemesi). G5 kapısı: PCB-YÖNLENDİRMEYE-HAZIR (koşullu).
 
 ## Yapılanlar
+- T-018: START-HERE G5'e, VERIFY.md T-014 koşusuna (F5 47/49 + iki eksik isim) eşitlendi; KICAD-CHANGE-LIST'e T-013. sim-results.json zaten doğruydu, değişmedi.
 - R-002 (#53) Tur 2 ONAY, 0 engelleyici; T-014 (#52) Done. Koşullar korundu: F5 47/49, belge eşitleme. THINKER'ın kendi KiCad 10 koşusu doğrulanamadı (KiCad 9.0.2); onay BUILDER ham çıktıları + bağımsız karşılaştırmayla.
 - R-002 tur 1 (PR #53, 1 engelleyici: Codex'te KiCad 9.0.2): 5a2985c üzerinde KiCad 10.0.7 ile ERC 0 + netlist, R-002 karşılaştırıcısı 0 fark (reports/g5/T-014/R-002-tur2/). LDSTRT/ITIMER gerekçesi AÇIK.
 - T-013 (#49) + R-012 (#50) + R-013 (#51) main'de. T-014: 9 maddeden 8 GEÇTİ, 1 KALDI (belge: START-HERE, VERIFY.md eski). run_all exit 0, F5 47/49 (bilinen 2 köşe AÇIK).
@@ -20,10 +21,10 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: belge eşitleme ve yönlendirme fazı için T-kartı taslakları (Draft). Sonra Claude Code: belge eşitleme → yönlendirme.
+Codex: T-018 kontrolü ve PR #54 (T-019…T-024, D-009) sırası. Sonra Claude Code: T-018 birleştir, sıradaki kart.
 
 ## Engeller
-Yok (yönlendirmeye). Açık koşullar: F5 iki köşe tam pencere AÇIK (kısaltılmış pencerede O1 10,92 V); START-HERE ve reports/g2/VERIFY.md eski; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
+Yok (yönlendirmeye). Açık koşullar: F5 iki köşe tam pencere AÇIK (kısaltılmış pencerede O1 10,92 V); 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
 
 ## Kullanıcıdan bekleyenler (yalnız fiziksel, engellemez)
 - U-001, U-007 tezgâh ölçümleri (kart üretilince).
