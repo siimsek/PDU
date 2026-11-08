@@ -266,7 +266,7 @@ def vout(B):
         for y in (70.0, 70.8, 71.6, 72.4):
             B.via("/VOUT", x, y, "RS1 output field")
     B.track("/VOUT", "B", 5.5, [(32.2, 71.0), (27.5, 71.0), (27.5, 60.0), (34.9, 57.0), (34.9, 47.4)], "RS1 output -> bank, clear of the RS1.2 sense via")
-    B.zone("F_VOUT_RS2", "/VOUT", "F", [(48.9, 17.4), (50.1, 17.4), (50.1, 14.4), (55.9, 14.4), (55.9, 19.9), (48.9, 19.9)], tag="RS2.2 output, 5.5 mm tall; the pad south part stays free for the sense via (R-021)")
+    B.zone("F_VOUT_RS2", "/VOUT", "F", [(49.7, 14.4), (55.9, 14.4), (55.9, 19.9), (48.9, 19.9), (48.9, 17.4), (49.7, 17.4)], tag="RS2.2 output, 5.5 mm tall from x 49.7 (inside the pad); only the pad south-west corner stays free for the sense via (R-021 Tur 2)")
     for x in (51.8, 52.6, 53.4, 54.2):
         for y in (15.4, 16.2, 17.0, 17.8):
             B.via("/VOUT", x, y, "RS2 output field")
@@ -491,7 +491,8 @@ VIA_TARGETS = {"Q2 drain (/VOUT)": (("Q2.5 drain field",), 15, 9), "Q2 source (/
 SECTIONS = [("/S2E_11V U4 -> D3 channel", "/S2E_11V", "F", (104.0, 51.0), "y", 2.97), ("/S2E_11V east drop", "/S2E_11V", "F", (110.5, 46.5), "x", 2.97),
             ("/O1_11V pins -> field", "/O1_11V", "F", (103.0, 44.0), "x", 4.76), ("/VIN CIN3/4 -> U1", "/VIN", "F", (56.0, 74.5), "y", 2.94),
             ("/VIN CIN7/8 -> U2", "/VIN", "F", (27.5, 9.5), "y", 2.94), ("/SW_PH1 U1 -> L1", "/SW_PH1", "F", (44.5, 75.0), "y", 2.35),
-            ("/SW_PH2 U2 -> L2", "/SW_PH2", "F", (39.0, 8.9), "y", 2.35), ("/VOUT RS2.2 -> field", "/VOUT", "F", (50.5, 17.1), "y", 4.92), ("/VOUT RS1.2 -> field", "/VOUT", "F", (32.0, 69.4), "x", 4.92),
+            ("/SW_PH2 U2 -> L2", "/SW_PH2", "F", (39.0, 8.9), "y", 2.35), ("/VOUT RS2.2 -> field", "/VOUT", "F", (50.5, 17.1), "y", 4.92), ("/VOUT RS1.2 -> field", "/VOUT", "F", (32.0, 69.4), "x", 4.92), ("/VOUT RS1.2 pad exit (y 69.3)", "/VOUT", "F", (32.0, 69.3), "x", 4.92),
+            ("/VOUT RS2.2 pad exit (x 50.08)", "/VOUT", "F", (50.08, 17.1), "y", 4.92), ("/VOUT RS2.2 in the pad (x 49.75)", "/VOUT", "F", (49.75, 17.1), "y", 4.92),
             ("/VSAFE under U3 -> U4", "/VSAFE", "B", (103.4, 41.5), "y", 4.92),
             ("/VSAFE around CEFIN2 GND via (sum of both sides)", "/VSAFE", "B", [(104.99, 38.0), (104.99, 42.2)], "y", 4.92),
             ("/O1_11V D_REV1 branch", "/O1_11V", "B", (112.0, 40.0), "x", 1.0), ("/S2E_11V D_REV2 branch", "/S2E_11V", "F", (114.0, 27.2), "y", 1.0)]

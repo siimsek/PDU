@@ -2972,18 +2972,10 @@
 "name": "F_VOUT_RS2",
 "net": "/VOUT",
 "layer": "F",
-"tag": "RS2.2 output, 5.5 mm tall; the pad south part stays free for the sense via (R-021)",
+"tag": "RS2.2 output, 5.5 mm tall from x 49.7 (inside the pad); only the pad south-west corner stays free for the sense via (R-021 Tur 2)",
 "points": [
 [
-48.9,
-17.4
-],
-[
-50.1,
-17.4
-],
-[
-50.1,
+49.7,
 14.4
 ],
 [
@@ -2997,6 +2989,14 @@
 [
 48.9,
 19.9
+],
+[
+48.9,
+17.4
+],
+[
+49.7,
+17.4
 ]
 ]
 },

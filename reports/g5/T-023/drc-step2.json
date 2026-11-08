@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-08T20:49:30",
+    "date": "2026-11-08T21:37:56",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -73,7 +73,7 @@
                         "x": 118.870719,
                         "y": 90.947553
                     },
-                    "uuid": "0bcacb98-b501-495c-a253-20cc0087a548"
+                    "uuid": "6c7ba1e9-61f4-4b9a-a429-22c94b60ca47"
                 }
             ],
             "severity": "error",
@@ -2617,10 +2617,10 @@
                 {
                     "description": "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
                     "pos": {
-                        "x": 107.0,
-                        "y": 95.0
+                        "x": 119.0,
+                        "y": 56.7
                     },
-                    "uuid": "8ac1cec2-60cc-47fd-ab42-42ad4e23d693"
+                    "uuid": "190e927a-1360-4115-a03a-81fe3d0ece79"
                 }
             ],
             "severity": "warning",
@@ -2632,40 +2632,10 @@
                 {
                     "description": "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
                     "pos": {
-                        "x": 119.0,
-                        "y": 56.7
+                        "x": 107.0,
+                        "y": 95.0
                     },
-                    "uuid": "aa2563a4-1a47-4063-a877-0697c66fe31e"
-                }
-            ],
-            "severity": "warning",
-            "type": "via_dangling"
-        },
-        {
-            "description": "Via is not connected or connected on only one layer",
-            "items": [
-                {
-                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
-                    "pos": {
-                        "x": 138.045,
-                        "y": 91.695
-                    },
-                    "uuid": "42ed6886-9457-4529-8002-d082b0fa7271"
-                }
-            ],
-            "severity": "warning",
-            "type": "via_dangling"
-        },
-        {
-            "description": "Via is not connected or connected on only one layer",
-            "items": [
-                {
-                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
-                    "pos": {
-                        "x": 142.0,
-                        "y": 65.4
-                    },
-                    "uuid": "9114ad49-0416-48df-bd39-fc7ea658c0f8"
+                    "uuid": "dcdc1c61-a5ed-40b8-b1fc-1165c033b38c"
                 }
             ],
             "severity": "warning",
@@ -2680,7 +2650,37 @@
                         "x": 136.644999,
                         "y": 90.095
                     },
-                    "uuid": "de97d85e-bc39-45d3-aafc-8d10bfd00ec9"
+                    "uuid": "78c2bec5-e1c8-4888-a2f9-abb5d0292b7b"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
+                    "pos": {
+                        "x": 138.045,
+                        "y": 91.695
+                    },
+                    "uuid": "f5692505-0af0-489a-8d78-fbda9bbd79a6"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
+                    "pos": {
+                        "x": 142.0,
+                        "y": 65.4
+                    },
+                    "uuid": "f84f9c22-2b87-4753-b342-ebe37f1cc05c"
                 }
             ],
             "severity": "warning",
@@ -2695,7 +2695,7 @@
                         "x": 126.0,
                         "y": 76.7
                     },
-                    "uuid": "668ad51b-8027-4984-ab9e-03c84b408807"
+                    "uuid": "0174c80c-f77e-4b8e-a7ea-c1f8122ba15d"
                 }
             ],
             "severity": "warning",

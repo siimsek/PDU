@@ -271,7 +271,7 @@
    "via_centre_in_power_track": false,
    "via_centre_in_power_zone": false,
    "min_gap_to_power_track_mm": 0.976,
-   "min_gap_to_power_zone_outline_mm": 0.7
+   "min_gap_to_power_zone_outline_mm": 0.3
   }
  },
  "kelvin_arm_power_overlap": {

@@ -434,6 +434,39 @@
    "meets_min": true,
    "basis": "HESAP: copper span through this point, 0.02 mm steps"
   },
+  "/VOUT RS1.2 pad exit (y 69.3)": {
+   "centre": [
+    32.0,
+    69.3
+   ],
+   "cut_axis": "x",
+   "copper_width_mm": 5.52,
+   "class_min_mm": 4.92,
+   "meets_min": true,
+   "basis": "HESAP: copper span through this point, 0.02 mm steps"
+  },
+  "/VOUT RS2.2 pad exit (x 50.08)": {
+   "centre": [
+    50.08,
+    17.1
+   ],
+   "cut_axis": "y",
+   "copper_width_mm": 5.52,
+   "class_min_mm": 4.92,
+   "meets_min": true,
+   "basis": "HESAP: copper span through this point, 0.02 mm steps"
+  },
+  "/VOUT RS2.2 in the pad (x 49.75)": {
+   "centre": [
+    49.75,
+    17.1
+   ],
+   "cut_axis": "y",
+   "copper_width_mm": 5.48,
+   "class_min_mm": 4.92,
+   "meets_min": true,
+   "basis": "HESAP: copper span through this point, 0.02 mm steps"
+  },
   "/VSAFE under U3 -> U4": {
    "centre": [
     103.4,
