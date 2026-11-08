@@ -1,0 +1,184 @@
+{
+ "basis": "HESAP on filled copper (GRID mm raster, 3-4 chamfer). Not a routed path: COUT, U3/U4 and CEFIN have no vias to L3 yet, so each pad is treated as if a via to L3 stood at its centre (T-022 must add them). Width = 2 x bottleneck clearance, excluding END_R around sources and targets.",
+ "grid_mm": 0.2,
+ "end_exclusion_radius_mm": 2.5,
+ "bus_inner_min_width_mm": 18.36,
+ "bus_vias_min": 15,
+ "VOUT_Q2_drain_to_COUT": {
+  "zone": "L3_VOUT",
+  "sources": 9,
+  "targets": {
+   "COUT1": {
+    "len_mm": 68.43,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT2": {
+    "len_mm": 45.52,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT3": {
+    "len_mm": 24.05,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT4": {
+    "len_mm": 59.1,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT5": {
+    "len_mm": 50.9,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT6": {
+    "len_mm": 42.9,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT7": {
+    "len_mm": 34.7,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT8": {
+    "len_mm": 26.7,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT9": {
+    "len_mm": 23.07,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT10": {
+    "len_mm": 60.23,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT11": {
+    "len_mm": 52.23,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT12": {
+    "len_mm": 44.03,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT13": {
+    "len_mm": 36.03,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT14": {
+    "len_mm": 27.83,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT15": {
+    "len_mm": 19.83,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT16": {
+    "len_mm": 11.63,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT17": {
+    "len_mm": 69.92,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT18": {
+    "len_mm": 61.72,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT19": {
+    "len_mm": 53.72,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT20": {
+    "len_mm": 37.52,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT21": {
+    "len_mm": 29.32,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT22": {
+    "len_mm": 21.32,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT23": {
+    "len_mm": 13.12,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT24": {
+    "len_mm": 72.65,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT25": {
+    "len_mm": 64.45,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT26": {
+    "len_mm": 56.45,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT27": {
+    "len_mm": 48.25,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT28": {
+    "len_mm": 40.25,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT29": {
+    "len_mm": 32.05,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT30": {
+    "len_mm": 16.67,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT31": {
+    "len_mm": 75.3,
+    "bottleneck_width_mm": 6.0
+   },
+   "COUT32": {
+    "len_mm": 67.1,
+    "bottleneck_width_mm": 6.0
+   }
+  },
+  "len_min_mm": 11.63,
+  "len_max_mm": 75.3,
+  "bottleneck_min_mm": 6.0,
+  "unreachable": []
+ },
+ "VSAFE_Q2_source_to_eFuse": {
+  "zone": "L3_VSAFE",
+  "sources": 3,
+  "targets": {
+   "U3_IN_1": {
+    "len_mm": 21.96,
+    "bottleneck_width_mm": 6.4
+   },
+   "U4_IN_16": {
+    "len_mm": 26.85,
+    "bottleneck_width_mm": 6.4
+   },
+   "CEFIN1_1": {
+    "len_mm": 21.5,
+    "bottleneck_width_mm": 6.0
+   },
+   "CEFIN2_1": {
+    "len_mm": 27.03,
+    "bottleneck_width_mm": 6.4
+   }
+  },
+  "len_min_mm": 21.5,
+  "len_max_mm": 27.03,
+  "bottleneck_min_mm": 6.0,
+  "unreachable": []
+ },
+ "L2_GND_return_straight_line": {
+  "CEFIN1": {
+   "to_nearest_COUT_GND_mm": 10.24
+  },
+  "CEFIN2": {
+   "to_nearest_COUT_GND_mm": 22.65
+  }
+ },
+ "via_counts": {
+  "Q2_drain_L3": 9,
+  "Q2_source_L3": 3,
+  "required_each": 15
+ }
+}
