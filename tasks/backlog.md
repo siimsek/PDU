@@ -1,13 +1,11 @@
 # Backlog — engelleyici olmayan işler
 
 Tek satır: `- [kaynak] konu — neden engelleyici değil — önerilen kart/rol`.
-
 - [G4 N1] Vishay IHLP4040DZER6R8M01 6,8 µH L(I) eğrisi 16–40 A (Vishay'den iste veya tezgâhta ölç) — faz OC tetiği O1'i tüm L tabanlarında ≤11,41 V tutuyor (HESAP) — THINKER D-kartı veya U-maddesi.
 - [G4 B5] UVLO düşüş eşiği (14,67–18,64 V, yalnız tipik histerezis) ve 18 V (3,0 V/hücre) kesimin BMS'te olup olmadığı — kullanıcı politikası; kart UVLO'su hücre koruması değil — U-maddesi (karar), BENCH T2.
 - [G4 B4] Trimsiz yığılmış köşeler görünür FAIL (bara min 10,73 V, bırakma 11,26 V; SİM F3) — kabul kart başı trim T1b ile; FAIL kaydı silinmez — bilgi.
 - [G4 B5] LM70880 EA gm maks yayımlanmamış (taramada 0,5–1,8 mS geçer) — tezgâh FRA T3 — BENCH.
 - [G4 C] MLCC DC-bias grafikleri okunamadı (Ceff VARSAYIM) — Ceff payları muhafazakâr — THINKER datasheet okuma.
-
 - [R-001] Startup PRE/CLR overlap creates a temporary nonstable latch state — no persistent set expected under no-fault sequence; verify /P5V_PROT, PRE, CLR and OVP_Q traces on bench — BENCH/THINKER.
 - [R-001] BIAS→AGND is correct for the ≤60 V fault case, but exact VIN-to-VCC LDO dissipation needs actual VIN/IVCC and thermal budget — no thermal criterion currently supplied — THINKER/BENCH.
 - [R-001] Define production R_TRIM replacement range, per-board trim procedure and RFB1 tolerance for complete VOUT corner analysis — current 442 Ω point is within calculated static window — BUILDER.
@@ -18,3 +16,6 @@ Tek satır: `- [kaynak] konu — neden engelleyici değil — önerilen kart/rol
 - [R-012/T-013] Kaba yerleşimdeki silkscreen DRC uyarıları (199 overlap, 199 over-copper, 17 edge clearance) — iz/via içermeyen ilk yerleşimde etiket/footprint görünümünden kaynaklanıyor; üretim/son yerleşim öncesi temizlenecek — T-014 (BUILDER).
 - [T-013 / R-012] Güç ağlarındaki ölçüm uçları (R_OVT/R_OV2T Kelvin VRAW, INA296 IN±, bölücüler, TP'ler) sınıf min genişlik kuralına takılır → yönlendirme kartında net-tie ya da gerekçeli DRC muafiyeti — BUILDER (yönlendirme).
 - [T-014] Belge eşitleme: START-HERE durum satırı G4'te kaldı; reports/g2/VERIFY.md + sim-results.json F5 için D-007 öncesi 49/49 gösteriyor (güncel run_all 47/49, reports/g5/T-014/VERIFY-run_all.md); KICAD-CHANGE-LIST-FINAL'e T-013 PCB kurulumu atfı — BUILDER (küçük belge kartı).
+- [T-014/R-002] Belge eşitleme: START-HERE G4’te ve main VERIFY.md F5 49/49; KICAD-READY 47/49 gösteriyor. Süre kaydı da 10.10 s ile 10.88 s arasında farklı (133 test PASS ikisinde de) — gate sonucunu etkilemeyen dokümantasyon farkı — BUILDER.
+- [R-002] Spec pin kapsamı: T-014 netlistindeki 26 fiziksel düğüm için doğrudan spec pin anahtarı yok (22 bağlı: /GND veya /VSAFE; 4 unconnected-) — mevcut eşleşmelerde yanlış ağ kanıtlanmadı, fakat bu düğümler spec ile karşılaştırılmıyor — BUILDER, pin kapsama denetimini genişlet.
+- [R-002] 157 izlenen dosyada yerel kişisel mutlak yollar (reports/g5/T-012/netlist.net, reports/g5/T-013/netlist.net ve reports/g5/T-014/netlist.net source satırları dahil) — git geçmişi yeniden yazılmayacak; yeni çıktılarda yerel yolları temizle ve mevcut izlenen dosyaları ileriye dönük normalleştir — BUILDER.

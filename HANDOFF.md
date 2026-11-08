@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-014 (PR #52 taslak; R-002 tur 1 KOŞULLU, tur 2 bekliyor; **birleştirilmedi**)
-- **Aktif kart:** T-014 (Review). Kapı: **PCB-YÖNLENDİRMEYE-HAZIR (koşullu)** — reports/g5/KICAD-READY.md.
+- **Dal / son commit:** wp/T-014 → main (R-002 Tur 2 ONAY; PR #52, #53)
+- **Aktif kart:** yok — G5 KiCad kapısı kapandı: **PCB-YÖNLENDİRMEYE-HAZIR (koşullu)** (reports/g5/KICAD-READY.md). Yönlendirme kartları henüz yazılmadı.
 
 ## Yapılanlar
+- R-002 (#53) Tur 2 ONAY, 0 engelleyici; T-014 (#52) Done. Koşullar korundu: F5 47/49, belge eşitleme. THINKER'ın kendi KiCad 10 koşusu doğrulanamadı (KiCad 9.0.2); onay BUILDER ham çıktıları + bağımsız karşılaştırmayla.
 - R-002 tur 1 (PR #53, 1 engelleyici: Codex'te KiCad 9.0.2): 5a2985c üzerinde KiCad 10.0.7 ile ERC 0 + netlist, R-002 karşılaştırıcısı 0 fark (reports/g5/T-014/R-002-tur2/). LDSTRT/ITIMER gerekçesi AÇIK.
 - T-013 (#49) + R-012 (#50) + R-013 (#51) main'de. T-014: 9 maddeden 8 GEÇTİ, 1 KALDI (belge: START-HERE, VERIFY.md eski). run_all exit 0, F5 47/49 (bilinen 2 köşe AÇIK).
 - R-012 tur 2 (1 engelleyici): `neck_audit` yayda gerçek yay uzunluğu (start/mid/end); prob E/F yayları + testler. Doğrulama kartı tasks/R-013.md (queue: yalnız R-013 satırı — check_workflow kapısı için).
@@ -19,15 +20,14 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Codex: R-002 tur 2. ONAY → Claude Code: #52 + #53 birleştir.
+Codex: belge eşitleme ve yönlendirme fazı için T-kartı taslakları (Draft). Sonra Claude Code: belge eşitleme → yönlendirme.
 
 ## Engeller
-F5 iki köşe: kısaltılmış pencere kanıtı var (O1 10,92 V), tam pencere AÇIK (backlog).
+Yok (yönlendirmeye). Açık koşullar: F5 iki köşe tam pencere AÇIK (kısaltılmış pencerede O1 10,92 V); START-HERE ve reports/g2/VERIFY.md eski; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
 
 ## Kullanıcıdan bekleyenler (yalnız fiziksel, engellemez)
 - U-001, U-007 tezgâh ölçümleri (kart üretilince).
 - **Birleştirme yetkisi: VERİLDİ (2026-11-07).** KiCad/tasarım PR'ı için THINKER onayı yeterli (WORKFLOW kural 6).
 
 ## Okuma gerektirmeyen notlar
-- Çalışma ağacında `PDU.kicad_pro` commit dışı (2026-11-08 00:08, eski netclass: BUS 6,0 mm vb.; muhtemelen açık kalan KiCad GUI kaydı — doğrulanmadı). `git add -A` KULLANMA; birleştirmeden önce commit'teki sürümle eşitle.
 - KiCad GUI açıksa şemayı/PCB'yi GUI'den kaydetmeyin; şema `scripts/sch_edit_b*.py`, PCB `scripts/pcb_setup.py` + `pcb_rules.py` ile yeniden üretilir.

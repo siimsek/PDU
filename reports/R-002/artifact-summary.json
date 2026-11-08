@@ -1,0 +1,83 @@
+{
+  "t014": {
+    "commit": "5a2985cc18d0867dc3030feb3117807254bd96ef",
+    "pr": 52,
+    "branch": "wp/T-014",
+    "reported_kicad_version": "10.0.7"
+  },
+  "erc": {
+    "version": "10.0.7",
+    "root_sheet_violations": 0,
+    "ignored_checks": [
+      "single_global_label",
+      "four_way_junction",
+      "simulation_model_issue",
+      "footprint_filter"
+    ]
+  },
+  "empty_board_drc": {
+    "version": "10.0.7",
+    "violations": 0,
+    "unconnected_items": 0,
+    "schematic_parity": 0
+  },
+  "placed_board_drc": {
+    "version": "10.0.7",
+    "schematic_parity": 0,
+    "unconnected_items": 402,
+    "violations": 413,
+    "warning_types": {
+      "silk_edge_clearance": 15,
+      "silk_overlap": 199,
+      "silk_over_copper": 199
+    }
+  },
+  "run_all": {
+    "recorded_steps": 12,
+    "all_steps_exit_zero": true,
+    "pytest_passed": 133,
+    "families": {
+      "F1": {
+        "runs": 7,
+        "completed": 7,
+        "pass": 6
+      },
+      "F2": {
+        "runs": 4,
+        "completed": 4,
+        "pass": 4
+      },
+      "F3": {
+        "runs": 13,
+        "completed": 13,
+        "pass": 11
+      },
+      "F4": {
+        "runs": 3,
+        "completed": 3,
+        "pass": 2
+      },
+      "F5": {
+        "runs": 49,
+        "completed": 47,
+        "pass": 47
+      }
+    }
+  },
+  "f5_known_incomplete": {
+    "names": [
+      "f5_vt11.487_td300ns_ctyp_r200m_l0.8",
+      "f5_vt11.765_td300ns_ctyp_r200m_l0.8"
+    ],
+    "source_guard": "analysis/g2/test_sim_bom.py::test_all_five_families_completed asserts incomplete == KNOWN_INCOMPLETE"
+  },
+  "main_documents": {
+    "start_here_status": "G4; says KiCad files do not yet include G2-G4 changes",
+    "verify_f5": {
+      "runs": 49,
+      "completed": 49,
+      "pass": 49
+    }
+  },
+  "interpretation": "T-014 conditional gate label is consistent with two incomplete full-window F5 runs and the reported document-only KALDI item. Raw reports were parsed; local KiCad 10 rerun was not possible."
+}

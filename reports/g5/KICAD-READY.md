@@ -51,6 +51,14 @@ Elektriksel ve KiCad maddeleri geçti. Şema 180 ref ile spec'e birebir, ERC 0. 
    - güç ağı ölçüm uçlarının sınıf min kuralına takılması (backlog: net-tie veya gerekçeli muafiyet),
    - Q1/Q2 ≥645 mm² bakır, LM70880 EP via dizisi, L2/L3 dökümleri.
 
+## Bağımsız inceleme (R-002, PR #53)
+
+**R-002 Tur 2: ONAY, 0 engelleyici.** Karar bu kapının **koşullu** sonucunu onaylar; yukarıdaki F5 ve belge koşullarını kaldırmaz.
+
+- **Doğrulama sınırı:** THINKER ortamında KiCad 9.0.2 kurulu; KiCad 10.0.7 ile kendi ERC/netlist koşusu **doğrulanamadı**. Onay şunlara dayanır: BUILDER'ın 5a2985c kaynağından KiCad 10.0.7 ile ürettiği ham çıktılar (`T-014/R-002-tur2/`), kaynak blob eşleşmeleri ve THINKER'ın gerçek PyYAML ile koştuğu bağımsız karşılaştırma (180 ref, 422 pin anahtarı, 0 fark).
+- **U3/U4 LDSTRT → /GND ve ITIMER açık:** R-002 Tur 2'de THINKER tarafından TPS25982 datasheet'ine göre doğru bulundu (`T-014/R-002-tur2/RESULT.md`'deki AÇIK işaretini kapatır).
+- **Açık kalan işler (`tasks/backlog.md`):** F5'in iki köşesi tam pencerede; belge eşitleme (START-HERE, `reports/g2/VERIFY.md`, `sim-results.json`); spec'te anahtarı olmayan 26 netlist düğümünün kapsama alınması; izli dosyalardaki yerel yollar.
+
 ## Kanıt dosyaları
 
 `reports/g5/T-014/`: erc.json, netlist.net, check-B1-B7.txt, check_footprints.txt, drc-empty.json, drc-placed.json. T-013 kurulum kanıtı: [`PCB-SETUP.md`](PCB-SETUP.md).
