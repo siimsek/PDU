@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-022 → main (PR #66; R-018 PR #68 Tur 2 KOŞULLU).
-- **Aktif kart:** T-023 Ready (sinyal yönlendirme, başlamadı). Kart T-022 sonrası 199 açık çift, 6 via_dangling uyarısı; devir listesi tasks/done/T-022.md.
+- **Dal / son commit:** wp/T-023 (taslak PR; yalnız adım 1, PDU.kicad_pcb değişmedi). D-012 (#69) main'de.
+- **Aktif kart:** T-023 **InProgress** — adım 1 bitti: taban DRC 0, parite 0, 199 açık çift; 72 yeni GND via ile 77 GND çifti geçici kopyada kapandı. Rapor: reports/g5/T-023/step1-report.md.
 
 ## Yapılanlar
+- T-023 adım 1: envanter ve GND via adayları; repo kartına yazılmadı.
 - R-018 Tur 1: TP_SW1/2 SW düğümüne taşındı; U1/U2 ISNS+VOUT çiftleri bağlandı; U4 +1,15 mm, CEFIN2 U4 batısında (CEFIN1 düzeni); D_REV/CEFOUT kolları 1,5 mm.
 - T-022 (dal): Q2 90° + L3_VSAFE, B.Cu /VOUT 7,0 ve /VSAFE 5,5, O1/S2E/ANODE/VIN, gate 5,469 mm. `pcb_route_power.py` yalnız T-021 kartından koşar. /VIN, /ANODE, /VSAFE, /O1, /S2E açık uç 0.
 - T-022 sığma denemesi (geçici kopyalar, KiCad DRC): Q2 180° gate 11,562 mm; 7,0 mm güney şeridi TP_VSAFE ile kısa devre, 5,5 mm temiz; Q2 90° gate 5,469 mm + iki B.Cu bara + 20 via 0 hata.
@@ -23,10 +24,9 @@
 - T-012 (#47) main'de (R-011 ONAY). T-013 (dal): `pcb_setup.py` (pcbnew) + `pcb_rules.py` + `pcb_drc.py`; netclass routing-g2'ye eşitlendi; kaba bölge yerleşimi; iz yok.
 - T-011 (#44) main'de (R-010: kanonik Value kuralı). T-012 (dal): D-008 test padleri + J_OVP_INJ_BUS + JP_EN_BUCK (BOM dışı), notlar/antet; ERC 0, B1–B7 fark 0.
 - T-010 + T-009 (#42) main'de (R-009: Q2 TI land footprint). T-011 (dal): B6 tamam; şemadaki 142 PCB parçasının tamamı spec ile birebir, ERC 0.
-- T-017 (#40) main'de. T-010 + T-009 (dal): B5 30 + B4 12 parça `sch_place.py` ile (etiket-pin); ERC 0; B1–B5 fark 0; blok dışı 0. Q2 footprint TI land'den özel (R-009).
 
 ## Sonraki adım
-Codex: T-023 sinyal yönlendirme planı (D-012). Sonra Claude Code: T-023.
+Claude Code: T-023 adım 2 (GND uygula, Kelvin, gate), her adımda refill/DRC/parite.
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).

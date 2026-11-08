@@ -1,0 +1,103 @@
+{
+"kicad": "10.0.7",
+"errors": 0,
+"by_type": {
+"warning:via_dangling": 6
+},
+"schematic_parity_issues": 0,
+"unconnected_pairs": 199,
+"pairs_by_net": {
+"/CBOOT1": 1,
+"/CBOOT2": 1,
+"/CBOOT_R1": 1,
+"/CBOOT_R2": 1,
+"/CFG_PRI": 1,
+"/CFG_SEC": 1,
+"/CLR_N": 5,
+"/COMP": 4,
+"/COMP_MID": 1,
+"/DVDT_O1": 1,
+"/DVDT_S2E": 1,
+"/EN_BUCK": 5,
+"/EN_EFUSE": 3,
+"/FB": 2,
+"/FB_INJ": 2,
+"/FB_TRIM": 1,
+"/GATE": 1,
+"/GND": 77,
+"/ILIM_O1": 1,
+"/ILIM_S2E": 1,
+"/IMON_O1": 2,
+"/IMON_S2E": 2,
+"/ISNS1": 2,
+"/ISNS2": 2,
+"/ISO_EN": 2,
+"/ISO_GATE": 2,
+"/ISO_OV": 4,
+"/ISO_VCAP": 1,
+"/LDO_DELAY": 1,
+"/OC_REF": 4,
+"/OC_SENSE1": 2,
+"/OC_SENSE2": 2,
+"/OC_TRIP1_N": 1,
+"/OC_TRIP2_N": 1,
+"/OVP_BUS_N": 2,
+"/OVP_Q": 2,
+"/OVP_REF": 4,
+"/OVP_SENSE": 3,
+"/OVP_TRIP_N": 2,
+"/P5V_PROT": 22,
+"/PG_O1": 3,
+"/PG_S2E": 3,
+"/REF_NR": 1,
+"/RT_PH1": 1,
+"/RT_PH2": 1,
+"/SW4_PH1": 1,
+"/SW4_PH2": 1,
+"/SYNC": 2,
+"/VCAP": 1,
+"/VCC1": 1,
+"/VCC2": 1,
+"/VDDA1": 2,
+"/VDDA2": 1,
+"/VOUT": 6
+},
+"warnings": [
+{
+"type": "via_dangling",
+"items": [
+"Geçit [/VOUT] F.Cu - B.Cu üzerinde"
+]
+},
+{
+"type": "via_dangling",
+"items": [
+"Geçit [/VOUT] F.Cu - B.Cu üzerinde"
+]
+},
+{
+"type": "via_dangling",
+"items": [
+"Geçit [/O1_11V] F.Cu - B.Cu üzerinde"
+]
+},
+{
+"type": "via_dangling",
+"items": [
+"Geçit [/O1_11V] F.Cu - B.Cu üzerinde"
+]
+},
+{
+"type": "via_dangling",
+"items": [
+"Geçit [/O1_11V] F.Cu - B.Cu üzerinde"
+]
+},
+{
+"type": "via_dangling",
+"items": [
+"Geçit [/VSAFE] F.Cu - B.Cu üzerinde"
+]
+}
+]
+}
