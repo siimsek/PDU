@@ -8,6 +8,7 @@ known); broken relative links in the workflow documents.
 """
 from __future__ import annotations
 
+import hashlib
 import re
 import sys
 from pathlib import Path
@@ -176,7 +177,7 @@ def check_encoding(root: Path) -> list[str]:
 
 def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
     errs, status = check_cards(root)
-    errs += check_queue(root, status) + check_handoff(root) + check_lines(root) + check_links(root) + check_encoding(root)
+    errs += check_queue(root, status) + check_handoff(root) + check_lines(root) + check_links(root) + check_encoding(root) + check_standard(root)
     return errs, permission_warnings(root)
 
 
@@ -186,6 +187,39 @@ def _utf8():
             s.reconfigure(encoding="utf-8")
         except (AttributeError, ValueError):
             pass
+
+
+STANDARD_DOC = "docs/POWER-PCB-ENGINEERING-STANDARD.md"
+STANDARD_SRC = "decisions/R-020-engineering-standard-source.md"
+STANDARD_SHA = "5c03f55e43b985e87191ea46efc52dc3321ad9b196f42ecd7bb8056901c9fcfe"
+STANDARD_LINKS = ("AGENTS.md", "CLAUDE.md", "docs/WORKFLOW.md")
+
+
+def check_standard(root: Path, required: bool | None = None) -> list[str]:
+    """T-026: the permanent standard stays byte-complete against its source and stays linked from the agent rules.
+
+    required defaults to True for the real repository: there, both files missing is a FAIL (R-020). Only minimal test fixtures skip it.
+    """
+    required = (root.resolve() == ROOT.resolve()) if required is None else required
+    errs = []
+    src, doc = root / STANDARD_SRC, root / STANDARD_DOC
+    if not src.exists() and not doc.exists():
+        return [f"mühendislik standardı eksik: {STANDARD_SRC} ve {STANDARD_DOC}"] if required else []
+    if not src.exists() or not doc.exists():
+        return [f"mühendislik standardı eksik: {STANDARD_SRC} veya {STANDARD_DOC}"]
+    data = src.read_bytes()
+    if hashlib.sha256(data).hexdigest() != STANDARD_SHA:
+        errs.append(f"{STANDARD_SRC}: SHA-256 beklenen değil")
+    if not doc.read_bytes().endswith(data):
+        errs.append(f"{STANDARD_DOC}: kaynak metin eksiksiz değil")
+    for f in STANDARD_LINKS:
+        text = (root / f).read_text(encoding="utf-8") if (root / f).exists() else ""
+        targets = re.findall(r"\]\(([^)#]*POWER-PCB-ENGINEERING-STANDARD\.md)\)", text)
+        if not targets:
+            errs.append(f"{f}: mühendislik standardı bağlantısı yok")
+        elif not all((root / f).parent.joinpath(t).resolve() == doc.resolve() for t in targets):
+            errs.append(f"{f}: mühendislik standardı bağlantı hedefi yanlış")
+    return errs
 
 
 def main() -> int:
