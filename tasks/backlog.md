@@ -20,3 +20,5 @@ Tek satır: `- [kaynak] konu — neden engelleyici değil — önerilen kart/rol
 
 - [T-014/R-002] Belge eşitleme: START-HERE G4’te ve main VERIFY.md F5 49/49; KICAD-READY 47/49 gösteriyor. Süre kaydı da 10.10 s ile 10.88 s arasında farklı (133 test PASS ikisinde de) — gate sonucunu etkilemeyen dokümantasyon farkı — BUILDER.
 - [R-002] Spec pin kapsamı: T-014 netlistindeki 26 fiziksel düğüm için doğrudan spec pin anahtarı yok (22 bağlı: /GND veya /VSAFE; 4 unconnected-) — mevcut eşleşmelerde yanlış ağ kanıtlanmadı, fakat bu düğümler spec ile karşılaştırılmıyor — BUILDER, pin kapsama denetimini genişlet.
+
+- [R-002] 157 izlenen dosyada yerel kişisel mutlak yollar (T-012–T-014 reports/g5/.../netlist.net source satırları dahil) — git geçmişi yeniden yazılmayacak; yeni çıktılarda yerel yolları temizle ve mevcut izlenen dosyaları ileriye dönük normalleştir — BUILDER.
