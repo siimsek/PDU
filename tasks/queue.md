@@ -60,7 +60,7 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [T-024](T-024.md) | BUILDER | M | T-023 | Draft |
 | [R-020](R-020.md) | THINKER | M | T-022 | Review |
 | [T-026](done/T-026.md) | BUILDER | S | — | Done |
-| [T-027](T-027.md) | BUILDER | M | T-026 | Draft |
+| [T-027](done/T-027.md) | BUILDER | M | T-026 | Done |
 | [T-028](T-028.md) | BUILDER | M | T-027 | Draft |
 | [T-029](T-029.md) | BUILDER | M | T-027, T-028 | Draft |
 | [T-030](T-030.md) | BUILDER | M | T-026, T-027 | Draft |
