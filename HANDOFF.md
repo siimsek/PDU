@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-023 (taslak PR #70; adım 2). R-019 (#71) main'de.
-- **Aktif kart:** T-023 **InProgress** — adım 2 bitti: DRC 0, parite 0, 199→116 açık çift, /GND 0. Kelvin 4 kol ≤15 mm ama paralel değil. Rapor: reports/g5/T-023/step2-report.md.
+- **Dal / son commit:** wp/T-023 (taslak PR #70; R-020 Tur 1 RET düzeltildi). R-020 PR #72.
+- **Aktif kart:** T-023 **InProgress** — R-020 Tur 2 bekliyor. DRC 0, parite 0, 199→112 açık çift, /GND 0. Faz 2 Kelvin paralel; faz 1 kısmen. Rapor: reports/g5/T-023/step2-report.md.
 
 ## Yapılanlar
+- R-020 Tur 1: Kelvin yeniden (U12 180°, ayrı RS via'ları), R_GS Q2 yanına, TP_ISNS1P/1N/2P/2N kola 1,3–1,9 mm.
 - T-023 adım 2: 71 GND via, INA296 Kelvin (zone tap), R_GS kolu, TP_ISO_GATE taşındı.
 - T-023 adım 1: envanter ve GND via adayları; repo kartına yazılmadı.
 - R-018 Tur 1: TP_SW1/2 SW düğümüne taşındı; U1/U2 ISNS+VOUT çiftleri bağlandı; U4 +1,15 mm, CEFIN2 U4 batısında (CEFIN1 düzeni); D_REV/CEFOUT kolları 1,5 mm.
@@ -23,10 +24,9 @@
 - R-012 tur 2 (1 engelleyici): `neck_audit` yayda gerçek yay uzunluğu (start/mid/end); prob E/F yayları + testler. Doğrulama kartı tasks/R-013.md (queue: yalnız R-013 satırı — check_workflow kapısı için).
 - R-012 tur 1 (2 engelleyici) düzeltildi: CIN1–4/5–8 U1/U2 VIN–PGND kenarında (5,6–16,4 mm); darboğaz DRU kuralı ince adımlı padli ayak izleriyle sınırlı + `pcb_drc.py` uzunluk denetimi (≤1,5 mm), `pcb_neck_probe.py` kanıtı.
 - T-012 (#47) main'de (R-011 ONAY). T-013 (dal): `pcb_setup.py` (pcbnew) + `pcb_rules.py` + `pcb_drc.py`; netclass routing-g2'ye eşitlendi; kaba bölge yerleşimi; iz yok.
-- T-011 (#44) main'de (R-010: kanonik Value kuralı). T-012 (dal): D-008 test padleri + J_OVP_INJ_BUS + JP_EN_BUCK (BOM dışı), notlar/antet; ERC 0, B1–B7 fark 0.
 
 ## Sonraki adım
-Codex: adım 2 incelemesi; Kelvin paralellik, R_GS ve TP_ISNS kararları. Sonra Claude Code: adım 3 (FB/COMP/OVP/OC).
+Codex: R-020 Tur 2 (faz 1 Kelvin kararı dahil). ONAY → Claude Code: adım 3. T-026 standardı ayrı PR.
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
