@@ -41,9 +41,23 @@ R-021 engelleyicisi: U1.11 sense viası RS1.1'de L1 güç izinin bakırı içind
 | RS1.1 | (37,962; 67,6) | (37,7; 66,4) | evet | hayır | hayır | 1,013 | — |
 | RS1.2 | (32,037; 67,6) | (32,3; 66,4) | evet | hayır | hayır | 1,551 | 2,2 |
 | RS2.1 | (43,538; 16,6) | (43,9; 17,7) | evet | hayır | hayır | 0,709 | — |
-| RS2.2 | (49,462; 16,6) | (49,1; 15,6) | evet | hayır | hayır | 0,976 | 0,7 |
+| RS2.2 | (49,462; 16,6) | (49,1; 15,6) | evet | hayır | hayır | 0,976 | 0,3 |
 
 Ölçüm karttan: `PCB_TRACK.HitTest` ve `ZONE.HitTestFilledArea`. Dört Kelvin kolunun merkez hattının (uçlardaki 0,4 mm uzatma dahil) kendi ağının güç bakırına değen örnek sayısı: **0**. Bu, geometrik ayrımı gösterir; pad içi akım dağılımı ve ölçüm hatası **doğrulanamadı**.
+
+## R-021 Tur 2 — RS2.2 pad çıkışı
+
+R-021 Tur 2 engelleyicisi: sense viası için açılan kontur, RS2.2 pad çıkışını x=50,08'de 2,50 mm'ye düşürmüştü. Kontur düzeltildi: güç dökümü pad içinde x=49,7'den itibaren tam yükseklikte; yalnız padin güneybatı köşesi sense via için boş.
+
+| Kesit (F.Cu dolu bakır) | Bakır (mm) | Dış katman minimum (mm) |
+|---|---:|---:|
+| /VOUT RS2.2 in the pad (x 49.75) | 5,48 | 4,92 |
+| /VOUT RS2.2 pad exit (x 50.08) | 5,52 | 4,92 |
+| /VOUT RS2.2 -> field | 5,52 | 4,92 |
+| /VOUT RS1.2 pad exit (y 69.3) | 5,52 | 4,92 |
+| /VOUT RS1.2 -> field | 5,52 | 4,92 |
+
+RS1/RS2 çıkış via sayısı 16 / 16 (hedef 15). RS2.2 sense viası güç dökümü konturuna 0,3 mm, dökümün içinde değil. Bu kesitler F.Cu yereldir; çok katmanlı akım ve ısı dağılımı **doğrulanamadı**.
 
 ## Gate ve R_GS
 
