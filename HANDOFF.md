@@ -5,6 +5,7 @@
 - **Aktif kart:** sıradaki T-019 (F5 tam pencere tıkanması kök neden; Draft). G5 kapısı: PCB-YÖNLENDİRMEYE-HAZIR (koşullu).
 
 ## Yapılanlar
+- R-014 (#56) ONAY: yerel KiCad 10.0.7 ile ERC 0, 180 ref, 422 pin, 0 fark, parite 0. D-009: bundled pcbnew API; gerçek bağlantı, refill ve parite T-020…T-024 aday kartında doğrulanacak.
 - T-018: START-HERE G5'e, VERIFY.md T-014 koşusuna (F5 47/49 + iki eksik isim) eşitlendi; KICAD-CHANGE-LIST'e T-013. sim-results.json zaten doğruydu, değişmedi.
 - R-002 (#53) Tur 2 ONAY, 0 engelleyici; T-014 (#52) Done. Koşullar korundu: F5 47/49, belge eşitleme. THINKER'ın kendi KiCad 10 koşusu doğrulanamadı (KiCad 9.0.2); onay BUILDER ham çıktıları + bağımsız karşılaştırmayla.
 - R-002 tur 1 (PR #53, 1 engelleyici: Codex'te KiCad 9.0.2): 5a2985c üzerinde KiCad 10.0.7 ile ERC 0 + netlist, R-002 karşılaştırıcısı 0 fark (reports/g5/T-014/R-002-tur2/). LDSTRT/ITIMER gerekçesi AÇIK.
@@ -21,7 +22,7 @@
 - Spec düzeltmeleri (datasheet kanıtlı, şema doğruydu): U2 FB → GND (p.19), RBOOT seri (p.4), SW4 ayrı ağ.
 
 ## Sonraki adım
-Claude Code: T-019 (kriter gevşetme yok). D-009 Review; T-020 buna bağlı.
+Claude Code: T-020 ayrıntılı yerleşim. T-019 bekliyor (dokunma talimatı).
 
 ## Engeller
 Yok (yönlendirmeye). Açık koşullar: F5 iki köşe tam pencere AÇIK (kısaltılmış pencerede O1 10,92 V); 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
