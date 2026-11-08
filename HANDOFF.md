@@ -1,6 +1,6 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
-- **Tarih:** 2026-11-07
+- **Tarih:** 2026-11-08
 - **Dal / son commit:** wp/T-014 (PR #52 taslak; R-002 tur 1 KOŞULLU, tur 2 bekliyor; **birleştirilmedi**)
 - **Aktif kart:** T-014 (Review). Kapı: **PCB-YÖNLENDİRMEYE-HAZIR (koşullu)** — reports/g5/KICAD-READY.md.
 
