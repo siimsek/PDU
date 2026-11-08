@@ -31,7 +31,7 @@ Kaynak: [`q2_fit_probe.py`](q2_fit_probe.py) → [`q2-fit-probe.json`](q2-fit-pr
 
 ## D-010'daki diğer ölçü notu
 
-D-010'un 5×3, 0,75 mm adımlı drain dizisi mevcut 3×3, 1,2 mm adımlı T-021 dizisiyle çakışmaz (noktalar aynı değil), dolayısıyla "9 + 6 = 15" olduğu gibi uygulanamaz. Bu denemede mevcut 9 via korunup araya 8 via eklendi.
+D-010'un 5×3, 0,75 mm adımlı drain dizisi mevcut 3×3, 1,2 mm adımlı T-021 dizisiyle aynı noktalara oturmuyor; pad merkezli yorumda merkez vialar üst üste biner (D-011). Dolayısıyla "9 + 6 = 15" olduğu gibi uygulanamaz. Bu denemede mevcut 9 via korunup araya 8 via eklendi.
 
 ## Karar gereği
 
