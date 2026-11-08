@@ -1,0 +1,32 @@
+{
+  "kicad_cli_version": "10.0.7",
+  "bundled_pcbnew_version": "10.0.7",
+  "clone_venv_pyyaml": "6.0.3",
+  "erc_violations": 0,
+  "netlist_spec": {
+    "spec_pcb_refs": 180,
+    "netlist_components": 180,
+    "ref_set_match": true,
+    "pin_keys_checked": 422,
+    "mismatch_count": 0
+  },
+  "pcb_drc": {
+    "schematic_parity_items": 0,
+    "unconnected_item_errors": 402,
+    "other_violation_errors": 0,
+    "violation_warnings": 413,
+    "warning_types": {
+      "silk_edge_clearance": 15,
+      "silk_overlap": 199,
+      "silk_over_copper": 199
+    }
+  },
+  "pcbnew_memory_smoke": {
+    "loaded_board": "PDU.kicad_pcb",
+    "tracks_before": 0,
+    "tracks_after": 1,
+    "zones_before": 4,
+    "zones_after": 5,
+    "board_saved": false
+  }
+}
