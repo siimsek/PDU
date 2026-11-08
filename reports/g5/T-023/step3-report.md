@@ -1,4 +1,4 @@
-# T-023 Adım 3 — FB/COMP/OVP/OC (R-022 Tur 4 sonrası)
+# T-023 Adım 3 — FB/COMP/OVP/OC (R-022 Tur 5 sonrası)
 
 **Durum: T-023 InProgress. Adım 3 hedef ağları kapandı; adım 4'e geçilmedi, THINKER onayı bekleniyor.** KiCad 10.0.7 (`--refill-zones --schematic-parity`): DRC hatası **0**, parite **0**, açık çift **199 → 68**, adım 1'e göre yeni açık ağ **0**, adım 2'ye göre yeni açık ağ **0**, L2 **1** ada. Uyarı: `{'warning:via_dangling': 6}`. Bu sayılar ara aşamadır, final kabul değildir.
 
@@ -12,7 +12,7 @@ Kaynak: [`scripts/pcb_route_signals.py`](../../../scripts/pcb_route_signals.py) 
 | TP_GND_OC yerel GND | Taşındı: (50,5; 22,0), U14 grubunun yanı | kendi via'sı [49.65, 22.85], kol 1,2 mm |
 | TP_OC_SENSE1 uzun kol | Taşındı: (33,0; 59,5) | TP kolu 5,34 mm, 2 via |
 | TP_OC_SENSE2 uzun kol | Taşındı: (38,5; 27,0) | TP kolu 2,31 mm, 0 via |
-| Kalan 8 sinyal bağlantısı | Tamamlandı. Tamamlanan bağlantı **37**, başarısız **0** | step3-routes.json |
+| Kalan 8 sinyal bağlantısı | Tamamlandı. Tamamlanan bağlantı **38**, başarısız **0** | step3-routes.json |
 
 U1 ölçüm kolları değiştirilmedi: yönlendirme sırası `STEP3_FIRST` ile sabitlendi ve pad çıkışları sabit waypoint ile verildi (`STEP3_PREFIX`, `STEP3_FIRST`). `/ISNS1` ve `/ISNS2` izleri önceki adım 3 kartıyla aynıdır.
 
@@ -32,12 +32,12 @@ U1 ölçüm kolları değiştirilmedi: yönlendirme sırası `STEP3_FIRST` ile s
 | `/FB` | 0 | 8,9 | F | 0 | 1,32 / 2,95 |
 | `/FB_TRIM` | 0 | 1,55 | F | 0 | 5,62 / 7,35 |
 | `/FB_INJ` | 0 | 109,43 | B, F | 2 | 3,97 / 7,08 |
-| `/COMP` | 0 | 129,9 | F | 0 | 1,92 / 2,65 |
+| `/COMP` | 0 | 131,15 | F | 0 | 1,92 / 2,65 |
 | `/COMP_MID` | 0 | 1,8 | F | 0 | 5,33 / 13,08 |
 | `/OVP_SENSE` | 0 | 91,97 | B, F | 8 | 30,22 / 36,05 |
 | `/OVP_REF` | 0 | 41,51 | F | 0 | 25,68 / 35,49 |
 | `/OVP_TRIP_N` | 0 | 85,32 | B, F | 6 | 26,86 / 34,16 |
-| `/OVP_Q` | 0 | 138,41 | B, F | 10 | 6,59 / 8,3 |
+| `/OVP_Q` | 0 | 137,64 | B, F | 10 | 8,4 / 8,4 |
 | `/OVP_BUS_N` | 0 | 91,65 | B, F | 2 | 29,35 / 31,5 |
 | `/OC_SENSE1` | 0 | 10,81 | B, F | 2 | 13,42 / 13,61 |
 | `/OC_SENSE2` | 0 | 13,87 | B, F | 2 | 9,88 / 10,47 |
@@ -52,7 +52,7 @@ SW mesafeleri ölçülen en küçük plan mesafesidir; gürültü kuplajı **do�
 
 ## R-022 Tur 4: U1 yakınında FB/COMP aday yerleşimi
 
-Aday uygulandı ve kart bu durumdadır. "Önce" `69f7b7c` kartıdır. Ölçümler [step3-ref-audit.json](step3-ref-audit.json) içindedir; iz merkezi geometrisidir, kuplaj veya gürültü ölçümü **değildir**.
+Aday uygulandı. Bu bölümdeki sayılar `7a37b1f` kartınındır, "önce" `69f7b7c` kartıdır; TP_COMP sonrası değişiklikler R-022 Tur 5 bölümündedir. Ölçümler [step3-ref-audit.json](step3-ref-audit.json) içindedir; iz merkezi geometrisidir, kuplaj veya gürültü ölçümü **değildir**.
 
 **Değişiklik:** RFB1, RFB2, R_TRIM, CHF, RCOMP, CCOMP ve TP_COMP U1'in kuzeyindeki y=83,8 mm sırasına taşındı (`TP_MOVES`). /FB, /FB_TRIM, /COMP_MID ve /COMP gövdesi elle sabit bakırdır (`STEP3_FIXED`, `STEP3_PREFIX`). Şema, ağ, değer ve güç betiği değişmedi.
 
@@ -123,7 +123,7 @@ En yakın prob GND'si değişen test noktaları:
 | TP_OC_REF | TP_GND_FB 45,69 | TP_GND_OVP 2,79 |
 | TP_OVP_REF | TP_GND_FB 52,99 | TP_GND_OVP 2,79 |
 
-TP_O1 ve TP_ISO_OV'un en yakın prob GND mesafesi arttı. TP_COMP taşınınca en yakın atanmış GND'si 39,33 mm oldu (önce 28,63 mm); FB/COMP grubu için yerel prob GND yok, THINKER kararı gerekir. Yeni test pedi eklenmedi.
+TP_O1 ve TP_ISO_OV'un en yakın prob GND mesafesi arttı. TP_COMP için Tur 5'te yerel prob GND sağlandı. Yeni test pedi eklenmedi.
 
 ## R-022 Tur 4: Kelvin, güç, HV
 
@@ -131,6 +131,43 @@ TP_O1 ve TP_ISO_OV'un en yakın prob GND mesafesi arttı. TP_COMP taşınınca e
 - Kelvin kolları 8,205 / 8,798 / 7,917 / 10,468 mm (sınır 15 mm), sense via'ları güç bakırı dışında. U6–Q2 gate 5,469 mm (sınır 10 mm). `--audit2` ile bu kartta ölçüldü, adım 2 dosyaları değiştirilmedi.
 - HV 0,6 mm ve sınıf açıklıkları: DRC hatası 0, parite 0, açık çift 68. DRC fiziksel kanıt değildir.
 - /OC_REF izi 9,775 mm: R-022 Tur 4 gereği bileşen 10 mm kuralının otomatik ihlali sayılmadı.
+
+## R-022 Tur 5: TP_COMP prob GND
+
+**Karar (uygulandı):** TP_COMP, /COMP hattı üzerinde TP_GND_OC'nin yanına taşındı: (63,4; 83,7) → (54,3; 22,7). TP_COMP→TP_GND_OC merkezden merkeze **3,86 mm** (önce en yakın atanmış GND 39,33 mm). `ASSIGNED_PROBE_GND` ile atanmıştır ve [probe-map.md](probe-map.md) içindedir. CCOMP.2 kullanılmadı.
+
+Karşılaştırılan seçenek: TP_GND_FB'yi kuzeye (66,2; 83,4) almak. Yönlendirilmedi, HESAP olarak değerlendirildi. TP_GND_FB'yi kullanan pad'lerin en yakın prob GND'si şöyle uzardı:
+
+| TP | Şimdi (mm) | TP_GND_FB kuzeye taşınırsa (mm) |
+|---|---:|---:|
+| TP_VSAFE | 13,78 | 32,47 |
+| TP_VOUT | 19,75 | 38,43 |
+| TP_FB_INJ_A | 22,8 | 40,07 |
+| TP_OVP_TRIP_N | 7,15 | 24,34 |
+| TP_OVP_SENSE | 15,13 | 31,35 |
+| TP_PG_S2E | 28,84 | 44,84 |
+| TP_CLR_N | 30,91 | 45,88 |
+| TP_S2E | 24,98 | 38,01 |
+| TP_OVP_BUS_N | 9,74 | 22,43 |
+
+Bu nedenle hiçbir atanmış GND padi taşınmadı. Diğer test noktalarının en yakın prob GND'si ve mesafesi `7a37b1f` ile **aynı** (betikle karşılaştırıldı, tek fark TP_COMP).
+
+**Elektriksel etki (GEOMETRİ):**
+- TP_COMP ayrı dal değil, COMP hattı pad üzerinden geçiyor: dal uzunluğu 0,0 mm (önce 0,75 mm).
+- U1.15→U2.15: 125,945 → 127,005 mm. /COMP toplam 129,895 → 131,152 mm, via yok.
+- TP pad'in EXTCOMP'a kapasitif yükü ölçülmedi. TP_COMP artık primary yanında değil, COMP hattının orta kısmındadır; ölçüm noktası olarak kullanılabilirliği **doğrulanamadı**.
+- D-008 TP_GND_OC'yi "OC grubu yanı" olarak tanımlar; FB/loop için paylaşımı THINKER kararıdır. D-008 değiştirilmedi.
+
+## R-022 Tur 5: dokuz gizli pasif
+
+[assembly-map.md](assembly-map.md) ve [assembly-map.json](assembly-map.json): RFB1, RFB2, R_TRIM, CHF, RCOMP, CCOMP, CVCC1, CVDDA1, RT1 için konum, dönme, yüz, pad ağları, BOM değer ve MPN. Betik kart değeri BOM'dan farklıysa veya referans görünürse durur. Harita kart SHA-256'sına bağlıdır (`30ff7da04f06ce4a…`, [probe-map.md](probe-map.md) ile aynı). `tasks/T-024.md` kabul kriterlerine SHA eşleşmesi kapısı eklendi. Yerinde montaj doğrulaması **yapılmadı**.
+
+## R-022 Tur 5: doğrulama
+
+- KiCad 10.0.7: DRC hatası 0, parite 0, açık çift 68 (adım 4), L2 1 ada, uyarı `{'warning:via_dangling': 6}`.
+- `7a37b1f` ile pcbnew karşılaştırması: /VOUT, /VSAFE, /VIN, /ANODE, /ISO_GATE, /ISNS1, /ISNS2, /O1_11V, /S2E_11V izleri ve via'ları ile tüm bölge sınırları aynı.
+- Kelvin 8,205 / 8,798 / 7,917 / 10,468 mm, U6–Q2 gate 5,469 mm. `--audit2` ile bu kartta ölçüldü.
+- FB/COMP ve /OC_REF R-022 Tur 5 gereği koşullu ara kabul; SI ve kararlılık **doğrulanamadı**.
 
 ## Kapsam dışı bırakılanlar
 

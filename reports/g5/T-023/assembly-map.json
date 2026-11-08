@@ -1,0 +1,197 @@
+{
+ "board": "PDU.kicad_pcb",
+ "board_sha256_lf": "30ff7da04f06ce4a02b83f4d7c51442ffdb83dcce3313e97b6418d538fab5ec8",
+ "kicad": "10.0.7",
+ "bom": "design/bom-v2.csv",
+ "rows": [
+  {
+   "ref": "RFB1",
+   "value": "130k",
+   "mpn": "ERA3AEB134V",
+   "manufacturer": "Panasonic",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "d6_mm": [
+    42.55,
+    83.8
+   ],
+   "pcb_mm": [
+    72.55,
+    31.2
+   ],
+   "rotation_deg": 0.0,
+   "side": "F",
+   "pad_nets": {
+    "1": "/FB_INJ",
+    "2": "/FB"
+   }
+  },
+  {
+   "ref": "RFB2",
+   "value": "9.76k",
+   "mpn": "TNPW06039K76BXEA",
+   "manufacturer": "Vishay",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "d6_mm": [
+    45.95,
+    83.8
+   ],
+   "pcb_mm": [
+    75.95,
+    31.2
+   ],
+   "rotation_deg": 0.0,
+   "side": "F",
+   "pad_nets": {
+    "1": "/FB",
+    "2": "/FB_TRIM"
+   }
+  },
+  {
+   "ref": "R_TRIM",
+   "value": "442",
+   "mpn": "TNPW0603442RBXEA",
+   "manufacturer": "Vishay",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "d6_mm": [
+    49.15,
+    83.8
+   ],
+   "pcb_mm": [
+    79.15,
+    31.2
+   ],
+   "rotation_deg": 0.0,
+   "side": "F",
+   "pad_nets": {
+    "1": "/FB_TRIM",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "CHF",
+   "value": "22p",
+   "mpn": "C1608C0G1H220J080AA",
+   "manufacturer": "TDK",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "d6_mm": [
+    53.6,
+    83.8
+   ],
+   "pcb_mm": [
+    83.6,
+    31.2
+   ],
+   "rotation_deg": 0.0,
+   "side": "F",
+   "pad_nets": {
+    "1": "/COMP",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "RCOMP",
+   "value": "33.2k",
+   "mpn": "CRCW060333K2FKEA",
+   "manufacturer": "Vishay",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "d6_mm": [
+    57.0,
+    83.8
+   ],
+   "pcb_mm": [
+    87.0,
+    31.2
+   ],
+   "rotation_deg": 0.0,
+   "side": "F",
+   "pad_nets": {
+    "1": "/COMP",
+    "2": "/COMP_MID"
+   }
+  },
+  {
+   "ref": "CCOMP",
+   "value": "10n",
+   "mpn": "C1608C0G1H103J080AA",
+   "manufacturer": "TDK",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "d6_mm": [
+    60.4,
+    83.8
+   ],
+   "pcb_mm": [
+    90.4,
+    31.2
+   ],
+   "rotation_deg": 0.0,
+   "side": "F",
+   "pad_nets": {
+    "1": "/COMP_MID",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "CVCC1",
+   "value": "4.7u",
+   "mpn": "C2012X7R1E475K125AB",
+   "manufacturer": "TDK",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "d6_mm": [
+    46.54,
+    81.775
+   ],
+   "pcb_mm": [
+    76.54,
+    33.225
+   ],
+   "rotation_deg": 0.0,
+   "side": "F",
+   "pad_nets": {
+    "1": "/VCC1",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "CVDDA1",
+   "value": "100n",
+   "mpn": "C1608X7R1H104K080AA",
+   "manufacturer": "TDK",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "d6_mm": [
+    51.038,
+    82.025
+   ],
+   "pcb_mm": [
+    81.038,
+    32.975
+   ],
+   "rotation_deg": 0.0,
+   "side": "F",
+   "pad_nets": {
+    "1": "/VDDA1",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "RT1",
+   "value": "49.9k",
+   "mpn": "CRCW060349K9FKEA",
+   "manufacturer": "Vishay",
+   "footprint": "Resistor_SMD:R_0603_1608Metric",
+   "d6_mm": [
+    55.221,
+    82.025
+   ],
+   "pcb_mm": [
+    85.221,
+    32.975
+   ],
+   "rotation_deg": 0.0,
+   "side": "F",
+   "pad_nets": {
+    "1": "/RT_PH1",
+    "2": "/GND"
+   }
+  }
+ ]
+}

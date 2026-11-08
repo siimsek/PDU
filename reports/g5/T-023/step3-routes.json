@@ -4,8 +4,17 @@
 "routed": [
 {
 "net": "/COMP",
+"pin": "TP_COMP.1",
+"length_mm": 63.9,
+"vias": 0,
+"layers": [
+"F"
+]
+},
+{
+"net": "/COMP",
 "pin": "U2.15",
-"length_mm": 102.1,
+"length_mm": 39.06,
 "vias": 0,
 "layers": [
 "F"
@@ -349,7 +358,7 @@
 {
 "net": "/OVP_Q",
 "pin": "TP_OVP_Q.1",
-"length_mm": 117.52,
+"length_mm": 116.76,
 "vias": 8,
 "layers": [
 "B",

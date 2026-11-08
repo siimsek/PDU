@@ -5,6 +5,7 @@ Step 1 (D-012, read-only for PDU.kicad_pcb):
     "C:\\Program Files\\KiCad\\10.0\\bin\\python.exe" scripts/pcb_route_signals.py --step1
     ...python.exe scripts/pcb_route_signals.py --step2      # writes PDU.kicad_pcb: run on the T-022 board only (it refuses a board that already has T023_ zones)
     ...python.exe scripts/pcb_route_signals.py --audit2     # step 2 evidence: DRC, Kelvin lengths, SW distance, L2
+    ...python.exe scripts/pcb_route_signals.py --assembly-map                 # R-022 Tur 5: board-bound map of the passives with hidden silk references
     ...python.exe scripts/pcb_route_signals.py --audit-ref [--before <board>] / --probe-map   # R-022 Tur 3: reference-net geometry, board-bound probe map
     ...python.exe scripts/pcb_route_signals.py --step3 / --gnd / --audit3    # order after --step2: signals, then GND returns in the room left, then evidence
 
@@ -360,7 +361,7 @@ KELVIN = {
                             "tp": ("F", 0.4, [(45.6, 20.477), (45.6, 19.6)])},
 }
 # R-020: test pads beside their Kelvin arm (search starts from R-020's coordinates, then checked against the new route).
-TP_MOVES = [("RFB1", 42.55, 83.8), ("RFB2", 45.95, 83.8), ("R_TRIM", 49.15, 83.8), ("CHF", 53.6, 83.8), ("RCOMP", 57.0, 83.8), ("CCOMP", 60.4, 83.8), ("TP_COMP", 63.4, 83.7),
+TP_MOVES = [("RFB1", 42.55, 83.8), ("RFB2", 45.95, 83.8), ("R_TRIM", 49.15, 83.8), ("CHF", 53.6, 83.8), ("RCOMP", 57.0, 83.8), ("CCOMP", 60.4, 83.8), ("TP_COMP", 54.3, 22.7),
             ("TP_GND_OVP", 96.2, 62.0), ("TP_OVP_REF", 98.9, 62.7), ("TP_OC_REF", 93.5, 62.7), ("TP_OC_SENSE1", 33.0, 59.5), ("TP_OC_SENSE2", 38.5, 27.0), ("TP_GND_OC", 50.5, 22.0), ("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
 GATE_W = 0.4
 TP_GATE = (97.4, 44.6)
@@ -729,14 +730,14 @@ SENS_KEEP = 10.0       # mm: PCB-HANDOFF §3 item 5; a routing cost, not a pass/
 SENS_B_COST = 2.0
 SENS_VIA_COST = 24.0
 STEP3_PREFIX = {"/GND": {"U6.2": [(91.457, 48.14), (88.8, 48.14)], "U15.2": [(91.698, 81.055), (92.72, 81.29)], "U11.2": [(26.112, 61.03), (26.112, 62.33), (24.2, 62.33)],
-                         "R_TRIM.2": [(49.975, 83.8), (50.95, 83.6)], "CHF.2": [(54.375, 83.8), (55.25, 83.8)], "CCOMP.2": [(61.175, 83.8), (62.0, 83.8)], "R_BLS.2": [(91.225, 75.685), (90.95, 74.48)], "C_LDO_DELAY.2": [(87.897, 71.845), (87.32, 72.44)], "U10.9": [(87.115, 81.005), (86.02, 79.83)]}, "/OVP_BUS_N": {"U7.1": [(103.395, 76.365), (102.6, 76.365), (102.6, 77.4)]}, "/COMP": {"U1.15": [(47.5, 79.4), (47.5, 80.7), (44.75, 80.7), (44.75, 82.95), (63.4, 82.95), (63.4, 83.7)]},
+                         "R_TRIM.2": [(49.975, 83.8), (50.95, 83.6)], "CHF.2": [(54.375, 83.8), (55.25, 83.8)], "CCOMP.2": [(61.175, 83.8), (62.0, 83.8)], "R_BLS.2": [(91.225, 75.685), (90.95, 74.48)], "C_LDO_DELAY.2": [(87.897, 71.845), (87.32, 72.44)], "U10.9": [(87.115, 81.005), (86.02, 79.83)]}, "/OVP_BUS_N": {"U7.1": [(103.395, 76.365), (102.6, 76.365), (102.6, 77.4)]}, "/COMP": {"U1.15": [(47.5, 79.4), (47.5, 80.7), (44.75, 80.7), (44.75, 82.95), (63.4, 82.95)]},
                 "/ISO_OV": {"U6.7": [(93.733, 48.14), (92.5, 48.14), (92.5, 45.4)]}, "/OVP_Q": {"U9.5": [(104.445, 80.755), (105.4, 80.755), (105.4, 80.0)]},
                 "/OVP_REF": {"U7.3": [(103.395, 75.065), (102.5, 75.065), (102.5, 74.2)]}, "/OC_TRIP2_N": {"U14.1": [(44.757, 25.105), (44.0, 25.105), (44.0, 26.2)]}}
 # R-022 Tur 4 / SNVSCD3 p.44, p.20: FB divider at the FB pin and compensation at the primary. Hand-placed copper, routed nowhere else.
 STEP3_FIXED = {"/FB": [[(47.0, 79.4), (47.0, 80.25), (44.25, 80.25), (44.25, 83.8)], [(43.375, 83.8), (45.125, 83.8)]], "/FB_TRIM": [[(46.775, 83.8), (48.325, 83.8)]],
                "/GND": [[(84.965, 80.03), (86.02, 79.83)]], "/COMP_MID": [[(57.825, 83.8), (59.625, 83.8)]], "/COMP": [[(52.825, 82.95), (52.825, 83.8)], [(56.175, 82.95), (56.175, 83.8)]]}
 STEP3_SKIP = ("/FB", "/FB_TRIM", "/COMP_MID")
-STEP3_DONE = ("RCOMP.1", "CHF.1", "TP_COMP.1")
+STEP3_DONE = ("RCOMP.1", "CHF.1")
 YIELDING_ZONES = ("T022_F_VSAFE_Q2",)
 GRID = 0.15
 ROUTE_W = 0.25
@@ -1283,6 +1284,9 @@ def ref_audit_board(path):
                             "sw_min_edge_mm": round(mn[0], 3), "sw_min_at_d6": mn[1], "track_mm_within_edge_distance_of_sw": {k: round(v, 2) for k, v in bands.items()},
                             "f_samples_without_l2_mm": round(uncovered, 2), "f_l2_gap_runs": gaps, "b_mm_by_adjacent_l3_net": {k: round(v, 2) for k, v in l3_mm.items()},
                             "signal_via_to_nearest_gnd_via_mm": [round(min(math.dist(q, g) for g in gnd_vias), 2) for q in vias]}
+    t_ = net_paths(geo, "/COMP", "TP_COMP.1", ("U1.15", "U2.15"))
+    u_ = out["nets"]["/COMP"]["paths"]["U2.15"]["path_mm"]
+    out["tp_comp_branch_stub_mm"] = round((t_["U1.15"]["path_mm"] + t_["U2.15"]["path_mm"] - u_) / 2, 3)
     pads = {f"{p_['ref']}.{p_['pin']}": p_ for p_ in geo.pads}
     for x, y in RETURN_PAIRS:
         if x not in pads or y not in pads or pads[x]["net"] != "/GND" or pads[y]["net"] != "/GND":
@@ -1306,6 +1310,53 @@ def ref_audit():
     return 0
 
 
+ASSIGNED_PROBE_GND = {"TP_COMP": "TP_GND_OC", "TP_OVP_REF": "TP_GND_OVP", "TP_OC_REF": "TP_GND_OVP"}    # R-022 Tur 4-5
+HIDDEN_PASSIVES = ("RFB1", "RFB2", "R_TRIM", "CHF", "RCOMP", "CCOMP", "CVCC1", "CVDDA1", "RT1")
+
+
+def assembly_map():
+    """Readable, board-bound placement list for the passives whose silk reference is hidden (R-022 Tur 5, checked at the T-024 gate)."""
+    import csv
+    import hashlib
+    sha = hashlib.sha256(PCB.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    with (ROOT / "design" / "bom-v2.csv").open(encoding="utf-8", newline="") as f:
+        bom = {r["ref"]: r for r in csv.DictReader(f)}
+    b = P.LoadBoard(str(PCB))
+    fps = {f.GetReference(): f for f in b.GetFootprints()}
+    rows = []
+    for ref in HIDDEN_PASSIVES:
+        fp, line = fps[ref], bom[ref]
+        q = fp.GetPosition()
+        pads = {p_.GetNumber(): p_.GetNetname() for p_ in fp.Pads()}
+        if fp.GetValue() != line["value"]:
+            raise SystemExit(f"{ref}: board value {fp.GetValue()} differs from BOM {line['value']}")
+        if fp.Reference().IsVisible():
+            raise SystemExit(f"{ref}: silk reference is visible; the map no longer matches the board")
+        rows.append({"ref": ref, "value": line["value"], "mpn": line["mpn"], "manufacturer": line["manufacturer"], "footprint": fp.GetFPIDAsString(), "d6_mm": [round(P.ToMM(q.x) - 30, 3), round(115 - P.ToMM(q.y), 3)], "pcb_mm": [round(P.ToMM(q.x), 3), round(P.ToMM(q.y), 3)], "rotation_deg": round(fp.GetOrientationDegrees(), 1), "side": "F" if fp.GetLayer() == P.F_Cu else "B", "pad_nets": pads})
+    with (OUT / "assembly-map.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump({"board": "PDU.kicad_pcb", "board_sha256_lf": sha, "kicad": P.GetBuildVersion(), "bom": "design/bom-v2.csv", "rows": rows}, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    fmt = lambda v: f"{v:.3f}".replace(".", ",")
+    body = "\n".join(f"| {r['ref']} | {r['value']} | {r['mpn']} | {r['manufacturer']} | `{r['footprint'].split(':')[-1]}` | {fmt(r['d6_mm'][0])} ; {fmt(r['d6_mm'][1])} | {fmt(r['pcb_mm'][0])} ; {fmt(r['pcb_mm'][1])} | {r['rotation_deg']:.0f}° | {r['side']} | " + ", ".join(f"{k}: `{v}`" for k, v in sorted(r["pad_nets"].items())) + " |" for r in rows)
+    txt = f"""# T-023 montaj haritası: silk referansı gizli pasifler
+
+**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `{sha}`. KiCad {P.GetBuildVersion()}. BOM: `design/bom-v2.csv`. Kart değişirse `--assembly-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın. T-024 imalat kapısı bu eşleşmeyi ister.
+
+Konum, yön, değer ve ağlar karttan betikle alındı; değerler BOM ile karşılaştırıldı. D-006: orijin sol alt, y yukarı. PCB: KiCad pafta koordinatı. Dönme KiCad açısıdır.
+
+| Ref | Değer | MPN | Üretici | Footprint | D-006 x ; y (mm) | PCB x ; y (mm) | Dönme | Yüz | Pad ağları |
+|---|---|---|---|---|---|---|---:|---|---|
+{body}
+
+## Doğrulanamayanlar
+
+Montaj hattı, yeniden işleme erişimi ve kart üzerinde yerinde tanıma doğrulanmadı. Bu dosya üretici montaj çizimi yerine geçmez.
+"""
+    (OUT / "assembly-map.md").write_text(txt, encoding="utf-8", newline="\n")
+    print(json.dumps({"sha": sha, "rows": len(rows)}, ensure_ascii=False))
+    return 0
+
+
 def probe_map():
     import hashlib
     sha = hashlib.sha256(PCB.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
@@ -1324,6 +1375,10 @@ def probe_map():
         g = min((x for x in gnds if x is not r), key=lambda x: math.dist(x["d6_mm"], r["d6_mm"]), default=None)
         r["nearest_probe_gnd"] = g["ref"] if g else None
         r["nearest_probe_gnd_mm"] = round(math.dist(g["d6_mm"], r["d6_mm"]), 2) if g else None
+        if r["ref"] in ASSIGNED_PROBE_GND:
+            a_ = next(x for x in gnds if x["ref"] == ASSIGNED_PROBE_GND[r["ref"]])
+            r["assigned_probe_gnd"] = a_["ref"]
+            r["assigned_probe_gnd_mm"] = round(math.dist(a_["d6_mm"], r["d6_mm"]), 2)
     out = {"board": "PDU.kicad_pcb", "board_sha256_lf": sha, "kicad": P.GetBuildVersion(), "rows": rows}
     with (OUT / "probe-map.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump(out, f, indent=1, ensure_ascii=False)
@@ -1345,6 +1400,10 @@ Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y y
 ## Tüm test noktaları ({len(rows)})
 
 {head}{chr(10).join(line(r) for r in rows)}
+
+## Atanmış prob GND
+
+{chr(10).join(f"- {r['ref']} → {r['assigned_probe_gnd']}: {str(r['assigned_probe_gnd_mm']).replace('.', ',')} mm" for r in rows if r.get("assigned_probe_gnd"))}
 
 ## Doğrulanamayanlar
 
@@ -1370,6 +1429,8 @@ if __name__ == "__main__":
         sys.exit(gnd_returns())
     if "--audit-ref" in sys.argv:
         sys.exit(ref_audit())
+    if "--assembly-map" in sys.argv:
+        sys.exit(assembly_map())
     if "--probe-map" in sys.argv:
         sys.exit(probe_map())
     if "--audit3" in sys.argv:

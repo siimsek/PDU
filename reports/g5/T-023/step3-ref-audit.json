@@ -110,6 +110,300 @@
      "5.0": 0.0,
      "10.0": 8.61
     },
+    "f_samples_without_l2_mm": 1.2,
+    "f_l2_gap_runs": 2,
+    "b_mm_by_adjacent_l3_net": {
+     "(boş)": 2.1
+    },
+    "signal_via_to_nearest_gnd_via_mm": [
+     8.62,
+     9.14
+    ]
+   },
+   "/FB": {
+    "track_mm": 8.9,
+    "f_mm": 8.9,
+    "b_mm": 0.0,
+    "vias": 0,
+    "paths_from": "U1.16",
+    "paths": {
+     "RFB2.1": {
+      "connected": true,
+      "path_mm": 8.025,
+      "f_mm": 8.025,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 4.783
+     },
+     "RFB1.2": {
+      "connected": true,
+      "path_mm": 8.025,
+      "f_mm": 8.025,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 5.701
+     }
+    },
+    "sw_min_edge_mm": 1.197,
+    "sw_min_at_d6": [
+     44.25,
+     80.25
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 2.16,
+     "3.0": 4.3,
+     "5.0": 8.9,
+     "10.0": 8.9
+    },
+    "f_samples_without_l2_mm": 0.0,
+    "f_l2_gap_runs": 0,
+    "b_mm_by_adjacent_l3_net": {},
+    "signal_via_to_nearest_gnd_via_mm": []
+   },
+   "/FB_INJ": {
+    "track_mm": 109.429,
+    "f_mm": 84.821,
+    "b_mm": 24.608,
+    "vias": 2,
+    "paths_from": "RFB1.1",
+    "paths": {
+     "R_INJ.2": {
+      "connected": true,
+      "path_mm": 30.702,
+      "f_mm": 6.094,
+      "b_mm": 24.608,
+      "layer_changes": 2,
+      "straight_mm": 27.216
+     },
+     "TP_FB_INJ_B.1": {
+      "connected": true,
+      "path_mm": 76.124,
+      "f_mm": 76.124,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 68.678
+     }
+    },
+    "sw_min_edge_mm": 3.848,
+    "sw_min_at_d6": [
+     59.5,
+     81.35
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.0,
+     "3.0": 0.0,
+     "5.0": 21.1,
+     "10.0": 44.21
+    },
+    "f_samples_without_l2_mm": 2.13,
+    "f_l2_gap_runs": 9,
+    "b_mm_by_adjacent_l3_net": {
+     "/VIN": 17.97,
+     "(boş)": 6.64
+    },
+    "signal_via_to_nearest_gnd_via_mm": [
+     4.98,
+     3.57
+    ]
+   },
+   "/COMP": {
+    "track_mm": 131.152,
+    "f_mm": 131.152,
+    "b_mm": 0.0,
+    "vias": 0,
+    "paths_from": "U1.15",
+    "paths": {
+     "RCOMP.1": {
+      "connected": true,
+      "path_mm": 18.575,
+      "f_mm": 18.575,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 9.727
+     },
+     "CHF.1": {
+      "connected": true,
+      "path_mm": 15.225,
+      "f_mm": 15.225,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 6.908
+     },
+     "U2.15": {
+      "connected": true,
+      "path_mm": 127.005,
+      "f_mm": 127.005,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 75.679
+     },
+     "TP_COMP.1": {
+      "connected": true,
+      "path_mm": 88.748,
+      "f_mm": 88.748,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 57.106
+     }
+    },
+    "sw_min_edge_mm": 1.798,
+    "sw_min_at_d6": [
+     44.75,
+     80.7
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.77,
+     "3.0": 4.14,
+     "5.0": 30.6,
+     "10.0": 64.12
+    },
+    "f_samples_without_l2_mm": 0.0,
+    "f_l2_gap_runs": 0,
+    "b_mm_by_adjacent_l3_net": {},
+    "signal_via_to_nearest_gnd_via_mm": []
+   }
+  },
+  "returns": {
+   "U1.17-R_TRIM.2": {
+    "straight_mm": 6.769,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "U1.17-CHF.2": {
+    "straight_mm": 9.964,
+    "l2_filled_share_of_straight_line": 0.75
+   },
+   "U1.17-CCOMP.2": {
+    "straight_mm": 16.064,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "R_OCB.2-U13.2": {
+    "straight_mm": 62.656,
+    "l2_filled_share_of_straight_line": 1.0
+   },
+   "R_OCB.2-U14.2": {
+    "straight_mm": 64.422,
+    "l2_filled_share_of_straight_line": 0.903
+   },
+   "C_REF_OUT.2-U7.2": {
+    "straight_mm": 8.608,
+    "l2_filled_share_of_straight_line": 0.886
+   },
+   "C_REF_OUT.2-R_OCB.2": {
+    "straight_mm": 7.319,
+    "l2_filled_share_of_straight_line": 0.967
+   }
+  },
+  "tp_comp_branch_stub_mm": 0.0
+ },
+ "before": {
+  "nets": {
+   "/OVP_REF": {
+    "track_mm": 41.506,
+    "f_mm": 41.506,
+    "b_mm": 0.0,
+    "vias": 0,
+    "paths_from": "U8.6",
+    "paths": {
+     "U7.3": {
+      "connected": true,
+      "path_mm": 28.279,
+      "f_mm": 28.279,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 21.944
+     },
+     "R_OCT.1": {
+      "connected": true,
+      "path_mm": 24.373,
+      "f_mm": 24.373,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 22.437
+     },
+     "C_REF_OUT.1": {
+      "connected": true,
+      "path_mm": 15.783,
+      "f_mm": 15.783,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 14.935
+     },
+     "TP_OVP_REF.1": {
+      "connected": true,
+      "path_mm": 27.183,
+      "f_mm": 27.183,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 24.628
+     }
+    },
+    "sw_min_edge_mm": 25.558,
+    "sw_min_at_d6": [
+     82.22,
+     80.82
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.0,
+     "3.0": 0.0,
+     "5.0": 0.0,
+     "10.0": 0.0
+    },
+    "f_samples_without_l2_mm": 0.0,
+    "f_l2_gap_runs": 0,
+    "b_mm_by_adjacent_l3_net": {},
+    "signal_via_to_nearest_gnd_via_mm": []
+   },
+   "/OC_REF": {
+    "track_mm": 118.47,
+    "f_mm": 116.37,
+    "b_mm": 2.1,
+    "vias": 2,
+    "paths_from": "R_OCB.1",
+    "paths": {
+     "U13.3": {
+      "connected": true,
+      "path_mm": 63.493,
+      "f_mm": 61.393,
+      "b_mm": 2.1,
+      "layer_changes": 2,
+      "straight_mm": 61.03
+     },
+     "U14.3": {
+      "connected": true,
+      "path_mm": 89.143,
+      "f_mm": 87.043,
+      "b_mm": 2.1,
+      "layer_changes": 2,
+      "straight_mm": 63.553
+     },
+     "R_OCT.2": {
+      "connected": true,
+      "path_mm": 12.068,
+      "f_mm": 12.068,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 5.78
+     },
+     "TP_OC_REF.1": {
+      "connected": true,
+      "path_mm": 2.072,
+      "f_mm": 2.072,
+      "b_mm": 0.0,
+      "layer_changes": 0,
+      "straight_mm": 1.845
+     }
+    },
+    "sw_min_edge_mm": 9.775,
+    "sw_min_at_d6": [
+     45.79,
+     61.2
+    ],
+    "track_mm_within_edge_distance_of_sw": {
+     "2.0": 0.0,
+     "3.0": 0.0,
+     "5.0": 0.0,
+     "10.0": 8.61
+    },
     "f_samples_without_l2_mm": 1.18,
     "f_l2_gap_runs": 2,
     "b_mm_by_adjacent_l3_net": {
@@ -198,8 +492,8 @@
     "f_samples_without_l2_mm": 2.12,
     "f_l2_gap_runs": 9,
     "b_mm_by_adjacent_l3_net": {
-     "/VIN": 17.97,
-     "(boş)": 7.06
+     "/VIN": 18.36,
+     "(boş)": 6.67
     },
     "signal_via_to_nearest_gnd_via_mm": [
      4.98,
@@ -292,300 +586,7 @@
     "straight_mm": 7.319,
     "l2_filled_share_of_straight_line": 0.967
    }
-  }
- },
- "before": {
-  "nets": {
-   "/OVP_REF": {
-    "track_mm": 39.04,
-    "f_mm": 39.04,
-    "b_mm": 0.0,
-    "vias": 0,
-    "paths_from": "U8.6",
-    "paths": {
-     "U7.3": {
-      "connected": true,
-      "path_mm": 28.087,
-      "f_mm": 28.087,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 21.944
-     },
-     "R_OCT.1": {
-      "connected": true,
-      "path_mm": 24.305,
-      "f_mm": 24.305,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 22.437
-     },
-     "C_REF_OUT.1": {
-      "connected": true,
-      "path_mm": 15.988,
-      "f_mm": 15.988,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 14.935
-     },
-     "TP_OVP_REF.1": {
-      "connected": true,
-      "path_mm": 14.328,
-      "f_mm": 14.328,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 13.271
-     }
-    },
-    "sw_min_edge_mm": 25.558,
-    "sw_min_at_d6": [
-     82.22,
-     80.82
-    ],
-    "track_mm_within_edge_distance_of_sw": {
-     "2.0": 0.0,
-     "3.0": 0.0,
-     "5.0": 0.0,
-     "10.0": 0.0
-    },
-    "f_samples_without_l2_mm": 0.0,
-    "f_l2_gap_runs": 0,
-    "b_mm_by_adjacent_l3_net": {},
-    "signal_via_to_nearest_gnd_via_mm": []
-   },
-   "/OC_REF": {
-    "track_mm": 113.208,
-    "f_mm": 113.208,
-    "b_mm": 0.0,
-    "vias": 0,
-    "paths_from": "R_OCB.1",
-    "paths": {
-     "U13.3": {
-      "connected": true,
-      "path_mm": 63.496,
-      "f_mm": 63.496,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 61.03
-     },
-     "U14.3": {
-      "connected": true,
-      "path_mm": 89.145,
-      "f_mm": 89.145,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 63.553
-     },
-     "R_OCT.2": {
-      "connected": true,
-      "path_mm": 7.247,
-      "f_mm": 7.247,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 5.78
-     },
-     "TP_OC_REF.1": {
-      "connected": true,
-      "path_mm": 2.074,
-      "f_mm": 2.074,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 1.845
-     }
-    },
-    "sw_min_edge_mm": 9.775,
-    "sw_min_at_d6": [
-     45.79,
-     61.2
-    ],
-    "track_mm_within_edge_distance_of_sw": {
-     "2.0": 0.0,
-     "3.0": 0.0,
-     "5.0": 0.0,
-     "10.0": 8.46
-    },
-    "f_samples_without_l2_mm": 0.0,
-    "f_l2_gap_runs": 0,
-    "b_mm_by_adjacent_l3_net": {},
-    "signal_via_to_nearest_gnd_via_mm": []
-   },
-   "/FB": {
-    "track_mm": 64.529,
-    "f_mm": 64.529,
-    "b_mm": 0.0,
-    "vias": 0,
-    "paths_from": "U1.16",
-    "paths": {
-     "RFB2.1": {
-      "connected": true,
-      "path_mm": 51.867,
-      "f_mm": 51.867,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 20.403
-     },
-     "RFB1.2": {
-      "connected": true,
-      "path_mm": 62.608,
-      "f_mm": 62.608,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 27.542
-     }
-    },
-    "sw_min_edge_mm": 1.175,
-    "sw_min_at_d6": [
-     44.55,
-     80.1
-    ],
-    "track_mm_within_edge_distance_of_sw": {
-     "2.0": 2.65,
-     "3.0": 9.6,
-     "5.0": 31.92,
-     "10.0": 49.11
-    },
-    "f_samples_without_l2_mm": 0.0,
-    "f_l2_gap_runs": 0,
-    "b_mm_by_adjacent_l3_net": {},
-    "signal_via_to_nearest_gnd_via_mm": []
-   },
-   "/FB_INJ": {
-    "track_mm": 94.56,
-    "f_mm": 80.266,
-    "b_mm": 14.294,
-    "vias": 8,
-    "paths_from": "RFB1.1",
-    "paths": {
-     "R_INJ.2": {
-      "connected": true,
-      "path_mm": 6.162,
-      "f_mm": 4.414,
-      "b_mm": 1.749,
-      "layer_changes": 2,
-      "straight_mm": 5.665
-     },
-     "TP_FB_INJ_B.1": {
-      "connected": true,
-      "path_mm": 92.383,
-      "f_mm": 78.088,
-      "b_mm": 14.294,
-      "layer_changes": 8,
-      "straight_mm": 81.374
-     }
-    },
-    "sw_min_edge_mm": 6.464,
-    "sw_min_at_d6": [
-     61.35,
-     73.05
-    ],
-    "track_mm_within_edge_distance_of_sw": {
-     "2.0": 0.0,
-     "3.0": 0.0,
-     "5.0": 0.0,
-     "10.0": 25.82
-    },
-    "f_samples_without_l2_mm": 4.87,
-    "f_l2_gap_runs": 9,
-    "b_mm_by_adjacent_l3_net": {
-     "/VIN": 8.36,
-     "(boş)": 5.93
-    },
-    "signal_via_to_nearest_gnd_via_mm": [
-     4.68,
-     4.96,
-     4.15,
-     4.51,
-     2.96,
-     5.35,
-     2.59,
-     1.48
-    ]
-   },
-   "/COMP": {
-    "track_mm": 151.941,
-    "f_mm": 151.941,
-    "b_mm": 0.0,
-    "vias": 0,
-    "paths_from": "U1.15",
-    "paths": {
-     "RCOMP.1": {
-      "connected": true,
-      "path_mm": 29.442,
-      "f_mm": 29.442,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 17.52
-     },
-     "CHF.1": {
-      "connected": true,
-      "path_mm": 34.57,
-      "f_mm": 34.57,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 22.212
-     },
-     "U2.15": {
-      "connected": true,
-      "path_mm": 119.809,
-      "f_mm": 119.809,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 75.679
-     },
-     "TP_COMP.1": {
-      "connected": true,
-      "path_mm": 45.55,
-      "f_mm": 45.55,
-      "b_mm": 0.0,
-      "layer_changes": 0,
-      "straight_mm": 36.667
-     }
-    },
-    "sw_min_edge_mm": 1.777,
-    "sw_min_at_d6": [
-     44.7,
-     80.7
-    ],
-    "track_mm_within_edge_distance_of_sw": {
-     "2.0": 0.98,
-     "3.0": 4.25,
-     "5.0": 43.6,
-     "10.0": 94.5
-    },
-    "f_samples_without_l2_mm": 0.0,
-    "f_l2_gap_runs": 0,
-    "b_mm_by_adjacent_l3_net": {},
-    "signal_via_to_nearest_gnd_via_mm": []
-   }
   },
-  "returns": {
-   "U1.17-R_TRIM.2": {
-    "straight_mm": 20.779,
-    "l2_filled_share_of_straight_line": 1.0
-   },
-   "U1.17-CHF.2": {
-    "straight_mm": 24.681,
-    "l2_filled_share_of_straight_line": 0.848
-   },
-   "U1.17-CCOMP.2": {
-    "straight_mm": 25.166,
-    "l2_filled_share_of_straight_line": 1.0
-   },
-   "R_OCB.2-U13.2": {
-    "straight_mm": 62.656,
-    "l2_filled_share_of_straight_line": 1.0
-   },
-   "R_OCB.2-U14.2": {
-    "straight_mm": 64.422,
-    "l2_filled_share_of_straight_line": 0.934
-   },
-   "C_REF_OUT.2-U7.2": {
-    "straight_mm": 8.608,
-    "l2_filled_share_of_straight_line": 0.857
-   },
-   "C_REF_OUT.2-R_OCB.2": {
-    "straight_mm": 7.319,
-    "l2_filled_share_of_straight_line": 0.867
-   }
-  }
+  "tp_comp_branch_stub_mm": 0.75
  }
 }

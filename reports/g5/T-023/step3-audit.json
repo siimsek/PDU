@@ -52,7 +52,7 @@
  "router": {
   "grid_mm": 0.15,
   "route_width_mm": 0.25,
-  "connections_routed": 37,
+  "connections_routed": 38,
   "connections_failed": []
  },
  "nets": {
@@ -89,7 +89,7 @@
   },
   "/COMP": {
    "open_pairs": 0,
-   "track_mm": 129.9,
+   "track_mm": 131.15,
    "layers": [
     "F"
    ],
@@ -141,14 +141,14 @@
   },
   "/OVP_Q": {
    "open_pairs": 0,
-   "track_mm": 138.41,
+   "track_mm": 137.64,
    "layers": [
     "B",
     "F"
    ],
    "vias": 10,
-   "min_distance_to_sw_pad_mm": 6.59,
-   "min_distance_to_sw_copper_outline_mm": 8.3
+   "min_distance_to_sw_pad_mm": 8.4,
+   "min_distance_to_sw_copper_outline_mm": 8.4
   },
   "/OVP_BUS_N": {
    "open_pairs": 0,

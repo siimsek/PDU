@@ -1,6 +1,6 @@
 # T-023 prob haritası
 
-**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `0b870539a1a301b8a26882439703deece059051601f771d2794e970e566ec606`. KiCad 10.0.7. Kart değişirse `--probe-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın.
+**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `30ff7da04f06ce4a02b83f4d7c51442ffdb83dcce3313e97b6418d538fab5ec8`. KiCad 10.0.7. Kart değişirse `--probe-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın.
 
 Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y yukarı. PCB: KiCad pafta koordinatı, D-006 x+30, 115−y. Mesafeler düz çizgidir.
 
@@ -8,7 +8,7 @@ Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y y
 
 | Ref | Ağ | D-006 x ; y (mm) | PCB x ; y (mm) | Yüz | Pad Ø (mm) | En yakın prob GND |
 |---|---|---|---|---|---:|---|
-| TP_COMP | `/COMP` | 63,400 ; 83,700 | 93,400 ; 31,300 | F | 1,0 | TP_GND_OVP (39,33 mm) |
+| TP_COMP | `/COMP` | 54,300 ; 22,700 | 84,300 ; 92,300 | F | 1,0 | TP_GND_OC (3,86 mm) |
 | TP_GND_OC | `/GND` | 50,500 ; 22,000 | 80,500 ; 93,000 | F | 2,0 | TP_GND_FB (18,73 mm) |
 | TP_GND_OVP | `/GND` | 96,200 ; 62,000 | 126,200 ; 53,000 | F | 2,0 | TP_GND_FB (46,62 mm) |
 | TP_ISNS2N | `/VOUT` | 45,600 ; 19,600 | 75,600 ; 95,400 | F | 1,0 | TP_GND_OC (5,46 mm) |
@@ -21,7 +21,7 @@ Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y y
 |---|---|---|---|---|---:|---|
 | TP_ANODE | `/ANODE` | 12,725 ; 34,552 | 42,725 ; 80,448 | F | 2,0 | TP_GND_POWER (7,81 mm) |
 | TP_CLR_N | `/CLR_N` | 92,745 ; 4,111 | 122,745 ; 110,889 | F | 1,0 | TP_GND_FB (30,91 mm) |
-| TP_COMP | `/COMP` | 63,400 ; 83,700 | 93,400 ; 31,300 | F | 1,0 | TP_GND_OVP (39,33 mm) |
+| TP_COMP | `/COMP` | 54,300 ; 22,700 | 84,300 ; 92,300 | F | 1,0 | TP_GND_OC (3,86 mm) |
 | TP_EN_BUCK | `/EN_BUCK` | 12,727 ; 22,111 | 42,727 ; 92,889 | F | 1,0 | TP_GND_POWER (14,69 mm) |
 | TP_FB_INJ_A | `/VOUT` | 89,895 ; 14,664 | 119,895 ; 100,336 | F | 1,0 | TP_GND_FB (22,8 mm) |
 | TP_FB_INJ_B | `/FB_INJ` | 4,549 ; 26,054 | 34,549 ; 88,946 | F | 1,0 | TP_GND_POWER (8,51 mm) |
@@ -55,6 +55,12 @@ Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y y
 | TP_VIN | `/VIN` | 18,327 ; 34,552 | 48,327 ; 80,448 | F | 2,0 | TP_GND_POWER (13,41 mm) |
 | TP_VOUT | `/VOUT` | 88,871 ; 24,052 | 118,871 ; 90,948 | F | 2,0 | TP_GND_FB (19,75 mm) |
 | TP_VSAFE | `/VSAFE` | 82,901 ; 24,052 | 112,901 ; 90,948 | F | 2,0 | TP_GND_FB (13,78 mm) |
+
+## Atanmış prob GND
+
+- TP_COMP → TP_GND_OC: 3,86 mm
+- TP_OC_REF → TP_GND_OVP: 2,79 mm
+- TP_OVP_REF → TP_GND_OVP: 2,79 mm
 
 ## Doğrulanamayanlar
 
