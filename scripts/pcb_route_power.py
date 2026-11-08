@@ -266,7 +266,7 @@ def vout(B):
         for y in (70.0, 70.8, 71.6, 72.4):
             B.via("/VOUT", x, y, "RS1 output field")
     B.track("/VOUT", "B", 5.5, [(32.2, 71.0), (27.5, 71.0), (27.5, 60.0), (34.9, 57.0), (34.9, 47.4)], "RS1 output -> bank, clear of the RS1.2 sense via")
-    B.zone("F_VOUT_RS2", "/VOUT", "F", [(48.9, 14.4), (55.9, 14.4), (55.9, 19.9), (48.9, 19.9)], tag="RS2.2 output, 5.5 mm tall")
+    B.zone("F_VOUT_RS2", "/VOUT", "F", [(48.9, 17.4), (50.1, 17.4), (50.1, 14.4), (55.9, 14.4), (55.9, 19.9), (48.9, 19.9)], tag="RS2.2 output, 5.5 mm tall; the pad south part stays free for the sense via (R-021)")
     for x in (51.8, 52.6, 53.4, 54.2):
         for y in (15.4, 16.2, 17.0, 17.8):
             B.via("/VOUT", x, y, "RS2 output field")
@@ -430,16 +430,16 @@ def controller_sense(B):
     """LM70880 ISNS/VOUT pins to the inner edge of RS1/RS2: separate pair, zero power current, HV 0.6 mm kept between the two taps."""
     B.track("/ISNS1", "F", 0.25, [(50.0, 79.65), (50.1, 80.95)], "U1.11 neck")
     B.via("/ISNS1", 50.1, 80.95, "U1.11")
-    B.tap("TAP_ISNS1", "/ISNS1", "B", [(50.1, 80.95), (50.1, 79.1), (37.6, 79.1), (37.6, 68.3)])
-    B.via("/ISNS1", 37.6, 68.3, "RS1.1 inner edge")
+    B.tap("TAP_ISNS1", "/ISNS1", "B", [(50.1, 80.95), (50.1, 79.1), (37.7, 79.1), (37.7, 66.4)])
+    B.via("/ISNS1", 37.7, 66.4, "RS1.1 inner edge, south of the L1 power entry (R-021)")
     B.track("/VOUT", "F", 0.25, [(49.0, 79.65), (49.0, 80.4)], "U1.12 neck")
     B.via("/VOUT", 49.0, 80.4, "U1.12")
     B.tap("TAP_U1_VOUT", "/VOUT", "B", [(49.0, 80.4), (49.0, 82.6), (35.7, 82.6), (35.7, 67.0), (32.3, 66.4)])
     B.via("/VOUT", 32.3, 66.4, "RS1.2 inner edge")
     B.track("/ISNS2", "F", 0.25, [(33.5, 4.35), (33.4, 3.6)], "U2.11 neck")
     B.via("/ISNS2", 33.4, 3.6, "U2.11")
-    B.tap("TAP_ISNS2", "/ISNS2", "B", [(33.4, 3.6), (33.4, 4.6), (43.8, 4.6), (43.8, 15.6)])
-    B.via("/ISNS2", 43.8, 15.6, "RS2.1 inner edge")
+    B.tap("TAP_ISNS2", "/ISNS2", "B", [(33.4, 3.6), (33.4, 4.6), (43.9, 4.6), (43.9, 17.7)])
+    B.via("/ISNS2", 43.9, 17.7, "RS2.1 inner edge, north of the L2 power entry (R-021)")
     B.track("/VOUT", "F", 0.25, [(34.5, 4.35), (34.5, 2.9)], "U2.12 neck")
     B.via("/VOUT", 34.5, 2.9, "U2.12")
     B.tap("TAP_U2_VOUT", "/VOUT", "B", [(34.5, 2.9), (34.5, 1.4), (49.1, 1.4), (49.1, 15.6)])

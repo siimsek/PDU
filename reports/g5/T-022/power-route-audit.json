@@ -233,7 +233,7 @@
     ],
     [
      "8 için [/ISNS1] U11 ayak F.Cu",
-     "1 için [/ISNS1] RS1 ayak F.Cu"
+     "Geçit [/ISNS1] F.Cu - B.Cu üzerinde"
     ]
    ],
    "deferred_to": "T-023: U11.8 INA296 Kelvin and TP_ISNS1P"
@@ -255,12 +255,12 @@
    "open_pairs": 2,
    "open_pairs_detail": [
     [
-     "1 için [/ISNS2] TP_ISNS2P ayak F.Cu",
-     "11 için [/ISNS2] U2 ayak F.Cu"
+     "11 için [/ISNS2] U2 ayak F.Cu",
+     "1 için [/ISNS2] TP_ISNS2P ayak F.Cu"
     ],
     [
      "8 için [/ISNS2] U12 ayak F.Cu",
-     "1 için [/ISNS2] RS2 ayak F.Cu"
+     "Geçit [/ISNS2] F.Cu - B.Cu üzerinde"
     ]
    ],
    "deferred_to": "T-023: U12.8 INA296 Kelvin and TP_ISNS2P"
@@ -495,7 +495,7 @@
   "L4_GND": {
    "islands": 10,
    "fill_area_mm2": [
-    7564.04,
+    7558.39,
     0.32,
     0.37,
     0.32,

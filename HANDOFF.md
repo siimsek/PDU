@@ -1,10 +1,11 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-08
-- **Dal / son commit:** wp/T-023 (taslak PR #70; R-020 Tur 2 RED düzeltildi). T-026 PR #73, R-020 PR #72 açık.
-- **Aktif kart:** T-023 **InProgress** — DRC 0, parite 0, 199→112 açık çift. RS1 180° ile iki faz Kelvin F.Cu'da paralel. Rapor: reports/g5/T-023/step2-report.md.
+- **Dal / son commit:** wp/T-023 (taslak PR #70; R-021 RED düzeltildi). T-026 (#73) main'de; R-021 PR #74 açık.
+- **Aktif kart:** T-023 **InProgress** — R-021 doğrulaması bekliyor. DRC 0, parite 0, 112 açık çift; sense vialar güç bakırından ayrı. Sıradaki standart kartı T-027.
 
 ## Yapılanlar
+- R-021: sense vialar güç bakırından ayrıldı (RS1.1, RS2.1, RS2.2); audit pad merkezi ile sense via'yı ayırıyor.
 - R-020 Tur 2: faz 1 alternatifleri ölçüldü (phase1-alternatives.json); RS1 180° + T-022 RS1 güç yolu yeniden üretildi; iki faz Kelvin F.Cu paralel.
 - R-020 Tur 1: Kelvin yeniden (U12 180°, ayrı RS via'ları), R_GS Q2 yanına, TP_ISNS1P/1N/2P/2N kola 1,3–1,9 mm.
 - T-023 adım 2: 71 GND via, INA296 Kelvin (zone tap), R_GS kolu, TP_ISO_GATE taşındı.
@@ -25,7 +26,7 @@
 - R-012 tur 2 (1 engelleyici): `neck_audit` yayda gerçek yay uzunluğu (start/mid/end); prob E/F yayları + testler. Doğrulama kartı tasks/R-013.md (queue: yalnız R-013 satırı — check_workflow kapısı için).
 
 ## Sonraki adım
-Codex: T-023 adım 2 doğrulaması. PR #73 birleşince sıradaki T-027. Adım 3 ancak THINKER onayıyla.
+Codex: R-021 doğrulaması (PR #70). Sonra Claude Code: adım 3 (onay olursa) ve T-027.
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).

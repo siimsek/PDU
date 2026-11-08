@@ -1,6 +1,6 @@
 # T-022 — Güç yolları (D-010 geçerli kısımları + D-011, R-018 Tur 1 düzeltmeleri)
 
-**Durum: Done; R-020 Tur 2 revizyonu.** T-023 faz 1 Kelvin paralelliği için RS1 180° döndürüldü ve RS1 güç yolu (`F_VOUT_RS1`, B.Cu bara, L1.2 → RS1.1, U1 ölçüm kolları) bu kartın betiğiyle yeniden üretildi; önceki kayıt git geçmişinde. KiCad 10.0.7: DRC hatası **0**, parite **0**, boş kart DRC hatası **0**. Güç ağlarında açık uç yalnız T-023'e devredilen Kelvin, FB ve gate uçlarındadır.
+**Durum: Done; R-020 Tur 2 revizyonu.** T-023 faz 1 Kelvin paralelliği için RS1 180° döndürüldü ve RS1 güç yolu (`F_VOUT_RS1`, B.Cu bara, L1.2 → RS1.1, U1 ölçüm kolları) bu kartın betiğiyle yeniden üretildi; R-021 ile U1.11 ve U2.11 sense vialarının yeri ve `F_VOUT_RS2` konturu değişti, sense vialar güç bakırından ayrıldı; önceki kayıt git geçmişinde. KiCad 10.0.7: DRC hatası **0**, parite **0**, boş kart DRC hatası **0**. Güç ağlarında açık uç yalnız T-023'e devredilen Kelvin, FB ve gate uçlarındadır.
 
 Kaynak: [`scripts/pcb_route_power.py`](../../../scripts/pcb_route_power.py), T-021 kartından üretilir. Ham çıktı: [power-route-audit.json](power-route-audit.json), [route-items.json](route-items.json), [drc.json](drc.json), [drc-empty.json](drc-empty.json). Netclass, `PDU.kicad_dru` ve `PDU.kicad_pro` değişmedi.
 
@@ -115,7 +115,7 @@ geometrik yaklaşık: pad merkezleri arası düzlem poligonu, shoelace; akım ç
 | Düzlem | Ada | En büyük dolu alan (mm²) |
 |---|---:|---:|
 | L2_GND | 1 | 9287,11 |
-| L4_GND | 10 | 7564,04 |
+| L4_GND | 10 | 7558,39 |
 | L3_VIN | 1 | 3571,31 |
 | L3_VOUT | 1 | 2038,8 |
 | L3_VSAFE | 1 | 1667,15 |

@@ -348,14 +348,14 @@ def step1():
 U12_POS, U12_ROT = (40.425, 23.805), 180
 PAD_U12_1, PAD_U12_8 = (42.538, 22.83), (38.313, 22.83)
 KELVIN = {
-    "RS1-U11 IN+ (/ISNS1)": {"net": "/ISNS1", "from": "U11.8", "to": "RS1.1", "parts": [("F", 0.4, [(37.963, 67.6), (37.4, 66.0), (31.85, 63.9), (30.337, 62.98)])], "vias": [], "neck": [],
-                             "tp": ("F", 0.4, [(37.963, 67.6), (39.7, 67.6)])},
+    "RS1-U11 IN+ (/ISNS1)": {"net": "/ISNS1", "from": "U11.8", "to": "RS1.1", "parts": [("F", 0.4, [(37.7, 66.4), (37.4, 66.0), (31.85, 63.9), (30.337, 62.98)])], "vias": [], "neck": [],
+                             "tp": ("F", 0.4, [(37.7, 66.4), (40.2, 67.6)])},
     "RS1-U11 IN- (/VOUT)": {"net": "/VOUT", "from": "U11.1", "to": "RS1.2", "parts": [("F", 0.4, [(32.037, 67.6), (32.45, 66.0), (26.9, 63.9), (26.112, 62.98)])], "vias": [], "neck": [],
                             "tp": ("F", 0.4, [(32.037, 67.6), (30.4, 67.4)])},
-    "RS2-U12 IN+ (/ISNS2)": {"net": "/ISNS2", "from": "U12.8", "to": "RS2.1", "parts": [("F", 0.4, [(43.8, 15.6), (44.0, 18.4), (38.8, 22.4), PAD_U12_8])], "vias": [], "neck": [],
+    "RS2-U12 IN+ (/ISNS2)": {"net": "/ISNS2", "from": "U12.8", "to": "RS2.1", "parts": [("F", 0.4, [(43.9, 17.7), (44.0, 18.4), (38.8, 22.4), PAD_U12_8])], "vias": [], "neck": [],
                              "tp": ("F", 0.4, [(40.0, 21.48), (38.8, 20.0)])},
-    "RS2-U12 IN- (/VOUT)": {"net": "/VOUT", "from": "U12.1", "to": "RS2.2", "parts": [("F", 0.4, [(49.1, 15.6), (48.8, 18.4), (43.6, 22.4), PAD_U12_1])], "vias": [], "neck": [],
-                            "tp": ("F", 0.4, [(45.6, 20.86), (45.6, 19.6)])},
+    "RS2-U12 IN- (/VOUT)": {"net": "/VOUT", "from": "U12.1", "to": "RS2.2", "parts": [("F", 0.4, [(49.1, 15.6), (48.3, 16.2), (48.3, 18.4), (43.1, 22.4), PAD_U12_1])], "vias": [], "neck": [],
+                            "tp": ("F", 0.4, [(45.6, 20.477), (45.6, 19.6)])},
 }
 # R-020: test pads beside their Kelvin arm (search starts from R-020's coordinates, then checked against the new route).
 TP_MOVES = [("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
@@ -370,6 +370,9 @@ REFDES = [("C_ISO_VCAP", 92.6, 44.6, 0), ("R_GS", 97.5, 47.6, 0), ("TP_ISNS1P", 
           ("TP_ISNS2P", 36.6, 21.6, 90), ("TP_ISNS2N", 48.4, 21.6, 0), ("RS2", 52.5, 21.0, 0)]
 HIDE_REF = ("TP_ISO_GATE",)       # no silk-free spot beside the gate pad; the pad stays identified in D-008 and the assembly drawing
 KELVIN_LIMIT = 15.0
+# R-021: the real sense vias on the shunt pads (not the pad centres)
+SENSE_VIAS = {"RS1.1": (37.7, 66.4), "RS1.2": (32.3, 66.4), "RS2.1": (43.9, 17.7), "RS2.2": (49.1, 15.6)}
+POWER_ZONES = ("T022_F_VOUT_RS",)
 LAYERS = {"F": P.F_Cu, "B": P.B_Cu}
 
 
@@ -533,6 +536,10 @@ def step2_audit():
     swz = [outline_pts(z) for z in b.Zones() if z.GetNetname().startswith("/SW_PH")]
     l2 = next(z for z in b.Zones() if z.GetZoneName() == "L2_GND")
     res = {}
+
+    def pad_of(r):
+        return next(x for x in geo.pads if f"{x['ref']}.{x['pin']}" == r)
+
     for name, k in KELVIN.items():
         items = conn.GetConnectedItems(pads[k["from"]])
         linked = any(x.GetClass() == "PAD" and f"{x.GetParentFootprint().GetReference()}.{x.GetNumber()}" == k["to"] for x in items)
@@ -540,8 +547,32 @@ def step2_audit():
         sw_pad = min(geo.rect_dist(r["rect"], *q) for r in sw for q in pts)
         sw_zone = min(min(geo.seg_dist(u, v, q) for u, v in zip(o, o[1:] + o[:1])) for o in swz for q in pts)
         res[name] = {"route_mm": round(conductor_mm(k), 3), "limit_mm": KELVIN_LIMIT, "meets_limit": conductor_mm(k) <= KELVIN_LIMIT, "parts": [{"layer": lay + ".Cu", "width_mm": w, "length_mm": round(polylen(p), 3)} for lay, w, p in k["parts"]],
-                     "vias": len(k["vias"]), "neck_mm": round(polylen(k["neck"]), 3), "kicad_connected": linked, "from": k["from"], "to": k["to"], "take_off_via": k["parts"][0][2][0],
+                     "vias": len(k["vias"]), "neck_mm": round(polylen(k["neck"]), 3), "kicad_connected": linked, "from": k["from"], "to": k["to"], "pad_centre": [round(v, 3) for v in centre(pad_of(k["to"]))], "ribbon_start": k["parts"][0][2][0], "sense_via": SENSE_VIAS.get(k["to"]),
                      "min_distance_to_sw_pad_mm": round(sw_pad, 2), "min_distance_to_sw_copper_outline_mm": round(sw_zone, 2), "l2_under_route_fraction": round(sum(1 for q in pts if l2.HitTestFilledArea(P.In1_Cu, kp(*q), 0)) / len(pts), 3)}
+    # R-021: measured on the board, not from names: is each sense via / Kelvin arm inside load-carrying copper of its own net?
+    tracks = [t for t in b.GetTracks() if t.Type() != P.PCB_VIA_T and P.ToMM(t.GetWidth()) >= 2.0]
+    zones = [z for z in b.Zones() if z.GetZoneName().startswith(POWER_ZONES)]
+    vias = {tuple(round(v, 2) for v in d6(t.GetPosition())): t for t in b.GetTracks() if t.Type() == P.PCB_VIA_T}
+    sense = {}
+    for pad, xy in SENSE_VIAS.items():
+        net = pads[pad].GetNetname()
+        q = kp(*xy)
+        ptr = [t for t in tracks if t.GetNetname() == net]
+        gaps = [geo.seg_dist(d6(t.GetStart()), d6(t.GetEnd()), xy) - P.ToMM(t.GetWidth()) / 2 - VIA_R for t in ptr]
+        zo = [z for z in zones if z.GetNetname() == net]
+        zgaps = [min(geo.seg_dist(u, v, xy) for u, v in zip(o, o[1:] + o[:1])) - VIA_R for o in (outline_pts(z) for z in zo)]
+        sense[pad] = {"pad_centre": [round(v, 3) for v in centre(pad_of(pad))], "sense_via": xy, "via_exists_on_net": tuple(round(v, 2) for v in xy) in vias and vias[tuple(round(v, 2) for v in xy)].GetNetname() == net,
+                      "via_centre_in_power_track": any(t.HitTest(q, 0) for t in ptr), "via_centre_in_power_zone": any(z.HitTestFilledArea(z.GetFirstLayer(), q, 0) for z in zo),
+                      "min_gap_to_power_track_mm": round(min(gaps), 3) if gaps else None, "min_gap_to_power_zone_outline_mm": round(min(zgaps), 3) if zgaps else None}
+    arms = {}
+    for name, k in KELVIN.items():
+        hit = 0
+        pts = []
+        for lay, w, poly in k["parts"]:
+            pts = sample(extend(poly))
+            hit += sum(1 for q in pts for t in tracks if t.GetNetname() == k["net"] and t.GetLayer() == LAYERS[lay] and t.HitTest(kp(*q), 0))
+            hit += sum(1 for q in pts for z in zones if z.GetNetname() == k["net"] and z.IsOnLayer(LAYERS[lay]) and z.HitTestFilledArea(LAYERS[lay], kp(*q), 0))
+        arms[name] = {"centre_line_samples_in_own_power_copper": hit}
     pair = {}
     for phase, plus, minus in (("phase 1", "RS1-U11 IN+ (/ISNS1)", "RS1-U11 IN- (/VOUT)"), ("phase 2", "RS2-U12 IN+ (/ISNS2)", "RS2-U12 IN- (/VOUT)")):
         pp, mm = [q for x in KELVIN[plus]["parts"] for q in sample(x[2])], [q for x in KELVIN[minus]["parts"] for q in sample(x[2])]
@@ -549,14 +580,13 @@ def step2_audit():
         pair[phase] = {"IN+_to_IN-_max_mm": round(d[-1], 3), "IN+_to_IN-_median_mm": round(d[len(d) // 2], 3), "IN-_to_IN+_max_mm": round(max(nearest_on(pp, q) for q in mm[::4]), 3),
                        "length_difference_mm": round(abs(conductor_mm(KELVIN[plus]) - conductor_mm(KELVIN[minus])), 3)}
     a1 = KELVIN["RS2-U12 IN+ (/ISNS2)"]["parts"][0][2][1:3]
-    a2 = KELVIN["RS2-U12 IN- (/VOUT)"]["parts"][0][2][1:3]
+    a2 = KELVIN["RS2-U12 IN- (/VOUT)"]["parts"][0][2][2:4]
     def ang(s):
         return math.degrees(math.atan2(s[1][1] - s[0][1], s[1][0] - s[0][0]))
     pair["phase 2"]["main_section_angle_difference_deg"] = round(abs(ang(a1) - ang(a2)), 2)
     b1 = KELVIN["RS1-U11 IN+ (/ISNS1)"]["parts"][0][2][1:3]
     b2 = KELVIN["RS1-U11 IN- (/VOUT)"]["parts"][0][2][1:3]
     pair["phase 1"]["main_section_angle_difference_deg"] = round(abs(ang(b1) - ang(b2)), 2)
-    pad_of = lambda r: next(x for x in geo.pads if f"{x['ref']}.{x['pin']}" == r)
     g1, gr = centre(pad_of("Q2.4")), centre(pad_of("R_GS.1"))
     s1, gr2 = min((centre(pad_of(f"Q2.{n}")) for n in (1, 2, 3)), key=lambda c: math.dist(c, centre(pad_of("R_GS.2")))), centre(pad_of("R_GS.2"))
     gp = {"main_U6_Q2_mm": round(polylen([(93.733, 47.49), (94.2, 47.49), (94.8, 47.49), (95.9, 48.65), (95.9, 51.453)]), 3), "limit_mm": 10.0, "width_mm": GATE_W, "layer": "F.Cu",
@@ -578,12 +608,12 @@ def step2_audit():
     opened = {n: now["pairs_by_net"].get(n, 0) - v for n, v in base["pairs_by_net"].items() if now["pairs_by_net"].get(n, 0) > v}
     gnd_left = [k for k, v in l2_state(b).items() if not v["on_L2"]]
     out = {"kicad": P.GetBuildVersion(), "baseline": {k: base[k] for k in ("errors", "unconnected_pairs", "schematic_parity_issues")}, "after": {k: now[k] for k in ("errors", "by_type", "schematic_parity_issues", "unconnected_pairs", "pairs_by_net")},
-           "new_opens_vs_step1": opened, "kelvin": res, "kelvin_pairing": pair, "gate": gp, "test_pads": tps, "l2": {"islands": l2f.OutlineCount(), "fill_area_mm2": round(area / P.FromMM(1.0) ** 2, 2)},
+           "new_opens_vs_step1": opened, "kelvin": res, "kelvin_pairing": pair, "sense_takeoff": sense, "kelvin_arm_power_overlap": arms, "gate": gp, "test_pads": tps, "l2": {"islands": l2f.OutlineCount(), "fill_area_mm2": round(area / P.FromMM(1.0) ** 2, 2)},
            "gnd_vias": {"new": gapp["new_vias"], "groups": gapp["groups"], "max_centre_to_via_mm": gapp["max_centre_to_via_mm"], "gnd_pads_not_on_L2": gnd_left}}
     with (OUT / "step2-audit.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump(out, f, indent=1, ensure_ascii=False)
         f.write("\n")
-    print(json.dumps({k: out[k] for k in ("new_opens_vs_step1", "kelvin_pairing", "gate", "test_pads", "l2", "gnd_vias")} | {"after": {k: out["after"][k] for k in ("errors", "by_type", "schematic_parity_issues", "unconnected_pairs")}, "kelvin": {k: (v["route_mm"], v["kicad_connected"], v["min_distance_to_sw_copper_outline_mm"], v["l2_under_route_fraction"]) for k, v in res.items()}}, ensure_ascii=False, indent=0))
+    print(json.dumps({k: out[k] for k in ("new_opens_vs_step1", "kelvin_pairing", "sense_takeoff", "kelvin_arm_power_overlap", "l2", "gnd_vias")} | {"after": {k: out["after"][k] for k in ("errors", "by_type", "schematic_parity_issues", "unconnected_pairs")}, "kelvin": {k: (v["route_mm"], v["kicad_connected"], v["min_distance_to_sw_copper_outline_mm"], v["l2_under_route_fraction"]) for k, v in res.items()}}, ensure_ascii=False, indent=0))
     return 0
 
 

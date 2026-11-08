@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-08T20:19:54",
+    "date": "2026-11-08T20:49:09",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -73,7 +73,7 @@
                         "x": 55.3625,
                         "y": 84.934999
                     },
-                    "uuid": "f953a735-6543-434e-8a83-b04979a896c3"
+                    "uuid": "a128edcb-9f3f-425b-9b4a-dd15f710ba17"
                 }
             ],
             "severity": "error",
@@ -96,7 +96,7 @@
                         "x": 57.5,
                         "y": 55.0
                     },
-                    "uuid": "d9d6c611-41da-48b6-b989-bf48c7aee486"
+                    "uuid": "489e22e2-1500-4e48-adff-df5b20e91afa"
                 }
             ],
             "severity": "error",
@@ -111,7 +111,7 @@
                         "x": 71.775,
                         "y": 80.465
                     },
-                    "uuid": "462c916b-2ea6-4b4c-a73c-2587ac5d48be"
+                    "uuid": "5c303fb9-1155-4ce6-96bc-c242278563ab"
                 },
                 {
                     "description": "1 için [/VOUT] U12 ayak F.Cu",
@@ -165,7 +165,7 @@
                         "x": 118.870719,
                         "y": 90.947553
                     },
-                    "uuid": "f7d28a12-9a8e-4691-9724-e02a98cbf678"
+                    "uuid": "0bcacb98-b501-495c-a253-20cc0087a548"
                 }
             ],
             "severity": "error",
@@ -410,7 +410,7 @@
                         "x": 61.345,
                         "y": 80.465
                     },
-                    "uuid": "4b85dcba-24f1-42fb-86b9-1bed3c6615e3"
+                    "uuid": "746b98ac-024c-4498-883d-9ada5b036a95"
                 },
                 {
                     "description": "2 için [/GND] RRAWBL ayak F.Cu",
@@ -525,7 +525,7 @@
                         "x": 66.75,
                         "y": 104.75
                     },
-                    "uuid": "c22724b5-25d4-4fd7-b7a0-08c7c0041b2c"
+                    "uuid": "1c190bd4-4ece-4e28-9513-a307a3fc58b4"
                 },
                 {
                     "description": "4 için [/GND] U12 ayak F.Cu",
@@ -548,7 +548,7 @@
                         "x": 66.75,
                         "y": 104.75
                     },
-                    "uuid": "c22724b5-25d4-4fd7-b7a0-08c7c0041b2c"
+                    "uuid": "1c190bd4-4ece-4e28-9513-a307a3fc58b4"
                 },
                 {
                     "description": "2 için [/GND] CVCC2 ayak F.Cu",
@@ -694,7 +694,7 @@
                         "x": 78.75,
                         "y": 49.099999
                     },
-                    "uuid": "e4151f72-ecda-45e1-ab6f-38c45ef9445b"
+                    "uuid": "f0e13e84-a4fd-4231-8547-0db33c6bca94"
                 }
             ],
             "severity": "error",
@@ -916,7 +916,7 @@
                         "x": 89.0,
                         "y": 43.175
                     },
-                    "uuid": "7874d4a7-e0fe-4c1c-a47a-21cdc80a4f20"
+                    "uuid": "bd584de4-8ea4-4bc6-8a27-ac6dfd5de7de"
                 },
                 {
                     "description": "2 için [/GND] RCFG1 ayak F.Cu",
@@ -1376,7 +1376,7 @@
                         "x": 118.5,
                         "y": 67.585
                     },
-                    "uuid": "ef560873-a8bc-425a-a611-fc7c4b26a61f"
+                    "uuid": "11b5e1c5-5f7c-477f-86e1-cd5296da704f"
                 },
                 {
                     "description": "2 için [/GND] U6 ayak F.Cu",
@@ -1499,7 +1499,7 @@
                         "x": 128.199999,
                         "y": 74.7
                     },
-                    "uuid": "0521d2a4-0515-47c3-868b-64f42ec4c6aa"
+                    "uuid": "0c960abc-e08a-4406-98de-b6b4841e692f"
                 }
             ],
             "severity": "error",
@@ -1890,7 +1890,7 @@
                         "x": 138.653,
                         "y": 97.335
                     },
-                    "uuid": "301f86ea-52c5-4b9f-a96a-c1d3f3deed5b"
+                    "uuid": "c20515e5-22a9-451b-9d57-d3f81f1a11b1"
                 }
             ],
             "severity": "error",
@@ -2184,12 +2184,12 @@
                     "uuid": "d417bc22-f125-4dec-953f-fbe4109473e9"
                 },
                 {
-                    "description": "1 için [/ISNS1] RS1 ayak F.Cu",
+                    "description": "Geçit [/ISNS1] F.Cu - B.Cu üzerinde",
                     "pos": {
-                        "x": 67.9625,
-                        "y": 47.4
+                        "x": 67.7,
+                        "y": 48.599999
                     },
-                    "uuid": "de75f2db-2271-434c-985d-26ae37572090"
+                    "uuid": "4baed8d8-bd24-4fe3-9f7c-9336f9a5bdbe"
                 }
             ],
             "severity": "error",
@@ -4200,20 +4200,20 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "1 için [/ISNS2] TP_ISNS2P ayak F.Cu",
-                    "pos": {
-                        "x": 47.961277,
-                        "y": 100.773907
-                    },
-                    "uuid": "f1eb7b2c-40df-406a-ab0b-a62d8e097be2"
-                },
-                {
                     "description": "11 için [/ISNS2] U2 ayak F.Cu",
                     "pos": {
                         "x": 63.5,
                         "y": 110.4
                     },
                     "uuid": "339e76c9-e68d-444b-a0e1-f982936b7f10"
+                },
+                {
+                    "description": "1 için [/ISNS2] TP_ISNS2P ayak F.Cu",
+                    "pos": {
+                        "x": 47.961277,
+                        "y": 100.773907
+                    },
+                    "uuid": "f1eb7b2c-40df-406a-ab0b-a62d8e097be2"
                 }
             ],
             "severity": "error",
@@ -4231,12 +4231,12 @@
                     "uuid": "4f2d06c7-ab63-40fa-856b-95eb5dc9cd04"
                 },
                 {
-                    "description": "1 için [/ISNS2] RS2 ayak F.Cu",
+                    "description": "Geçit [/ISNS2] F.Cu - B.Cu üzerinde",
                     "pos": {
-                        "x": 73.5375,
-                        "y": 98.4
+                        "x": 73.9,
+                        "y": 97.3
                     },
-                    "uuid": "536866f3-2f8c-48f7-a862-785bf7b16c14"
+                    "uuid": "c3fda16a-60a0-4d75-9478-c110353a81c3"
                 }
             ],
             "severity": "error",
@@ -4621,7 +4621,7 @@
                         "x": 107.0,
                         "y": 95.0
                     },
-                    "uuid": "bad7c54e-836f-4a82-a87d-16474fd9e6a2"
+                    "uuid": "8ac1cec2-60cc-47fd-ab42-42ad4e23d693"
                 }
             ],
             "severity": "warning",
@@ -4636,37 +4636,7 @@
                         "x": 119.0,
                         "y": 56.7
                     },
-                    "uuid": "de96ad06-70b0-435b-a30a-5cb623e2b68b"
-                }
-            ],
-            "severity": "warning",
-            "type": "via_dangling"
-        },
-        {
-            "description": "Via is not connected or connected on only one layer",
-            "items": [
-                {
-                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
-                    "pos": {
-                        "x": 142.0,
-                        "y": 65.4
-                    },
-                    "uuid": "1b6317a4-d6ff-4cf6-9153-23af5dc8f700"
-                }
-            ],
-            "severity": "warning",
-            "type": "via_dangling"
-        },
-        {
-            "description": "Via is not connected or connected on only one layer",
-            "items": [
-                {
-                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
-                    "pos": {
-                        "x": 136.644999,
-                        "y": 90.095
-                    },
-                    "uuid": "a7618eac-bc69-4227-8117-ba8969801ebf"
+                    "uuid": "aa2563a4-1a47-4063-a877-0697c66fe31e"
                 }
             ],
             "severity": "warning",
@@ -4681,7 +4651,37 @@
                         "x": 138.045,
                         "y": 91.695
                     },
-                    "uuid": "fa89075a-4691-448a-8989-75bdbf673ddb"
+                    "uuid": "42ed6886-9457-4529-8002-d082b0fa7271"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
+                    "pos": {
+                        "x": 142.0,
+                        "y": 65.4
+                    },
+                    "uuid": "9114ad49-0416-48df-bd39-fc7ea658c0f8"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
+                    "pos": {
+                        "x": 136.644999,
+                        "y": 90.095
+                    },
+                    "uuid": "de97d85e-bc39-45d3-aafc-8d10bfd00ec9"
                 }
             ],
             "severity": "warning",
@@ -4696,7 +4696,7 @@
                         "x": 126.0,
                         "y": 76.7
                     },
-                    "uuid": "d2818cec-529d-461c-b984-1b72ee047547"
+                    "uuid": "668ad51b-8027-4984-ab9e-03c84b408807"
                 }
             ],
             "severity": "warning",

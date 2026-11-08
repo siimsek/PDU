@@ -68,14 +68,14 @@
  "new_opens_vs_step1": {},
  "kelvin": {
   "RS1-U11 IN+ (/ISNS1)": {
-   "route_mm": 9.401,
+   "route_mm": 8.205,
    "limit_mm": 15.0,
    "meets_limit": true,
    "parts": [
     {
      "layer": "F.Cu",
      "width_mm": 0.4,
-     "length_mm": 9.401
+     "length_mm": 8.205
     }
    ],
    "vias": 0,
@@ -83,13 +83,21 @@
    "kicad_connected": true,
    "from": "U11.8",
    "to": "RS1.1",
-   "take_off_via": [
-    37.963,
+   "pad_centre": [
+    37.962,
     67.6
    ],
-   "min_distance_to_sw_pad_mm": 6.99,
-   "min_distance_to_sw_copper_outline_mm": 7.77,
-   "l2_under_route_fraction": 1.0
+   "ribbon_start": [
+    37.7,
+    66.4
+   ],
+   "sense_via": [
+    37.7,
+    66.4
+   ],
+   "min_distance_to_sw_pad_mm": 8.2,
+   "min_distance_to_sw_copper_outline_mm": 8.6,
+   "l2_under_route_fraction": 0.916
   },
   "RS1-U11 IN- (/VOUT)": {
    "route_mm": 8.798,
@@ -107,23 +115,31 @@
    "kicad_connected": true,
    "from": "U11.1",
    "to": "RS1.2",
-   "take_off_via": [
+   "pad_centre": [
     32.037,
     67.6
+   ],
+   "ribbon_start": [
+    32.037,
+    67.6
+   ],
+   "sense_via": [
+    32.3,
+    66.4
    ],
    "min_distance_to_sw_pad_mm": 10.8,
    "min_distance_to_sw_copper_outline_mm": 12.55,
    "l2_under_route_fraction": 0.831
   },
   "RS2-U12 IN+ (/ISNS2)": {
-   "route_mm": 10.017,
+   "route_mm": 7.917,
    "limit_mm": 15.0,
    "meets_limit": true,
    "parts": [
     {
      "layer": "F.Cu",
      "width_mm": 0.4,
-     "length_mm": 10.017
+     "length_mm": 7.917
     }
    ],
    "vias": 0,
@@ -131,23 +147,31 @@
    "kicad_connected": true,
    "from": "U12.8",
    "to": "RS2.1",
-   "take_off_via": [
-    43.8,
-    15.6
+   "pad_centre": [
+    43.538,
+    16.6
    ],
-   "min_distance_to_sw_pad_mm": 4.78,
-   "min_distance_to_sw_copper_outline_mm": 5.86,
-   "l2_under_route_fraction": 0.936
+   "ribbon_start": [
+    43.9,
+    17.7
+   ],
+   "sense_via": [
+    43.9,
+    17.7
+   ],
+   "min_distance_to_sw_pad_mm": 6.85,
+   "min_distance_to_sw_copper_outline_mm": 7.15,
+   "l2_under_route_fraction": 0.925
   },
   "RS2-U12 IN- (/VOUT)": {
-   "route_mm": 10.522,
+   "route_mm": 10.468,
    "limit_mm": 15.0,
    "meets_limit": true,
    "parts": [
     {
      "layer": "F.Cu",
      "width_mm": 0.4,
-     "length_mm": 10.522
+     "length_mm": 10.468
     }
    ],
    "vias": 0,
@@ -155,29 +179,113 @@
    "kicad_connected": true,
    "from": "U12.1",
    "to": "RS2.2",
-   "take_off_via": [
+   "pad_centre": [
+    49.462,
+    16.6
+   ],
+   "ribbon_start": [
     49.1,
     15.6
    ],
-   "min_distance_to_sw_pad_mm": 7.99,
-   "min_distance_to_sw_copper_outline_mm": 10.1,
+   "sense_via": [
+    49.1,
+    15.6
+   ],
+   "min_distance_to_sw_pad_mm": 7.75,
+   "min_distance_to_sw_copper_outline_mm": 9.78,
    "l2_under_route_fraction": 0.939
   }
  },
  "kelvin_pairing": {
   "phase 1": {
-   "IN+_to_IN-_max_mm": 5.738,
-   "IN+_to_IN-_median_mm": 2.45,
+   "IN+_to_IN-_max_mm": 5.265,
+   "IN+_to_IN-_median_mm": 2.101,
    "IN-_to_IN+_max_mm": 4.192,
-   "length_difference_mm": 0.603,
+   "length_difference_mm": 0.593,
    "main_section_angle_difference_deg": 0.0
   },
   "phase 2": {
-   "IN+_to_IN-_max_mm": 5.268,
-   "IN+_to_IN-_median_mm": 2.927,
-   "IN-_to_IN+_max_mm": 5.287,
-   "length_difference_mm": 0.505,
+   "IN+_to_IN-_max_mm": 4.105,
+   "IN+_to_IN-_median_mm": 2.627,
+   "IN-_to_IN+_max_mm": 5.608,
+   "length_difference_mm": 2.551,
    "main_section_angle_difference_deg": 0.0
+  }
+ },
+ "sense_takeoff": {
+  "RS1.1": {
+   "pad_centre": [
+    37.962,
+    67.6
+   ],
+   "sense_via": [
+    37.7,
+    66.4
+   ],
+   "via_exists_on_net": true,
+   "via_centre_in_power_track": false,
+   "via_centre_in_power_zone": false,
+   "min_gap_to_power_track_mm": 1.013,
+   "min_gap_to_power_zone_outline_mm": null
+  },
+  "RS1.2": {
+   "pad_centre": [
+    32.037,
+    67.6
+   ],
+   "sense_via": [
+    32.3,
+    66.4
+   ],
+   "via_exists_on_net": true,
+   "via_centre_in_power_track": false,
+   "via_centre_in_power_zone": false,
+   "min_gap_to_power_track_mm": 1.551,
+   "min_gap_to_power_zone_outline_mm": 2.2
+  },
+  "RS2.1": {
+   "pad_centre": [
+    43.538,
+    16.6
+   ],
+   "sense_via": [
+    43.9,
+    17.7
+   ],
+   "via_exists_on_net": true,
+   "via_centre_in_power_track": false,
+   "via_centre_in_power_zone": false,
+   "min_gap_to_power_track_mm": 0.709,
+   "min_gap_to_power_zone_outline_mm": null
+  },
+  "RS2.2": {
+   "pad_centre": [
+    49.462,
+    16.6
+   ],
+   "sense_via": [
+    49.1,
+    15.6
+   ],
+   "via_exists_on_net": true,
+   "via_centre_in_power_track": false,
+   "via_centre_in_power_zone": false,
+   "min_gap_to_power_track_mm": 0.976,
+   "min_gap_to_power_zone_outline_mm": 0.7
+  }
+ },
+ "kelvin_arm_power_overlap": {
+  "RS1-U11 IN+ (/ISNS1)": {
+   "centre_line_samples_in_own_power_copper": 0
+  },
+  "RS1-U11 IN- (/VOUT)": {
+   "centre_line_samples_in_own_power_copper": 0
+  },
+  "RS2-U12 IN+ (/ISNS2)": {
+   "centre_line_samples_in_own_power_copper": 0
+  },
+  "RS2-U12 IN- (/VOUT)": {
+   "centre_line_samples_in_own_power_copper": 0
   }
  },
  "gate": {
@@ -197,7 +305,7 @@
     40.2,
     67.6
    ],
-   "branch_mm": 1.737,
+   "branch_mm": 2.773,
    "net_arm": "/ISNS1",
    "kicad_connected_to_shunt_pad": true
   },
@@ -224,7 +332,7 @@
     45.6,
     19.6
    ],
-   "branch_mm": 1.26,
+   "branch_mm": 0.877,
    "net_arm": "/VOUT",
    "kicad_connected_to_shunt_pad": true
   }

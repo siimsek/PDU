@@ -2862,9 +2862,9 @@
 },
 {
 "net": "/ISNS1",
-"x": 37.6,
-"y": 68.3,
-"tag": "RS1.1 inner edge"
+"x": 37.7,
+"y": 66.4,
+"tag": "RS1.1 inner edge, south of the L1 power entry (R-021)"
 },
 {
 "net": "/VOUT",
@@ -2886,9 +2886,9 @@
 },
 {
 "net": "/ISNS2",
-"x": 43.8,
-"y": 15.6,
-"tag": "RS2.1 inner edge"
+"x": 43.9,
+"y": 17.7,
+"tag": "RS2.1 inner edge, north of the L2 power entry (R-021)"
 },
 {
 "net": "/VOUT",
@@ -2972,10 +2972,18 @@
 "name": "F_VOUT_RS2",
 "net": "/VOUT",
 "layer": "F",
-"tag": "RS2.2 output, 5.5 mm tall",
+"tag": "RS2.2 output, 5.5 mm tall; the pad south part stays free for the sense via (R-021)",
 "points": [
 [
 48.9,
+17.4
+],
+[
+50.1,
+17.4
+],
+[
+50.1,
 14.4
 ],
 [
@@ -4215,19 +4223,19 @@
 78.7
 ],
 [
-38.0,
+38.1,
 78.7
 ],
 [
-38.0,
-67.9
+38.1,
+66.0
 ],
 [
-37.2,
-67.9
+37.3,
+66.0
 ],
 [
-37.2,
+37.3,
 79.5
 ],
 [
@@ -4303,19 +4311,19 @@
 5.0
 ],
 [
-43.4,
+43.5,
 5.0
 ],
 [
-43.4,
-16.0
+43.5,
+18.1
 ],
 [
-44.2,
-16.0
+44.3,
+18.1
 ],
 [
-44.2,
+44.3,
 4.2
 ],
 [
