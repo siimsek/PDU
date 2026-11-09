@@ -1,0 +1,19 @@
+{
+ "pin_net_pairs_before": 488,
+ "pin_net_pairs_after": 488,
+ "pin_net_diff": 0,
+ "pinfunction_diff": [
+  "('U15', '1', 'A_1')",
+  "('U15', '1', None)",
+  "('U15', '3', 'B_3')",
+  "('U15', '3', None)",
+  "('U15', '4', 'Y_4')",
+  "('U15', '4', None)",
+  "('U15', '6', 'C_6')",
+  "('U15', '6', None)"
+ ],
+ "erc_violations": {
+  "before": 0,
+  "after": 0
+ }
+}
