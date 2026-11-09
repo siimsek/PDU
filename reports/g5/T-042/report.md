@@ -5,7 +5,7 @@
 ## Özet
 
 - 20 referansın hiçbiri için Türkiye'de stok doğrulanamadı.
-- 11 MPN için satıcı sayfası bu turda okunmadı; bunlar **AÇIK**.
+- 12 MPN için satıcı sayfası bu turda okunmadı; bunlar **AÇIK**.
 - Ozdisan'da LM74700QDBVRQ1: stok 0, "On Order: No", üretici standart termini 1–2 hafta yazıyor, fiyat talep üzerine, MOQ 1. Termin bir teslim sözü değildir. T-028 `tr-sourcing.md` içindeki "On Order" ifadesi bu okuma ile düzeltilmelidir.
 - Ozdisan arama URL'si 404 verdi; ürün sayfası olmayan MPN'ler için stok sorgulanamadı.
 
