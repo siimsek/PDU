@@ -1,0 +1,73 @@
+{
+ "rows": [
+  {
+   "scenario": "f5_vt11.487_td300ns_ctyp_r200m_l1.2",
+   "variant": "rc1us",
+   "repeat": 1,
+   "exit": 0,
+   "seconds": 0.68,
+   "vraw_max_fault": 63.5174,
+   "error_lines": []
+  },
+  {
+   "scenario": "f5_vt11.487_td300ns_ctyp_r200m_l1.2",
+   "variant": "rc1us",
+   "repeat": 2,
+   "exit": 0,
+   "seconds": 0.69,
+   "vraw_max_fault": 63.5174,
+   "error_lines": []
+  },
+  {
+   "scenario": "f5_vt11.487_td300ns_ctyp_r200m_l1.2",
+   "variant": "rc1us",
+   "repeat": 3,
+   "exit": 0,
+   "seconds": 0.78,
+   "vraw_max_fault": 63.5174,
+   "error_lines": []
+  },
+  {
+   "scenario": "f5_vt11.487_td300ns_ctyp_r200m_l1.2",
+   "variant": "sch0p3_0p7",
+   "repeat": 1,
+   "exit": 0,
+   "seconds": 0.71,
+   "vraw_max_fault": 26.0088,
+   "error_lines": []
+  },
+  {
+   "scenario": "f5_vt11.487_td300ns_ctyp_r200m_l1.2",
+   "variant": "sch0p3_0p7",
+   "repeat": 2,
+   "exit": 0,
+   "seconds": 0.75,
+   "vraw_max_fault": 26.0088,
+   "error_lines": []
+  },
+  {
+   "scenario": "f2_dip_22V_to_15V_restart",
+   "variant": "rc0p05us",
+   "repeat": 1,
+   "exit": 1,
+   "seconds": 55.24,
+   "vraw_max_fault": null,
+   "error_lines": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0162391, timestep = 2.24499e-18: trouble with node \"pdiss\"",
+    "run simulation(s) aborted"
+   ]
+  },
+  {
+   "scenario": "f2_dip_22V_to_15V_restart",
+   "variant": "rc2us",
+   "repeat": 1,
+   "exit": 1,
+   "seconds": 55.58,
+   "vraw_max_fault": null,
+   "error_lines": [
+    "doAnalyses: TRAN:  Timestep too small; time = 0.0162407, timestep = 1.68375e-18: trouble with node \"pdiss\"",
+    "run simulation(s) aborted"
+   ]
+  }
+ ]
+}
