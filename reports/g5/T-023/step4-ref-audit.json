@@ -116,8 +116,8 @@
      "(boş)": 1.5
     },
     "signal_via_to_nearest_gnd_via_mm": [
-     7.15,
-     6.7
+     6.7,
+     7.15
     ]
    },
    "/FB": {
@@ -201,17 +201,17 @@
      "(boş)": 3.0
     },
     "signal_via_to_nearest_gnd_via_mm": [
-     6.33,
-     6.73,
      5.82,
+     6.73,
+     6.33,
      7.76
     ]
    },
    "/COMP": {
     "track_mm": 130.101,
-    "f_mm": 130.101,
-    "b_mm": 0.0,
-    "vias": 0,
+    "f_mm": 128.389,
+    "b_mm": 1.712,
+    "vias": 2,
     "paths_from": "U1.15",
     "paths": {
      "RCOMP.1": {
@@ -233,9 +233,9 @@
      "U2.15": {
       "connected": true,
       "path_mm": 127.15,
-      "f_mm": 127.15,
-      "b_mm": 0.0,
-      "layer_changes": 0,
+      "f_mm": 125.437,
+      "b_mm": 1.712,
+      "layer_changes": 2,
       "straight_mm": 75.679
      },
      "TP_COMP.1": {
@@ -254,14 +254,19 @@
     ],
     "track_mm_within_edge_distance_of_sw": {
      "2.0": 1.36,
-     "3.0": 7.63,
+     "3.0": 7.97,
      "5.0": 30.1,
      "10.0": 64.45
     },
-    "f_samples_without_l2_mm": 0.0,
-    "f_l2_gap_runs": 0,
-    "b_mm_by_adjacent_l3_net": {},
-    "signal_via_to_nearest_gnd_via_mm": []
+    "f_samples_without_l2_mm": 1.28,
+    "f_l2_gap_runs": 3,
+    "b_mm_by_adjacent_l3_net": {
+     "(boş)": 1.71
+    },
+    "signal_via_to_nearest_gnd_via_mm": [
+     1.79,
+     0.85
+    ]
    }
   },
   "returns": {

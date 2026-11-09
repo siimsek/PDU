@@ -10,8 +10,8 @@
   },
   "U2.18->CVDDA2.1": {
    "net": "/VDDA2",
-   "path_mm": 17.855,
-   "net_vias": 2,
+   "path_mm": 4.56,
+   "net_vias": 0,
    "straight_mm": 4.442
   },
   "U1.19->CVCC1.1": {
@@ -22,7 +22,7 @@
   },
   "U2.19->CVCC2.1": {
    "net": "/VCC2",
-   "path_mm": 12.256,
+   "path_mm": 11.867,
    "net_vias": 2,
    "straight_mm": 9.843
   },

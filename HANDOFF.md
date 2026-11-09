@@ -2,7 +2,7 @@
 
 - **Tarih:** 2026-11-09
 - **Dal / son commit:** wp/T-023 (taslak PR #70). T-027 birleşti (PR #75). R-022 kartları PR #76'da açık.
-- **Aktif kart:** T-023 **InProgress** — adım 4: DRC 0, parite 0, 14 açık çift, `/GND` açık çifti yok. Rapor: reports/g5/T-023/step4-report.md.
+- **Aktif kart:** T-023 **InProgress** — adım 4: DRC 0, parite 0, açık çift 0, L2 tek ada. Rapor: reports/g5/T-023/step4-report.md. T-023 Done değil.
 
 ## Yapılanlar
 - Adım 3 router (D-012 B): 36 bağlantı; GND vialar sinyallerden sonra.
@@ -26,7 +26,7 @@
 - R-002 tur 1 (PR #53, 1 engelleyici: Codex'te KiCad 9.0.2): 5a2985c üzerinde KiCad 10.0.7 ile ERC 0 + netlist, R-002 karşılaştırıcısı 0 fark (reports/g5/T-014/R-002-tur2/). LDSTRT/ITIMER gerekçesi AÇIK.
 
 ## Sonraki adım
-Codex: PR #70 adım 4 ara incelemesi (R-022 Tur 8, U-012). T-023 Done değil; T-034 Draft; hiçbir PR birleştirilmez.
+Codex: PR #70 incelemesi (R-022 Tur 9, U-012). T-034 Draft; hiçbir PR birleştirilmez.
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).

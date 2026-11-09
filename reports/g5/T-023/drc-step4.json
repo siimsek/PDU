@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-11-09T13:38:36",
+    "date": "2026-11-09T13:41:41",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -40,10 +40,10 @@
                 {
                     "description": "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
                     "pos": {
-                        "x": 119.0,
-                        "y": 56.7
+                        "x": 107.0,
+                        "y": 95.0
                     },
-                    "uuid": "119efb28-a9b5-470c-848d-265cb0ea529c"
+                    "uuid": "48ab3dea-0669-4e76-828a-23a690c5c265"
                 }
             ],
             "severity": "warning",
@@ -55,25 +55,10 @@
                 {
                     "description": "Geçit [/VOUT] F.Cu - B.Cu üzerinde",
                     "pos": {
-                        "x": 107.0,
-                        "y": 95.0
+                        "x": 119.0,
+                        "y": 56.7
                     },
-                    "uuid": "31c6a553-918a-43a1-b30b-5c059d7eee9f"
-                }
-            ],
-            "severity": "warning",
-            "type": "via_dangling"
-        },
-        {
-            "description": "Via is not connected or connected on only one layer",
-            "items": [
-                {
-                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
-                    "pos": {
-                        "x": 136.644999,
-                        "y": 90.095
-                    },
-                    "uuid": "1633cb03-7c38-4dd0-88c6-683fd1d2297c"
+                    "uuid": "cfad62a0-ce92-456f-9a0a-a89f213dea3a"
                 }
             ],
             "severity": "warning",
@@ -88,7 +73,7 @@
                         "x": 138.045,
                         "y": 91.695
                     },
-                    "uuid": "773dd732-aad6-4dd3-ab29-b088d6b9478b"
+                    "uuid": "05978c13-1764-43cc-a5c1-010c20e34cf5"
                 }
             ],
             "severity": "warning",
@@ -103,7 +88,22 @@
                         "x": 142.0,
                         "y": 65.4
                     },
-                    "uuid": "d9dd589c-e96d-49e3-901c-8f30749ef91c"
+                    "uuid": "1451fbe9-d268-49ad-b6c4-09e9654420df"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Geçit [/O1_11V] F.Cu - B.Cu üzerinde",
+                    "pos": {
+                        "x": 136.644999,
+                        "y": 90.095
+                    },
+                    "uuid": "c750f917-1c5a-402a-8419-47a2b8191f94"
                 }
             ],
             "severity": "warning",
@@ -118,7 +118,7 @@
                         "x": 126.0,
                         "y": 76.7
                     },
-                    "uuid": "2a243d66-17fa-4db9-a300-a12c8de4a106"
+                    "uuid": "2327340f-18a0-45c1-aa11-95a8c8f02223"
                 }
             ],
             "severity": "warning",

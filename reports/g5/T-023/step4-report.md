@@ -1,106 +1,92 @@
-# T-023 Adım 4 — kalan sinyaller (başladı, tamamlanmadı)
+# T-023 Adım 4 — R-022 Tur 8 sonrası (T-023 Done değil)
 
-**Durum: T-023 InProgress; T-023 Done değil.** R-022 Tur 7 ile U-011 kapatıldı, adım 4 başladı. KiCad 10.0.7 (`--refill-zones --schematic-parity`): DRC hatası **0**, parite **0**, açık çift **68 → 14**, `/GND` açık çifti **0**, L2 **1** ada, adım 1 ve 2'ye göre yeni açık ağ **0**. Uyarı: `{'warning:via_dangling': 6}`. Bu ara aşamadır, final kabul değildir.
+**Durum: T-023 InProgress.** KiCad 10.0.7 (`--refill-zones --schematic-parity`): DRC hatası **0**, parite **0**, açık çift **0** (önceki ara kart 14), L2 **1** ada, `/GND` padlerinin L2 eksiği yok. Uyarı: `{'warning:via_dangling': 6}`. Bu kanıt DRC/geometri kanıtıdır; SI, kararlılık, kuplaj, ısı ve fiziksel prob erişimini **kanıtlamaz**.
 
-Ham çıktı: [step4-audit.json](step4-audit.json), [step3-routes.json](step3-routes.json), [step3-audit.json](step3-audit.json), [step3-ref-audit.json](step3-ref-audit.json), [drc-step3.json](drc-step3.json). Netclass ve DRC kuralları değişmedi. "Önce" `a1c6076` kartıdır.
+Bu adımın ham çıktıları: [step4-signal-audit.json](step4-signal-audit.json), [step4-routes.json](step4-routes.json), [step4-gnd-applied.json](step4-gnd-applied.json), [step4-ref-audit.json](step4-ref-audit.json), [drc-step4.json](drc-step4.json), [step4-audit.json](step4-audit.json), [critical-lengths.json](critical-lengths.json), [signal-route-audit.json](signal-route-audit.json). Adım 3 kanıtları `a1c6076`'daki içerikleriyle `step3-*.json`, `drc-step3.json` ve `step3-probe-map.*`, `step3-assembly-map.*` adlarında geri konuldu. `2e6f702` ara raporu [step4-interim-report.md](step4-interim-report.md) olarak saklandı.
 
-## Kalan açık çiftler (14)
+Netclass ve DRC kuralları değişmedi. Router artık montaj deliği yasak bölgelerini de işaretliyor.
 
-Router 90 bağlantı kurdu, 11 bağlantı kurulamadı; `/GATE`, `/DVDT_O1`, `/DVDT_S2E` HV nedeniyle bilerek yönlendirilmedi.
+## Beş karar için ne yapıldı
 
-### Karar gerektirenler: 0,6 mm HV ile çelişen pin çıkışları
+### 1. U5 `/GATE`
+T-022 via'ları **kaydırılmadı** (`/ANODE` bakırı `a1c6076` ile aynı). Çıkış pad kenarından başlıyor: `(21,29; 42,5)` ile via merkezleri arası HESAP 1,027 mm, DRC geçti. U5.5 → Q1.4 yolu 12,169 mm.
 
-- **`/GATE` (U5.5):** pad 0,95 mm aralıkla /ANODE ve /VIN T-022 via'ları arasında. 0,25 mm iz için kenar boşluğu 0,525 mm (HESAP: 0,95 − 0,3 − 0,125), DRC 0,6 mm ister.
-- **`/DVDT_S2E` (U4.15):** yan pin U4.16 /VSAFE T-022 saplamasının ucuna merkez mesafesi 0,527 mm, kenar 0,277 mm (HESAP). 0,5 mm pin aralığında çıkış izi 0,6 mm'yi sağlayamıyor. Denemede DRC bu çifti hata verdi.
-- **`/DVDT_O1` (U3.15):** aynı yapı varsayıldı, U3'te ayrıca **ölçülmedi** (VARSAYIM).
+### 2. U3/U4 DVDT
+U3.16/U4.16 `/VSAFE` saplaması `T023_ESC_U3_16`/`U4_16` bölgesi oldu; U3.17/U4.17 `/O1_11V`/`/S2E_11V` bağı pad köşesine alındı. DVDT 15. pinden 0,6 mm ile çıkıyor (DRC).
 
-Kural gevşetilmedi. Seçenekler THINKER'ındır: T-022 via/saplamalarını taşımak veya HV kuralının pad istisnasına ilişkin karar.
+### 3. U1.13/U1.14 ve U2.13/U2.14
+Önce mevcut izinlerde kısa çıkış arandı; 0,25 mm iz `U1.12` ile 0,6 mm'yi sağlayamadı. Bu yüzden `/VOUT` ve `/ISNS` pin çıkışları iz yerine 0,2 mm genişlikte bölge oldu (`T023_ESC_U1_11/12`, `U2_11/12`) ve sense via'ları taşındı: `/VOUT` U1 (49,0; 80,4) → (49,34; 81,0), U2 (34,5; 2,9) → (34,105; 3,0); `/ISNS1` (50,1; 80,95) → (50,4; 80,25), `/ISNS2` (33,4; 3,6) → (33,1; 3,75). `T022_TAP_ISNS1` ucu kısaltıldı, `T022_TAP_TP_VOUT_3` doğu ve kuzey kenarı genişletildi.
 
-### Yönlendirilemeyenler
+**Dikkat:** kesiti azalan güç/sense bakırı yok denemez: 0,2 mm boyun, sense akımıyla çalıştığı VARSAYIMINA dayanır (AÇIK). Üretici minimum bölge genişliği onayı **doğrulanamadı**.
 
-| Ağ | Pin | Router nedeni |
-|---|---|---|
-| `/VCC1` | CVCC1.1 | no route (555834 expansions) |
-| `/RT_PH1` | RT1.1 | no route (7 expansions) |
-| `/CBOOT1` | RBOOT1.2 | no route (2 expansions) |
-| `/LDO_DELAY` | U10.7 | no route (591213 expansions) |
-| `/CFG_PRI` | RCFG1.1 | no free grid cell at the pad |
-| `/CFG_SEC` | RCFG2.1 | no free grid cell at the pad |
-| `/IMON_S2E` | RIMON2.1 | no route (63 expansions) |
-| `/IMON_S2E` | TP_IMON_S2E.1 | no route (63 expansions) |
-| `/IMON_O1` | U3.9 | no route (554849 expansions) |
-| `/P5V_PROT` | U10.1 | no route (535525 expansions) |
-| `/PG_O1` | U3.13 | no route (506987 expansions) |
+### 4. CVDDA ve CBOOT/RBOOT
+Yerleşim U1/U2 pinlerine alındı (`STEP4_PLACE`). L1/U1 courtyard aralığı (1,11 mm) bir 0603 için yetmediğinden CVDDA1 U1 kuzeyinde, CVCC1 güneyde kaldı.
 
-- U1.13 `/CFG_PRI` ve U1.14 `/RT_PH1`: kuzey cebi kapalı. Batıda /COMP ve /FB, doğuda /VOUT via (49,0; 80,4) ve B.Cu şeridi var (ızgara haritası). Çıkış için T-022 U1 sense via/şeridinin taşınması gerekebilir; **denenmedi**.
-- Diğerlerinin kök nedeni tek tek **doğrulanamadı**.
+| Yol | Ağ | Yol mm | Düz mm |
+|---|---|---:|---:|
+| U1.18 → CVDDA1.1 | `/VDDA1` | 4,516 | 3,843 |
+| U2.18 → CVDDA2.1 | `/VDDA2` | 4,56 | 4,442 |
+| U1.19 → CVCC1.1 | `/VCC1` | 8,398 | 8,143 |
+| U2.19 → CVCC2.1 | `/VCC2` | 11,867 | 9,843 |
+| U1.4 → RBOOT1.2 | `/CBOOT1` | 1,564 | 2,225 |
+| RBOOT1.1 → CBOOT1.1 | `/CBOOT_R1` | 0,707 | 1,615 |
+| CBOOT1.2 → U1.5 | `/SW4_PH1` | 2,087 | 2,386 |
+| U2.4 → RBOOT2.2 | `/CBOOT2` | 0,901 | 1,588 |
+| RBOOT2.1 → CBOOT2.1 | `/CBOOT_R2` | 0,65 | 1,551 |
+| CBOOT2.2 → U2.5 | `/SW4_PH2` | 1,44 | 2,05 |
+| U1.14 → RT1.1 | `/RT_PH1` | 8,991 | 6,914 |
+| U1.13 → RCFG1.1 | `/CFG_PRI` | 3,958 | 2,921 |
+| U2.14 → RT2.1 | `/RT_PH2` | 2,361 | 3,14 |
+| U2.13 → RCFG2.1 | `/CFG_SEC` | 3,994 | 3,572 |
+| U5.5 → Q1.4 | `/GATE` | 12,169 | 9,286 |
+| U5.1 → CVCAP.1 | `/VCAP` | 28,759 | 26,629 |
+| U3.15 → CDVDT1.1 | `/DVDT_O1` | 38,05 | 24,008 |
+| U4.15 → CDVDT2.1 | `/DVDT_S2E` | 69,651 | 23,427 |
+| U4.8 → RILIM2.1 | `/ILIM_S2E` | 6,366 | 6,608 |
+| U3.8 → RILIM1.1 | `/ILIM_O1` | 32,104 | 26,82 |
 
-## Probe GND rolleri
+Yol: iz merkez çizgisi ve via üzerinden en kısa grafik; bölgeler dahil değil, akım dağılımı değil.
 
-Merkezden merkeze düz mesafe (mm); fiziksel erişim kanıtı değildir.
+Ara karta göre ağ toplamı (mm / via):
 
-| Rol | GND pad | Üyeler |
-|---|---|---|
-| FB | TP_GND_FB | U1.16 19,036; RCOMP 9,431; R_TRIM.2 15,629; TP_FB_INJ_A 12,081; TP_FB_INJ_B 11,982; TP_OVP_REF 2,804 |
-| OC | TP_GND_OC | TP_OC_SENSE1 41,382; TP_OC_SENSE2 13,0; TP_OC_REF 2,9; TP_COMP 3,864; U14.2 6,245; U13.2 44,438 |
-| OVP/J_OVP | TP_GND_OVP | J_OVP_INJ_BUS.2 12,697; TP_OVP_SENSE 4,53; TP_OVP_BUS_N 4,846; TP_OVP_TRIP_N 5,883; TP_OVP_Q 86,897; TP_VSAFE 11,917; TP_VOUT 15,94 |
-| POWER | TP_GND_POWER | J1.2 11,312; TP_ANODE 7,81; TP_VIN 13,412 |
+| Ağ | `2e6f702` | Şimdi |
+|---|---:|---:|
+| `/VDDA1` | 71,562 / 6 | 69,355 / 8 |
+| `/VDDA2` | 62,077 / 0 | 4,56 / 0 |
+| `/VCC2` | 12,882 / 2 | 13,006 / 2 |
+| `/CBOOT2` | 26,697 / 2 | 0,901 / 0 |
+| `/SW4_PH1` | 6,056 / 2 | 2,087 / 0 |
+| `/SW4_PH2` | 34,01 / 2 | 1,44 / 0 |
+| `/VCAP` | 31,511 / 0 | 29,896 / 2 |
+| `/OVP_Q` | 138,166 / 13 | 25,591 / 2 |
 
-Taşınanlar: TP_GND_OVP (76,5; 14,0), TP_OC_REF (47,6; 22,0), TP_OVP_REF (68,4; 83,6), TP_FB_INJ_A (62,4; 71,8), TP_FB_INJ_B (68,4; 71,8). `ASSIGNED_PROBE_GND` eşlemeleri [probe-map.md](probe-map.md) içindedir. TP_COMP–TP_GND_OC paylaşımı korundu; D-008 değiştirilmedi.
+`/VDDA1` toplamı RSYNC dalını da içerir (U1.18 → CVDDA1.1 yukarıdaki satırdır). `/VCAP` için yerleşim değişmedi: termal ve gate konumu **doğrulanamadı**, zorunlu taşıma çıkarılmadı. `/DVDT_S2E` ve `/DVDT_O1` uzun kaldı; zayıf sinyal olduğu VARSAYIM, kabulü THINKER'ındır.
 
-Kapsanamayan üyeler: TP_OC_SENSE1 (TP_GND_OC'ye 41,382 mm) ve TP_OVP_Q (TP_GND_OVP'ye 86,897 mm). Mevcut dört GND padiyle bu iki üye yakınlaştırılmadı. TP'yi taşımak mı yeni pad mi gerektiği THINKER kararıdır; bu yüzden yeni pad kartı **açılmadı**.
+### 5. `/OVP_REF` ve prob
+`TP_OVP_Q` `R_Q.1` yanına alındı (101,5; 62,6). Mevcut prob GND'lerine uzaklık: TP_GND_FB 41,515 mm, atanmış TP_GND_OVP 54,653 mm; en yakın GND pasif pad C_CMP.2 5,537 mm. TP_OC_SENSE1 değişmedi: TP_GND_POWER 37,565 mm, TP_GND_OC 41,382 mm; en yakın GND pasif pad COUT1.2 5,883 mm. Atama değiştirilmedi, yeni pad kartı **açılmadı**; kısa dönüş için pasif pad kullanılıp kullanılmayacağı THINKER/T-024 kararıdır.
 
-En yakın prob GND'si değişen test noktaları (en çok iyileşen önce):
+## Güç, Kelvin, HV (`a1c6076` ile)
 
-| TP | Önce | Sonra |
-|---|---|---|
-| TP_FB_INJ_A | TP_GND_OC 40,07 | TP_GND_FB 12,08 |
-| TP_PG_S2E | TP_GND_OC 44,84 | TP_GND_OVP 17,65 |
-| TP_CLR_N | TP_GND_OC 45,88 | TP_GND_OVP 19,02 |
-| TP_OVP_SENSE | TP_GND_OC 31,35 | TP_GND_OVP 4,53 |
-| TP_VOUT | TP_GND_OC 38,43 | TP_GND_OVP 15,94 |
-| TP_VSAFE | TP_GND_OC 32,47 | TP_GND_OVP 11,92 |
-| TP_OVP_TRIP_N | TP_GND_OC 24,34 | TP_GND_OVP 5,88 |
-| TP_S2E | TP_GND_OVP 38,01 | TP_GND_OVP 20,27 |
-| TP_OVP_BUS_N | TP_GND_OC 22,43 | TP_GND_OVP 4,85 |
-| TP_ISO_OV | TP_GND_OC 17,65 | TP_GND_OVP 16,31 |
-| TP_OVP_REF | TP_GND_OVP 2,79 | TP_GND_FB 2,8 |
-| TP_OC_REF | TP_GND_OVP 2,79 | TP_GND_OC 2,9 |
-| TP_FB_INJ_B | TP_GND_POWER 8,51 | TP_GND_FB 11,98 |
-| TP_ISO_GATE | TP_GND_OVP 17,44 | TP_GND_OVP 37,06 |
+`--audit2`: Kelvin 8,205 / 8,798 / 7,917 / 10,468 mm (≤15), L2 tek ada. `/ANODE` ve `/ISO_GATE` iz/via kümesi `a1c6076` ile aynı. Değişenler: `/VOUT` 4 eleman çıktı 3 girdi (U1/U2 boyun izi ve via'lar + R_INJ via'sı önceki turdan), `/ISNS1`, `/ISNS2` boyun ve via, `/VIN` U10.5 boyun ucu ve via (TAP_U10_5 bölgesi eklendi), `/VSAFE` U3/U4.16 saplamaları, `/O1_11V` ve `/S2E_11V` birer bağ. Zone değişimi: `T022_TAP_ISNS1`, `T022_TAP_TP_VOUT_3`; eklenen `T023_ESC_*`, `T023_TAP_U10_5`. Boyun denetimi (`pcb_drc.neck_audit`) 0 ihlal. Bu karşılaştırma doldurulmuş bakırı veya akım kapasitesini kanıtlamaz.
 
-## R_INJ ve FRA padleri
+HV 0,6 mm: DRC kuralı değişmedi ve 0 ihlal; tek tek pay ölçümü yapılmadı.
 
-TP_FB_INJ_A R_INJ.1'e 2,115 mm, TP_FB_INJ_B R_INJ.2'ye 2,235 mm, A–B arası 6,0 mm. Fixture bağlantısı ve fiziksel erişim **doğrulanamadı**.
+## FB/COMP ve referanslar (`a1c6076` → şimdi)
 
-R_INJ.1 ve TP_FB_INJ_A için `/VOUT`, U1.12'nin B.Cu şeridinden bölge bakırıyla alındı (`T023_TAP_R_INJ_F/B`, via 64,5; 74,0): BUS_POWER genişlik kuralı 0,25 mm izi kabul etmez. **Güç bakırına iki bölge ve bir via eklendi.** Mevcut güç izleri ve bölgeleri `a1c6076` ile aynı; Kelvin 8,205 / 8,798 / 7,917 / 10,468 mm, U6–Q2 gate 5,469 mm (`--audit2`).
-
-## FB/COMP ve referanslar
-
-| Ağ | Önce mm / via | Sonra mm / via | Önce SW kenar (mm) | Sonra SW kenar (mm) |
+| Ağ | Önce mm / via | Sonra mm / via | Önce SW kenar | Sonra SW kenar |
 |---|---:|---:|---:|---:|
-| `/FB` | 8,9 / 0 | 8,9 / 0 | 1,197 | 1,197 |
-| `/COMP` | 130,581 / 0 | 130,581 / 0 | 1,798 | 1,798 |
-| `/FB_INJ` | 108,919 / 2 | 57,97 / 4 | 3,848 | 2,057 |
-| `/OVP_REF` | 40,437 / 0 | 52,98 / 0 | 25,558 | 12,66 |
-| `/OC_REF` | 117,42 / 2 | 114,817 / 2 | 9,775 | 9,925 |
+| `/FB` | 8,9 / 0 | 9,256 / 0 | 1,197 | 1,148 |
+| `/COMP` | 130,581 / 0 | 130,101 / 2 | 1,798 | 1,634 |
+| `/FB_INJ` | 108,919 / 2 | 55,405 / 4 | 3,848 | 2,057 |
+| `/OVP_REF` | 40,437 / 0 | 52,98 / 0 | 25,558 | 14,835 |
+| `/OC_REF` | 117,42 / 2 | 114,967 / 2 | 9,775 | 9,775 |
 
-`/OVP_REF` TP_OVP_REF dalıyla uzadı ve SW kenarı azaldı. SI ve kararlılık **doğrulanamadı**.
+`/COMP` iki via kazandı (U2 tarafı), SW kenarı azaldı. FB ve COMP halkası batıya 0,5 mm kaydı. SI ve kararlılık **doğrulanamadı**.
 
-## İnceleme gerektiren uzun ağlar
+## Silk ve haritalar
 
-AUX_LOCAL netclass genişliği 0,5 mm; pad uçlarında 0,25 mm kullanıldı.
-
-| Ağ | Toplam mm | 0,5 mm kısım | Via |
-|---|---:|---:|---:|
-| `/VDDA1` | 71,562 | 67,372 | 6 |
-| `/VDDA2` | 62,077 | 51,535 | 0 |
-| `/VCAP` | 31,511 | 30,267 | 0 |
-| `/SW4_PH2` | 34,01 | 30,81 | 2 |
-| `/CBOOT2` | 26,697 | 24,411 | 2 |
-
-TI SNVSCD3 s.44 VCC ve BOOT kondansatörlerini pinlere yakın ister; `/VDDA1` ve `/VDDA2`, `/CBOOT2`, `/SW4_PH2` uzunlukları bu amaçla çelişebilir. Bu sayılar kabul edilmiş değildir, yeniden yerleşim kararı gerekebilir. Uzun diğer ağlar: `/P5V_PROT` 252,834 mm, 30 via; `/EN_BUCK` 199,418 mm, 19 via; `/OVP_Q` 138,166 mm, 13 via; `/COMP` 130,581 mm, 0 via; `/CLR_N` 130,024 mm, 12 via; `/SYNC` 129,851 mm, 10 via.
+19 pasif ve 12 TP'nin silk'i gizlendi. Harita SHA'sı `a1c0a4f7afed418c…` [probe-map.md](probe-map.md) ve [assembly-map.md](assembly-map.md) içinde. Fiziksel doğrulama T-024'tedir.
 
 ## Doğrulanamayanlar
 
-SI/kararlılık, kuplaj/gürültü, startup, dönüş akımı, ısı, fiziksel prob ve montaj erişimi, üretici via onayı.
+SI/kararlılık, kuplaj/gürültü, startup, dönüş akımı, ısı, üretici minimum via ve bölge onayı, fiziksel prob/fixture/montaj erişimi. DRC 0 üretime hazır demek değildir.

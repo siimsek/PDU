@@ -15,8 +15,9 @@
 "net": "/COMP",
 "pin": "U2.15",
 "length_mm": 37.61,
-"vias": 0,
+"vias": 2,
 "layers": [
+"B",
 "F"
 ]
 },
@@ -453,16 +454,6 @@
 ]
 },
 {
-"net": "/VDDA2",
-"pin": "U2.18",
-"length_mm": 17.75,
-"vias": 2,
-"layers": [
-"B",
-"F"
-]
-},
-{
 "net": "/VCC1",
 "pin": "CVCC1.1",
 "length_mm": 7.67,
@@ -475,7 +466,7 @@
 {
 "net": "/VCC2",
 "pin": "CVCC2.1",
-"length_mm": 11.56,
+"length_mm": 11.87,
 "vias": 2,
 "layers": [
 "B",

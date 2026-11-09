@@ -19,7 +19,7 @@
  "router": {
   "grid_mm": 0.15,
   "route_width_mm": 0.25,
-  "connections_routed": 91,
+  "connections_routed": 90,
   "connections_failed": []
  },
  "nets": {
@@ -58,9 +58,10 @@
    "open_pairs": 0,
    "track_mm": 130.1,
    "layers": [
+    "B",
     "F"
    ],
-   "vias": 0,
+   "vias": 2,
    "min_distance_to_sw_pad_mm": 1.76,
    "min_distance_to_sw_copper_outline_mm": 3.08
   },

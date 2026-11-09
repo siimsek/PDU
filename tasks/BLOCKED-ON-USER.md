@@ -15,7 +15,7 @@ Kullanıcıya soru sorulmaz (2026-11-07): kararları THINKER verir. Burada yaln�
 | U-009 | R-021: dört sense viasının güç bakırıyla teması; R-021 Tur 2 kapanışı (yalnız bu dar kapsam) | T-023 adım 3 | Done (R-021 Tur 2) |
 | U-010 | R-021 ikinci turda kalan RS2.2 pad çıkış kesiti; R-022 doğruladı (5,50 mm) | T-023 adım 3 | Done (R-022) |
 | U-011 | R-022 Tur 3–6: /FB-/COMP yerleşimi, SW yakınlığı ve referans/FB prob GND; R-022 Tur 7 kapattı. `probe-map.md` ve `assembly-map.md` yerinde doğrulaması T-024'e devredildi | T-023 adım 4 | Done (R-022 Tur 7) |
-| U-012 | T-023 adım 4: /GATE, /DVDT_O1, /DVDT_S2E çıkışları 0,6 mm HV ile çelişiyor; U1.13/U1.14 kuzey cebi kapalı (`reports/g5/T-023/step4-report.md`); THINKER kararı gerekir | T-023 Done | Beklemede (R-022 Tur 8) |
+| U-012 | T-023 adım 4: HV pin çıkışları ve U1.13/U1.14 cebi. R-022 Tur 8 adaylarıyla açık çift 0, DRC 0, parite 0 (`reports/g5/T-023/step4-report.md`); 0,2 mm sense bölgeleri ve TP_OVP_Q/TP_OC_SENSE1 prob dönüşü THINKER kararında | T-023 Done | Beklemede (R-022 Tur 9) |
 
 ## U-001 prosedürü — O1/S2E gerçek akımı (kart gelmeden)
 
