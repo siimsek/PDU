@@ -1,0 +1,115 @@
+{
+ "doc": "TI LM70880-Q1 SNVSBX7A (JUNE 2024) https://www.ti.com/lit/ds/symlink/lm70880-q1.pdf",
+ "VCC_datasheet_V": 8.0,
+ "VCC_power_py_V": 5.0,
+ "rows": [
+  {
+   "VIN": 20.0,
+   "IVCC_mA": 5.0,
+   "AGND_VCC8_W": 0.06,
+   "AGND_VCC5_code_W": 0.075,
+   "BIAS_VOUT_W": 0.015,
+   "saving_W": 0.045,
+   "dTj_EVM_saving_C": 0.84,
+   "dTj_JEDEC_saving_C": 1.51
+  },
+  {
+   "VIN": 20.0,
+   "IVCC_mA": 10.0,
+   "AGND_VCC8_W": 0.12,
+   "AGND_VCC5_code_W": 0.15,
+   "BIAS_VOUT_W": 0.03,
+   "saving_W": 0.09,
+   "dTj_EVM_saving_C": 1.67,
+   "dTj_JEDEC_saving_C": 3.01
+  },
+  {
+   "VIN": 20.0,
+   "IVCC_mA": 20.0,
+   "AGND_VCC8_W": 0.24,
+   "AGND_VCC5_code_W": 0.3,
+   "BIAS_VOUT_W": 0.06,
+   "saving_W": 0.18,
+   "dTj_EVM_saving_C": 3.35,
+   "dTj_JEDEC_saving_C": 6.03
+  },
+  {
+   "VIN": 22.2,
+   "IVCC_mA": 5.0,
+   "AGND_VCC8_W": 0.071,
+   "AGND_VCC5_code_W": 0.086,
+   "BIAS_VOUT_W": 0.015,
+   "saving_W": 0.056,
+   "dTj_EVM_saving_C": 1.04,
+   "dTj_JEDEC_saving_C": 1.88
+  },
+  {
+   "VIN": 22.2,
+   "IVCC_mA": 10.0,
+   "AGND_VCC8_W": 0.142,
+   "AGND_VCC5_code_W": 0.172,
+   "BIAS_VOUT_W": 0.03,
+   "saving_W": 0.112,
+   "dTj_EVM_saving_C": 2.08,
+   "dTj_JEDEC_saving_C": 3.75
+  },
+  {
+   "VIN": 22.2,
+   "IVCC_mA": 20.0,
+   "AGND_VCC8_W": 0.284,
+   "AGND_VCC5_code_W": 0.344,
+   "BIAS_VOUT_W": 0.06,
+   "saving_W": 0.224,
+   "dTj_EVM_saving_C": 4.17,
+   "dTj_JEDEC_saving_C": 7.5
+  },
+  {
+   "VIN": 26.0,
+   "IVCC_mA": 5.0,
+   "AGND_VCC8_W": 0.09,
+   "AGND_VCC5_code_W": 0.105,
+   "BIAS_VOUT_W": 0.015,
+   "saving_W": 0.075,
+   "dTj_EVM_saving_C": 1.4,
+   "dTj_JEDEC_saving_C": 2.51
+  },
+  {
+   "VIN": 26.0,
+   "IVCC_mA": 10.0,
+   "AGND_VCC8_W": 0.18,
+   "AGND_VCC5_code_W": 0.21,
+   "BIAS_VOUT_W": 0.03,
+   "saving_W": 0.15,
+   "dTj_EVM_saving_C": 2.79,
+   "dTj_JEDEC_saving_C": 5.02
+  },
+  {
+   "VIN": 26.0,
+   "IVCC_mA": 20.0,
+   "AGND_VCC8_W": 0.36,
+   "AGND_VCC5_code_W": 0.42,
+   "BIAS_VOUT_W": 0.06,
+   "saving_W": 0.3,
+   "dTj_EVM_saving_C": 5.58,
+   "dTj_JEDEC_saving_C": 10.05
+  }
+ ],
+ "vraw_peak_sim_by_family": {
+  "F1": [
+   34.76,
+   "f1_worst"
+  ],
+  "F4": [
+   11.0,
+   "f4_o1_short_s2e_isolation"
+  ],
+  "F5": [
+   29.13,
+   "f5_vt11.487_td1048ns_cmin_r20m_l1.2"
+  ]
+ },
+ "bias_abs_V": 32.0,
+ "rboot1": "1",
+ "cboot1": "47n",
+ "cvcc1": "4.7u"
+}
