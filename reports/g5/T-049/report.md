@@ -6,8 +6,10 @@
 
 | Standart | Kapsam bilgisi | Kaynak durumu |
 |---|---|---|
-| ISO 13297 | Küçük teknede AC/DC tesisat; elektrikli sevk hariç | R-024 özeti; iso.org sayfası 403, bu kartta bağımsız doğrulanamadı |
+| ISO 13297 | Küçük teknede AC/DC tesisat; elektrikli sevk hariç | R-024/R-025 özeti; iso.org sayfası bu ortamda 403 |
 | ISO 16315:2026 | Elektrikli sevk sistemleri, <1500 V DC, gövde boyu 24 m'ye kadar | [Resmi sayfa](https://committee.iso.org/standard/84203.html) okundu |
-| ISO 8846:2025 | Çevredeki yanıcı gazın tutuşması; hidrojen-hava ve arızalı cihaz hariç | R-024 özeti; iso.org sayfası 403, bu kartta bağımsız doğrulanamadı |
+| ISO 8846:2025 | Çevredeki yanıcı gazın tutuşması; hidrojen-hava ve arızalı cihaz hariç | R-024/R-025 özeti; iso.org sayfası bu ortamda 403 |
+
+Yük adları README.md:3'te kayıtlı (T3 Gemstone O1, SLAMTEC RPLIDAR S2E), ancak yük adı sevk tesisatı olduğunu kanıtlamaz.
 
 Sonuç: PDU'nun sevk gücüyle ilişkisi bilinmeden ISO 13297 ile ISO 16315 arasında seçim yapılamaz. Yanıcı ortam bilinmeden ISO 8846 uygulanamaz; gaz derecesi veya madde yazılmadı.
