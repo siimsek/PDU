@@ -25,7 +25,7 @@ Formül: `T = 75 µs + C × V(VCAP_UVLOR) / 300 µA`, belgede tipik akımla veri
 | U5 | Q1 BSC160N10NS3 G | Infineon Rev, 2,4 s,3 | 19 / 25 | 0,190 | 0,278 |
 | U6 | Q2 CSD19531Q5A | SLPS406B s,1 tipik, params,py s,3 maks | 37 / 48 | 0,370 | 0,533 |
 
-VCC–UVLO histerezisi ve pompanın gate şarjı sırasındaki katkısı dahil değil. UVLO düşüşüne yakınlık için ayrıntılı dinamik **AÇIK**.
+VCAP UVLO histerezisi ve pompanın gate şarjı sırasındaki katkısı dahil değil. UVLO düşüşüne yakınlık için ayrıntılı dinamik **AÇIK**.
 
 ## Model kapsamı
 

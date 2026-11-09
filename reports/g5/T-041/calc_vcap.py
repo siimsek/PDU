@@ -48,7 +48,7 @@ Formül: `T = 75 µs + C × V(VCAP_UVLOR) / 300 µA`, belgede tipik akımla veri
 |---|---|---|---:|---:|---:|
 {s}
 
-VCC–UVLO histerezisi ve pompanın gate şarjı sırasındaki katkısı dahil değil. UVLO düşüşüne yakınlık için ayrıntılı dinamik **AÇIK**.
+VCAP UVLO histerezisi ve pompanın gate şarjı sırasındaki katkısı dahil değil. UVLO düşüşüne yakınlık için ayrıntılı dinamik **AÇIK**.
 
 ## Model kapsamı
 
