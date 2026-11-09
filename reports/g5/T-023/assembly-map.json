@@ -1,6 +1,6 @@
 {
  "board": "PDU.kicad_pcb",
- "board_sha256_lf": "d87bd7bfd03822d8bd34220172c75ac1819cf0bc79d101ac30ca7380df9b649e",
+ "board_sha256_lf": "e5915d1dd819aa544001140b0381837c86902e825fc624cb29d2e975510facd8",
  "kicad": "10.0.7",
  "bom": "design/bom-v2.csv",
  "rows": [

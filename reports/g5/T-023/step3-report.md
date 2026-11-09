@@ -1,5 +1,7 @@
 # T-023 Adım 3 — FB/COMP/OVP/OC (R-022 Tur 6 sonrası)
 
+**Güncel durum için [step4-report.md](step4-report.md); bu rapordaki sayılar adım 3 kartlarınındır.**
+
 **Durum: T-023 InProgress. Adım 3 hedef ağları kapandı; adım 4'e geçilmedi, THINKER onayı bekleniyor.** KiCad 10.0.7 (`--refill-zones --schematic-parity`): DRC hatası **0**, parite **0**, açık çift **199 → 68**, adım 1'e göre yeni açık ağ **0**, adım 2'ye göre yeni açık ağ **0**, L2 **1** ada. Uyarı: `{'warning:via_dangling': 6}`. Bu sayılar ara aşamadır, final kabul değildir.
 
 Kaynak: [`scripts/pcb_route_signals.py`](../../../scripts/pcb_route_signals.py) sırasıyla `--step2`, `--step3`, `--gnd`, `--audit3`. D-012 seçenek B: 0,15 mm ızgaralı deterministik A\*. Ham çıktı: [step3-audit.json](step3-audit.json), [step3-routes.json](step3-routes.json), [step3-gnd-applied.json](step3-gnd-applied.json), [drc-step3.json](drc-step3.json). Netclass ve DRC kuralları değişmedi.

@@ -1,0 +1,371 @@
+{
+ "kicad": "10.0.7",
+ "method": "Pad-centre straight distances and summed track lengths from the saved board; geometry only.",
+ "probe_gnd_roles": {
+  "FB": {
+   "gnd": "TP_GND_FB.1",
+   "mm": {
+    "U1.16": 19.036,
+    "RCOMP.1": 9.431,
+    "R_TRIM.2": 15.629,
+    "TP_FB_INJ_A.1": 12.081,
+    "TP_FB_INJ_B.1": 11.982,
+    "TP_OVP_REF.1": 2.804
+   }
+  },
+  "OC": {
+   "gnd": "TP_GND_OC.1",
+   "mm": {
+    "TP_OC_SENSE1.1": 41.382,
+    "TP_OC_SENSE2.1": 13.0,
+    "TP_OC_REF.1": 2.9,
+    "TP_COMP.1": 3.864,
+    "U14.2": 6.245,
+    "U13.2": 44.438
+   }
+  },
+  "OVP/J_OVP": {
+   "gnd": "TP_GND_OVP.1",
+   "mm": {
+    "J_OVP_INJ_BUS.2": 12.697,
+    "TP_OVP_SENSE.1": 4.53,
+    "TP_OVP_BUS_N.1": 4.846,
+    "TP_OVP_TRIP_N.1": 5.883,
+    "TP_OVP_Q.1": 86.897,
+    "TP_VSAFE.1": 11.917,
+    "TP_VOUT.1": 15.94
+   }
+  },
+  "POWER": {
+   "gnd": "TP_GND_POWER.1",
+   "mm": {
+    "J1.2": 11.312,
+    "TP_ANODE.1": 7.81,
+    "TP_VIN.1": 13.412
+   }
+  }
+ },
+ "fra_pads": {
+  "TP_FB_INJ_A-TP_FB_INJ_B": 6.0,
+  "TP_FB_INJ_A-R_INJ.1": 2.115,
+  "TP_FB_INJ_B-R_INJ.2": 2.235
+ },
+ "held_for_hv_rule": [
+  "/GATE",
+  "/DVDT_O1",
+  "/DVDT_S2E"
+ ],
+ "router_failed": [
+  {
+   "net": "/VCC1",
+   "pin": "CVCC1.1",
+   "why": "no route (555834 expansions)"
+  },
+  {
+   "net": "/RT_PH1",
+   "pin": "RT1.1",
+   "why": "no route (7 expansions)"
+  },
+  {
+   "net": "/CBOOT1",
+   "pin": "RBOOT1.2",
+   "why": "no route (2 expansions)"
+  },
+  {
+   "net": "/LDO_DELAY",
+   "pin": "U10.7",
+   "why": "no route (591213 expansions)"
+  },
+  {
+   "net": "/CFG_PRI",
+   "pin": "RCFG1.1",
+   "why": "no free grid cell at the pad"
+  },
+  {
+   "net": "/CFG_SEC",
+   "pin": "RCFG2.1",
+   "why": "no free grid cell at the pad"
+  },
+  {
+   "net": "/IMON_S2E",
+   "pin": "RIMON2.1",
+   "why": "no route (63 expansions)"
+  },
+  {
+   "net": "/IMON_S2E",
+   "pin": "TP_IMON_S2E.1",
+   "why": "no route (63 expansions)"
+  },
+  {
+   "net": "/IMON_O1",
+   "pin": "U3.9",
+   "why": "no route (554849 expansions)"
+  },
+  {
+   "net": "/P5V_PROT",
+   "pin": "U10.1",
+   "why": "no route (535525 expansions)"
+  },
+  {
+   "net": "/PG_O1",
+   "pin": "U3.13",
+   "why": "no route (506987 expansions)"
+  }
+ ],
+ "connections_routed": 90,
+ "net_copper": {
+  "/CBOOT2": {
+   "mm": 26.697,
+   "wide_mm": 24.411,
+   "vias": 2
+  },
+  "/CBOOT_R1": {
+   "mm": 6.329,
+   "wide_mm": 5.297,
+   "vias": 0
+  },
+  "/CBOOT_R2": {
+   "mm": 4.477,
+   "wide_mm": 3.45,
+   "vias": 0
+  },
+  "/CLR_N": {
+   "mm": 130.024,
+   "wide_mm": 0.0,
+   "vias": 12
+  },
+  "/COMP": {
+   "mm": 130.581,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/COMP_MID": {
+   "mm": 1.8,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/EN_BUCK": {
+   "mm": 199.418,
+   "wide_mm": 0.0,
+   "vias": 19
+  },
+  "/EN_EFUSE": {
+   "mm": 48.712,
+   "wide_mm": 0.0,
+   "vias": 2
+  },
+  "/FB": {
+   "mm": 8.9,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/FB_INJ": {
+   "mm": 57.97,
+   "wide_mm": 0.0,
+   "vias": 4
+  },
+  "/FB_TRIM": {
+   "mm": 1.55,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/ILIM_O1": {
+   "mm": 34.162,
+   "wide_mm": 0.0,
+   "vias": 2
+  },
+  "/ILIM_S2E": {
+   "mm": 39.365,
+   "wide_mm": 0.0,
+   "vias": 2
+  },
+  "/IMON_O1": {
+   "mm": 109.828,
+   "wide_mm": 0.0,
+   "vias": 8
+  },
+  "/ISO_EN": {
+   "mm": 23.678,
+   "wide_mm": 0.0,
+   "vias": 2
+  },
+  "/ISO_OV": {
+   "mm": 107.114,
+   "wide_mm": 0.0,
+   "vias": 5
+  },
+  "/ISO_VCAP": {
+   "mm": 7.232,
+   "wide_mm": 4.92,
+   "vias": 2
+  },
+  "/OC_REF": {
+   "mm": 114.817,
+   "wide_mm": 0.0,
+   "vias": 2
+  },
+  "/OC_SENSE1": {
+   "mm": 10.843,
+   "wide_mm": 0.0,
+   "vias": 2
+  },
+  "/OC_SENSE2": {
+   "mm": 12.315,
+   "wide_mm": 0.0,
+   "vias": 2
+  },
+  "/OC_TRIP1_N": {
+   "mm": 68.017,
+   "wide_mm": 0.0,
+   "vias": 6
+  },
+  "/OC_TRIP2_N": {
+   "mm": 85.869,
+   "wide_mm": 0.0,
+   "vias": 6
+  },
+  "/OVP_BUS_N": {
+   "mm": 92.75,
+   "wide_mm": 0.0,
+   "vias": 4
+  },
+  "/OVP_Q": {
+   "mm": 138.166,
+   "wide_mm": 0.0,
+   "vias": 13
+  },
+  "/OVP_REF": {
+   "mm": 52.98,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/OVP_SENSE": {
+   "mm": 88.327,
+   "wide_mm": 0.0,
+   "vias": 8
+  },
+  "/OVP_TRIP_N": {
+   "mm": 93.507,
+   "wide_mm": 0.0,
+   "vias": 6
+  },
+  "/P5V_PROT": {
+   "mm": 252.834,
+   "wide_mm": 0.0,
+   "vias": 30
+  },
+  "/PG_O1": {
+   "mm": 129.653,
+   "wide_mm": 0.0,
+   "vias": 12
+  },
+  "/PG_S2E": {
+   "mm": 59.828,
+   "wide_mm": 0.0,
+   "vias": 4
+  },
+  "/REF_NR": {
+   "mm": 14.764,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/RT_PH2": {
+   "mm": 8.514,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/SW4_PH1": {
+   "mm": 6.056,
+   "wide_mm": 4.123,
+   "vias": 2
+  },
+  "/SW4_PH2": {
+   "mm": 34.01,
+   "wide_mm": 30.81,
+   "vias": 2
+  },
+  "/SYNC": {
+   "mm": 129.851,
+   "wide_mm": 0.0,
+   "vias": 10
+  },
+  "/VCAP": {
+   "mm": 31.511,
+   "wide_mm": 30.267,
+   "vias": 0
+  },
+  "/VCC2": {
+   "mm": 12.882,
+   "wide_mm": 11.531,
+   "vias": 2
+  },
+  "/VDDA1": {
+   "mm": 71.562,
+   "wide_mm": 67.372,
+   "vias": 6
+  },
+  "/VDDA2": {
+   "mm": 62.077,
+   "wide_mm": 51.535,
+   "vias": 0
+  }
+ },
+ "open_pairs": [
+  [
+   "4 için [/CBOOT1] U1 ayak F.Cu",
+   "2 için [/CBOOT1] RBOOT1 ayak F.Cu"
+  ],
+  [
+   "13 için [/CFG_PRI] U1 ayak F.Cu",
+   "1 için [/CFG_PRI] RCFG1 ayak F.Cu"
+  ],
+  [
+   "14 için [/RT_PH1] U1 ayak F.Cu",
+   "1 için [/RT_PH1] RT1 ayak F.Cu"
+  ],
+  [
+   "1 için [/VCC1] CVCC1 ayak F.Cu",
+   "19 için [/VCC1] U1 ayak F.Cu"
+  ],
+  [
+   "Yol [/P5V_PROT] B.Cu üzerinde, uzunluk 4.5000 mm",
+   "1 için [/P5V_PROT] U10 ayak F.Cu"
+  ],
+  [
+   "Yol [/PG_O1] B.Cu üzerinde, uzunluk 7.0004 mm",
+   "13 için [/PG_O1] U3 ayak F.Cu"
+  ],
+  [
+   "1 için [/IMON_S2E] TP_IMON_S2E ayak F.Cu",
+   "1 için [/IMON_S2E] RIMON2 ayak F.Cu"
+  ],
+  [
+   "1 için [/IMON_S2E] RIMON2 ayak F.Cu",
+   "9 için [/IMON_S2E] U4 ayak F.Cu"
+  ],
+  [
+   "15 için [/DVDT_S2E] U4 ayak F.Cu",
+   "1 için [/DVDT_S2E] CDVDT2 ayak F.Cu"
+  ],
+  [
+   "1 için [/LDO_DELAY] C_LDO_DELAY ayak F.Cu",
+   "7 için [/LDO_DELAY] U10 ayak F.Cu"
+  ],
+  [
+   "9 için [/IMON_O1] U3 ayak F.Cu",
+   "Yol [/IMON_O1] F.Cu üzerinde, uzunluk 0.4750 mm"
+  ],
+  [
+   "13 için [/CFG_SEC] U2 ayak F.Cu",
+   "1 için [/CFG_SEC] RCFG2 ayak F.Cu"
+  ],
+  [
+   "15 için [/DVDT_O1] U3 ayak F.Cu",
+   "1 için [/DVDT_O1] CDVDT1 ayak F.Cu"
+  ],
+  [
+   "4 için [/GATE] Q1 ayak F.Cu",
+   "5 için [/GATE] U5 ayak F.Cu"
+  ]
+ ]
+}
