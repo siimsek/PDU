@@ -17,6 +17,7 @@ OUT = ROOT / "reports" / "g2" / "power-results.json"
 
 VOUT = 11.0
 SHARE = 1.10            # VARSAYIM worst phase share (+10 %), RS 1 % mismatch + CS amp mismatch unknown
+VCC_ADJUSTABLE = 8.0    # V, LM70880 SNVSBX7A p.12: VCC bias for a 12 V fixed or adjustable output
 ETA_ASSUMED = 0.92      # VARSAYIM converter efficiency at 82.5 W (datasheet typical curve only)
 CORE_LOSS_EACH = 0.15   # VARSAYIM IHLP core loss per inductor (vendor calculator not available) -> AÇIK
 CU_TC = 0.00393         # copper resistance tempco 1/K (physics constant)
@@ -169,8 +170,9 @@ def losses():
     board_area_m2 = 0.1016 * 0.0762
     h_conv = 10.0   # VARSAYIM natural convection W/m2K, both sides
     dt_board = total_board / (h_conv * 2 * board_area_m2)
-    # G4: BIAS -> AGND, VCC from internal LDO off VIN (LM70880 p.13). IVCC 10 mA is VARSAYIM (not read as a table value).
-    p_bias_extra = 0.010 * (v("VIN_NOM") - 5.0)
+    # G4: BIAS -> AGND, VCC from internal LDO off VIN (LM70880 p.13). VCC is 8 V for an adjustable output (SNVSBX7A p.12, T-050). IVCC 10 mA is VARSAYIM (not read as a table value).
+    # Possible double count: eta_assumed already includes the VCC LDO loss if the datasheet curve was taken with BIAS=GND; curve BIAS condition is not stated (AÇIK, reports/g5/T-050).
+    p_bias_extra = 0.010 * (v("VIN_NOM") - VCC_ADJUSTABLE)
     p_ic_g4 = p_ic_each + p_bias_extra
     tj_by_amb = {f"{ta:.0f}C": {"evm_18p6": ta + p_ic_g4 * 18.6, "jedec_33p5": ta + p_ic_g4 * 33.5,
                                "q_iso": ta + pl["q_iso"] * 50.0}
