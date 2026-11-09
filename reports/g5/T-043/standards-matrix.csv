@@ -1,0 +1,17 @@
+standart,sürüm,kaynak,karar,gerekçe,test_düzeyi,sahip
+ISO 9001,2026,https://www.iso.org/news/2026/09/ISO9001-2026,Koşullu (kuruluş QMS),Ürün standardı değil; kuruluş kapsamı bilinmiyor,AÇIK,Kuruluş kalite sorumlusu
+IPC-A-610,J,https://www.ipc.org/TOC/IPC-A-610J_TOC.pdf,Koşullu,Montaj kabulü; sınıf sözleşmeyle seçilir,AÇIK,Montaj üreticisi + kalite
+IPC J-STD-001,J,https://www.ipc.org/TOC/IPC-J-STD-001J_TOC.pdf,Koşullu,Lehim süreci; sınıf seçilmedi,AÇIK,Montaj üreticisi + kalite
+IPC-2221/2152/7351,Repoda sürüm tek tek doğrulanmadı,https://www.ipc.org/TOC/IPC-2152.pdf,Uygulanır (tasarım referansı),Repoda atıf var; atıf uygunluk değil,AÇIK,Tasarım + fab
+IEC 60664-1,2020+AMD1:2025,https://webstore.iec.ch/en/publication/59671,Koşullu,"Kirlilik derecesi ve kaplama AÇIK; 0,6 mm kuralı korunur",AÇIK,Elektrik tasarımı
+IEC 61000-4-2,2025,https://webstore.iec.ch/en/publication/68954,Koşullu,Yöntem; seviyeyi ürün profili seçer,AÇIK,Sistem + EMC lab
+IEC 60533,2015; 2026 ön yayın doğrulanamadı,https://webstore.iec.ch/en/publication/23161,Koşullu,Gemi niteliği ve montaj yeri AÇIK,AÇIK,Sistem + EMC lab
+IEC 60945,2002,https://webstore.iec.ch/en/publication/3959,"Koşullu, olası değil",Navigasyon/köprü ilişkisi gösterilmedi,AÇIK,Sistem
+IEC 60068-2-52,2017,https://webstore.iec.ch/en/publication/30839,Koşullu,Tuz maruziyeti AÇIK,AÇIK,Çevre test lab
+IEC 60529,Sürüm doğrulanmadı,https://webstore.iec.ch/en/publication/2452,Koşullu,Muhafaza yok; çıplak PCB IP dereceli değil,AÇIK,Mekanik/sistem
+ISO 13297,2020+Amd1:2022,https://www.iso.org/standard/69551.html,Koşullu,Tekne niteliği AÇIK; bkz. T-049,AÇIK,Sistem entegratörü
+ISO 16315,"2026 (ed.2, 2026-02)",https://committee.iso.org/standard/84203.html,Koşullu,Sevk arayüzü AÇIK; bkz. T-049,AÇIK,Sistem entegratörü
+ISO 8846,2025,https://www.iso.org/standard/87197.html,Koşullu,Yanıcı ortam AÇIK; bkz. T-049,AÇIK,Sistem güvenliği
+IEC 60092-504,2026,https://webstore.iec.ch/en/publication/68493,"Koşullu, olası değil",Temel gemi hizmeti gösterilmedi,AÇIK,Sistem entegratörü
+IEC 62133-2 / UN 38.3,Sürüm doğrulanmadı,https://webstore.iec.ch/en/publication/32662,Koşullu (batarya),PCB kapsamı değil; batarya paketi AÇIK,AÇIK,Batarya/tedarik
+ISO 26262 / 7637 / 16750,2018 / 2023 / 2023,https://www.iso.org/standard/68383.html,Uygulanmaz (şimdilik),Karayolu kapsamı; müşteri isterse yeniden değerlendirilir,AÇIK,Sistem güvenliği
