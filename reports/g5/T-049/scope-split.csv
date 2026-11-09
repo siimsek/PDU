@@ -1,0 +1,5 @@
+soru,durum,kaynak
+PDU sevk gücü taşıyor mu,AÇIK,"O1: T3 Gemstone O1, S2E: SLAMTEC RPLIDAR S2E (README.md:3, BENCH-ACCEPTANCE.md:26); yük adı sevk işlevini kanıtlamaz, BLOCKED-ON-USER.md:20 motor/ESC profili ölçülmedi"
+Tekne niteliği ve boy (≤24 m ISO 16315),AÇIK,Repoda yok
+Kapalı bölme,AÇIK,Repoda yok
+Yanıcı gaz,AÇIK,Repoda yok; 6S LiPo yanıcı gaz kaynağı olarak ayrıca değerlendirilmedi
