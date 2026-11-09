@@ -1,0 +1,115 @@
+{
+ "doc": "TI TPS25982 SLVSEI3D Rev. D (MAY 2026) https://www.ti.com/lit/ds/symlink/tps25982.pdf",
+ "IdVdt_uA": {
+  "min": 2.0,
+  "typ": 4.6,
+  "max": 6.33
+ },
+ "CdVdt_nF": 1.0,
+ "tolerance": 0.05,
+ "bus_V": 11.1605,
+ "rows": [
+  {
+   "case": "en hızlı (Imax, C-%5)",
+   "sr_V_ms": 6.663,
+   "ramp_ms": 1.675,
+   "load": "4 µF (deck CPORT, VARSAYIM)",
+   "inrush_mA": 26.7,
+   "energy_mJ": 0.249
+  },
+  {
+   "case": "en hızlı (Imax, C-%5)",
+   "sr_V_ms": 6.663,
+   "ramp_ms": 1.675,
+   "load": "10 µF (CEFOUT nominal; Ceff bilinmiyor)",
+   "inrush_mA": 66.6,
+   "energy_mJ": 0.623
+  },
+  {
+   "case": "en hızlı (Imax, C-%5)",
+   "sr_V_ms": 6.663,
+   "ramp_ms": 1.675,
+   "load": "100 µF (örnek)",
+   "inrush_mA": 666.3,
+   "energy_mJ": 6.228
+  },
+  {
+   "case": "en hızlı (Imax, C-%5)",
+   "sr_V_ms": 6.663,
+   "ramp_ms": 1.675,
+   "load": "470 µF (örnek)",
+   "inrush_mA": 3131.7,
+   "energy_mJ": 29.271
+  },
+  {
+   "case": "tipik",
+   "sr_V_ms": 4.6,
+   "ramp_ms": 2.426,
+   "load": "4 µF (deck CPORT, VARSAYIM)",
+   "inrush_mA": 18.4,
+   "energy_mJ": 0.249
+  },
+  {
+   "case": "tipik",
+   "sr_V_ms": 4.6,
+   "ramp_ms": 2.426,
+   "load": "10 µF (CEFOUT nominal; Ceff bilinmiyor)",
+   "inrush_mA": 46.0,
+   "energy_mJ": 0.623
+  },
+  {
+   "case": "tipik",
+   "sr_V_ms": 4.6,
+   "ramp_ms": 2.426,
+   "load": "100 µF (örnek)",
+   "inrush_mA": 460.0,
+   "energy_mJ": 6.228
+  },
+  {
+   "case": "tipik",
+   "sr_V_ms": 4.6,
+   "ramp_ms": 2.426,
+   "load": "470 µF (örnek)",
+   "inrush_mA": 2162.0,
+   "energy_mJ": 29.271
+  },
+  {
+   "case": "en yavaş (Imin, C+%5)",
+   "sr_V_ms": 1.905,
+   "ramp_ms": 5.859,
+   "load": "4 µF (deck CPORT, VARSAYIM)",
+   "inrush_mA": 7.6,
+   "energy_mJ": 0.249
+  },
+  {
+   "case": "en yavaş (Imin, C+%5)",
+   "sr_V_ms": 1.905,
+   "ramp_ms": 5.859,
+   "load": "10 µF (CEFOUT nominal; Ceff bilinmiyor)",
+   "inrush_mA": 19.0,
+   "energy_mJ": 0.623
+  },
+  {
+   "case": "en yavaş (Imin, C+%5)",
+   "sr_V_ms": 1.905,
+   "ramp_ms": 5.859,
+   "load": "100 µF (örnek)",
+   "inrush_mA": 190.5,
+   "energy_mJ": 6.228
+  },
+  {
+   "case": "en yavaş (Imin, C+%5)",
+   "sr_V_ms": 1.905,
+   "ramp_ms": 5.859,
+   "load": "470 µF (örnek)",
+   "inrush_mA": 895.2,
+   "energy_mJ": 29.271
+  }
+ ],
+ "cload_uF_at_ilim_min_fastest": {
+  "O1 (RILIM 182)": 1085.1,
+  "S2E (RILIM 300)": 654.3
+ },
+ "vcdvdt_startup_V": 15.161,
+ "deck_dvdt_mentions": 0
+}
