@@ -1,0 +1,61 @@
+{
+ "C_F": 1e-07,
+ "tol": 0.1,
+ "I_A": [
+  0.000162,
+  0.0003,
+  0.0006
+ ],
+ "rows": [
+  {
+   "ref": "U5",
+   "mpn": "LM74700-Q1",
+   "doc": "SNOSD17G",
+   "url": "https://www.ti.com/lit/ds/symlink/lm74700-q1.pdf",
+   "uvlo_V": [
+    5.8,
+    6.6,
+    7.7
+   ],
+   "t_typ_ms": 2.275,
+   "t_slow_ms": 5.303,
+   "t_fast_ms": 0.945,
+   "eq": "s.13 Eş.1"
+  },
+  {
+   "ref": "U6",
+   "mpn": "LM74502H",
+   "doc": "SNOSDE5A",
+   "url": "https://www.ti.com/lit/ds/symlink/lm74502.pdf",
+   "uvlo_V": [
+    5.7,
+    6.5,
+    7.5
+   ],
+   "t_typ_ms": 2.242,
+   "t_slow_ms": 5.168,
+   "t_fast_ms": 0.93,
+   "eq": "s.11 Eş.1"
+  }
+ ],
+ "gate_charge_share": [
+  {
+   "ref": "U5",
+   "fet": "Q1 BSC160N10NS3 G",
+   "src": "Infineon Rev. 2.4 s.3",
+   "qg_typ_nC": 19.0,
+   "qg_max_nC": 25.0,
+   "dV_typ_V": 0.19,
+   "dV_max_with_Cmin_V": 0.278
+  },
+  {
+   "ref": "U6",
+   "fet": "Q2 CSD19531Q5A",
+   "src": "SLPS406B s.1 tipik, params.py s.3 maks",
+   "qg_typ_nC": 37.0,
+   "qg_max_nC": 48.0,
+   "dV_typ_V": 0.37,
+   "dV_max_with_Cmin_V": 0.533
+  }
+ ]
+}
