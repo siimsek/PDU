@@ -4146,7 +4146,7 @@
 			(pin input line
 				(at -15.24 0 0)
 				(length 7.62)
-				(name ""
+				(name "A"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -4182,7 +4182,7 @@
 			(pin input line
 				(at -15.24 -5.08 0)
 				(length 7.62)
-				(name ""
+				(name "B"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -4200,7 +4200,7 @@
 			(pin output line
 				(at 12.7 0 180)
 				(length 6.35)
-				(name ""
+				(name "Y"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -4236,7 +4236,7 @@
 			(pin input line
 				(at -15.24 5.08 0)
 				(length 7.62)
-				(name ""
+				(name "C"
 					(effects
 						(font
 							(size 1.27 1.27)
