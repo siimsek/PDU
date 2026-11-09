@@ -1,0 +1,7 @@
+standart,sürüm,karar,girdi,mevcut_kanıt,eksik
+IEC 60664-1,2020+AMD1:2025,Koşullu,"Çalışma gerilimi 26 V; hata 53,3 V TVS, VRAW SİM ≤34,8 V (PCB-HANDOFF:51)","PDU.kicad_dru HV kuralı 0,6 mm","Kirlilik derecesi, kaplama, geçici kategori, lisanslı tablo: AÇIK; uyum hesabı yapılmadı"
+IPC-2221,Doğrulanmadı,Tasarım referansı,analysis/g2/routing.py atfı,routing-g2.json genişlikleri,"Sürüm, sınıf, fab toleransı AÇIK"
+IPC-2152,Doğrulanmadı,Tasarım referansı,analysis/g2/routing.py atfı,routing-g2.json,Kart yığını onayı AÇIK (E-07)
+IPC-7351,Doğrulanmadı,Tasarım referansı,analysis/g2/bom.py:52,T-028 land karşılaştırması: 16 referans AÇIK,Montaj ve pasta kabulü AÇIK
+IPC-A-610,J,Koşullu,Montaj sınıfı seçilmedi,Yok,"Sınıf, muayene, EMS kanıtı AÇIK"
+J-STD-001,J,Koşullu,Süreç sınıfı seçilmedi,Yok,Süreç kanıtı AÇIK
