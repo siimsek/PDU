@@ -1,0 +1,5 @@
+soru,durum,kaynak
+PDU sevk gücü taşıyor mu,AÇIK,O1/S2E yük kimliği repoda yok
+Tekne niteliği ve boy (≤24 m ISO 16315),AÇIK,Repoda yok
+Kapalı bölme,AÇIK,Repoda yok
+Yanıcı gaz,AÇIK,Repoda yok; 6S LiPo yanıcı gaz kaynağı olarak ayrıca değerlendirilmedi
