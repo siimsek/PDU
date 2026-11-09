@@ -27,6 +27,8 @@ Her köşe ayrı koşuldu ve kimlikli kaydedildi: `stall/<köşe>.stall.json` (d
 
 `Get-CimInstance Win32_Process` 15:36 UTC: iki `timeout.exe 21600 ... ngspice_con.exe -b -o <köşe>.log <köşe>.cir`, başlangıç 12:19:31 ve 12:19:33 UTC. Limit bu komutlardan doğrulandı; dolum zamanı yaklaşık 18:19 UTC. Çıkış kaydı henüz yok; sonuç AÇIK, simülasyon zamanları dışarıdan okunamadı.
 
+**15:43 UTC güncellemesi (OLGU):** Uygulama iki arka plan görevini `killed` bildirdi (görev kimlikleri bxj1twmte, b692md2ps). Aynı dakikada `Win32_Process` iki `ngspice_con.exe` (PID 10296, 2336) ve bunların `timeout.exe` üstlerini hâlâ çalışır gösterdi. Çalışma klasöründe `.exit` veya `.end` dosyası yok, log dosyaları 12:19:31/33 UTC'den sonra değişmedi. Sarmalayıcı kabuk kapandığı için çıkış kodu artık kaydedilemez. Limit dolumu yine 18:19 UTC. Bu iki koşu için tam pencere, çıkış veya ölçüm kanıtı yoktur; sonuç **AÇIK** kalır.
+
 ## Tanı varyantı — resmi sonuç değil
 
 [run_variant.py](run_variant.py) `V(ens)>0.5` karşılaştırmalarının önüne yalnız bu klasörde RC filtresi ekler. Sonuç [variant-results.json](variant-results.json).
