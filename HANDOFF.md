@@ -1,8 +1,8 @@
 # HANDOFF — devam notu (her oturum sonunda üzerine yazılır; geçmiş git'te)
 
 - **Tarih:** 2026-11-09
-- **Dal / son commit:** wp/T-037 entegrasyon dalı (PR'lar: T-028 #78, T-032 #77, T-035 #80, T-039 #81, T-040 #82, T-041 #83, T-042 #84, R-023 #79; T-023 #70 PCB bekliyor).
-- **Aktif kart:** T-038 F5 eksik iki köşe. Öncelik devre hesabı, simülasyon, şema okunabilirliği; PCB routing bekliyor (T-023 Done değil, T-036 Draft).
+- **Dal / son commit:** wp/T-037 entegrasyon dalı #85; T-028 #78, T-032 #77, T-035 #80, T-038, T-039..T-042 #81-#84, T-043..T-049 #87-#93, T-050..T-052 #95-#97; R-023..R-025 açık; T-023 #70 PCB bekliyor.
+- **Aktif kart:** T-038 AÇIK: iki F5 köşesi 214 µs'de sayısal kilitleniyor (ens eşiği), tamamlanmadı. Öncelik devre, şema, simülasyon; PCB routing bekliyor.
 
 ## Yapılanlar
 - R-018 Tur 1: TP_SW1/2 SW düğümüne taşındı; U1/U2 ISNS+VOUT çiftleri bağlandı; U4 +1,15 mm, CEFIN2 U4 batısında (CEFIN1 düzeni); D_REV/CEFOUT kolları 1,5 mm.
@@ -26,7 +26,7 @@
 - T-017 (#40) main'de. T-010 + T-009 (dal): B5 30 + B4 12 parça `sch_place.py` ile (etiket-pin); ERC 0; B1–B5 fark 0; blok dışı 0. Q2 footprint TI land'den özel (R-009).
 
 ## Sonraki adım
-Codex: T-028 #78 düzeltmesi, T-035, T-039/040/041/042 ve T-037 entegrasyon incelemesi; T-038 koşu sonucu. Hiçbir PR birleştirilmez.
+Codex: T-038 teşhisi ve ens histerezis kararı; T-050..T-052 ve R-025 düzeltmeleri. Hiçbir PR birleştirilmez.
 
 ## Engeller
 Yok. T-024'e devredilen: akım çözümlü döngü alanı, CEFOUT geçici akımı. Açık koşullar: F5 iki köşe tam pencere AÇIK; 26 spec dışı düğüm; izli dosyalarda yerel yol (backlog).
