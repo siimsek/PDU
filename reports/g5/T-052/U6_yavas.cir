@@ -1,0 +1,14 @@
+* T-052 isolated charge pump U6_yavas
+.param IP=0.000162 C=1.1e-07 VSTOP=12.4 CG=3.870967741935484e-09 TG=0.016839506172839507
+BCP 0 vcap I = {IP}*min(max(({VSTOP}-V(vcap))/10m,0),1)*(1-(time>{TG}))
+CV vcap 0 {C} IC=0
+SW1 vcap g ctrl 0 SWG
+.model SWG SW(Ron=1 Roff=1e9 Vt=0.5 Vh=0.01)
+VC ctrl 0 PWL(0 0 {TG} 0 {TG*1.001} 1)
+CGL g 0 {CG} IC=0
+RGL g 0 1G
+.tran 2.104938271604938e-06 0.020207407407407407 0 2.104938271604938e-06 UIC
+.meas tran tuv WHEN V(vcap)=7.5 RISE=1
+.meas tran vpre FIND V(vcap) AT=0.016671111111111112
+.meas tran vend FIND V(vcap) AT=0.02003901234567901
+.end
