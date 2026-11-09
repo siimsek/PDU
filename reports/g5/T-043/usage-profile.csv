@@ -4,7 +4,8 @@ Sistem adı,IDA PDU,docs/START-HERE.md:1,OLGU; 'IDA' açılımı repoda tanıml�
 "Ticari/rekreasyonel statü, hedef ülke",AÇIK,Repoda kaynak yok,AÇIK
 Batarya,"6S LiPo, 20-26 V",analysis/g2/params.py:55-57 (KULLANICI),OLGU
 Dağıtım sınırı,"11 V ortak bara, O1 ve S2E portları, 7,5 A hedef",docs/START-HERE.md; params.py:60,OLGU
-PDU sevk beslemesi mi,AÇIK,O1/S2E yüklerinin kimliği repoda yok,AÇIK
+Yük kimliği,O1: T3 Gemstone O1; S2E: SLAMTEC RPLIDAR S2E,README.md:3; reports/g2/BENCH-ACCEPTANCE.md:26,OLGU; gerçek akım T-1 ölçümünde AÇIK
+PDU sevk tesisatına ait mi,AÇIK,Yük adı sevk işlevini kanıtlamaz; BLOCKED-ON-USER.md:20 yalnız O1 için motor/ESC kalkış profilini anar,AÇIK
 "Montaj mevki, muhafaza, sabitleme",AÇIK,decisions/D-006-board-size.md:40 'tanımlı değil',VARSAYIM kayıtlı
 Ortam sıcaklığı,85 °C tarama değeri,"params.py:65 VARSAYIM; reports/g2/USER-DECISIONS.md:17 LM70880 Tj 137,7 °C, 125 °C taramasında FAIL",VARSAYIM; gerçek profil AÇIK
 "Nem, tuz, titreşim, şok",AÇIK,Repoda kaynak yok,AÇIK
