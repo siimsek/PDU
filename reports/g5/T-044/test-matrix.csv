@@ -1,0 +1,8 @@
+test,yöntem,sürüm,örneklem,koşul_seviye,öncesi_işlev,sonrası_işlev,sonuç,sorumlu
+ESD bağışıklık,IEC 61000-4-2,2025,AÇIK,AÇIK,"T0-T6 alt kümesi, seçilmedi","T0-T6 alt kümesi, seçilmedi",Yapılmadı,Atanmadı (AÇIK)
+Gemi EMC emisyon/bağışıklık,IEC 60533,2015 (2026 ön yayın doğrulanamadı),AÇIK,AÇIK,"T0-T6 alt kümesi, seçilmedi","T0-T6 alt kümesi, seçilmedi",Yapılmadı,Atanmadı (AÇIK)
+Deniz ekipmanı genel,IEC 60945,2002 (kapsam olası değil),AÇIK,AÇIK,"T0-T6 alt kümesi, seçilmedi","T0-T6 alt kümesi, seçilmedi",Yapılmadı,Atanmadı (AÇIK)
+Döngüsel tuz sisi,IEC 60068-2-52,2017,AÇIK,AÇIK,"T0-T6 alt kümesi, seçilmedi","T0-T6 alt kümesi, seçilmedi",Yapılmadı,Atanmadı (AÇIK)
+Muhafaza IP,IEC 60529,Sürüm doğrulanmadı,AÇIK,AÇIK,"T0-T6 alt kümesi, seçilmedi","T0-T6 alt kümesi, seçilmedi",Yapılmadı,Atanmadı (AÇIK)
+Titreşim,"IEC 60068 ailesi, bölüm seçilmedi",AÇIK,AÇIK,AÇIK,"T0-T6 alt kümesi, seçilmedi","T0-T6 alt kümesi, seçilmedi",Yapılmadı,Atanmadı (AÇIK)
+Sıcaklık ve nem,"IEC 60068 ailesi, bölüm seçilmedi",AÇIK,AÇIK,AÇIK,"T0-T6 alt kümesi, seçilmedi","T0-T6 alt kümesi, seçilmedi",Yapılmadı,Atanmadı (AÇIK)
