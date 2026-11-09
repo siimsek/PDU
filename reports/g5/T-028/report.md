@@ -4,7 +4,8 @@
 
 | Sonuç | Sayı |
 |---|---:|
-| Pin PASS (datasheet adı ve şema pin numarası uyumlu, T-027 PCB pad EŞLEŞTİ) | 198 / 198 |
+| Pin PASS (datasheet adı ve şema pin numarası uyumlu, T-027 PCB pad EŞLEŞTİ) | 194 / 198 |
+| Pin AÇIK (U15 şema sembol adı boş: 1, 3, 4, 6) | 4 |
 | Pin FAIL | 0 |
 | Referans PASS | 1 (Q2) |
 | Referans AÇIK | 16 |
@@ -14,11 +15,12 @@ Referansların AÇIK kalma nedeni pin değil, land pattern kabulüdür. [group1-
 ## Pin bulguları
 
 - **U1/U2 BIAS (pin 6) `/GND`:** SNVSBX7A s.13 "Tie the BIAS pin to AGND if unused" diyor. Aynı belgenin s.3 tablosu 12 V/ayarlı çıkışta BIAS'ı VOUT'a veya 10–30 V kaynağa bağlamayı önerir. Şema s.13'e uyar; VCC VIN'den beslenir ve ek LDO kaybı `power.py`'de VARSAYIM.
-- **U15:** Şema sembolünde pin 1, 3, 4, 6 adları boş. Numara ve ağ rolü SN74LVC1G11 A/B/Y/C ile uyumlu, ancak okunabilirlik eksik; kart taslağı T-035.
+- **U15:** Şema sembolünde pin 1, 3, 4, 6 adları boş; R-023 sonrası bu dört pin AÇIK. Numara ve ağ rolü SN74LVC1G11 A/B/Y/C ile uyumlu görünüyor. T-035 ile kapatılacak.
 - **U3/U4:** ITIMER boş (s.5 en hızlı tepki), RETRY_DLY, NRETRY, LDSTRT `/GND` (s.5). Pin PASS; davranış ayrıca simüle edilmedi.
 - **U11/U12 pin 4:** s.2 "Reserved. Connect to ground"; şemada `/GND`.
 - **U8 pin 1, 3, 7, 8; U9 Q̄; U10 FB/NC ve NC:** kasıtlı NC, veri sayfasıyla uyumlu.
-- **Q1/Q2:** pin 1–3 S, 4 G, pad 5 = pin 5–8 D. Q2 için s.1 Top View görseli okundu; PDF metin sırası yanıltıcıdır.
+- **Q1:** Resmi Infineon BSC160N10NS3 G Rev. 2.4 (2009-10-30, s.8 dipnotu) s.1 sembol görseli S 1–3, G 4, D 5–8; şema pin 1–3 S, 4 G, 5 D, kart pad 5 = pin 5–8. Pin eşleşmesi görselden okundu.
+- **Q2:** s.1 Top View görseli aynı düzeni gösteriyor; PDF metin sırası yanıltıcıdır.
 
 ## Land pattern
 
@@ -43,4 +45,4 @@ U10 için belgede DGN0008B ve DGN0008C iki land var; kartın EP'si 1,57×1,89 mm
 
 ## Kaynaklar
 
-Belge bağlantıları [group1-refs.csv](group1-refs.csv) içinde. PDF'ler 2026-11-09'da ti.com'dan okundu; Q1 repo kopyasıdır, revizyon tarihi metin kodlaması nedeniyle **doğrulanamadı**.
+Belge bağlantıları [group1-refs.csv](group1-refs.csv) içinde. PDF'ler 2026-11-09'da ti.com ve infineon.com'dan okundu.

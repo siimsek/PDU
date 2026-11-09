@@ -26,7 +26,7 @@ DOC = {  # key: (manufacturer, document, revision date, url, package text)
     "INA296": ("Texas Instruments", "SBOSA32D", "JUNE 2025", TI + "ina296a-q1.pdf", "VSSOP-8 DGK0008A"),
     "G11": ("Texas Instruments", "SCES487I", "NOVEMBER 2024", TI + "sn74lvc1g11.pdf", "SOT-23-6 DBV0006A"),
     "CSD19531": ("Texas Instruments", "SLPS406B", "MAY 2014", TI + "csd19531q5a.pdf", "SON 5x6 Q5A"),
-    "BSC160": ("Infineon", "BSC160N10NS3 G (repo hardware/_datasheets/bsc160n10ns3g.pdf)", "doğrulanamadı", "repo: hardware/_datasheets/bsc160n10ns3g.pdf", "PG-TDSON-8"),
+    "BSC160": ("Infineon", "BSC160N10NS3 G Rev. 2.4", "2009-10-30", "https://www.infineon.com/assets/row/public/documents/24/49/infineon-bsc160n10ns3-ds-en.pdf", "PG-TDSON-8"),
 }
 # pin -> datasheet name; page = PDF page of the pin table
 TABLE = {
@@ -41,7 +41,7 @@ TABLE = {
     "INA296": ({1: "IN-", 2: "GND", 3: "REF2", 4: "NC", 5: "OUT", 6: "VS", 7: "REF1", 8: "IN+"}, "2-3"),
     "G11": ({1: "A", 2: "GND", 3: "B", 4: "Y", 5: "VCC", 6: "C"}, "3"),
     "CSD19531": ({1: "S", 2: "S", 3: "S", 4: "G", 5: "D"}, "1 (Top View); pad 5 = pins 5-8"),
-    "BSC160": ({1: "S", 2: "S", 3: "S", 4: "G", 5: "D"}, "1 (symbol); pad 5 = pins 5-8"),
+    "BSC160": ({1: "S", 2: "S", 3: "S", 4: "G", 5: "D"}, "1 (S 1-3, G 4, D 5-8 sembol görseli); kart pad 5 = pin 5-8"),
 }
 REFS = {"U1": "LM70880", "U2": "LM70880", "U3": "TPS25982", "U4": "TPS25982", "U5": "LM74700", "U6": "LM74502", "U7": "TLV3601", "U13": "TLV3601", "U14": "TLV3601", "U8": "REF50", "U9": "G74", "U10": "TPS7A16", "U11": "INA296", "U12": "INA296", "U15": "G11", "Q1": "BSC160", "Q2": "CSD19531"}
 # (pitch, pad width, pad length, centre span) from the TI example board layout, PDF page
@@ -77,9 +77,10 @@ def main():
             n = int(p["pin"])
             sch = re.sub(r"_\d+$", "", p["name"])
             ds = tb[n]
-            ok = (norm(ALIAS.get(ds, ds)) == norm(sch)) or sch == ""
+            named = sch != ""
+            ok = norm(ALIAS.get(ds, ds)) == norm(sch) or not named
             pcb = p["state"] == "EŞLEŞTİ"
-            status = "PASS" if ok and pcb else "FAIL"
+            status = ("PASS" if named else "AÇIK") if ok and pcb else "FAIL"
             note = NOTES.get((key, n), "")
             out_p.append({"ref": ref, "pin": n, "schematic_name": sch, "datasheet_name": ds, "net": p["net"], "nc": p["nc"], "t027_pcb_state": p["state"], "doc": DOC[key][1], "pdf_page": page, "status": status, "note": note})
         doc = DOC[key]

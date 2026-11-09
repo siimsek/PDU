@@ -181,17 +181,17 @@ U12,5,OUT,OUT,/OC_SENSE2,,EŞLEŞTİ,SBOSA32D,2-3,PASS,
 U12,6,VS,VS,/P5V_PROT,,EŞLEŞTİ,SBOSA32D,2-3,PASS,
 U12,7,REF1,REF1,/GND,,EŞLEŞTİ,SBOSA32D,2-3,PASS,
 U12,8,IN+,IN+,/ISNS2,,EŞLEŞTİ,SBOSA32D,2-3,PASS,
-U15,1,,A,/OVP_BUS_N,,EŞLEŞTİ,SCES487I,3,PASS,Şema sembolünde pin adı boş; numara A işlevine karşılık gelir.
+U15,1,,A,/OVP_BUS_N,,EŞLEŞTİ,SCES487I,3,AÇIK,Şema sembolünde pin adı boş; numara A işlevine karşılık gelir.
 U15,2,GND,GND,/GND,,EŞLEŞTİ,SCES487I,3,PASS,
-U15,3,,B,/OC_TRIP1_N,,EŞLEŞTİ,SCES487I,3,PASS,Şema sembolünde pin adı boş; numara B işlevine karşılık gelir.
-U15,4,,Y,/OVP_TRIP_N,,EŞLEŞTİ,SCES487I,3,PASS,Şema sembolünde pin adı boş; numara Y çıkışına karşılık gelir.
+U15,3,,B,/OC_TRIP1_N,,EŞLEŞTİ,SCES487I,3,AÇIK,Şema sembolünde pin adı boş; numara B işlevine karşılık gelir.
+U15,4,,Y,/OVP_TRIP_N,,EŞLEŞTİ,SCES487I,3,AÇIK,Şema sembolünde pin adı boş; numara Y çıkışına karşılık gelir.
 U15,5,VCC,VCC,/P5V_PROT,,EŞLEŞTİ,SCES487I,3,PASS,
-U15,6,,C,/OC_TRIP2_N,,EŞLEŞTİ,SCES487I,3,PASS,Şema sembolünde pin adı boş; numara C işlevine karşılık gelir.
-Q1,1,S,S,/ANODE,,EŞLEŞTİ,BSC160N10NS3 G (repo hardware/_datasheets/bsc160n10ns3g.pdf),1 (symbol); pad 5 = pins 5-8,PASS,
-Q1,2,S,S,/ANODE,,EŞLEŞTİ,BSC160N10NS3 G (repo hardware/_datasheets/bsc160n10ns3g.pdf),1 (symbol); pad 5 = pins 5-8,PASS,
-Q1,3,S,S,/ANODE,,EŞLEŞTİ,BSC160N10NS3 G (repo hardware/_datasheets/bsc160n10ns3g.pdf),1 (symbol); pad 5 = pins 5-8,PASS,
-Q1,4,G,G,/GATE,,EŞLEŞTİ,BSC160N10NS3 G (repo hardware/_datasheets/bsc160n10ns3g.pdf),1 (symbol); pad 5 = pins 5-8,PASS,
-Q1,5,D,D,/VIN,,EŞLEŞTİ,BSC160N10NS3 G (repo hardware/_datasheets/bsc160n10ns3g.pdf),1 (symbol); pad 5 = pins 5-8,PASS,
+U15,6,,C,/OC_TRIP2_N,,EŞLEŞTİ,SCES487I,3,AÇIK,Şema sembolünde pin adı boş; numara C işlevine karşılık gelir.
+Q1,1,S,S,/ANODE,,EŞLEŞTİ,BSC160N10NS3 G Rev. 2.4,"1 (S 1-3, G 4, D 5-8 sembol görseli); kart pad 5 = pin 5-8",PASS,
+Q1,2,S,S,/ANODE,,EŞLEŞTİ,BSC160N10NS3 G Rev. 2.4,"1 (S 1-3, G 4, D 5-8 sembol görseli); kart pad 5 = pin 5-8",PASS,
+Q1,3,S,S,/ANODE,,EŞLEŞTİ,BSC160N10NS3 G Rev. 2.4,"1 (S 1-3, G 4, D 5-8 sembol görseli); kart pad 5 = pin 5-8",PASS,
+Q1,4,G,G,/GATE,,EŞLEŞTİ,BSC160N10NS3 G Rev. 2.4,"1 (S 1-3, G 4, D 5-8 sembol görseli); kart pad 5 = pin 5-8",PASS,
+Q1,5,D,D,/VIN,,EŞLEŞTİ,BSC160N10NS3 G Rev. 2.4,"1 (S 1-3, G 4, D 5-8 sembol görseli); kart pad 5 = pin 5-8",PASS,
 Q2,1,S,S,/VSAFE,,EŞLEŞTİ,SLPS406B,1 (Top View); pad 5 = pins 5-8,PASS,
 Q2,2,S,S,/VSAFE,,EŞLEŞTİ,SLPS406B,1 (Top View); pad 5 = pins 5-8,PASS,
 Q2,3,S,S,/VSAFE,,EŞLEŞTİ,SLPS406B,1 (Top View); pad 5 = pins 5-8,PASS,
