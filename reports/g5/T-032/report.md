@@ -39,6 +39,19 @@ Deck'te karşılığı olmayan veya soyut kalanlar. Sonuçları **doğrulanamad�
 - **R_INJ / FRA, IMON, ILIM ağı, PG/SYNC ve U9/U15 mantık kapıları:** Yok veya soyut.
 - **Isı:** Yok.
 
+## Grup 2 (20 kondansatör, 40 pin; R-026)
+
+Kayıt: [group2-map.csv](group2-map.csv), [group2-coverage.json](group2-coverage.json). Üretici: [gen_group2.py](gen_group2.py). Toplu değerler `design/pdu_v2_params.inc` ile `sim_runner.py` formüllerinden yeniden hesaplandı ve eşit çıktı.
+
+| Durum | Sayı | Referans |
+|---|---:|---|
+| EŞLEŞTİ | 13 | CEFIN1–2, CEFOUT1–2, CIN1–8, COUT1 |
+| AÇIK | 7 | CBIN1–2, CBOOT1–2, CDVDT1–2, CIN_U5 |
+
+Pin: 26 EŞLEŞTİ, 14 AÇIK. EŞLEŞTİ yalnız düğüm ve toplu eleman karşılığı demektir. CIN, CEFIN ve CPORT Ceff oranları VARSAYIM kalır; bu grup modeli doğrulamaz.
+
+Eksikler: CBIN (2×10 nF) `CIN_EFF` içinde yok. CIN_U5 (22 nF) için `anode` düğümünde eleman yok. CBOOT ve CDVDT karşılıksızdır. Kalan 140 referans AÇIK, G3–G9.
+
 ## Önerilen takip
 
 Üretim kararı THINKER'ındır. Aday işler: dVdt ve VCAP için veri sayfası hesabı veya alt devre, iki F5 tamamlanmayan köşenin yeniden koşusu, T-032 G2 eşlemesi. Bu kart yalnız kapsamı kaydeder.
