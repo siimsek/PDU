@@ -1,0 +1,90 @@
+{
+ "before": {
+  "eta_assumed": 0.92,
+  "p_conv_loss_W": 7.173913043478251,
+  "ic_loss_each_W": 2.831871567474489,
+  "g4_bias_agnd_extra_each_W_VARSAYIM": 0.172,
+  "g4_ic_loss_each_W": 3.0038715674744894,
+  "g4_tj_by_ambient_C": {
+   "40C": {
+    "evm_18p6": 95.8720111550255,
+    "jedec_33p5": 140.62969751039537,
+    "q_iso": 72.4
+   },
+   "50C": {
+    "evm_18p6": 105.8720111550255,
+    "jedec_33p5": 150.62969751039537,
+    "q_iso": 82.4
+   },
+   "85C": {
+    "evm_18p6": 140.87201115502552,
+    "jedec_33p5": 185.62969751039537,
+    "q_iso": 117.4
+   }
+  },
+  "g4_ta_max_evm_for_tj125_C": 69.1279888449745,
+  "tj_ic_C": {
+   "jedec_33p5": 179.86769751039537,
+   "evm_18p6": 137.6728111550255
+  }
+ },
+ "after": {
+  "eta_assumed": 0.92,
+  "p_conv_loss_W": 7.173913043478251,
+  "ic_loss_each_W": 2.831871567474489,
+  "g4_bias_agnd_extra_each_W_VARSAYIM": 0.142,
+  "g4_ic_loss_each_W": 2.973871567474489,
+  "g4_tj_by_ambient_C": {
+   "40C": {
+    "evm_18p6": 95.3140111550255,
+    "jedec_33p5": 139.62469751039538,
+    "q_iso": 72.4
+   },
+   "50C": {
+    "evm_18p6": 105.3140111550255,
+    "jedec_33p5": 149.62469751039538,
+    "q_iso": 82.4
+   },
+   "85C": {
+    "evm_18p6": 140.3140111550255,
+    "jedec_33p5": 184.62469751039538,
+    "q_iso": 117.4
+   }
+  },
+  "g4_ta_max_evm_for_tj125_C": 69.6859888449745,
+  "tj_ic_C": {
+   "jedec_33p5": 179.86769751039537,
+   "evm_18p6": 137.6728111550255
+  }
+ },
+ "cases": {
+  "A kod (5 V, eski)": {
+   "extra_W": 0.172,
+   "ic_each_W": 3.0039,
+   "tj_85C_evm": 140.87,
+   "tj_85C_jedec": 185.63,
+   "ta_max_evm_tj125": 69.13
+  },
+  "B ek toplam, 8 V (yeni kod)": {
+   "extra_W": 0.142,
+   "ic_each_W": 2.9739,
+   "tj_85C_evm": 140.31,
+   "tj_85C_jedec": 184.62,
+   "ta_max_evm_tj125": 69.69
+  },
+  "C eğri BIAS=VOUT ise artımlı (VIN-VOUT)×I, VOUT=11 V": {
+   "extra_W": 0.112,
+   "ic_each_W": 2.9439,
+   "tj_85C_evm": 139.76,
+   "tj_85C_jedec": 183.62,
+   "ta_max_evm_tj125": 70.24
+  },
+  "D eğri BIAS=GND ise çift sayım, ek 0": {
+   "extra_W": 0.0,
+   "ic_each_W": 2.8319,
+   "tj_85C_evm": 137.67,
+   "tj_85C_jedec": 179.87,
+   "ta_max_evm_tj125": 72.33
+  }
+ }
+}

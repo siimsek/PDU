@@ -45,3 +45,9 @@ def test_uvlo_174k_restarts_at_20V_and_180k_fail_preserved(r):
 def test_ic_thermal_flagged_not_hidden(r):
     # at the assumed 85 C ambient the derived IC Tj exceeds the 125 C screen: must stay visible
     assert r["losses"]["tj_ic_C"]["evm_18p6"] > 125
+
+
+def test_bias_agnd_uses_adjustable_vcc():
+    """T-050: VCC is 8 V for an adjustable output (SNVSBX7A p.12); IVCC 10 mA stays VARSAYIM."""
+    L = pw.losses()
+    assert abs(L["g4_bias_agnd_extra_each_W_VARSAYIM"] - 0.010 * (22.2 - 8.0)) < 1e-9
