@@ -1,0 +1,76 @@
+{
+ "group": "G2",
+ "refs": 20,
+ "pins": 40,
+ "ref_status": {
+  "AÇIK": 7,
+  "EŞLEŞTİ": 13
+ },
+ "refs_by_status": {
+  "AÇIK": [
+   "CBIN1",
+   "CBIN2",
+   "CBOOT1",
+   "CBOOT2",
+   "CDVDT1",
+   "CDVDT2",
+   "CIN_U5"
+  ],
+  "EŞLEŞTİ": [
+   "CEFIN1",
+   "CEFIN2",
+   "CEFOUT1",
+   "CEFOUT2",
+   "CIN1",
+   "CIN2",
+   "CIN3",
+   "CIN4",
+   "CIN5",
+   "CIN6",
+   "CIN7",
+   "CIN8",
+   "COUT1"
+  ]
+ },
+ "pin_status": {
+  "AÇIK": 14,
+  "EŞLEŞTİ": 26
+ },
+ "lumped_value_check": {
+  "CIN_EFF": {
+   "inc": 1.88e-05,
+   "formula": 1.88e-05,
+   "equal": true
+  },
+  "CEFIN_EFF": {
+   "inc": 1e-07,
+   "formula": 1e-07,
+   "equal": true
+  },
+  "CPORT_O1": {
+   "inc": 4e-06,
+   "formula": 4.000000000000001e-06,
+   "equal": true
+  },
+  "CPORT_S2E": {
+   "inc": 4e-06,
+   "formula": 4.000000000000001e-06,
+   "equal": true
+  },
+  "COUT_EFF": {
+   "inc": 0.000659904,
+   "formula": 0.000659904,
+   "equal": true
+  }
+ },
+ "remaining_groups": [
+  "G3",
+  "G4",
+  "G5",
+  "G6",
+  "G7",
+  "G8",
+  "G9"
+ ],
+ "remaining_refs_ACIK": 140
+}
