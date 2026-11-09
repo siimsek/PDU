@@ -1,0 +1,14 @@
+* T-051 isolated dVdt behaviour run05
+.param ID=4.6e-06 CD=1e-09 CL=1e-05 ILIM=8.13 VBUS=11.1605
+VIN vin 0 DC {VBUS}
+BID 0 dv I = {ID}*min(max(({VBUS}-V(dv))/10m,0),1)
+CDV dv 0 {CD} IC=0
+BFET vin out I = min({ILIM}, max(10*(V(dv)-V(out)),0))
+CLD out 0 {CL} IC=0
+RLK out 0 1G
+.tran 9.704782608695655e-07 0.0038819130434782616 0 9.704782608695655e-07 UIC
+.meas tran t10 WHEN V(out)=1.1160500000000002 RISE=1
+.meas tran t90 WHEN V(out)=10.044450000000001 RISE=1
+.meas tran vend MAX V(out)
+.meas tran ipk MAX par('min(10*(V(dv)-V(out)),8.13)')
+.end
