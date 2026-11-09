@@ -23,4 +23,5 @@ Tek satır: `- [kaynak] konu — neden engelleyici değil — önerilen kart/rol
 - [R-015] TP_OVP_REF metin ankrajı kendi footprint merkezine 9,121 mm, TP_ISNS2P merkezine 4,964 mm; elektriksel DRC temiz ancak etiket ilişkilendirmesi silk/test noktası DFM'inde teyit edilmeli — T-020 yerleşim aşamasında engelleyici değil — BUILDER.
 - [R-016] PR #59 açıklamasındaki T-021 L3 alanları eski; Q1/Q2 3654,79 / 2107,6 mm² yerine güncel 3654,438 / 2067,131 mm² kullan — kabul hedefi yine geçiyor ve kanıt dosyaları güncel — BUILDER (PR özeti eşitlemesi).
 - [T-022 / R-018] CEFOUT1/2 kollarının (1,5 mm zone tap) geçici akım/yol kapasitesi üretim öncesi takip edilecek; 1,5 mm dinamik akım kanıtı değildir, tepe akım doğrulanmadı — T-024 kapısı. Doğrulanamayanlar: fiziksel prob erişimi (TP_SW1/2), fab neck toleransı (0,602 mm kenar) ve via-in-pad onayı.
-- [T-023 / R-022 Tur 9] Dört /VOUT ve /ISNS F.Cu ESC bölgesinin dolgu kesiti yaklaşık 0,192–0,198 mm; `neck_audit` bölge taramıyor. T-023 Done öncesi DFM/sense akımı kararı veya kriteri sağlayan alternatif gerekli; prob dönüşünde C_CMP.2 ve COUT1.2 atanmış değil (bkz. `tasks/T-036.md`) — PCB işi kullanıcı talebiyle beklemede
+
+- [R-026] UVLO civarında kısa devre: VIN/EN, faz akımları, VOUT/VSAFE/O1, koruma süresi, yeniden başlatma ve ısı için akım sınırlı güvenli tezgâh testi; simülasyon fiziksel kanıt değildir.
