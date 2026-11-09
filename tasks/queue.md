@@ -61,9 +61,19 @@ Sıra yukarıdan aşağı. Durum kartla aynı olmalı (`python scripts/check_wor
 | [R-020](R-020.md) | THINKER | M | T-022 | Review |
 | [T-026](done/T-026.md) | BUILDER | S | — | Done |
 | [T-027](done/T-027.md) | BUILDER | M | T-026 | Done |
-| [T-028](T-028.md) | BUILDER | M | T-027 | Draft |
+| [T-028](T-028.md) | BUILDER | M | T-027 | Review |
 | [T-029](T-029.md) | BUILDER | M | T-027, T-028 | Draft |
 | [T-030](T-030.md) | BUILDER | M | T-026, T-027 | Draft |
 | [T-031](T-031.md) | BUILDER | S | T-027, T-028, T-029, T-030 | Draft |
+| [R-023](R-023.md) | THINKER | M | T-027 | Review |
+| [T-032](T-032.md) | BUILDER | M | T-027 | Review |
+| [T-035](T-035.md) | BUILDER | S | T-028 | Review |
+| [T-036](T-036.md) | BUILDER | S | T-023 | Draft |
+| [T-037](T-037.md) | BUILDER | S | R-023 | Review |
+| [T-038](T-038.md) | BUILDER | M | T-032 | Draft |
+| [T-039](T-039.md) | BUILDER | S | T-032 | Review |
+| [T-040](T-040.md) | BUILDER | S | T-028 | Review |
+| [T-041](T-041.md) | BUILDER | S | T-032 | Review |
+| [T-042](T-042.md) | BUILDER | M | T-028 | Review |
 
 Paralel yürütülebilir: THINKER kartları birbirinden ve BUILDER kartlarından bağımsız. THINKER `queue.md`'yi değiştirmez (paralel PR çakışması); yalnız kendi kartının Durum'unu yazar, BUILDER birleştirirken kuyruğu eşitler.
