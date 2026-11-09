@@ -1,6 +1,6 @@
 {
  "board": "PDU.kicad_pcb",
- "board_sha256_lf": "e5915d1dd819aa544001140b0381837c86902e825fc624cb29d2e975510facd8",
+ "board_sha256_lf": "23e8ac027f76626ca5e5ceba96c44ac603c1a3eeeb46d881a2d80e0d15f5966c",
  "kicad": "10.0.7",
  "tp_gnd_fb_to_fb_loop_mm": {
   "U1.16": 19.036,
@@ -253,7 +253,7 @@
    ],
    "side": "F",
    "pad_mm": 1.0,
-   "silk_ref_visible": true,
+   "silk_ref_visible": false,
    "nearest_probe_gnd": "TP_GND_FB",
    "nearest_probe_gnd_mm": 29.94
   },
@@ -418,18 +418,18 @@
    "ref": "TP_OVP_Q",
    "net": "/OVP_Q",
    "d6_mm": [
-    3.445,
-    61.054
+    101.5,
+    62.6
    ],
    "pcb_mm": [
-    33.445,
-    53.946
+    131.5,
+    52.4
    ],
    "side": "F",
    "pad_mm": 1.0,
-   "silk_ref_visible": true,
-   "nearest_probe_gnd": "TP_GND_POWER",
-   "nearest_probe_gnd_mm": 26.54
+   "silk_ref_visible": false,
+   "nearest_probe_gnd": "TP_GND_FB",
+   "nearest_probe_gnd_mm": 41.52
   },
   {
    "ref": "TP_OVP_REF",
@@ -569,7 +569,7 @@
    ],
    "side": "F",
    "pad_mm": 1.0,
-   "silk_ref_visible": true,
+   "silk_ref_visible": false,
    "nearest_probe_gnd": "TP_GND_FB",
    "nearest_probe_gnd_mm": 23.42
   },

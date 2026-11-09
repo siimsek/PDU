@@ -362,7 +362,18 @@ KELVIN = {
 }
 # R-020: test pads beside their Kelvin arm (search starts from R-020's coordinates, then checked against the new route).
 TP_MOVES = [("RFB1", 42.55, 83.8), ("RFB2", 45.95, 83.8), ("R_TRIM", 49.15, 83.8), ("CHF", 53.6, 83.8), ("RCOMP", 57.0, 83.8), ("CCOMP", 60.4, 83.8), ("TP_COMP", 54.3, 22.7), ("TP_GND_FB", 65.6, 83.45), ("TP_FB_INJ_A", 62.4, 71.8), ("TP_FB_INJ_B", 68.4, 71.8),
-            ("TP_GND_OVP", 76.5, 14.0), ("TP_OVP_REF", 68.4, 83.6), ("TP_OC_REF", 47.6, 22.0), ("TP_OC_SENSE1", 33.0, 59.5), ("TP_OC_SENSE2", 38.5, 27.0), ("TP_GND_OC", 50.5, 22.0), ("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
+            ("TP_GND_OVP", 76.5, 14.0), ("TP_OVP_REF", 68.4, 83.6), ("TP_OC_REF", 47.6, 22.0), ("TP_OVP_Q", 101.5, 62.6), ("TP_OC_SENSE1", 33.0, 59.5), ("TP_OC_SENSE2", 38.5, 27.0), ("TP_GND_OC", 50.5, 22.0), ("TP_ISNS1P", 40.2, 67.6), ("TP_ISNS1N", 29.6, 67.4), ("TP_ISNS2P", 38.8, 20.0), ("TP_ISNS2N", 45.6, 19.6)]
+# R-022 Tur 8: local placement of the LM70880 bypass, bootstrap and pin resistors (SNVSBX7A p.4, p.44): (ref, x, y, orientation)
+STEP4_PLACE = [("CVDDA1", 46.3, 81.55, 0), ("CVCC1", 44.55, 69.5, 0), ("RCFG1", 51.125, 81.7, 0), ("RSYNC", 59.0, 81.9, 0), ("CBOOT1", 54.625, 78.125, 180), ("RBOOT1", 54.93, 76.55, 180),
+               ("CVDDA2", 40.0, 2.2, 0), ("RBOOT2", 29.2, 7.55, 0), ("CBOOT2", 29.2, 6.0, 0), ("RCFG2", 32.4, 1.5, 180), ("RT2", 36.825, 1.5, 0), ("RILIM2", 104.95, 32.15, 270)]
+# R-022 Tur 8: 0.6 mm HV escape beside the fine-pitch /VOUT and /ISNS pins, as zones (no track centre fits inside the pads). (name, net, polygon on F.Cu)
+ESCAPES = [("T023_ESC_U1_12", "/VOUT", [(49.0, 79.12), (49.375, 79.12), (49.375, 80.85), (49.65, 80.85), (49.65, 81.35), (49.175, 81.35), (49.175, 79.4)]),
+           ("T023_ESC_U1_11", "/ISNS1", [(49.975, 79.12), (50.175, 79.12), (50.175, 80.0), (50.6, 80.05), (50.6, 80.45), (50.2, 80.45), (49.975, 80.1)]),
+           ("T023_ESC_U2_12", "/VOUT", [(34.5, 4.88), (34.125, 4.88), (34.125, 3.15), (33.85, 3.15), (33.85, 2.65), (34.325, 2.65), (34.325, 4.6)]),
+           ("T023_ESC_U2_11", "/ISNS2", [(33.525, 4.88), (33.325, 4.88), (33.325, 4.0), (32.9, 3.95), (32.9, 3.55), (33.3, 3.55), (33.525, 3.9)]),
+           ("T023_ESC_U3_16", "/VSAFE", [(102.8, 41.1), (103.24, 41.1), (103.24, 41.325), (102.8, 41.325)]), ("T023_ESC_U4_16", "/VSAFE", [(109.59, 41.1), (110.03, 41.1), (110.03, 41.325), (109.59, 41.325)])]
+ESC_TRACKS = (("/VOUT", (49.0, 79.65), (49.0, 80.4)), ("/ISNS1", (50.0, 79.65), (50.1, 80.95)), ("/VOUT", (34.5, 4.35), (34.5, 2.9)), ("/ISNS2", (33.5, 4.35), (33.4, 3.6)), ("/VSAFE", (103.225, 41.12), (102.8, 41.12)), ("/VSAFE", (110.015, 41.12), (109.6, 41.12)))
+ESC_VIAS = (("/VOUT", (49.0, 80.4), (49.34, 81.0)), ("/ISNS1", (50.1, 80.95), (50.4, 80.25)), ("/VOUT", (34.5, 2.9), (34.105, 3.0)), ("/ISNS2", (33.4, 3.6), (33.1, 3.75)), ("/VIN", (90.35, 79.75), (89.6, 79.4)))
 GATE_W = 0.4
 TP_GATE = (97.4, 44.6)
 TP_BRANCH = [(94.8, 47.49), (96.2, 46.5), (96.2, 44.6), (97.4, 44.6)]
@@ -372,7 +383,7 @@ R_GS_VIA = (98.325, 49.3)
 OLD_R_GS_VIA = (92.85, 36.645)
 REFDES = [("C_ISO_VCAP", 92.6, 44.6, 0), ("R_GS", 97.5, 47.6, 0), ("TP_ISNS1P", 41.5, 69.2, 0), ("RS1", 35.9, 70.2, 0), ("U11", 28.2, 59.4, 0), ("TP_ISNS1N", 26.0, 68.0, 90),
           ("TP_ISNS2P", 36.6, 21.6, 90), ("R_INJ", 65.34, 70.3, 0), ("TP_OC_SENSE1", 33.0, 57.9, 0), ("RS2", 53.4, 21.0, 0)]
-HIDE_REF = ("TP_ISO_GATE", "TP_GND_OC", "TP_ISNS2N", "TP_OVP_REF", "RFB1", "RFB2", "R_TRIM", "CHF", "RCOMP", "CCOMP", "TP_COMP", "TP_GND_OVP", "CVCC1", "CVDDA1", "RT1", "TP_OC_REF", "TP_FB_INJ_A", "TP_FB_INJ_B")       # no silk-free spot beside these pads; they stay identified in D-008 and the assembly drawing
+HIDE_REF = ("CIN3", "TP_SW1", "TP_ISNS1P", "TP_OVP_Q", "RBOOT1", "RBOOT2", "CBOOT1", "CBOOT2", "CVDDA2", "RCFG1", "RCFG2", "RIMON2", "RILIM2", "TP_ISO_GATE", "TP_GND_OC", "TP_ISNS2N", "TP_OVP_REF", "RFB1", "RFB2", "R_TRIM", "CHF", "RCOMP", "CCOMP", "TP_COMP", "TP_GND_OVP", "CVCC1", "CVDDA1", "RT1", "TP_OC_REF", "TP_FB_INJ_A", "TP_FB_INJ_B")       # no silk-free spot beside these pads; they stay identified in D-008 and the assembly drawing
 KELVIN_LIMIT = 15.0
 # R-021: the real sense vias on the shunt pads (not the pad centres)
 SENSE_VIAS = {"RS1.1": (37.7, 66.4), "RS1.2": (32.3, 66.4), "RS2.1": (43.9, 17.7), "RS2.2": (49.1, 15.6)}
@@ -406,7 +417,7 @@ def t_via(b, net, xy):
     b.Add(v)
 
 
-def t_zone(b, name, net, lay, polys):
+def t_zone(b, name, net, lay, polys, min_t=0.25, clr=0.3):
     """One zone from one or more overlapping polygons of the same conductor (a branch must be in the same fill as its arm to be connected)."""
     s0 = P.SHAPE_POLY_SET()
     for poly in polys:
@@ -422,8 +433,8 @@ def t_zone(b, name, net, lay, polys):
         z.SetNet(b.GetNetInfo().GetNetItem(net))
         z.SetLayer(lay)
         z.SetAssignedPriority(7)
-        z.SetMinThickness(P.FromMM(0.25))
-        z.SetLocalClearance(P.FromMM(0.3))
+        z.SetMinThickness(P.FromMM(min_t))
+        z.SetLocalClearance(P.FromMM(clr))
         z.SetThermalReliefGap(P.FromMM(0.3))
         z.SetThermalReliefSpokeWidth(P.FromMM(0.5))
         z.SetPadConnection(P.ZONE_CONNECTION_FULL)
@@ -463,6 +474,9 @@ def step2():
     fp["R_GS"].SetPosition(kp(*R_GS_POS))
     for ref, x, y in TP_MOVES:
         fp[ref].SetPosition(kp(x, y))
+    for ref, x, y, ang in STEP4_PLACE:
+        fp[ref].SetOrientationDegrees(ang)
+        fp[ref].SetPosition(kp(x, y))
     for ref, x, y, ang in REFDES:
         t = fp[ref].Reference()
         t.SetPosition(kp(x, y))
@@ -492,7 +506,7 @@ def step2():
     t_track(b, "/ISO_GATE", P.F_Cu, GATE_W, TP_BRANCH)
     t_track(b, "/ISO_GATE", P.F_Cu, GATE_W, R_GS_LINK)
     t_zone(b, "T023_TAP_R_INJ_F", "/VOUT", P.F_Cu, [[(62.0, 71.35), (64.9, 71.35), (64.9, 74.4), (64.1, 74.4), (64.1, 72.25), (62.0, 72.25)]])
-    t_zone(b, "T023_TAP_R_INJ_B", "/VOUT", P.B_Cu, [[(48.6, 80.0), (49.4, 80.0), (49.4, 82.2), (64.1, 82.2), (64.1, 73.6), (64.9, 73.6), (64.9, 83.0), (48.6, 83.0)]])
+    t_zone(b, "T023_TAP_R_INJ_B", "/VOUT", P.B_Cu, [[(48.6, 80.0), (49.7, 80.0), (49.7, 82.2), (64.1, 82.2), (64.1, 73.6), (64.9, 73.6), (64.9, 83.0), (48.6, 83.0)]])
     t_via(b, "/VOUT", (64.5, 74.0))
     t_track(b, "/GND", P.F_Cu, 0.25, [(43.3, 24.7), (44.35, 24.455)])       # R-022 Tur 2: U14.2 joins U12.4's local GND before the signals take the room
     # R-022 Tur 2: the U6.5 tap moves 0.35 mm east so /ISO_OV can pass under U6 with 0.6 mm to /VOUT (positions only)
@@ -506,6 +520,32 @@ def step2():
     else:
         stub.SetStart(kp(93.733, 49.0))
     t_track(b, "/GND", P.F_Cu, 0.25, [(31.0, 62.33), (32.1, 62.62)])       # U11.7 has no room for its own via beside the RS1 Kelvin arm; it shares U13.2's via
+    gone = [t for t in b.GetTracks() if t.Type() != P.PCB_VIA_T and any(t.GetNetname() == n_ and math.dist(d6(t.GetStart()), a_) < 0.01 and math.dist(d6(t.GetEnd()), c_) < 0.01 for n_, a_, c_ in ESC_TRACKS)]
+    assert len(gone) == len(ESC_TRACKS), len(gone)
+    for n_, a_, c_ in ESC_VIAS:
+        next(t for t in b.GetTracks() if t.Type() == P.PCB_VIA_T and t.GetNetname() == n_ and math.dist(d6(t.GetPosition()), a_) < 0.01).SetPosition(kp(*c_))
+    stub = next(t for t in b.GetTracks() if t.Type() != P.PCB_VIA_T and t.GetNetname() == "/VIN" and math.dist(d6(t.GetEnd()), (90.35, 79.75)) < 0.01)
+    stub.SetEnd(kp(89.6, 79.4))
+    for dx_ in (0.0, 6.79):                  # U3/U4.17: the link starts at the pad corner so the /VSAFE tie of pin 16 keeps 0.6 mm
+        t = next(t for t in b.GetTracks() if t.Type() != P.PCB_VIA_T and t.GetLayer() == P.F_Cu and t.GetNetname() in ("/O1_11V", "/S2E_11V") and min(math.dist(d6(t.GetStart()), (103.77 + dx_, 41.78)), math.dist(d6(t.GetEnd()), (103.77 + dx_, 41.78))) < 0.03)
+        (t.SetStart if math.dist(d6(t.GetStart()), (103.77 + dx_, 41.78)) < 0.03 else t.SetEnd)(kp(103.795 + dx_, 41.795))
+    tail = next(z for z in b.Zones() if z.GetZoneName().startswith("T022_TAP_ISNS1"))     # the unused end above the moved via would push the /VOUT ribbon off the U1.12 via (0.6 mm)
+    ol = tail.Outline()
+    for i_ in range(ol.VertexCount()):
+        v_ = ol.CVertex(i_)
+        if d6(v_)[1] > 80.7:
+            ol.SetVertex(i_, kp(50.05 if d6(v_)[0] < 50.0 else d6(v_)[0], 80.65))
+    ol = next(z for z in b.Zones() if z.GetZoneName().startswith("T022_TAP_TP_VOUT") and z.GetBoundingBox().Contains(kp(49.0, 81.0))).Outline()     # the moved U1.12 via stays inside both /VOUT ribbons, which is what joins them
+    for i_ in range(ol.VertexCount()):
+        v_ = ol.CVertex(i_)
+        x_, y_ = d6(v_)
+        if abs(x_ - 49.4) < 0.01 or abs(y_ - 83.0) < 0.01:      # east side: the moved via; north side: room for the CVDDA1.2 GND via without splitting the ribbon
+            ol.SetVertex(i_, kp(49.7 if abs(x_ - 49.4) < 0.01 else x_, 83.5 if abs(y_ - 83.0) < 0.01 else y_))
+    t_zone(b, "T023_TAP_U10_5", "/VIN", P.B_Cu, [[(89.3, 79.1), (90.75, 79.1), (90.75, 80.0), (89.3, 80.0)]])
+    for name_, net_, pts_ in ESCAPES:
+        t_zone(b, name_, net_, P.F_Cu, [pts_], min_t=0.19, clr=0.2)
+    for t in gone:
+        b.Remove(t)
     P.ZONE_FILLER(b).Fill(b.Zones())
     P.SaveBoard(str(PCB), b, True)
     print(json.dumps({"kelvin_mm": {k: round(conductor_mm(v), 3) for k, v in KELVIN.items()}}, ensure_ascii=False))
@@ -561,7 +601,7 @@ def gnd_returns():
     P.ZONE_FILLER(b).Fill(b.Zones())
     P.SaveBoard(str(PCB), b, True)
     placed = [c for c in cands if c["via"]]
-    with (OUT / "step3-gnd-applied.json").open("w", encoding="utf-8", newline="\n") as f:
+    with (OUT / "step4-gnd-applied.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump({"groups": len(cands), "new_vias": len(placed), "no_position_found": [c["pads"] for c in cands if not c["via"]], "max_centre_to_via_mm": max((c["stub_mm"] for c in placed), default=None), "candidates": cands}, f, indent=0, ensure_ascii=False)
         f.write("\n")
     print(json.dumps({"new_gnd_vias": len(placed), "no_position": [c["pads"] for c in cands if not c["via"]]}, ensure_ascii=False))
@@ -728,23 +768,34 @@ HV_NETS = ("/ANODE", "/VIN", "/VOUT", "/VSAFE")
 STEP4_NETS = ("/CBOOT1", "/CBOOT2", "/CBOOT_R1", "/CBOOT_R2", "/CFG_PRI", "/CFG_SEC", "/DVDT_O1", "/DVDT_S2E", "/EN_BUCK", "/EN_EFUSE", "/GATE", "/ILIM_O1", "/ILIM_S2E", "/IMON_O1", "/IMON_S2E", "/ISO_VCAP", "/LDO_DELAY", "/P5V_PROT", "/PG_O1", "/PG_S2E", "/REF_NR", "/RT_PH1", "/RT_PH2", "/SW4_PH1", "/SW4_PH2", "/SYNC", "/VCAP", "/VCC1", "/VCC2", "/VDDA1", "/VDDA2")
 AUX_NETS = ("/CBOOT1", "/CBOOT2", "/CBOOT_R1", "/CBOOT_R2", "/SW4_PH1", "/SW4_PH2", "/VCAP", "/GATE", "/VCC1", "/VCC2", "/VDDA1", "/VDDA2", "/ISO_VCAP")   # AUX_LOCAL netclass: 0.5 mm where it fits, 0.25 mm at the pad ends
 AUX_W = 0.5
-STEP4_HOLD = ("/GATE", "/DVDT_O1", "/DVDT_S2E")   # no exit meets the 0.6 mm HV rule without a THINKER decision (reports/g5/T-023/step3-report.md)
-STEP3_FIRST = ("/COMP", "/FB", "/OVP_REF", "/OC_REF", "/ISO_EN", "/OVP_BUS_N", "/ISO_OV", "/CLR_N", "/OC_TRIP2_N")   # routed in this order, before the span-sorted rest
+STEP4_HOLD = ()
+STEP3_FIRST = ("/COMP", "/FB", "/OVP_REF", "/OC_REF", "/ISO_EN", "/OVP_BUS_N", "/ISO_OV", "/CLR_N", "/OC_TRIP2_N", "/EN_BUCK", "/SYNC", "/EN_EFUSE", "/ILIM_O1", "/IMON_O1", "/DVDT_O1", "/PG_O1", "/DVDT_S2E", "/PG_S2E", "/ILIM_S2E", "/IMON_S2E")   # routed in this order, before the span-sorted rest
 SENSITIVE = ("/COMP", "/FB", "/OVP_REF", "/OC_REF")   # R-022 Tur 3: F.Cu over L2 first, few layer changes, away from SW
 SENS_FAR = ("/OVP_REF", "/OC_REF")   # PCB-HANDOFF §3 item 5 group: the 10 mm cost applies to these only; /FB and /COMP must stay at U1
-STEP3_ROOT = {"/OVP_REF": "U8.6", "/OC_REF": "R_OCB.1"}   # tree grows out from the source/divider so probes and branches stay local
+STEP3_ROOT = {"/EN_EFUSE": "U3.6", "/OVP_REF": "U8.6", "/OC_REF": "R_OCB.1", "/VDDA1": "CVDDA1.1", "/VDDA2": "CVDDA2.1"}   # tree grows out from the source/divider so probes and branches stay local
 SENS_KEEP = 10.0       # mm: PCB-HANDOFF §3 item 5; a routing cost, not a pass/fail limit
 SENS_B_COST = 2.0
 SENS_VIA_COST = 24.0
 STEP3_PREFIX = {"/GND": {"U6.2": [(91.457, 48.14), (88.8, 48.14)], "U15.2": [(91.698, 81.055), (92.72, 81.29)], "U11.2": [(26.112, 61.03), (26.112, 62.33), (24.2, 62.33)],
-                         "R_TRIM.2": [(49.975, 83.8), (50.95, 83.6)], "CHF.2": [(54.375, 83.8), (55.25, 83.8)], "CCOMP.2": [(61.175, 83.8), (62.0, 83.8)], "R_BLS.2": [(91.225, 75.685), (90.95, 74.48)], "C_LDO_DELAY.2": [(87.897, 71.845), (87.32, 72.44)], "U10.9": [(87.115, 81.005), (86.02, 79.83)], "U2.16": [(36.5, 4.6), (36.82, 5.6)], "CVDDA1.2": [(51.813, 82.025), (52.7, 81.2)], "RT1.2": [(56.046, 82.025), (55.49, 81.43)], "U7.2": [(103.395, 75.715), (103.908, 75.715), (104.25, 75.75)], "C_OCC1.2": [(43.189, 63.025), (44.04, 63.29)], "RT2.2": [(32.216, 1.525), (33.12, 1.52)], "U1.6": [(51.9, 77.75), (52.7, 77.75)], "U1.8": [(51.9, 78.75), (52.7, 78.75)], "U2.6": [(31.6, 6.25), (32.4, 6.25)]}, "/VDDA1": {"CVDDA1.1": [(50.263, 82.025), (50.75, 81.5), (50.85, 80.6)]}, "/OVP_BUS_N": {"U7.1": [(103.395, 76.365), (102.6, 76.365), (102.6, 77.4)]}, "/COMP": {"U1.15": [(47.5, 79.4), (47.5, 80.7), (44.75, 80.7), (44.75, 82.95), (63.4, 82.95)]},
+                         "R_TRIM.2": [(49.975, 83.8), (50.95, 83.6)], "CHF.2": [(54.375, 83.8), (55.25, 83.8)], "CCOMP.2": [(61.175, 83.8), (62.0, 83.8)], "R_BLS.2": [(91.225, 75.685), (90.95, 74.48)], "C_LDO_DELAY.2": [(87.897, 71.845), (87.32, 72.44)], "U10.9": [(87.115, 81.005), (86.02, 79.83)], "U2.16": [(36.5, 4.6), (36.82, 5.6)], "CVDDA1.2": [(47.075, 82.0), (47.075, 82.32)], "RT1.2": [(56.046, 82.025), (55.49, 81.43)], "RCFG1.2": [(52.35, 81.7), (52.75, 81.7)], "CVCC1.2": [(45.5, 68.775), (45.5, 68.3)], "C_LAT.2": [(78.6, 64.07), (78.6, 63.5)], "RILIM2.2": [(104.95, 30.9), (104.95, 30.4)], "U9.1": [(101.02, 82.255), (100.35, 82.5)], "SW1.2": [(99.5, 81.95), (99.5, 82.4)], "RIMON1.2": [(102.43, 34.4), (102.75, 33.75)], "RIMON2.2": [(102.43, 31.42), (102.95, 31.9)], "CVDDA2.2": [(41.225, 2.2), (41.75, 2.2)], "RCFG2.2": [(31.175, 1.5), (30.7, 1.5)], "U7.2": [(103.395, 75.715), (103.908, 75.715), (104.25, 75.75)], "C_OCC1.2": [(43.189, 63.025), (44.04, 63.29)], "RT2.2": [(37.65, 1.975), (37.65, 2.6)], "U1.6": [(51.9, 77.75), (52.7, 77.75)], "U1.8": [(51.9, 78.75), (52.7, 78.75)], "U2.6": [(31.6, 6.25), (32.4, 6.25)]}, "/GATE": {"U5.5": [(21.29, 42.5), (21.95, 42.5)]}, "/DVDT_O1": {"U3.15": [(103.78, 40.63), (104.15, 40.63), (104.15, 34.5), (104.4, 33.9)]}, "/ILIM_O1": {"U3.8": [(100.84, 38.75), (100.84, 37.65)]}, "/IMON_O1": {"U3.9": [(101.34, 38.75), (101.34, 37.65), (102.95, 36.05), (102.95, 34.8)]}, "/EN_EFUSE": {"U3.6": [(99.4, 39.67), (99.0, 39.67), (99.0, 35.55)]}, "/DVDT_S2E": {"U4.15": [(110.57, 40.63), (110.92, 40.63), (110.92, 38.52), (108.0, 35.6), (107.85, 35.1)]}, "/PG_O1": {"U3.13": [(103.68, 39.6), (103.65, 39.2), (103.65, 34.5), (103.5, 34.05)]}, "/PG_S2E": {"U4.13": [(110.47, 39.6), (110.4, 39.2), (110.4, 38.64), (106.8, 35.04), (106.95, 34.35)]}, "/LDO_DELAY": {"U10.7": [(89.97, 81.26), (90.65, 81.26), (90.65, 78.9)]}, "/P5V_PROT": {"U10.1": [(84.26, 81.98), (84.0, 82.3), (84.0, 82.8)], "U9.2": [(102.25, 81.755), (102.75, 81.75)]}, "/VCC1": {"U1.19": [(45.8, 77.25), (45.5, 77.05), (45.2, 76.95)]}, "/OVP_BUS_N": {"U7.1": [(103.395, 76.365), (102.6, 76.365), (102.6, 77.4)]}, "/COMP": {"U1.15": [(47.46, 79.5), (47.46, 79.75), (47.395, 80.4), (47.395, 80.7), (44.25, 80.7), (44.25, 82.95), (63.4, 82.95)], "U2.15": [(36.04, 4.31), (36.04, 3.9)]}, "/EN_BUCK": {"U1.9": [(51.05, 79.69), (51.05, 80.1), (51.3, 80.55)]}, "/IMON_S2E": {"U4.9": [(108.13, 38.75), (108.13, 37.01), (105.9, 34.78), (105.9, 32.4)]},
                 "/ISO_OV": {"U6.7": [(93.733, 48.14), (92.5, 48.14), (92.5, 45.4)]}, "/OVP_Q": {"U9.5": [(104.445, 80.755), (105.4, 80.755), (105.4, 80.0)]},
                 "/OVP_REF": {"U7.3": [(103.395, 75.065), (102.5, 75.065), (102.5, 74.2)]}, "/OC_TRIP2_N": {"U14.1": [(44.757, 25.105), (44.0, 25.105), (44.0, 26.2)]}}
 # R-022 Tur 4 / SNVSCD3 p.44, p.20: FB divider at the FB pin and compensation at the primary. Hand-placed copper, routed nowhere else.
-STEP3_FIXED = {"/FB": [[(47.0, 79.4), (47.0, 80.25), (44.25, 80.25), (44.25, 83.8)], [(43.375, 83.8), (45.125, 83.8)]], "/FB_TRIM": [[(46.775, 83.8), (48.325, 83.8)]],
-               "/GND": [[(84.965, 80.03), (86.02, 79.83)], [(65.6, 83.45), (62.0, 83.8)], [(36.82, 5.6), (37.4, 5.75)]], "/COMP_MID": [[(57.825, 83.8), (59.625, 83.8)]], "/COMP": [[(52.825, 82.95), (52.825, 83.8)], [(56.175, 82.95), (56.175, 83.8)]]}
-STEP3_SKIP = ("/FB", "/FB_TRIM", "/COMP_MID")
-STEP3_DONE = ("RCOMP.1", "CHF.1")
+STEP3_FIXED = {"/VDDA1": [[(45.85, 77.75), (45.4, 77.8), (45.4, 79.6)], [(44.9, 81.55), (45.15, 81.55)]],
+               "/RT_PH1": [[(47.95, 79.69), (47.855, 80.4), (47.855, 82.5), (54.03, 82.5)]], "/CFG_PRI": [[(48.45, 79.69), (48.315, 80.4), (48.315, 82.03), (49.92, 82.03)]],
+               "/RT_PH2": [[(35.55, 4.31), (35.585, 3.6), (35.62, 1.95)]], "/CFG_SEC": [[(35.05, 4.31), (35.13, 3.6), (35.13, 1.85), (33.6, 1.85)]],
+               "/CBOOT1": [[(52.2, 76.25), (52.95, 76.25), (53.75, 76.4)]], "/SW4_PH1": [[(52.2, 76.75), (52.75, 76.75), (53.5, 77.6), (53.85, 77.8)]], "/CBOOT_R1": [[(55.6, 77.7), (55.7, 77.0)]],
+               "/EN_EFUSE": [[(106.2, 39.67), (105.9, 39.67), (105.9, 36.15), (105.1, 35.55)]], "/ILIM_S2E": [[(107.63, 38.75), (107.63, 37.15), (106.08, 35.6), (105.45, 34.97), (105.28, 34.5), (105.0, 33.35)]], "/CBOOT2": [[(31.3, 7.75), (30.4, 7.7)]], "/SW4_PH2": [[(31.3, 7.25), (30.7, 6.3), (30.4, 6.2)]], "/CBOOT_R2": [[(28.4, 7.1), (28.4, 6.45)]], "/FB": [[(47.0, 79.4), (46.9, 80.25), (43.8, 80.25), (43.8, 83.8)], [(43.375, 83.8), (45.125, 83.8)]], "/FB_TRIM": [[(46.775, 83.8), (48.325, 83.8)]],
+               "/GND": [[(101.02, 80.755), (99.9, 80.755)], [(46.38, 78.25), (47.5, 78.25)], [(84.965, 80.03), (86.02, 79.83)], [(65.6, 83.45), (62.0, 83.8)], [(36.82, 5.6), (37.4, 5.75)]], "/COMP_MID": [[(57.825, 83.8), (59.625, 83.8)]], "/COMP": [[(52.825, 82.95), (52.825, 83.8)], [(56.175, 82.95), (56.175, 83.8)]]}
+STEP3_SKIP = ("/ILIM_S2E", "/FB", "/FB_TRIM", "/COMP_MID", "/RT_PH1", "/RT_PH2", "/CFG_PRI", "/CFG_SEC", "/CBOOT1", "/CBOOT_R1", "/SW4_PH1", "/CBOOT2", "/CBOOT_R2", "/SW4_PH2")
+STEP4_VIAS = {"/VDDA1": [(45.4, 79.6), (44.9, 81.55)], "/EN_EFUSE": [(99.0, 35.55), (105.1, 35.55)], "/IMON_O1": [(102.95, 34.8)], "/PG_O1": [(103.5, 34.05)], "/PG_S2E": [(106.95, 34.35)], "/DVDT_O1": [(104.4, 33.9)]}
+STEP4_B = {"/VDDA1": [[(45.4, 79.6), (44.9, 81.55)]], "/EN_EFUSE": [[(99.0, 35.55), (105.1, 35.55)]]}
+STEP4_SEED = {"/VDDA1": [(45.4, 77.8, 0)], "/EN_EFUSE": [(99.0, 35.55, 1), (105.1, 35.55, 1)]}
+STEP4_B_NET = ("/IMON_O1", "/DVDT_O1", "/PG_S2E")   # off F.Cu in the U3/U4 fan-out corridor
+STEP4_B_KEEP = ((105.95, 31.35, 108.15, 33.85),)   # J3.2: room for the L4_GND thermal spokes
+STEP4_FORCE_B = ("U3.9", "U3.13", "U3.15", "U4.13")   # these pad exits end on a placed via: the rest of the net stays off F.Cu, which the U3/U4 fan-out needs
+STEP4_KEEP = {"/P5V_PROT": [(84.0, 82.8), (102.75, 81.75)], "/EN_BUCK": [(51.3, 80.55)], "/IMON_O1": [(102.95, 34.8)],  "/DVDT_S2E": [(107.85, 35.1)]}   # room for the via the router will drop at the end of a walled-in pad exit
+STEP3_DONE = ("RCOMP.1", "CHF.1", "U1.18", "U4.6")
 YIELDING_ZONES = ("T022_F_VSAFE_Q2",)
 GRID = 0.15
 ROUTE_W = 0.25
@@ -887,6 +938,9 @@ def build_grid(b, geo, netcode):
         L = 0 if z.IsOnLayer(P.F_Cu) else (1 if z.IsOnLayer(P.B_Cu) else 2)
         t, v = clearances(None, net, "zone")
         G.poly([L], netcode.get(net, -3), outline_pts(z), t, v)
+    for z in b.Zones():                                  # mounting-hole keepouts: no copper of any net
+        if z.GetIsRuleArea():
+            G.poly([0, 1, 2], -9, outline_pts(z), ROUTE_W / 2 + DIAG_MARGIN, VIA_R + DIAG_MARGIN)
     sw_cells = [r for r in geo.pads if r["net"].startswith(("/SW_PH", "/SW4_PH"))]
     np = G.np
     for r in sw_cells:
@@ -1092,6 +1146,23 @@ def step3():
             for a_, c_ in zip(pts, pts[1:]):
                 G.seg([0], netcode[net], a_, c_, ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
 
+    for net, group in STEP4_B.items():
+        for pts in group:
+            t_track(b, net, P.B_Cu, ROUTE_W, pts)
+            for a_, c_ in zip(pts, pts[1:]):
+                G.seg([1], netcode[net], a_, c_, ROUTE_W + ROUTE_CLR + DIAG_MARGIN, ROUTE_W / 2 + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+    for rect_ in STEP4_B_KEEP:
+        G.rect([1], -9, rect_, ROUTE_W / 2 + DIAG_MARGIN, VIA_R + DIAG_MARGIN)
+    placed_ = {(int(round(x_ / GRID)) * GRID, int(round(y_ / GRID)) * GRID) for g_ in STEP4_VIAS.values() for x_, y_ in g_}
+    for net, group in STEP4_VIAS.items():
+        for xy in group:
+            t_via(b, net, xy)
+            G.seg([0, 1, 2], netcode[net], xy, xy, VIA_R + ROUTE_CLR + ROUTE_W / 2 + DIAG_MARGIN, VIA_R + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+
+    for net, group in STEP4_KEEP.items():
+        for xy in group:
+            G.seg([0, 1, 2], netcode[net], xy, xy, VIA_R + ROUTE_CLR + ROUTE_W / 2 + DIAG_MARGIN, VIA_R + ROUTE_CLR + VIA_R + DIAG_MARGIN)
+
     def exit_of(q, code, L):
         if q[0] in prefix_end:
             return snap(G, code, prefix_end[q[0]], L), prefix_end[q[0]]
@@ -1108,17 +1179,19 @@ def step3():
         exits = {}
 
         def add_src(q):
-            L = 1 if (q[3] is False and q[2] is False) else 0
+            L = 1 if (q[3] is False and q[2] is False) or q[0] in STEP4_FORCE_B else 0
             cell, ex = exit_of(q, code, L)
             if cell:
                 exits[q[0]] = ex
                 seen.add((cell[0], cell[1], L))
             return cell, L
         add_src(done[0])
+        for x_, y_, l_ in STEP4_SEED.get(net, ()):
+            seen.add((int(round(y_ / GRID)), int(round(x_ / GRID)), l_))
         while todo:
             todo.sort(key=lambda q: min(math.dist(q[1], d[1]) for d in done))
             q = todo.pop(0)
-            L = 1 if (q[3] is False and q[2] is False) else 0
+            L = 1 if (q[3] is False and q[2] is False) or q[0] in STEP4_FORCE_B else 0
             cell, ex = exit_of(q, code, L)
             if cell:
                 exits[q[0]] = ex
@@ -1135,6 +1208,15 @@ def step3():
                 src_[cell[0], cell[1]] = True
                 near_ = dilated(src_, 8)
                 masks_ = [wide[0] | (G.free(0, code) & near_), wide[1] | (G.free(1, code) & near_)]
+            elif net in STEP4_B_NET:
+                src_ = G.np.zeros((G.ny, G.nx), bool)
+                for j_, i_, l_ in seen:
+                    if l_ == 0:
+                        src_[j_, i_] = True
+                if L == 0:
+                    src_[cell[0], cell[1]] = True
+                win_ = (G.xs > 98.0) & (G.xs < 111.5) & (G.ys > 30.0) & (G.ys < 38.5)      # the U3/U4 fan-out corridor stays free on F.Cu for the nets that have no B.Cu there
+                masks_ = [G.free(0, code) & (dilated(src_, 20) | ~win_), G.free(1, code)]
             else:
                 masks_ = None
             path, n = astar(G, code, sorted(seen), cell, L, sensitive=("far" if net in SENS_FAR else net in SENSITIVE), masks=masks_)
@@ -1146,7 +1228,8 @@ def step3():
             net_len = 0.0
             for (x0, y0, L0), (x1, y1, L1) in zip(xy, xy[1:]):
                 if L0 != L1:
-                    t_via(b, net, (x0, y0))
+                    if (x0, y0) not in placed_:
+                        t_via(b, net, (x0, y0))
                     G.seg([0, 1, 2], code, (x0, y0), (x0, y0), VIA_R + ROUTE_CLR + ROUTE_W / 2 + DIAG_MARGIN, VIA_R + ROUTE_CLR + VIA_R + DIAG_MARGIN)
                     continue
                 if (x0, y0) != (x1, y1):
@@ -1175,7 +1258,7 @@ def step3():
             log["routed"].append({"net": net, "pin": q[0], "length_mm": round(net_len, 2), "vias": sum(1 for a0, c0 in zip(xy, xy[1:]) if a0[2] != c0[2]), "layers": sorted({"F" if x[2] == 0 else "B" for x in xy})})
     P.ZONE_FILLER(b).Fill(b.Zones())
     P.SaveBoard(str(PCB), b, True)
-    with (OUT / "step3-routes.json").open("w", encoding="utf-8", newline="\n") as f:
+    with (OUT / "step4-routes.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump({"grid_mm": GRID, "route_width_mm": ROUTE_W, **log}, f, indent=0, ensure_ascii=False)
         f.write("\n")
     print(json.dumps({"routed": len(log["routed"]), "failed": log["failed"], "vias": sum(r["vias"] for r in log["routed"]), "total_mm": round(sum(r["length_mm"] for r in log["routed"]), 1)}, ensure_ascii=False))
@@ -1186,11 +1269,11 @@ def step3_audit():
     b = P.LoadBoard(str(PCB))
     P.ZONE_FILLER(b).Fill(b.Zones())
     b.BuildConnectivity()
-    D = drc(PCB, OUT / "drc-step3.json")
+    D = drc(PCB, OUT / "drc-step4.json")
     now = summary(D)
     base = json.loads((OUT / "step1-baseline.json").read_text(encoding="utf-8"))
-    routes = json.loads((OUT / "step3-routes.json").read_text(encoding="utf-8"))
-    gnd = json.loads((OUT / "step3-gnd-applied.json").read_text(encoding="utf-8"))
+    routes = json.loads((OUT / "step4-routes.json").read_text(encoding="utf-8"))
+    gnd = json.loads((OUT / "step4-gnd-applied.json").read_text(encoding="utf-8"))
     step2 = json.loads((OUT / "step2-audit.json").read_text(encoding="utf-8"))["after"]
     geo = Geo(b)
     sw_pads = [r for r in geo.pads if r["net"].startswith(("/SW_PH", "/SW4_PH"))]
@@ -1210,7 +1293,7 @@ def step3_audit():
            "new_opens_vs_step2": {n: v - step2["pairs_by_net"].get(n, 0) for n, v in now["pairs_by_net"].items() if v > step2["pairs_by_net"].get(n, 0)},
            "router": {"grid_mm": routes["grid_mm"], "route_width_mm": routes["route_width_mm"], "connections_routed": len(routes["routed"]), "connections_failed": routes["failed"]}, "nets": per,
            "gnd": {"new_vias": gnd["new_vias"], "no_position": gnd["no_position_found"], "searched_paths": sum(1 for c in gnd["candidates"] if c.get("path") == "searched"), "pads_not_on_L2": [k for k, v in state.items() if not v["on_L2"]]}, "l2_islands": l2.OutlineCount()}
-    with (OUT / "step3-audit.json").open("w", encoding="utf-8", newline="\n") as f:
+    with (OUT / "step4-signal-audit.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump(out, f, indent=1, ensure_ascii=False)
         f.write("\n")
     print(json.dumps({k: out[k] for k in ("after", "new_opens_vs_step1", "new_opens_vs_step2", "gnd", "l2_islands")} | {"router": {k: out["router"][k] for k in ("connections_routed",)}, "failed": out["router"]["connections_failed"], "nets": {k: (v["open_pairs"], v["track_mm"], v["vias"], v["min_distance_to_sw_pad_mm"]) for k, v in per.items()}}, ensure_ascii=False))
@@ -1364,7 +1447,7 @@ def ref_audit():
     res = {"kicad": P.GetBuildVersion(), "method": "Centre-line geometry on the saved board after refill: samples every 0.2 mm, paths over the net's own copper. Geometry only; no coupling, return-current or noise solution.", "after": ref_audit_board(PCB)}
     if "--before" in sys.argv:
         res["before"] = ref_audit_board(sys.argv[sys.argv.index("--before") + 1])
-    with (OUT / "step3-ref-audit.json").open("w", encoding="utf-8", newline="\n") as f:
+    with (OUT / "step4-ref-audit.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump(res, f, indent=1, ensure_ascii=False)
         f.write("\n")
     print(json.dumps({k: {n: {x: v[x] for x in ("track_mm", "vias", "sw_min_edge_mm")} for n, v in res[k]["nets"].items()} for k in res if k in ("before", "after")}, ensure_ascii=False))
@@ -1373,7 +1456,7 @@ def ref_audit():
 
 FB_LOOP_ANCHORS = ("U1.16", "U1.15", "RFB2.1", "RFB1.2", "R_TRIM.2", "CHF.2", "RCOMP.1", "CCOMP.2")
 ASSIGNED_PROBE_GND = {"TP_COMP": "TP_GND_OC", "TP_OC_REF": "TP_GND_OC", "TP_OVP_REF": "TP_GND_FB", "TP_FB_INJ_A": "TP_GND_FB", "TP_FB_INJ_B": "TP_GND_FB", "TP_OVP_SENSE": "TP_GND_OVP", "TP_OVP_BUS_N": "TP_GND_OVP", "TP_OVP_TRIP_N": "TP_GND_OVP"}    # R-022 Tur 4-7
-HIDDEN_PASSIVES = ("RFB1", "RFB2", "R_TRIM", "CHF", "RCOMP", "CCOMP", "CVCC1", "CVDDA1", "RT1")
+HIDDEN_PASSIVES = ("RFB1", "RFB2", "R_TRIM", "CHF", "RCOMP", "CCOMP", "CVCC1", "CVDDA1", "RT1", "RBOOT1", "RBOOT2", "CBOOT1", "CBOOT2", "CVDDA2", "RCFG1", "RCFG2", "RIMON2", "RILIM2", "CIN3")
 
 
 def assembly_map():
@@ -1488,6 +1571,55 @@ STEP4_ROLES = {"FB": ("TP_GND_FB.1", ("U1.16", "RCOMP.1", "R_TRIM.2", "TP_FB_INJ
                "OVP/J_OVP": ("TP_GND_OVP.1", ("J_OVP_INJ_BUS.2", "TP_OVP_SENSE.1", "TP_OVP_BUS_N.1", "TP_OVP_TRIP_N.1", "TP_OVP_Q.1", "TP_VSAFE.1", "TP_VOUT.1")), "POWER": ("TP_GND_POWER.1", ("J1.2", "TP_ANODE.1", "TP_VIN.1"))}
 
 
+LOCAL_PATHS = (("U1.18", "CVDDA1.1"), ("U2.18", "CVDDA2.1"), ("U1.19", "CVCC1.1"), ("U2.19", "CVCC2.1"), ("U1.4", "RBOOT1.2"), ("RBOOT1.1", "CBOOT1.1"), ("CBOOT1.2", "U1.5"), ("U2.4", "RBOOT2.2"), ("RBOOT2.1", "CBOOT2.1"), ("CBOOT2.2", "U2.5"),
+               ("U1.14", "RT1.1"), ("U1.13", "RCFG1.1"), ("U2.14", "RT2.1"), ("U2.13", "RCFG2.1"), ("U5.5", "Q1.4"), ("U5.1", "CVCAP.1"), ("U3.15", "CDVDT1.1"), ("U4.15", "CDVDT2.1"), ("U4.8", "RILIM2.1"), ("U3.8", "RILIM1.1"))
+
+
+def local_path(geo, a_, c_):
+    """Shortest copper path between two pads over track centre lines; a via joins its layers. Zones are not traversed."""
+    import heapq
+    pa, pc = next(q for q in geo.pads if f"{q['ref']}.{q['pin']}" == a_), next(q for q in geo.pads if f"{q['ref']}.{q['pin']}" == c_)
+    net = pa["net"]
+    edges = collections.defaultdict(list)
+    nodes = set()
+    key = lambda xy, lay: (round(xy[0], 3), round(xy[1], 3), lay)
+    for u_, v_, _, n_, lay in geo.segs:
+        if n_ == net:
+            k0, k1 = key(u_, lay), key(v_, lay)
+            nodes |= {k0, k1}
+            edges[k0].append((math.dist(u_, v_), k1))
+            edges[k1].append((math.dist(u_, v_), k0))
+    vias = [q for q, n_ in geo.vias if n_ == net]
+    for q in vias:
+        at = [k for k in nodes if math.dist(k[:2], q) < 0.08]
+        for k in at:
+            for m in at:
+                if k != m:
+                    edges[k].append((math.dist(k[:2], m[:2]), m))
+    lays = {pa["front"]: P.F_Cu, False: P.B_Cu}
+    def touching(p_):
+        lay_ = P.F_Cu if p_["front"] else P.B_Cu
+        return [k for k in nodes if k[2] == lay_ and geo.rect_dist(p_["rect"], k[0], k[1]) < 0.02]
+    src, dst = touching(pa), set(touching(pc))
+    dist, heap = {}, []
+    for k in src:
+        dist[k] = 0.0
+        heapq.heappush(heap, (0.0, k))
+    best = None
+    while heap:
+        d0, k = heapq.heappop(heap)
+        if d0 > dist.get(k, 1e18):
+            continue
+        if k in dst:
+            best = d0
+            break
+        for w_, m in edges[k]:
+            if d0 + w_ < dist.get(m, 1e18):
+                dist[m] = d0 + w_
+                heapq.heappush(heap, (d0 + w_, m))
+    return {"net": net, "path_mm": None if best is None else round(best, 3), "net_vias": len(vias)}
+
+
 def step4_audit():
     """R-022 Tur 7 evidence: probe GND roles, FRA pads at R_INJ, per-net copper of every routed signal, remaining opens by net."""
     import collections as c_
@@ -1506,12 +1638,32 @@ def step4_audit():
             per[n]["mm"] += P.ToMM(t.GetLength())
             per[n]["wide_mm"] += P.ToMM(t.GetLength()) if t.GetWidth() >= P.FromMM(AUX_W) else 0.0
     per = {k: {x: round(v, 3) for x, v in d.items()} for k, d in sorted(per.items())}
-    drc_ = json.loads((OUT / "drc-step3.json").read_text(encoding="utf-8"))
-    routes = json.loads((OUT / "step3-routes.json").read_text(encoding="utf-8"))
+    drc_ = json.loads((OUT / "drc-step4.json").read_text(encoding="utf-8"))
+    routes = json.loads((OUT / "step4-routes.json").read_text(encoding="utf-8"))
     pairs = []
     for u in drc_["unconnected_items"]:
         pairs.append([i["description"] for i in u["items"]])
-    out = {"kicad": P.GetBuildVersion(), "method": "Pad-centre straight distances and summed track lengths from the saved board; geometry only.", "probe_gnd_roles": roles, "fra_pads": fra, "held_for_hv_rule": list(STEP4_HOLD), "router_failed": routes["failed"], "connections_routed": len(routes["routed"]), "net_copper": per, "open_pairs": pairs}
+    geo = Geo(b)
+    local = {f"{u_}->{v_}": local_path(geo, u_, v_) for u_, v_ in LOCAL_PATHS}
+    for row in local.values():
+        row["straight_mm"] = None
+    for u_, v_ in LOCAL_PATHS:
+        local[f"{u_}->{v_}"]["straight_mm"] = round(math.dist(pos[u_], pos[v_]), 3)
+    gnd_tp = {r_: pos[r_] for r_ in pos if r_.startswith("TP_GND")}
+    gnd_pads = {f"{q_['ref']}.{q_['pin']}": centre(q_) for q_ in geo.pads if q_["net"] == "/GND" and not q_["ref"].startswith(("TP_", "U", "J", "Q"))}
+    probe = {}
+    for t_ in ("TP_OVP_Q.1", "TP_OC_SENSE1.1"):
+        near_ = sorted(gnd_tp, key=lambda k_: math.dist(gnd_tp[k_], pos[t_]))[:2]
+        pad_ = min(gnd_pads, key=lambda k_: math.dist(gnd_pads[k_], pos[t_]))
+        probe[t_] = {"xy_mm": [round(v_, 3) for v_ in pos[t_]], "nearest_probe_gnd": [[k_, round(math.dist(gnd_tp[k_], pos[t_]), 3)] for k_ in near_], "nearest_gnd_passive_pad": [pad_, round(math.dist(gnd_pads[pad_], pos[t_]), 3)]}
+    out = {"kicad": P.GetBuildVersion(), "method": "Pad-centre straight distances and summed track lengths from the saved board; geometry only.", "probe_gnd_roles": roles, "fra_pads": fra, "held_for_hv_rule": list(STEP4_HOLD), "router_failed": routes["failed"], "connections_routed": len(routes["routed"]), "net_copper": per, "open_pairs": pairs, "local_paths_mm": local, "probe_gnd_options": probe}
+    critical = {"kicad": out["kicad"], "method": "Layered shortest path over track centre lines and vias (zones are not traversed); not a current-density or SI result.", "local_paths_mm": local}
+    with (OUT / "critical-lengths.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump(critical, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    with (OUT / "signal-route-audit.json").open("w", encoding="utf-8", newline="\n") as f:
+        json.dump({"kicad": out["kicad"], "open_pairs": pairs, "router_failed": routes["failed"], "connections_routed": len(routes["routed"]), "net_copper": per}, f, indent=1, ensure_ascii=False)
+        f.write("\n")
     with (OUT / "step4-audit.json").open("w", encoding="utf-8", newline="\n") as f:
         json.dump(out, f, indent=1, ensure_ascii=False)
         f.write("\n")

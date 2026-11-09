@@ -1,0 +1,226 @@
+{
+ "kicad": "10.0.7",
+ "step1_baseline": {
+  "errors": 0,
+  "unconnected_pairs": 199,
+  "schematic_parity_issues": 0
+ },
+ "after": {
+  "errors": 0,
+  "by_type": {
+   "warning:via_dangling": 6
+  },
+  "schematic_parity_issues": 0,
+  "unconnected_pairs": 0,
+  "pairs_by_net": {}
+ },
+ "new_opens_vs_step1": {},
+ "new_opens_vs_step2": {},
+ "router": {
+  "grid_mm": 0.15,
+  "route_width_mm": 0.25,
+  "connections_routed": 91,
+  "connections_failed": []
+ },
+ "nets": {
+  "/FB": {
+   "open_pairs": 0,
+   "track_mm": 9.26,
+   "layers": [
+    "F"
+   ],
+   "vias": 0,
+   "min_distance_to_sw_pad_mm": 1.27,
+   "min_distance_to_sw_copper_outline_mm": 2.95
+  },
+  "/FB_TRIM": {
+   "open_pairs": 0,
+   "track_mm": 1.55,
+   "layers": [
+    "F"
+   ],
+   "vias": 0,
+   "min_distance_to_sw_pad_mm": 5.62,
+   "min_distance_to_sw_copper_outline_mm": 7.35
+  },
+  "/FB_INJ": {
+   "open_pairs": 0,
+   "track_mm": 55.4,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 4,
+   "min_distance_to_sw_pad_mm": 2.18,
+   "min_distance_to_sw_copper_outline_mm": 3.87
+  },
+  "/COMP": {
+   "open_pairs": 0,
+   "track_mm": 130.1,
+   "layers": [
+    "F"
+   ],
+   "vias": 0,
+   "min_distance_to_sw_pad_mm": 1.76,
+   "min_distance_to_sw_copper_outline_mm": 3.08
+  },
+  "/COMP_MID": {
+   "open_pairs": 0,
+   "track_mm": 1.8,
+   "layers": [
+    "F"
+   ],
+   "vias": 0,
+   "min_distance_to_sw_pad_mm": 6.28,
+   "min_distance_to_sw_copper_outline_mm": 13.08
+  },
+  "/OVP_SENSE": {
+   "open_pairs": 0,
+   "track_mm": 110.17,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 9,
+   "min_distance_to_sw_pad_mm": 28.15,
+   "min_distance_to_sw_copper_outline_mm": 33.92
+  },
+  "/OVP_REF": {
+   "open_pairs": 0,
+   "track_mm": 52.98,
+   "layers": [
+    "F"
+   ],
+   "vias": 0,
+   "min_distance_to_sw_pad_mm": 14.96,
+   "min_distance_to_sw_copper_outline_mm": 22.56
+  },
+  "/OVP_TRIP_N": {
+   "open_pairs": 0,
+   "track_mm": 156.44,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 7,
+   "min_distance_to_sw_pad_mm": 32.8,
+   "min_distance_to_sw_copper_outline_mm": 34.99
+  },
+  "/OVP_Q": {
+   "open_pairs": 0,
+   "track_mm": 25.59,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 2,
+   "min_distance_to_sw_pad_mm": 48.84,
+   "min_distance_to_sw_copper_outline_mm": 55.39
+  },
+  "/OVP_BUS_N": {
+   "open_pairs": 0,
+   "track_mm": 92.75,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 4,
+   "min_distance_to_sw_pad_mm": 29.35,
+   "min_distance_to_sw_copper_outline_mm": 31.5
+  },
+  "/OC_SENSE1": {
+   "open_pairs": 0,
+   "track_mm": 10.24,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 2,
+   "min_distance_to_sw_pad_mm": 13.42,
+   "min_distance_to_sw_copper_outline_mm": 13.61
+  },
+  "/OC_SENSE2": {
+   "open_pairs": 0,
+   "track_mm": 12.32,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 2,
+   "min_distance_to_sw_pad_mm": 10.47,
+   "min_distance_to_sw_copper_outline_mm": 10.47
+  },
+  "/OC_REF": {
+   "open_pairs": 0,
+   "track_mm": 114.97,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 2,
+   "min_distance_to_sw_pad_mm": 9.9,
+   "min_distance_to_sw_copper_outline_mm": 9.9
+  },
+  "/OC_TRIP1_N": {
+   "open_pairs": 0,
+   "track_mm": 72.83,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 8,
+   "min_distance_to_sw_pad_mm": 7.05,
+   "min_distance_to_sw_copper_outline_mm": 7.05
+  },
+  "/OC_TRIP2_N": {
+   "open_pairs": 0,
+   "track_mm": 86.22,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 6,
+   "min_distance_to_sw_pad_mm": 13.35,
+   "min_distance_to_sw_copper_outline_mm": 13.35
+  },
+  "/CLR_N": {
+   "open_pairs": 0,
+   "track_mm": 130.25,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 13,
+   "min_distance_to_sw_pad_mm": 29.4,
+   "min_distance_to_sw_copper_outline_mm": 36.5
+  },
+  "/ISO_EN": {
+   "open_pairs": 0,
+   "track_mm": 21.7,
+   "layers": [
+    "F"
+   ],
+   "vias": 0,
+   "min_distance_to_sw_pad_mm": 35.16,
+   "min_distance_to_sw_copper_outline_mm": 41.27
+  },
+  "/ISO_OV": {
+   "open_pairs": 0,
+   "track_mm": 106.75,
+   "layers": [
+    "B",
+    "F"
+   ],
+   "vias": 5,
+   "min_distance_to_sw_pad_mm": 18.73,
+   "min_distance_to_sw_copper_outline_mm": 20.81
+  }
+ },
+ "gnd": {
+  "new_vias": 38,
+  "no_position": [],
+  "searched_paths": 2,
+  "pads_not_on_L2": []
+ },
+ "l2_islands": 1
+}

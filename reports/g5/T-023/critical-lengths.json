@@ -1,0 +1,126 @@
+{
+ "kicad": "10.0.7",
+ "method": "Layered shortest path over track centre lines and vias (zones are not traversed); not a current-density or SI result.",
+ "local_paths_mm": {
+  "U1.18->CVDDA1.1": {
+   "net": "/VDDA1",
+   "path_mm": 4.516,
+   "net_vias": 8,
+   "straight_mm": 3.843
+  },
+  "U2.18->CVDDA2.1": {
+   "net": "/VDDA2",
+   "path_mm": 17.855,
+   "net_vias": 2,
+   "straight_mm": 4.442
+  },
+  "U1.19->CVCC1.1": {
+   "net": "/VCC1",
+   "path_mm": 8.398,
+   "net_vias": 2,
+   "straight_mm": 8.143
+  },
+  "U2.19->CVCC2.1": {
+   "net": "/VCC2",
+   "path_mm": 12.256,
+   "net_vias": 2,
+   "straight_mm": 9.843
+  },
+  "U1.4->RBOOT1.2": {
+   "net": "/CBOOT1",
+   "path_mm": 1.564,
+   "net_vias": 0,
+   "straight_mm": 2.225
+  },
+  "RBOOT1.1->CBOOT1.1": {
+   "net": "/CBOOT_R1",
+   "path_mm": 0.707,
+   "net_vias": 0,
+   "straight_mm": 1.615
+  },
+  "CBOOT1.2->U1.5": {
+   "net": "/SW4_PH1",
+   "path_mm": 2.087,
+   "net_vias": 0,
+   "straight_mm": 2.386
+  },
+  "U2.4->RBOOT2.2": {
+   "net": "/CBOOT2",
+   "path_mm": 0.901,
+   "net_vias": 0,
+   "straight_mm": 1.588
+  },
+  "RBOOT2.1->CBOOT2.1": {
+   "net": "/CBOOT_R2",
+   "path_mm": 0.65,
+   "net_vias": 0,
+   "straight_mm": 1.551
+  },
+  "CBOOT2.2->U2.5": {
+   "net": "/SW4_PH2",
+   "path_mm": 1.44,
+   "net_vias": 0,
+   "straight_mm": 2.05
+  },
+  "U1.14->RT1.1": {
+   "net": "/RT_PH1",
+   "path_mm": 8.991,
+   "net_vias": 0,
+   "straight_mm": 6.914
+  },
+  "U1.13->RCFG1.1": {
+   "net": "/CFG_PRI",
+   "path_mm": 3.958,
+   "net_vias": 0,
+   "straight_mm": 2.921
+  },
+  "U2.14->RT2.1": {
+   "net": "/RT_PH2",
+   "path_mm": 2.361,
+   "net_vias": 0,
+   "straight_mm": 3.14
+  },
+  "U2.13->RCFG2.1": {
+   "net": "/CFG_SEC",
+   "path_mm": 3.994,
+   "net_vias": 0,
+   "straight_mm": 3.572
+  },
+  "U5.5->Q1.4": {
+   "net": "/GATE",
+   "path_mm": 12.169,
+   "net_vias": 0,
+   "straight_mm": 9.286
+  },
+  "U5.1->CVCAP.1": {
+   "net": "/VCAP",
+   "path_mm": 28.759,
+   "net_vias": 2,
+   "straight_mm": 26.629
+  },
+  "U3.15->CDVDT1.1": {
+   "net": "/DVDT_O1",
+   "path_mm": 38.05,
+   "net_vias": 6,
+   "straight_mm": 24.008
+  },
+  "U4.15->CDVDT2.1": {
+   "net": "/DVDT_S2E",
+   "path_mm": 69.651,
+   "net_vias": 6,
+   "straight_mm": 23.427
+  },
+  "U4.8->RILIM2.1": {
+   "net": "/ILIM_S2E",
+   "path_mm": 6.366,
+   "net_vias": 0,
+   "straight_mm": 6.608
+  },
+  "U3.8->RILIM1.1": {
+   "net": "/ILIM_O1",
+   "path_mm": 32.104,
+   "net_vias": 2,
+   "straight_mm": 26.82
+  }
+ }
+}

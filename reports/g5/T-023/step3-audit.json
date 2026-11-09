@@ -11,21 +11,40 @@
    "warning:via_dangling": 6
   },
   "schematic_parity_issues": 0,
-  "unconnected_pairs": 14,
+  "unconnected_pairs": 68,
   "pairs_by_net": {
    "/CBOOT1": 1,
+   "/CBOOT2": 1,
+   "/CBOOT_R1": 1,
+   "/CBOOT_R2": 1,
    "/CFG_PRI": 1,
    "/CFG_SEC": 1,
    "/DVDT_O1": 1,
    "/DVDT_S2E": 1,
+   "/EN_BUCK": 5,
+   "/EN_EFUSE": 3,
    "/GATE": 1,
-   "/IMON_O1": 1,
+   "/ILIM_O1": 1,
+   "/ILIM_S2E": 1,
+   "/IMON_O1": 2,
    "/IMON_S2E": 2,
+   "/ISO_VCAP": 1,
    "/LDO_DELAY": 1,
-   "/P5V_PROT": 1,
-   "/PG_O1": 1,
+   "/P5V_PROT": 22,
+   "/PG_O1": 3,
+   "/PG_S2E": 3,
+   "/REF_NR": 1,
    "/RT_PH1": 1,
-   "/VCC1": 1
+   "/RT_PH2": 1,
+   "/SW4_PH1": 1,
+   "/SW4_PH2": 1,
+   "/SYNC": 2,
+   "/VCAP": 1,
+   "/VCC1": 1,
+   "/VCC2": 1,
+   "/VDDA1": 2,
+   "/VDDA2": 1,
+   "/VOUT": 2
   }
  },
  "new_opens_vs_step1": {},
@@ -33,64 +52,8 @@
  "router": {
   "grid_mm": 0.15,
   "route_width_mm": 0.25,
-  "connections_routed": 90,
-  "connections_failed": [
-   {
-    "net": "/VCC1",
-    "pin": "CVCC1.1",
-    "why": "no route (555834 expansions)"
-   },
-   {
-    "net": "/RT_PH1",
-    "pin": "RT1.1",
-    "why": "no route (7 expansions)"
-   },
-   {
-    "net": "/CBOOT1",
-    "pin": "RBOOT1.2",
-    "why": "no route (2 expansions)"
-   },
-   {
-    "net": "/LDO_DELAY",
-    "pin": "U10.7",
-    "why": "no route (591213 expansions)"
-   },
-   {
-    "net": "/CFG_PRI",
-    "pin": "RCFG1.1",
-    "why": "no free grid cell at the pad"
-   },
-   {
-    "net": "/CFG_SEC",
-    "pin": "RCFG2.1",
-    "why": "no free grid cell at the pad"
-   },
-   {
-    "net": "/IMON_S2E",
-    "pin": "RIMON2.1",
-    "why": "no route (63 expansions)"
-   },
-   {
-    "net": "/IMON_S2E",
-    "pin": "TP_IMON_S2E.1",
-    "why": "no route (63 expansions)"
-   },
-   {
-    "net": "/IMON_O1",
-    "pin": "U3.9",
-    "why": "no route (554849 expansions)"
-   },
-   {
-    "net": "/P5V_PROT",
-    "pin": "U10.1",
-    "why": "no route (535525 expansions)"
-   },
-   {
-    "net": "/PG_O1",
-    "pin": "U3.13",
-    "why": "no route (506987 expansions)"
-   }
-  ]
+  "connections_routed": 38,
+  "connections_failed": []
  },
  "nets": {
   "/FB": {
@@ -115,14 +78,14 @@
   },
   "/FB_INJ": {
    "open_pairs": 0,
-   "track_mm": 57.97,
+   "track_mm": 108.92,
    "layers": [
     "B",
     "F"
    ],
-   "vias": 4,
-   "min_distance_to_sw_pad_mm": 2.18,
-   "min_distance_to_sw_copper_outline_mm": 3.87
+   "vias": 2,
+   "min_distance_to_sw_pad_mm": 3.97,
+   "min_distance_to_sw_copper_outline_mm": 7.08
   },
   "/COMP": {
    "open_pairs": 0,
@@ -146,72 +109,72 @@
   },
   "/OVP_SENSE": {
    "open_pairs": 0,
-   "track_mm": 88.33,
+   "track_mm": 91.01,
    "layers": [
     "B",
     "F"
    ],
    "vias": 8,
-   "min_distance_to_sw_pad_mm": 29.57,
-   "min_distance_to_sw_copper_outline_mm": 38.11
+   "min_distance_to_sw_pad_mm": 30.22,
+   "min_distance_to_sw_copper_outline_mm": 36.05
   },
   "/OVP_REF": {
    "open_pairs": 0,
-   "track_mm": 52.98,
+   "track_mm": 40.44,
    "layers": [
     "F"
    ],
    "vias": 0,
-   "min_distance_to_sw_pad_mm": 12.79,
-   "min_distance_to_sw_copper_outline_mm": 22.56
+   "min_distance_to_sw_pad_mm": 25.68,
+   "min_distance_to_sw_copper_outline_mm": 35.49
   },
   "/OVP_TRIP_N": {
    "open_pairs": 0,
-   "track_mm": 93.51,
+   "track_mm": 84.65,
    "layers": [
     "B",
     "F"
    ],
    "vias": 6,
-   "min_distance_to_sw_pad_mm": 21.41,
-   "min_distance_to_sw_copper_outline_mm": 30.51
+   "min_distance_to_sw_pad_mm": 26.86,
+   "min_distance_to_sw_copper_outline_mm": 34.16
   },
   "/OVP_Q": {
    "open_pairs": 0,
-   "track_mm": 138.17,
+   "track_mm": 137.57,
    "layers": [
     "B",
     "F"
    ],
-   "vias": 13,
-   "min_distance_to_sw_pad_mm": 9.15,
-   "min_distance_to_sw_copper_outline_mm": 9.15
+   "vias": 10,
+   "min_distance_to_sw_pad_mm": 8.4,
+   "min_distance_to_sw_copper_outline_mm": 8.4
   },
   "/OVP_BUS_N": {
    "open_pairs": 0,
-   "track_mm": 92.75,
+   "track_mm": 91.65,
    "layers": [
     "B",
     "F"
    ],
-   "vias": 4,
+   "vias": 2,
    "min_distance_to_sw_pad_mm": 29.35,
    "min_distance_to_sw_copper_outline_mm": 31.5
   },
   "/OC_SENSE1": {
    "open_pairs": 0,
-   "track_mm": 10.84,
+   "track_mm": 10.24,
    "layers": [
     "B",
     "F"
    ],
    "vias": 2,
    "min_distance_to_sw_pad_mm": 13.42,
-   "min_distance_to_sw_copper_outline_mm": 13.51
+   "min_distance_to_sw_copper_outline_mm": 13.61
   },
   "/OC_SENSE2": {
    "open_pairs": 0,
-   "track_mm": 12.32,
+   "track_mm": 13.02,
    "layers": [
     "B",
     "F"
@@ -222,29 +185,29 @@
   },
   "/OC_REF": {
    "open_pairs": 0,
-   "track_mm": 114.82,
+   "track_mm": 117.42,
    "layers": [
     "B",
     "F"
    ],
    "vias": 2,
-   "min_distance_to_sw_pad_mm": 10.05,
-   "min_distance_to_sw_copper_outline_mm": 10.05
+   "min_distance_to_sw_pad_mm": 9.9,
+   "min_distance_to_sw_copper_outline_mm": 9.9
   },
   "/OC_TRIP1_N": {
    "open_pairs": 0,
-   "track_mm": 68.02,
+   "track_mm": 67.64,
    "layers": [
     "B",
     "F"
    ],
    "vias": 6,
-   "min_distance_to_sw_pad_mm": 7.05,
-   "min_distance_to_sw_copper_outline_mm": 7.05
+   "min_distance_to_sw_pad_mm": 6.9,
+   "min_distance_to_sw_copper_outline_mm": 6.9
   },
   "/OC_TRIP2_N": {
    "open_pairs": 0,
-   "track_mm": 85.87,
+   "track_mm": 86.84,
    "layers": [
     "B",
     "F"
@@ -255,18 +218,18 @@
   },
   "/CLR_N": {
    "open_pairs": 0,
-   "track_mm": 130.02,
+   "track_mm": 131.23,
    "layers": [
     "B",
     "F"
    ],
-   "vias": 12,
+   "vias": 10,
    "min_distance_to_sw_pad_mm": 27.07,
-   "min_distance_to_sw_copper_outline_mm": 36.5
+   "min_distance_to_sw_copper_outline_mm": 36.4
   },
   "/ISO_EN": {
    "open_pairs": 0,
-   "track_mm": 23.68,
+   "track_mm": 22.8,
    "layers": [
     "B",
     "F"
@@ -277,20 +240,20 @@
   },
   "/ISO_OV": {
    "open_pairs": 0,
-   "track_mm": 107.11,
+   "track_mm": 108.65,
    "layers": [
     "B",
     "F"
    ],
-   "vias": 5,
+   "vias": 6,
    "min_distance_to_sw_pad_mm": 18.73,
    "min_distance_to_sw_copper_outline_mm": 20.81
   }
  },
  "gnd": {
-  "new_vias": 50,
+  "new_vias": 59,
   "no_position": [],
-  "searched_paths": 5,
+  "searched_paths": 4,
   "pads_not_on_L2": []
  },
  "l2_islands": 1

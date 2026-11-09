@@ -31,7 +31,7 @@
     "TP_OVP_SENSE.1": 4.53,
     "TP_OVP_BUS_N.1": 4.846,
     "TP_OVP_TRIP_N.1": 5.883,
-    "TP_OVP_Q.1": 86.897,
+    "TP_OVP_Q.1": 54.653,
     "TP_VSAFE.1": 11.917,
     "TP_VOUT.1": 15.94
    }
@@ -50,92 +50,47 @@
   "TP_FB_INJ_A-R_INJ.1": 2.115,
   "TP_FB_INJ_B-R_INJ.2": 2.235
  },
- "held_for_hv_rule": [
-  "/GATE",
-  "/DVDT_O1",
-  "/DVDT_S2E"
- ],
- "router_failed": [
-  {
-   "net": "/VCC1",
-   "pin": "CVCC1.1",
-   "why": "no route (555834 expansions)"
-  },
-  {
-   "net": "/RT_PH1",
-   "pin": "RT1.1",
-   "why": "no route (7 expansions)"
-  },
-  {
-   "net": "/CBOOT1",
-   "pin": "RBOOT1.2",
-   "why": "no route (2 expansions)"
-  },
-  {
-   "net": "/LDO_DELAY",
-   "pin": "U10.7",
-   "why": "no route (591213 expansions)"
-  },
-  {
-   "net": "/CFG_PRI",
-   "pin": "RCFG1.1",
-   "why": "no free grid cell at the pad"
-  },
-  {
-   "net": "/CFG_SEC",
-   "pin": "RCFG2.1",
-   "why": "no free grid cell at the pad"
-  },
-  {
-   "net": "/IMON_S2E",
-   "pin": "RIMON2.1",
-   "why": "no route (63 expansions)"
-  },
-  {
-   "net": "/IMON_S2E",
-   "pin": "TP_IMON_S2E.1",
-   "why": "no route (63 expansions)"
-  },
-  {
-   "net": "/IMON_O1",
-   "pin": "U3.9",
-   "why": "no route (554849 expansions)"
-  },
-  {
-   "net": "/P5V_PROT",
-   "pin": "U10.1",
-   "why": "no route (535525 expansions)"
-  },
-  {
-   "net": "/PG_O1",
-   "pin": "U3.13",
-   "why": "no route (506987 expansions)"
-  }
- ],
- "connections_routed": 90,
+ "held_for_hv_rule": [],
+ "router_failed": [],
+ "connections_routed": 91,
  "net_copper": {
+  "/CBOOT1": {
+   "mm": 1.564,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
   "/CBOOT2": {
-   "mm": 26.697,
-   "wide_mm": 24.411,
-   "vias": 2
+   "mm": 0.901,
+   "wide_mm": 0.0,
+   "vias": 0
   },
   "/CBOOT_R1": {
-   "mm": 6.329,
-   "wide_mm": 5.297,
+   "mm": 0.707,
+   "wide_mm": 0.0,
    "vias": 0
   },
   "/CBOOT_R2": {
-   "mm": 4.477,
-   "wide_mm": 3.45,
+   "mm": 0.65,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/CFG_PRI": {
+   "mm": 3.958,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/CFG_SEC": {
+   "mm": 3.994,
+   "wide_mm": 0.0,
    "vias": 0
   },
   "/CLR_N": {
-   "mm": 130.024,
+   "mm": 130.248,
    "wide_mm": 0.0,
-   "vias": 12
+   "vias": 13
   },
   "/COMP": {
-   "mm": 130.581,
+   "mm": 130.101,
    "wide_mm": 0.0,
    "vias": 0
   },
@@ -144,23 +99,33 @@
    "wide_mm": 0.0,
    "vias": 0
   },
-  "/EN_BUCK": {
-   "mm": 199.418,
+  "/DVDT_O1": {
+   "mm": 38.525,
    "wide_mm": 0.0,
-   "vias": 19
+   "vias": 6
+  },
+  "/DVDT_S2E": {
+   "mm": 70.126,
+   "wide_mm": 0.0,
+   "vias": 6
+  },
+  "/EN_BUCK": {
+   "mm": 164.503,
+   "wide_mm": 0.0,
+   "vias": 10
   },
   "/EN_EFUSE": {
-   "mm": 48.712,
+   "mm": 49.553,
    "wide_mm": 0.0,
    "vias": 2
   },
   "/FB": {
-   "mm": 8.9,
+   "mm": 9.256,
    "wide_mm": 0.0,
    "vias": 0
   },
   "/FB_INJ": {
-   "mm": 57.97,
+   "mm": 55.405,
    "wide_mm": 0.0,
    "vias": 4
   },
@@ -169,43 +134,58 @@
    "wide_mm": 0.0,
    "vias": 0
   },
+  "/GATE": {
+   "mm": 12.594,
+   "wide_mm": 11.387,
+   "vias": 0
+  },
   "/ILIM_O1": {
-   "mm": 34.162,
+   "mm": 32.651,
    "wide_mm": 0.0,
    "vias": 2
   },
   "/ILIM_S2E": {
-   "mm": 39.365,
+   "mm": 6.366,
    "wide_mm": 0.0,
-   "vias": 2
+   "vias": 0
   },
   "/IMON_O1": {
-   "mm": 109.828,
+   "mm": 114.837,
    "wide_mm": 0.0,
-   "vias": 8
+   "vias": 9
+  },
+  "/IMON_S2E": {
+   "mm": 117.19,
+   "wide_mm": 0.0,
+   "vias": 7
   },
   "/ISO_EN": {
-   "mm": 23.678,
+   "mm": 21.701,
    "wide_mm": 0.0,
-   "vias": 2
+   "vias": 0
   },
   "/ISO_OV": {
-   "mm": 107.114,
+   "mm": 106.752,
    "wide_mm": 0.0,
    "vias": 5
   },
   "/ISO_VCAP": {
-   "mm": 7.232,
-   "wide_mm": 4.92,
+   "mm": 7.532,
+   "wide_mm": 5.432,
+   "vias": 2
+  },
+  "/LDO_DELAY": {
+   "mm": 12.928,
+   "wide_mm": 0.0,
    "vias": 2
   },
   "/OC_REF": {
-   "mm": 114.817,
+   "mm": 114.967,
    "wide_mm": 0.0,
    "vias": 2
   },
   "/OC_SENSE1": {
-   "mm": 10.843,
+   "mm": 10.243,
    "wide_mm": 0.0,
    "vias": 2
   },
@@ -215,12 +195,12 @@
    "vias": 2
   },
   "/OC_TRIP1_N": {
-   "mm": 68.017,
+   "mm": 72.832,
    "wide_mm": 0.0,
-   "vias": 6
+   "vias": 8
   },
   "/OC_TRIP2_N": {
-   "mm": 85.869,
+   "mm": 86.22,
    "wide_mm": 0.0,
    "vias": 6
   },
@@ -230,9 +210,9 @@
    "vias": 4
   },
   "/OVP_Q": {
-   "mm": 138.166,
+   "mm": 25.591,
    "wide_mm": 0.0,
-   "vias": 13
+   "vias": 2
   },
   "/OVP_REF": {
    "mm": 52.98,
@@ -240,27 +220,27 @@
    "vias": 0
   },
   "/OVP_SENSE": {
-   "mm": 88.327,
+   "mm": 110.173,
    "wide_mm": 0.0,
-   "vias": 8
+   "vias": 9
   },
   "/OVP_TRIP_N": {
-   "mm": 93.507,
+   "mm": 156.44,
+   "wide_mm": 0.0,
+   "vias": 7
+  },
+  "/P5V_PROT": {
+   "mm": 250.399,
+   "wide_mm": 0.0,
+   "vias": 26
+  },
+  "/PG_O1": {
+   "mm": 148.534,
    "wide_mm": 0.0,
    "vias": 6
   },
-  "/P5V_PROT": {
-   "mm": 252.834,
-   "wide_mm": 0.0,
-   "vias": 30
-  },
-  "/PG_O1": {
-   "mm": 129.653,
-   "wide_mm": 0.0,
-   "vias": 12
-  },
   "/PG_S2E": {
-   "mm": 59.828,
+   "mm": 66.266,
    "wide_mm": 0.0,
    "vias": 4
   },
@@ -269,103 +249,220 @@
    "wide_mm": 0.0,
    "vias": 0
   },
+  "/RT_PH1": {
+   "mm": 8.991,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
   "/RT_PH2": {
-   "mm": 8.514,
+   "mm": 2.361,
    "wide_mm": 0.0,
    "vias": 0
   },
   "/SW4_PH1": {
-   "mm": 6.056,
-   "wide_mm": 4.123,
-   "vias": 2
-  },
-  "/SW4_PH2": {
-   "mm": 34.01,
-   "wide_mm": 30.81,
-   "vias": 2
-  },
-  "/SYNC": {
-   "mm": 129.851,
+   "mm": 2.087,
    "wide_mm": 0.0,
-   "vias": 10
-  },
-  "/VCAP": {
-   "mm": 31.511,
-   "wide_mm": 30.267,
    "vias": 0
   },
+  "/SW4_PH2": {
+   "mm": 1.44,
+   "wide_mm": 0.0,
+   "vias": 0
+  },
+  "/SYNC": {
+   "mm": 126.096,
+   "wide_mm": 0.0,
+   "vias": 11
+  },
+  "/VCAP": {
+   "mm": 29.896,
+   "wide_mm": 28.652,
+   "vias": 2
+  },
+  "/VCC1": {
+   "mm": 9.179,
+   "wide_mm": 7.459,
+   "vias": 2
+  },
   "/VCC2": {
-   "mm": 12.882,
-   "wide_mm": 11.531,
+   "mm": 13.045,
+   "wide_mm": 11.344,
    "vias": 2
   },
   "/VDDA1": {
-   "mm": 71.562,
-   "wide_mm": 67.372,
-   "vias": 6
+   "mm": 69.355,
+   "wide_mm": 52.398,
+   "vias": 8
   },
   "/VDDA2": {
-   "mm": 62.077,
-   "wide_mm": 51.535,
-   "vias": 0
+   "mm": 18.701,
+   "wide_mm": 13.418,
+   "vias": 2
   }
  },
- "open_pairs": [
-  [
-   "4 için [/CBOOT1] U1 ayak F.Cu",
-   "2 için [/CBOOT1] RBOOT1 ayak F.Cu"
-  ],
-  [
-   "13 için [/CFG_PRI] U1 ayak F.Cu",
-   "1 için [/CFG_PRI] RCFG1 ayak F.Cu"
-  ],
-  [
-   "14 için [/RT_PH1] U1 ayak F.Cu",
-   "1 için [/RT_PH1] RT1 ayak F.Cu"
-  ],
-  [
-   "1 için [/VCC1] CVCC1 ayak F.Cu",
-   "19 için [/VCC1] U1 ayak F.Cu"
-  ],
-  [
-   "Yol [/P5V_PROT] B.Cu üzerinde, uzunluk 4.5000 mm",
-   "1 için [/P5V_PROT] U10 ayak F.Cu"
-  ],
-  [
-   "Yol [/PG_O1] B.Cu üzerinde, uzunluk 7.0004 mm",
-   "13 için [/PG_O1] U3 ayak F.Cu"
-  ],
-  [
-   "1 için [/IMON_S2E] TP_IMON_S2E ayak F.Cu",
-   "1 için [/IMON_S2E] RIMON2 ayak F.Cu"
-  ],
-  [
-   "1 için [/IMON_S2E] RIMON2 ayak F.Cu",
-   "9 için [/IMON_S2E] U4 ayak F.Cu"
-  ],
-  [
-   "15 için [/DVDT_S2E] U4 ayak F.Cu",
-   "1 için [/DVDT_S2E] CDVDT2 ayak F.Cu"
-  ],
-  [
-   "1 için [/LDO_DELAY] C_LDO_DELAY ayak F.Cu",
-   "7 için [/LDO_DELAY] U10 ayak F.Cu"
-  ],
-  [
-   "9 için [/IMON_O1] U3 ayak F.Cu",
-   "Yol [/IMON_O1] F.Cu üzerinde, uzunluk 0.4750 mm"
-  ],
-  [
-   "13 için [/CFG_SEC] U2 ayak F.Cu",
-   "1 için [/CFG_SEC] RCFG2 ayak F.Cu"
-  ],
-  [
-   "15 için [/DVDT_O1] U3 ayak F.Cu",
-   "1 için [/DVDT_O1] CDVDT1 ayak F.Cu"
-  ],
-  [
-   "4 için [/GATE] Q1 ayak F.Cu",
-   "5 için [/GATE] U5 ayak F.Cu"
-  ]
- ]
+ "open_pairs": [],
+ "local_paths_mm": {
+  "U1.18->CVDDA1.1": {
+   "net": "/VDDA1",
+   "path_mm": 4.516,
+   "net_vias": 8,
+   "straight_mm": 3.843
+  },
+  "U2.18->CVDDA2.1": {
+   "net": "/VDDA2",
+   "path_mm": 17.855,
+   "net_vias": 2,
+   "straight_mm": 4.442
+  },
+  "U1.19->CVCC1.1": {
+   "net": "/VCC1",
+   "path_mm": 8.398,
+   "net_vias": 2,
+   "straight_mm": 8.143
+  },
+  "U2.19->CVCC2.1": {
+   "net": "/VCC2",
+   "path_mm": 12.256,
+   "net_vias": 2,
+   "straight_mm": 9.843
+  },
+  "U1.4->RBOOT1.2": {
+   "net": "/CBOOT1",
+   "path_mm": 1.564,
+   "net_vias": 0,
+   "straight_mm": 2.225
+  },
+  "RBOOT1.1->CBOOT1.1": {
+   "net": "/CBOOT_R1",
+   "path_mm": 0.707,
+   "net_vias": 0,
+   "straight_mm": 1.615
+  },
+  "CBOOT1.2->U1.5": {
+   "net": "/SW4_PH1",
+   "path_mm": 2.087,
+   "net_vias": 0,
+   "straight_mm": 2.386
+  },
+  "U2.4->RBOOT2.2": {
+   "net": "/CBOOT2",
+   "path_mm": 0.901,
+   "net_vias": 0,
+   "straight_mm": 1.588
+  },
+  "RBOOT2.1->CBOOT2.1": {
+   "net": "/CBOOT_R2",
+   "path_mm": 0.65,
+   "net_vias": 0,
+   "straight_mm": 1.551
+  },
+  "CBOOT2.2->U2.5": {
+   "net": "/SW4_PH2",
+   "path_mm": 1.44,
+   "net_vias": 0,
+   "straight_mm": 2.05
+  },
+  "U1.14->RT1.1": {
+   "net": "/RT_PH1",
+   "path_mm": 8.991,
+   "net_vias": 0,
+   "straight_mm": 6.914
+  },
+  "U1.13->RCFG1.1": {
+   "net": "/CFG_PRI",
+   "path_mm": 3.958,
+   "net_vias": 0,
+   "straight_mm": 2.921
+  },
+  "U2.14->RT2.1": {
+   "net": "/RT_PH2",
+   "path_mm": 2.361,
+   "net_vias": 0,
+   "straight_mm": 3.14
+  },
+  "U2.13->RCFG2.1": {
+   "net": "/CFG_SEC",
+   "path_mm": 3.994,
+   "net_vias": 0,
+   "straight_mm": 3.572
+  },
+  "U5.5->Q1.4": {
+   "net": "/GATE",
+   "path_mm": 12.169,
+   "net_vias": 0,
+   "straight_mm": 9.286
+  },
+  "U5.1->CVCAP.1": {
+   "net": "/VCAP",
+   "path_mm": 28.759,
+   "net_vias": 2,
+   "straight_mm": 26.629
+  },
+  "U3.15->CDVDT1.1": {
+   "net": "/DVDT_O1",
+   "path_mm": 38.05,
+   "net_vias": 6,
+   "straight_mm": 24.008
+  },
+  "U4.15->CDVDT2.1": {
+   "net": "/DVDT_S2E",
+   "path_mm": 69.651,
+   "net_vias": 6,
+   "straight_mm": 23.427
+  },
+  "U4.8->RILIM2.1": {
+   "net": "/ILIM_S2E",
+   "path_mm": 6.366,
+   "net_vias": 0,
+   "straight_mm": 6.608
+  },
+  "U3.8->RILIM1.1": {
+   "net": "/ILIM_O1",
+   "path_mm": 32.104,
+   "net_vias": 2,
+   "straight_mm": 26.82
+  }
+ },
+ "probe_gnd_options": {
+  "TP_OVP_Q.1": {
+   "xy_mm": [
+    101.5,
+    62.6
+   ],
+   "nearest_probe_gnd": [
+    [
+     "TP_GND_FB.1",
+     41.515
+    ],
+    [
+     "TP_GND_OVP.1",
+     54.653
+    ]
+   ],
+   "nearest_gnd_passive_pad": [
+    "C_CMP.2",
+    5.537
+   ]
+  },
+  "TP_OC_SENSE1.1": {
+   "xy_mm": [
+    33.0,
+    59.5
+   ],
+   "nearest_probe_gnd": [
+    [
+     "TP_GND_POWER.1",
+     37.565
+    ],
+    [
+     "TP_GND_FB.1",
+     40.452
+    ]
+   ],
+   "nearest_gnd_passive_pad": [
+    "COUT1.2",
+    5.883
+   ]
+  }
+ }
 }

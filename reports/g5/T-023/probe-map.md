@@ -1,10 +1,10 @@
 # T-023 prob haritası
 
-**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `e5915d1dd819aa544001140b0381837c86902e825fc624cb29d2e975510facd8`. KiCad 10.0.7. Kart değişirse `--probe-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın.
+**Bu harita yalnız şu kart içeriği için geçerlidir.** `PDU.kicad_pcb` SHA-256 (satır sonu LF): `23e8ac027f76626ca5e5ceba96c44ac603c1a3eeeb46d881a2d80e0d15f5966c`. KiCad 10.0.7. Kart değişirse `--probe-map` ile yeniden üretin; SHA uyuşmuyorsa bu tabloyu kullanmayın.
 
 Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y yukarı. PCB: KiCad pafta koordinatı, D-006 x+30, 115−y. Mesafeler düz çizgidir.
 
-## Silk etiketi gizli test noktaları (9)
+## Silk etiketi gizli test noktaları (12)
 
 | Ref | Ağ | D-006 x ; y (mm) | PCB x ; y (mm) | Yüz | Pad Ø (mm) | En yakın prob GND |
 |---|---|---|---|---|---:|---|
@@ -13,10 +13,13 @@ Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y y
 | TP_FB_INJ_B | `/FB_INJ` | 68,400 ; 71,800 | 98,400 ; 43,200 | F | 1,0 | TP_GND_FB (11,98 mm) |
 | TP_GND_OC | `/GND` | 50,500 ; 22,000 | 80,500 ; 93,000 | F | 2,0 | TP_GND_OVP (27,2 mm) |
 | TP_GND_OVP | `/GND` | 76,500 ; 14,000 | 106,500 ; 101,000 | F | 2,0 | TP_GND_OC (27,2 mm) |
+| TP_ISNS1P | `/ISNS1` | 40,200 ; 67,600 | 70,200 ; 47,400 | F | 1,0 | TP_GND_FB (29,94 mm) |
 | TP_ISNS2N | `/VOUT` | 45,600 ; 19,600 | 75,600 ; 95,400 | F | 1,0 | TP_GND_OC (5,46 mm) |
 | TP_ISO_GATE | `/ISO_GATE` | 97,400 ; 44,600 | 127,400 ; 70,400 | F | 1,0 | TP_GND_OVP (37,06 mm) |
 | TP_OC_REF | `/OC_REF` | 47,600 ; 22,000 | 77,600 ; 93,000 | F | 1,0 | TP_GND_OC (2,9 mm) |
+| TP_OVP_Q | `/OVP_Q` | 101,500 ; 62,600 | 131,500 ; 52,400 | F | 1,0 | TP_GND_FB (41,52 mm) |
 | TP_OVP_REF | `/OVP_REF` | 68,400 ; 83,600 | 98,400 ; 31,400 | F | 1,0 | TP_GND_FB (2,8 mm) |
+| TP_SW1 | `/SW_PH1` | 45,400 ; 71,600 | 75,400 ; 43,400 | F | 1,0 | TP_GND_FB (23,42 mm) |
 
 ## Tüm test noktaları (36)
 
@@ -45,7 +48,7 @@ Koordinatlar pcbnew pad merkezinden betikle alındı. D-006: orijin sol alt, y y
 | TP_OC_SENSE1 | `/OC_SENSE1` | 33,000 ; 59,500 | 63,000 ; 55,500 | F | 1,0 | TP_GND_POWER (37,57 mm) |
 | TP_OC_SENSE2 | `/OC_SENSE2` | 38,500 ; 27,000 | 68,500 ; 88,000 | F | 1,0 | TP_GND_OC (13,0 mm) |
 | TP_OVP_BUS_N | `/OVP_BUS_N` | 71,699 ; 14,664 | 101,699 ; 100,336 | F | 1,0 | TP_GND_OVP (4,85 mm) |
-| TP_OVP_Q | `/OVP_Q` | 3,445 ; 61,054 | 33,445 ; 53,946 | F | 1,0 | TP_GND_POWER (26,54 mm) |
+| TP_OVP_Q | `/OVP_Q` | 101,500 ; 62,600 | 131,500 ; 52,400 | F | 1,0 | TP_GND_FB (41,52 mm) |
 | TP_OVP_REF | `/OVP_REF` | 68,400 ; 83,600 | 98,400 ; 31,400 | F | 1,0 | TP_GND_FB (2,8 mm) |
 | TP_OVP_SENSE | `/OVP_SENSE` | 80,981 ; 14,664 | 110,981 ; 100,336 | F | 1,0 | TP_GND_OVP (4,53 mm) |
 | TP_OVP_TRIP_N | `/OVP_TRIP_N` | 74,725 ; 19,609 | 104,725 ; 95,391 | F | 1,0 | TP_GND_OVP (5,88 mm) |
