@@ -1,0 +1,31 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * t-051 isolated dvdt behaviour run02
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 4015
+
+  Measurements for Transient Analysis
+
+t10                 =   1.77496e-04
+t90                 =   1.51746e-03
+vend                =  1.11605e+01 at=  2.67908e-03
+ipk                 =  6.66316e-01 at=  1.67344e-03
+
+
+Total analysis time (seconds) = 0.0194472
+
+Total elapsed time (seconds) = 0.025 
+
+Total DRAM available = 16306.379 MB.
+DRAM currently available = 6027.062 MB.
+Maximum ngspice program size =   10.289 MB.
+Current ngspice program size =   10.289 MB.
+
