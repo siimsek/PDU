@@ -29,6 +29,17 @@ Alternatif değerlendirmesi. Bire bir uyum kanıtlanmadan öneri değildir:
 
 Farklı üreticiden pin uyumlu parça bulunamadı; yeni bir parça şema/PCB değişikliği ve ayrı karar gerektirir.
 
+## S2 — 20 TDK kondansatör (R-026)
+
+Kayıt: [sourcing-s2.csv](sourcing-s2.csv), [gen_s2.py](gen_s2.py). 8 MPN, 2026-11-09. Sipariş veya teklif isteği yok.
+
+- 20 referansın hiçbiri için Türkiye stoğu doğrulanamadı; stok ve MOQ **AÇIK**.
+- 8 MPN TDK sayfasında `Production`, AEC-Q200 `NO`.
+- Ozdisan alan aramasında tam MPN sayfası çıkmadı. Bu, yokluk kanıtı değildir.
+- Ozdisan `C1608X7R1H104KT-L` sayfası: 100 nF 50 V ±%10 X7R 0603, üretici standart termini 5–6 hafta, gelecek stok yok. Stok sayısı okunmadı. BOM'daki `C1608X7R1H104K080AA` ile aynı sipariş kodu olduğu **doğrulanamadı**.
+- Aynı sayfanın "Benzer Ürünler" listesi onaylı alternatif değildir, deftere alternatif olarak yazılmadı.
+- mouser.com.tr arama sayfası bot koruması gösterdi; aşılmadı, veri alınmadı.
+
 ## Devam
 
 `coverage.json` grup listesi sırasıyla taranmalı; her satıra tarihli stok, MOQ ve kaynak yazılmalı. Satıcıdan yazılı teklif dış iletişim gerektirir ve bu kartta yapılmadı.
