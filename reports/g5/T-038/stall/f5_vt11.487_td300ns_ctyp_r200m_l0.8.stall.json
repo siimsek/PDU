@@ -1,0 +1,64 @@
+{
+ "corner": "f5_vt11.487_td300ns_ctyp_r200m_l0.8",
+ "deck_path": "reports/g2/sim/f5/f5_vt11.487_td300ns_ctyp_r200m_l0.8.cir",
+ "deck_sha256": "72736f77f27cba23f04adb1f56331f27c85d52a103671eb3fe2731ace49dba17",
+ "netlist_sha256": "f6351423677407fb24681c9299cd33340ad3620cdb9b14b7a5af7f4b927c8d31",
+ "simulator": "ngspice-47 : Circuit level simulation program",
+ "command": "-b -o f5_vt11.487_td300ns_ctyp_r200m_l0.8.diag.log -r f5_vt11.487_td300ns_ctyp_r200m_l0.8.raw f5_vt11.487_td300ns_ctyp_r200m_l0.8.cir",
+ "limit_s": 75,
+ "seconds": 75.01,
+ "exit": "timeout",
+ "points": 62976,
+ "t_last_s": 0.0002141142111914783,
+ "last_window_points": 3000,
+ "dt_min_s": 8.131516293641283e-20,
+ "dt_max_s": 2.5614276324970042e-17,
+ "t_span_of_window_s": 3.942294624428855e-15,
+ "raw_bytes": 100586120,
+ "raw_sha256": "a808d2fc75d059028ca59546401e91d8c05edfe7aa2a3f078b959b00fa41bf35",
+ "window_range": {
+  "v(ens)": [
+   0.5000000435438414,
+   0.500000045515376
+  ],
+  "v(ven)": [
+   1.001517941280018,
+   1.001653813208158
+  ],
+  "v(vin)": [
+   18.42793011955234,
+   18.43043016303011
+  ],
+  "v(q)": [
+   1.003111433648979,
+   1.003111433648979
+  ],
+  "v(ctl)": [
+   -2.166231995631744e-07,
+   -2.166231995631744e-07
+  ],
+  "v(vraw)": [
+   9.65892527074042,
+   24.19913960495205
+  ],
+  "v(vsafe)": [
+   10.78161467513231,
+   10.78161474404322
+  ],
+  "v(o1)": [
+   10.89338767115655,
+   10.89338767115847
+  ],
+  "i(vm1)": [
+   31.99170385820256,
+   31.99170387237663
+  ]
+ },
+ "sign_flips_in_window": {
+  "ens>0.5": 0,
+  "ven>VEN_R(1.0)": 0,
+  "ven>VEN_R-VEN_H(0.9)": 0,
+  "fault1>0.5": 0,
+  "q>0.5": 0
+ }
+}
