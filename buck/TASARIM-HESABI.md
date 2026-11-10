@@ -12,7 +12,7 @@ Güç katı için parçaların sağlaması gereken değerler:
 
 | Eleman | Değer | Akım | Gerilim | Diğer şartlar |
 |---|---|---|---|---|
-| L1 bobin | **33 µH** ±%20 | Isat ≥ 11,3 A, Irms ≥ 9,0 A | Anahtarlama düğümü 26 V | DCR ≤ 20 mΩ |
+| L1 bobin | **33 µH** ±%20 | Isat ≥ 13 A, Irms ≥ 9,0 A | Anahtarlama düğümü 26 V | DCR ≤ 20 mΩ |
 | Cout | **2 × 680 µF** (1360 µF), yanına 2 × 10 µF seramik | Her biri ≥ 0,35 A RMS | ≥ 35 V | Her birinin ESR'si ≤ 40 mΩ |
 | Cin | **2 × 220 µF** (440 µF), yanına 2 × 4,7 µF seramik | Her biri ≥ 1,88 A RMS | ≥ 50 V | Her birinin ESR'si ≤ 50 mΩ |
 | S1 MOSFET | Rds ≤ 30 mΩ, Qg ≤ 100 nC | 8,70 A tepe, 5,56 A RMS, Id ≥ 20 A seçilir | VDS ≥ 60 V | Toplam ısıl direnç ≤ 38,9 K/W |
@@ -23,11 +23,50 @@ Duty oranı Vin 20 / 22,2 / 26 V için ideal 0,550 / 0,495 / 0,423, kayıplı mo
 
 Gerilim sınıfları için çalışma geriliminin yaklaşık iki katı alındı, çünkü anahtarlama düğümünde ringing oluşur. Seramik kapasitör adetleri hesapla değil, yüksek frekans yolu için seçimle konuldu.
 
-**Henüz kesin olmayanlar:** S1'in P-MOS mu N-MOS mu olacağı, kapı sürücüsü, PWM üreteci, geri besleme ve yumuşak başlatma. Bunlar hocaya sorulacak sorulara bağlıdır (PROJE-TANIMI Bölüm 7) ve L ile C değerlerini değiştirmez.
+Bobin doyma şartı kalkış nedeniyle arttı: kararlı tepe 8,70 A iken LTspice'te ilk darbelerde akım 11,62 A'e çıkıyor. Şart %12 payla 13 A alındı.
 
-**Önemli sınır:** Tepe akım 8,70 A kararlı durum değeridir. Yumuşak başlatma olmadan ilk açılışta bobin akımı çok daha yükselir (PROJE-TANIMI T7).
+## 2. Kesin devre
 
-## 2. Seçeneklerin karşılaştırması
+**Kararlar:**
+
+- **S1 P-MOS.** Yüzen bootstrap beslemesi gerekmez, sürücü transistörlerle kurulur.
+- **Hazır buck, PWM kontrolcü veya sürücü entegresi yok.** Yalnız bir çift op-amp, bir çift karşılaştırıcı ve bir 2,5 V referans kullanılır.
+- **Gerilim modlu kontrol, Tip III kompanzasyon.** Tip II düşük ESR'de faz payını 0°'ye düşürdüğü için elendi.
+- **Korumalar yok.** Bu yüzden gerçek cihazlar bağlanmaz, testler güç direnciyle yapılır.
+
+Tüm devrenin netlisti: `buck/buck-tam.cir`. LTspice ile doğrudan açılır.
+
+| Blok | Eleman | Değer | Not |
+|---|---|---|---|
+| Yardımcı 11,3 V | Rv, Dv, Qv, Ccc | 2.2 kΩ, 12 V zener, NPN, 10 µF | Qv kaybı 0,44 W (30 mA varsayımı) |
+| Referans | Rr, Dr | 5.6 kΩ, 2,5 V şönt ±%1 | 1,57 mA |
+| Yumuşak başlatma | Rss, Css | 10 kΩ, 1 µF | τ = 10 ms |
+| Orta nokta | Rm1, Rm2, Cm | 10 kΩ, 10 kΩ, 100 nF | Vm = 5,65 V |
+| Üçgen üreteci | Ri, Ci | 8.66 kΩ, 1 nF C0G | Sim. yaklaşık 100 kHz, tezgâhta Ri ile ayarlanır |
+| Histerezis | Rh1, Rh2, Rpu | 27 kΩ, 100 kΩ, 1 kΩ | 4,12–7,18 V, 3,05 V tepe-tepe |
+| Geri besleme | R1, Rb | 34 kΩ, 10 kΩ, ±%0,1 | Vo = 11,0 V (10,87–11,13 V) |
+| Tip III | R2, C2, C1, R3, C3 | 33 kΩ, 10 nF, 47 pF, 2.2 kΩ, 10 nF | Kapasitörler C0G veya film |
+| PWM çıkışı | Rp, Rb2 | 2,2 kΩ, 1,2 kΩ | Baz 3,99 V |
+| Seviye kaydırıcı | QL, Re, Rup | NPN, 160 Ω, 620 Ω | 20,6 mA, Rup 0,15 W |
+| Totem sürücü | Qn, Qp, Rg, Rgs | NPN + PNP (≥ 2 A tepe, ≥ 40 V), 4,7 Ω, 10 kΩ | Kapı tepe yaklaşık 2,1 A |
+| Kapı rayı (Vin−12 V) | Rz, Dz, Crail | 330 Ω 1 W, 12 V 1 W zener, 1 µF | Rz 0,59 W, zener 0,51 W (26 V) |
+
+**Entegre şartları:** Op-amp GBW ≥ 5 MHz, yükselme ≥ 10 V/µs, en az 16 V besleme, girişi 0–5 V aralığını kapsamalı. Karşılaştırıcı açık kollektör, gecikme ≤ 150 ns, en az 16 V besleme. Karşılaştırıcı gecikmesi frekansı etkiler.
+
+**Kararlılık** (doğrusal model, 64 köşe: Vin, yük, ESR 7,5–40 mΩ, L ve C ±%20): nominal kesim 10,5 kHz ve faz payı 83°. En kötü durumda faz payı 49,5°, kazanç payı 15,0 dB, kesim 5,1–30,8 kHz.
+
+**LTspice tam devre** (kapalı çevrim, transistör seviyesi sürücü, genel MOSFET/BJT/diyot modelleri, davranışsal op-amp ve karşılaştırıcı; yük 7,5 A ↔ 0,75 A adımı):
+
+| Durum | Vo | ΔVo | IL tepe | Kalkış Vo tepe | Kalkış IL tepe | Yük düşünce Vo tepe | Yük binince Vo dip | Verim | f |
+|---|---|---|---|---|---|---|---|---|---|
+| 20 V, 7,5 A | 10,983 V | 46 mV | 8,32 A | 11,01 V | 9,50 A | 11,14 V | 10,85 V | %92,3 | 100.3 kHz |
+| 22,2 V, 7,5 A | 10,983 V | 51 mV | 8,41 A | 11,01 V | 10,38 A | 11,13 V | 10,87 V | %91,9 | 100.2 kHz |
+| 26 V, 7,5 A | 10,983 V | 56 mV | 8,59 A | 11,01 V | 11,62 A | 11,14 V | 10,85 V | %91,2 | 98.8 kHz |
+| 26 V, 0,75 A | 10,983 V | 50 mV | 1,79 A | 11,01 V | 11,62 A | 11,01 V | 10,98 V | %77,5 | 99.1 kHz |
+
+Tam yükte verim %91,2–92,3, kontrol devresi ve kaynak kaybı dahil. Çıkış tüm durumlarda 12 V'un altında, yük adımı ±%2 bandı içinde kalıyor. Transistör modelleri genel olduğundan bu sonuçlar parça seçilince yeniden koşulur.
+
+## 3. Seçeneklerin karşılaştırması
 
 Dört seçenek aynı girdiler ve aynı varsayımlarla hesaplandı. Çift fazda bobin başına DCR 40 mΩ alındı, böylece toplam bakır kaybı tek fazla eşit tutuldu.
 
@@ -64,7 +103,7 @@ Göreli maliyet tahmindir, teklif değildir. Parça seçilince gerçek fiyatla g
 - **SEPIC / buck-boost:** Çıkış her zaman girişten düşük olduğu için gerekmiyor. Anahtar 37 V ve yaklaşık 11,6 A görür, iki bobin ve ek kuplaj kapasitörü ister.
 - **Hazır modül veya buck entegresi:** Hocanın kararıyla kapsam dışı.
 
-## 3. Hesap adımları
+## 4. Hesap adımları
 
 **Varsayımlar** (parça seçilince gerçek değerlerle değişir): Vf = 0,6 V, Rds = 30 mΩ, DCR = 20 mΩ, kenar başına geçiş 60 ns, kaynak direnci 50 mΩ, ortam 50 °C, Tj üst sınırı 125 °C.
 
@@ -125,9 +164,9 @@ C ≥ Io·D(1−D) / (f·ΔV) = 187,5 µF  (100 mV için)
 
 Çekirdek kaybı, kapı sürme, ringing ve diyot toparlanması dahil değildir. Isıl dirençler `(125 − 50) / P` ile bulundu; FD ve S1 için soğutucu gerekir.
 
-## 4. LTspice doğrulaması
+## 5. Topoloji karşılaştırması için LTspice koşusu
 
-Devre: seçilen L ve C, ESR ve DCR, 50 mΩ kaynak direnci, 30 mΩ davranışsal anahtar, 0,6 V diyot. Anahtarlama kaybı modelde yoktur.
+Açık çevrim, duty elle verildi. Devre: seçilen L ve C, ESR ve DCR, 50 mΩ kaynak direnci, 30 mΩ davranışsal anahtar, 0,6 V diyot. Anahtarlama kaybı modelde yoktur.
 
 | Durum | Vo | ΔVo | ΔIL | Cin RMS | Verim (anahtarlama hariç) |
 |---|---|---|---|---|---|
@@ -143,6 +182,6 @@ Devre: seçilen L ve C, ESR ve DCR, 50 mΩ kaynak direnci, 30 mΩ davranışsal 
 - Cin RMS LTspice'te 2,50 A çıkıyor, hesapta 3,75 A. Modeldeki kaynak salt dirençtir ve akımın bir kısmını paylaşır. Gerçekte batarya kablosu endüktiftir, bu yüzden kapasitör 3,75 A'e göre seçilir.
 - Geri besleme yok, duty elle verildi. Bu nedenle Vo 11 V'un biraz altındadır.
 
-## 5. Sıradaki adım: parça seçimi
+## 6. Sıradaki adım: parça seçimi
 
-Bölüm 1'deki tablo, parça ararken filtre olarak kullanılır. Seçilen her parça için üretici verisindeki gerçek Vf, Rds, DCR, ESR ve geçiş süreleri `hesap.py` içine girilir, hesaplar ve LTspice yeniden koşulur.
+Bölüm 1 ve 2'deki tablolar parça ararken filtre olarak kullanılır. Seçilen her parça için üretici verisindeki gerçek Vf, Rds, DCR, ESR ve geçiş süreleri `hesap.py` ile `ltspice_tam.py` içine girilir, hesaplar ve LTspice yeniden koşulur.

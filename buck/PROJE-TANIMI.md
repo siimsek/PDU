@@ -1,6 +1,6 @@
 # Ayrık Buck Dönüştürücü: Proje Tanımı ve Çalışma Planı
 
-**Tarih:** 10 Kasım 2026. **Durum:** Aşama 0, ekip ve hoca onayı bekliyor.
+**Tarih:** 10 Kasım 2026. **Durum:** Tüm devre LTspice'te tasarlandı (Aşama 1–3). Sıradaki adım parça seçimi (Aşama 4).
 
 Bu belge projenin tek yön göstericisidir. Burada yazmayan bir şey eklenmez, sıradaki aşama onaylanmadan başlanmaz.
 
@@ -198,14 +198,15 @@ T8'de S1 ideal anahtar olduğu için anahtarlama kaybı yoktur. Kayıplar elle h
 - Hafif yükte çıkış 12,96 V'a çıkar (T6). Bu, O1'in 12 V sınırının üstündedir.
 - Sert kalkışta bobin akımı 50 A'yı geçer (T7), bobin doyar. Gerçek devre doğrudan bu şekilde açılmamalıdır.
 
-## 7. Hocaya sorulacaklar
+## 7. Verilen kararlar
 
-1. Hazır buck entegresi yasak, peki PWM üretecek bir entegre (TL494 gibi) veya mikrodenetleyici serbest mi?
-2. MOSFET sürücü entegresi serbest mi, yoksa sürücü de transistörlerle mi kurulacak?
-3. Op-amp ve karşılaştırıcı kullanılabilir mi?
-4. Hedef 11 V / 7 A olarak mı kalıyor, önce daha düşük akımla mı başlayalım?
-5. S1 için P-MOS mu, N-MOS mu bekleniyor? P-MOS yüksek taraf sürmeyi basitleştirir, N-MOS daha verimlidir ama kapı gerilimi girişin üstüne çıkmalıdır.
-6. Hesapta izlememizi istediği özel bir yöntem veya kaynak var mı?
+Hocaya gösterilip teyit almak yeterlidir. Cevap farklıysa yalnız ilgili blok değişir, bobin ve kapasitör değerleri kalır. Ayrıntı: TASARIM-HESABI.md Bölüm 2.
+
+1. PWM kontrolcü ve mikrodenetleyici yok. PWM op-amp ve karşılaştırıcı ile kurulur.
+2. MOSFET sürücü entegresi yok. Sürücü transistörlerle kurulur.
+3. Yalnız bir çift op-amp, bir çift karşılaştırıcı ve bir 2,5 V referans kullanılır.
+4. Hedef 11 V, tasarım akımı 7,5 A.
+5. S1 P-MOS.
 
 ## 8. Çalışma kuralları (ekip ve yapay zekâ için)
 

@@ -8,6 +8,8 @@ from pathlib import Path
 B = Path(__file__).parent
 H = json.loads((B / "hesap-sonuc.json").read_text(encoding="utf-8"))
 S = json.loads((B / "ltspice-sonuc.json").read_text(encoding="utf-8"))
+KT = json.loads((B / "kontrol-sonuc.json").read_text(encoding="utf-8"))
+TM = json.loads((B / "ltspice-tam-sonuc.json").read_text(encoding="utf-8"))
 
 
 def n(x: float, k: int = 2) -> str:
@@ -25,6 +27,20 @@ LM = S["tek_faz_Lmin_26"]
 U1, U2 = S["cift_faz_duty_farki_0.005"], S["cift_faz_duty_farki_0.01"]
 K26 = A["kayiplar"][2]
 K20 = A["kayiplar"][0]
+YB, RF, UC, PW, SR, KR, GB, KL, YS = (KT[x] for x in ("yardimci_besleme", "referans", "ucgen", "pwm", "surucu", "kapi_rayi", "geri_besleme", "kararlilik", "yumusak_baslatma"))
+KALK_I = max(TM[k]["KALKI"] for k in ("20V", "22p2V", "26V", "26V_hafif"))
+ISAT = max(L["Isat_min_A"], 1.12 * KALK_I)
+VERIMLER = [TM[k]["VERIM"] for k in ("20V", "22p2V", "26V")]
+
+
+def tam_satir(ad, k):
+    r = TM[k]
+    return (f"| {ad} | {n(r['VSS'], 3)} V | {n((r['VSMAX'] - r['VSMIN']) * 1e3, 0)} mV | {n(r['ILMAXS'])} A | {n(r['KALKV'])} V | {n(r['KALKI'])} A | "
+            f"{n(r['UST'])} V | {n(r['ALT'])} V | %{n(r['VERIM'], 1)} | {1e-3 / r['TPER']:.1f} kHz |")
+
+
+tam_tablo = "\n".join(["| Durum | Vo | ΔVo | IL tepe | Kalkış Vo tepe | Kalkış IL tepe | Yük düşünce Vo tepe | Yük binince Vo dip | Verim | f |", "|---|---|---|---|---|---|---|---|---|---|",
+                       tam_satir("20 V, 7,5 A", "20V"), tam_satir("22,2 V, 7,5 A", "22p2V"), tam_satir("26 V, 7,5 A", "26V"), tam_satir("26 V, 0,75 A", "26V_hafif")])
 
 
 def satir_top(baslik, f):
@@ -72,7 +88,7 @@ Güç katı için parçaların sağlaması gereken değerler:
 
 | Eleman | Değer | Akım | Gerilim | Diğer şartlar |
 |---|---|---|---|---|
-| L1 bobin | **{L['L_uH']:.0f} µH** ±%20 | Isat ≥ {n(L['Isat_min_A'], 1)} A, Irms ≥ {n(L['Irms_min_A'], 1)} A | Anahtarlama düğümü {S1['Vds_calisma_V']:.0f} V | DCR ≤ {L['DCR_max_mOhm']:.0f} mΩ |
+| L1 bobin | **{L['L_uH']:.0f} µH** ±%20 | Isat ≥ {n(ISAT, 0)} A, Irms ≥ {n(L['Irms_min_A'], 1)} A | Anahtarlama düğümü {S1['Vds_calisma_V']:.0f} V | DCR ≤ {L['DCR_max_mOhm']:.0f} mΩ |
 | Cout | **2 × 680 µF** ({CO['toplam_uF']:.0f} µF), yanına 2 × 10 µF seramik | Her biri ≥ {n(CO['Irms_A'] / 2)} A RMS | ≥ 35 V | Her birinin ESR'si ≤ 40 mΩ |
 | Cin | **2 × 220 µF** ({CI['toplam_uF']:.0f} µF), yanına 2 × 4,7 µF seramik | Her biri ≥ {n(CI['Irms_adet_A'])} A RMS | ≥ 50 V | Her birinin ESR'si ≤ 50 mΩ |
 | S1 MOSFET | Rds ≤ {S1['Rds_max_mOhm']:.0f} mΩ, Qg ≤ 100 nC | {n(S1['Ipk_A'])} A tepe, {n(S1['Irms_A'])} A RMS, Id ≥ 20 A seçilir | VDS ≥ 60 V | Toplam ısıl direnç ≤ {n(S1['theta_max_K_W'], 1)} K/W |
@@ -83,11 +99,45 @@ Duty oranı Vin 20 / 22,2 / 26 V için ideal {n(G['duty']['20.0']['ideal'], 3)} 
 
 Gerilim sınıfları için çalışma geriliminin yaklaşık iki katı alındı, çünkü anahtarlama düğümünde ringing oluşur. Seramik kapasitör adetleri hesapla değil, yüksek frekans yolu için seçimle konuldu.
 
-**Henüz kesin olmayanlar:** S1'in P-MOS mu N-MOS mu olacağı, kapı sürücüsü, PWM üreteci, geri besleme ve yumuşak başlatma. Bunlar hocaya sorulacak sorulara bağlıdır (PROJE-TANIMI Bölüm 7) ve L ile C değerlerini değiştirmez.
+Bobin doyma şartı kalkış nedeniyle arttı: kararlı tepe {n(L['Ipk_Lmin_A'])} A iken LTspice'te ilk darbelerde akım {n(KALK_I)} A'e çıkıyor. Şart %12 payla {n(ISAT, 0)} A alındı.
 
-**Önemli sınır:** Tepe akım {n(L['Ipk_Lmin_A'])} A kararlı durum değeridir. Yumuşak başlatma olmadan ilk açılışta bobin akımı çok daha yükselir (PROJE-TANIMI T7).
+## 2. Kesin devre
 
-## 2. Seçeneklerin karşılaştırması
+**Kararlar:**
+
+- **S1 P-MOS.** Yüzen bootstrap beslemesi gerekmez, sürücü transistörlerle kurulur.
+- **Hazır buck, PWM kontrolcü veya sürücü entegresi yok.** Yalnız bir çift op-amp, bir çift karşılaştırıcı ve bir 2,5 V referans kullanılır.
+- **Gerilim modlu kontrol, Tip III kompanzasyon.** Tip II düşük ESR'de faz payını 0°'ye düşürdüğü için elendi.
+- **Korumalar yok.** Bu yüzden gerçek cihazlar bağlanmaz, testler güç direnciyle yapılır.
+
+Tüm devrenin netlisti: `buck/buck-tam.cir`. LTspice ile doğrudan açılır.
+
+| Blok | Eleman | Değer | Not |
+|---|---|---|---|
+| Yardımcı 11,3 V | Rv, Dv, Qv, Ccc | {YB['R_ohm'] / 1e3:.1f} kΩ, 12 V zener, NPN, 10 µF | Qv kaybı {n(YB['P_gecis_26V_W'])} W ({YB['I_cc_varsayim_mA']:.0f} mA varsayımı) |
+| Referans | Rr, Dr | {RF['R_ohm'] / 1e3:.1f} kΩ, 2,5 V şönt ±%1 | {n(RF['I_mA'])} mA |
+| Yumuşak başlatma | Rss, Css | {YS['R_ohm'] / 1e3:.0f} kΩ, {YS['C_uF']:.0f} µF | τ = {n(YS['tau_ms'], 0)} ms |
+| Orta nokta | Rm1, Rm2, Cm | 10 kΩ, 10 kΩ, 100 nF | Vm = {n(UC['Vm_V'])} V |
+| Üçgen üreteci | Ri, Ci | {UC['R_I_ohm'] / 1e3:.2f} kΩ, {UC['C_I_nF']:.0f} nF C0G | Sim. yaklaşık 100 kHz, tezgâhta Ri ile ayarlanır |
+| Histerezis | Rh1, Rh2, Rpu | 27 kΩ, 100 kΩ, 1 kΩ | {n(UC['Vvadi_V'])}–{n(UC['Vtepe_V'])} V, {n(UC['Vpp_V'])} V tepe-tepe |
+| Geri besleme | R1, Rb | {GB['R1_ohm'] / 1e3:.0f} kΩ, {GB['Rb_ohm'] / 1e3:.0f} kΩ, ±%0,1 | Vo = {n(GB['Vo_V'], 1)} V ({n(GB['Vo_min_ref1_R01'])}–{n(GB['Vo_max_ref1_R01'])} V) |
+| Tip III | R2, C2, C1, R3, C3 | {GB['R2_ohm'] / 1e3:.0f} kΩ, {GB['C2_nF']:.0f} nF, {GB['C1_pF']:.0f} pF, {GB['R3_ohm'] / 1e3:.1f} kΩ, {GB['C3_nF']:.0f} nF | Kapasitörler C0G veya film |
+| PWM çıkışı | Rp, Rb2 | 2,2 kΩ, 1,2 kΩ | Baz {n(SR['Vb_V'])} V |
+| Seviye kaydırıcı | QL, Re, Rup | NPN, {SR['R_E_ohm']:.0f} Ω, {SR['R_UP_ohm']:.0f} Ω | {n(SR['I_seviye_mA'], 1)} mA, Rup {n(SR['P_RUP_W'])} W |
+| Totem sürücü | Qn, Qp, Rg, Rgs | NPN + PNP (≥ 2 A tepe, ≥ 40 V), {n(SR['Rg_ohm'], 1)} Ω, {SR['Rgs_ohm'] / 1e3:.0f} kΩ | Kapı tepe yaklaşık {n(SR['I_kapi_tepe_A_beta100'], 1)} A |
+| Kapı rayı (Vin−12 V) | Rz, Dz, Crail | {KR['R_ohm']:.0f} Ω 1 W, 12 V 1 W zener, {KR['C_uF']:.0f} µF | Rz {n(KR['P_R_26V_W'])} W, zener {n(KR['P_zener_26V_W'])} W (26 V) |
+
+**Entegre şartları:** Op-amp GBW ≥ 5 MHz, yükselme ≥ 10 V/µs, en az 16 V besleme, girişi 0–5 V aralığını kapsamalı. Karşılaştırıcı açık kollektör, gecikme ≤ 150 ns, en az 16 V besleme. Karşılaştırıcı gecikmesi frekansı etkiler.
+
+**Kararlılık** (doğrusal model, {KL['kose_sayisi']} köşe: Vin, yük, ESR 7,5–40 mΩ, L ve C ±%20): nominal kesim {n(KL['nominal_fc_kHz'], 1)} kHz ve faz payı {n(KL['nominal_PM_derece'], 0)}°. En kötü durumda faz payı {n(KL['PM_min_derece'], 1)}°, kazanç payı {n(KL['GM_min_dB'], 1)} dB, kesim {n(KL['fc_min_kHz'], 1)}–{n(KL['fc_max_kHz'], 1)} kHz.
+
+**LTspice tam devre** (kapalı çevrim, transistör seviyesi sürücü, genel MOSFET/BJT/diyot modelleri, davranışsal op-amp ve karşılaştırıcı; yük 7,5 A ↔ 0,75 A adımı):
+
+{tam_tablo}
+
+Tam yükte verim %{n(min(VERIMLER), 1)}–{n(max(VERIMLER), 1)}, kontrol devresi ve kaynak kaybı dahil. Çıkış tüm durumlarda 12 V'un altında, yük adımı ±%2 bandı içinde kalıyor. Transistör modelleri genel olduğundan bu sonuçlar parça seçilince yeniden koşulur.
+
+## 3. Seçeneklerin karşılaştırması
 
 Dört seçenek aynı girdiler ve aynı varsayımlarla hesaplandı. Çift fazda bobin başına DCR 40 mΩ alındı, böylece toplam bakır kaybı tek fazla eşit tutuldu.
 
@@ -109,7 +159,7 @@ Göreli maliyet tahmindir, teklif değildir. Parça seçilince gerçek fiyatla g
 - **SEPIC / buck-boost:** Çıkış her zaman girişten düşük olduğu için gerekmiyor. Anahtar {n(EK['sepic_anahtar_V'], 0)} V ve yaklaşık {n(EK['sepic_anahtar_ort_tepe_A_20V'], 1)} A görür, iki bobin ve ek kuplaj kapasitörü ister.
 - **Hazır modül veya buck entegresi:** Hocanın kararıyla kapsam dışı.
 
-## 3. Hesap adımları
+## 4. Hesap adımları
 
 **Varsayımlar** (parça seçilince gerçek değerlerle değişir): Vf = {n(V['VF'], 1)} V, Rds = {V['RDS'] * 1e3:.0f} mΩ, DCR = {V['DCR_tek'] * 1e3:.0f} mΩ, kenar başına geçiş {V['TSW'] * 1e9:.0f} ns, kaynak direnci {V['RS_kaynak'] * 1e3:.0f} mΩ, ortam {V['TA']:.0f} °C, Tj üst sınırı 125 °C.
 
@@ -160,9 +210,9 @@ C ≥ Io·D(1−D) / (f·ΔV) = {n(CI['C_min_100mV_uF'], 1)} µF  (100 mV için)
 
 Çekirdek kaybı, kapı sürme, ringing ve diyot toparlanması dahil değildir. Isıl dirençler `(125 − 50) / P` ile bulundu; FD ve S1 için soğutucu gerekir.
 
-## 4. LTspice doğrulaması
+## 5. Topoloji karşılaştırması için LTspice koşusu
 
-Devre: seçilen L ve C, ESR ve DCR, 50 mΩ kaynak direnci, 30 mΩ davranışsal anahtar, 0,6 V diyot. Anahtarlama kaybı modelde yoktur.
+Açık çevrim, duty elle verildi. Devre: seçilen L ve C, ESR ve DCR, 50 mΩ kaynak direnci, 30 mΩ davranışsal anahtar, 0,6 V diyot. Anahtarlama kaybı modelde yoktur.
 
 | Durum | Vo | ΔVo | ΔIL | Cin RMS | Verim (anahtarlama hariç) |
 |---|---|---|---|---|---|
@@ -178,9 +228,9 @@ Devre: seçilen L ve C, ESR ve DCR, 50 mΩ kaynak direnci, 30 mΩ davranışsal 
 - Cin RMS LTspice'te {n(T['22.2']['Cin_rms_A'])} A çıkıyor, hesapta {n(CI['Irms_A'])} A. Modeldeki kaynak salt dirençtir ve akımın bir kısmını paylaşır. Gerçekte batarya kablosu endüktiftir, bu yüzden kapasitör {n(CI['Irms_A'])} A'e göre seçilir.
 - Geri besleme yok, duty elle verildi. Bu nedenle Vo 11 V'un biraz altındadır.
 
-## 5. Sıradaki adım: parça seçimi
+## 6. Sıradaki adım: parça seçimi
 
-Bölüm 1'deki tablo, parça ararken filtre olarak kullanılır. Seçilen her parça için üretici verisindeki gerçek Vf, Rds, DCR, ESR ve geçiş süreleri `hesap.py` içine girilir, hesaplar ve LTspice yeniden koşulur.
+Bölüm 1 ve 2'deki tablolar parça ararken filtre olarak kullanılır. Seçilen her parça için üretici verisindeki gerçek Vf, Rds, DCR, ESR ve geçiş süreleri `hesap.py` ile `ltspice_tam.py` içine girilir, hesaplar ve LTspice yeniden koşulur.
 """
 
 (B / "TASARIM-HESABI.md").write_text(MD, encoding="utf-8", newline="\n")
