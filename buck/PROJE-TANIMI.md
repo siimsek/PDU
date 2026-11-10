@@ -69,8 +69,8 @@ Aşağıdaki sayılar başlangıç değerleridir. Güncel karar ve değerler [TA
 | Vin | D (ideal) | D (kayıplı model) |
 |---|---|---|
 | 20 V | 0,550 | 0,577 |
-| 22,2 V | 0,495 | 0,521 |
-| 26 V | 0,423 | 0,446 |
+| 22,2 V | 0,495 | 0,520 |
+| 26 V | 0,423 | 0,445 |
 
 Kayıplı denklem: `D = (Vo + Vf + I·DCR) / (Vin − I·Rds + Vf)`. Varsayımlar: Vf = 0,6 V, Rds = 30 mΩ, DCR = 20 mΩ.
 
@@ -183,7 +183,7 @@ Referans sonuçlar, bu belge hazırlanırken LTspice'te koşuldu. Ekip kendi ko�
 | T6 | Hafif yük: 22 Ω, 22,2 V | CCM denklemi geçersiz (DCM) | Vo 12,957 V, ILmin 0 |
 | T7 | Sert kalkış, ideal | Vo tepe 20,05 V | Vo tepe 19,96 V, IL tepe 62,8 A |
 | T7b | Sert kalkış, ESR ve DCR 20'şer mΩ | Vo tepe 17,36 V | Vo tepe 17,14 V, IL tepe 53,9 A |
-| T8 | Kayıplı model, D = 0,577 / 0,521 / 0,446 | Vo 11 V | Vo 10,996 / 10,995 / 10,997 V, verim %95,3 / 95,2 / 94,9 |
+| T8 | Kayıplı model, D = 0,577 / 0,520 / 0,445 | Vo 11 V | Vo 10,996 / 10,995 / 10,997 V, verim %95,3 / 95,2 / 94,9 |
 | T9 | Yük 7 A'dan 0,75 A'ya düşüyor | Gözlem | 15 ms içinde 10,84 V'tan 11,94 V'a |
 
 T8'de S1 ideal anahtar olduğu için anahtarlama kaybı yoktur. Kayıplar elle hesaba uyar: 26 V'ta 4,41 W.
