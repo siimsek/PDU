@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 262" width="720" height="262" font-family="Arial, sans-serif" font-size="15" fill="#111">
+  <rect width="720" height="262" fill="#fff"/>
+  <g fill="none" stroke="#111" stroke-width="2">
+    <!-- üst ray -->
+    <path d="M60 70 H150"/>
+    <path d="M210 70 H330"/>
+    <path d="M460 70 H660"/>
+    <!-- alt ray -->
+    <path d="M60 240 H660"/>
+    <!-- kaynak -->
+    <path d="M60 70 V130"/>
+    <path d="M60 180 V240"/>
+    <circle cx="60" cy="155" r="25"/>
+    <path d="M60 138 V150 M54 144 H66"/>
+    <path d="M54 168 H66"/>
+    <!-- anahtar S1 -->
+    <circle cx="154" cy="70" r="4" fill="#fff"/>
+    <circle cx="206" cy="70" r="4" fill="#fff"/>
+    <path d="M157 67 L201 42"/>
+    <path d="M180 112 V62" stroke-dasharray="5 4"/>
+    <!-- diyot FD -->
+    <path d="M280 70 V136"/>
+    <path d="M262 136 H298"/>
+    <path d="M262 170 L298 170 L280 136 Z"/>
+    <path d="M280 170 V240"/>
+    <!-- bobin L -->
+    <path d="M330 70 a16 16 0 0 1 32 0 a16 16 0 0 1 32 0 a16 16 0 0 1 32 0 a17 16 0 0 1 34 0"/>
+    <!-- kapasitör C -->
+    <path d="M510 70 V146"/>
+    <path d="M486 146 H534"/>
+    <path d="M486 160 H534"/>
+    <path d="M510 160 V240"/>
+    <!-- yük R -->
+    <path d="M660 70 V118 l-12 7 l24 12 l-24 12 l24 12 l-24 12 l12 7 V240"/>
+  </g>
+  <g fill="#111">
+    <circle cx="280" cy="70" r="4"/>
+    <circle cx="510" cy="70" r="4"/>
+    <circle cx="280" cy="240" r="4"/>
+    <circle cx="510" cy="240" r="4"/>
+  </g>
+  <text x="96" y="152">Vin</text>
+  <text x="96" y="172" font-size="12">20–26 V</text>
+  <text x="172" y="30" font-weight="700">S1</text>
+  <text x="130" y="132" font-size="13">PWM: D ve f</text>
+  <text x="312" y="160" font-weight="700">FD</text>
+  <text x="312" y="178" font-size="12">serbest geçiş</text>
+  <text x="393" y="38" font-weight="700" text-anchor="middle">L</text>
+  <text x="393" y="108" font-size="13" text-anchor="middle">iL →</text>
+  <text x="546" y="150" font-weight="700">C</text>
+  <text x="546" y="168" font-size="12">Rser = ESR</text>
+  <text x="682" y="150" font-weight="700">R</text>
+  <text x="600" y="58" font-weight="700">Vo = 11 V</text>
+  <text x="256" y="58" font-size="13">sw</text>
+</svg>
