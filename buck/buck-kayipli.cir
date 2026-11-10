@@ -1,0 +1,27 @@
+* Stage-1 open-loop buck - mirror of buck-kayipli.asc
+.param Vin=22.2 Vout=11 Iout=7.5 Fsw=100k
+.param Rsrc=50m ESRin=25m ESRout=20m DCR=20m
+.param Rsw=30m Vf=0.6
+.param Duty=(Vout+Vf+Iout*DCR)/(Vin-Rsrc*Vout*Iout/(0.94*Vin)-Iout*Rsw+Vf)
+V1 VIN_SRC 0 {Vin}
+RSRC VIN_SRC VIN_SW {Rsrc}
+CIN VIN_SW 0 440u Rser={ESRin}
+S1 VIN_SW SW CTL 0 SWMOD
+D1 0 SW DFREE
+L1 SW VOUT 33u Rser={DCR}
+COUT VOUT 0 1360u Rser={ESRout}
+RLOAD VOUT 0 {Vout/Iout}
+VCTRL CTL 0 PULSE(0 5 0 5n 5n {Duty/Fsw-5n} {1/Fsw})
+.model SWMOD SW(Ron=30m Roff=100Meg Vt=2.5 Vh=0.1)
+.model DFREE D(Ron=33m Roff=1G Vfwd=0.6)
+.tran 0 60m 0 100n
+.meas tran VAVG AVG V(VOUT) FROM 45m TO 55m
+.meas tran VMAX MAX V(VOUT) FROM 45m TO 55m
+.meas tran VMIN MIN V(VOUT) FROM 45m TO 55m
+.meas tran VSTARTPK MAX V(VOUT) FROM 0 TO 45m
+.meas tran ILMAX MAX I(L1) FROM 45m TO 55m
+.meas tran ILMIN MIN I(L1) FROM 45m TO 55m
+.meas tran ISTARTPK MAX I(L1) FROM 0 TO 45m
+.meas tran PIN AVG -V(VIN_SRC)*I(V1) FROM 45m TO 55m
+.meas tran POUT AVG V(VOUT)*I(RLOAD) FROM 45m TO 55m
+.end
