@@ -1,1 +1,0 @@
-{"blocks": ["B1", "B2"], "pass": true, "n_errors": 0}

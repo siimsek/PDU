@@ -1,8 +1,0 @@
-{
-  "compensation-step.cir": "pdu-load-step.cir",
-  "ngspice-compensation.cir": "pdu-load-step.ng.cir",
-  "phase-ripple.cir": "pdu-interleaved-26v.cir",
-  "phase-ripple-20v.cir": "pdu-interleaved-20v.cir",
-  "ngspice-ripple-26v.cir": "pdu-interleaved-26v.ng.cir",
-  "ngspice-ripple-20v.cir": "pdu-interleaved-20v.ng.cir"
-}

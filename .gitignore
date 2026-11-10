@@ -1,46 +1,7 @@
-# LTspice generated waveforms and caches
+# LTspice transient output
 *.raw
-*.db
-*.log.raw
-*.op.raw
+*.log
 
 # Python cache
 __pycache__/
 *.py[cod]
-
-# KiCad local settings
-*.kicad_prl
-
-# KiCad/editor session state (keep locally; never delete locks to bypass editors)
-*.lck
-*.bak
-*.kicad_sch-bak
-*.kicad_pcb-bak
-*-backups/
-.history/
-_autosave-*
-
-# Downloaded manufacturer data/models: obtain from the documented official URLs.
-# TDK models explicitly prohibit redistribution without permission.
-hardware/_datasheets/
-hardware/validation/c5750/*.mod
-hardware/validation/c5750/readme_ltspice_en.txt
-
-# Machine-specific MCP endpoint configuration and replayable transient requests
-.konnect/diagnostics/*config*.json
-.konnect/diagnostics/*pid*.txt
-.konnect/diagnostics/*-calls*.json
-.konnect/diagnostics/reapply-routing-*.json
-.konnect/diagnostics/*-audit.txt
-
-# Failed convergence generated a29MB diagnostic; retain locally, summarize in reports
-simulation/candidate-global-startup-one-hot-r2.log
-
-# G3: test/tool caches and ad-hoc ngspice scratch files
-.pytest_cache/
-**/_t.cir
-**/_t.log
-reports/**/sim/**/dbg/
-
-# W0: session packs (scripts/make_pack.py)
-packs/

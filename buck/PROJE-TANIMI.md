@@ -1,42 +1,46 @@
-# Proje Tanımı — Aşama 1: Açık Çevrim Buck
+# Proje Tanımı — Açık Çevrim Buck Güç Katı
 
 **Tarih:** 10 Kasım 2026
+**Durum:** L / f / CIN / COUT kombinasyonları analitik olarak karşılaştırılıyor; verim kazananı seçilmedi. Yeni LTspice devresi henüz kullanıcıyla kurulmadı.
 
-## Ana hedef
+## Amaç
 
-6S LiPo kaynağından (20–26 V) **11 V / 7.5 A (82.5 W)** hedeflenen tek faz **asenkron buck güç katını** hesaplamak, LTspice'ta **çizilmiş ve düzenlenebilir** devreyle ideal/kayıplı simülasyonları yapmak ve sonuçları kıyaslamak.
+6S LiPo için kabul edilen 20–26 V DC girişten 11 V / 7,5 A (82,5 W) hedefleyen tek faz, asenkron buck güç katısını hesaplamak ve LTspice'ta birlikte sıfırdan kurup incelemek.
 
-**İlk aşamada yalnız bunlar:** Vin kaynağı, S1 anahtarı, D1 serbest geçiş diyodu, L1 bobin, CIN, COUT ve direnç yükü. Anahtarın periyodik açılıp kapanması için LTspice'ta `VCTRL PULSE(...)` kullanılır. Bu, fiziksel PWM kontrolcü devresi değildir.
+Bu, **açık çevrim güç katıdır**. 11 V yalnız nominal çalışma hedefidir; Vin değiştiğinde sabit duty çıkışı regüle etmez. 12 V üst sınırı, kalkış davranışı veya yük güvenliği garanti edilmez.
 
-### Doğrudan LTspice'ta açılacak çizimler
+## Devre sınırı
 
-- [buck-ideal.asc](buck-ideal.asc): ideal açık çevrim devre
-- [buck-kayipli.asc](buck-kayipli.asc): kaynak, anahtar, bobin, kondansatör ESR ve diyot kayıpları ile aynı devre
-- [buck-ideal.cir](buck-ideal.cir) ve [buck-kayipli.cir](buck-kayipli.cir): karşılaştırma amaçlı eşdeğer **metinsel** netlistler; görsel şema yerine geçmezler.
+- DC giriş kaynağı
+- S1 anahtarı ve LTspice `PULSE` sürme kaynağı
+- D1 serbest geçiş diyodu
+- L1 bobin
+- CIN ve COUT
+- RLOAD simülasyon yükü
 
-**Kullanım:** Windows LTspice > File > Open > `.asc` dosyasını seç > Run. Vin / Iout değerlerini şematikteki `.param` satırlarından değiştir. `V(VOUT)` ve `I(L1)` dalga şekillerine bak; SPICE Error Log'da `.meas` sonuçlarını incele. Varsayılan: Vin=22.2 V, Iout=7.5 A, f=100 kHz.
+Elektronik PWM kontrolcüsü, MOSFET sürücüsü, op-amp, geri besleme, kompanzasyon, soft-start, ikinci faz, koruma devreleri ve PCB bu çalışmanın kapsamında değildir. PULSE kaynağı yalnızca simülasyon anahtarlamasıdır.
 
-## Kapsam dışı
+## Önceki referans hesap noktası
 
-Elektronik PWM üreteci, op-amp, karşılaştırıcı, MOSFET sürücü, geri besleme, Tip III kompanzasyon, yumuşak başlatma, ikinci faz, koruma devreleri, KiCad şematiği, PCB ve gerçek cihaz bağlantıları bu aşamaya **dahil değildir**. Önceki çalışmalar silinmemiştir, [arşivde](../archive/buck-onceki-calisma-2026-11-10/README.md) durur.
+Yeni karşılaştırmada bütün adaylar aynı 11 V / 7,5 A / 82,5 W çıkış hedefinde değerlendirilecek. Gerçek kayıplı simülasyonda duty her kombinasyonda hedef çıkışa göre ayrı ayarlanacak. [Parametre karşılaştırması](PARAMETRE-KARSILASTIRMA.md) farklı L/f/C adaylarını içerir.
 
-## Başlangıç değerleri
+| Parametre | Aday değer | Seçim ölçütü / açıklama |
+|---|---:|---|
+| Vin | 20–26 V; nominal 22,2 V | İdeal duty hesabı |
+| Vo hedefi | 11 V | Nominal çalışma noktası |
+| Iout tasarım noktası | 7,5 A | 82,5 W |
+| fsw | 100 kHz | Başlangıç frekansı; optimize edilmiş değil |
+| L1 | 39 µH | 26 V'ta yaklaşık %21,7 nominal ripple; −%20 toleransta yaklaşık %27,1 |
+| CIN | 470 µF | 15 mΩ ESR varsayımı ve −%20 L toleransıyla yaklaşık 0,167 V giriş ripple hesabı |
+| COUT | 220 µF | 20 mΩ ESR varsayımıyla yaklaşık 52,3 mV ripple; −%20 L toleransında |
+| RLOAD | 1,467 Ω | 11 V ve 7,5 A eşdeğer yükü; 82,5 W harcar |
 
-| Parametre | Değer |
-|---|---:|
-| Vin | 20 / 22.2 / 26 V |
-| Vo hedef | 11 V |
-| Iout tasarım | 7.5 A |
-| f | 100 kHz |
-| L1 | 33 µH |
-| CIN | 440 µF (2 × 220 µF eşdeğeri) |
-| COUT | 1360 µF (2 × 680 µF eşdeğeri) |
-| RLOAD | 1.467 Ω (11 V, 7.5 A hedefinde) |
+Bu tablodaki 52,3 mV yalnız L toleransını içerir. COUT da −%20 olduğunda yaklaşık 55,13 mV çıkar ve 55 mV hedefi az farkla aşılır. 220 µF nihai seçim değildir. Tarama her iki kapasitörün toleransını da içerir.
 
-Değerler ilk adaylardır; "en verimli / kararlı" oldukları simülasyonla henüz kanıtlanmadı. **Açık çevrimde 11 V regülasyonu veya 12 V üst sınırı garanti edilemez.** Koruma sistemi doğrulanmadan O1, RPLIDAR S2E gibi gerçek cihazları bağlama.
+ESR değerleri yalnızca sonraki kayıplı simülasyon için model varsayımlarıdır, seçilmiş kondansatör verisi değildir. Gerçek parça MPN'leri, gerilim/akım dereceleri ve sıcaklık koşulları ayrıca veri sayfasıyla doğrulanmalıdır.
 
-## Aşama 1 testleri
+## Güvenli kullanım sınırı
 
-İdeal ve kayıplı şema; giriş 20 / 22.2 / 26 V, nominal ve hafif yük; bobin akımı ve çıkış dalgalanması; ilk kalkış aşımı; sabit duty ile giriş değişimi; L/C tolerans deneyi. Kabul: LTspice görüntüsü, parametreler, ölçümler, hesap–simülasyon farklarının açıklaması.
+22,2 V giriş için hesaplanan ideal duty `D = 11/22,2 ≈ 0,4955` değeridir. Bu duty sabit tutulursa 20 V girişte ideal çıkış 9,91 V, 26 V girişte 12,88 V olur. 1,467 Ω simülasyon direnci 26 V girişte yaklaşık 8,78 A çeker. Gerçek O1, RPLIDAR S2E veya hassas bir yük bu açık çevrim devreye bağlanmaz.
 
-Aşama 1 onaylanmadan kontrolcü, sürücü, koruma, PCB çalışmasına geçilmez. Hesap, varsayım, simülasyon ve fiziksel ölçümü birbirinden ayrı tut.
+İlk devre yalnız LTspice simülasyonunda kurulacaktır. Analitik hesap, simülasyon ve fiziksel ölçüm ayrı sonuçlardır; bu depoda şu anda LTspice devresi veya LTspice sonucu yoktur.

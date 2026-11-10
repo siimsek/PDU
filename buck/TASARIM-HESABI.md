@@ -1,62 +1,108 @@
-# Aşama 1 — Buck Güç Katı Hesabı
+# Tasarım Hesabı — Açık Çevrim Buck
 
-**Tarih:** 10 Kasım 2026. **Geçerli kapsam:** tek faz, asenkron, açık çevrim buck. Bu metindeki sayılar analitik başlangıç hesaplarıdır; LTspice'ta yeni şematikler henüz çalıştırılmadı.
+**Tarih:** 10 Kasım 2026
+**Sınıf:** analitik hesap ve model varsayımları; LTspice sonucu veya fiziksel ölçüm değildir.
 
-## Tasarım girdileri
+Akım dalgalanması, tepe/RMS akımı ve kondansatör ripple denklemleri [Analog Devices Buck Power Stage Design Equations](https://www.analog.com/en/resources/app-notes/buck-power-stage-design-equations.html) uygulama notundaki buck güç katı ilişkileriyle tutarlıdır. Buradaki hesaplar belirtilen açık çevrim hedeflerine uygulanmıştır.
+
+Bu dosya ilk referans noktasının hesabını tutar. Güncel [L / f / C karşılaştırması](PARAMETRE-KARSILASTIRMA.md), aynı çıkış gücünde farklı adayları ve L/C toleranslarını inceler. Referans noktası verim bakımından seçilmiş bir optimum değildir.
+
+## Girdiler ve seçim yaklaşımı
 
 | Girdi | Değer |
 |---|---:|
-| Kaynak | 6S LiPo, 20–26 V (nominal 22.2 V) |
-| Çıkış hedefi | 11 V |
-| Yük tasarımı | 7.5 A, 82.5 W (gerçek yük hedefi yaklaşık 7 A) |
-| Anahtarlama frekansı | 100 kHz |
-| Devre | S1 + D1 + L1 + CIN + COUT + RLOAD |
-| Başlangıç L1 | 33 µH, DCR varsayımı 20 mΩ |
-| Başlangıç CIN | 440 µF, ESR varsayımı 25 mΩ |
-| Başlangıç COUT | 1360 µF, ESR varsayımı 20 mΩ |
+| Vin | 20 / 22,2 / 26 V |
+| Vo hedefi | 11 V |
+| Iout | 7,5 A |
+| Pout | 82,5 W |
+| fsw | 100 kHz |
+| Bobin tolerans köşesi | −%20 |
+| İzin verilen nominal bobin ripple hedefi | ≤ %25 × Iout |
+| Çıkış ripple tasarım kontrolü | ≤ 55 mV p-p (%0,5 Vo) |
+| Giriş ripple kontrolü | ≤ 1% × 20 V = 0,20 V p-p |
 
-**Neden bu topoloji?** Girişin tamamı 11 V üstünde olduğundan step-down buck yeterlidir. Tek faz asenkron güç katı için tek anahtar, tek serbest geçiş diyotu ve LC filtresiyle hesap yapılır; senkron/çift faz ve kontrolcü mimarisi bu aşamada analiz konusu değildir. 100 kHz, bobin boyutu ile anahtarlama kaybı arasında başlangıç tercihi olup optimize edilmiş/ölçülmüş nihai değer değildir.
+Küçük ve büyük bileşen seçimi arasında tek bir evrensel “en iyi” değer yoktur. Buradaki ilk aday; ripple hedefleri, makul standart değerler ve 100 kHz açık çevrim davranışıyla seçildi. Boyut, kayıp, sıcaklık, tolerans ve kalkış sonuçları LTspice ve gerçek parça verileriyle incelenmeden nihai tasarım değildir.
 
-## Hesap
+## Duty ve bobin akımı
 
-İdeal kararlı hal volt-saniye dengesi:
+İdeal sürekli iletim (CCM) kararlı durumunda:
 
 ```text
-(Vin - Vo) · D · T = Vo · (1-D) · T
-D = Vo/Vin,   T = 1/f = 10 us
-L >= Vo · (1 - Vo/Vin_max) / (0.30 · Iout · f) = 28.205 uH
-L = 33 uH secildi (ilk aday)
-DeltaIL_pp = Vo · (1 - Vo/Vin) / (L · f)
-IL_peak = Iout + DeltaIL_pp/2
-Vout_ripple_pp ≈ DeltaIL_pp/(8 f Cout) + DeltaIL_pp · ESRout
+D = Vo / Vin
+T = 1 / fsw = 10 us
+ΔIL_pp = Vo · (1 − D) / (L · fsw)
+IL_peak = Iout + ΔIL_pp / 2
+IL_rms = sqrt(Iout² + ΔIL_pp² / 12)
 ```
 
-| Vin (V) | D ideal | DeltaIL (A p-p) | IL tepe (A) | Vout dalgalanması yaklaşık (mV p-p) |
-|---:|---:|---:|---:|---:|
-| 20 | 0.55000 | 1.500 | 8.250 | 31.38 |
-| 22.2 | 0.49550 | 1.682 | 8.341 | 35.19 |
-| 26 | 0.42308 | 1.923 | 8.462 | 40.23 |
+Bobin ripple'ı yüksek girişte en büyüktür. 26 V ve %25 ripple hedefi için:
 
-Bobin %20 düşükse en yüksek girişte yaklaşık **2.404 A p-p** ve **8.702 A** kararlı tepe oluşur. Bu kararlı hale göre %30 pay, Isat için yaklaşık **11.31 A** yapar. **Kalkış tepe akımı bundan çok daha büyük olabilir**, dolayısıyla yalnız bu sayıyla parça seçimi tamamlanmış sayılmaz.
+```text
+L_min = Vo · (1 − Vo / Vin_max) / (0.25 · Iout · fsw)
+      = 33.85 uH
+```
 
-26 V, 7.5 A durumunda giriş kondansatörü RMS akımı için ideal yaklaşık üst sınır **3.75 A** (D = 0.5 yakınında); bobin RMS yaklaşık 7.52 A. Direnç yükü **11/7.5 = 1.467 ohm**, bu güçte en az 82.5 W'lık ideal yük eşdeğeridir.
+Bir sonraki yaygın standart değer olarak **39 µH** aday alındı. Bu değer için en kötü girişte nominal ripple yaklaşık 1,627 A p-p (%21,7). Bobin −%20 toleransla 31,2 µH olduğunda ripple yaklaşık 2,034 A p-p (%27,1), kararlı tepe akımı 8,517 A olur.
 
-## Kayıplı aday
+| Vin (V) | İdeal duty | ΔIL, L=39 µH (A p-p) | IL tepe (A) |
+|---:|---:|---:|---:|
+| 20 | 0,5500 | 1,269 | 8,135 |
+| 22,2 | 0,4955 | 1,423 | 8,212 |
+| 26 | 0,4231 | 1,627 | 8,314 |
 
-- `buck-kayipli.asc` kaynak direnci 50 mΩ, anahtar Ron 30 mΩ, Schottky eşdeğer Vf 0.6 V + Ron 33 mΩ, bobin DCR 20 mΩ, giriş ESR 25 mΩ, çıkış ESR 20 mΩ varsayar.
-- Duty yaklaşık düşüm denkleminden hesaplanır; bu **geri besleme değildir**. Her giriş değeri için duty sabitlenerek ayrı analiz yapılır.
-- `buck-ideal.asc` eşdeğer dirençleri ihmal edilecek kadar küçültür ve D = Vo/Vin alır.
-- Bu anahtar modeli gerçek MOSFET kapı yükünü ve anahtarlama geçiş kaybını içermez. Analitik verim, LTspice enerji verimi ve fiziksel ölçüm aynı şey değildir.
+−%20 bobin toleransındaki kararlı tepeye %30 tasarım payı eklenirse Isat ölçütü yaklaşık **11,07 A** çıkar. Bu yalnızca kararlı durum ölçütüdür; kalkış tepe akımı daha yüksek olabilir ve simülasyonla ayrıca görülmelidir. Bu sayı gerçek bobin seçimi değildir.
 
-## Deney ve kabul planı
+## Kondansatör kontrolü
 
-1. İdeal devreyi Vin = 20, 22.2, 26 V ve 7.5 A yük ayarı için çalıştır; Vo, DeltaIL, Ipeak ve dalgalanmayı hesapla karşılaştır.
-2. Kayıplı devrede aynı üç noktayı dene; model parametrelerini raporla. Hesapla farkın nedenini açıkla.
-3. Nominal Vin için belirlenen duty oranını **sabit tutarak** Vin 20 ve 26 V yap; açık çevrimin regülasyon yapmadığını göster.
-4. 26 V hafif yükte (ör. 0.75 A) giriş ve çıkış dalga şekillerini karşılaştır; DCM olasılığını ve çıkış aşımını kontrol et.
-5. 0–45 ms penceresinde startup Vout ve bobin akım tepesini ayrıca incele. Gerçek yük bağlantısı yok.
-6. 33 µH toleransını, 100 kHz frekansı, 1360 µF seçimini ve daha küçük kapasitör adaylarını simülasyonla karşılaştırıp nihai değeri **ancak sonuç gördükten sonra** belirle.
+İdeal buck giriş akımı darbeli olduğundan CIN'in RMS ripple akımı önemlidir. Üçgen bobin ripple'ı dahil yaklaşık RMS kontrolü:
 
-**Kabul:** Aktif .asc dosyaları açılıp görsel olarak incelenebilir olmalı; simülasyonların ölçüm çıktıları ve parametreleri kaydedilmeli; hesap–simülasyon farkları açıkça açıklanmalı. Şematiklerin sembol pin bağlantıları statik olarak kontrol edildi; bu ortamda gerçek LTspice çalıştırması yapılmadı.
+```text
+ICIN_rms ≈ sqrt(D(1−D)·Iout² + D·ΔIL_pp²/12)
+```
 
-Eski kapalı çevrim, PWM/geri besleme ve çift faz hesap/çalışmaları: [arşiv](../archive/buck-onceki-calisma-2026-11-10/README.md).
+En büyük değer çalışma noktalarımızda yaklaşık **3,76 A RMS**. Gerçek kondansatör bankasının toplam ripple akımı derecesi bu değeri sıcaklık ve ömür payıyla karşılamalıdır.
+
+Giriş ripple'ı için kullanılan yaklaşık model:
+
+```text
+ΔVCIN ≈ Iout·D·(1−D) / (fsw·CIN)
+ΔVESR_IN ≈ (Iout + ΔIL_pp/2) · ESRIN
+ΔVIN_pp ≈ ΔVCIN + ΔVESR_IN
+```
+
+CIN = **470 µF**, ESRIN = **15 mΩ** varsayımıyla ve −%20 bobin toleransı dahil en yüksek hesaplanan giriş ripple'ı yaklaşık **0,167 V p-p** olur. Bu, 20 V girişin %1'i olan 0,20 V hedefinin altındadır. ESR yalnızca analiz varsayımıdır; gerçek ESR ve ripple akımı veri sayfasından alınmalıdır.
+
+Çıkış ripple'ının kapasitif ve ESR bileşenleri:
+
+```text
+ΔVCOUT ≈ ΔIL_pp / (8·fsw·COUT)
+ΔVESR_OUT ≈ ΔIL_pp · ESRout
+ΔVOUT_pp ≈ ΔVCOUT + ΔVESR_OUT
+```
+
+COUT = **220 µF**, ESRout = **20 mΩ** varsayımıyla L=39 µH ve Vin=26 V'ta ripple yaklaşık **41,8 mV p-p**; bobin −%20 köşesinde yaklaşık **52,2 mV p-p** çıkar. Bu değer 55 mV hedefinin altındadır. Bu basit kararlı ripple hesabı yük adımı/kalkış cevabını kanıtlamaz.
+
+COUT da aynı anda −%20 olduğunda ripple yaklaşık **55,13 mV p-p** olur. Bu ek tolerans köşesinde 55 mV sınırı az farkla aşılır. Tarama bu köşeyi içerir; örneğin 100 kHz / 39 µH için 330 µF çıkış adayı, aynı ESR varsayımıyla yaklaşık 50,3 mV p-p verir.
+
+## Yük ve açık çevrim davranışı
+
+```text
+RLOAD = Vo / Iout = 11 / 7.5 = 1.467 ohm
+PLOAD = Vo · Iout = 82.5 W
+```
+
+RLOAD LTspice'ta yükü temsil eder. Gerçek direnç olarak kurulursa 82,5 W ısıtır; fiziksel yük bileşeni seçilmedi.
+
+Nominal Vin=22,2 V duty'si `D=0,4955` sabitlenirse ideal çıkış yaklaşık `D·Vin` olur:
+
+| Vin (V) | Sabit duty ile ideal Vo (V) | 1,467 Ω yükün akımı (A) |
+|---:|---:|---:|
+| 20 | 9,91 | 6,76 |
+| 22,2 | 11,00 | 7,50 |
+| 26 | 12,88 | 8,78 |
+
+Dolayısıyla açık çevrim devrede sabit duty ile giriş değişirken 11 V regülasyonu yoktur. 26 V girişte 12 V üzerinde çıkış oluşabileceği için gerçek cihaz/yük bağlanmaz.
+
+## Sonraki doğrulama
+
+Önce kullanıcıyla LTspice'ta ideal güç katı sıfırdan çizilecek. Bağlantılar ve değerler doğrulandıktan sonra 20 / 22,2 / 26 V nominal yükte çalıştırılır; bobin akımı, çıkış ripple'ı ve kalkış incelenir. Ardından kayıplı model, sabit duty giriş değişimi ve bobin toleransı eklenir. Gerçek bileşen seçimi için MPN veri sayfaları ayrıca değerlendirilir.

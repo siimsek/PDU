@@ -1,7 +1,0 @@
-* Explicit zero inductor series resistance portability probe
-V1 A 0 1
-L1 A B 6.8u Rser=0
-R1 B 0 1
-.tran 100n 100u
-.meas tran VFINAL FIND V(B) AT=100u
-.end

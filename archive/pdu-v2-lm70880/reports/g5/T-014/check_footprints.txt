@@ -1,6 +1,0 @@
-TI_CSD19531Q5A_Q5A: PASS (5 pads, 1 polygons)
-Molex_Mini-Fit_Jr_5566-02A_2x01_P4.20mm_Vertical: PASS (0 pads, 0 polygons)
-TDSON-8-1_Konnect: PASS (5 pads, 0 polygons)
-TDK_C5750_2220_Recommended: PASS (2 pads, 0 polygons)
-TPS25982_RGE0024M: PASS (26 pads, 0 polygons)
-LM70880_RRX0029B_RectLands: PASS (30 pads, 2 polygons)

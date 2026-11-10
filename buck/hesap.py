@@ -1,66 +1,174 @@
 #!/usr/bin/env python3
-"""Asama 1: tek faz acik cevrim buck icin matematiksel degerler (LTspice DEGIL)."""
+"""Analitik baslangic hesabi: tek faz, asenkron, acik cevrim buck.
+
+Bu betik LTspice calistirmaz; yalnizca varsayim ve denklemlerden hesap JSON'u uretir.
+"""
 from __future__ import annotations
-import json, math
+
+import json
+import math
 from pathlib import Path
 
-VO, IO, F = 11.0, 7.5, 100e3
-VIN = (20.0, 22.2, 26.0)
-L, CIN, COUT = 33e-6, 440e-6, 1360e-6
-ESR_IN, ESR_OUT, DCR = 25e-3, 20e-3, 20e-3
-RSRC, RSW, RDIO, VF = 50e-3, 30e-3, 33e-3, 0.6
-L_TOL = 0.20
-RIPPLE_LIMIT = 0.30
-P_OUT = VO * IO
 
-def duty_loss(vin: float, iout: float = IO) -> float:
-    # Sabit duty deneyi icin tahmini baslangic ayari; geri besleme DEGiL.
-    return (VO + VF + iout * DCR) / (vin - RSRC * VO*iout/(0.94*vin) - iout*RSW + VF)
+VO_V = 11.0
+IO_A = 7.5
+VIN_V = (20.0, 22.2, 26.0)
+FSW_HZ = 100_000.0
 
-def data():
-    rows = []
-    for vin in VIN:
-        d = VO / vin
-        di = (vin - VO) * d / (F*L)
-        i_peak = IO + di/2
-        d_loss = duty_loss(vin)
-        # Basit kayip modeli: sadece karsilastirma icin, gercek komponent veya anahtarlama modeli degil.
-        p_sw = IO**2 * RSW * d_loss
-        p_d = (VF*IO + RDIO*IO**2) * (1-d_loss)
-        p_l = IO**2 * DCR
-        i_in_est = P_OUT/(0.94*vin)
-        p_src = RSRC * i_in_est**2
-        p_other = p_sw+p_d+p_l+p_src
-        rows.append({
-            "Vin_V": vin, "Duty_ideal": d, "Duty_kayipli_tahmin": d_loss,
-            "I_L_dalgalanma_pp_A": di, "I_L_tepe_A": i_peak,
-            "Cout_dalgalanma_yaklasik_mV": 1e3*(di/(8*F*COUT)+di*ESR_OUT),
-            "Cin_Irms_A_ideal": IO*math.sqrt(d*(1-d)),
-            "iletim_ve_bakir_kayiplari_yaklasik_W": p_other,
-            "anahtarlama_haric_verim_yaklasik_pct": 100*P_OUT/(P_OUT+p_other),
-        })
-    worst_di = VO*(1-VO/VIN[-1])/(L*F)
-    di_tol = worst_di/(1-L_TOL)
+# Tek nokta referansi; tarama kazani veya veri sayfasi ile secilmis parcalar degildir.
+L_H = 39e-6
+CIN_F = 470e-6
+COUT_F = 220e-6
+ESR_IN_OHM = 15e-3
+ESR_OUT_OHM = 20e-3
+
+L_TOLERANCE = 0.20
+RIPPLE_TARGET_FRACTION = 0.25
+OUTPUT_RIPPLE_LIMIT_V = 0.005 * VO_V
+INPUT_RIPPLE_LIMIT_V = 0.01 * min(VIN_V)
+SATURATION_MARGIN = 0.30
+
+
+def ripple_voltage(delta_i_pp: float, capacitance: float, esr: float) -> dict[str, float]:
+    capacitive = delta_i_pp / (8 * FSW_HZ * capacitance)
+    resistive = delta_i_pp * esr
     return {
-        "sinif": "HESAP / VARSAYIM; ne LTspice sonucu ne fiziksel olcum",
-        "topoloji": "tek faz asenkron acik cevrim",
-        "parametreler": {
-            "Vin_V": list(VIN), "Vo_hedef_V": VO, "Iout_tasarim_A": IO,
-            "Pout_hedef_W": P_OUT, "f_Hz": F,
-            "L_uH": L*1e6, "Cin_uF": CIN*1e6, "Cout_uF": COUT*1e6,
-            "Rsrc_mOhm": RSRC*1e3, "Rsw_mOhm": RSW*1e3,
-            "Rdiode_mOhm": RDIO*1e3, "Vf_diode_V": VF,
-            "DCR_mOhm": DCR*1e3,
-            "ESRin_mOhm": ESR_IN*1e3, "ESRout_mOhm": ESR_OUT*1e3,
-        },
-        "L_min_uH_yuzde30": VO*(1-VO/VIN[-1])/(RIPPLE_LIMIT*IO*F)*1e6,
-        "L_tolerans_eksi20_dalgalanma_A": di_tol,
-        "L_tolerans_eksi20_Ipk_A": IO+di_tol/2,
-        "Isat_sadece_kararli_min_A_30pct_marj": (IO+di_tol/2)*1.3,
-        "not": "Kalkis akimi kararlidan fazla olabilir; Isat buna gore kontrol edilir. Gercek yuk baglanmaz.",
-        "sonuclar": rows,
+        "capacitive_Vpp": capacitive,
+        "esr_Vpp": resistive,
+        "total_approx_Vpp": capacitive + resistive,
     }
-if __name__=="__main__":
-    p=Path(__file__).with_name("hesap-sonuc.json")
-    p.write_text(json.dumps(data(),indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
-    print(p)
+
+
+def calculate() -> dict[str, object]:
+    output_power_w = VO_V * IO_A
+    l_min_h = (
+        VO_V * (1 - VO_V / max(VIN_V))
+        / (RIPPLE_TARGET_FRACTION * IO_A * FSW_HZ)
+    )
+    duty_nominal = VO_V / VIN_V[1]
+    steady_cases: list[dict[str, float]] = []
+
+    for vin_v in VIN_V:
+        duty = VO_V / vin_v
+        delta_i_pp = VO_V * (1 - duty) / (L_H * FSW_HZ)
+        inductor_peak_a = IO_A + delta_i_pp / 2
+        inductor_rms_a = math.sqrt(IO_A**2 + delta_i_pp**2 / 12)
+
+        # RMS for the pulsed source current, including triangular inductor ripple.
+        cin_rms_a = math.sqrt(
+            duty * (1 - duty) * IO_A**2 + duty * delta_i_pp**2 / 12
+        )
+        cin_cap_v = IO_A * duty * (1 - duty) / (FSW_HZ * CIN_F)
+        cin_esr_v = (IO_A + delta_i_pp / 2) * ESR_IN_OHM
+        cout_ripple = ripple_voltage(delta_i_pp, COUT_F, ESR_OUT_OHM)
+
+        steady_cases.append({
+            "Vin_V": vin_v,
+            "duty_ideal": duty,
+            "Ton_us": duty / FSW_HZ * 1e6,
+            "Iin_average_ideal_A": output_power_w / vin_v,
+            "delta_IL_pp_A": delta_i_pp,
+            "IL_peak_A": inductor_peak_a,
+            "IL_rms_A": inductor_rms_a,
+            "ICIN_rms_A_approx": cin_rms_a,
+            "ICOUT_rms_A_approx": delta_i_pp / math.sqrt(12),
+            "VIN_ripple_cap_Vpp": cin_cap_v,
+            "VIN_ripple_esr_Vpp": cin_esr_v,
+            "VIN_ripple_total_approx_Vpp": cin_cap_v + cin_esr_v,
+            "VOUT_ripple": cout_ripple,
+            "switch_rms_A_ideal": math.sqrt(
+                duty * (IO_A**2 + delta_i_pp**2 / 12)
+            ),
+            "diode_average_A_ideal": IO_A * (1 - duty),
+            "diode_rms_A_ideal": math.sqrt(
+                (1 - duty) * (IO_A**2 + delta_i_pp**2 / 12)
+            ),
+        })
+
+    delta_i_worst_tol = (
+        VO_V * (1 - VO_V / max(VIN_V))
+        / (L_H * (1 - L_TOLERANCE) * FSW_HZ)
+    )
+    peak_worst_tol = IO_A + delta_i_worst_tol / 2
+    output_ripple_worst_tol = ripple_voltage(
+        delta_i_worst_tol, COUT_F, ESR_OUT_OHM
+    )
+
+    cin_ripple_worst_tol = []
+    cin_rms_worst_tol = []
+    for vin_v in VIN_V:
+        duty = VO_V / vin_v
+        delta_i_tol = (
+            VO_V * (1 - duty)
+            / (L_H * (1 - L_TOLERANCE) * FSW_HZ)
+        )
+        cin_cap_v = IO_A * duty * (1 - duty) / (FSW_HZ * CIN_F)
+        cin_esr_v = (IO_A + delta_i_tol / 2) * ESR_IN_OHM
+        cin_ripple_worst_tol.append(cin_cap_v + cin_esr_v)
+        cin_rms_worst_tol.append(math.sqrt(
+            duty * (1 - duty) * IO_A**2 + duty * delta_i_tol**2 / 12
+        ))
+
+    fixed_duty_cases = []
+    for vin_v in VIN_V:
+        vout_v = duty_nominal * vin_v
+        fixed_duty_cases.append({
+            "Vin_V": vin_v,
+            "Vout_ideal_V": vout_v,
+            "Iload_at_RLOAD_A": vout_v / (VO_V / IO_A),
+        })
+
+    return {
+        "classification": "ANALİTİK HESAP / VARSAYIM; LTspice veya fiziksel ölçüm değil",
+        "topology": "tek faz asenkron açık çevrim buck",
+        "units": "Hesapta SI; alan adlarında birimler belirtilmiştir",
+        "parameters": {
+            "Vin_V": list(VIN_V),
+            "Vout_target_V": VO_V,
+            "Iout_design_A": IO_A,
+            "Pout_target_W": output_power_w,
+            "Fsw_Hz": FSW_HZ,
+            "L_uH": L_H * 1e6,
+            "L_tolerance_fraction": L_TOLERANCE,
+            "CIN_uF": CIN_F * 1e6,
+            "ESRIN_mOhm_assumed": ESR_IN_OHM * 1e3,
+            "COUT_uF": COUT_F * 1e6,
+            "ESROUT_mOhm_assumed": ESR_OUT_OHM * 1e3,
+            "RLOAD_ohm": VO_V / IO_A,
+        },
+        "selection_checks": {
+            "inductor_ripple_target_fraction": RIPPLE_TARGET_FRACTION,
+            "L_min_uH_for_ripple_target_at_Vin_max": l_min_h * 1e6,
+            "selected_standard_L_uH": L_H * 1e6,
+            "L_at_minus20pct_uH": L_H * (1 - L_TOLERANCE) * 1e6,
+            "delta_IL_pp_at_Vin_max_A_nominal_L": steady_cases[-1]["delta_IL_pp_A"],
+            "delta_IL_pp_at_Vin_max_A_minus20pct_L": delta_i_worst_tol,
+            "current_ripple_fraction_at_Vin_max_minus20pct_L": delta_i_worst_tol / IO_A,
+            "IL_peak_A_at_Vin_max_minus20pct_L": peak_worst_tol,
+            "Isat_steady_state_screen_A_with_30pct_margin": peak_worst_tol * (1 + SATURATION_MARGIN),
+            "VOUT_ripple_limit_mVpp": OUTPUT_RIPPLE_LIMIT_V * 1e3,
+            "VOUT_ripple_mVpp_at_Vin_max_minus20pct_L": output_ripple_worst_tol["total_approx_Vpp"] * 1e3,
+            "VIN_ripple_limit_mVpp": INPUT_RIPPLE_LIMIT_V * 1e3,
+            "VIN_ripple_max_approx_mVpp_at_minus20pct_L": max(cin_ripple_worst_tol) * 1e3,
+            "ICIN_rms_max_approx_A_at_minus20pct_L": max(cin_rms_worst_tol),
+            "fixed_nominal_duty": duty_nominal,
+            "fixed_nominal_duty_cases": fixed_duty_cases,
+        },
+        "steady_state_cases": steady_cases,
+        "model_notes": [
+            "Açık çevrim duty, Vin değiştiğinde Vout değerini regüle etmez.",
+            "CIN/COUT ESR değerleri model varsayımıdır; gerçek parça verisi değildir.",
+            "Bobin doyum akımı kontrolü kalkış ve arıza akımlarını kapsamaz.",
+            "Anahtarlama kaybı, termal davranış, parazitik yerleşim ve fiziksel davranış modellenmemiştir.",
+        ],
+    }
+
+
+if __name__ == "__main__":
+    result_path = Path(__file__).with_name("hesap-sonuc.json")
+    result_path.write_text(
+        json.dumps(calculate(), indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    print(result_path)

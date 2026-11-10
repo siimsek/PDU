@@ -1,6 +1,0 @@
-* LTspice syntax adapter: disable the implicit 1mOhm damping resistance.
-* Physical model is identical to pdu-inductor-ng.lib: L + 23.3mOhm DCR.
-.subckt PDU_L A B LVAL=6.8u
-Lcore A D {LVAL*LFACTOR} Rser=0
-Rdcr D B 23.3m
-.ends PDU_L

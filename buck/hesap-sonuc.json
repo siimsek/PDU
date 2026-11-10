@@ -1,65 +1,131 @@
 {
-  "sinif": "HESAP / VARSAYIM; ne LTspice sonucu ne fiziksel olcum",
-  "topoloji": "tek faz asenkron acik cevrim",
-  "parametreler": {
+  "classification": "ANALİTİK HESAP / VARSAYIM; LTspice veya fiziksel ölçüm değil",
+  "topology": "tek faz asenkron açık çevrim buck",
+  "units": "Hesapta SI; alan adlarında birimler belirtilmiştir",
+  "parameters": {
     "Vin_V": [
-      20,
+      20.0,
       22.2,
-      26
+      26.0
     ],
-    "Vo_hedef_V": 11,
-    "Iout_tasarim_A": 7.5,
-    "Pout_hedef_W": 82.5,
-    "f_Hz": 100000,
-    "L_uH": 33,
-    "Cin_uF": 440,
-    "Cout_uF": 1360,
-    "Rsrc_mOhm": 50,
-    "Rsw_mOhm": 30,
-    "Rdiode_mOhm": 33,
-    "Vf_diode_V": 0.6,
-    "DCR_mOhm": 20,
-    "ESRin_mOhm": 25,
-    "ESRout_mOhm": 20
+    "Vout_target_V": 11.0,
+    "Iout_design_A": 7.5,
+    "Pout_target_W": 82.5,
+    "Fsw_Hz": 100000.0,
+    "L_uH": 39.0,
+    "L_tolerance_fraction": 0.2,
+    "CIN_uF": 470.0,
+    "ESRIN_mOhm_assumed": 15.0,
+    "COUT_uF": 220.0,
+    "ESROUT_mOhm_assumed": 20.0,
+    "RLOAD_ohm": 1.4666666666666666
   },
-  "L_min_uH_yuzde30": 28.205128205128204,
-  "L_tolerans_eksi20_dalgalanma_A": 2.4038461538461533,
-  "L_tolerans_eksi20_Ipk_A": 8.701923076923077,
-  "Isat_sadece_kararli_min_A_30pct_marj": 11.3125,
-  "not": "Kalkis akimi kararlidan fazla olabilir; Isat buna gore kontrol edilir. Gercek yuk baglanmaz.",
-  "sonuclar": [
+  "selection_checks": {
+    "inductor_ripple_target_fraction": 0.25,
+    "L_min_uH_for_ripple_target_at_Vin_max": 33.84615384615384,
+    "selected_standard_L_uH": 39.0,
+    "L_at_minus20pct_uH": 31.2,
+    "delta_IL_pp_at_Vin_max_A_nominal_L": 1.6272189349112425,
+    "delta_IL_pp_at_Vin_max_A_minus20pct_L": 2.034023668639053,
+    "current_ripple_fraction_at_Vin_max_minus20pct_L": 0.2712031558185404,
+    "IL_peak_A_at_Vin_max_minus20pct_L": 8.517011834319526,
+    "Isat_steady_state_screen_A_with_30pct_margin": 11.072115384615383,
+    "VOUT_ripple_limit_mVpp": 55.0,
+    "VOUT_ripple_mVpp_at_Vin_max_minus20pct_L": 52.23742603550295,
+    "VIN_ripple_limit_mVpp": 200.0,
+    "VIN_ripple_max_approx_mVpp_at_minus20pct_L": 166.70456691426412,
+    "ICIN_rms_max_approx_A_at_minus20pct_L": 3.767226462298193,
+    "fixed_nominal_duty": 0.4954954954954955,
+    "fixed_nominal_duty_cases": [
+      {
+        "Vin_V": 20.0,
+        "Vout_ideal_V": 9.90990990990991,
+        "Iload_at_RLOAD_A": 6.756756756756757
+      },
+      {
+        "Vin_V": 22.2,
+        "Vout_ideal_V": 11.0,
+        "Iload_at_RLOAD_A": 7.500000000000001
+      },
+      {
+        "Vin_V": 26.0,
+        "Vout_ideal_V": 12.882882882882882,
+        "Iload_at_RLOAD_A": 8.783783783783784
+      }
+    ]
+  },
+  "steady_state_cases": [
     {
-      "Vin_V": 20,
-      "Duty_ideal": 0.55,
-      "Duty_kayipli_tahmin": 0.5829649666820611,
-      "I_L_dalgalanma_pp_A": 1.5,
-      "I_L_tepe_A": 8.25,
-      "Cout_dalgalanma_yaklasik_mV": 31.378676470588236,
-      "Cin_Irms_A_ideal": 3.731202889149825,
-      "iletim_ve_bakir_kayiplari_yaklasik_W": 5.722390222622503,
-      "anahtarlama_haric_verim_yaklasik_pct": 93.51367582743735
+      "Vin_V": 20.0,
+      "duty_ideal": 0.55,
+      "Ton_us": 5.500000000000001,
+      "Iin_average_ideal_A": 4.125,
+      "delta_IL_pp_A": 1.2692307692307692,
+      "IL_peak_A": 8.134615384615385,
+      "IL_rms_A": 7.508944370690875,
+      "ICIN_rms_A_approx": 3.741084075394671,
+      "ICOUT_rms_A_approx": 0.3663953631395702,
+      "VIN_ripple_cap_Vpp": 0.03949468085106382,
+      "VIN_ripple_esr_Vpp": 0.12201923076923077,
+      "VIN_ripple_total_approx_Vpp": 0.1615139116202946,
+      "VOUT_ripple": {
+        "capacitive_Vpp": 0.007211538461538461,
+        "esr_Vpp": 0.025384615384615384,
+        "total_approx_Vpp": 0.032596153846153844
+      },
+      "switch_rms_A_ideal": 5.568782188160316,
+      "diode_average_A_ideal": 3.3749999999999996,
+      "diode_rms_A_ideal": 5.0371530156387525
     },
     {
       "Vin_V": 22.2,
-      "Duty_ideal": 0.4954954954954955,
-      "Duty_kayipli_tahmin": 0.5250850107961945,
-      "I_L_dalgalanma_pp_A": 1.6816816816816813,
-      "I_L_tepe_A": 8.34084084084084,
-      "Cout_dalgalanma_yaklasik_mV": 35.17929694400282,
-      "Cin_Irms_A_ideal": 3.74984781770584,
-      "iletim_ve_bakir_kayiplari_yaklasik_W": 5.811236436292775,
-      "anahtarlama_haric_verim_yaklasik_pct": 93.41959565871896
+      "duty_ideal": 0.4954954954954955,
+      "Ton_us": 4.954954954954955,
+      "Iin_average_ideal_A": 3.7162162162162162,
+      "delta_IL_pp_A": 1.422961422961423,
+      "IL_peak_A": 8.21148071148071,
+      "IL_rms_A": 7.511240572253674,
+      "ICIN_rms_A_approx": 3.7609794011422895,
+      "ICOUT_rms_A_approx": 0.41077358029661526,
+      "VIN_ripple_cap_Vpp": 0.03989037916582482,
+      "VIN_ripple_esr_Vpp": 0.12317221067221065,
+      "VIN_ripple_total_approx_Vpp": 0.16306258983803548,
+      "VOUT_ripple": {
+        "capacitive_Vpp": 0.008085008085008085,
+        "esr_Vpp": 0.02845922845922846,
+        "total_approx_Vpp": 0.036544236544236545
+      },
+      "switch_rms_A_ideal": 5.287270469862969,
+      "diode_average_A_ideal": 3.7837837837837833,
+      "diode_rms_A_ideal": 5.335120046707919
     },
     {
-      "Vin_V": 26,
-      "Duty_ideal": 0.4230769230769231,
-      "Duty_kayipli_tahmin": 0.44836684986260306,
-      "I_L_dalgalanma_pp_A": 1.923076923076923,
-      "I_L_tepe_A": 8.461538461538462,
-      "Cout_dalgalanma_yaklasik_mV": 40.22907239819004,
-      "Cin_Irms_A_ideal": 3.705355551538018,
-      "iletim_ve_bakir_kayiplari_yaklasik_W": 5.957675678472834,
-      "anahtarlama_haric_verim_yaklasik_pct": 93.26494209487498
+      "Vin_V": 26.0,
+      "duty_ideal": 0.4230769230769231,
+      "Ton_us": 4.230769230769231,
+      "Iin_average_ideal_A": 3.173076923076923,
+      "delta_IL_pp_A": 1.6272189349112425,
+      "IL_peak_A": 8.31360946745562,
+      "IL_rms_A": 7.514695832512305,
+      "ICIN_rms_A_approx": 3.7179312995530895,
+      "ICOUT_rms_A_approx": 0.469737645050731,
+      "VIN_ripple_cap_Vpp": 0.03894938939947123,
+      "VIN_ripple_esr_Vpp": 0.1247041420118343,
+      "VIN_ripple_total_approx_Vpp": 0.16365353141130554,
+      "VOUT_ripple": {
+        "capacitive_Vpp": 0.009245562130177513,
+        "esr_Vpp": 0.03254437869822485,
+        "total_approx_Vpp": 0.041789940828402365
+      },
+      "switch_rms_A_ideal": 4.887886077637227,
+      "diode_average_A_ideal": 4.326923076923077,
+      "diode_rms_A_ideal": 5.707821225933584
     }
+  ],
+  "model_notes": [
+    "Açık çevrim duty, Vin değiştiğinde Vout değerini regüle etmez.",
+    "CIN/COUT ESR değerleri model varsayımıdır; gerçek parça verisi değildir.",
+    "Bobin doyum akımı kontrolü kalkış ve arıza akımlarını kapsamaz.",
+    "Anahtarlama kaybı, termal davranış, parazitik yerleşim ve fiziksel davranış modellenmemiştir."
   ]
 }
