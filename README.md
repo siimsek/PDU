@@ -2,30 +2,30 @@
 
 20–26 V girişten (6S batarya, ana çalışma noktası 24,6 V) 11 V / 7,5 A (82,5 W) hedefleyen tek faz, asenkron, açık çevrim buck güç katı. Beslenecek yükler T3 Gemstone O1 ve SLAMTEC RPLIDAR S2E'dir.
 
-**Aşama: ANA GÜÇ DEVRESİ.** Güç katının değerleri ve parça kriterleri belirlendi ve LTspice'ta doğrulandı. Belirli parça numarası seçilmedi; PWM, geri besleme ve soft-start henüz yok. Bu aşamanın son hâli `ANA-GUC-DEVRESI` dalında saklanır.
+**Aşama: ANA GÜÇ DEVRESİ.** Güç katının değerleri belirlendi ve LTspice'ta doğrulandı; parçalar için aday listesi var, kesin seçim yapılmadı. PWM, geri besleme ve soft-start henüz yok; fiziksel devre kurulmadı.
 
 **Nerede kaldık, sırada ne var:** [YOL-HARITASI.md](YOL-HARITASI.md) · **Çalışma kuralları (yapay zekâ araçları dahil):** [AGENTS.md](AGENTS.md)
 
 ![LTspice şematiği](buck/ltspice/buck_guc_kati.svg)
 
-## Devre değerleri
+## Devre değerleri ve parçalar
 
-| Eleman | Şematikteki değer | Kabul aralığı | Kısa neden |
+| Eleman | Şematikteki değer | 1. sıra aday (kesin değil) | Kabul aralığı |
 |---|---|---|---|
-| V1 | 24,6 V | 20–26 V | 6S batarya; normal çalışma noktası 24,6 V |
-| Vdrv | 100 kHz, Ton = 4,65 µs | — | 24,6 V'ta 11 V veren iletim süresi |
-| L1 | 33 µH, DCR 15 mΩ | 33–47 µH, Isat ≥ 12 A, DCR ≤ 15 mΩ | Akım ripple'ı %25; tipik yükte sürekli iletim |
-| Cout | 1000 µF, ESR 25 mΩ | 1000 µF, ESR 15–35 mΩ, ≥ 25 V | Sabit güç yüküyle sönüm; tolerans köşesinde 12 V altında kalır |
-| Cin1, Cin2 | 2 × 1000 µF, ESR 20 mΩ | toplam ripple akımı ≥ 4,5 A, ≥ 35 V | Giriş ripple akımı 3,8 A RMS |
-| S1 | ideal anahtar, `Ron=12m` | RDS(on) ≤ 12 mΩ, VDS ≥ 55 V | İletim kaybı 0,32 W |
-| D1 | ideal diyot, `Vf=0.5 Ron=10m` | VF ≤ 0,58 V @ 7,5 A, VRRM ≥ 45 V | İletim kaybının üçte ikisi diyotta |
-| Rload | 1,467 Ω | ≥ 100 W | 11 V / 7,5 A test yükü |
+| V1 | 24,6 V | 6S batarya | 20–26 V |
+| Vdrv | 100 kHz, Ton = 4,61 µs | — (sonraki aşamada sürücü + PWM) | — |
+| L1 | 33 µH, DCR 14,5 mΩ | Würth 74435583300 | 33–47 µH, Isat ≥ 12 A, DCR ≤ 15 mΩ |
+| Cout | 1000 µF, ESR 35 mΩ | Nichicon UHE1E102MHD6TO (25 V) | 1000 µF, ESR 15–35 mΩ, ≥ 25 V |
+| Cin1, Cin2 | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 (35 V) | toplam ripple akımı ≥ 4,5 A, ≥ 35 V |
+| S1 | ideal anahtar, `Ron=5.6m` | STP100N6F7 (60 V, TO-220) | RDS(on) ≤ 12 mΩ, VDS ≥ 55 V |
+| D1 | ideal diyot, `Vf=0.38 Ron=8m` | STPS40M60CT (60 V, 2 × 20 A, iki bacak paralel) | VF ≤ 0,58 V @ 7,5 A, VRRM ≥ 45 V |
+| Rload | 1,467 Ω | ≥ 100 W direnç yükü | — |
 
-Kriterlerin tamamı ve nedenleri: [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md). Seçim süreci ve test sonuçları: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md).
+Şematik ideal elemanlıdır; değerler aday listesinin başındaki parçaların veri sayfasından alınmıştır. Bu bir satın alma kararı değildir. Adayların sırası ve nedeni, doğrulama durumu ve kriterlerin nedenleri: [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md). Seçim süreci ve test sonuçları: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md).
 
-LTspice sonucu (24,6 V giriş, kararlı durum, 19–20 ms): Vo = 11,001 V, çıkış ripple'ı 46,5 mV t-t, bobin akımı 6,55–8,45 A. Fiziksel ölçüm yoktur.
+LTspice sonucu (24,6 V giriş, kararlı durum, 19–20 ms): Vo = 11,000 V, çıkış ripple'ı 64,4 mV t-t, bobin akımı 6,56–8,44 A. Fiziksel ölçüm yoktur.
 
-Açık çevrim: Ton sabitken giriş veya yük değişirse çıkış 11 V'ta kalmaz; soft-start yoktur (sert kalkışta LTspice 53,1 A / 16,9 V gösterir). **Gerçek O1 veya S2E bağlanmaz.**
+Açık çevrim: Ton sabitken giriş veya yük değişirse çıkış 11 V'ta kalmaz; soft-start yoktur (sert kalkışta LTspice 52,2 A / 16,7 V gösterir). **Gerçek O1 veya S2E bağlanmaz.**
 
 ## LTspice'ta deneme
 
@@ -37,7 +37,7 @@ Açık çevrim: Ton sabitken giriş veya yük değişirse çıkış 11 V'ta kalm
 
 Şematikteki tek yönerge `.tran 20m` satırıdır (simülasyon süresi); LTspice bunu şematikte ister.
 
-Beklenen (24,6 V giriş, 19–20 ms): V(out) ortalama ≈ 11,00 V, ripple ≈ 47 mV t-t, I(L1) ≈ 6,6–8,4 A.
+Beklenen (24,6 V giriş, 19–20 ms): V(out) ortalama ≈ 11,00 V, ripple ≈ 64 mV t-t, I(L1) ≈ 6,6–8,4 A.
 
 ## Dosyalar
 
@@ -46,7 +46,7 @@ Beklenen (24,6 V giriş, 19–20 ms): V(out) ortalama ≈ 11,00 V, ripple ≈ 47
 | [YOL-HARITASI.md](YOL-HARITASI.md) | Güncel durum, adımlar ve tamamlanma ölçütleri, karar günlüğü |
 | [AGENTS.md](AGENTS.md) | Çalışma kuralları: neyin nasıl yapılacağı, araçlar, PCB aşaması kuralları |
 | [buck/ltspice/buck_guc_kati.asc](buck/ltspice/buck_guc_kati.asc) | LTspice şematiği (çift tıkla aç, Run) |
-| [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md) | Parça kriterleri (en az/en çok değerler) ve nedenleri, Türkiye'de bulunurluk, parça arama istemi |
+| [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md) | Aday parçalar (öncelik sırasıyla), kriterler (en az/en çok değerler) ve nedenleri, Türkiye'de bulunurluk, parça arama istemi |
 | [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) | Yük gereksinimleri, değerlerin nasıl seçildiği, test sonuçları, açık riskler |
 | [buck/hesap.py](buck/hesap.py) | Analitik hesap: ripple, akımlar, kayıplar, LC dinamiği (`python buck/hesap.py`) |
 | [buck/dogrula.py](buck/dogrula.py) | LTspice doğrulama koşuları (`python buck/dogrula.py secilen` / `pencere` / `tarama` / `grafik`) |

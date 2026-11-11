@@ -15,18 +15,17 @@ VIN_V = (20.0, 22.2, 24.6, 25.2, 26.0)       # zorunlu test noktalari
 VIN_ANA_V = 24.6
 FSW_HZ = 100_000.0
 
-# Ana sematikteki degerler: parca numarasindan bagimsiz HEDEF degerler (PARCA-HEDEFLERI.md).
-# Ron, Vf/Rd ve DCR kabul sinirinin kendisidir; daha iyi parca yalniz kaybi azaltir.
-L_H = 33e-6             # kabul penceresi 33-47 uH
-DCR_OHM = 15e-3         # ust sinir
-COUT_F = 1000e-6
-ESR_OUT_OHM = 25e-3     # kabul penceresi 15-35 mohm (alt sinir LC sonumu, ust sinir ripple)
-ESR_OUT_MIN_OHM, ESR_OUT_MAX_OHM = 15e-3, 35e-3
-CIN_F = 2000e-6         # 2 x 1000 uF
-ESR_IN_OHM = 10e-3      # 2 x 20 mohm paralel
-RON_OHM = 12e-3         # S1 ust sinir (25 C)
-VF_V = 0.5              # D1
-RD_OHM = 10e-3          # D1 seri direnci; 7,5 A'de toplam 0,575 V
+# Ana sematikteki degerler: 1. sira aday parcalarin veri sayfasi degerleri; kesin secim degil (PARCA-HEDEFLERI.md).
+L_H = 33e-6             # Wurth 74435583300; kabul penceresi 33-47 uH
+DCR_OHM = 14.52e-3      # maks
+COUT_F = 1000e-6        # Nichicon UHE1E102MHD6TO
+ESR_OUT_OHM = 35e-3     # veri sayfasi maks; gercek deger daha dusuktur
+ESR_OUT_MIN_OHM, ESR_OUT_MAX_OHM = 15e-3, 35e-3   # kabul penceresi (alt sinir LC sonumu, ust sinir ripple)
+CIN_F = 2000e-6         # 2 x TDK B41859D7108M000
+ESR_IN_OHM = 7.5e-3     # 2 x 15 mohm paralel
+RON_OHM = 5.6e-3        # STP100N6F7, 25 C maks
+VF_V = 0.38             # STPS40M60CT, iki bacak paralel; iki noktadan YAKLASIK
+RD_OHM = 8e-3           # 7,5 A'de toplam 0,44 V
 
 L_DUSUK = 0.30          # -%20 tolerans ve tepe akimda -%10 dusum birlikte
 L_YUKSEK = 0.20

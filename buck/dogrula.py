@@ -43,10 +43,12 @@ P_O1_BOSTA = 4.0            # W  TAHMIN
 
 MEVCUT = dict(L=33e-6, DCR=15e-3, Cout=330e-6, ESRo=15e-3, Cin=220e-6, ESRi=20e-3,
               Ron=10e-3, Vf=0.5, Rd=10e-3, f=100e3)
-# Ana sematikteki degerler: parca numarasindan bagimsiz HEDEF degerler (PARCA-HEDEFLERI.md).
-# Ron, Vf/Rd, DCR kabul sinirinin kendisidir (daha iyi parca kaybi azaltir); Cout ESR pencerenin ortasidir.
-SECILEN = dict(L=33e-6, DCR=15e-3, Cout=1000e-6, ESRo=25e-3, Cin=1000e-6, ESRi=20e-3,
-               Ron=12e-3, Vf=0.5, Rd=10e-3, f=100e3)
+# Ana sematikteki degerler: 1. sira aday parcalarin veri sayfasi degerleri; kesin secim degil (PARCA-HEDEFLERI.md).
+# L1 Wurth 74435583300 (33 uH, DCR maks 14,52 mohm), Cout Nichicon UHE1E102MHD6TO (ESR maks 35 mohm),
+# Cin 2 x TDK B41859D7108M000 (15 mohm), S1 STP100N6F7 (5,6 mohm maks),
+# D1 STPS40M60CT iki bacak paralel (~0,38 V + 8 mohm; iki veri sayfasi noktasindan YAKLASIK).
+SECILEN = dict(L=33e-6, DCR=14.52e-3, Cout=1000e-6, ESRo=35e-3, Cin=1000e-6, ESRi=15e-3,
+               Ron=5.6e-3, Vf=0.38, Rd=8e-3, f=100e3)
 L_DUSUK, L_YUKSEK = 0.70, 1.20     # -%20 tolerans ve tepe akimda -%10 dusum birlikte; +%20 tolerans
 ESR_MIN, ESR_MAX = 15e-3, 35e-3    # Cout 100 kHz ESR kabul penceresi (tolerans dahil)
 # Dogrulanan L penceresi (Cout 1000 uF ile): 33-47 uH. 22 uH tipik yukte DCM'de kaldigi icin pencere disi.
@@ -635,7 +637,7 @@ def grafik() -> None:
     _, b = yuk_adimi(p, VIN_ANA, P_ZARF, P_ZARF_KALKIS, raw=True)
     svg_ciz(g / "yuk_adimi.svg", "S2E kalkış darbesi, O1 5 A zarfında (57,6→73→57,6 W sabit güç), 24,6 V, Ton sabit", [
         dict(ylabel="V(out) [V]", cizgiler=[(12.0, "12 V")],
-             seriler=[("Cout 330 µF / 15 mΩ (eski)", a["time"], a["V(out)"]), ("Cout 1000 µF / 25 mΩ (seçilen)", b["time"], b["V(out)"])]),
+             seriler=[("Cout 330 µF / 15 mΩ (eski)", a["time"], a["V(out)"]), ("seçilen parçalar (1000 µF / 35 mΩ)", b["time"], b["V(out)"])]),
         dict(ylabel="I(L1) [A]", seriler=[("eski", a["time"], a["I(L1)"]), ("seçilen", b["time"], b["I(L1)"])])])
     n = netlist(p, vin=VIN_ANA, surucu=surucu_ton(p, ton), yuk=yuk_r(7.5), tstop=12.05e-3, tstart=12e-3,
                 ic=f"V(out)={VO} I(L1)=7.5", meas=["VO AVG V(out)"])

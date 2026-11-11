@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """buck_guc_kati.asc dosyasini uretir (LTspice sematigi, Windows-1252/ASCII).
 
-Sade surum: yalniz deger tabanli ideal elemanlar; degerler parca numarasindan bagimsiz hedeflerdir
-(buck/PARCA-HEDEFLERI.md). Gercek parca SPICE modeli, .param, .meas, .ic yok.
+Sade surum: yalniz deger tabanli ideal elemanlar; degerler 1. sira aday parcalarin (kesin secim degil)
+veri sayfasindandir (buck/PARCA-HEDEFLERI.md). Gercek parca SPICE modeli, .param, .meas, .ic yok.
 Kullanim: python sematik_uret.py [Ton_us]     (varsayilan asagidaki TON_US)
 Ton, 24,6 V giriste (ana calisma noktasi) ortalama cikis 11 V olacak sekilde LTspice kosusuyla ayarlanmistir.
 """
 import sys
 from pathlib import Path
 
-TON_US = 4.65          # 24,6 V -> 11 V icin LTspice ile ayarli iletim suresi (T = 10 us)
+TON_US = 4.61          # 24,6 V -> 11 V icin LTspice ile ayarli iletim suresi (T = 10 us)
 ton = float(sys.argv[1]) if len(sys.argv) > 1 else TON_US
 
 W = []  # wires
@@ -40,14 +40,14 @@ FLAGS = [(-320, GND, "0"), (96, TOP, "vin"), (704, TOP, "sw"), (1024, TOP, "out"
 CAPW = ["WINDOW 39 24 85 Left 2"]
 SYMS = [
     ("voltage", -320, 112, "R0", "V1", "24.6", None, []),
-    ("polcap", -176, 144, "R0", "Cin1", "1000u", "Rser=20m", CAPW),
-    ("polcap", -16, 144, "R0", "Cin2", "1000u", "Rser=20m", CAPW),
-    ("anahtar", 176, 64, "R270", "S1", "anahtar", "Ron=12m", ["WINDOW 0 64 56 VTop 2", "WINDOW 39 40 56 VTop 2"]),
+    ("polcap", -176, 144, "R0", "Cin1", "1000u", "Rser=15m", CAPW),
+    ("polcap", -16, 144, "R0", "Cin2", "1000u", "Rser=15m", CAPW),
+    ("anahtar", 176, 64, "R270", "S1", "anahtar", "Ron=5.6m", ["WINDOW 0 64 56 VTop 2", "WINDOW 39 40 56 VTop 2"]),
     ("voltage", 256, 160, "R0", "Vdrv", f"PULSE(0 10 0 10n 10n {ton:g}u 10u)", None, []),
-    ("diyot", 768, 208, "R180", "D1", "diyot", "Vf=0.5 Ron=10m", []),
-    ("ind", 768, 80, "R270", "L1", "33u", "Rser=15m",
+    ("diyot", 768, 208, "R180", "D1", "diyot", "Vf=0.38 Ron=8m", []),
+    ("ind", 768, 80, "R270", "L1", "33u", "Rser=14.5m",
      ["WINDOW 0 32 56 VTop 2", "WINDOW 3 5 56 VBottom 2", "WINDOW 39 -20 56 VBottom 2"]),
-    ("polcap", 928, 144, "R0", "Cout", "1000u", "Rser=25m", CAPW),
+    ("polcap", 928, 144, "R0", "Cout", "1000u", "Rser=35m", CAPW),
     ("res", 1088, 128, "R0", "Rload", "1.4667", None, []),
 ]
 

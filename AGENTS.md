@@ -46,9 +46,9 @@ Güncel değerler ve aktif adım burada tekrar edilmez; [YOL-HARITASI.md](YOL-HA
 
 ### 4.2 Değerler ve parçalar
 - **Tek doğruluk kaynağı:** şematik değerleri `buck/ltspice/sematik_uret.py`, `buck/hesap.py` ve `buck/dogrula.py` (`SECILEN`) içinde aynı olmalıdır. Biri değişirse üçü birlikte değişir, testler yeniden koşulur, belgelerdeki sayılar yenilenir.
-- Bir değeri değiştirmeden önce nedenini oku ([buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md), yol haritasındaki karar günlüğü). Bilerek alınmış kararlar: Cout ESR'sinin **alt sınırı** vardır; 22 µH ve 680 µF **elenmiştir**; Cout/L büyütmek giriş değişimi etkisini düzeltmez.
-- Şematik parça numarasından bağımsız **hedef değerleri** taşır. Belirli parça numarası (MPN) seçilmez ve şematiğe yazılmaz; parçayı kullanıcı bulur. Parça araması yalnız kullanıcı isterse yapılır ve sonuç "kriteri tutan örnek" olarak yazılır.
-- Kullanıcı bir parça getirdiğinde: veri sayfası değerlerini kriterlerle tek tek karşılaştır → uyuyorsa değerleri üç dosyaya yaz → `dogrula.py secilen` ve `pencere` koş → belgeleri güncelle. Veri sayfasında bulunmayan değer tahmin edilmez; "doğrulanamadı" yazılır.
+- Bir değeri değiştirmeden önce nedenini oku ([buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md), yol haritasındaki karar günlüğü). Bilerek alınmış kararlar: Cout ESR'sinin **alt sınırı** vardır (bu yüzden 18 mΩ değil 35 mΩ'luk kondansatör seçildi); 22 µH ve 680 µF **elenmiştir**; Cout/L büyütmek giriş değişimi etkisini düzeltmez; S1 en düşük dirençli değil en düşük kapı yüklü adaydır.
+- Parçalar **kesinleşmemiştir**. [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md) içinde öncelik sırasına dizilmiş bir aday listesi vardır; şematik **1. sıra adayların** veri sayfası değerlerini taşır. Bu değerler "satın alınacak parça" diye sunulmaz. Aday sırasını ve 1. sırayı kullanıcı belirler; araç kendi başına parça seçip şematiğe yazmaz, sırayı değiştirmez. Parça araması yalnız kullanıcı isterse yapılır ve sonuç "kriteri tutan aday" olarak sunulur.
+- Kullanıcı yeni bir parça getirdiğinde: veri sayfası değerlerini kriterlerle tek tek karşılaştır → adayı geçici olarak (depoyu değiştirmeden) LTspice köşe testinden geçir → sonucu sun → kullanıcı 1. sıraya almak isterse değerleri üç dosyaya yaz → `dogrula.py secilen` koş → belgeleri güncelle. Veri sayfasında bulunmayan değer tahmin edilmez; "doğrulanamadı" yazılır.
 
 ### 4.3 Şematik
 - Ana şematik yalnız değer tabanlıdır: ideal anahtar/diyot, L/C + ESR/DCR. `.param`, `.meas`, `.ic`, `.model`, açıklama notu veya gerçek parça SPICE modeli eklenmez. Şematikteki tek yönerge `.tran` satırıdır.
@@ -110,12 +110,12 @@ Bu bölüm ileriye dönüktür. PCB işine kullanıcı açıkça başlatmadan gi
 ### 7.1 Başlamadan önce
 - Güç katı dondurulmuş (Adım 3), sürücü, PWM, geri besleme ve korumalar tasarlanmış (Adım 4–7) ve tezgâhta ölçülmüş (Adım 8) olmalıdır. Eksik adımla PCB'ye geçilecekse kullanıcıya açıkça söylenir.
 - Araç, katman sayısı, bakır kalınlığı ve kart üreticisinin tasarım kuralları kullanıcıyla netleştirilir (önceki tasarımda KiCad kullanılmıştı; varsayılmaz, sorulur).
-- Her parçanın kılıfı ve ayak izi **seçilen parçanın veri sayfasından** alınır; kütüphane ayak izi veri sayfası ölçüleriyle karşılaştırılır.
+- PCB'ye geçmeden önce parçalar **kesinleştirilmiş** olmalıdır. Her parçanın kılıfı ve ayak izi kesinleşen parçanın veri sayfasından alınır; kütüphane ayak izi veri sayfası ölçüleriyle karşılaştırılır. Şu anki 1. sıra adaylar: L1 yüzey montaj (Würth 74435583300), Cout radyal, Cin radyal 16 × 20 mm, S1 ve D1 TO-220.
 
 ### 7.2 Tasarım girdileri (bu depodan)
 - Akımlar: çıkış 7,5 A sürekli; bobin tepe 8,9 A; giriş ortalama ≈ 4,3 A (20 V'ta); Cin ripple akımı 3,8 A RMS; S1 5,7 A RMS; D1 4,2 A ortalama. Sert kalkış ve arıza akımları ayrıca (Adım 5 ve 7 sonuçlarıyla) ele alınır.
 - Gerilimler: giriş 26 V, batarya takma anında ≈ 28 V; anahtar düğümü 0 ↔ giriş gerilimi arasında 100 kHz'de salınır.
-- Isı: D1 ≈ 2,3 W, S1 ≈ 0,3 W iletim + anahtarlama, L1 ≈ 0,85 W bakır + çekirdek. Güncel değerler Adım 3 çıktısından alınır.
+- Isı: D1 ≈ 1,8 W, S1 ≈ 0,15 W iletim + anahtarlama, L1 ≈ 0,8 W bakır + çekirdek. Güncel değerler Adım 3 çıktısından alınır.
 
 ### 7.3 Yerleşim
 - **Sıcak çevrim** (Cin → S1 → D1 → Cin) mümkün olan en küçük alanda kurulur; Cin, S1 ve D1 birbirine bitişik yerleştirilir. Bu çevrim önce yerleştirilir, diğer her şey ona göre.
@@ -140,7 +140,7 @@ Bu bölüm ileriye dönüktür. PCB işine kullanıcı açıkça başlatmadan gi
 ## 8. Yapılmayacaklar (kısa liste)
 
 - Kullanıcı istemeden sonraki adıma geçmek, yeni dosya açmak, commit/push yapmak.
-- Şematiğe yönerge, parça modeli veya parça numarası eklemek.
+- Şematiğe yönerge veya parça SPICE modeli eklemek; kullanıcı istemeden aday sırasını veya şematikteki parça değerlerini değiştirmek; aday parçayı kesin seçim gibi sunmak.
 - Koşulmamış test için sonuç yazmak; tahmini veri sayfası değeri gibi sunmak.
 - Bir değeri nedenini okumadan değiştirmek (özellikle Cout ESR, L1, Cout).
 - Üç dosyadan (üreteç, hesap, doğrulama) yalnız birini güncellemek.
