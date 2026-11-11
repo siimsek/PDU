@@ -22,6 +22,8 @@ Etiketler: **DATASHEET** üretici belgesi · **ÇIKARIM** üretici şemasından 
 
 Bu değerler güç katının **elektriksel temelidir**; devre açık çevrim kaldığı sürece gerçek O1/S2E bağlanamaz (bkz. §6).
 
+**Parça seçimi sonrası (şematikteki son değerler):** "Önerilen" sütunu hedef değerlerdir. Parçalar seçildikten sonra şematiğe veri sayfası değerleri yazıldı: Cout ESR 28 mΩ, Cin 2 × 680 µF / 20 mΩ (ripple akımı anma değeri bu kapasiteyi gerektirdi), S1 Ron 11 mΩ, D1 0,46 V + 3,1 mΩ, Ton 4,63 µs. Parça listesi: [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md); bu değerlerle sonuçlar §5.
+
 ## 2. Yükler
 
 | | T3 Gemstone O1 | SLAMTEC RPLIDAR S2E |
@@ -107,60 +109,60 @@ Soru: akım ripple'ı önemsenmeyip çıkış geriliminin giriş değişiminde s
 - **Daha büyük L / Cout giriş geçişini kötüleştirir:** LC yavaşladığı için rampa sırasındaki aşım/çöküş büyür (68 µH / 1500 µF'ta 7,58–13,32 V).
 - Büyük adayların kazancı ripple ve hafif yük yükselmesindedir; ikisi de zaten sınırların içinde veya geri beslemeyle giderilecek konulardır. **Seçim değişmedi (A).** Parça aşamasında yer varsa 33 µH / 1000 µF köşe sönümünü iyileştirir, karşılığı daha yüksek sert kalkış akımıdır.
 
-## 5. Seçilen tasarımın test sonuçları (SİM)
+## 5. Seçilen parçalarla test sonuçları (SİM)
 
-L 33 µH / 15 mΩ · Cout 680 µF / 25 mΩ · Cin 2 × 220 µF / 20 mΩ · Ron 10 mΩ · Vf 0,5 V + 10 mΩ · 100 kHz. Ton ayar doğruluğu ±5 mV; ripple 1 ms pencerede t-t.
+Şematikteki değerler = seçilen parçaların veri sayfası değerleri ([PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md)): L 33 µH / 15 mΩ · Cout 680 µF / 28 mΩ · Cin 2 × 680 µF / 20 mΩ · Ron 11 mΩ · Vf 0,46 V + 3,1 mΩ · 100 kHz. Tablolar `python buck/dogrula.py secilen` çıktısıdır.
 
-### 5.1 Beş girişte kararlı durum, 7,5 A (Ton her girişte 11 V'a ayarlı = ideal regülasyon varsayımı)
+### 5.1 Kararlı durum, 7,5 A direnç yük, Ton her girişte 11 V'a ayarlı (ideal regülasyon varsayımı)
 
-| Vin V | Ton µs | Vo V | ΔVo mV | IL A | S1 rms A | D1 ort A | Cout rms A | P S1 W | P D1 W | P L1 W | Toplam W | η iletim % |
+| Vin V | Ton µs | Vo V | ΔVo mV | IL A | S1 rms A | D1 ort A | Cout rms A | P S1 W | P D1 W | P L1 W | P toplam W | η iletim % |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 20 | 5,691 | 10,999 | 38,2 | 6,74–8,26 | 5,67 | 3,22 | 0,43 | 0,32 | 1,85 | 0,85 | 3,03 | 96,46 |
-| 22,2 | 5,138 | 10,999 | 43,1 | 6,64–8,36 | 5,39 | 3,64 | 0,49 | 0,29 | 2,09 | 0,85 | 3,24 | 96,22 |
-| **24,6** | 4,646 | 11,000 | 47,4 | 6,55–8,45 | 5,13 | 4,01 | 0,54 | 0,26 | 2,31 | 0,85 | 3,42 | 96,01 |
-| 25,2 | 4,539 | 10,999 | 54,5 | 6,53–8,48 | 5,07 | 4,09 | 0,55 | 0,26 | 2,35 | 0,85 | 3,47 | 95,96 |
-| 26 | 4,400 | 11,002 | 55,9 | 6,51–8,51 | 5,00 | 4,19 | 0,56 | 0,25 | 2,41 | 0,85 | 3,52 | 95,91 |
+| 20 | 5.675 | 11.001 | 42.4 | 6.74–8.26 | 5.66 | 3.24 | 0.43 | 0.35 | 1.56 | 0.85 | 2.77 | 96.75 |
+| 22.2 | 5.120 | 11.001 | 53.2 | 6.64–8.37 | 5.39 | 3.65 | 0.48 | 0.32 | 1.77 | 0.85 | 2.94 | 96.56 |
+| 24.6 | 4.629 | 10.999 | 58.6 | 6.56–8.46 | 5.12 | 4.02 | 0.53 | 0.29 | 1.94 | 0.85 | 3.09 | 96.39 |
+| 25.2 | 4.519 | 10.999 | 53.7 | 6.54–8.46 | 5.06 | 4.10 | 0.54 | 0.28 | 1.98 | 0.85 | 3.12 | 96.35 |
+| 26 | 4.382 | 11.000 | 61.4 | 6.51–8.51 | 4.99 | 4.21 | 0.56 | 0.27 | 2.03 | 0.85 | 3.17 | 96.30 |
 
-HESAP ile fark: Ton ≤ %0,3, ΔIL ≤ %1. Verim yalnız iletim kaybıdır; anahtarlama, çekirdek ve sürücü kayıpları **modelde yoktur**, gerçek verim daha düşük olacaktır.
+Verim yalnız iletim kaybıdır; anahtarlama, çekirdek ve sürücü kayıpları **modelde yoktur**, gerçek verim daha düşük olacaktır. Ton ayar doğruluğu ±5 mV; ripple 1 ms pencerede t-t.
 
 ![Kararlı durum](grafik/kararli.svg)
 
-### 5.2 Gerçek yük senaryoları, 24,6 V (Ton 11 V'a ayarlı, sabit güç yükü)
+### 5.2 Kararlı durum, gerçek yük senaryoları, 24,6 V, Ton 11 V'a ayarlı (sabit güç yükü)
 
-| Senaryo | P W | I@11 V A | Ton µs | Kip | Vo V | ΔVo mV | IL tepe A |
-|---|---|---|---|---|---|---|---|
-| yalnız S2E çalışma | 2,64 | 0,24 | 2,305 | DCM | 11,003 | 24,7 | 0,95 |
-| yalnız O1 boşta (TAHMİN) | 4,00 | 0,36 | 2,838 | DCM | 11,001 | 30,4 | 1,17 |
-| yalnız O1 tipik (TAHMİN) | 10,00 | 0,91 | 4,495 | DCM | 11,018 | 48,5 | 1,85 |
-| O1 boşta + S2E | 6,64 | 0,60 | 3,656 | DCM | 10,981 | 39,7 | 1,51 |
-| O1 tipik + S2E | 12,64 | 1,15 | 4,583 | CCM | 11,000 | 48,3 | 2,09 |
-| O1 tipik + S2E kalkış | 28,00 | 2,55 | 4,597 | CCM | 11,000 | 48,5 | 3,49 |
-| yalnız O1 zarf | 55,00 | 5,00 | 4,621 | CCM | 11,001 | 56,2 | 5,96 |
-| O1 zarf + S2E | 57,64 | 5,24 | 4,624 | CCM | 11,001 | 49,3 | 6,19 |
-| O1 zarf + S2E kalkış | 73,00 | 6,64 | 4,638 | CCM | 11,000 | 51,6 | 7,59 |
+| Senaryo | P W | I@11V A | Ton µs | Kip | Vo V | ΔVo mV | IL tepe A | η iletim % |
+|---|---|---|---|---|---|---|---|---|
+| yalnız S2E çalışma | 2.64 | 0.24 | 2.303 | DCM | 11.008 | 27.7 | 0.95 | 97.6 |
+| yalnız O1 boşta (tahmin) | 4.00 | 0.36 | 2.835 | DCM | 10.993 | 34.3 | 1.17 | 97.5 |
+| yalnız O1 tipik (tahmin) | 10.00 | 0.91 | 4.483 | DCM | 10.984 | 55.1 | 1.85 | 97.5 |
+| O1 boşta + S2E | 6.64 | 0.60 | 3.653 | DCM | 10.976 | 44.4 | 1.51 | 97.5 |
+| O1 tipik + S2E | 12.64 | 1.15 | 4.573 | CCM | 10.999 | 53.9 | 2.09 | 97.5 |
+| O1 tipik + S2E kalkış | 28.00 | 2.55 | 4.585 | CCM | 10.999 | 54.1 | 3.49 | 97.3 |
+| yalnız O1 zarf 5 A | 55.00 | 5.00 | 4.606 | CCM | 11.001 | 61.9 | 5.96 | 96.8 |
+| O1 zarf + S2E | 57.64 | 5.24 | 4.608 | CCM | 11.000 | 54.9 | 6.18 | 96.8 |
+| O1 zarf + S2E kalkış | 73.00 | 6.64 | 4.620 | CCM | 11.000 | 60.7 | 7.60 | 96.5 |
 
 Ripple her senaryoda S2E sınırının (±330 mV) çok altında. DCM'de gereken Ton yükle 2,3–4,5 µs arasında değişir: geri besleme bu aralığı kapsamalıdır.
 
-### 5.3 Açık çevrim: Ton sabit (4,646 µs), kararlı çıkış [V]
+### 5.3 Açık çevrim: Ton sabit (24,6 V / 7,5 A'ya ayarlı), giriş ve yük değişince kararlı çıkış [V]
 
-| Vin V \ yük A | 0,24 | 0,6 | 1,15 | 2,5 | 5,24 | 7,5 |
+| Vin V \ yük A@11V | 0.24 | 0.6 | 1.15 | 2.5 | 5.24 | 7.5 |
 |---|---|---|---|---|---|---|
-| 20 | 13,69 | 10,54 | 9,02 | 8,99 | 8,94 | 8,89 |
-| 22,2 | 15,20 | 11,71 | 10,04 | 10,01 | 9,95 | 9,90 |
-| 24,6 | 16,85 | 12,98 | 11,15 | 11,12 | 11,06 | 11,00 |
-| 25,2 | 17,26 | 13,30 | 11,43 | 11,40 | 11,33 | 11,27 |
-| 26 | 17,81 | 13,72 | 11,80 | 11,77 | 11,70 | 11,64 |
+| 20 | 13.67 | 10.52 | 9.01 | 8.99 | 8.94 | 8.90 |
+| 22.2 | 15.18 | 11.69 | 10.03 | 10.00 | 9.94 | 9.90 |
+| 24.6 | 16.82 | 12.96 | 11.14 | 11.11 | 11.05 | 11.00 |
+| 25.2 | 17.23 | 13.28 | 11.42 | 11.39 | 11.32 | 11.27 |
+| 26 | 17.78 | 13.70 | 11.79 | 11.76 | 11.69 | 11.64 |
 
 O1'in 5–12 V aralığı yalnız 24,6 V civarında ve yük CCM'deyken sağlanır. **Açık çevrim O1 için hiçbir L/C değeriyle güvenli değildir.**
 
-### 5.4 Yük adımları, 24,6 V, Ton sabit (kontrolcü tepki vermiyor: kötümser sınır)
+### 5.4 Yük adımları, 24,6 V, Ton sabit (kontrolcü tepki vermiyor = kötümser sınır)
 
-| Adım | P W | Vmin V | Vmax V | Adım sırasında kararlı V | Salınım mV | IL tepe A |
-|---|---|---|---|---|---|---|
-| S2E kalkışı, O1 tipik | 12,6→28,0→12,6 | 10,67 | 11,29 | 10,96 | 48 | 4,6 |
-| O1 tipik→zarf→tipik | 12,6→57,6→12,6 | 10,04 | 11,80 | 10,90 | 49 | 9,7 |
-| S2E kalkışı, O1 zarf | 57,6→73,0→57,6 | 10,65 | 11,31 | 10,97 | 50 | 8,8 |
-| O1 zarf→boşta→zarf | 57,6→6,6→57,6 | 10,11 | **15,35** | 15,27 | 171 | 9,8 |
+| Adım | P W | Vmin V | Vmax V | ara kararlı V | ara salınım mV | son kararlı V | son salınım mV | IL tepe A |
+|---|---|---|---|---|---|---|---|---|
+| S2E kalkışı, O1 tipik | 12.6→28.0 | 10.68 | 11.29 | 10.97 | 53 | 10.99 | 53 | 4.6 |
+| O1 tipik→zarf→tipik, S2E çalışıyor | 12.6→57.6 | 10.05 | 11.80 | 10.91 | 55 | 10.99 | 53 | 9.7 |
+| S2E kalkışı, O1 zarf | 57.6→73.0 | 10.64 | 11.31 | 10.97 | 56 | 11.00 | 54 | 8.9 |
+| O1 zarf→boşta→zarf, S2E çalışıyor | 57.6→6.6 | 10.11 | 15.31 | 15.22 | 174 | 11.00 | 55 | 9.8 |
 
 İlk üç adımda çıkış kontrolcü olmadan bile 10,0–11,8 V içinde kalır. Son satır DCM yükselmesidir (§5.3) ve yalnız geri beslemeyle giderilir.
 
@@ -168,67 +170,71 @@ O1'in 5–12 V aralığı yalnız 24,6 V civarında ve yük CCM'deyken sağlanı
 
 ### 5.5 Yük atma, ideal kontrolcü sınırı (yük düştüğü anda duty = 0; en iyi durum)
 
-| Vin V | 73 → 6,6 W | 82,5 → 2,6 W |
+| Vin V | 73→6,6 W Vtepe V | 82,5→2,6 W Vtepe V |
 |---|---|---|
-| 20 | 11,17 V | 11,21 V |
-| 24,6 | 11,18 V | 11,22 V |
-| 26 | 11,18 V | 11,22 V |
+| 20 | 11.192 | 11.229 |
+| 22.2 | 11.196 | 11.233 |
+| 24.6 | 11.199 | 11.236 |
+| 25.2 | 11.200 | 11.237 |
+| 26 | 11.200 | 11.238 |
 
-Bobindeki enerji Cout'a boşaldığında tepe en çok 11,22 V'tur; 12 V'a 0,78 V pay kalır. Gerçek kapalı çevrim, tepki gecikmesi kadar bunun üstüne çıkar; bu pay kontrol tasarımının bütçesidir.
+Bobindeki enerji Cout'a boşaldığında tepe en çok 11,24 V'tur; 12 V'a 0,76 V pay kalır. Gerçek kapalı çevrim, tepki gecikmesi kadar bunun üstüne çıkar; bu pay kontrol tasarımının bütçesidir.
 
 ### 5.6 Soğuk kalkış
 
-| Vin V | Yük | Sert: IL tepe / Vo tepe | 5 ms duty rampası: IL tepe / Vo tepe |
-|---|---|---|---|
-| 20 | 7,5 A direnç | 45,6 A / 17,12 V | 9,8 A / 11,23 V |
-| 22,2 | 7,5 A direnç | 45,7 A / 17,12 V | 9,8 A / 11,23 V |
-| 24,6 | 7,5 A direnç | 45,8 A / 17,12 V | 9,9 A / 11,23 V |
-| 25,2 | 7,5 A direnç | 45,8 A / 17,13 V | 10,0 A / 11,24 V |
-| 26 | 7,5 A direnç | 45,8 A / 17,12 V | 10,0 A / 11,24 V |
-| 24,6 | O1 tipik + S2E (12,6 W) | 47,7 A / 19,45 V | 5,3 A / 11,27 V |
+| Vin V | Yük | sert: IL tepe A | sert: Vo tepe V | 5 ms duty rampası: IL tepe A | 5 ms duty rampası: Vo tepe V |
+|---|---|---|---|---|---|
+| 20 | 7,5 A direnç | 45.5 | 17.11 | 9.7 | 11.24 |
+| 22.2 | 7,5 A direnç | 45.6 | 17.12 | 9.8 | 11.23 |
+| 24.6 | 7,5 A direnç | 45.8 | 17.15 | 9.9 | 11.24 |
+| 25.2 | 7,5 A direnç | 45.8 | 17.15 | 9.9 | 11.24 |
+| 26 | 7,5 A direnç | 45.9 | 17.16 | 10.0 | 11.24 |
+| 24.6 | O1 tipik + S2E (12,6 W) | 47.5 | 19.44 | 5.4 | 11.28 |
 
-Sert kalkış aşımı O1'in TVS çalışma gerilimini (16 V, ÇIKARIM) ve TPS62180 mutlak sınırını (17 V) aşar. Duty rampası bir **varsayımdır** (soft-start devresi tasarlanmadı); yalnız aşımın kaynağının basamak uyarımı olduğunu ve yumuşak kalkışla giderildiğini gösterir.
+Sert kalkış aşımı O1'in TVS çalışma gerilimini (16 V, ÇIKARIM) ve TPS62180 mutlak sınırını (17 V) aşar. Model bobini doğrusal alır; gerçek 2300HT-330 bu akımda doyacağından tepe akım daha yüksek olur. Duty rampası bir **varsayımdır** (soft-start devresi tasarlanmadı); yalnız aşımın kaynağının basamak uyarımı olduğunu ve yumuşak kalkışla giderildiğini gösterir.
 
 ![Kalkış](grafik/kalkis.svg)
 
-### 5.7 Giriş değişimi, Ton sabit, 57,6 W
+### 5.7 Giriş değişimi, Ton sabit, O1 zarf + S2E (57,6 W)
 
-| Vin V (1 ms rampa) | Vmin V | Vmax V | Ara kararlı V |
+| Vin V (1 ms rampa) | Vmin V | Vmax V | ara kararlı V |
 |---|---|---|---|
-| 24,6 → 20 → 24,6 | 8,68 | 11,15 | 8,84 |
-| 24,6 → 26 → 24,6 | 10,94 | 11,71 | 11,66 |
-| 22,2 → 25,2 → 22,2 | 10,88 | **12,66** | 12,55 |
+| 24.6→20→24.6 | 8.68 | 11.16 | 8.85 |
+| 24.6→26→24.6 | 10.93 | 11.70 | 11.65 |
+| 22.2→25.2→22.2 | 10.88 | 12.65 | 12.55 |
 
 Çıkış girişi oransal izler (ΔVo ≈ D·ΔVin). 20 V'ta S2E'nin 9 V alt sınırının altına, batarya dolarken O1'in 12 V sınırının üstüne çıkar.
 
-### 5.8 Tolerans köşeleri (L ±%20, Cout ±%20, ESR ±%20), 7,5 A
+### 5.8 Tolerans köşeleri (L −%30/+%15, Cout ±%20, ESR ±%20), 7,5 A
 
-| Köşe | Vin V | ΔVo mV | IL tepe A | S2E kalkışı @zarf Vmin/Vmax | 73 W salınım mV | Yük atma sınırı V | Sert kalkış A / V | Rampalı kalkış A / V |
+| Köşe | Vin V | ΔVo mV | IL tepe A | zarf adım Vmin/Vmax | 73 W salınım mV | yük atma sınırı V | sert kalkış A/V | rampalı kalkış A/V |
 |---|---|---|---|---|---|---|---|---|
-| anma | 24,6 | 47,4 | 8,45 | 10,65/11,31 | 50 | 11,18 | 45,8 / 17,1 | 9,9 / 11,23 |
-| L−, C−, ESR+ | 26 | 73,9 | 8,74 | 10,64/11,32 | 76 | 11,22 | 45,5 / 16,9 | 9,9 / 11,19 |
-| L+, C−, ESR− | 24,6 | 38,1 | 8,31 | 10,30/11,74 | 881 | 11,17 | 39,2 / 17,4 | 9,5 / 11,22 |
-| L−, C+, ESR− | 26 | 56,2 | 8,76 | 10,71/11,25 | 50 | 11,14 | 54,8 / 17,2 | 10,5 / 11,23 |
+| anma | 24.6 | 58.6 | 8.46 | 10.64/11.31 | 56 | 11.20 | 45.8/17.2 | 9.9/11.24 |
+| ripple en kötü: L−, C−, ESR+ | 26 | 93.6 | 8.91 | 10.66/11.31 | 97 | 11.24 | 48.0/16.9 | 10.1/11.19 |
+| Z0 en yüksek: L+, C−, ESR− | 24.6 | 43.2 | 8.34 | 10.45/11.48 | 720 | 11.17 | 39.9/17.4 | 9.5/11.22 |
+| Z0 en düşük: L−, C+, ESR− | 26 | 63.1 | 8.91 | 10.72/11.24 | 64 | 11.15 | 58.1/17.2 | 10.7/11.22 |
 
-En zayıf köşe L+, C−, ESR−: 73 W darbesinde 0,9 V t-t salınım var ama çıkış 12 V altında; sürekli zarfta (57,6 W) 171 mV. HESAP sınırı bu köşede 75 W.
+L −%30, bobinin akım altındaki endüktans düşümünü (7,5–8,5 A'de ≈ −%17, doğrusal ara değer varsayımı) ve −%15 toleransı birlikte kapsar. En zayıf köşe L+, C−, ESR−: 73 W darbesinde 0,7 V t-t salınım var ama çıkış 12 V altında kalır.
 
-### 5.9 Giriş tarafı (batarya 40 mΩ + kablo 1 µH / 10 mΩ — TAHMİN), 7,5 A
+### 5.9 Giriş tarafı, batarya+kablo modeli (VARSAYIM 40 mΩ + 1 µH/10 mΩ), 7,5 A
 
-| Batarya V | ΔVin mV t-t | Cin toplam rms A | Cin ESR kaybı W |
-|---|---|---|---|
-| 20 | 122 | 3,73 | 0,14 |
-| 24,6 | 125 | 3,77 | 0,14 |
-| 26 | 125 | 3,76 | 0,14 |
+| Batarya V | Vo V | ΔVin mV t-t | Cin toplam rms A | Cin ESR kaybı W |
+|---|---|---|---|---|
+| 20 | 11.001 | 95 | 3.72 | 0.14 |
+| 24.6 | 11.000 | 97 | 3.76 | 0.14 |
+| 26 | 11.004 | 97 | 3.75 | 0.14 |
 
-26 V bataryanın sıcak takılması (anahtar kapalı): V(vin) tepe 28,1 V, batarya akımı tepe 265 A. Değerler tahmini kaynak empedansına bağlıdır.
+Batarya 26 V sıcak takma (anahtar kapalı): V(vin) tepe 26.0 V, batarya akımı tepe 329 A
+
+Değerler tahmini kaynak empedansına bağlıdır. Cin toplam ripple akımı 3,76 A; iki kondansatörün toplam anma değeri 4,36 A.
 
 ## 6. Doğrulanamayanlar ve sonraki aşamaya kalanlar
 
 **Geri besleme aşamasının çözmesi gerekenler (bu güç katıyla çözülemez):**
 - Regülasyon: giriş 20–26 V ve yük 0,24–7,5 A aralığında 11 V; Ton 2,3–5,7 µs; DCM/CCM geçişi 0,95 A'de.
 - Yumuşak kalkış: sert kalkış 46 A / 17–19 V; birkaç ms'lik rampa 10 A / 11,3 V'a indirir.
-- Yük atma bütçesi: ideal sınır 11,22 V; 12 V'a kalan 0,78 V kontrol gecikmesine ve ayar toleransına paylaştırılacak.
-- Tasarım verileri: f0 = 1,06 kHz, Z0 = 0,22 Ω, ESR sıfırı 9,4 kHz; yük sabit güç karakterli (negatif artımsal direnç, zarfta −2,1 Ω).
+- Yük atma bütçesi: ideal sınır 11,24 V; 12 V'a kalan 0,76 V kontrol gecikmesine ve ayar toleransına paylaştırılacak.
+- Tasarım verileri: f0 = 1,06 kHz, Z0 = 0,22 Ω, ESR sıfırı 8,4 kHz; yük sabit güç karakterli (negatif artımsal direnç, zarfta −2,1 Ω).
 - Anahtar kısa devre kalırsa çıkış giriş gerilimine çıkar; O1 için bağımsız aşırı gerilim koruması ayrı bir konudur.
 
 **Doğrulanmamış veriler:**
@@ -236,6 +242,8 @@ En zayıf köşe L+, C−, ESR−: 73 W darbesinde 0,9 V t-t salınım var ama �
 - O1 giriş koruması (eFuse OVLO ≈ 14,7 V, TVS, TPS62180) v0.2 şemasının metin katmanından çıkarıldı; devre bağlantıları görülerek doğrulanmadı, eldeki kart revizyonu farklı olabilir. 12 V üstü için dayanım varsayılmamalıdır.
 - S2E kalkış darbesinin süresi ve 11 V'taki değeri (datasheet 12 V verir); testlerde sabit güç varsayıldı.
 - Batarya iç direnci ve kablo endüktansı tahmindir.
+- L1 (Bourns 2300HT-330) endüktansının akımla değişimi iki veri sayfası noktasından doğrusal alındı; 100 kHz çekirdek kaybı bilinmiyor.
+- L1, Cout ve Cin için Türkiye stoku doğrulanamadı; kondansatör empedans/ripple değerleri dağıtıcı listelerindendir.
 
 **İdeal modelin kapsamadıkları:** anahtarlama kayıpları ve geçiş süreleri, diyot ters toparlanma/kapasitesi, bobin doyumu ve çekirdek kaybı, kondansatör ESL'i ve kapasitenin gerilim/sıcaklıkla değişimi, parazitik zil, ısıl davranış, EMI. Verim ve tepe gerilim/akım değerleri bu etkiler olmadan verilmiştir.
 

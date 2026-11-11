@@ -15,18 +15,19 @@ VIN_V = (20.0, 22.2, 24.6, 25.2, 26.0)       # zorunlu test noktalari
 VIN_ANA_V = 24.6
 FSW_HZ = 100_000.0
 
-# Ana sematikteki degerler (hedef/varsayim; veri sayfasindan secilmis parca degildir)
-L_H = 33e-6
-DCR_OHM = 15e-3
-COUT_F = 680e-6
-ESR_OUT_OHM = 25e-3     # hedef pencere 20-30 mohm (LC sonumu icin alt sinir da var)
-CIN_F = 440e-6          # 2 x 220 uF
+# Ana sematikteki degerler = secilen parcalarin veri sayfasi degerleri (PARCA-HEDEFLERI.md)
+L_H = 33e-6             # Bourns 2300HT-330: 33 uH @0 A; 13,6 A'de 23 uH (demir tozu, yumusak doyum)
+DCR_OHM = 15e-3         # maks
+COUT_F = 680e-6         # Rubycon 25ZLH680M 10x16
+ESR_OUT_OHM = 28e-3     # 100 kHz empedans, maks; hedef pencere 20-30 mohm
+CIN_F = 1360e-6         # 2 x Panasonic EEUFR1V681B (680 uF / 35 V)
 ESR_IN_OHM = 10e-3      # 2 x 20 mohm paralel
-RON_OHM = 10e-3         # S1
-VF_V = 0.5              # D1
-RD_OHM = 10e-3          # D1 seri direnci
+RON_OHM = 11e-3         # STP75NF75, 25 C maks
+VF_V = 0.46             # IXYS DSB60C60HB esik gerilimi (150 C, kayip hesabi icin)
+RD_OHM = 3.1e-3         # 6,2 mohm/bacak, iki bacak paralel
 
-L_TOL = 0.20
+L_DUSUK = 0.30          # akim altinda dusum (~%17 @ 7,5-8,5 A, dogrusal varsayim) + %15 tolerans
+L_YUKSEK = 0.15
 C_TOL = 0.20
 ESR_TOL = 0.20
 SATURATION_MARGIN = 0.30
@@ -116,8 +117,8 @@ if __name__ == "__main__":
               f" {k['dvin']*1e3:7.1f} {k['p_s1']:5.2f} {k['p_d1']:5.2f} {k['p_l1']:5.2f} {k['kayip']:6.2f} {k['verim']*100:7.2f}")
     print("  Verim yalnız iletim kayıplarıdır; anahtarlama, çekirdek ve sürücü kayıpları yoktur.")
 
-    kose = nokta(max(VIN_V), l=L_H * (1 - L_TOL), c=COUT_F * (1 - C_TOL), esr=ESR_OUT_OHM * (1 + ESR_TOL))
-    print(f"\n2) Tolerans köşesi (26 V, L −%20, Cout −%20, ESR +%20): dIL={kose['di']:.2f} A, ILtepe={kose['ipk']:.2f} A,"
+    kose = nokta(max(VIN_V), l=L_H * (1 - L_DUSUK), c=COUT_F * (1 - C_TOL), esr=ESR_OUT_OHM * (1 + ESR_TOL))
+    print(f"\n2) Tolerans köşesi (26 V, L −%30, Cout −%20, ESR +%20): dIL={kose['di']:.2f} A, ILtepe={kose['ipk']:.2f} A,"
           f" Isat ölçütü (+%30)={kose['ipk']*(1+SATURATION_MARGIN):.1f} A, dVout={kose['dvout']*1e3:.1f} mV")
 
     print("\n3) Yük uyumu (11 V çıkış)")
@@ -139,8 +140,8 @@ if __name__ == "__main__":
     print(f"\n5) LC dinamiği: f0={q['f0_hz']:.0f} Hz, Z0={q['z0']:.3f} Ω, ESR sıfırı={q['f_esr_hz']/1e3:.1f} kHz")
     print(f"  Sabit güç yüküyle açık çevrim kararlılık sınırı: P < {q['p_cpl_sinir_w']:.0f} W"
           f" (zarf {P_O1_ZARF_W+P_S2E_CALISMA_W:.1f} W, S2E kalkışında {P_O1_ZARF_W+P_S2E_KALKIS_W:.1f} W)")
-    qk = dinamik(L_H * (1 + L_TOL), COUT_F * (1 - C_TOL), ESR_OUT_OHM * (1 - ESR_TOL))
-    print(f"  Köşe (L +%20, Cout −%20, ESR −%20): P < {qk['p_cpl_sinir_w']:.0f} W")
+    qk = dinamik(L_H * (1 + L_YUKSEK), COUT_F * (1 - C_TOL), ESR_OUT_OHM * (1 - ESR_TOL))
+    print(f"  Köşe (L +%15, Cout −%20, ESR −%20): P < {qk['p_cpl_sinir_w']:.0f} W")
     i0, i1 = O1_IMAX + i_s2e_k, (4.0 + P_S2E_CALISMA_W) / VO_V
     print(f"  Yük atma {i0:.2f}→{i1:.2f} A, ideal kontrolcü sınırı: {q['atma_tepe_v'](i0, i1):.2f} V"
           f" (köşe {qk['atma_tepe_v'](i0, i1):.2f} V)")

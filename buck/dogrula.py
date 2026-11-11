@@ -42,7 +42,12 @@ P_O1_BOSTA = 4.0            # W  TAHMIN
 
 MEVCUT = dict(L=33e-6, DCR=15e-3, Cout=330e-6, ESRo=15e-3, Cin=220e-6, ESRi=20e-3,
               Ron=10e-3, Vf=0.5, Rd=10e-3, f=100e3)
-SECILEN = dict(MEVCUT, Cout=680e-6, ESRo=25e-3)
+# Secilen parcalarin veri sayfasi degerleri (PARCA-HEDEFLERI.md):
+# L1 Bourns 2300HT-330 (33 uH @0 A, 13,6 A'de 23 uH; DCR 15 mohm maks), Cout Rubycon 25ZLH680M (28 mohm maks),
+# Cin 2 x Panasonic EEUFR1V681B (680 uF, 20 mohm), S1 STP75NF75 (11 mohm maks), D1 DSB60C60HB iki bacak paralel.
+SECILEN = dict(L=33e-6, DCR=15e-3, Cout=680e-6, ESRo=28e-3, Cin=680e-6, ESRi=20e-3,
+               Ron=11e-3, Vf=0.46, Rd=3.1e-3, f=100e3)
+L_DUSUK, L_YUKSEK = 0.70, 1.15     # akim altinda dusum (7,5-8,5 A'de ~-%17) ve +-%15 tolerans birlikte
 
 
 def eng(x: float) -> str:
@@ -494,11 +499,11 @@ def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
         sat.append([f"{v0:g}→{v1:g}→{v0:g}", f"{g['vmin']:.2f}", f"{g['vmax']:.2f}", f"{g['v1son']:.2f}"])
     tablo(["Vin V (1 ms rampa)", "Vmin V", "Vmax V", "ara kararlı V"], sat)
 
-    print("### 8. Tolerans köşeleri (L ±%20, Cout ±%20, ESR ±%20), 7,5 A\n")
+    print("### 8. Tolerans köşeleri (L −%30/+%15, Cout ±%20, ESR ±%20), 7,5 A\n")
     sat = []
-    for isim, kl, kc, ke, v in (("anma", 1, 1, 1, VIN_ANA), ("ripple en kötü: L−, C−, ESR+", 0.8, 0.8, 1.2, 26.0),
-                                ("Z0 en yüksek: L+, C−, ESR−", 1.2, 0.8, 0.8, VIN_ANA),
-                                ("Z0 en düşük: L−, C+, ESR−", 0.8, 1.2, 0.8, 26.0)):
+    for isim, kl, kc, ke, v in (("anma", 1, 1, 1, VIN_ANA), ("ripple en kötü: L−, C−, ESR+", L_DUSUK, 0.8, 1.2, 26.0),
+                                ("Z0 en yüksek: L+, C−, ESR−", L_YUKSEK, 0.8, 0.8, VIN_ANA),
+                                ("Z0 en düşük: L−, C+, ESR−", L_DUSUK, 1.2, 0.8, 26.0)):
         q = dict(p, L=p["L"] * kl, Cout=p["Cout"] * kc, ESRo=p["ESRo"] * ke)
         k = kararli(q, v, 7.5)
         z = yuk_adimi(q, v, P_ZARF, P_ZARF_KALKIS)
@@ -595,8 +600,8 @@ def grafik() -> None:
     _, b = yuk_adimi(p, VIN_ANA, P_ZARF, P_ZARF_KALKIS, raw=True)
     svg_ciz(g / "yuk_adimi.svg", "S2E kalkış darbesi, O1 5 A zarfında (57,6→73→57,6 W sabit güç), 24,6 V, Ton sabit", [
         dict(ylabel="V(out) [V]", cizgiler=[(12.0, "12 V")],
-             seriler=[("Cout 330 µF / 15 mΩ (eski)", a["time"], a["V(out)"]), ("Cout 680 µF / 25 mΩ (seçilen)", b["time"], b["V(out)"])]),
-        dict(ylabel="I(L1) [A]", seriler=[("330 µF", a["time"], a["I(L1)"]), ("680 µF", b["time"], b["I(L1)"])])])
+             seriler=[("Cout 330 µF / 15 mΩ (eski)", a["time"], a["V(out)"]), ("seçilen parçalar (680 µF / 28 mΩ)", b["time"], b["V(out)"])]),
+        dict(ylabel="I(L1) [A]", seriler=[("eski", a["time"], a["I(L1)"]), ("seçilen", b["time"], b["I(L1)"])])])
     n = netlist(p, vin=VIN_ANA, surucu=surucu_ton(p, ton), yuk=yuk_r(7.5), tstop=12.05e-3, tstart=12e-3,
                 ic=f"V(out)={VO} I(L1)=7.5", meas=["VO AVG V(out)"])
     _, k = kos(n, "dalga", raw=True)
