@@ -14,7 +14,7 @@ def wire(*pts):
     for a, b in zip(pts, pts[1:]):
         W.append(f"WIRE {a[0]} {a[1]} {b[0]} {b[1]}")
 
-TOP, GND = 64, 304
+TOP, GND = 64, 336
 # ust hat
 wire((-320, 128), (-320, TOP))
 wire((-240, TOP), (-176, TOP))
@@ -40,28 +40,31 @@ SYMS = [
     ("voltage", -320, 112, "R0", "V1", "{Vin}", None),
     ("res", -224, 48, "R90", "Rsrc", "20m", None),
     ("ind", -192, 80, "R270", "Lsrc", "300n", "Rser=1m"),
-    ("polcap", -32, 144, "R0", "Cin1", "220u", "V=35 Rser=11.1m"),
-    ("polcap", 64, 144, "R0", "Cin2", "220u", "V=35 Rser=11.1m"),
+    ("polcap", -32, 144, "R0", "Cin1", "220u", "Rser=11.1m"),
+    ("polcap", 64, 144, "R0", "Cin2", "220u", "Rser=11.1m"),
     ("nmos", 176, 112, "R270", "M1", "BSZ065N06LS5", None),
     ("res", 240, 112, "R0", "Rg", "10", None),
-    ("voltage", 240, 240, "R270", "Vdrv", "PULSE(0 10 0 10n 10n {D/fsw-10n} {1/fsw})", None),
+    ("voltage", 240, 240, "R270", "Vdrv", "PULSE(0 10 0 10n 10n {Ton} {Tsw})", None),
     ("schottky", 416, 208, "R180", "D1", "RBR40NS60A", None),
     ("ind", 416, 80, "R270", "L1", "33u", "Rser=1.33m Rpar=1543 Cpar=18.4p"),
-    ("polcap", 576, 144, "R0", "Cout", "330u", "V=25 Rser=9.2m"),
+    ("polcap", 576, 144, "R0", "Cout", "330u", "Rser=9.2m"),
     ("res", 688, 128, "R0", "Rload", "{RL}", None),
 ]
 
 TEXT = [
     (-336, -160, 3, ";Acik cevrim asenkron buck guc kati  -  20-26 V -> 11 V / 7,5 A (82,5 W), fsw = 100 kHz"),
-    (-336, -120, 2, ";S1 = M1 (BSZ065N06LS5, 60 V), D1 = RBR40NS60A (60 V Schottky), L1 = 33 uH (WE-HCF 74436413300),"
+    (-336, -120, 2, ";M1 = BSZ065N06LS5 (60 V), D1 = RBR40NS60A (60 V Schottky), L1 = 33 uH (WE-HCF 74436413300),"
                     "\\nCIN = 2 x 220 uF/35 V polimer, COUT = 330 uF/25 V polimer. Parca degerleri LTspice kutuphane kayitlaridir."),
     (-336, -56, 2, ";Vdrv: yuzer PULSE kaynagi (gercek PWM/surucu degil). Rsrc/Lsrc: batarya+kablo varsayimi."),
-    (-336, 352, 2, f"!.param Vin=22.2 fsw=100k D={d_nom:.4f} RL=1.466667"),
-    (-336, 384, 2, f";11,00 V icin LTspice ile ayarlanan duty:  Vin=20 V -> D={d_lo:.4f}   22,2 V -> D={d_nom:.4f}   26 V -> D={d_hi:.4f}"
-                   "\\nAcik cevrim: D sabitken Vin veya yuk degisirse cikis 11 V'ta kalmaz. Hassas yuk baglamayin."),
-    (-336, 448, 2, "!.ic V(out)=11 I(L1)=7.5 V(vin)={Vin-0.08} I(Lsrc)={82.5/Vin}\\n.tran 0 6m 5m uic\\n.options maxstep=20n"),
-    (-336, 544, 2, ";Sifirdan sert kalkis icin: .ic satirini silin ve  .tran 0 8m  kullanin (soft-start yoktur; IL tepe ve asim buyuktur)."),
-    (240, 352, 2, "!.meas tran Vo_avg avg V(out)\\n.meas tran Vo_pp pp V(out)\\n.meas tran IL_max max I(L1)\\n.meas tran IL_min min I(L1)"
+    (-336, 400, 2, f"!.param Vin=22.2 fsw=100k D={d_nom:.4f} RL=1.466667\\n.param Ton=D/fsw-10n Tsw=1/fsw"),
+    (-336, 464, 2, ";11,00 V icin LTspice ile ayarlanan duty:"
+                   f"\\n  Vin = 20 V   -> D = {d_lo:.4f}\\n  Vin = 22,2 V -> D = {d_nom:.4f}\\n  Vin = 26 V   -> D = {d_hi:.4f}"
+                   "\\nAcik cevrim: D sabitken Vin veya yuk degisirse cikis"
+                   "\\n11 V'ta kalmaz. Hassas yuk baglamayin."),
+    (-336, 592, 2, "!.ic V(out)=11 I(L1)=7.5 V(vin)={Vin-0.08} I(Lsrc)={82.5/Vin}\\n.tran 0 6m 5m uic\\n.options maxstep=20n"),
+    (-336, 672, 2, ";Sifirdan sert kalkis icin: .ic satirini silin ve .tran 0 8m kullanin"
+                   "\\n(soft-start yoktur; IL tepe ve asim buyuktur)."),
+    (240, 400, 2, "!.meas tran Vo_avg avg V(out)\\n.meas tran Vo_pp pp V(out)\\n.meas tran IL_max max I(L1)\\n.meas tran IL_min min I(L1)"
                   "\\n.meas tran Pin avg V(vin)*I(Lsrc)\\n.meas tran Pout avg V(out)*I(Rload)\\n.meas tran Pgate avg -V(gp,sw)*I(Vdrv)"
                   "\\n.meas tran verim param Pout/(Pin+Pgate)\\n.meas tran P_M1 avg V(vin,sw)*Id(M1)+V(g,sw)*Ig(M1)\\n.meas tran P_D1 avg -V(sw)*I(D1)"
                   "\\n.meas tran P_L1 avg V(sw,out)*I(L1)"),
@@ -80,3 +83,7 @@ for x, y, sz, t in TEXT:
 p = Path(__file__).with_name("buck_guc_kati.asc")
 p.write_bytes(("\r\n".join(out) + "\r\n").encode("cp1252"))
 print(p)
+
+# gorseli de guncelle: sematik ve README'deki resim ayni kaynaktan uretilir
+from asc_gorsel import render
+print(render(p))

@@ -15,4 +15,6 @@ Tek aktif dal `main`. Kullanıcı işi doğrudan verir; thinker/builder, rol, ka
 - Bu temizlikte önceki devreler ve `archive/` kullanıcı isteğiyle kaldırıldı. Yeni arşiv oluşturma.
 - Sonraki aşamaya yalnız kullanıcı istediğinde geç.
 
+Şematik görseli: `buck/ltspice/buck_guc_kati.asc` her değiştiğinde (betikle veya LTspice'ta elle) aynı değişiklikte `python buck/ltspice/asc_gorsel.py` çalıştırılıp `buck_guc_kati.svg` yenilenir ve birlikte commit edilir; README bu görseli gösterir. `python buck/ltspice/sematik_uret.py <D_22.2> <D_20> <D_26>` şematiği ve görseli birlikte üretir.
+
 `python buck/hesap.py` referans noktasını hesaplar. `python buck/parametre_taramasi.py` sabit çıkış hedefinde analitik taramayı, `buck/tarama-sonuc.json` ve `buck/PARAMETRE-KARSILASTIRMA.md` dosyalarını üretir. Bu çıktılar LTspice veya laboratuvar sonucu değildir. Dosyalar UTF-8'dir.

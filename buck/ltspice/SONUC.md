@@ -24,6 +24,8 @@ Fiziksel ölçüm **yoktur**. Parça parametreleri LTspice kütüphane kayıtlar
 | Kapı sürme | PULSE 0–10 V, tr = tf = 10 ns, Rg = 10 Ω | [V] ideal sürücü |
 | Yük | 1,4667 Ω | 11 V / 7,5 A |
 
+![LTspice şematiği](buck_guc_kati.svg)
+
 Şematik: [buck_guc_kati.asc](buck_guc_kati.asc) (LTspice'ta açılır; netlist'e çevrilip batch modda koşuldu: Vo = 11,003 V, verim %97,47, 22,2 V girişte).
 Parazitik doğrulama netlist'i: [buck_guc_kati_parazitik.cir](buck_guc_kati_parazitik.cir).
 
@@ -195,7 +197,8 @@ python tarama1_f_L.py
 python tarama2_mos_diyot.py 100 "WE-HCF 74436413300 33u"
 python dogrulama_A.py ; python dogrulama_D_zil.py ; python dogrulama_E_snubber.py
 python nihai_dogrulama.py
-python sematik_uret.py 0.5058 0.5612 0.4320
+python sematik_uret.py 0.5058 0.5612 0.4320   # .asc ve .svg birlikte üretilir
+python asc_gorsel.py                           # .asc elle değiştirildiyse yalnız görseli yeniler
 ```
 
 `araclar.py` netlist üretir, LTspice'ı koşar, `.meas` sonuçlarını okur ve duty'yi ayarlar. `calisma/` geçici çalışma klasörüdür.

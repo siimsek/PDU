@@ -6,6 +6,10 @@ Bu depo, 20–26 V girişten 11 V / 7,5 A hedefleyen tek faz asenkron buck güç
 
 Ana güç katı LTspice'ta kuruldu ve simüle edildi: 100 kHz, 33 µH, BSZ065N06LS5, RBR40NS60A, CIN 2 × 220 µF, COUT 330 µF. Simülasyon verimi 20–26 V girişte %97,1–97,7'dir. Bunlar yalnız simülasyon sonucudur; parça verileri veri sayfasıyla doğrulanmadı ve fiziksel ölçüm yoktur.
 
+![Açık çevrim buck güç katı LTspice şematiği](buck/ltspice/buck_guc_kati.svg)
+
+Görsel, [buck_guc_kati.asc](buck/ltspice/buck_guc_kati.asc) dosyasından `python buck/ltspice/asc_gorsel.py` ile üretilir; şematik her değiştiğinde yeniden üretilir.
+
 - [LTspice sonuç raporu](buck/ltspice/SONUC.md)
 - [LTspice şematiği](buck/ltspice/buck_guc_kati.asc)
 - [Yol haritası: sonraki adımlar, nihai PCB'ye kadar](buck/YOL-HARITASI.md)
