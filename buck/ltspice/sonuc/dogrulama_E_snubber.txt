@@ -1,0 +1,15 @@
+RBR40NS60A  Rg= 4.7 RC=0ohm/0nF eta=97.143 Vds_max=36.6 Vr_max=60.7 Vsw_min=-0.48 Vopp=830mV Vopp20=73.6mV Vinpp=10457mV Pmos=0.19 Pdio=1.89 it=2 
+RBR40NS60A  Rg= 4.7 RC=2.2ohm/1nF eta=97.103 Vds_max=28.8 Vr_max=39.0 Vsw_min=-0.46 Vopp=259mV Vopp20=27.1mV Vinpp=3462mV Pmos=0.18 Pdio=1.87 it=2 
+RBR40NS60A  Rg= 4.7 RC=3.3ohm/2.2nF eta=97.010 Vds_max=29.3 Vr_max=38.3 Vsw_min=-0.46 Vopp=329mV Vopp20=31.5mV Vinpp=3805mV Pmos=0.18 Pdio=1.87 it=2 
+RBR40NS60A  Rg= 4.7 RC=2.2ohm/4.7nF eta=96.840 Vds_max=29.4 Vr_max=30.7 Vsw_min=-0.46 Vopp=270mV Vopp20=26.4mV Vinpp=3119mV Pmos=0.18 Pdio=1.86 it=2 
+RBR40NS60A  Rg=  10 RC=0ohm/0nF eta=97.094 Vds_max=36.1 Vr_max=60.7 Vsw_min=-0.48 Vopp=735mV Vopp20=69.7mV Vinpp=10181mV Pmos=0.23 Pdio=1.88 it=2 
+RBR40NS60A  Rg=  10 RC=2.2ohm/1nF eta=97.068 Vds_max=30.2 Vr_max=37.8 Vsw_min=-0.46 Vopp=235mV Vopp20=26.3mV Vinpp=3066mV Pmos=0.21 Pdio=1.87 it=2 
+RBR40NS60A  Rg=  10 RC=3.3ohm/2.2nF eta=96.983 Vds_max=28.8 Vr_max=36.4 Vsw_min=-0.46 Vopp=295mV Vopp20=29.2mV Vinpp=3279mV Pmos=0.21 Pdio=1.87 it=2 
+RBR40NS60A  Rg=  10 RC=2.2ohm/4.7nF eta=96.823 Vds_max=28.7 Vr_max=29.3 Vsw_min=-0.46 Vopp=244mV Vopp20=25.0mV Vinpp=2757mV Pmos=0.20 Pdio=1.86 it=2 
+RBR40NS60A  Rg=  22 RC=0ohm/0nF eta=96.965 Vds_max=32.8 Vr_max=55.0 Vsw_min=-0.46 Vopp=570mV Vopp20=58.8mV Vinpp=8703mV Pmos=0.36 Pdio=1.87 it=2 
+RBR40NS60A  Rg=  22 RC=2.2ohm/1nF eta=96.955 Vds_max=31.2 Vr_max=33.5 Vsw_min=-0.46 Vopp=159mV Vopp20=24.5mV Vinpp=1913mV Pmos=0.33 Pdio=1.87 it=2 
+RBR40NS60A  Rg=  22 RC=3.3ohm/2.2nF eta=96.889 Vds_max=30.3 Vr_max=31.3 Vsw_min=-0.46 Vopp=203mV Vopp20=26.8mV Vinpp=1981mV Pmos=0.32 Pdio=1.86 it=2 
+RBR40NS60A  Rg=  22 RC=2.2ohm/4.7nF eta=96.759 Vds_max=27.5 Vr_max=27.9 Vsw_min=-0.45 Vopp=165mV Vopp20=23.5mV Vinpp=1673mV Pmos=0.30 Pdio=1.86 it=2 
+RBQ30NS45B  Rg=  10 RC=2.2ohm/1nF eta=97.195 Vds_max=27.6 Vr_max=45.3 Vsw_min=-0.42 Vopp=140mV Vopp20=27.5mV Vinpp=2824mV Pmos=0.21 Pdio=1.74 it=2 
+RBQ30NS45B  Rg=  10 RC=3.3ohm/2.2nF eta=97.109 Vds_max=28.7 Vr_max=43.9 Vsw_min=-0.42 Vopp=173mV Vopp20=28.9mV Vinpp=2912mV Pmos=0.21 Pdio=1.74 it=2 
+RBQ30NS45B  Rg=  10 RC=2.2ohm/4.7nF eta=96.951 Vds_max=28.0 Vr_max=36.4 Vsw_min=-0.42 Vopp=142mV Vopp20=24.8mV Vinpp=2601mV Pmos=0.20 Pdio=1.74 it=2 

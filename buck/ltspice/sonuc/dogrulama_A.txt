@@ -1,0 +1,33 @@
+A) tam parazitik model
+ RBQ30NS45B  Vin=20.0 eta hizli=97.804 tam=97.800 D=0.5619 | tam: Vds_max=35.2 Vr_max=45.7 Vsw_min=-0.4 Vopp=627mV Vopp20MHz=164.9mV Vinpp=31073mV Pmos=0.22 Pdio=1.37 it=1 note=''
+ RBQ30NS45B  Vin=22.2 eta hizli=97.596 tam=97.577 D=0.5066 | tam: Vds_max=36.8 Vr_max=45.7 Vsw_min=-0.4 Vopp=663mV Vopp20MHz=166.7mV Vinpp=30197mV Pmos=0.20 Pdio=1.57 it=1 note=''
+ RBQ30NS45B  Vin=26.0 eta hizli=97.305 tam=97.254 D=0.4328 | tam: Vds_max=39.4 Vr_max=45.7 Vsw_min=-0.4 Vopp=690mV Vopp20MHz=159.6mV Vinpp=28101mV Pmos=0.18 Pdio=1.84 it=1 note=''
+ RBR40NS60A  Vin=20.0 eta hizli=97.713 tam=97.710 D=0.5626 | tam: Vds_max=42.3 Vr_max=53.4 Vsw_min=-0.5 Vopp=1033mV Vopp20MHz=186.7mV Vinpp=39680mV Pmos=0.22 Pdio=1.45 it=1 note=''
+ RBR40NS60A  Vin=22.2 eta hizli=97.496 tam=97.489 D=0.5073 | tam: Vds_max=44.5 Vr_max=59.6 Vsw_min=-0.5 Vopp=1150mV Vopp20MHz=208.3mV Vinpp=44289mV Pmos=0.21 Pdio=1.63 it=1 note=''
+ RBR40NS60A  Vin=26.0 eta hizli=97.190 tam=97.184 D=0.4335 | tam: Vds_max=48.1 Vr_max=60.7 Vsw_min=-0.5 Vopp=1144mV Vopp20MHz=222.7mV Vinpp=41891mV Pmos=0.19 Pdio=1.89 it=1 note=''
+B) sicaklik, Vin=26
+ RBQ30NS45B  T= 27 eta=97.305 Pmos=0.243 Pdio=1.746 D=0.4328
+ RBQ30NS45B  T= 85 eta=97.536 Pmos=0.250 Pdio=1.540 D=0.4315
+ RBQ30NS45B  T=125 eta=96.970 Pmos=0.257 Pdio=2.029 D=0.4305
+ RBR40NS60A  T= 27 eta=97.190 Pmos=0.220 Pdio=1.870 D=0.4335
+ RBR40NS60A  T= 85 eta=97.345 Pmos=0.234 Pdio=1.721 D=0.4323
+ RBR40NS60A  T=125 eta=96.744 Pmos=0.238 Pdio=2.246 D=0.4312
+C) kondansator (L,C -%20, ESR x1.5)
+ cin  2x WCAP-PSLC 875075661008 220u/35V    Vin=20.0 Vopp20= 27.9mV Vinpp=  191mV ICin_rms=3.80 ICout_rms=0.54 eta=97.666
+ cin  2x WCAP-PSLC 875075661008 220u/35V    Vin=26.0 Vopp20= 35.4mV Vinpp=  215mV ICin_rms=3.81 ICout_rms=0.70 eta=97.133
+ cin  1x WCAP-PSLC 875075661008 220u/35V    Vin=20.0 Vopp20= 27.5mV Vinpp=  379mV ICin_rms=3.85 ICout_rms=0.54 eta=97.515
+ cin  1x WCAP-PSLC 875075661008 220u/35V    Vin=26.0 Vopp20= 35.5mV Vinpp=  426mV ICin_rms=3.86 ICout_rms=0.70 eta=96.995
+ cin  2x WCAP-PT5H 870235675007 150u/35V    Vin=20.0 Vopp20= 27.4mV Vinpp=  149mV ICin_rms=3.84 ICout_rms=0.54 eta=97.688
+ cin  2x WCAP-PT5H 870235675007 150u/35V    Vin=26.0 Vopp20= 35.4mV Vinpp=  168mV ICin_rms=3.85 ICout_rms=0.70 eta=97.167
+ cin  2x WCAP-PSLC 875075661004 100u/35V    Vin=20.0 Vopp20= 27.2mV Vinpp=  184mV ICin_rms=3.90 ICout_rms=0.54 eta=97.686
+ cin  2x WCAP-PSLC 875075661004 100u/35V    Vin=26.0 Vopp20= 36.0mV Vinpp=  198mV ICin_rms=3.91 ICout_rms=0.70 eta=97.162
+ cout 1x WCAP-PTG5 870025575009 330u/25V    Vin=20.0 Vopp20= 27.9mV Vinpp=  191mV ICin_rms=3.80 ICout_rms=0.54 eta=97.666
+ cout 1x WCAP-PTG5 870025575009 330u/25V    Vin=26.0 Vopp20= 35.4mV Vinpp=  215mV ICin_rms=3.81 ICout_rms=0.70 eta=97.133
+ cout 1x WCAP-PTG5 870025575007 220u/25V    Vin=20.0 Vopp20= 31.1mV Vinpp=  193mV ICin_rms=3.80 ICout_rms=0.54 eta=97.660
+ cout 1x WCAP-PTG5 870025575007 220u/25V    Vin=26.0 Vopp20= 40.5mV Vinpp=  216mV ICin_rms=3.81 ICout_rms=0.70 eta=97.136
+ cout 1x WCAP-PSLC 875075561006 150u/25V    Vin=20.0 Vopp20= 36.2mV Vinpp=  190mV ICin_rms=3.80 ICout_rms=0.54 eta=97.660
+ cout 1x WCAP-PSLC 875075561006 150u/25V    Vin=26.0 Vopp20= 46.5mV Vinpp=  216mV ICin_rms=3.81 ICout_rms=0.70 eta=97.137
+ cout 1x WCAP-PSLC 875075561005 100u/25V    Vin=20.0 Vopp20= 39.3mV Vinpp=  192mV ICin_rms=3.80 ICout_rms=0.54 eta=97.661
+ cout 1x WCAP-PSLC 875075561005 100u/25V    Vin=26.0 Vopp20= 49.9mV Vinpp=  216mV ICin_rms=3.81 ICout_rms=0.70 eta=97.137
+ cout 2x WCAP-PSLC 875075561005 100u/25V    Vin=20.0 Vopp20= 20.1mV Vinpp=  196mV ICin_rms=3.80 ICout_rms=0.54 eta=97.665
+ cout 2x WCAP-PSLC 875075561005 100u/25V    Vin=26.0 Vopp20= 27.8mV Vinpp=  214mV ICin_rms=3.81 ICout_rms=0.70 eta=97.142

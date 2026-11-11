@@ -1,0 +1,44 @@
+1) hat x yuk (duty ayarli)
+ Vin=20.0 yuk= 25% D=0.5553 Vo=10.9984 eta=97.91% Pkayip=0.44W Pmos=0.05 Pdio=0.30 Pind=0.07 ILmin=0.97 ILmax=2.73 Vopp20=14.6mV Vinpp=58mV ICin=1.00A it=2 set=0.0mV
+ Vin=20.0 yuk= 50% D=0.5575 Vo=10.9993 eta=97.92% Pkayip=0.87W Pmos=0.10 Pdio=0.65 Pind=0.08 ILmin=2.83 ILmax=4.63 Vopp20=14.3mV Vinpp=70mV ICin=1.92A it=2 set=0.0mV
+ Vin=20.0 yuk=100% D=0.5612 Vo=11.0001 eta=97.67% Pkayip=1.97W Pmos=0.27 Pdio=1.44 Pind=0.14 ILmin=6.65 ILmax=8.31 Vopp20=14.3mV Vinpp=95mV ICin=3.78A it=2 set=0.1mV
+ Vin=20.0 yuk=120% D=0.5625 Vo=11.0002 eta=97.56% Pkayip=2.48W Pmos=0.37 Pdio=1.78 Pind=0.17 ILmin=8.14 ILmax=9.80 Vopp20=14.1mV Vinpp=107mV ICin=4.53A it=1 set=0.0mV
+ Vin=22.2 yuk= 10% D=0.4581 Vo=11.0113 eta=97.32% Pkayip=0.23W Pmos=0.01 Pdio=0.12 Pind=0.08 ILmin=-0.07 ILmax=1.61 Vopp20=15.5mV Vinpp=14mV ICin=0.52A it=14 set=0.0mV
+ Vin=22.2 yuk= 25% D=0.5006 Vo=10.9988 eta=97.64% Pkayip=0.50W Pmos=0.05 Pdio=0.33 Pind=0.09 ILmin=0.83 ILmax=2.90 Vopp20=16.3mV Vinpp=60mV ICin=1.02A it=2 set=0.0mV
+ Vin=22.2 yuk= 50% D=0.5026 Vo=10.9994 eta=97.69% Pkayip=0.98W Pmos=0.10 Pdio=0.73 Pind=0.10 ILmin=2.75 ILmax=4.71 Vopp20=16.3mV Vinpp=72mV ICin=1.94A it=2 set=0.1mV
+ Vin=22.2 yuk=100% D=0.5058 Vo=11.0000 eta=97.45% Pkayip=2.16W Pmos=0.27 Pdio=1.62 Pind=0.16 ILmin=6.54 ILmax=8.42 Vopp20=16.0mV Vinpp=98mV ICin=3.82A it=2 set=0.1mV
+ Vin=22.2 yuk=120% D=0.5069 Vo=11.0000 eta=97.33% Pkayip=2.71W Pmos=0.36 Pdio=2.01 Pind=0.19 ILmin=8.03 ILmax=9.91 Vopp20=16.0mV Vinpp=109mV ICin=4.57A it=2 set=0.0mV
+ Vin=26.0 yuk= 25% D=0.4277 Vo=10.9992 eta=97.26% Pkayip=0.58W Pmos=0.06 Pdio=0.38 Pind=0.12 ILmin=0.69 ILmax=3.02 Vopp20=18.5mV Vinpp=64mV ICin=1.02A it=2 set=0.1mV
+ Vin=26.0 yuk= 50% D=0.4295 Vo=10.9996 eta=97.36% Pkayip=1.12W Pmos=0.11 Pdio=0.84 Pind=0.13 ILmin=2.67 ILmax=4.82 Vopp20=18.9mV Vinpp=76mV ICin=1.93A it=2 set=0.1mV
+ Vin=26.0 yuk=100% D=0.4320 Vo=10.9999 eta=97.14% Pkayip=2.43W Pmos=0.26 Pdio=1.87 Pind=0.19 ILmin=6.39 ILmax=8.49 Vopp20=18.9mV Vinpp=100mV ICin=3.79A it=2 set=0.3mV
+ Vin=26.0 yuk=120% D=0.4329 Vo=10.9999 eta=97.03% Pkayip=3.03W Pmos=0.35 Pdio=2.32 Pind=0.22 ILmin=7.89 ILmax=10.04 Vopp20=18.3mV Vinpp=109mV ICin=4.54A it=2 set=0.1mV
+2) tolerans
+ nominal                        Vin=20.0 eta=97.67% ILmax=8.31 Vopp20=14.3mV Vinpp=95mV ICin=3.78 ICout=0.43
+ nominal                        Vin=26.0 eta=97.14% ILmax=8.49 Vopp20=18.9mV Vinpp=100mV ICin=3.79 ICout=0.56
+ L-20%                          Vin=20.0 eta=97.67% ILmax=8.49 Vopp20=17.6mV Vinpp=94mV ICin=3.79 ICout=0.54
+ L-20%                          Vin=26.0 eta=97.13% ILmax=8.81 Vopp20=22.9mV Vinpp=98mV ICin=3.80 ICout=0.70
+ L+20%                          Vin=20.0 eta=97.67% ILmax=8.20 Vopp20=12.1mV Vinpp=95mV ICin=3.78 ICout=0.36
+ L+20%                          Vin=26.0 eta=97.14% ILmax=8.40 Vopp20=15.6mV Vinpp=101mV ICin=3.79 ICout=0.47
+ C-20% ESRx1.5                  Vin=20.0 eta=97.63% ILmax=8.30 Vopp20=21.1mV Vinpp=143mV ICin=3.79 ICout=0.43
+ C-20% ESRx1.5                  Vin=26.0 eta=97.09% ILmax=8.49 Vopp20=27.2mV Vinpp=148mV ICin=3.80 ICout=0.56
+ L-20% C-20% ESRx1.5 DCRx1.3    Vin=20.0 eta=97.60% ILmax=8.50 Vopp20=26.2mV Vinpp=140mV ICin=3.80 ICout=0.54
+ L-20% C-20% ESRx1.5 DCRx1.3    Vin=26.0 eta=97.06% ILmax=8.81 Vopp20=34.0mV Vinpp=149mV ICin=3.81 ICout=0.70
+3) sicaklik (22.2 V)
+ T= 27 eta=97.45% Pmos=0.27 Pdio=1.62 D=0.5058
+ T= 85 eta=97.58% Pmos=0.28 Pdio=1.50 D=0.5046
+ T=125 eta=96.99% Pmos=0.29 Pdio=2.00 D=0.5035
+4) sabit duty D=0.5058
+ Vin=20.0 yuk=100% Vo=9.893 (onceki pencere 9.893) Vo_max=9.901 Io=6.74A
+ Vin=22.2 yuk=100% Vo=11.000 (onceki pencere 11.000) Vo_max=11.009 Io=7.50A
+ Vin=26.0 yuk=100% Vo=12.913 (onceki pencere 12.913) Vo_max=12.924 Io=8.80A
+ Vin=22.2 yuk= 50% Vo=11.070 (onceki pencere 11.070) Vo_max=11.079 Io=3.77A
+ Vin=22.2 yuk= 10% Vo=11.270 (onceki pencere 11.270) Vo_max=11.278 Io=0.77A
+ Vin=26.0 yuk= 10% Vo=13.219 (onceki pencere 13.219) Vo_max=13.228 Io=0.90A
+5) tam parazitik (MLCC giris/cikis, Rg=10, RC 2.2ohm/1nF)
+ Vin=20.0 D=0.5615 Vo=11.0000 eta=97.61% Vds_max=25.8 Vr_max=30.2 Vgs=[-0.1,10.0] Vopp=163mV Vopp20=20.6mV Pmos=0.24 Pdio=1.44 Pind=0.14 Id_max=16.9
+ Vin=22.2 D=0.5060 Vo=11.0000 eta=97.39% Vds_max=27.5 Vr_max=33.0 Vgs=[-0.1,10.0] Vopp=189mV Vopp20=23.1mV Pmos=0.23 Pdio=1.62 Pind=0.16 Id_max=17.6
+ Vin=26.0 D=0.4322 Vo=11.0000 eta=97.07% Vds_max=30.2 Vr_max=37.8 Vgs=[-0.0,10.0] Vopp=235mV Vopp20=26.3mV Pmos=0.21 Pdio=1.87 Pind=0.19 Id_max=18.9
+6) sert kalkis
+ Vin=20.0 IL_max=35.4A Vo_max=17.89V Iin_max=20.6A Vds_max=20.4 t_ILmax=0.17ms t_Vomax=0.33ms
+ Vin=22.2 IL_max=35.6A Vo_max=17.93V Iin_max=18.7A Vds_max=22.7 t_ILmax=0.18ms t_Vomax=0.33ms
+ Vin=26.0 IL_max=35.8A Vo_max=17.97V Iin_max=16.0A Vds_max=26.5 t_ILmax=0.17ms t_Vomax=0.32ms

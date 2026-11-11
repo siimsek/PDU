@@ -1,10 +1,20 @@
 # Açık çevrim buck güç katı
 
-Bu depo, 20–26 V girişten 11 V / 7,5 A hedefleyen tek faz asenkron buck güç katının hesaplarını ve yönergelerini tutar. Eski şematikler ve arşiv, kullanıcı isteğiyle temizlendi. Yeni LTspice şematiğini birlikte sıfırdan kuracağız.
+Bu depo, 20–26 V girişten 11 V / 7,5 A hedefleyen tek faz asenkron buck güç katının hesaplarını, LTspice simülasyonlarını ve yönergelerini tutar.
 
-## LTspice çizimine başlayacağımız aday
+## Güncel durum
 
-L, CIN, COUT ve frekans değerleri karşılaştırılıyor; henüz verim açısından kazanan seçilmedi. [Parametre taraması](buck/PARAMETRE-KARSILASTIRMA.md) 11 V / 7,5 A / 82,5 W hedefinde farklı kombinasyonların analitik ön elemesini içerir. İlk LTspice çizimi için taramadaki 100 kHz adayı kullanılacak.
+Ana güç katı LTspice'ta kuruldu ve simüle edildi: 100 kHz, 33 µH, BSZ065N06LS5, RBR40NS60A, CIN 2 × 220 µF, COUT 330 µF. Simülasyon verimi 20–26 V girişte %97,1–97,7'dir. Bunlar yalnız simülasyon sonucudur; parça verileri veri sayfasıyla doğrulanmadı ve fiziksel ölçüm yoktur.
+
+- [LTspice sonuç raporu](buck/ltspice/SONUC.md)
+- [LTspice şematiği](buck/ltspice/buck_guc_kati.asc)
+- [Yol haritası: sonraki adımlar, nihai PCB'ye kadar](buck/YOL-HARITASI.md)
+
+Aşağıdaki bölüm, simülasyondan önceki analitik başlangıç adayını kayıt olarak tutar; güncel seçim yukarıdaki rapordadır.
+
+## Simülasyon öncesi analitik başlangıç adayı
+
+[Parametre taraması](buck/PARAMETRE-KARSILASTIRMA.md) 11 V / 7,5 A / 82,5 W hedefinde farklı kombinasyonların analitik ön elemesini içerir. İlk aday olarak taramadaki 100 kHz noktası alınmıştı.
 
 | Değer | Aday |
 |---|---:|
@@ -32,4 +42,4 @@ Bu, analitik taramadan seçilmiş bir başlangıç adayıdır; verim bakımında
 - [Parametre tarama betiği](buck/parametre_taramasi.py)
 - [Tarama çıktısı](buck/tarama-sonuc.json)
 
-Hesap çıktısı analitik sonuçtur; simülasyon veya fiziksel ölçüm değildir. Gerçek bileşen modeli, LTspice sonuçları ve laboratuvar ölçümleri ayrı kaydedilecektir.
+Hesap çıktısı analitik sonuçtur; simülasyon veya fiziksel ölçüm değildir. LTspice sonuçları `buck/ltspice/` altında ayrı tutulur; laboratuvar ölçümü henüz yoktur.

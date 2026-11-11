@@ -1,7 +1,7 @@
 # Proje Tanımı — Açık Çevrim Buck Güç Katı
 
 **Tarih:** 10 Kasım 2026
-**Durum:** L / f / CIN / COUT kombinasyonları analitik olarak karşılaştırılıyor; verim kazananı seçilmedi. Yeni LTspice devresi henüz kullanıcıyla kurulmadı.
+**Durum:** Ana güç katı LTspice'ta kuruldu ve simüle edildi (11 Kasım 2026); sonuçlar [ltspice/SONUC.md](ltspice/SONUC.md), sonraki adımlar [YOL-HARITASI.md](YOL-HARITASI.md) dosyasındadır. Aşağıdaki tablo simülasyon öncesi analitik referanstır.
 
 ## Amaç
 
@@ -43,4 +43,4 @@ ESR değerleri yalnızca sonraki kayıplı simülasyon için model varsayımlar�
 
 22,2 V giriş için hesaplanan ideal duty `D = 11/22,2 ≈ 0,4955` değeridir. Bu duty sabit tutulursa 20 V girişte ideal çıkış 9,91 V, 26 V girişte 12,88 V olur. 1,467 Ω simülasyon direnci 26 V girişte yaklaşık 8,78 A çeker. Gerçek O1, RPLIDAR S2E veya hassas bir yük bu açık çevrim devreye bağlanmaz.
 
-İlk devre yalnız LTspice simülasyonunda kurulacaktır. Analitik hesap, simülasyon ve fiziksel ölçüm ayrı sonuçlardır; bu depoda şu anda LTspice devresi veya LTspice sonucu yoktur.
+Devre yalnız LTspice simülasyonunda kuruldu. Analitik hesap, simülasyon ve fiziksel ölçüm ayrı sonuçlardır; bu depoda fiziksel ölçüm yoktur.
