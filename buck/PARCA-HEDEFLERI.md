@@ -11,8 +11,8 @@ Ana şematik ([ltspice/buck_guc_kati.asc](ltspice/buck_guc_kati.asc)) bu tabloda
 | **L1** bobin | 33 µH, DCR 15 mΩ | 33 µH ±%20 (yakın: 33–47 µH) · Isat ≥ 12 A · Irms (ısıl) ≥ 9 A · DCR ≤ 15 mΩ · ekranlı güç bobini | Tepe akım 8,7 A (L −%20, 26 V) + %30 pay; RMS 7,5 A |
 | **CIN** (Cin1, Cin2) | 2 × 220 µF, ESR 20 mΩ/adet | toplam ≥ 440 µF · ≥ 35 V · ESR ≤ 20 mΩ/adet · ripple akımı ≥ 2,5 A RMS/adet · polimer veya düşük ESR elektrolitik | Toplam ripple akımı ≈ 3,8 A RMS; 26 V girişe gerilim payı |
 | **COUT** | 330 µF, ESR 15 mΩ | 330 µF (yakın: 330–470 µF) · ≥ 25 V · ESR ≤ 15 mΩ · ripple akımı ≥ 1 A RMS | Ripple ≤ 55 mV p-p hedefi; ESR 19 mΩ üstünde hedef aşılır |
-| **S1** anahtar (N-MOSFET) | ideal, Ron 10 mΩ (`SW_10m`) | VDS ≥ 40 V (tercihen 60 V) · ID ≥ 15 A · RDS(on) ≤ 10 mΩ | Gerilim 26 V + zil payı; RMS ≈ 5,6 A, tepe 8,7 A |
-| **D1** Schottky diyot | ideal, Vf 0,5 V + 10 mΩ (`D_0V5`) | VR ≥ 40 V (tercihen 60 V) · IF(AV) ≥ 10 A · Vf ≤ 0,5 V @ 7,5 A | Ortalama akım ≈ 4,3 A (26 V'ta); ters gerilim 26 V |
+| **S1** anahtar (N-MOSFET) | ideal, Ron 10 mΩ (`Ron=10m`) | VDS ≥ 40 V (tercihen 60 V) · ID ≥ 15 A · RDS(on) ≤ 10 mΩ | Gerilim 26 V + zil payı; RMS ≈ 5,6 A, tepe 8,7 A |
+| **D1** Schottky diyot | ideal, Vf 0,5 V + 10 mΩ (`Vf=0.5 Ron=10m`) | VR ≥ 40 V (tercihen 60 V) · IF(AV) ≥ 10 A · Vf ≤ 0,5 V @ 7,5 A | Ortalama akım ≈ 4,3 A (26 V'ta); ters gerilim 26 V |
 | **Rload** yük | 1,467 Ω | 1,47 Ω, ≥ 100 W (direnç bankası veya elektronik yük) | 82,5 W sürekli ısı |
 
 ## Notlar

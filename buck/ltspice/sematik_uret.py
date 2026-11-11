@@ -18,47 +18,51 @@ def wire(*pts):
 
 TOP, GND = 64, 336
 # ust hat
-wire((-176, 128), (-176, TOP), (-16, TOP), (80, TOP), (128, TOP), (192, TOP))
-wire((272, TOP), (560, TOP), (592, TOP), (624, TOP))
-wire((704, TOP), (784, TOP), (848, TOP), (896, TOP))
+wire((-320, 128), (-320, TOP), (-160, TOP), (0, TOP), (96, TOP), (192, TOP))
+wire((272, TOP), (704, TOP), (752, TOP), (784, TOP))
+wire((864, TOP), (944, TOP), (1024, TOP), (1104, TOP))
 # dikeyler
-wire((-176, 208), (-176, GND))
-wire((-16, TOP), (-16, 144)); wire((-16, 208), (-16, GND))
-wire((80, TOP), (80, 144)); wire((80, 208), (80, GND))
+wire((-320, 208), (-320, GND))
+wire((-160, TOP), (-160, 144)); wire((-160, 208), (-160, GND))
+wire((0, TOP), (0, 144)); wire((0, 208), (0, GND))
 wire((208, 112), (208, GND))                      # S1 kontrol (-)
 wire((256, 112), (256, 176)); wire((256, 256), (256, GND))   # S1 kontrol (+) ve Vdrv
-wire((592, TOP), (592, 144)); wire((592, 208), (592, GND))
-wire((784, TOP), (784, 144)); wire((784, 208), (784, GND))
-wire((896, TOP), (896, 144)); wire((896, 224), (896, GND))
+wire((752, TOP), (752, 144)); wire((752, 208), (752, GND))
+wire((944, TOP), (944, 144)); wire((944, 208), (944, GND))
+wire((1104, TOP), (1104, 144)); wire((1104, 224), (1104, GND))
 # toprak hatti
-wire((-176, GND), (-16, GND), (80, GND), (208, GND), (256, GND), (592, GND), (784, GND), (896, GND))
+wire((-320, GND), (-160, GND), (0, GND), (208, GND), (256, GND), (752, GND), (944, GND), (1104, GND))
 
-FLAGS = [(-176, GND, "0"), (128, TOP, "vin"), (560, TOP, "sw"), (848, TOP, "out"), (256, 144, "pwm")]
+FLAGS = [(-320, GND, "0"), (96, TOP, "vin"), (704, TOP, "sw"), (1024, TOP, "out"), (256, 144, "pwm")]
 
+# WINDOW 39 = SpiceLine (Rser) yazisini gorunur yapar; R270 parcalarda V* hizalama yaziyi yatay tutar
+CAPW = ["WINDOW 39 24 85 Left 2"]
 SYMS = [
-    ("voltage", -176, 112, "R0", "V1", "22.2", None),
-    ("polcap", -32, 144, "R0", "Cin1", "220u", "Rser=20m"),
-    ("polcap", 64, 144, "R0", "Cin2", "220u", "Rser=20m"),
-    ("sw", 176, 64, "R270", "S1", "SW_10m", None),
-    ("voltage", 256, 160, "R0", "Vdrv", f"PULSE(0 10 0 10n 10n {ton:g}u 10u)", None),
-    ("schottky", 608, 208, "R180", "D1", "D_0V5", None),
-    ("ind", 608, 80, "R270", "L1", "33u", "Rser=15m"),
-    ("polcap", 768, 144, "R0", "Cout", "330u", "Rser=15m"),
-    ("res", 880, 128, "R0", "Rload", "1.4667", None),
+    ("voltage", -320, 112, "R0", "V1", "22.2", None, []),
+    ("polcap", -176, 144, "R0", "Cin1", "220u", "Rser=20m", CAPW),
+    ("polcap", -16, 144, "R0", "Cin2", "220u", "Rser=20m", CAPW),
+    ("anahtar", 176, 64, "R270", "S1", "anahtar", "Ron=10m", ["WINDOW 0 64 56 VTop 2", "WINDOW 39 40 56 VTop 2"]),
+    ("voltage", 256, 160, "R0", "Vdrv", f"PULSE(0 10 0 10n 10n {ton:g}u 10u)", None, []),
+    ("diyot", 768, 208, "R180", "D1", "diyot", "Vf=0.5 Ron=10m", []),
+    ("ind", 768, 80, "R270", "L1", "33u", "Rser=15m",
+     ["WINDOW 0 32 56 VTop 2", "WINDOW 3 5 56 VBottom 2", "WINDOW 39 -20 56 VBottom 2"]),
+    ("polcap", 928, 144, "R0", "Cout", "330u", "Rser=15m", CAPW),
+    ("res", 1088, 128, "R0", "Rload", "1.4667", None, []),
 ]
 
-# LTspice'in calismasi icin gereken en az yonerge: sure + ideal anahtar/diyot degerleri (parcalarin altinda)
+# Ideal anahtar/diyot tanimlari idealler.lib icindedir (anahtar.asy / diyot.asy bu dosyayi kendiliginden ekler).
+# .tran sematikte kalmak zorunda: LTspice simulasyon komutunu yalniz sematik yazisindan kabul ediyor
+# (lib dosyasina veya sembole tasimak denendi, Run calismadi).
 TEXT = [
-    (-192, -48, 3, ";Acik cevrim asenkron buck  -  22,2 V -> 11 V / 7,5 A, 100 kHz"),
-    (-128, 384, 2, "!.tran 10m"),
-    (144, 384, 2, "!.model SW_10m SW(Ron=10m Vt=5)"),
-    (512, 384, 2, "!.model D_0V5 D(Ron=10m Vfwd=0.5)"),
+    (-336, -96, 3, ";Acik cevrim asenkron buck  -  22,2 V -> 11 V / 7,5 A, 100 kHz"),
+    (-336, 400, 2, "!.tran 10m"),
 ]
 
 out = ["Version 4", "SHEET 1 1400 900"] + W
 out += [f"FLAG {x} {y} {n}" for x, y, n in FLAGS]
-for sym, x, y, rot, name, val, line in SYMS:
+for sym, x, y, rot, name, val, line, win in SYMS:
     out.append(f"SYMBOL {sym} {x} {y} {rot}")
+    out += win
     out.append(f"SYMATTR InstName {name}")
     out.append(f"SYMATTR Value {val}")
     if line:

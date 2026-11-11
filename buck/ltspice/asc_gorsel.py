@@ -35,7 +35,8 @@ def esc(t: str) -> str:
 
 
 def load_symbol(name: str):
-    raw = (SYM / f"{name}.asy").read_bytes()
+    local = Path(__file__).with_name(f"{name}.asy")      # once sematigin yanindaki ozel semboller
+    raw = (local if local.exists() else SYM / f"{name}.asy").read_bytes()
     txt = raw.decode("utf-16-le") if raw[1:2] == b"\x00" else raw.decode("latin-1")
     prim, win = [], {}
     for ln in txt.splitlines():
@@ -123,6 +124,7 @@ def render(asc: Path) -> Path:
     # semboller
     for s in syms:
         prim, win = load_symbol(s["name"])
+        show_value = 3 in win                              # sembolde Value penceresi yoksa (alt devre adi) gosterme
         win = {**win, **s["win"]}
         T = lambda x, y: tuple(a + b for a, b in zip((s["x"], s["y"]), rot(s["rot"], x, y)))
         for kind, v in prim:
@@ -141,7 +143,9 @@ def render(asc: Path) -> Path:
                 n = 40
                 cv.line([T(cx + rx * math.cos(a0 + (a1 - a0) * i / n), cy - ry * math.sin(a0 + (a1 - a0) * i / n)) for i in range(n + 1)])
         horiz = s["rot"] in ("R90", "R270", "M90", "M270")
-        labels = [(0, s["attr"].get("InstName", ""), True), (3, s["attr"].get("Value", ""), False)]
+        labels = [(0, s["attr"].get("InstName", ""), True)]
+        if show_value:
+            labels.append((3, s["attr"].get("Value", ""), False))
         if s["attr"].get("SpiceLine"):
             labels.append((39, s["attr"]["SpiceLine"], False))
         # sembolun dunya koordinatlarindaki kutusu (etiketleri govdeye carpmadan yerlestirmek icin)

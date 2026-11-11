@@ -1,0 +1,10 @@
+* Ideal anahtar ve diyot tanimlari.
+* Degerler (Ron, Vf) sematikte parcanin ustunden degistirilir; bu dosyaya dokunmak gerekmez.
+.subckt anahtar A B CP CN params: Ron=10m
+S1 A B CP CN SWM
+.model SWM SW(Ron={Ron} Vt=5)
+.ends
+.subckt diyot A K params: Vf=0.5 Ron=10m
+D1 A K DM
+.model DM D(Ron={Ron} Vfwd={Vf})
+.ends
