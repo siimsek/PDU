@@ -72,7 +72,10 @@ Güncel değerler ve aktif adım burada tekrar edilmez; [YOL-HARITASI.md](YOL-HA
 - Her belge güncel durumu anlatır; eski sürümlerin anlatısı belgede biriktirilmez (geçmiş `git log`'da ve karar günlüğündedir).
 
 ### 4.7 Git
-- Çalışma dalı `main`. Tamamlanan adımlar ayrı dalda dondurulur (`ANA-GUC-DEVRESI`, etiket `ana-guc-devresi-v2`); dondurulmuş dala yeni iş yazılmaz.
+- **Bütün iş `main` dalında yapılır.** Günlük değişiklikler, parça güncellemeleri, belge düzeltmeleri ve yol haritasındaki tek tek adımlar için **yeni dal, etiket veya milestone açılmaz**; yalnız commit atılır.
+- Dal, etiket ve milestone **yalnız ana aşamalar** içindir ([YOL-HARITASI.md](YOL-HARITASI.md) "Ana aşamalar" tablosu: ana güç devresi, kontrol, prototip, PCB). Her ana aşamanın bir dalı ve bir milestone'u olur; bunlar yalnız kullanıcı isteyince açılır veya güncellenir.
+- Bir ana aşama **kapanırken** (kullanıcı onayıyla): aşamanın dalı `main`'in o anki hâline getirilir, milestone kapatılır. Aşama sürerken dal eski bir ara kayıt olarak kalabilir; güncel hâl her zaman `main`'dedir.
+- Şu an var olanlar: `ANA-GUC-DEVRESI` dalı, `ana-guc-devresi-v2` etiketi, "ANA GÜÇ DEVRESİ" milestone'u (Aşama A). Bunlara yenisi eklenmez (ör. `-v3` etiketi, parça seçimi için ayrı dal açılmaz).
 - Commit ve push yalnız kullanıcı isteyince yapılır. Commit mesajı Türkçe, ne değiştiğini ve nedenini söyler.
 - Geçmiş yeniden yazılmaz (`push --force`, `reset --hard` yok); dal veya etiket silmeden önce kullanıcıya sorulur.
 - GitHub işlemleri için `gh` kullanılır (bu makinede `C:\Program Files\GitHub CLI\gh.exe`).
@@ -140,6 +143,7 @@ Bu bölüm ileriye dönüktür. PCB işine kullanıcı açıkça başlatmadan gi
 ## 8. Yapılmayacaklar (kısa liste)
 
 - Kullanıcı istemeden sonraki adıma geçmek, yeni dosya açmak, commit/push yapmak.
+- Ana aşama kapanışı dışında yeni dal, etiket veya milestone açmak.
 - Şematiğe yönerge veya parça SPICE modeli eklemek; kullanıcı istemeden aday sırasını veya şematikteki parça değerlerini değiştirmek; aday parçayı kesin seçim gibi sunmak.
 - Koşulmamış test için sonuç yazmak; tahmini veri sayfası değeri gibi sunmak.
 - Bir değeri nedenini okumadan değiştirmek (özellikle Cout ESR, L1, Cout).

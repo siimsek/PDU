@@ -15,8 +15,9 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 | **Sıradaki adım** | Adım 3 — Kayıp ve ısı. Adım 4 ve sonrası (sürücü, PWM, geri besleme, PCB) **kullanıcı isteyene kadar başlatılmaz** |
 | **Devrenin hâli** | Açık çevrim, soft-start yok. LTspice'ta doğrulandı; **fiziksel devre ve ölçüm yok** |
 | **Güvenlik** | Gerçek O1 / S2E **bağlanmaz**: açık çevrim 12 V üst sınırını garanti etmez |
-| **Dal / etiket** | Çalışma `main` dalında. Adım 1'in dondurulmuş hâli: `ANA-GUC-DEVRESI` dalı, `ana-guc-devresi-v2` etiketi |
-| **GitHub** | Milestone: [ANA GÜÇ DEVRESİ](https://github.com/siimsek/PDU/milestone/1) (açık; Adım 2 bitince kapanır) |
+| **Ana aşama** | **A — Ana güç devresi** (Adım 0–3); Adım 2'deyiz |
+| **Dal** | Bütün iş `main` dalında. Güncel hâl her zaman `main`'dedir |
+| **Aşama kaydı** | Aşama A: `ANA-GUC-DEVRESI` dalı (ara kayıt: hedef değerlerin doğrulandığı hâl, etiket `ana-guc-devresi-v2`) ve [ANA GÜÇ DEVRESİ](https://github.com/siimsek/PDU/milestone/1) milestone'u (açık). İkisi de Aşama A kapanınca (Adım 3 sonu) güncellenir/kapatılır |
 
 ### Şematikteki değerler (tek bakışta)
 
@@ -33,6 +34,20 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 
 LTspice sonucu (24,6 V, 7,5 A): çıkış 11,000 V, ripple 64,4 mV t-t, bobin akımı 6,56–8,44 A, iletim kaybı 2,75 W.
 Adayların sırası ve gerekçesi, doğrulama durumu ve kriterlerin nedenleri: [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md). Kanıt: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md).
+
+## Ana aşamalar
+
+Adımlar dört ana aşamada toplanır. **Dal ve milestone yalnız ana aşama düzeyinde açılır**; tek tek adımlar, parça güncellemeleri ve belge düzeltmeleri için açılmaz (yalnız `main`'e commit). Kurallar: [AGENTS.md](AGENTS.md) §4.7.
+
+| Ana aşama | Adımlar | Dal | Milestone | Durum |
+|---|---|---|---|---|
+| **A — Ana güç devresi** | 0–3 | `ANA-GUC-DEVRESI` (var) | [ANA GÜÇ DEVRESİ](https://github.com/siimsek/PDU/milestone/1) (açık) | 🔄 Sürüyor (Adım 2) |
+| **B — Kontrol** | 4–7 (sürücü, PWM ve yumuşak kalkış, geri besleme, korumalar) | açılmadı | açılmadı | ⛔ Kullanıcı başlatır |
+| **C — Prototip ve ölçüm** | 8 | açılmadı | açılmadı | ⛔ Kullanıcı başlatır |
+| **D — PCB ve gerçek yük** | 9–10 | açılmadı | açılmadı | ⛔ Kullanıcı başlatır |
+
+- Bir ana aşamaya başlanırken kullanıcı isterse milestone açılır; aşama kapanırken dal `main`'in o anki hâline getirilir ve milestone kapatılır.
+- Dal ve milestone adlarını kullanıcı verir.
 
 ## Adımlar
 
@@ -129,6 +144,7 @@ Yeni kararlar en üste eklenir. Bir değeri değiştirmeden önce burada ve [buc
 
 | Tarih | Karar | Neden |
 |---|---|---|
+| 11.11.2026 | Dal ve milestone yalnız ana aşamalarda (A–D) açılır; adımlar ve küçük değişiklikler yalnız `main`'e commit | Kullanıcı kararı: her değişiklikte yeni dal/milestone istenmiyor |
 | 11.11.2026 | Parçalar kesin seçim değil, öncelik sıralı aday listesidir; şematik 1. sıra adayların değerlerini taşır (Würth 74435583300, Nichicon UHE1E102MHD6TO, 2 × TDK B41859D7108M000, STP100N6F7, STPS40M60CT) | Kullanıcı kararı. 1. sıra: dış araştırma adayları arasından LTspice köşe testini en geniş payla geçen set |
 | 11.11.2026 | Cout için 18 mΩ değil 35 mΩ'luk kondansatör | Veri sayfası ESR'si en yüksek değerdir; 18 mΩ'luk parçanın gerçek ESR'si sönüm alt sınırının altına inebilir (47 µH ile 12,83 V) |
 | 11.11.2026 | S1 için en düşük dirençli değil en düşük kapı yüklü aday (30 nC) | İletim kaybı zaten 0,15 W; düşük kapı yükü sürücü aşamasını kolaylaştırır |
@@ -146,4 +162,5 @@ Yeni kararlar en üste eklenir. Bir değeri değiştirmeden önce burada ve [buc
 - Bir adım ilerlediğinde veya bittiğinde: "Şu anki durum" tablosu, adım tablosundaki durum ve ilgili adımın "yapıldı / yapılacak" satırları aynı değişiklikte güncellenir.
 - Şematik değeri değiştiğinde: "Şematikteki değerler" tablosu ve karar günlüğü güncellenir.
 - "Son güncelleme" tarihi değiştirilir.
+- Yeni dal, etiket veya milestone yalnız bir ana aşama açılır/kapanırken ve kullanıcı isteyince oluşturulur; "Ana aşamalar" tablosu o zaman güncellenir.
 - Yapılmamış iş "tamam" yazılmaz; koşulmamış test sonucu yazılmaz.
