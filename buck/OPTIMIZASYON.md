@@ -88,6 +88,25 @@ Tarama: L ∈ {22, 33, 47} µH × Cout ∈ {330, 470, 680} µF, ESR 15 mΩ, 24,6
 - **A ve B güvenlik ölçütlerini geçer.** B'nin köşe sönümü biraz daha iyi ve parçaları daha küçüktür; karşılığında akım ripple'ı %38 (köşede %49), tepe akımı 0,6 A, çıkış ripple'ı %55 daha yüksektir ve tipik yük (≈ 1,2 A) DCM içinde kalır.
 - **A seçildi:** daha düşük akım/gerilim ripple'ı ve tepe akımı, CCM'in daha düşük yüke inmesi. 680 µF, köşede 12 V altında kalan en küçük standart değerdir; daha büyüğü yalnız sert kalkış akımını artırır.
 
+### 4.1 Gerilim sabitliği öncelikli karşılaştırma (daha büyük L / Cout)
+
+Soru: akım ripple'ı önemsenmeyip çıkış geriliminin giriş değişiminde sabit kalması öncelik yapılırsa değerler değişmeli mi? Aynı Z0'da daha büyük adaylar, ESR 25 mΩ, Ton sabit (SİM):
+
+| | A: 33 µH / 680 µF | 47 µH / 1000 µF | 68 µH / 1500 µF | 33 µH / 1000 µF |
+|---|---|---|---|---|
+| Kararlı çıkış, 20 / 22,2 / 24,6 / 25,2 / 26 V giriş (7,5 A) | 8,89 / 9,90 / 11,00 / 11,27 / 11,64 V | aynı | aynı | aynı |
+| Giriş 24,6 → 20 V rampası (57,6 W): Vmin / Vmax | 8,68 / 11,15 V | 8,14 / 11,59 V | 7,58 / 11,98 V | 8,53 / 11,27 V |
+| Giriş 22,2 → 25,2 V rampası (57,6 W): Vmax | 12,66 V | 12,94 V | 13,32 V | 12,76 V |
+| Çıkış ripple'ı anma / köşe | 47 / 74 mV | 33 / 52 mV | 23 / 36 mV | 47 / 74 mV |
+| Sabit Ton'da 0,6 A yükte çıkış (24,6 V) | 12,98 V | 11,52 V | 11,17 V | 12,98 V |
+| O1 tipik → zarf adımı: Vmin / Vmax | 10,04 / 11,80 V | 10,08 / 11,78 V | 10,11 / 11,75 V | 10,22 / 11,64 V |
+| Köşe, S2E kalkışı @zarf: salınım 57,6 / 73 W | 171 / 881 mV | 83 / 434 mV | 152 / 411 mV | 36 / 54 mV |
+| Sert kalkış | 45,8 A / 17,1 V | 46,1 A / 17,1 V | 46,5 A / 17,1 V | 53,3 A / 16,9 V |
+
+- **Giriş değişiminin kararlı etkisi L ve Cout'tan bağımsızdır:** Vo ≈ D·Vin − düşümler; dört adayda da 20–26 V arasında 8,89–11,64 V. Parça değeriyle düzelmez; yalnız Ton girişe göre ayarlanırsa (ileri besleme veya geri besleme) sabit kalır.
+- **Daha büyük L / Cout giriş geçişini kötüleştirir:** LC yavaşladığı için rampa sırasındaki aşım/çöküş büyür (68 µH / 1500 µF'ta 7,58–13,32 V).
+- Büyük adayların kazancı ripple ve hafif yük yükselmesindedir; ikisi de zaten sınırların içinde veya geri beslemeyle giderilecek konulardır. **Seçim değişmedi (A).** Parça aşamasında yer varsa 33 µH / 1000 µF köşe sönümünü iyileştirir, karşılığı daha yüksek sert kalkış akımıdır.
+
 ## 5. Seçilen tasarımın test sonuçları (SİM)
 
 L 33 µH / 15 mΩ · Cout 680 µF / 25 mΩ · Cin 2 × 220 µF / 20 mΩ · Ron 10 mΩ · Vf 0,5 V + 10 mΩ · 100 kHz. Ton ayar doğruluğu ±5 mV; ripple 1 ms pencerede t-t.

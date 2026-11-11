@@ -1,5 +1,6 @@
 # LTspice transient output
 *.raw
+*.net
 *.log
 
 # Python cache

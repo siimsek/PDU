@@ -102,6 +102,8 @@ def yuk_guc(pwl_w: str, vmin: float = 5.0, ad: str = "y") -> list[str]:
 
 # ---------------------------------------------------------------- kosu
 _CALISMA = None
+_MASAUSTU = None
+MASAUSTU_ADI = "buck_dogrula"
 
 
 def calisma() -> Path:
@@ -111,11 +113,73 @@ def calisma() -> Path:
     return _CALISMA
 
 
+def ltspice_kos(cir: Path) -> None:
+    """LTspice'i toplu kipte kosar.
+
+    Windows'ta LTspice -b her baslatildiginda on plandaki pencerenin odagini alir. Bunu onlemek
+    icin surec gorunmeyen ayri bir masaustunde (CreateDesktop) baslatilir; kullanicinin ekrani
+    ve klavye odagi etkilenmez.
+    """
+    if os.name != "nt":
+        subprocess.run([LTSPICE, "-b", str(cir)], check=True, timeout=900)
+        return
+    import ctypes
+    from ctypes import wintypes as w
+
+    class STARTUPINFOW(ctypes.Structure):
+        _fields_ = [("cb", w.DWORD), ("lpReserved", w.LPWSTR), ("lpDesktop", w.LPWSTR), ("lpTitle", w.LPWSTR),
+                    ("dwX", w.DWORD), ("dwY", w.DWORD), ("dwXSize", w.DWORD), ("dwYSize", w.DWORD),
+                    ("dwXCountChars", w.DWORD), ("dwYCountChars", w.DWORD), ("dwFillAttribute", w.DWORD),
+                    ("dwFlags", w.DWORD), ("wShowWindow", w.WORD), ("cbReserved2", w.WORD),
+                    ("lpReserved2", ctypes.c_void_p), ("hStdInput", w.HANDLE), ("hStdOutput", w.HANDLE),
+                    ("hStdError", w.HANDLE)]
+
+    class PROCESS_INFORMATION(ctypes.Structure):
+        _fields_ = [("hProcess", w.HANDLE), ("hThread", w.HANDLE), ("dwProcessId", w.DWORD),
+                    ("dwThreadId", w.DWORD)]
+
+    u = ctypes.WinDLL("user32", use_last_error=True)
+    k = ctypes.WinDLL("kernel32", use_last_error=True)
+    u.CreateDesktopW.restype = w.HANDLE
+    u.CreateDesktopW.argtypes = [w.LPCWSTR, w.LPCWSTR, ctypes.c_void_p, w.DWORD, w.DWORD, ctypes.c_void_p]
+    k.CreateProcessW.argtypes = [w.LPCWSTR, w.LPWSTR, ctypes.c_void_p, ctypes.c_void_p, w.BOOL, w.DWORD,
+                                 ctypes.c_void_p, w.LPCWSTR, ctypes.POINTER(STARTUPINFOW),
+                                 ctypes.POINTER(PROCESS_INFORMATION)]
+    k.WaitForSingleObject.argtypes = [w.HANDLE, w.DWORD]
+    k.GetExitCodeProcess.argtypes = [w.HANDLE, ctypes.POINTER(w.DWORD)]
+    k.TerminateProcess.argtypes = [w.HANDLE, w.UINT]
+    k.CloseHandle.argtypes = [w.HANDLE]
+
+    global _MASAUSTU
+    if _MASAUSTU is None:
+        _MASAUSTU = u.CreateDesktopW(MASAUSTU_ADI, None, None, 0, 0x10000000, None)  # GENERIC_ALL
+        if not _MASAUSTU:
+            raise OSError(ctypes.get_last_error(), "CreateDesktop basarisiz")
+    si = STARTUPINFOW()
+    si.cb = ctypes.sizeof(si)
+    si.lpDesktop = MASAUSTU_ADI
+    pi = PROCESS_INFORMATION()
+    komut = ctypes.create_unicode_buffer(f'"{LTSPICE}" -b "{cir}"')
+    if not k.CreateProcessW(None, komut, None, None, False, 0, None, None, ctypes.byref(si), ctypes.byref(pi)):
+        raise OSError(ctypes.get_last_error(), "LTspice baslatilamadi")
+    try:
+        if k.WaitForSingleObject(pi.hProcess, 900_000) != 0:
+            k.TerminateProcess(pi.hProcess, 1)
+            raise TimeoutError(f"LTspice zaman asimi: {cir}")
+        kod = w.DWORD()
+        k.GetExitCodeProcess(pi.hProcess, ctypes.byref(kod))
+        if kod.value:
+            raise RuntimeError(f"LTspice cikis kodu {kod.value}: {cir}")
+    finally:
+        k.CloseHandle(pi.hProcess)
+        k.CloseHandle(pi.hThread)
+
+
 def kos(metin: str, ad: str = "k", raw: bool = False):
     d = calisma()
     cir = d / f"{ad}.cir"
     cir.write_text(metin, encoding="ascii")
-    subprocess.run([LTSPICE, "-b", str(cir)], check=True, timeout=900)
+    ltspice_kos(cir)
     log = (d / f"{ad}.log").read_bytes()
     log = log.decode("utf-16-le") if log[:2] in (b"\xff\xfe",) or log[1:2] == b"\x00" else log.decode("latin1")
     m = {k.lower(): float(v) for k, v in re.findall(r"^(\w+):.*?=(-?[\d.]+(?:[eE][-+]?\d+)?)", log, re.M)}
