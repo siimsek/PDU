@@ -7,6 +7,7 @@ kosar, .meas sonuclarini tablo olarak yazar. Buyuk .raw dosyalari repoya girmez.
 Kullanim:
   python buck/dogrula.py tarama      # 9 aday (L x Cout) karsilastirmasi
   python buck/dogrula.py secilen     # secilen tasarim: 5 giris, yuk, kalkis, tolerans
+  python buck/dogrula.py pencere     # L/Cout/ESR kabul pencerelerinin kenarlari
   python buck/dogrula.py grafik      # buck/grafik/*.svg
   python buck/dogrula.py mevcut      # ana sematigin (eski degerler) yeniden kosusu
 
@@ -42,12 +43,16 @@ P_O1_BOSTA = 4.0            # W  TAHMIN
 
 MEVCUT = dict(L=33e-6, DCR=15e-3, Cout=330e-6, ESRo=15e-3, Cin=220e-6, ESRi=20e-3,
               Ron=10e-3, Vf=0.5, Rd=10e-3, f=100e3)
-# Secilen parcalarin veri sayfasi degerleri (PARCA-HEDEFLERI.md):
-# L1 Bourns 2300HT-330 (33 uH @0 A, 13,6 A'de 23 uH; DCR 15 mohm maks), Cout Rubycon 25ZLH680M (28 mohm maks),
-# Cin 2 x Panasonic EEUFR1V681B (680 uF, 20 mohm), S1 STP75NF75 (11 mohm maks), D1 DSB60C60HB iki bacak paralel.
-SECILEN = dict(L=33e-6, DCR=15e-3, Cout=680e-6, ESRo=28e-3, Cin=680e-6, ESRi=20e-3,
-               Ron=11e-3, Vf=0.46, Rd=3.1e-3, f=100e3)
-L_DUSUK, L_YUKSEK = 0.70, 1.15     # akim altinda dusum (7,5-8,5 A'de ~-%17) ve +-%15 tolerans birlikte
+# Ana sematikteki degerler: parca numarasindan bagimsiz HEDEF degerler (PARCA-HEDEFLERI.md).
+# Ron, Vf/Rd, DCR kabul sinirinin kendisidir (daha iyi parca kaybi azaltir); Cout ESR pencerenin ortasidir.
+SECILEN = dict(L=33e-6, DCR=15e-3, Cout=1000e-6, ESRo=25e-3, Cin=1000e-6, ESRi=20e-3,
+               Ron=12e-3, Vf=0.5, Rd=10e-3, f=100e3)
+L_DUSUK, L_YUKSEK = 0.70, 1.20     # -%20 tolerans ve tepe akimda -%10 dusum birlikte; +%20 tolerans
+ESR_MIN, ESR_MAX = 15e-3, 35e-3    # Cout 100 kHz ESR kabul penceresi (tolerans dahil)
+# Dogrulanan L penceresi (Cout 1000 uF ile): 33-47 uH. 22 uH tipik yukte DCM'de kaldigi icin pencere disi.
+CIFTLER = ((33e-6, 1000e-6), (39e-6, 1000e-6), (47e-6, 1000e-6))
+VO_MIN, VO_MAX = 9.0, 12.0         # S2E alt siniri, O1 ust siniri
+RIPPLE_MAX = 0.165                 # V t-t; cikisin %1,5'i (S2E siniri +-%3)
 
 
 def eng(x: float) -> str:
@@ -420,6 +425,35 @@ def tarama() -> None:
            "yük atma sınırı V", "sert kalkış Itepe A", "sert kalkış Vtepe V"], sat)
 
 
+def pencere() -> None:
+    """Kabul pencerelerinin kenarlarini kosar: uc L/Cout cifti, ESR 20-35 mohm, tolerans koseleri."""
+    print("## Kabul penceresi doğrulaması (LTspice, 24,6 V; köşeler: L −%30/+%20, Cout −%20)\n")
+    sat = []
+    for L, C in CIFTLER:
+        p = dict(SECILEN, L=L, Cout=C)
+        r_anma = kararli(dict(p, ESRo=ESR_MAX), VIN_ANA, 7.5)
+        r_kose = kararli(dict(p, L=L * L_DUSUK, Cout=C * 0.8, ESRo=ESR_MAX), 26.0, 7.5)
+        a_anma = yuk_adimi(dict(p, ESRo=ESR_MIN), VIN_ANA, P_ZARF, P_ZARF_KALKIS)
+        o_anma = yuk_adimi(dict(p, ESRo=ESR_MIN), VIN_ANA, P_HAFIF, P_ZARF)
+        q = dict(p, L=L * L_YUKSEK, Cout=C * 0.8, ESRo=ESR_MIN)
+        a_kose = yuk_adimi(q, VIN_ANA, P_ZARF, P_ZARF_KALKIS)
+        o_kose = yuk_adimi(q, VIN_ANA, P_HAFIF, P_ZARF)
+        atma = yuk_atma_sinir(dict(q, ESRo=ESR_MAX), VIN_ANA, P_ZARF_KALKIS, P_BOSTA)
+        vmin = min(a_anma["vmin"], o_anma["vmin"], a_kose["vmin"], o_kose["vmin"])
+        vmax = max(a_anma["vmax"], o_anma["vmax"], a_kose["vmax"], o_kose["vmax"], atma["vmax"])
+        gecti = vmin >= VO_MIN and vmax <= VO_MAX and r_kose["vpp"] <= RIPPLE_MAX
+        sat.append([f"{L * 1e6:g}", f"{C * 1e6:g}", f"{r_anma['ilmax'] - r_anma['ilmin']:.2f}", f"{r_kose['ilmax']:.2f}",
+                    f"{r_anma['vpp'] * 1e3:.0f} / {r_kose['vpp'] * 1e3:.0f}",
+                    f"{a_anma['vmin']:.2f}–{a_anma['vmax']:.2f}", f"{o_anma['vmin']:.2f}–{o_anma['vmax']:.2f}",
+                    f"{a_kose['vmin']:.2f}–{a_kose['vmax']:.2f}", f"{o_kose['vmin']:.2f}–{o_kose['vmax']:.2f}",
+                    f"{a_kose['v0pp'] * 1e3:.0f} / {a_kose['v1pp'] * 1e3:.0f}", f"{atma['vmax']:.2f}",
+                    "GEÇTİ" if gecti else "KALDI"])
+        print(sat[-1], file=sys.stderr, flush=True)
+    tablo(["L µH", "Cout µF", "ΔIL A", "IL tepe köşe A", "ΔVo ESR 35 mΩ: anma / köşe mV",
+           "S2E kalkışı @zarf V", "O1 tipik→zarf V", "köşe: S2E kalkışı @zarf V", "köşe: O1 tipik→zarf V",
+           "köşe salınım 57,6 / 73 W mV", "köşe yük atma sınırı V", f"{VO_MIN:g}–{VO_MAX:g} V ve ≤{RIPPLE_MAX * 1e3:.0f} mV"], sat)
+
+
 def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
     print(f"## {ad}: L={p['L'] * 1e6:g} µH/{p['DCR'] * 1e3:g} mΩ, Cout={p['Cout'] * 1e6:g} µF/{p['ESRo'] * 1e3:g} mΩ, "
           f"Cin=2×{p['Cin'] * 1e6:g} µF/{p['ESRi'] * 1e3:g} mΩ, Ron={p['Ron'] * 1e3:g} mΩ, "
@@ -499,12 +533,13 @@ def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
         sat.append([f"{v0:g}→{v1:g}→{v0:g}", f"{g['vmin']:.2f}", f"{g['vmax']:.2f}", f"{g['v1son']:.2f}"])
     tablo(["Vin V (1 ms rampa)", "Vmin V", "Vmax V", "ara kararlı V"], sat)
 
-    print("### 8. Tolerans köşeleri (L −%30/+%15, Cout ±%20, ESR ±%20), 7,5 A\n")
+    print("### 8. Tolerans köşeleri (L −%30/+%20, Cout ±%20, ESR 15/35 mΩ), 7,5 A\n")
     sat = []
-    for isim, kl, kc, ke, v in (("anma", 1, 1, 1, VIN_ANA), ("ripple en kötü: L−, C−, ESR+", L_DUSUK, 0.8, 1.2, 26.0),
-                                ("Z0 en yüksek: L+, C−, ESR−", L_YUKSEK, 0.8, 0.8, VIN_ANA),
-                                ("Z0 en düşük: L−, C+, ESR−", L_DUSUK, 1.2, 0.8, 26.0)):
-        q = dict(p, L=p["L"] * kl, Cout=p["Cout"] * kc, ESRo=p["ESRo"] * ke)
+    for isim, kl, kc, esr, v in (("anma", 1, 1, p["ESRo"], VIN_ANA),
+                                 ("ripple en kötü: L−, C−, ESR 35 mΩ", L_DUSUK, 0.8, ESR_MAX, 26.0),
+                                 ("sönüm en zayıf: L+, C−, ESR 15 mΩ", L_YUKSEK, 0.8, ESR_MIN, VIN_ANA),
+                                 ("Z0 en düşük: L−, C+, ESR 15 mΩ", L_DUSUK, 1.2, ESR_MIN, 26.0)):
+        q = dict(p, L=p["L"] * kl, Cout=p["Cout"] * kc, ESRo=esr)
         k = kararli(q, v, 7.5)
         z = yuk_adimi(q, v, P_ZARF, P_ZARF_KALKIS)
         at = yuk_atma_sinir(q, v, P_ZARF_KALKIS, P_BOSTA)
@@ -600,7 +635,7 @@ def grafik() -> None:
     _, b = yuk_adimi(p, VIN_ANA, P_ZARF, P_ZARF_KALKIS, raw=True)
     svg_ciz(g / "yuk_adimi.svg", "S2E kalkış darbesi, O1 5 A zarfında (57,6→73→57,6 W sabit güç), 24,6 V, Ton sabit", [
         dict(ylabel="V(out) [V]", cizgiler=[(12.0, "12 V")],
-             seriler=[("Cout 330 µF / 15 mΩ (eski)", a["time"], a["V(out)"]), ("seçilen parçalar (680 µF / 28 mΩ)", b["time"], b["V(out)"])]),
+             seriler=[("Cout 330 µF / 15 mΩ (eski)", a["time"], a["V(out)"]), ("Cout 1000 µF / 25 mΩ (seçilen)", b["time"], b["V(out)"])]),
         dict(ylabel="I(L1) [A]", seriler=[("eski", a["time"], a["I(L1)"]), ("seçilen", b["time"], b["I(L1)"])])])
     n = netlist(p, vin=VIN_ANA, surucu=surucu_ton(p, ton), yuk=yuk_r(7.5), tstop=12.05e-3, tstart=12e-3,
                 ic=f"V(out)={VO} I(L1)=7.5", meas=["VO AVG V(out)"])
@@ -624,6 +659,8 @@ def main() -> None:
             tarama()
         elif kip == "secilen":
             secilen()
+        elif kip == "pencere":
+            pencere()
         elif kip == "mevcut":
             secilen(MEVCUT, "Mevcut (eski) değerler")
         elif kip == "grafik":
