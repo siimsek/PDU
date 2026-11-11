@@ -15,4 +15,4 @@ Tek aktif dal `main`. Kullanıcı işi doğrudan verir; thinker/builder, rol, ka
 
 Şematik: `python buck/ltspice/sematik_uret.py [Ton_us]` `buck_guc_kati.asc` ve `buck_guc_kati.svg` dosyalarını birlikte üretir. Şematik LTspice'ta elle değişirse aynı değişiklikte `python buck/ltspice/asc_gorsel.py` ile görsel yenilenir ve birlikte commit edilir; README bu görseli gösterir.
 
-`python buck/hesap.py` analitik özeti ekrana yazar (LTspice veya laboratuvar sonucu değildir). Dosyalar UTF-8'dir.
+`python buck/hesap.py` analitik özeti ekrana yazar (LTspice veya laboratuvar sonucu değildir). `python buck/dogrula.py secilen|tarama|mevcut|grafik` LTspice'ı toplu kipte koşar (5 giriş noktası, gerçek yük senaryoları, kalkış, tolerans); test netlistleri geçici klasörde kalır, ana şematiğe yönerge eklenmez. Yükler, gerekçeler ve sonuçlar [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) dosyasındadır; şematik değeri değişirse `hesap.py` ve `dogrula.py` sabitleri de güncellenip yeniden koşulur. Dosyalar UTF-8'dir.

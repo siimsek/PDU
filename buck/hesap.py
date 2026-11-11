@@ -1,180 +1,147 @@
 #!/usr/bin/env python3
-"""Analitik baslangic hesabi: tek faz, asenkron, acik cevrim buck.
+"""Analitik hesap: tek faz, asenkron, acik cevrim buck guc kati.
 
-Bu betik LTspice calistirmaz; varsayim ve denklemlerden ozet tabloyu ekrana yazar.
+Bu betik LTspice calistirmaz; denklemlerden ozet tablolari ekrana yazar (ANALITIK HESAP).
+Simulasyon karsiligi `python buck/dogrula.py` ile alinir. Fiziksel olcum yoktur.
 Degerler ana sematikle aynidir; bulunan parcaya gore asagidaki sabitler degistirilir.
 """
 from __future__ import annotations
 
 import math
 
-
 VO_V = 11.0
-IO_A = 7.5
-VIN_V = (20.0, 22.2, 26.0)
+IO_A = 7.5                                   # tasarim akimi (yuk zarfi 6,64 A + pay)
+VIN_V = (20.0, 22.2, 24.6, 25.2, 26.0)       # zorunlu test noktalari
+VIN_ANA_V = 24.6
 FSW_HZ = 100_000.0
 
-# Ana sematikteki degerler; veri sayfasi ile secilmis parcalar degildir.
+# Ana sematikteki degerler (hedef/varsayim; veri sayfasindan secilmis parca degildir)
 L_H = 33e-6
+DCR_OHM = 15e-3
+COUT_F = 680e-6
+ESR_OUT_OHM = 25e-3     # hedef pencere 20-30 mohm (LC sonumu icin alt sinir da var)
 CIN_F = 440e-6          # 2 x 220 uF
-COUT_F = 330e-6
 ESR_IN_OHM = 10e-3      # 2 x 20 mohm paralel
-ESR_OUT_OHM = 15e-3
+RON_OHM = 10e-3         # S1
+VF_V = 0.5              # D1
+RD_OHM = 10e-3          # D1 seri direnci
 
-L_TOLERANCE = 0.20
-RIPPLE_TARGET_FRACTION = 0.25
-OUTPUT_RIPPLE_LIMIT_V = 0.005 * VO_V
-INPUT_RIPPLE_LIMIT_V = 0.01 * min(VIN_V)
+L_TOL = 0.20
+C_TOL = 0.20
+ESR_TOL = 0.20
 SATURATION_MARGIN = 0.30
 
+# Yukler. DATASHEET: uretici belgesi; TAHMIN: yayimlanmis deger yok.
+O1_VMIN, O1_VMAX, O1_IMAX = 5.0, 12.0, 5.0        # DATASHEET  T3 Gemstone O1 DC girisi 5-12 V / 5 A
+S2E_VMIN, S2E_VMAX = 9.0, 28.0                    # DATASHEET  RPLIDAR S2E 9-28 V (tipik 12 V)
+S2E_RIPPLE = 0.03                                 # DATASHEET  besleme ripple'i en cok %3
+P_S2E_CALISMA_W = 12 * 0.22                       # DATASHEET  12 V'ta en cok 0,22 A
+P_S2E_KALKIS_W = 12 * 1.5                         # DATASHEET  12 V'ta en cok 1,5 A (sure verilmemis)
+P_O1_ZARF_W = VO_V * O1_IMAX                      # DATASHEET  anma akimi; gercek tuketim degil
+P_O1_TIPIK_W = 10.0                               # TAHMIN
 
-def ripple_voltage(delta_i_pp: float, capacitance: float, esr: float) -> dict[str, float]:
-    capacitive = delta_i_pp / (8 * FSW_HZ * capacitance)
-    resistive = delta_i_pp * esr
+
+def duty(vin: float, io: float, vo: float = VO_V) -> float:
+    """CCM duty; anahtar, diyot ve bobin dusumleri dahil."""
+    return (vo + VF_V + io * (DCR_OHM + RD_OHM)) / (vin + VF_V + io * (RD_OHM - RON_OHM))
+
+
+def nokta(vin: float, io: float = IO_A, l: float = L_H, c: float = COUT_F, esr: float = ESR_OUT_OHM) -> dict:
+    d = duty(vin, io)
+    di = (VO_V + VF_V + io * (DCR_OHM + RD_OHM)) * (1 - d) / (l * FSW_HZ)
+    il_rms = math.sqrt(io**2 + di**2 / 12)
+    sw_rms = math.sqrt(d) * il_rms
+    d_rms = math.sqrt(1 - d) * il_rms
+    d_avg = io * (1 - d)
+    p_s1 = sw_rms**2 * RON_OHM
+    p_d1 = VF_V * d_avg + RD_OHM * d_rms**2
+    p_l1 = il_rms**2 * DCR_OHM
+    kayip = p_s1 + p_d1 + p_l1
     return {
-        "capacitive_Vpp": capacitive,
-        "esr_Vpp": resistive,
-        "total_approx_Vpp": capacitive + resistive,
+        "vin": vin, "d": d, "ton_us": d / FSW_HZ * 1e6, "di": di, "ipk": io + di / 2,
+        "ikritik": di / 2,                                   # bunun altinda DCM
+        "icin_rms": math.sqrt(d * (1 - d) * io**2 + d * di**2 / 12),
+        "icout_rms": di / math.sqrt(12), "sw_rms": sw_rms, "d_avg": d_avg,
+        "dvout": di * (esr + 1 / (8 * FSW_HZ * c)),
+        "dvin": io * d * (1 - d) / (FSW_HZ * CIN_F) + (io + di / 2) * ESR_IN_OHM,
+        "p_s1": p_s1, "p_d1": p_d1, "p_l1": p_l1, "kayip": kayip,
+        "verim": VO_V * io / (VO_V * io + kayip),
     }
 
 
-def calculate() -> dict[str, object]:
-    output_power_w = VO_V * IO_A
-    l_min_h = (
-        VO_V * (1 - VO_V / max(VIN_V))
-        / (RIPPLE_TARGET_FRACTION * IO_A * FSW_HZ)
-    )
-    duty_nominal = VO_V / VIN_V[1]
-    steady_cases: list[dict[str, float]] = []
+def acik_cevrim_vo(vin: float, d: float, r: float) -> float:
+    """Sabit duty ve direnc yukte kararli cikis; CCM ve DCM'den gecerli olani."""
+    # CCM: vo = d(vin - io Ron) - (1-d)(Vf + io Rd) - io DCR,  io = vo / r
+    ccm = (d * vin - (1 - d) * VF_V) / (1 + (d * RON_OHM + (1 - d) * RD_OHM + DCR_OHM) / r)
+    # DCM (dirençler ihmal): vo/r = d^2 T (vin-vo)(vin+Vf) / (2 L (vo+Vf))
+    f = lambda v: d * d * (vin - v) * (vin + VF_V) / (2 * L_H * FSW_HZ * (v + VF_V)) - v / r
+    lo, hi = 0.0, vin
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if f(mid) > 0 else (lo, mid)
+    return max(ccm, lo)
 
-    for vin_v in VIN_V:
-        duty = VO_V / vin_v
-        delta_i_pp = VO_V * (1 - duty) / (L_H * FSW_HZ)
-        inductor_peak_a = IO_A + delta_i_pp / 2
-        inductor_rms_a = math.sqrt(IO_A**2 + delta_i_pp**2 / 12)
 
-        # RMS for the pulsed source current, including triangular inductor ripple.
-        cin_rms_a = math.sqrt(
-            duty * (1 - duty) * IO_A**2 + duty * delta_i_pp**2 / 12
-        )
-        cin_cap_v = IO_A * duty * (1 - duty) / (FSW_HZ * CIN_F)
-        cin_esr_v = (IO_A + delta_i_pp / 2) * ESR_IN_OHM
-        cout_ripple = ripple_voltage(delta_i_pp, COUT_F, ESR_OUT_OHM)
-
-        steady_cases.append({
-            "Vin_V": vin_v,
-            "duty_ideal": duty,
-            "Ton_us": duty / FSW_HZ * 1e6,
-            "Iin_average_ideal_A": output_power_w / vin_v,
-            "delta_IL_pp_A": delta_i_pp,
-            "IL_peak_A": inductor_peak_a,
-            "IL_rms_A": inductor_rms_a,
-            "ICIN_rms_A_approx": cin_rms_a,
-            "ICOUT_rms_A_approx": delta_i_pp / math.sqrt(12),
-            "VIN_ripple_cap_Vpp": cin_cap_v,
-            "VIN_ripple_esr_Vpp": cin_esr_v,
-            "VIN_ripple_total_approx_Vpp": cin_cap_v + cin_esr_v,
-            "VOUT_ripple": cout_ripple,
-            "switch_rms_A_ideal": math.sqrt(
-                duty * (IO_A**2 + delta_i_pp**2 / 12)
-            ),
-            "diode_average_A_ideal": IO_A * (1 - duty),
-            "diode_rms_A_ideal": math.sqrt(
-                (1 - duty) * (IO_A**2 + delta_i_pp**2 / 12)
-            ),
-        })
-
-    delta_i_worst_tol = (
-        VO_V * (1 - VO_V / max(VIN_V))
-        / (L_H * (1 - L_TOLERANCE) * FSW_HZ)
-    )
-    peak_worst_tol = IO_A + delta_i_worst_tol / 2
-    output_ripple_worst_tol = ripple_voltage(
-        delta_i_worst_tol, COUT_F, ESR_OUT_OHM
-    )
-
-    cin_ripple_worst_tol = []
-    cin_rms_worst_tol = []
-    for vin_v in VIN_V:
-        duty = VO_V / vin_v
-        delta_i_tol = (
-            VO_V * (1 - duty)
-            / (L_H * (1 - L_TOLERANCE) * FSW_HZ)
-        )
-        cin_cap_v = IO_A * duty * (1 - duty) / (FSW_HZ * CIN_F)
-        cin_esr_v = (IO_A + delta_i_tol / 2) * ESR_IN_OHM
-        cin_ripple_worst_tol.append(cin_cap_v + cin_esr_v)
-        cin_rms_worst_tol.append(math.sqrt(
-            duty * (1 - duty) * IO_A**2 + duty * delta_i_tol**2 / 12
-        ))
-
-    fixed_duty_cases = []
-    for vin_v in VIN_V:
-        vout_v = duty_nominal * vin_v
-        fixed_duty_cases.append({
-            "Vin_V": vin_v,
-            "Vout_ideal_V": vout_v,
-            "Iload_at_RLOAD_A": vout_v / (VO_V / IO_A),
-        })
-
+def dinamik(l: float = L_H, c: float = COUT_F, esr: float = ESR_OUT_OHM, vin: float = VIN_ANA_V) -> dict:
+    d = duty(vin, IO_A)
+    rs = DCR_OHM + d * RON_OHM + (1 - d) * RD_OHM
+    z0 = math.sqrt(l / c)
     return {
-        "classification": "ANALİTİK HESAP / VARSAYIM; LTspice veya fiziksel ölçüm değil",
-        "topology": "tek faz asenkron açık çevrim buck",
-        "units": "Hesapta SI; alan adlarında birimler belirtilmiştir",
-        "parameters": {
-            "Vin_V": list(VIN_V),
-            "Vout_target_V": VO_V,
-            "Iout_design_A": IO_A,
-            "Pout_target_W": output_power_w,
-            "Fsw_Hz": FSW_HZ,
-            "L_uH": L_H * 1e6,
-            "L_tolerance_fraction": L_TOLERANCE,
-            "CIN_uF": CIN_F * 1e6,
-            "ESRIN_mOhm_assumed": ESR_IN_OHM * 1e3,
-            "COUT_uF": COUT_F * 1e6,
-            "ESROUT_mOhm_assumed": ESR_OUT_OHM * 1e3,
-            "RLOAD_ohm": VO_V / IO_A,
-        },
-        "selection_checks": {
-            "inductor_ripple_target_fraction": RIPPLE_TARGET_FRACTION,
-            "L_min_uH_for_ripple_target_at_Vin_max": l_min_h * 1e6,
-            "selected_standard_L_uH": L_H * 1e6,
-            "L_at_minus20pct_uH": L_H * (1 - L_TOLERANCE) * 1e6,
-            "delta_IL_pp_at_Vin_max_A_nominal_L": steady_cases[-1]["delta_IL_pp_A"],
-            "delta_IL_pp_at_Vin_max_A_minus20pct_L": delta_i_worst_tol,
-            "current_ripple_fraction_at_Vin_max_minus20pct_L": delta_i_worst_tol / IO_A,
-            "IL_peak_A_at_Vin_max_minus20pct_L": peak_worst_tol,
-            "Isat_steady_state_screen_A_with_30pct_margin": peak_worst_tol * (1 + SATURATION_MARGIN),
-            "VOUT_ripple_limit_mVpp": OUTPUT_RIPPLE_LIMIT_V * 1e3,
-            "VOUT_ripple_mVpp_at_Vin_max_minus20pct_L": output_ripple_worst_tol["total_approx_Vpp"] * 1e3,
-            "VIN_ripple_limit_mVpp": INPUT_RIPPLE_LIMIT_V * 1e3,
-            "VIN_ripple_max_approx_mVpp_at_minus20pct_L": max(cin_ripple_worst_tol) * 1e3,
-            "ICIN_rms_max_approx_A_at_minus20pct_L": max(cin_rms_worst_tol),
-            "fixed_nominal_duty": duty_nominal,
-            "fixed_nominal_duty_cases": fixed_duty_cases,
-        },
-        "steady_state_cases": steady_cases,
-        "model_notes": [
-            "Açık çevrim duty, Vin değiştiğinde Vout değerini regüle etmez.",
-            "CIN/COUT ESR değerleri model varsayımıdır; gerçek parça verisi değildir.",
-            "Bobin doyum akımı kontrolü kalkış ve arıza akımlarını kapsamaz.",
-            "Anahtarlama kaybı, termal davranış, parazitik yerleşim ve fiziksel davranış modellenmemiştir.",
-        ],
+        "f0_hz": 1 / (2 * math.pi * math.sqrt(l * c)), "z0": z0,
+        "f_esr_hz": 1 / (2 * math.pi * esr * c),
+        # sabit guc yukuyle acik cevrim LC'nin kararlilik siniri: R_yuk > L / (C (Rs + ESR))
+        "p_cpl_sinir_w": VO_V**2 * c * (rs + esr) / l,
+        # ideal kontrolcu (duty aninda 0) ile yuk atma tepe gerilimi, enerji dengesi
+        "atma_tepe_v": lambda i0, i1: math.sqrt(VO_V**2 + l * (i0**2 - i1**2) / c),
+        # sert kalkis kestirimi (LC'ye basamak): Itepe ~ Vo / Z0 (LTspice ile %3 icinde uyusuyor)
+        "sert_kalkis_itepe_a": VO_V / z0,
     }
 
 
 if __name__ == "__main__":
-    r = calculate()
-    c = r["selection_checks"]
-    print("ANALITIK HESAP (LTspice veya olcum degil)")
-    print(f"L={L_H*1e6:g} uH  CIN={CIN_F*1e6:g} uF/{ESR_IN_OHM*1e3:g} mohm  COUT={COUT_F*1e6:g} uF/{ESR_OUT_OHM*1e3:g} mohm  fsw={FSW_HZ/1e3:g} kHz")
-    print(" Vin    D     dIL   ILtepe  ICINrms  ICOUTrms  Sw_rms  D_ort  dVout(mV)  dVin(mV)")
-    for k in r["steady_state_cases"]:
-        print(f"{k['Vin_V']:5.1f} {k['duty_ideal']:.4f} {k['delta_IL_pp_A']:5.2f} {k['IL_peak_A']:6.2f} {k['ICIN_rms_A_approx']:7.2f}"
-              f" {k['ICOUT_rms_A_approx']:8.2f} {k['switch_rms_A_ideal']:7.2f} {k['diode_average_A_ideal']:6.2f}"
-              f" {k['VOUT_ripple']['total_approx_Vpp']*1e3:9.1f} {k['VIN_ripple_total_approx_Vpp']*1e3:9.1f}")
-    print(f"L -%20 kosesi (26 V): dIL={c['delta_IL_pp_at_Vin_max_A_minus20pct_L']:.2f} A, ILtepe={c['IL_peak_A_at_Vin_max_minus20pct_L']:.2f} A,"
-          f" Isat olcutu (+%30)={c['Isat_steady_state_screen_A_with_30pct_margin']:.1f} A")
-    print(f"  dVout={c['VOUT_ripple_mVpp_at_Vin_max_minus20pct_L']:.1f} mV (sinir {c['VOUT_ripple_limit_mVpp']:.0f}),"
-          f" dVin={c['VIN_ripple_max_approx_mVpp_at_minus20pct_L']:.0f} mV (sinir {c['VIN_ripple_limit_mVpp']:.0f}),"
-          f" ICINrms={c['ICIN_rms_max_approx_A_at_minus20pct_L']:.2f} A")
+    import sys
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    print("ANALİTİK HESAP (LTspice veya ölçüm değil)")
+    print(f"L={L_H*1e6:g} µH/{DCR_OHM*1e3:g} mΩ  COUT={COUT_F*1e6:g} µF/{ESR_OUT_OHM*1e3:g} mΩ  "
+          f"CIN={CIN_F*1e6:g} µF/{ESR_IN_OHM*1e3:g} mΩ  Ron={RON_OHM*1e3:g} mΩ  Vf={VF_V:g} V+{RD_OHM*1e3:g} mΩ  "
+          f"fsw={FSW_HZ/1e3:g} kHz  Io={IO_A:g} A")
+
+    print("\n1) Kararlı durum, 11 V / 7,5 A (duty her girişte 11 V'a göre; düşümler dahil)")
+    print("  Vin     D    Ton_us  dIL  ILtepe Ikritik ICINrms ICOUTrms S1rms D1ort dVout_mV dVin_mV  P_S1  P_D1  P_L1 toplam  verim%")
+    for v in VIN_V:
+        k = nokta(v)
+        print(f"{k['vin']:5.1f} {k['d']:.4f} {k['ton_us']:6.3f} {k['di']:5.2f} {k['ipk']:6.2f} {k['ikritik']:6.2f}"
+              f" {k['icin_rms']:7.2f} {k['icout_rms']:8.2f} {k['sw_rms']:5.2f} {k['d_avg']:5.2f} {k['dvout']*1e3:8.1f}"
+              f" {k['dvin']*1e3:7.1f} {k['p_s1']:5.2f} {k['p_d1']:5.2f} {k['p_l1']:5.2f} {k['kayip']:6.2f} {k['verim']*100:7.2f}")
+    print("  Verim yalnız iletim kayıplarıdır; anahtarlama, çekirdek ve sürücü kayıpları yoktur.")
+
+    kose = nokta(max(VIN_V), l=L_H * (1 - L_TOL), c=COUT_F * (1 - C_TOL), esr=ESR_OUT_OHM * (1 + ESR_TOL))
+    print(f"\n2) Tolerans köşesi (26 V, L −%20, Cout −%20, ESR +%20): dIL={kose['di']:.2f} A, ILtepe={kose['ipk']:.2f} A,"
+          f" Isat ölçütü (+%30)={kose['ipk']*(1+SATURATION_MARGIN):.1f} A, dVout={kose['dvout']*1e3:.1f} mV")
+
+    print("\n3) Yük uyumu (11 V çıkış)")
+    print(f"  O1  DC girişi {O1_VMIN:g}–{O1_VMAX:g} V: 11 V uygun, üst sınıra pay {O1_VMAX-VO_V:g} V (mutlak maksimum yayımlanmamış)")
+    print(f"  S2E {S2E_VMIN:g}–{S2E_VMAX:g} V: 11 V uygun; izinli ripple ±{S2E_RIPPLE*VO_V*1e3:.0f} mV")
+    i_s2e, i_s2e_k = P_S2E_CALISMA_W / VO_V, P_S2E_KALKIS_W / VO_V
+    print(f"  Akım @11 V: S2E çalışma {i_s2e:.2f} A, S2E kalkış {i_s2e_k:.2f} A, O1 zarf {O1_IMAX:g} A")
+    print(f"  Sürekli zarf {O1_IMAX+i_s2e:.2f} A, anlık zarf {O1_IMAX+i_s2e_k:.2f} A  →  7,5 A hedefinde pay"
+          f" {(IO_A/(O1_IMAX+i_s2e_k)-1)*100:.0f} %")
+
+    d0 = duty(VIN_ANA_V, IO_A)
+    print(f"\n4) Açık çevrim: duty {d0:.4f} sabit (24,6 V / 7,5 A ayarı), direnç yükte kararlı çıkış [V]")
+    amper = (0.24, 0.6, 1.15, 2.5, 5.24, 7.5)
+    print("  Vin \\ yük A@11V " + " ".join(f"{a:6g}" for a in amper))
+    for v in VIN_V:
+        print(f"  {v:5.1f}           " + " ".join(f"{acik_cevrim_vo(v, d0, VO_V / a):6.2f}" for a in amper))
+
+    q = dinamik()
+    print(f"\n5) LC dinamiği: f0={q['f0_hz']:.0f} Hz, Z0={q['z0']:.3f} Ω, ESR sıfırı={q['f_esr_hz']/1e3:.1f} kHz")
+    print(f"  Sabit güç yüküyle açık çevrim kararlılık sınırı: P < {q['p_cpl_sinir_w']:.0f} W"
+          f" (zarf {P_O1_ZARF_W+P_S2E_CALISMA_W:.1f} W, S2E kalkışında {P_O1_ZARF_W+P_S2E_KALKIS_W:.1f} W)")
+    qk = dinamik(L_H * (1 + L_TOL), COUT_F * (1 - C_TOL), ESR_OUT_OHM * (1 - ESR_TOL))
+    print(f"  Köşe (L +%20, Cout −%20, ESR −%20): P < {qk['p_cpl_sinir_w']:.0f} W")
+    i0, i1 = O1_IMAX + i_s2e_k, (4.0 + P_S2E_CALISMA_W) / VO_V
+    print(f"  Yük atma {i0:.2f}→{i1:.2f} A, ideal kontrolcü sınırı: {q['atma_tepe_v'](i0, i1):.2f} V"
+          f" (köşe {qk['atma_tepe_v'](i0, i1):.2f} V)")
+    print(f"  Sert kalkış kestirimi (yumuşak kalkış yok): ILtepe ≈ {q['sert_kalkis_itepe_a']:.0f} A")

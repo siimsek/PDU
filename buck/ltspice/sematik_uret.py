@@ -3,12 +3,12 @@
 
 Sade surum: yalniz deger tabanli ideal elemanlar; gercek parca modeli, .param, .meas, .ic yok.
 Kullanim: python sematik_uret.py [Ton_us]     (varsayilan asagidaki TON_US)
-Ton, 22,2 V giriste ortalama cikis 11 V olacak sekilde LTspice kosusuyla ayarlanmistir.
+Ton, 24,6 V giriste (ana calisma noktasi) ortalama cikis 11 V olacak sekilde LTspice kosusuyla ayarlanmistir.
 """
 import sys
 from pathlib import Path
 
-TON_US = 5.14          # 22,2 V -> 11 V icin LTspice ile ayarli iletim suresi (T = 10 us)
+TON_US = 4.65          # 24,6 V -> 11 V icin LTspice ile ayarli iletim suresi (T = 10 us)
 ton = float(sys.argv[1]) if len(sys.argv) > 1 else TON_US
 
 W = []  # wires
@@ -38,7 +38,7 @@ FLAGS = [(-320, GND, "0"), (96, TOP, "vin"), (704, TOP, "sw"), (1024, TOP, "out"
 # WINDOW 39 = SpiceLine (Rser) yazisini gorunur yapar; R270 parcalarda V* hizalama yaziyi yatay tutar
 CAPW = ["WINDOW 39 24 85 Left 2"]
 SYMS = [
-    ("voltage", -320, 112, "R0", "V1", "22.2", None, []),
+    ("voltage", -320, 112, "R0", "V1", "24.6", None, []),
     ("polcap", -176, 144, "R0", "Cin1", "220u", "Rser=20m", CAPW),
     ("polcap", -16, 144, "R0", "Cin2", "220u", "Rser=20m", CAPW),
     ("anahtar", 176, 64, "R270", "S1", "anahtar", "Ron=10m", ["WINDOW 0 64 56 VTop 2", "WINDOW 39 40 56 VTop 2"]),
@@ -46,7 +46,7 @@ SYMS = [
     ("diyot", 768, 208, "R180", "D1", "diyot", "Vf=0.5 Ron=10m", []),
     ("ind", 768, 80, "R270", "L1", "33u", "Rser=15m",
      ["WINDOW 0 32 56 VTop 2", "WINDOW 3 5 56 VBottom 2", "WINDOW 39 -20 56 VBottom 2"]),
-    ("polcap", 928, 144, "R0", "Cout", "330u", "Rser=15m", CAPW),
+    ("polcap", 928, 144, "R0", "Cout", "680u", "Rser=25m", CAPW),
     ("res", 1088, 128, "R0", "Rload", "1.4667", None, []),
 ]
 
@@ -54,8 +54,8 @@ SYMS = [
 # .tran sematikte kalmak zorunda: LTspice simulasyon komutunu yalniz sematik yazisindan kabul ediyor
 # (lib dosyasina veya sembole tasimak denendi, Run calismadi).
 TEXT = [
-    (-336, -96, 3, ";Acik cevrim asenkron buck  -  22,2 V -> 11 V / 7,5 A, 100 kHz"),
-    (-336, 400, 2, "!.tran 10m"),
+    (-336, -96, 3, ";Acik cevrim asenkron buck  -  24,6 V -> 11 V / 7,5 A, 100 kHz"),
+    (-336, 400, 2, "!.tran 20m"),
 ]
 
 out = ["Version 4", "SHEET 1 1400 900"] + W
