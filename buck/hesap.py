@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """Analitik baslangic hesabi: tek faz, asenkron, acik cevrim buck.
 
-Bu betik LTspice calistirmaz; yalnizca varsayim ve denklemlerden hesap JSON'u uretir.
+Bu betik LTspice calistirmaz; varsayim ve denklemlerden ozet tabloyu ekrana yazar.
+Degerler ana sematikle aynidir; bulunan parcaya gore asagidaki sabitler degistirilir.
 """
 from __future__ import annotations
 
-import json
 import math
-from pathlib import Path
 
 
 VO_V = 11.0
@@ -15,12 +14,12 @@ IO_A = 7.5
 VIN_V = (20.0, 22.2, 26.0)
 FSW_HZ = 100_000.0
 
-# Tek nokta referansi; tarama kazani veya veri sayfasi ile secilmis parcalar degildir.
-L_H = 39e-6
-CIN_F = 470e-6
-COUT_F = 220e-6
-ESR_IN_OHM = 15e-3
-ESR_OUT_OHM = 20e-3
+# Ana sematikteki degerler; veri sayfasi ile secilmis parcalar degildir.
+L_H = 33e-6
+CIN_F = 440e-6          # 2 x 220 uF
+COUT_F = 330e-6
+ESR_IN_OHM = 10e-3      # 2 x 20 mohm paralel
+ESR_OUT_OHM = 15e-3
 
 L_TOLERANCE = 0.20
 RIPPLE_TARGET_FRACTION = 0.25
@@ -165,10 +164,17 @@ def calculate() -> dict[str, object]:
 
 
 if __name__ == "__main__":
-    result_path = Path(__file__).with_name("hesap-sonuc.json")
-    result_path.write_text(
-        json.dumps(calculate(), indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
-    print(result_path)
+    r = calculate()
+    c = r["selection_checks"]
+    print("ANALITIK HESAP (LTspice veya olcum degil)")
+    print(f"L={L_H*1e6:g} uH  CIN={CIN_F*1e6:g} uF/{ESR_IN_OHM*1e3:g} mohm  COUT={COUT_F*1e6:g} uF/{ESR_OUT_OHM*1e3:g} mohm  fsw={FSW_HZ/1e3:g} kHz")
+    print(" Vin    D     dIL   ILtepe  ICINrms  ICOUTrms  Sw_rms  D_ort  dVout(mV)  dVin(mV)")
+    for k in r["steady_state_cases"]:
+        print(f"{k['Vin_V']:5.1f} {k['duty_ideal']:.4f} {k['delta_IL_pp_A']:5.2f} {k['IL_peak_A']:6.2f} {k['ICIN_rms_A_approx']:7.2f}"
+              f" {k['ICOUT_rms_A_approx']:8.2f} {k['switch_rms_A_ideal']:7.2f} {k['diode_average_A_ideal']:6.2f}"
+              f" {k['VOUT_ripple']['total_approx_Vpp']*1e3:9.1f} {k['VIN_ripple_total_approx_Vpp']*1e3:9.1f}")
+    print(f"L -%20 kosesi (26 V): dIL={c['delta_IL_pp_at_Vin_max_A_minus20pct_L']:.2f} A, ILtepe={c['IL_peak_A_at_Vin_max_minus20pct_L']:.2f} A,"
+          f" Isat olcutu (+%30)={c['Isat_steady_state_screen_A_with_30pct_margin']:.1f} A")
+    print(f"  dVout={c['VOUT_ripple_mVpp_at_Vin_max_minus20pct_L']:.1f} mV (sinir {c['VOUT_ripple_limit_mVpp']:.0f}),"
+          f" dVin={c['VIN_ripple_max_approx_mVpp_at_minus20pct_L']:.0f} mV (sinir {c['VIN_ripple_limit_mVpp']:.0f}),"
+          f" ICINrms={c['ICIN_rms_max_approx_A_at_minus20pct_L']:.2f} A")
