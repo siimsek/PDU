@@ -4,6 +4,8 @@
 
 **Aşama: ANA GÜÇ DEVRESİ.** Güç katının değerleri ve parça kriterleri belirlendi ve LTspice'ta doğrulandı. Belirli parça numarası seçilmedi; PWM, geri besleme ve soft-start henüz yok. Bu aşamanın son hâli `ANA-GUC-DEVRESI` dalında saklanır.
 
+**Nerede kaldık, sırada ne var:** [YOL-HARITASI.md](YOL-HARITASI.md) · **Çalışma kuralları (yapay zekâ araçları dahil):** [AGENTS.md](AGENTS.md)
+
 ![LTspice şematiği](buck/ltspice/buck_guc_kati.svg)
 
 ## Devre değerleri
@@ -41,6 +43,8 @@ Beklenen (24,6 V giriş, 19–20 ms): V(out) ortalama ≈ 11,00 V, ripple ≈ 47
 
 | Dosya | Ne işe yarar |
 |---|---|
+| [YOL-HARITASI.md](YOL-HARITASI.md) | Güncel durum, adımlar ve tamamlanma ölçütleri, karar günlüğü |
+| [AGENTS.md](AGENTS.md) | Çalışma kuralları: neyin nasıl yapılacağı, araçlar, PCB aşaması kuralları |
 | [buck/ltspice/buck_guc_kati.asc](buck/ltspice/buck_guc_kati.asc) | LTspice şematiği (çift tıkla aç, Run) |
 | [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md) | Parça kriterleri (en az/en çok değerler) ve nedenleri, Türkiye'de bulunurluk, parça arama istemi |
 | [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) | Yük gereksinimleri, değerlerin nasıl seçildiği, test sonuçları, açık riskler |
@@ -49,4 +53,4 @@ Beklenen (24,6 V giriş, 19–20 ms): V(out) ortalama ≈ 11,00 V, ripple ≈ 47
 | `buck/grafik/*.svg` | `dogrula.py grafik` ile üretilen dalga şekilleri |
 | `buck/ltspice/anahtar.asy`, `diyot.asy`, `idealler.lib` | İdeal anahtar ve diyot parçaları; şematikle aynı klasörde durmalı, elle açmak gerekmez |
 | [buck/ltspice/sematik_uret.py](buck/ltspice/sematik_uret.py), [asc_gorsel.py](buck/ltspice/asc_gorsel.py) | Şematiği ve yukarıdaki görseli üretir |
-| [CLAUDE.md](CLAUDE.md) | Çalışma kuralları (AGENTS.md buraya yönlendirir) |
+| [CLAUDE.md](CLAUDE.md) | Claude Code için `AGENTS.md` ve `YOL-HARITASI.md` dosyalarına yönlendirme |
