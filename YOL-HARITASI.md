@@ -2,7 +2,7 @@
 
 Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bir yapay zekâ aracı veya yeni biri depoyu açtığında önce burayı, sonra [AGENTS.md](AGENTS.md) dosyasını okur.
 
-**Son güncelleme:** 11 Kasım 2026
+**Son güncelleme:** 12 Kasım 2026
 
 ## Şu anki durum
 
@@ -11,7 +11,7 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 | **Proje** | Tekne için güç dağıtım kartı (PDU): 6S bataryadan (20–26 V) 11 V / 7,5 A üreten tek faz asenkron buck dönüştürücü |
 | **Beslenecek yükler** | T3 Gemstone O1 (5–12 V) ve SLAMTEC RPLIDAR S2E (9–28 V) |
 | **Aktif adım** | **Adım 2 — Gerçek parçaların bulunması** (aday listesi hazır, 1. sıra adaylar simülasyonda doğrulandı; kesin seçim yapılmadı) |
-| **Bekleyen iş** | Kullanıcı: aday listesinden kesin parçaları belirlemek; kesinleşen parçaların değerlerini üretici veri sayfasından teyit etmek. Sonra Adım 2 kapanır |
+| **Bekleyen iş** | Kullanıcı: aday listesinden kesin parçaları belirlemek; kesinleşen parçaların değerlerini üretici veri sayfasından teyit etmek; L1 kabul aralığını (33–47 µH) güncel `pencere` sonucuna göre yeniden karara bağlamak. Sonra Adım 2 kapanır |
 | **Sıradaki adım** | Adım 3 — Kayıp ve ısı. Adım 4 ve sonrası (sürücü, PWM, geri besleme, PCB) **kullanıcı isteyene kadar başlatılmaz** |
 | **Devrenin hâli** | Açık çevrim, soft-start yok. LTspice'ta doğrulandı; **fiziksel devre ve ölçüm yok** |
 | **Güvenlik** | Gerçek O1 / S2E **bağlanmaz**: açık çevrim 12 V üst sınırını garanti etmez |
@@ -26,7 +26,7 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 | Giriş | 24,6 V (ana nokta) | 6S batarya | 20–26 V |
 | Çıkış | 11 V / 7,5 A | — | — |
 | Anahtarlama | 100 kHz, Ton 4,61 µs | — | — |
-| L1 | 33 µH, DCR 14,5 mΩ | Würth 74435583300 | 33–47 µH, Isat ≥ 12 A, DCR ≤ 15 mΩ |
+| L1 | 33 µH, DCR 14,5 mΩ | Würth 74435583300 | 33–47 µH (39 µH güncel köşe testinde kaldı; aralık yeniden karar bekliyor), Isat ≥ 12 A, DCR ≤ 15 mΩ |
 | Cout | 1000 µF, ESR 35 mΩ | Nichicon UHE1E102MHD6TO | 1000 µF, ESR 15–35 mΩ, ≥ 25 V |
 | Cin | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 | toplam ripple akımı ≥ 4,5 A, ≥ 35 V |
 | S1 | Ron 5,6 mΩ | STP100N6F7 | RDS(on) ≤ 12 mΩ, VDS ≥ 55 V |
@@ -77,10 +77,10 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
 ### 1. Ana güç devresi: değerler ve doğrulama — ✅ tamam
 
 - Güç katı değerleri gerçek yük senaryolarına (sabit güç yükü) göre seçildi ve LTspice'ta doğrulandı: 5 giriş noktası, yük adımları, yük atma, kalkış, giriş değişimi, tolerans köşeleri.
-- Kabul aralıkları doğrulandı: L 33–47 µH, Cout 1000 µF, ESR 15–35 mΩ.
+- Kabul aralıkları: Cout 1000 µF, ESR 15–35 mΩ; L için şematikteki 33 µH doğrulandı. 33–47 µH aralığı aday parçalardan önceki hedef değerlerle doğrulanmıştı; güncel şematik değerleriyle `pencere` yeniden koşuldu (12.11.2026): 39 µH köşede 12,06 V ile **kaldı**, 47 µH 0,04 V payla geçti. Aralık yeniden karar bekliyor ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4).
 - Bulunan temel sorunlar: sabit güç yüküyle eski değerler salınıyordu; açık çevrim hafif yükte ve giriş değişiminde 11 V'u tutamıyor; sert kalkışta 52 A / 17 V.
 - Çıktılar: [buck/ltspice/buck_guc_kati.asc](buck/ltspice/buck_guc_kati.asc), [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md), [buck/hesap.py](buck/hesap.py), [buck/dogrula.py](buck/dogrula.py).
-- **Ölçüt (sağlandı):** şematik değerleriyle `dogrula.py secilen` ve `pencere` koşuldu; yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV.
+- **Ölçüt (şematik değeri 33 µH için sağlandı):** şematik değerleriyle `dogrula.py secilen` ve `pencere` koşuldu; 33 µH ile yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV. `pencere`nin 39 µH satırı kalmıştır.
 
 ### 2. Gerçek parçaların bulunması — 🔄 sürüyor (aday listesi hazır, kesin seçim bekliyor)
 

@@ -14,7 +14,7 @@ Bu belge güncel kararı anlatır. Değerler parça numarasından bağımsızdı
 | Çıkış | 11 V / 7,5 A | — | 11 V iki yükün aralığında (O1 5–12 V, S2E 9–28 V); yük zarfı 6,64 A, pay %13 | §2 |
 | fsw | 100 kHz | sabit | Ripple ve dinamik hedefler sağlanıyor; frekansı artırmanın bedeli (anahtarlama kaybı) ideal modelle ölçülemez | §5.1 |
 | Ton | 4,65 µs | — | 24,6 V / 7,5 A'de 11 V (SİM 11,001 V) | §5.1 |
-| L1 | 33 µH, 15 mΩ | 33–47 µH; Isat ≥ 12 A; DCR ≤ 15 mΩ | Akım ripple'ı %25; CCM sınırı 0,95 A tipik yükün (≈ 1,2 A) altında. 22 µH elendi (tipik yük DCM'de, çıkış 8,8 V'a düşer) | §4.1, §4.4 |
+| L1 | 33 µH, 15 mΩ | 33–47 µH (güncel değerlerle 39 µH köşe testinde kaldı; aralık yeniden karar bekliyor, §4.4); Isat ≥ 12 A; DCR ≤ 15 mΩ | Akım ripple'ı %25; CCM sınırı 0,95 A tipik yükün (≈ 1,2 A) altında. 22 µH elendi (tipik yük DCM'de, çıkış 8,8 V'a düşer) | §4.1, §4.4 |
 | Cout | 1000 µF | 1000 µF ±%20; ≥ 25 V | Sabit güç yüküyle LC sönümü. 330 µF sürekli salınır; 680 µF en kötü köşede 12,06 V; 1000 µF aynı köşede 11,81 V | §4.1, §4.4 |
 | Cout ESR | 25 mΩ | 15–35 mΩ | Alt sınır sönüm için, üst sınır ripple için | §4.2, §4.4 |
 | Cin | 2 × 1000 µF, 20 mΩ | toplam ripple akımı ≥ 4,5 A; ≥ 35 V; ≥ 440 µF | 3,8 A RMS giriş ripple akımı parçanın boyunu belirler | §5.9 |
@@ -126,15 +126,21 @@ Ton sabit, ESR 25 mΩ (SİM):
 - 22 µH / 470 µF: tipik yük (1,15 A) CCM sınırının (1,43 A) altında; Ton DCM'de ayarlıyken yük artınca çıkış 8,78 V'a düşer. **22 µH elendi.**
 - 33 µH / 680 µF: en kötü köşede O1 tipik → zarf adımında 12,06 V. **680 µF elendi.**
 
-Son pencere (Cout 1000 µF, ESR 15–35 mΩ):
+Son pencere (Cout 1000 µF, ESR 15–35 mΩ), şematikteki 1. sıra aday değerleriyle (DCR 14,52 mΩ, Ron 5,6 mΩ, Vf 0,38 V + 8 mΩ; 12 Kasım 2026 koşusu):
 
 | L µH | Cout µF | ΔIL A | IL tepe köşe A | ΔVo ESR 35 mΩ: anma / köşe mV | S2E kalkışı @zarf V | O1 tipik→zarf V | köşe: S2E kalkışı @zarf V | köşe: O1 tipik→zarf V | köşe salınım 57,6 / 73 W mV | köşe yük atma sınırı V | 9–12 V ve ≤165 mV |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| 33 | 1000 | 1.89 | 8.91 | 65 / 98 | 10.68–11.25 | 10.21–11.65 | 10.58–11.32 | 9.99–11.81 | 35 / 90 | 11.23 | GEÇTİ |
-| 39 | 1000 | 1.60 | 8.70 | 55 / 83 | 10.69–11.27 | 10.14–11.72 | 10.57–11.43 | 9.91–11.95 | 87 / 303 | 11.22 | GEÇTİ |
-| 47 | 1000 | 1.33 | 8.51 | 46 / 75 | 10.71–11.32 | 10.06–11.80 | 10.58–11.35 | 9.84–11.91 | 118 / 764 | 11.23 | GEÇTİ |
+| 33 | 1000 | 1.89 | 8.93 | 65 / 104 | 10.67–11.25 | 10.21–11.66 | 10.56–11.36 | 9.99–11.81 | 51 / 216 | 11.23 | GEÇTİ |
+| 39 | 1000 | 1.60 | 8.71 | 55 / 89 | 10.68–11.26 | 10.15–11.72 | 10.41–11.62 | 9.91–12.06 | 259 / 720 | 11.22 | KALDI |
+| 47 | 1000 | 1.34 | 8.49 | 50 / 68 | 10.71–11.33 | 10.07–11.83 | 10.21–11.76 | 9.85–11.96 | 596 / 1548 | 11.23 | GEÇTİ |
 
-33, 39 ve 47 µH üçü de geçer; payı en geniş olan 33 µH şematik değeridir. Ölçülebilir parça kriterlerine çevrimi: [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md).
+- **33 µH geçer** (şematik değeri); 12 V'a pay 0,19 V.
+- **39 µH kalır:** köşede O1 tipik → zarf adımında 12,06 V.
+- **47 µH karar ölçütünü geçer, ama sınırdadır:** 12 V'a pay 0,04 V ve köşede 73 W salınımı sönmez, büyür (HESAP kararlılık sınırı köşede ≈ 62 W < 73 W). Sonuç, S2E kalkış darbesinin 20 ms sürdüğü varsayımına bağlıdır; üretici süre vermez.
+- Son sütundaki karar 9–12 V'u (dört yük adımı ve yük atma) ve 26 V köşe kararlı ripple'ını sınar; "köşe salınım" sütunu yalnız yazdırılır, karara girmez. Bu sütun 73 W darbesinin son 2 ms'sindeki toplam tepe-tepe değerdir (yavaş LC salınımı + anahtarlama ripple'ı).
+- Aday parçalardan önceki hedef değerlerle (DCR 15 mΩ, Ron 12 mΩ, Vf 0,5 V + 10 mΩ) üç satır da geçiyordu (köşe salınımı 35/90, 87/303, 118/764 mV). Fark, düşük dirençli parçaların LC'nin seri sönümünü azaltmasındandır (seri direnç ≈ 25,9 → 21,4 mΩ): **daha düşük Ron / Vf / DCR kaybı azaltır ama sönümü de azaltır.**
+
+Bu sonuçla 33–47 µH kabul aralığı **yeniden karara bağlanmalıdır** (kullanıcı kararı); doğrulanmış tek değer şematikteki 33 µH'dir. Ölçülebilir parça kriterlerine çevrimi: [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md).
 
 ## 5. Şematik değerleriyle test sonuçları (SİM)
 

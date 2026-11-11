@@ -14,7 +14,7 @@
 |---|---|---|---|
 | V1 | 24,6 V | 6S batarya | 20–26 V |
 | Vdrv | 100 kHz, Ton = 4,61 µs | — (sonraki aşamada sürücü + PWM) | — |
-| L1 | 33 µH, DCR 14,5 mΩ | Würth 74435583300 | 33–47 µH, Isat ≥ 12 A, DCR ≤ 15 mΩ |
+| L1 | 33 µH, DCR 14,5 mΩ | Würth 74435583300 | 33–47 µH (39 µH güncel köşe testinde kaldı; aralık yeniden karar bekliyor), Isat ≥ 12 A, DCR ≤ 15 mΩ |
 | Cout | 1000 µF, ESR 35 mΩ | Nichicon UHE1E102MHD6TO (25 V) | 1000 µF, ESR 15–35 mΩ, ≥ 25 V |
 | Cin1, Cin2 | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 (35 V) | toplam ripple akımı ≥ 4,5 A, ≥ 35 V |
 | S1 | ideal anahtar, `Ron=5.6m` | STP100N6F7 (60 V, TO-220) | RDS(on) ≤ 12 mΩ, VDS ≥ 55 V |

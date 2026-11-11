@@ -66,7 +66,7 @@ Parantez içindeki "hedef", parça seçilmeden önce şematikte kullanılan değ
 
 | Kriter | Değer | Neden |
 |---|---|---|
-| Endüktans | **33–47 µH**, tolerans ≤ ±%20 (hedef 33 µH) | 33 µH'de akım ripple'ı %25. 22 µH'de CCM sınırı 1,4 A'e çıkar, tipik yük (≈ 1,2 A) kesintili iletimde kalır ve açık çevrim testinde çıkış 8,8 V'a düşer. 47 µH üstü Cout 1000 µF ile sönümü zayıflatır. 33, 39 ve 47 µH tolerans köşeleriyle doğrulandı. |
+| Endüktans | **33–47 µH**, tolerans ≤ ±%20 (hedef 33 µH) | 33 µH'de akım ripple'ı %25. 22 µH'de CCM sınırı 1,4 A'e çıkar, tipik yük (≈ 1,2 A) kesintili iletimde kalır ve açık çevrim testinde çıkış 8,8 V'a düşer. 47 µH üstü Cout 1000 µF ile sönümü zayıflatır. Güncel şematik değerleriyle tolerans köşesi testinde 33 µH geçti, 39 µH kaldı (12,06 V), 47 µH 0,04 V payla ve yalnız 20 ms'lik S2E kalkış darbesi varsayımıyla geçti ([OPTIMIZASYON.md](OPTIMIZASYON.md) §4.4). Doğrulanmış değer 33 µH'dir; 39–47 µH için aralık yeniden karar bekliyor. |
 | Doyma akımı (Isat) | ≥ 12 A; 9 A'de endüktans düşümü ≤ %10 | Tepe akım en kötü köşede 8,9 A; %30 pay. Köşe testleri toleransla birlikte toplam −%30'a kadar koşuldu. |
 | Isıl akım (Irms) | ≥ 9 A | 7,5 A sürekli; %20 pay. |
 | DCR | ≤ 15 mΩ (hedef 15 mΩ) | Bakır kaybı 0,85 W. Her +5 mΩ ≈ +0,28 W. 20 mΩ'a kadar kabul edilebilir (verim −%0,3). |
