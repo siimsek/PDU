@@ -1,8 +1,8 @@
 # Güç katı optimizasyonu ve doğrulama
 
-**Tarih:** 12 Kasım 2026 · **Araç:** LTspice 26.1.1 (toplu kip), Python 3.14.5 · ideal anahtar/diyot, L/C + ESR/DCR (§9.3 ve §9.4'teki ideal olmayan senaryolar ayrıca belirtilmiştir) · **Fiziksel ölçüm yok.**
+**Tarih:** 12 Kasım 2026 · **Araç:** LTspice 26.1.1 (toplu kip), Python 3.14.5 · ideal anahtar/diyot, L/C + ESR/DCR + çıkış sönüm dalı Cd–Rd (§9.3 ve §9.4'teki ideal olmayan senaryolar ayrıca belirtilmiştir) · **Fiziksel ölçüm yok.**
 
-**Dondurma durumu: CONDITIONAL** (simülasyon dondurması, §12): tolerans köşesindeki sönüm sorunu ve iki gerilim sınıfı kararı açık. Parça ölçümleri dondurmadan sonraki basamaktır.
+**Dondurma durumu: FROZEN (simülasyon dondurması, 12 Kasım 2026):** çıkış sönüm dalı (`Cd = 470 µF + seri Rd = 0,22 Ω`) eklendi ve bütün testler koşuldu; `Cout` ve `Cd` için ≥ 35 V, `Cin` için ≥ 50 V gerilim sınıfı kabul edildi; §12.1 kapısındaki 1–12 numaralı maddelerin tamamı kullanıcı onayı dahil kapandı. Sırada parça seçimi, bobin sarımı ve ölçümler vardır (§12.2).
 
 Etiketler: **DATASHEET** üretici belgesi · **ÇIKARIM** üretici şemasından veya eğrisinden okunan, doğrulanmamış · **TAHMİN** yayımlanmış değer yok · **HESAP** `python buck/hesap.py` · **SİM** `python buck/dogrula.py` · **ÖLÇÜM** fiziksel (bu belgede hiç yok).
 
@@ -16,24 +16,25 @@ Bu belge güncel kararı anlatır. Değerler parça numarasından bağımsızdı
 | Çıkış | 11 V / 7,5 A | — | 11 V iki yükün aralığında (O1 5–12 V, S2E 9–28 V); yük zarfı 6,64 A, pay %13 | §2 |
 | fsw | 100 kHz | sabit | Ripple ve dinamik hedefler sağlanıyor; frekansı artırmanın bedeli (anahtarlama kaybı) ideal modelle ölçülemez | §5.1 |
 | Ton | 4,59 µs | — | 24,6 V / 7,5 A'de 11 V (SİM 11,000 V). İletim süresi PULSE kenarları yüzünden Ton + 10 ns'dir | §5.1 |
-| L1 | 33 µH el sarım, 7,81 mΩ (@20 °C, HESAP) | 33 µH (47 µH yalnız satın alınan parça, S2E kalkış süresi ölçülünce; 39 µH ve 47 µH el sarım kaldı, §4.4); Isat ≥ 12 A; DCR 6,5–15 mΩ (el sarım hedefi 8–10) | Akım ripple'ı %25; CCM sınırı 0,95 A tipik yükün (≈ 1,2 A) altında. 22 µH elendi (tipik yük DCM'de, çıkış 8,8 V'a düşer). DCR alt sınırı: sönüm | §4.1, §4.4 |
-| Cout | 1000 µF | 1000 µF ±%20; ≥ 25 V (arıza hâlinde yetmez, §9.4) | Sabit güç yüküyle LC sönümü. 330 µF sürekli salınır; 680 µF en kötü köşede 12,06 V; 1000 µF aynı köşede 11,81 V | §4.1, §4.4 |
-| Cout ESR | 25 mΩ | 15–35 mΩ | Alt sınır sönüm için, üst sınır ripple için. **15 mΩ alt kenarı tolerans köşesinde 73 W sabit güç yükünü sönümlemez** (§4.4, §6) | §4.2, §4.4, §6 |
-| Cin | 2 × 1000 µF, 20 mΩ | toplam ripple akımı ≥ 4,5 A; ≥ 35 V; ≥ 440 µF | 3,8 A RMS giriş ripple akımı parçanın boyunu belirler | §5.9 |
-| S1 | Ron 12 mΩ | RDS(on) ≤ 12 mΩ; VDS ≥ 55 V | İletim kaybı 0,32 W | §5.1 |
-| D1 | 0,5 V + 10 mΩ | VF ≤ 0,58 V @ 7,5 A; VRRM ≥ 45 V | İletim kaybının üçte ikisi (2,3 W) | §5.1 |
+| L1 | 33 µH el sarım, 7,81 mΩ (@20 °C, HESAP) | **33 µH** (el sarım AL ±%8 → 30,7–36,1 µH; satın alınan ±%20 penceresi de geçer); Isat ≥ 12 A; DCR 6,5–15 mΩ (el sarım hedefi 8–10) | Akım ripple'ı %25; CCM sınırı 0,94 A tipik yükün (≈ 1,2 A) altında. 22 µH elendi (tipik yük DCM'de, çıkış 8,8 V'a düşer). 39 ve 47 µH sönüm dalıyla `pencere`'yi geçse de kullanıcı kararıyla 33 µH seçilmiştir | §4.1, §4.4 |
+| Cout | 1000 µF | 1000 µF ±%20; **≥ 35 V** (kullanıcı kararı, §9.4) | Sabit güç yüküyle LC dinamiği ve ripple. S1 kısa devresinde çıkış 27,3–31,1 V'a çıktığından 35 V sınıfı kabul edildi | §4.1, §4.4, §9.4 |
+| Cout ESR | 25 mΩ | **≤ 35 mΩ** @100 kHz, 20 °C (sönüm dalı varken 10–35 mΩ aralığının tamamı geçer) | Üst sınır ripple için (35 mΩ köşede 83 mV t-t). Alt sınır gereksinimini paralel Cd + Rd sönüm dalı devralır (§6, §10) | §4.2, §4.4, §6, §10 |
+| Çıkış sönüm dalı (Cd + seri Rd) | **470 µF + 0,22 Ω** | Cd: 470 µF ±%20, **≥ 35 V**; ayrık Rd: **0,22 Ω** (Cd ESR'si dahil toplam dal direnci **0,15–0,60 Ω**), ≥ 0,25 W | Ana Cout ESR'sinden bağımsız CPL sönümü: bütün köşe ve sıcak ESR (10 mΩ) senaryolarında Pkritik ≥ 126 W > 82,5 W; sürekli kayıp ≈ 1,3 mW | §6, §10 |
+| Cin | 2 × 1000 µF, 20 mΩ | toplam ripple akımı ≥ 4,5 A; **≥ 50 V** (kullanıcı kararı, §9.4); ≥ 440 µF | 3,8 A RMS giriş ripple akımı boyutu belirler; düşük dirençli kaynakla sıcak takmada tepe 45–46,5 V olabildiğinden 50 V sınıfı kabul edildi | §5.9, §9.4 |
+| S1 | Ron 12 mΩ | RDS(on) ≤ 12 mΩ; VDS ≥ 55 V | İletim kaybı 0,32 W (şematik adayıyla 0,15 W) | §5.1 |
+| D1 | 0,5 V + 10 mΩ | VF ≤ 0,58 V @ 7,5 A; VRRM ≥ 45 V (tercihen 60 V) | İletim kaybının üçte ikisi (şematik adayıyla 1,78 W @ 24,6 V) | §5.1 |
 
-Geçmiş: başlangıç değerleri 22,2 V / Ton 5,14 µs / Cout 330 µF (15 mΩ) / Cin 2 × 220 µF idi. Cout önce 680 µF'a, tolerans köşesi ve standart değer bulunurluğu için 1000 µF'a alındı. L1, fsw ve çıkış hedefi baştan beri aynıdır.
+Geçmiş: başlangıç değerleri 22,2 V / Ton 5,14 µs / Cout 330 µF (15 mΩ) / Cin 2 × 220 µF idi. Cout önce 680 µF'a, sonra 1000 µF'a alındı; 200 ms darbe testiyle ortaya çıkan tolerans köşesi CPL salınımı için çıkışa paralel `Cd = 470 µF + Rd = 0,22 Ω` sönüm dalı eklendi (12.11.2026). L1, fsw ve çıkış hedefi baştan beri aynıdır.
 
-**Aday parçalar (kesin seçim değil):** tablodaki "Hedef" sütunu aday parçalar belirlenmeden önce şematikte kullanılan değerlerdir. Şematik (1. sıra): L1 33 µH el sarım / 7,81 mΩ (Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım; 2. sıra satın alma: Würth 74435583300, DCR 14,52 mΩ), Cout 1000 µF / 35 mΩ (Nichicon UHE1E102MHD6TO; **35 mΩ maks. empedanstır, ESR varsayımıdır**), Cin 2 × 1000 µF / 15 mΩ (TDK B41859D7108M000; 15 mΩ da maks. empedans), S1 5,6 mΩ (STP100N6F7), D1 0,38 V + 8 mΩ (STPS40M60CT), Ton 4,59 µs. Hepsi kabul aralıklarının içindedir; sıralama gerekçesi [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md) dosyasında, bu değerlerle sonuçlar §5'tedir.
+**Aday parçalar ve gerilim sınıfı durumu (kesin seçim değil):** tablodaki "Hedef" sütunu aday parçalar belirlenmeden önceki başlangıç hedefleridir. Şematik değerleri: L1 33 µH el sarım / 7,81 mΩ (Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım; 2. sıra satın alma: Würth 74435583300, DCR 14,52 mΩ), Cout 1000 µF / 35 mΩ, Cd 470 µF + seri Rd 0,22 Ω, Cin 2 × 1000 µF / 15 mΩ, S1 5,6 mΩ (STP100N6F7), D1 0,38 V + 8 mΩ (STPS40M60CT), Ton 4,59 µs. **Not:** mevcut listedeki 25 V Cout (Nichicon UHE1E102MHD6TO) ve 35 V Cin (TDK B41859D7108M000) adayları elektriksel R/C değerlerinin kaynağıdır; kullanıcı kararıyla minimum gerilim sınıfları **Cout/Cd ≥ 35 V** ve **Cin ≥ 50 V** olarak yükseltildiğinden, simülasyon dondurmasından sonraki parça seçimi basamağında (§12.2) bu gerilim sınıflarını sağlayan kesin parça numaraları seçilecektir ([PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md)).
 
 Bu değerler güç katının **elektriksel temelidir**; devre açık çevrim kaldığı sürece gerçek O1/S2E bağlanamaz (§11).
 
-**12 Kasım 2026 doğrulama turunun özeti** (değer değiştirilmedi):
-- Ölçüm altyapısındaki iki hata giderildi: ripple'ı 64 → 70 mV gösteren anahtar zamanlama titremesi ve yakınsamayan Ton ayarı (§5.0).
-- Yük adımı testi 20 ms'lik darbeyle yavaş büyüyen salınımı kaçırıyordu; 200 ms'lik darbe ve sönüm ölçümü eklendi. Şematik **anma** değerleri 82,5 W sabit güç yüküne kadar sönümlüdür; **tolerans köşesi** (L +%20, Cout −%20, ESR 15 mΩ) 73 W'ta kalır (§4.4, §6).
-- Kayıp, ısı, gerilim stresi ve arıza gerilimleri ilk kez hesaplandı (§9); sönüm seçenekleri karşılaştırıldı (§10).
-- Simülasyon dondurması **koşulludur** (§12): tolerans köşesindeki sönüm sorununun çözümü ve iki gerilim sınıfı kararı açık. Parça seçimi, bobin sarımı ve ölçümler dondurmadan sonra gelir.
+**12 Kasım 2026 doğrulama ve sönüm dalı turunun özeti:**
+- Ölçüm altyapısındaki iki hata giderildi: sahte ripple üreten `Vh=0` anahtar zamanlama titremesi ve yakınsamayan Ton ayarı (§5.0).
+- 200 ms darbe testinde dalsız devrenin tolerans köşesinde (`L +%20`, `Cout −%20`, `ESR 15 mΩ`) 73–82,5 W sabit güç yüküyle salındığı görüldü; kullanıcı onayıyla çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı** şematiğe, `hesap.py`'ye ve `dogrula.py`'ye eklendi (§6, §10).
+- Bütün test kipleri (`hesap.py`, `sayisal`, `secilen`, `pencere`, `kararlilik`, `zarf`, `stres`, `grafik`) yeni devreyle baştan koşuldu: **anma ve tüm tolerans/sıcaklık köşe setlerinde 200 ms ve 500 ms sabit güç darbeleri 9–12 V içinde ve sönmüş olarak GEÇTİ**; çıkış ripple'ı 24,6 V'ta 64,3 → 55,7 mV'a, 26 V en kötü köşede 96,1 → 83,1 mV'a, soğuk ESR yük atma tepesi 12,13 → 11,76 V'a indi.
+- Kullanıcı kararıyla gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak belirlendi; genel modül için ayrı sınır tanımlanmayıp O1/S2E uyumluluk ölçütleriyle simülasyon dondurmasına gidilmesi kararlaştırıldı (§12.1).
 
 ## 2. Gereksinimler: genel modül zarfı ve referans yükler
 
@@ -48,9 +49,9 @@ Modül, tanımlı sınırlar içinde **farklı uyumlu yüklerle** çalışacak b
 | Yük tipleri | dirençli (CR), sabit akımlı (CC), sabit güçlü (CP / CPL), yük adımı (%25 ↔ %75, %50 → %100), tam yük atma, 0 A | test edildi (§6, §7) |
 | 7,5 A üstü talep | Verilmek zorunda değil; **güvenle sınırlanmalıdır** | Adım 7 şartı (§11) |
 | Ortam | 25 / 50 / 60 °C (HESAP, §9.2); kondansatör −10 °C Zmax (üst sınır varsayımı) | fiziksel doğrulama yok |
-| Sürekli gerilim toleransı, ripple ve geçici durum sınırları | **Kullanıcı tarafından onaylanmadı.** ±%5 gibi bir değer yalnız öneri olabilir; bu belgede kabul eşiği olarak kullanılmadı | **AÇIK — kullanıcı kararı** |
+| Sürekli gerilim toleransı, ripple ve geçici durum sınırları | **Kullanıcı kararı (12.11.2026): şimdilik ayrı sınır tanımlanmadı**; simülasyon dondurması O1/S2E uyumluluk ölçütleriyle (9–12 V, ripple ≤ 165 mV, 200 ms darbede sönüm) yapılır | Kapandı (isteğe bağlı, tanımlanmadı) |
 
-Genel sınırlar onaylanmadığı için bu belgede "genel modül GEÇTİ" kararı **yoktur**. `dogrula.py` içindeki 9–12 V ve 165 mV ölçütleri O1/S2E uyumluluk ölçütüdür; değiştirilmedi ve genel modül ölçütü yerine konmadı.
+Genel modül için ayrı sınır tanımlanmadığından bu belgede "genel modül GEÇTİ" kararı **yoktur**; §7 tabloları karakterizasyon ve O1/S2E uyumluluk kaydı olarak tutulur. `dogrula.py` içindeki 9–12 V ve 165 mV ölçütleri O1/S2E uyumluluk ölçütüdür.
 
 ### 2.2 Referans yükler (cihaza özgü uyumluluk)
 
@@ -152,50 +153,46 @@ Ton sabit, ESR 25 mΩ (SİM):
 - 22 µH / 470 µF: tipik yük (1,15 A) CCM sınırının (1,43 A) altında; Ton DCM'de ayarlıyken yük artınca çıkış 8,78 V'a düşer. **22 µH elendi.**
 - 33 µH / 680 µF: en kötü köşede O1 tipik → zarf adımında 12,06 V. **680 µF elendi.**
 
-Son pencere (Cout 1000 µF, ESR 15–35 mΩ), şematikteki 1. sıra değerleriyle (el sarım L1 DCR 7,81 mΩ, Ron 5,6 mΩ, Vf 0,38 V + 8 mΩ). **12 Kasım 2026 koşusu, düzeltilmiş ölçüm altyapısı ve 200 ms'lik darbe ile:**
+Son pencere (Cout 1000 µF, ESR 15–35 mΩ, paralel sönüm dalı **Cd = 470 µF + seri Rd = 0,22 Ω**), şematikteki 1. sıra değerleriyle (el sarım L1 DCR 7,81 mΩ, Ron 5,6 mΩ, Vf 0,38 V + 8 mΩ). **12 Kasım 2026 koşusu (`dogrula.py pencere`), köşelerde Cout ve Cd −%20 (800 µF ve 376 µF), 200 ms darbe ile:**
 
 | L µH | Cout µF | ΔIL A | IL tepe köşe A | ΔVo ESR 35 mΩ: anma / köşe mV | S2E kalkışı @zarf, 20 ms V | O1 tipik→zarf V | köşe: S2E kalkışı @zarf, 20 ms V | köşe: O1 tipik→zarf V | anma: 73 W 200 ms V, sönüm | köşe: 73 W 200 ms V, sönüm (LC periyodu başına oran) | köşe: 200 ms sonunda yavaş salınım mV t-t | köşe yük atma sınırı V | eski karar (yalnız 20 ms) | KARAR: 9–12 V, ≤165 mV, 200 ms'de sönümlü |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 33 | 1000 | 1.88 | 8.91 | 64 / 96 | 10.72–11.27 | 10.22–11.69 | 10.62–11.34 | 10.02–11.82 | 10.72–11.25 sönmüş | 9.91–12.05 sürekli salınım (×1.009) | 2082 | 11.23 | geçti | KALDI |
-| 39 | 1000 | 1.59 | 8.69 | 54 / 81 | 10.69–11.25 | 10.14–11.71 | 9.74–12.58 | 9.93–12.62 | 10.69–11.28 sönmüş | 9.46–12.59 sürekli salınım (×1.000) | 3030 | 11.23 | kaldı | KALDI |
-| 47 | 1000 | 1.32 | 8.49 | 45 / 67 | 10.56–11.46 | 10.05–11.92 | 9.24–12.86 | 9.64–12.27 | 10.66–11.29 sürekli salınım | 9.24–12.86 sürekli salınım (×1.000) | 3561 | 11.23 | kaldı | KALDI |
+| 33 | 1000 | 1.88 | 8.91 | 56 / 83 | 10.77–11.20 | 10.37–11.54 | 10.72–11.25 | 10.22–11.67 | 10.77–11.20 sönmüş | 10.72–11.25 sönmüş (×1.000) | 1 | 11.20 | geçti | GEÇTİ |
+| 39 | 1000 | 1.59 | 8.69 | 47 / 70 | 10.75–11.22 | 10.31–11.59 | 10.70–11.27 | 10.15–11.74 | 10.75–11.22 sönmüş | 10.70–11.27 sönmüş (×1.000) | 1 | 11.20 | geçti | GEÇTİ |
+| 47 | 1000 | 1.32 | 8.49 | 39 / 58 | 10.73–11.24 | 10.24–11.65 | 10.67–11.33 | 10.06–11.84 | 10.73–11.24 sönmüş | 10.67–11.30 sönmüş (×1.000) | 1 | 11.20 | geçti | GEÇTİ |
 
-- Karar artık üç şeye bakar: (1) bütün yük adımlarında ve yük atmada 9–12 V, (2) 26 V köşe ripple'ı ≤ 165 mV, (3) S2E kalkış darbesi (57,6 → 73 W) **200 ms** sürdüğünde de 9–12 V ve yavaş (LC) salınımın sönmesi. "Eski karar" sütunu yalnız 20 ms'lik darbeye bakan önceki mantıktır; regresyon için yazdırılır.
-- **33 µH artık KALIR.** Anma değerlerinde (ESR 15 mΩ) 73 W darbesi sönümlüdür (10,72–11,25 V). Köşede (L +%20 = 39,6 µH, Cout −%20 = 800 µF, ESR 15 mΩ) 20 ms'lik darbe 10,62–11,34 V verir ve eski karar "geçti" der; aynı darbe 200 ms sürünce salınım büyür ve **9,91–12,05 V**'a çıkar, 500 ms'de 9,64–12,32 V'ta sınır çevrimine oturur (§6.1). Bu, ölçütün gevşetilmesiyle değil, testin uzatılmasıyla ortaya çıkan bir başarısızlıktır.
-- **39 µH ve 47 µH kalır** (köşede 12,59 / 12,86 V); 47 µH anma değerlerinde bile sürekli salınır.
-- S2E'nin kalkış darbesinin süresi yayımlanmamıştır. Darbe 50 ms'yi aşmıyorsa köşede çıkış 10,45–11,57 V içinde kalır (§6.1); ama salınım sönmediği için bu bir kararlılık kanıtı değil, süreye bağlı bir sonuçtur.
-- Köşe, üç varsayımın birleşimidir: satın alınan bobin toleransı (+%20; el sarımda AL toleransı ±%8'dir), Cout −%20 ve ESR'nin 15 mΩ olması. **ESR ölçülmemiştir**; üretici yalnız 35 mΩ en büyük empedansı verir. El sarım toleransıyla (L +%8) 73 W sönümlüdür, 82,5 W kalır (§6.2).
-- Seri direnç (DCR + D·Ron + (1−D)·Rd) 25,9 mΩ'dan (hedef değerler) 21,4 mΩ'a (Würth DCR) ve 14,7 mΩ'a (el sarım DCR) düştü: **daha düşük Ron / Vf / DCR kaybı azaltır ama sönümü de azaltır.**
-
-Kullanıcı kararı (12.11.2026, bu koşudan önce): L1 için **1. sıra el sarım 33 µH** (Kool Mµ 40µ, 22 sarım; DCR 7,81 mΩ nominal @20 °C, 9,5 mΩ sıcak köşe, 6,5 mΩ denenen en düşük sönüm köşesi), **2. sıra satın alma**. Bu karar 20 ms'lik darbe sonuçlarına dayanıyordu; yukarıdaki sonuçla **yeniden değerlendirilmesi gerekir** (seçenekler §10). Sıra ve şematik değerleri değiştirilmedi. Ölçülebilir parça kriterleri: [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md).
+- Karar üç şeye bakar: (1) bütün yük adımlarında ve yük atmada 9–12 V, (2) 26 V köşe ripple'ı ≤ 165 mV, (3) S2E kalkış darbesi (57,6 → 73 W) **200 ms** sürdüğünde de 9–12 V ve yavaş (LC) salınımın sönmesi.
+- Sönüm dalı eklenmeden önce aynı koşuda 33 / 39 / 47 µH satırlarının üçü de köşede **kalıyordu** (33 µH: 9,91–12,05 V, 2082 mV t-t sürekli salınım; 39 / 47 µH: 12,59 / 12,86 V). **`Cd = 470 µF + Rd = 0,22 Ω` sönüm dalıyla üç satır da GEÇTİ**: 33 µH köşede 73 W 200 ms darbesi **10,72–11,25 V** içinde kalır ve darbe sonundaki yavaş salınım 1 mV t-t'dir (tamamen sönmüş).
+- **Seçilen hedef L1 = 33 µH'dir** (kullanıcı kararı korunmuştur; en geniş geçici durum payını [köşe O1 adımı 10,22–11,67 V] ve en hızlı LC dinamiğini verir). Sönüm dalı sayesinde L1 toleransı +%20'ye (39,6 µH) ve hatta 47 µH +%20'ye çıksa dahi sönüm bozulmaz; el sarımda (AL ±%8 → 30,7–36,1 µH) çok geniş üretim payı oluşur.
+- Sönüm artık ana `Cout`'un ESR alt sınırına veya yüksek DCR'ye muhtaç değildir (§6, §10). Ölçülebilir parça ve sarım hedef aralıkları: [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md).
 
 ## 5. Şematik değerleriyle test sonuçları (SİM)
 
-1. sıra değerler ([PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md)): L 33 µH / 7,81 mΩ (el sarım, HESAP) · Cout 1000 µF / 35 mΩ (maks. empedans, ESR varsayımı) · Cin 2 × 1000 µF / 15 mΩ · Ron 5,6 mΩ · Vf 0,38 V + 8 mΩ · 100 kHz. Tablolar `python buck/dogrula.py secilen` çıktısıdır (12.11.2026, çıkış kodu 0).
+Şematik değerleri ([PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md)): L 33 µH / 7,81 mΩ (el sarım, HESAP) · Cout 1000 µF / 35 mΩ (maks. empedans, ESR varsayımı) · **Cd 470 µF + seri Rd 0,22 Ω** · Cin 2 × 1000 µF / 15 mΩ · Ron 5,6 mΩ · Vf 0,38 V + 8 mΩ · 100 kHz. Tablolar `python buck/dogrula.py secilen` çıktısıdır (12.11.2026, çıkış kodu 0).
 
 ### 5.0 Ölçüm altyapısı: bulunan hatalar ve düzeltme (`dogrula.py sayisal`)
 
-Önceki tablolarda 24,6 / 25,2 / 26 V için 70,3 / 71,8 / 68,0 mV ripple görülüyordu; hesap 64–67 mV veriyordu. Neden deneyle ayrıldı:
+Düzeltme öncesi tablolarda anahtar zamanlama titremesi yüzünden ripple HESAP'tan %5–9 yüksek görünüyordu. Neden deneyle ayrıldı (sönüm dalı dahil güncel devreyle):
 
 | Anahtar modeli | iletim süresi ort. ns (Ton 4589 ns) | titreme t-t ns | titreme std ps | ΔVo mV t-t | dVo/dTon mV/ns (beklenen Vin/T = 2,46) | doğrudan sapma maks mV (Ton 4580–4600 ns) | ΔVo aralığı mV (aynı tarama) |
 |---|---|---|---|---|---|---|---|
-| idealler.lib (Vh=0, sert geçiş) | 4597.518 | 2.145 | 1013 | 70.3 | 2.533 | 3.98 | 65.0–70.4 |
-| test modeli (Vh=−0,5, yumuşak geçiş) | 4598.981 | 0.000 | 0 | 64.3 | 2.475 | 0.00 | 64.3–64.3 |
+| idealler.lib (Vh=0, sert geçiş) | 4597.518 | 2.145 | 1013 | 60.6 | 2.535 | 4.08 | 56.2–60.8 |
+| test modeli (Vh=−0,5, yumuşak geçiş) | 4598.981 | 0.000 | 0 | 55.7 | 2.475 | 0.00 | 55.7–55.7 |
 
-- **Kök neden:** `idealler.lib` anahtarı `Vh=0` (sert geçiş) ile tanımlıdır. LTspice, 10 ns'lik PULSE kenarının ortasındaki geçiş anını zaman adımına göre çözer; iletim süresi periyottan periyoda ≈ 2 ns oynar (std ≈ 1 ns). Bu titreme LC'yi uyarır, 1 ms'lik pencerede tepe-tepe değeri büyütür ve Vo(Ton) eğrisini basamaklı yapar (doğrudan sapma 4 mV). `Vh=−0,5` (yumuşak geçiş) ile titreme **sıfırdır**.
-- Denenip **neden olmadığı** görülenler: `plotwinsize=0` (sıkıştırma) etkisiz; `maxstep` 100 / 50 / 20 ns aynı sonucu verir (5 ns'de titreme sürer); bobinin varsayılan paralel direnci etkisiz; diyot `Epsilon` etkisiz. Ölçüm penceresini 15–16 ms'den 19–20 ms'ye almak sonucu değiştirir ama bunun nedeni pencere değil, `tstop` değişince zaman adımı diziliminin değişmesidir. İki denetim raporunun önerdiği nedenler (zaman kuantalaması; `Vh=0`) aynı olgunun iki yüzüdür.
-- **Düzeltme:** test netlistleri, `idealler.lib` ile aynı değerleri taşıyan ama anahtarı `Vh=-0.5` olan bir modeli netliste gömer. `idealler.lib`, `anahtar.asy`, `diyot.asy` ve ana şematik **değişmedi**. Ana şematiğin LTspice'taki kendi koşusu (`.tran 20m`) 64,4 mV verir.
-- **Ton ayarı:** eski sürüm kelepçeli çıkışta akım hatasını 3 mA'e indirmeye çalışıyordu; bu, 0,02 ns Ton çözünürlüğü ister (dI/dTon ≈ 0,16 A/ns), titreme ve 6 basamağa yuvarlama yüzünden yakınsamıyordu (20 V'ta 155 mA kalıyordu), sonuç yine de kullanılıyordu. Yeni sürüm: kökü iki yandan sarar, ölçüt çıkış gerilimi cinsindendir (1 mV eşdeğeri veya akımın %0,5'i), Ton 9 basamakla yazılır, bobin başlangıç akımı vadi değeridir, **yakınsamazsa koşu hata ile durur**. `kararli()` içindeki "yalnız CCM'de çıkışa bakıp Ton'u oynatma" adımı kaldırıldı.
+- **Kök neden:** `idealler.lib` anahtarı `Vh=0` (sert geçiş) ile tanımlıdır. LTspice, 10 ns'lik PULSE kenarının ortasındaki geçiş anını zaman adımına göre çözer; iletim süresi periyottan periyoda ≈ 2 ns oynar (std ≈ 1 ns). Bu titreme LC'yi uyarır, 1 ms'lik pencerede tepe-tepe değeri büyütür ve Vo(Ton) eğrisini basamaklı yapar (doğrudan sapma 4,1 mV). `Vh=−0,5` (yumuşak geçiş) ile titreme **sıfırdır**.
+- Denenip **neden olmadığı** görülenler: `plotwinsize=0` (sıkıştırma) etkisiz; `maxstep` 100 / 50 / 20 ns aynı sonucu verir (5 ns'de titreme sürer); bobinin varsayılan paralel direnci etkisiz; diyot `Epsilon` etkisiz. Ölçüm penceresini 15–16 ms'den 19–20 ms'ye almak sonucu değiştirir ama bunun nedeni pencere değil, `tstop` değişince zaman adımı diziliminin değişmesidir.
+- **Düzeltme:** test netlistleri, `idealler.lib` ile aynı değerleri taşıyan ama anahtarı `Vh=-0.5` olan bir modeli netliste gömer. `idealler.lib`, `anahtar.asy`, `diyot.asy` ve ana şematik **değişmedi**. Ana şematiğin LTspice'taki kendi koşusu (`.tran 20m`, 19–20 ms) Vo = 11,000 V ve ΔVo = 55,7 mV t-t verir.
+- **Ton ayarı:** kökü iki yandan sarar, ölçüt çıkış gerilimi cinsindendir (1 mV eşdeğeri veya akımın %0,5'i), Ton 9 basamakla yazılır, bobin başlangıç akımı vadi değeridir, **yakınsamazsa koşu hata ile durur**.
 
-Beş girişte ripple, hesap ve iki modelle:
+Beş girişte ripple, hesap (`ESR || Rd || Rload`) ve iki modelle:
 
 | Vin V | Ton µs | HESAP ΔVo mV | yumuşak: ΔVo mV | yumuşak: Vo V | sert: ΔVo mV | sert: Vo V |
 |---|---|---|---|---|---|---|
-| 20 | 5.6271 | 52.0 | 52.0 | 11.0000 | 52.6 | 10.9999 |
-| 22.2 | 5.0783 | 58.5 | 58.5 | 11.0000 | 63.9 | 10.9961 |
-| 24.6 | 4.5898 | 64.3 | 64.3 | 11.0000 | 70.3 | 11.0011 |
-| 25.2 | 4.4820 | 65.6 | 65.6 | 11.0000 | 66.3 | 10.9999 |
-| 26 | 4.3459 | 67.2 | 67.2 | 11.0000 | 73.6 | 11.0011 |
+| 20 | 5.6271 | 45.0 | 45.0 | 11.0000 | 45.5 | 10.9999 |
+| 22.2 | 5.0783 | 50.6 | 50.6 | 11.0000 | 55.2 | 10.9959 |
+| 24.6 | 4.5898 | 55.7 | 55.7 | 11.0000 | 60.8 | 11.0009 |
+| 25.2 | 4.4820 | 56.8 | 56.8 | 11.0000 | 57.4 | 10.9999 |
+| 26 | 4.3459 | 58.2 | 58.2 | 11.0000 | 63.5 | 11.0009 |
 
 Yakınsayan Ton değerleri [µs] (25 nokta, DCM dahil; hepsi yakınsadı):
 
@@ -211,13 +208,13 @@ Yakınsayan Ton değerleri [µs] (25 nokta, DCM dahil; hepsi yakınsadı):
 
 | Vin V | Ton µs | Vo V | ΔVo mV | IL A | S1 rms A | D1 ort A | Cout rms A | P S1 W | P D1 W | P L1 W | P toplam W | η iletim % |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 20 | 5.627 | 11.000 | 52.0 | 6.74–8.26 | 5.64 | 3.27 | 0.43 | 0.18 | 1.44 | 0.44 | 2.07 | 97.56 |
-| 22.2 | 5.078 | 11.000 | 58.5 | 6.64–8.36 | 5.36 | 3.68 | 0.48 | 0.16 | 1.62 | 0.44 | 2.23 | 97.37 |
-| 24.6 | 4.590 | 11.000 | 64.3 | 6.56–8.44 | 5.10 | 4.05 | 0.53 | 0.15 | 1.78 | 0.44 | 2.38 | 97.20 |
-| 25.2 | 4.482 | 11.000 | 65.6 | 6.54–8.46 | 5.04 | 4.13 | 0.54 | 0.14 | 1.82 | 0.44 | 2.41 | 97.16 |
-| 26 | 4.346 | 11.000 | 67.2 | 6.52–8.48 | 4.96 | 4.23 | 0.55 | 0.14 | 1.86 | 0.44 | 2.45 | 97.11 |
+| 20 | 5.627 | 11.000 | 45.0 | 6.74–8.26 | 5.64 | 3.27 | 0.37 | 0.18 | 1.44 | 0.44 | 2.06 | 97.56 |
+| 22.2 | 5.078 | 11.000 | 50.6 | 6.64–8.36 | 5.36 | 3.68 | 0.42 | 0.16 | 1.62 | 0.44 | 2.23 | 97.37 |
+| 24.6 | 4.590 | 11.000 | 55.7 | 6.56–8.44 | 5.10 | 4.05 | 0.46 | 0.15 | 1.78 | 0.44 | 2.38 | 97.20 |
+| 25.2 | 4.482 | 11.000 | 56.8 | 6.54–8.46 | 5.04 | 4.13 | 0.47 | 0.14 | 1.82 | 0.44 | 2.41 | 97.16 |
+| 26 | 4.346 | 11.000 | 58.2 | 6.52–8.48 | 4.96 | 4.23 | 0.48 | 0.14 | 1.86 | 0.44 | 2.45 | 97.11 |
 
-Verim yalnız iletim kaybıdır; anahtarlama, çekirdek ve kondansatör kayıplarıyla kestirim §9.1'dedir. Ripple 1 ms pencerede t-t; HESAP ile 0,1 mV içinde uyuşur.
+Verim yalnız iletim kaybıdır (`Rd` üzerindeki ≈ 1,3 mW dahil); anahtarlama, çekirdek ve kondansatör kayıplarıyla kestirim §9.1'dedir. Ripple akımının %14'ü `0,22 Ω` sönüm dalından geçtiğinden `Cout` RMS akımı (0,46 A) ve çıkış ripple'ı (55,7 mV) dalsız devreye (0,53 A / 64,3 mV) göre düşmüştür; HESAP ile 0,0 mV içinde uyuşur.
 
 ![Kararlı durum](grafik/kararli.svg)
 
@@ -225,17 +222,17 @@ Verim yalnız iletim kaybıdır; anahtarlama, çekirdek ve kondansatör kayıpla
 
 | Senaryo | P W | I@11V A | Ton µs | Kip | Vo V | ΔVo mV | IL tepe A | η iletim % |
 |---|---|---|---|---|---|---|---|---|
-| yalnız S2E çalışma | 2.64 | 0.24 | 2.293 | DCM | 10.993 | 34.2 | 0.95 | 98.0 |
-| yalnız O1 boşta (tahmin) | 4.00 | 0.36 | 2.825 | DCM | 10.988 | 42.2 | 1.17 | 97.9 |
-| yalnız O1 tipik (tahmin) | 10.00 | 0.91 | 4.473 | DCM | 10.979 | 65.7 | 1.85 | 97.9 |
-| O1 boşta + S2E | 6.64 | 0.60 | 3.643 | DCM | 10.982 | 54.2 | 1.51 | 97.9 |
-| O1 tipik + S2E | 12.64 | 1.15 | 4.552 | CCM | 11.000 | 66.0 | 2.09 | 97.9 |
-| O1 tipik + S2E kalkış | 28.00 | 2.55 | 4.561 | CCM | 11.000 | 66.3 | 3.49 | 97.8 |
-| yalnız O1 zarf 5 A | 55.00 | 5.00 | 4.575 | CCM | 11.000 | 66.9 | 5.94 | 97.5 |
-| O1 zarf + S2E | 57.64 | 5.24 | 4.576 | CCM | 11.000 | 67.0 | 6.18 | 97.5 |
-| O1 zarf + S2E kalkış | 73.00 | 6.64 | 4.585 | CCM | 11.000 | 67.4 | 7.58 | 97.3 |
+| yalnız S2E çalışma | 2.64 | 0.24 | 2.293 | DCM | 10.995 | 29.4 | 0.95 | 98.0 |
+| yalnız O1 boşta (tahmin) | 4.00 | 0.36 | 2.825 | DCM | 10.992 | 36.3 | 1.17 | 97.9 |
+| yalnız O1 tipik (tahmin) | 10.00 | 0.91 | 4.473 | DCM | 10.984 | 56.7 | 1.85 | 97.9 |
+| O1 boşta + S2E | 6.64 | 0.60 | 3.643 | DCM | 10.987 | 46.6 | 1.51 | 97.9 |
+| O1 tipik + S2E | 12.64 | 1.15 | 4.552 | CCM | 11.000 | 56.9 | 2.09 | 97.9 |
+| O1 tipik + S2E kalkış | 28.00 | 2.55 | 4.561 | CCM | 11.000 | 57.1 | 3.49 | 97.8 |
+| yalnız O1 zarf 5 A | 55.00 | 5.00 | 4.575 | CCM | 11.000 | 57.6 | 5.94 | 97.5 |
+| O1 zarf + S2E | 57.64 | 5.24 | 4.576 | CCM | 11.000 | 57.6 | 6.18 | 97.5 |
+| O1 zarf + S2E kalkış | 73.00 | 6.64 | 4.585 | CCM | 11.000 | 57.9 | 7.58 | 97.3 |
 
-Ripple her senaryoda S2E sınırının (±330 mV) çok altında. DCM satırlarında Vo'nun 11,000 V'tan 7–21 mV sapması, 16 ms'lik koşuda çıkışın tam oturmamasındandır (hafif yükte zaman sabiti onlarca ms); Ton kelepçeli ayardan gelir ve doğrudur. DCM'de gereken Ton yükle 2,3–4,5 µs arasında değişir: geri besleme bu aralığı kapsamalıdır.
+Ripple her senaryoda S2E sınırının (±330 mV) çok altında. DCM satırlarında Vo'nun 11,000 V'tan 5–16 mV sapması, 16 ms'lik koşuda çıkışın tam oturmamasındandır (hafif yükte zaman sabiti onlarca ms); Ton kelepçeli ayardan gelir ve doğrudur. DCM'de gereken Ton yükle 2,3–4,5 µs arasında değişir: geri besleme bu aralığı kapsamalıdır.
 
 ### 5.3 Açık çevrim: Ton sabit (24,6 V / 7,5 A'ya ayarlı), giriş ve yük değişince kararlı çıkış [V]
 
@@ -245,7 +242,7 @@ Ripple her senaryoda S2E sınırının (±330 mV) çok altında. DCM satırları
 | 22.2 | 15.12 | 11.64 | 9.99 | 9.97 | 9.94 | 9.91 |
 | 24.6 | 16.76 | 12.90 | 11.09 | 11.07 | 11.03 | 11.00 |
 | 25.2 | 17.17 | 13.22 | 11.37 | 11.35 | 11.31 | 11.27 |
-| 26 | 17.71 | 13.64 | 11.74 | 11.72 | 11.67 | 11.64 |
+| 26 | 17.72 | 13.64 | 11.74 | 11.72 | 11.67 | 11.64 |
 
 O1'in 5–12 V aralığı yalnız 24,6 V civarında ve yük CCM'deyken sağlanır. **Açık çevrim hiçbir L/C değeriyle regülasyon sağlamaz**; bu bir güç katı hatası değil, bilinen açık çevrim sınırıdır ve geri beslemeyle (Adım 6) kapanır. Yüksüz çalışmada çıkış giriş gerilimine tırmanır.
 
@@ -253,12 +250,12 @@ O1'in 5–12 V aralığı yalnız 24,6 V civarında ve yük CCM'deyken sağlanı
 
 | Adım (200 ms) | P W | Vmin V | Vmax V | ara kararlı V | ara salınım mV | son kararlı V | son salınım mV | IL tepe A | yavaş salınım |
 |---|---|---|---|---|---|---|---|---|---|
-| S2E kalkışı, O1 tipik | 12.6→28.0 | 10.73 | 11.24 | 10.98 | 66 | 11.00 | 66 | 4.5 | sönmüş |
-| O1 tipik→zarf→tipik, S2E çalışıyor | 12.6→57.6 | 10.24 | 11.66 | 10.94 | 67 | 11.00 | 66 | 9.4 | sönmüş |
-| S2E kalkışı, O1 zarf | 57.6→73.0 | 10.72 | 11.26 | 10.98 | 67 | 11.00 | 67 | 8.7 | sönmüş |
-| O1 zarf→boşta→zarf, S2E çalışıyor | 57.6→6.6 | 10.29 | 16.07 | 16.05 | 42 | 11.00 | 67 | 9.4 | sönmüş |
+| S2E kalkışı, O1 tipik | 12.6→28.0 | 10.78 | 11.20 | 10.98 | 57 | 11.00 | 57 | 4.4 | sönmüş |
+| O1 tipik→zarf→tipik, S2E çalışıyor | 12.6→57.6 | 10.38 | 11.53 | 10.94 | 58 | 11.00 | 57 | 9.0 | sönmüş |
+| S2E kalkışı, O1 zarf | 57.6→73.0 | 10.77 | 11.21 | 10.98 | 58 | 11.00 | 58 | 8.6 | sönmüş |
+| O1 zarf→boşta→zarf, S2E çalışıyor | 57.6→6.6 | 10.45 | 16.07 | 16.04 | 37 | 11.00 | 58 | 8.9 | sönmüş |
 
-İlk üç adımda çıkış kontrolcü olmadan bile 9–12 V içinde kalır ve salınım söner. Son satır DCM yükselmesidir (§5.3): 200 ms'de 16,07 V'a çıkar (önceki 20 ms'lik testte 14,66 V görünüyordu; yükselme sürüyordu) ve yalnız geri beslemeyle giderilir.
+İlk üç adımda çıkış kontrolcü olmadan bile 9–12 V içinde kalır (dalsız devreye göre sapma ≈ 50–140 mV daha dardır) ve salınım söner. Son satır DCM yükselmesidir (§5.3): 200 ms'de 16,07 V'a çıkar ve yalnız geri beslemeyle giderilir.
 
 ![Yük adımı](grafik/yuk_adimi.svg)
 
@@ -266,26 +263,26 @@ O1'in 5–12 V aralığı yalnız 24,6 V civarında ve yük CCM'deyken sağlanı
 
 | Vin V | 73→6,6 W Vtepe V | 82,5→2,6 W Vtepe V |
 |---|---|---|
-| 20 | 11.229 | 11.273 |
-| 22.2 | 11.233 | 11.276 |
-| 24.6 | 11.236 | 11.279 |
-| 25.2 | 11.236 | 11.280 |
-| 26 | 11.237 | 11.281 |
+| 20 | 11.197 | 11.234 |
+| 22.2 | 11.200 | 11.237 |
+| 24.6 | 11.202 | 11.240 |
+| 25.2 | 11.203 | 11.240 |
+| 26 | 11.204 | 11.241 |
 
-Bobindeki enerji Cout'a boşaldığında oluşan tepe budur. Kontrol gecikmesinin ve soğuk ESR'nin etkisi §7.3'tedir.
+Bobindeki enerji `Cout` ve `Cd + Rd` dalına boşaldığında oluşan tepe budur (dalsız devredeki 11,28 V'tan 11,24 V'a düşer). Kontrol gecikmesinin ve soğuk ESR'nin etkisi §7.3'tedir.
 
 ### 5.6 Soğuk kalkış
 
 | Vin V | Yük | sert: IL tepe A | sert: Vo tepe V | 5 ms duty rampası: IL tepe A | 5 ms duty rampası: Vo tepe V |
 |---|---|---|---|---|---|
-| 20 | 7,5 A direnç | 53.2 | 17.01 | 10.5 | 11.29 |
-| 22.2 | 7,5 A direnç | 53.3 | 17.01 | 10.5 | 11.29 |
-| 24.6 | 7,5 A direnç | 53.3 | 17.01 | 10.6 | 11.29 |
-| 25.2 | 7,5 A direnç | 53.3 | 17.01 | 10.7 | 11.29 |
-| 26 | 7,5 A direnç | 53.4 | 17.01 | 10.7 | 11.29 |
-| 24.6 | O1 tipik + S2E (12,6 W) | 54.8 | 18.81 | 6.5 | 11.35 |
+| 20 | 7,5 A direnç | 61.3 | 16.64 | 11.5 | 11.34 |
+| 22.2 | 7,5 A direnç | 61.4 | 16.63 | 11.6 | 11.34 |
+| 24.6 | 7,5 A direnç | 61.4 | 16.63 | 11.7 | 11.34 |
+| 25.2 | 7,5 A direnç | 61.4 | 16.63 | 11.7 | 11.34 |
+| 26 | 7,5 A direnç | 61.5 | 16.62 | 11.8 | 11.34 |
+| 24.6 | O1 tipik + S2E (12,6 W) | 63.1 | 18.07 | 8.0 | 11.39 |
 
-Sert kalkış aşımı O1'in TVS çalışma gerilimini (16 V, ÇIKARIM) ve TPS62180 mutlak sınırını (17 V) zorlar. Model bobini doğrusal alır; el sarım L1'in endüktansı 53 A'de ≈ %59'a düşer (üretici bias eğrisi), gerçek tepe akım daha yüksek olur. Duty rampası bir **varsayımdır** (soft-start devresi tasarlanmadı); yalnız aşımın kaynağının basamak uyarımı olduğunu ve yumuşak kalkışla giderildiğini gösterir.
+`Cd` sönüm dalı toplam çıkış kapasitesini artırdığı için sert kalkış tepe akımı 53,4 → 61,5 A'e çıkar, tepe gerilim sönüm sayesinde 17,01 → 16,62 V'a (12,6 W'ta 18,81 → 18,07 V'a) iner; sert kalkış hâlâ O1 girişini zorlar ve doğrusal olmayan bobini doyuma iter (`L/L0 ≈ %53` @61 A). 5 ms'lik duty rampasıyla (yumuşak kalkış varsayımı, Adım 5) bobin akımı 11,8 A ≤ 12 A ve çıkış 11,39 V ≤ 12 V içinde kalır.
 
 ![Kalkış](grafik/kalkis.svg)
 
@@ -293,22 +290,22 @@ Sert kalkış aşımı O1'in TVS çalışma gerilimini (16 V, ÇIKARIM) ve TPS62
 
 | Vin V (1 ms rampa) | Vmin V | Vmax V | ara kararlı V |
 |---|---|---|---|
-| 24.6→20→24.6 | 8.57 | 11.27 | 8.87 |
-| 24.6→26→24.6 | 10.89 | 11.76 | 11.65 |
-| 22.2→25.2→22.2 | 10.78 | 12.74 | 12.53 |
+| 24.6→20→24.6 | 8.33 | 11.50 | 8.87 |
+| 24.6→26→24.6 | 10.82 | 11.82 | 11.65 |
+| 22.2→25.2→22.2 | 10.62 | 12.90 | 12.53 |
 
 Çıkış girişi oransal izler (ΔVo ≈ D·ΔVin). 20 V'ta S2E'nin 9 V alt sınırının altına, batarya dolarken O1'in 12 V sınırının üstüne çıkar. L/Cout ile düzelmez (§4.3); bilinen açık çevrim sınırıdır.
 
-### 5.8 Tolerans köşeleri (L −%30/+%20, Cout ±%20, ESR 15/35 mΩ), 7,5 A; zarf adımı 200 ms
+### 5.8 Tolerans köşeleri (L −%30/+%20, Cout ve Cd ±%20, ESR 15/35 mΩ), 7,5 A; zarf adımı 200 ms
 
 | Köşe | Vin V | ΔVo mV | IL tepe A | zarf adım (200 ms) Vmin/Vmax | 73 W darbe sonu t-t mV | yavaş salınım | yük atma sınırı V | sert kalkış A/V | rampalı kalkış A/V |
 |---|---|---|---|---|---|---|---|---|---|
-| anma | 24.6 | 64.3 | 8.44 | 10.72/11.26 | 67 | sönmüş | 11.24 | 53.3/17.0 | 10.6/11.29 |
-| ripple en kötü: L−, C−, ESR 35 mΩ | 26 | 96.1 | 8.91 | 10.72/11.26 | 101 | sönmüş | 11.25 | 56.6/16.9 | 10.7/11.23 |
-| sönüm en zayıf: L+, C−, ESR 15 mΩ | 24.6 | 23.3 | 8.28 | 9.91/12.05 | 2140 | sürekli salınım | 11.12 | 47.7/18.0 | 10.0/11.29 |
-| Z0 en düşük: L−, C+, ESR 15 mΩ | 26 | 41.7 | 8.91 | 10.78/11.19 | 43 | sönmüş | 11.11 | 71.6/17.8 | 11.6/11.28 |
+| anma | 24.6 | 55.7 | 8.44 | 10.77/11.21 | 58 | sönmüş | 11.20 | 61.4/16.6 | 11.7/11.34 |
+| ripple en kötü: L−, C−, ESR 35 mΩ | 26 | 83.1 | 8.91 | 10.77/11.21 | 86 | sönmüş | 11.21 | 65.0/16.5 | 11.5/11.26 |
+| sönüm en zayıf: L+, C−, ESR 15 mΩ | 24.6 | 21.8 | 8.28 | 10.72/11.25 | 22 | sönmüş | 11.11 | 54.1/17.4 | 10.9/11.35 |
+| Z0 en düşük: L−, C+, ESR 15 mΩ | 26 | 39.1 | 8.91 | 10.82/11.16 | 40 | sönmüş | 11.10 | 79.6/16.8 | 12.8/11.30 |
 
-L −%30, −%20 toleransı ve tepe akımdaki endüktans düşümünü birlikte kapsar. **Sönüm en zayıf köşe KALIR:** 73 W darbesinde çıkış 9,91–12,05 V, salınım sürer (§6). Diğer üç köşe sönümlüdür.
+L −%30, −%20 toleransı ve tepe akımdaki endüktans düşümünü birlikte kapsar. **Dört köşenin tamamı GEÇER:** daha önce 9,91–12,05 V ve 2140 mV t-t sürekli salınımla kalan "sönüm en zayıf" köşe, `Cd = 376 µF (−%20) + Rd = 0,22 Ω` ile **10,72/11,25 V** aralığında ve **sönmüş** olarak kapanır (darbe sonu 22 mV t-t yalnız 100 kHz anahtarlama ripple'ıdır). `Z0 en düşük` köşede 5 ms rampa kalkış akımı 12,8 A'dir; Adım 5'te ≥ 6 ms rampa veya akım sınırlamalı kalkışla ≤ 12 A tutulur.
 
 ### 5.9 Giriş tarafı, batarya+kablo modeli (VARSAYIM 40 mΩ + 1 µH/10 mΩ), 7,5 A
 
@@ -324,119 +321,116 @@ Ton ideal kaynağa göre ayarlıdır; kaynak direnci girişi ≈ 0,3 V düşürd
 
 ## 6. Sabit güç yükü ile kararlılık (HESAP + SİM)
 
-`python buck/dogrula.py kararlilik` ve `python buck/hesap.py` §6. Ton sabit (açık çevrim), 24,6 V.
+`python buck/dogrula.py kararlilik` ve `python buck/hesap.py` §6. Ton sabit (açık çevrim), 24,6 V; şematikte `Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı vardır (`C −%20` köşelerinde `Cd` de −%20 = 376 µF).
 
-### 6.1 Darbe süresinin etkisi (20 ms'lik testin kaçırdığı hata)
+### 6.1 Darbe süresinin etkisi (1 ms – 500 ms)
 
-Pencere köşesi: L 39,6 µH, Cout 800 µF, ESR 15 mΩ, DCR 7,81 mΩ; 57,64 → 73 → 57,64 W.
+Pencere köşesi: L 39,6 µH, Cout 800 µF, ESR 15 mΩ, Cd 376 µF + Rd 0,22 Ω, DCR 7,81 mΩ; 57,64 → 73 → 57,64 W.
 
 | Darbe ms | Vmin V | Vmax V | darbe sonu t-t mV | yavaş salınım, son iki LC periyodu mV | oran | sönüm | 9–12 V | karar |
 |---|---|---|---|---|---|---|---|---|
-| 1 | 10.65 | 11.31 | 460 | — | — | kısa | içinde | GEÇTİ |
-| 5 | 10.39 | 11.63 | 670 | 632 → 636 | 1.006 | sürekli salınım | içinde | KALDI |
-| 20 | 10.62 | 11.34 | 725 | 686 → 690 | 1.006 | sürekli salınım | içinde | KALDI |
-| 50 | 10.45 | 11.57 | 848 | 806 → 811 | 1.006 | sürekli salınım | içinde | KALDI |
-| 200 | 9.91 | 12.05 | 2140 | 2064 → 2082 | 1.009 | sürekli salınım | DIŞINDA | KALDI |
-| 500 | 9.64 | 12.32 | 2684 | 2617 → 2617 | 1.000 | sürekli salınım | DIŞINDA | KALDI |
+| 1 | 10.72 | 11.33 | 389 | — | — | kısa | içinde | GEÇTİ |
+| 5 | 10.72 | 11.27 | 231 | 207 → 140 | 0.679 | sönüyor | içinde | GEÇTİ |
+| 20 | 10.72 | 11.25 | 25 | 4 → 3 | 0.754 | sönmüş | içinde | GEÇTİ |
+| 50 | 10.72 | 11.25 | 22 | 1 → 1 | 1.000 | sönmüş | içinde | GEÇTİ |
+| 200 | 10.72 | 11.25 | 22 | 1 → 1 | 1.000 | sönmüş | içinde | GEÇTİ |
+| 500 | 10.72 | 11.25 | 22 | 1 → 1 | 1.000 | sönmüş | içinde | GEÇTİ |
 
-HESAP (aynı köşe, 73 W): denge 10.979 V, Pkritik 72.0 W, sönüm -5.1 1/s → LC periyodu başına oran 1.006, zaman sabiti 196 ms
+HESAP (aynı köşe, 73 W): denge 10.979 V, Pkritik 146.0 W, sönüm +287.2 1/s → LC periyodu başına oran 0.725, zaman sabiti 3 ms
 
 - "oran": yavaş (≈ 0,9 kHz) salınımın art arda iki LC periyodundaki tepe-tepe değerlerinin oranı. Çıkış 4,8 kHz RC'den geçirilerek ölçülür (anahtarlama ripple'ı ayrılır). Sönüm sınıfları: sönmüş (< 20 mV) · sönüyor (oran < 0,98) · sürekli salınım (0,98–1,02) · büyüyor (> 1,02). Son ikisi kabul edilmez.
-- 20 ms'lik darbe 9–12 V içinde kalır; aynı darbe 200 ms'de dışarı çıkar. Salınım periyot başına ≈ %0,6 büyür (zaman sabiti ≈ 0,2 s); HESAP aynı oranı (1,006) verir. 500 ms'de genlik 2,6 V'ta doyar (sınır çevrimi; bunu küçük işaret hesabı vermez).
-- 1 ms'lik darbe zarf ölçmek için kısadır; "GEÇTİ" yalnız aralık anlamındadır.
+- Dalsız devrede aynı köşe 200 ms'de 9,91–12,05 V'a, 500 ms'de 9,64–12,32 V sınır çevrimine çıkıyordu (`Pkritik = 72 W`, sönüm −5,1 1/s). **Sönüm dalıyla sönüm +287 1/s'ye (τ ≈ 3 ms) döner**: 5 ms'de salınım periyot başına `×0,679` ile hızla söner (HESAP: `×0,725`), 20 ms'de 3 mV'a düşer ve 50–500 ms boyunca çıkış **10,72–11,25 V** aralığında tamamen sönmüş kalır.
 
 ### 6.2 Model setleri × yük (200 ms darbe)
 
 | Model seti | P W | HESAP Pkritik W | HESAP sönüm 1/s | HESAP oran/periyot | SİM oran/periyot | SİM sönüm | Vmin V | Vmax V | 200 ms sonunda yavaş salınım mV | HESAP–SİM aynı yönde | 9–12 V | karar |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| anma (şematik) | 57.6→73.0 | 174 | +455 | 0.595 | 1.000 | sönmüş | 10.72 | 11.26 | 3 | evet | içinde | GEÇTİ |
-| anma (şematik) | 41.2→82.5 | 174 | +413 | 0.624 | 1.000 | sönmüş | 10.28 | 11.62 | 3 | evet | içinde | GEÇTİ |
-| anma (şematik) | 20.6→61.9 | 173 | +500 | 0.566 | 1.000 | sönmüş | 10.30 | 11.61 | 3 | evet | içinde | GEÇTİ |
-| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 57.6→73.0 | 72 | -5 | 1.006 | 1.009 | sürekli salınım | 9.91 | 12.05 | 2082 | evet | DIŞINDA | KALDI |
-| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 41.2→82.5 | 72 | -58 | 1.067 | 1.000 | sürekli salınım | 9.37 | 12.57 | 3125 | evet | DIŞINDA | KALDI |
-| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 20.6→61.9 | 71 | +51 | 0.944 | 0.996 | sönmüş | 10.10 | 11.79 | 1 | evet | içinde | GEÇTİ |
-| el sarım: L+%8, C−%20, ESR 15 mΩ | 57.6→73.0 | 80 | +37 | 0.962 | 0.989 | sönmüş | 10.67 | 11.30 | 1 | evet | içinde | GEÇTİ |
-| el sarım: L+%8, C−%20, ESR 15 mΩ | 41.2→82.5 | 80 | -16 | 1.017 | 1.000 | sürekli salınım | 9.49 | 12.95 | 2842 | evet | DIŞINDA | KALDI |
-| el sarım: L+%8, C−%20, ESR 15 mΩ | 20.6→61.9 | 79 | +93 | 0.906 | 1.000 | sönmüş | 10.15 | 11.75 | 1 | evet | içinde | GEÇTİ |
-| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 57.6→73.0 | 63 | -54 | 1.062 | 1.000 | sürekli salınım | 9.63 | 12.68 | 2690 | evet | DIŞINDA | KALDI |
-| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 41.2→82.5 | 63 | -106 | 1.126 | 1.000 | sürekli salınım | 9.36 | 13.40 | 3208 | evet | DIŞINDA | KALDI |
-| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 20.6→61.9 | 62 | +3 | 0.997 | 0.997 | sürekli salınım | 10.10 | 11.82 | 1136 | evet (sınırda) | içinde | KALDI |
-| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 57.6→73.0 | 59 | -76 | 1.089 | 1.000 | sürekli salınım | 9.62 | 12.51 | 2726 | evet | DIŞINDA | KALDI |
-| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 41.2→82.5 | 58 | -128 | 1.155 | 1.000 | sürekli salınım | 9.34 | 13.43 | 3254 | evet | DIŞINDA | KALDI |
-| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 20.6→61.9 | 58 | -20 | 1.022 | 1.000 | sürekli salınım | 9.84 | 12.85 | 2180 | evet | DIŞINDA | KALDI |
-| anma L/C, ESR 15 mΩ, Rd 4 mΩ | 57.6→73.0 | 98 | +108 | 0.884 | 1.000 | sönmüş | 10.72 | 11.26 | 1 | evet | içinde | GEÇTİ |
-| anma L/C, ESR 15 mΩ, Rd 4 mΩ | 41.2→82.5 | 98 | +66 | 0.927 | 1.000 | sönmüş | 10.26 | 11.65 | 1 | evet | içinde | GEÇTİ |
-| anma L/C, ESR 15 mΩ, Rd 4 mΩ | 20.6→61.9 | 97 | +153 | 0.840 | 1.000 | sönmüş | 10.28 | 11.64 | 1 | evet | içinde | GEÇTİ |
-| anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ | 57.6→73.0 | 80 | +32 | 0.964 | 0.980 | sönmüş | 10.72 | 11.26 | 2 | evet | içinde | GEÇTİ |
-| anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ | 41.2→82.5 | 80 | -10 | 1.011 | 1.000 | sürekli salınım | 9.73 | 12.19 | 2402 | evet | DIŞINDA | KALDI |
-| anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ | 20.6→61.9 | 80 | +77 | 0.916 | 1.000 | sönmüş | 10.27 | 11.65 | 1 | evet | içinde | GEÇTİ |
-| en çok kayıp (sıcak bakır/RDS, VF azami) | 57.6→73.0 | 179 | +480 | 0.579 | 1.000 | sönmüş | 10.71 | 11.26 | 3 | evet | içinde | GEÇTİ |
-| en çok kayıp (sıcak bakır/RDS, VF azami) | 41.2→82.5 | 178 | +438 | 0.607 | 1.000 | sönmüş | 10.28 | 11.62 | 3 | evet | içinde | GEÇTİ |
-| en çok kayıp (sıcak bakır/RDS, VF azami) | 20.6→61.9 | 177 | +524 | 0.550 | 1.000 | sönmüş | 10.30 | 11.60 | 3 | evet | içinde | GEÇTİ |
-| soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır) | 57.6→73.0 | 426 | +1857 | 0.120 | 1.000 | sönmüş | 10.65 | 11.33 | 9 | evet | içinde | GEÇTİ |
-| soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır) | 41.2→82.5 | 424 | +1829 | 0.124 | 1.000 | sönmüş | 10.24 | 11.66 | 9 | evet | içinde | GEÇTİ |
-| soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır) | 20.6→61.9 | 422 | +1886 | 0.116 | 1.000 | sönmüş | 10.26 | 11.64 | 9 | evet | içinde | GEÇTİ |
+| anma (şematik) | 57.6→73.0 | 257 | +602 | 0.503 | 1.000 | sönmüş | 10.77 | 11.21 | 2 | evet | içinde | GEÇTİ |
+| anma (şematik) | 41.2→82.5 | 256 | +573 | 0.520 | 1.000 | sönmüş | 10.42 | 11.50 | 2 | evet | içinde | GEÇTİ |
+| anma (şematik) | 20.6→61.9 | 254 | +633 | 0.486 | 1.000 | sönmüş | 10.43 | 11.49 | 2 | evet | içinde | GEÇTİ |
+| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 57.6→73.0 | 146 | +287 | 0.725 | 1.000 | sönmüş | 10.72 | 11.25 | 1 | evet | içinde | GEÇTİ |
+| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 41.2→82.5 | 145 | +250 | 0.756 | 1.000 | sönmüş | 10.26 | 11.64 | 1 | evet | içinde | GEÇTİ |
+| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 20.6→61.9 | 145 | +327 | 0.693 | 1.000 | sönmüş | 10.28 | 11.63 | 1 | evet | içinde | GEÇTİ |
+| el sarım: L+%8, C−%20, ESR 15 mΩ | 57.6→73.0 | 161 | +348 | 0.692 | 1.000 | sönmüş | 10.74 | 11.24 | 1 | evet | içinde | GEÇTİ |
+| el sarım: L+%8, C−%20, ESR 15 mΩ | 41.2→82.5 | 160 | +310 | 0.720 | 1.000 | sönmüş | 10.30 | 11.61 | 1 | evet | içinde | GEÇTİ |
+| el sarım: L+%8, C−%20, ESR 15 mΩ | 20.6→61.9 | 159 | +388 | 0.663 | 1.000 | sönmüş | 10.32 | 11.59 | 1 | evet | içinde | GEÇTİ |
+| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 57.6→73.0 | 134 | +237 | 0.767 | 1.000 | sönmüş | 10.72 | 11.26 | 1 | evet | içinde | GEÇTİ |
+| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 41.2→82.5 | 134 | +200 | 0.799 | 1.000 | sönmüş | 10.26 | 11.65 | 1 | evet | içinde | GEÇTİ |
+| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 20.6→61.9 | 133 | +278 | 0.733 | 1.000 | sönmüş | 10.28 | 11.64 | 1 | evet | içinde | GEÇTİ |
+| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 57.6→73.0 | 136 | +247 | 0.758 | 1.000 | sönmüş | 10.72 | 11.25 | 1 | evet | içinde | GEÇTİ |
+| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 41.2→82.5 | 135 | +210 | 0.791 | 1.000 | sönmüş | 10.26 | 11.65 | 1 | evet | içinde | GEÇTİ |
+| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 20.6→61.9 | 135 | +287 | 0.725 | 1.000 | sönmüş | 10.28 | 11.63 | 1 | evet | içinde | GEÇTİ |
+| anma L/C, ESR 15 mΩ, Rd 4 mΩ | 57.6→73.0 | 199 | +407 | 0.629 | 1.000 | sönmüş | 10.77 | 11.21 | 1 | evet | içinde | GEÇTİ |
+| anma L/C, ESR 15 mΩ, Rd 4 mΩ | 41.2→82.5 | 198 | +377 | 0.650 | 1.000 | sönmüş | 10.41 | 11.52 | 1 | evet | içinde | GEÇTİ |
+| anma L/C, ESR 15 mΩ, Rd 4 mΩ | 20.6→61.9 | 198 | +440 | 0.606 | 1.000 | sönmüş | 10.42 | 11.51 | 1 | evet | içinde | GEÇTİ |
+| anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ | 57.6→73.0 | 187 | +368 | 0.657 | 1.000 | sönmüş | 10.78 | 11.20 | 1 | evet | içinde | GEÇTİ |
+| anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ | 41.2→82.5 | 186 | '+338'.replace("'","") | 0.680 | 1.000 | sönmüş | 10.40 | 11.52 | 1 | evet | içinde | GEÇTİ |
+| anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ | 41.2→82.5 | 186 | +338 | 0.680 | 1.000 | sönmüş | 10.40 | 11.52 | 1 | evet | içinde | GEÇTİ |
+| anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ | 20.6→61.9 | 185 | +401 | 0.633 | 1.000 | sönmüş | 10.42 | 11.51 | 1 | evet | içinde | GEÇTİ |
+| en çok kayıp (sıcak bakır/RDS, VF azami) | 57.6→73.0 | 262 | +627 | 0.489 | 1.000 | sönmüş | 10.77 | 11.21 | 2 | evet | içinde | GEÇTİ |
+| en çok kayıp (sıcak bakır/RDS, VF azami) | 41.2→82.5 | 261 | +598 | 0.506 | 1.000 | sönmüş | 10.42 | 11.50 | 2 | evet | içinde | GEÇTİ |
+| en çok kayıp (sıcak bakır/RDS, VF azami) | 20.6→61.9 | 259 | +658 | 0.472 | 1.000 | sönmüş | 10.43 | 11.49 | 2 | evet | içinde | GEÇTİ |
+| soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır) | 57.6→73.0 | 430 | +1247 | 0.241 | 1.000 | sönmüş | 10.74 | 11.24 | 6 | evet | içinde | GEÇTİ |
+| soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır) | 41.2→82.5 | 428 | +1224 | 0.248 | 1.000 | sönmüş | 10.41 | 11.50 | 6 | evet | içinde | GEÇTİ |
+| soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır) | 20.6→61.9 | 426 | +1272 | 0.235 | 1.000 | sönmüş | 10.43 | 11.49 | 6 | evet | içinde | GEÇTİ |
 
-Tam ifade ve geçerlilik sınırı (`hesap.py` `cpl()`): seri L + Rs (Rs = DCR + D·Ron + (1−D)·Rd), paralel kol C + ESR, yük i = P/v; denge noktası vo = vth − Rs·P/vo.
+Tam 3. derece durum uzayı ifadesi ve geçerlilik sınırı (`hesap.py` `cpl()`): durumlar `[iL, vCout, vCd]`, seri L + Rs (Rs = DCR + D·Ron + (1−D)·Rd), paralel kol Cout + ESR, paralel sönüm dalı Cd + Rd, yük i = P/v; denge noktası vo = vth − Rs·P/vo (`Cd` DC'yi keser).
 
 ```
-6) Sabit güç yükü (CPL) ile açık çevrim kararlılığı — tam ifade, gerçek denge noktası
-   Pkritik = Vo²(Rs+ESR)/(L/C+Rs·ESR);  Rs = DCR + D·Ron + (1−D)·Rd;  duty 57,64 W'ta 11 V'a ayarlı, 24,6 V
-   sönüm > 0: salınım söner (zaman sabiti 1/sönüm); sönüm < 0: BÜYÜR. Geçerlilik: cpl() açıklaması.
+6) Sabit güç yükü (CPL) ile açık çevrim kararlılığı — 3. derece tam ifade (şematik Cd=470 µF + Rd=0,22 Ω dahil)
+   Durum uzayı [iL, vCout, vCd], gerçek denge noktası; C−%20 setlerinde Cd de −%20 (376 µF); duty 57,64 W'ta 11 V'a ayarlı, 24,6 V
+   sönüm = −max Re(s) > 0: salınım söner (zaman sabiti 1/sönüm); sönüm < 0: BÜYÜR. Geçerlilik: cpl() açıklaması.
    model seti                                               Rs mΩ  Pkritik W | 57,64 W: sönüm 1/s | 73 W: Vo V  sönüm 1/s  τ ms   | 82,5 W: sönüm 1/s  τ ms
-   anma (şematik)                                            14.7    174.3   |    +519.9          | 10.979    +455.3       2   |    +414.8       2
-   pencere köşesi: L+%20, C−%20, ESR 15 mΩ                   14.7     72.0   |     +76.6          | 10.979      -5.1    196↑   |     -56.1     18↑
-   el sarım: L+%8, C−%20, ESR 15 mΩ                          14.7     79.9   |    +118.4          | 10.979     +36.8      27   |     -14.2     70↑
-   en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ             10.8     62.9   |     +27.5          | 10.985     -53.8     19↑   |    -104.5     10↑
-   en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ     14.1     58.7   |      +5.5          | 10.980     -75.9     13↑   |    -126.6      8↑
-   anma L/C, ESR 15 mΩ, Rd 4 mΩ                              12.1     98.1   |    +172.8          | 10.983    +107.8       9   |     +67.2      15
-   anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ                     12.1     80.5   |     +96.7          | 10.983     +31.8      31   |      -8.6    116↑
-   en çok kayıp (sıcak bakır/RDS, VF azami)                  16.3    178.9   |    +544.6          | 10.977    +479.8       2   |    +439.2       2
-   soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır)                14.7    425.6   |   +1898.7          | 10.979   +1857.0       1   |   +1830.4       1
-   ↑ = büyüyen salınımın zaman sabiti. Basitleştirilmiş eski sınır (Rs·ESR yok, Vo = 11 V): anma 182 W, köşe 73 W.
-   Gerekli pay tanımlı değildir (kullanıcı kararı); 82,5 W zarfı köşede Pkritik'in ÜSTÜNDEDİR.
+   anma (şematik)                                            14.7    256.6   |    +646.9          | 10.979    +602.2       2   |    +574.1       2
+   pencere köşesi: L+%20, C−%20, ESR 15 mΩ                   14.7    146.0   |    +345.1          | 10.979    +287.2       3   |    +251.0       4
+   el sarım: L+%8, C−%20, ESR 15 mΩ                          14.7    160.6   |    +405.9          | 10.979    +347.9       3   |    +311.6       3
+   en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ             10.8    134.3   |    +294.9          | 10.985    +237.3       4   |    +201.3       5
+   en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ     14.1    136.0   |    +305.4          | 10.980    +247.2       4   |    +210.8       5
+   anma L/C, ESR 15 mΩ, Rd 4 mΩ                              12.1    199.1   |    +454.0          | 10.983    +407.4       2   |    +378.2       3
+   anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ                     12.1    186.8   |    +415.3          | 10.983    +368.1       3   |    +338.7       3
+   en çok kayıp (sıcak bakır/RDS, VF azami)                  16.3    262.0   |    +672.0          | 10.977    +627.2       2   |    +599.1       2
+   soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır)                14.7    430.1   |   +1282.3          | 10.979   +1247.3       1   |   +1225.1       1
+   ↑ = büyüyen salınımın zaman sabiti. Dalsız basitleştirilmiş sınır (Rs·ESR ve Cd-Rd yok, Vo = 11 V): anma 182 W, köşe 73 W.
+   Sönüm dalıyla (470 µF + 0,22 Ω) bütün model setlerinde Pkritik ≥ 126 W > 82,5 W modül zarfı.
 ```
 
-- **HESAP ve SİM her satırda aynı yöndedir.** Şematik anma değerleri, en çok kayıp ve soğuk setleri 82,5 W'a kadar sönümlüdür.
-- **Kalan satırlar:** pencere köşesi 73 W ve 82,5 W'ta; el sarım toleransı (L +%8) 82,5 W'ta; en az sönüm setleri 73 W ve üstünde; anma L/C ile ESR 10 mΩ + Rd 4 mΩ senaryosu 82,5 W'ta. Bu satırlar **KALDI olarak kayıtlıdır**; ölçüt gevşetilmedi.
-- Köşelerde 82,5 W zarfı Pkritik'in (59–80 W) üstündedir. Gerekli pay için onaylı bir sayı yoktur; "Pkritik ≥ zarf" bile sağlanmamaktadır.
-- Sonucu belirleyen iki büyüklük **ölçülmemiştir**: Cout'un gerçek ESR'si (0,9 kHz ve 100 kHz, sıcak/soğuk) ve L1'in gerçek L / DCR değeri. ESR 35 mΩ'a yakınsa sorun yoktur; 15 mΩ veya altındaysa vardır.
-- Hesabın sınırı: CCM, ortalama model, ideal ve sonsuz bantlı sabit güç yükü, doğrusal diyot. Gerçek yüklerin giriş dönüştürücüleri sonlu bantlıdır; sonuç kötümser yöndedir ama ne kadar kötümser olduğu bilinmiyor.
-- Kapalı çevrim (Adım 6) bu dinamiği değiştirir; ancak **kontrolle kararlı hâle getirilebildiği gösterilmemiştir** (kontrol tasarlanmadı). Bu yüzden konu "kontrol çözer" diye kapatılmaz: ya donanımla sönüm eklenir (§10) ya da Adım 6'ya doğrulanacak şart olarak devredilir (§11) ve o zamana kadar dondurmayı engeller.
+- **9 model seti × 3 sabit güç adımı = 27 satırın tamamında HESAP ve SİM uyuşur ve tamamı GEÇER** (`10,26–11,65 V`, darbe sonunda yavaş salınım ≤ 6 mV t-t).
+- En sert kombinasyonda bile (`L +%20`, `Cout −%20`, `Cd −%20`, `DCR 6,5 mΩ`, `Ron 4,7 mΩ`, `Rd_diyot 4 mΩ`, sıcak `Cout ESR 10 mΩ`) kritik güç `Pkritik = 126 W`'tır (82,5 W modül zarfının **1,53 katı**); sönüm zaman sabiti ≤ 5 ms'dir.
+- Böylece `Cout`'un ölçülmemiş alt ESR sınırı artık bir kararlılık riski oluşturmaz; `Cout` seçimi yalnızca üst empedans/ESR (≤ 35 mΩ @100 kHz) ve ripple akımı ile sınırlanır.
 
 ## 7. Genel modül zarfı (SİM)
 
-`python buck/dogrula.py zarf`. Genel modül için onaylı sınır olmadığından GEÇTİ/KALDI kararı yoktur; son sütun yalnız O1/S2E uyumluluğudur.
+`python buck/dogrula.py zarf`. Genel modül için ayrı sınır tanımlanmadığından genel GEÇTİ/KALDI kararı yoktur; son sütun O1/S2E uyumluluğudur.
 
 ### 7.1 Kararlı durum, 0,24 A – 7,5 A, beş giriş (Ton her noktada 11 V'a ayarlı)
 
 | Vin V | Yük | Ton µs | Kip | Vo V | kayma mV/ms | ΔVo mV | IL tepe A | iletim kaybı W |
 |---|---|---|---|---|---|---|---|---|
-| 20 | düşük 0,24 A | 3.125 | DCM | 10.995 | -0.2 | 30.7 | 0.85 | 0.04 |
-| 20 | %25 | 5.587 | CCM | 11.000 | +0.0 | 53.0 | 2.64 | 0.37 |
-| 20 | %50 | 5.601 | CCM | 11.000 | +0.0 | 52.6 | 4.51 | 0.84 |
-| 20 | %75 | 5.614 | CCM | 11.000 | +0.0 | 52.3 | 6.39 | 1.40 |
-| 20 | %100 | 5.627 | CCM | 11.000 | -0.0 | 52.0 | 8.26 | 2.07 |
-| 22.2 | düşük 0,24 A | 2.660 | DCM | 10.995 | -0.2 | 32.4 | 0.91 | 0.05 |
-| 22.2 | %25 | 5.042 | CCM | 11.000 | +0.0 | 59.5 | 2.73 | 0.42 |
-| 22.2 | %50 | 5.054 | CCM | 11.000 | -0.0 | 59.2 | 4.61 | 0.92 |
-| 22.2 | %75 | 5.066 | CCM | 11.000 | +0.0 | 58.8 | 6.48 | 1.53 |
-| 22.2 | %100 | 5.078 | CCM | 11.000 | +0.0 | 58.5 | 8.36 | 2.23 |
-| 24.6 | düşük 0,24 A | 2.293 | DCM | 10.995 | -0.2 | 34.0 | 0.95 | 0.06 |
-| 24.6 | %25 | 4.557 | CCM | 11.000 | -0.0 | 65.4 | 2.81 | 0.45 |
-| 24.6 | %50 | 4.568 | CCM | 11.000 | +0.0 | 65.0 | 4.69 | 0.99 |
-| 24.6 | %75 | 4.579 | CCM | 11.000 | +0.0 | 64.7 | 6.57 | 1.64 |
-| 24.6 | %100 | 4.590 | CCM | 11.000 | +0.0 | 64.3 | 8.44 | 2.38 |
-| 25.2 | düşük 0,24 A | 2.218 | DCM | 10.994 | -0.2 | 34.3 | 0.96 | 0.06 |
-| 25.2 | %25 | 4.450 | CCM | 11.000 | +0.0 | 66.6 | 2.83 | 0.46 |
-| 25.2 | %50 | 4.460 | CCM | 11.000 | +0.0 | 66.3 | 4.71 | 1.01 |
-| 25.2 | %75 | 4.471 | CCM | 11.000 | +0.0 | 66.0 | 6.58 | 1.66 |
-| 25.2 | %100 | 4.482 | CCM | 11.000 | +0.0 | 65.6 | 8.46 | 2.41 |
-| 26 | düşük 0,24 A | 2.124 | DCM | 10.994 | -0.3 | 34.7 | 0.97 | 0.06 |
-| 26 | %25 | 4.314 | CCM | 11.000 | -0.0 | 68.3 | 2.86 | 0.47 |
-| 26 | %50 | 4.325 | CCM | 11.000 | -0.0 | 67.9 | 4.73 | 1.03 |
-| 26 | %75 | 4.335 | CCM | 11.000 | +0.0 | 67.6 | 6.61 | 1.69 |
-| 26 | %100 | 4.346 | CCM | 11.000 | +0.0 | 67.2 | 8.48 | 2.45 |
+| 20 | düşük 0,24 A | 3.125 | DCM | 10.997 | -0.2 | 26.4 | 0.85 | 0.04 |
+| 20 | %25 | 5.587 | CCM | 11.000 | -0.0 | 45.7 | 2.64 | 0.37 |
+| 20 | %50 | 5.601 | CCM | 11.000 | +0.0 | 45.5 | 4.51 | 0.84 |
+| 20 | %75 | 5.614 | CCM | 11.000 | +0.0 | 45.2 | 6.39 | 1.40 |
+| 20 | %100 | 5.627 | CCM | 11.000 | +0.0 | 45.0 | 8.26 | 2.06 |
+| 22.2 | düşük 0,24 A | 2.660 | DCM | 10.996 | -0.2 | 27.9 | 0.91 | 0.05 |
+| 22.2 | %25 | 5.042 | CCM | 11.000 | +0.0 | 51.4 | 2.73 | 0.41 |
+| 22.2 | %50 | 5.054 | CCM | 11.000 | +0.0 | 51.1 | 4.61 | 0.92 |
+| 22.2 | %75 | 5.066 | CCM | 11.000 | +0.0 | 50.9 | 6.48 | 1.52 |
+| 22.2 | %100 | 5.078 | CCM | 11.000 | +0.0 | 50.6 | 8.36 | 2.23 |
+| 24.6 | düşük 0,24 A | 2.293 | DCM | 10.996 | -0.2 | 29.2 | 0.95 | 0.05 |
+| 24.6 | %25 | 4.557 | CCM | 11.000 | +0.0 | 56.4 | 2.81 | 0.45 |
+| 24.6 | %50 | 4.568 | CCM | 11.000 | +0.0 | 56.2 | 4.69 | 0.99 |
+| 24.6 | %75 | 4.579 | CCM | 11.000 | +0.0 | 55.9 | 6.57 | 1.63 |
+| 24.6 | %100 | 4.590 | CCM | 11.000 | +0.0 | 55.7 | 8.44 | 2.38 |
+| 25.2 | düşük 0,24 A | 2.218 | DCM | 10.996 | -0.2 | 29.5 | 0.96 | 0.06 |
+| 25.2 | %25 | 4.450 | CCM | 11.000 | +0.0 | 57.5 | 2.83 | 0.46 |
+| 25.2 | %50 | 4.460 | CCM | 11.000 | -0.0 | 57.3 | 4.71 | 1.01 |
+| 25.2 | %75 | 4.471 | CCM | 11.000 | -0.0 | 57.0 | 6.58 | 1.66 |
+| 25.2 | %100 | 4.482 | CCM | 11.000 | -0.0 | 56.8 | 8.46 | 2.41 |
+| 26 | düşük 0,24 A | 2.124 | DCM | 10.996 | -0.2 | 29.9 | 0.97 | 0.06 |
+| 26 | %25 | 4.314 | CCM | 11.000 | -0.0 | 59.0 | 2.86 | 0.47 |
+| 26 | %50 | 4.325 | CCM | 11.000 | -0.0 | 58.7 | 4.73 | 1.03 |
+| 26 | %75 | 4.335 | CCM | 11.000 | +0.0 | 58.4 | 6.61 | 1.69 |
+| 26 | %100 | 4.346 | CCM | 11.000 | -0.0 | 58.2 | 8.48 | 2.45 |
 
 Kararlı çalışma noktası yük tipinden (CR/CC/CP) bağımsızdır; tip yalnız dinamiği değiştirir. 0 A'de sabit Ton ile çıkış giriş gerilimine tırmanır: açık çevrimde tanımlı değildir, geri besleme gerektirir. DCM satırındaki kayma (−0,2 mV/ms) 16 ms'de oturmamış koşuyu gösterir.
 
@@ -444,51 +438,51 @@ Kararlı çalışma noktası yük tipinden (CR/CC/CP) bağımsızdır; tip yaln�
 
 | Vin V | Tip | P W (@11 V) | Vmin V | Vmax V | ara kararlı V | son kararlı V | sönüm | IL tepe A | O1/S2E 9–12 V |
 |---|---|---|---|---|---|---|---|---|---|
-| 20 | CP | 20.6→61.9→20.6 | 10.31 | 11.60 | 10.95 | 11.00 | sönmüş | 9.3 | içinde |
-| 20 | CC | 20.6→61.9→20.6 | 10.36 | 11.59 | 10.95 | 11.00 | sönmüş | 8.9 | içinde |
-| 20 | CR | 20.6→61.9→20.6 | 10.40 | 11.57 | 10.95 | 11.00 | sönmüş | 8.5 | içinde |
-| 20 | CP | 41.2→82.5→41.2 | 10.29 | 11.62 | 10.95 | 11.00 | sönmüş | 11.4 | içinde |
-| 20 | CC | 41.2→82.5→41.2 | 10.36 | 11.59 | 10.95 | 11.00 | sönmüş | 10.7 | içinde |
-| 20 | CR | 41.2→82.5→41.2 | 10.42 | 11.55 | 10.95 | 11.00 | sönmüş | 10.2 | içinde |
-| 24.6 | CP | 20.6→61.9→20.6 | 10.30 | 11.61 | 10.94 | 11.00 | sönmüş | 9.5 | içinde |
-| 24.6 | CC | 20.6→61.9→20.6 | 10.35 | 11.59 | 10.94 | 11.00 | sönmüş | 9.0 | içinde |
-| 24.6 | CR | 20.6→61.9→20.6 | 10.40 | 11.57 | 10.95 | 11.00 | sönmüş | 8.7 | içinde |
-| 24.6 | CP | 41.2→82.5→41.2 | 10.28 | 11.62 | 10.94 | 11.00 | sönmüş | 11.6 | içinde |
-| 24.6 | CC | 41.2→82.5→41.2 | 10.35 | 11.59 | 10.94 | 11.00 | sönmüş | 10.9 | içinde |
-| 24.6 | CR | 41.2→82.5→41.2 | 10.41 | 11.56 | 10.95 | 11.00 | sönmüş | 10.4 | içinde |
-| 26 | CP | 20.6→61.9→20.6 | 10.30 | 11.61 | 10.94 | 11.00 | sönmüş | 9.6 | içinde |
-| 26 | CC | 20.6→61.9→20.6 | 10.35 | 11.59 | 10.94 | 11.00 | sönmüş | 9.1 | içinde |
-| 26 | CR | 20.6→61.9→20.6 | 10.39 | 11.57 | 10.95 | 11.00 | sönmüş | 8.7 | içinde |
-| 26 | CP | 41.2→82.5→41.2 | 10.28 | 11.63 | 10.94 | 11.00 | sönmüş | 11.6 | içinde |
-| 26 | CC | 41.2→82.5→41.2 | 10.35 | 11.59 | 10.94 | 11.00 | sönmüş | 11.0 | içinde |
-| 26 | CR | 41.2→82.5→41.2 | 10.41 | 11.56 | 10.95 | 11.00 | sönmüş | 10.5 | içinde |
+| 20 | CP | 20.6→61.9→20.6 | 10.44 | 11.49 | 10.95 | 11.00 | sönmüş | 9.0 | içinde |
+| 20 | CC | 20.6→61.9→20.6 | 10.47 | 11.47 | 10.95 | 11.00 | sönmüş | 8.6 | içinde |
+| 20 | CR | 20.6→61.9→20.6 | 10.50 | 11.46 | 10.95 | 11.00 | sönmüş | 8.3 | içinde |
+| 20 | CP | 41.2→82.5→41.2 | 10.42 | 11.50 | 10.95 | 11.00 | sönmüş | 11.0 | içinde |
+| 20 | CC | 41.2→82.5→41.2 | 10.47 | 11.47 | 10.95 | 11.00 | sönmüş | 10.5 | içinde |
+| 20 | CR | 41.2→82.5→41.2 | 10.51 | 11.45 | 10.95 | 11.00 | sönmüş | 10.1 | içinde |
+| 24.6 | CP | 20.6→61.9→20.6 | 10.43 | 11.49 | 10.94 | 11.00 | sönmüş | 9.2 | içinde |
+| 24.6 | CC | 20.6→61.9→20.6 | 10.47 | 11.48 | 10.94 | 11.00 | sönmüş | 8.8 | içinde |
+| 24.6 | CR | 20.6→61.9→20.6 | 10.50 | 11.47 | 10.95 | 11.00 | sönmüş | 8.5 | içinde |
+| 24.6 | CP | 41.2→82.5→41.2 | 10.42 | 11.50 | 10.94 | 11.00 | sönmüş | 11.2 | içinde |
+| 24.6 | CC | 41.2→82.5→41.2 | 10.47 | 11.48 | 10.94 | 11.00 | sönmüş | 10.7 | içinde |
+| 24.6 | CR | 41.2→82.5→41.2 | 10.50 | 11.46 | 10.95 | 11.00 | sönmüş | 10.3 | içinde |
+| 26 | CP | 20.6→61.9→20.6 | 10.43 | 11.49 | 10.94 | 11.00 | sönmüş | 9.2 | içinde |
+| 26 | CC | 20.6→61.9→20.6 | 10.46 | 11.48 | 10.94 | 11.00 | sönmüş | 8.9 | içinde |
+| 26 | CR | 20.6→61.9→20.6 | 10.49 | 11.47 | 10.95 | 11.00 | sönmüş | 8.6 | içinde |
+| 26 | CP | 41.2→82.5→41.2 | 10.42 | 11.50 | 10.94 | 11.00 | sönmüş | 11.2 | içinde |
+| 26 | CC | 41.2→82.5→41.2 | 10.46 | 11.48 | 10.94 | 11.00 | sönmüş | 10.7 | içinde |
+| 26 | CR | 41.2→82.5→41.2 | 10.50 | 11.46 | 10.95 | 11.00 | sönmüş | 10.3 | içinde |
 
-Şematik anma değerleriyle üç yük tipinde ve üç girişte adımlar 10,28–11,63 V içinde ve sönümlüdür. Tolerans köşelerindeki CP sonuçları §6.2'dedir.
+Şematik anma değerleriyle üç yük tipinde ve üç girişte adımlar **10,42–11,50 V** içinde (±%5,3) ve sönümlüdür; dalsız devreye (`10,28–11,63 V`) göre geçici sapma ≈ 270 mV daralmıştır. Tolerans köşelerindeki CP sonuçları §6.2'dedir (`10,26–11,65 V`).
 
 ### 7.3 Tam yük atma 82,5 → 0 W, kontrolcü gecikmesiyle
 
 | Model | Vin V | 0 periyot V | 1 periyot V | 2 periyot V | 3 periyot V |
 |---|---|---|---|---|---|
-| anma | 24.6 | 11.288 | 11.364 | 11.433 | 11.501 |
-| anma | 26 | 11.289 | 11.365 | 11.435 | 11.503 |
-| köşe L+%20, C−%20, ESR 35 mΩ | 24.6 | 11.286 | 11.377 | 11.466 | 11.552 |
-| köşe L+%20, C−%20, ESR 35 mΩ | 26 | 11.287 | 11.378 | 11.467 | 11.553 |
-| soğuk ESR 120 mΩ (üst sınır) | 24.6 | 11.973 | 12.051 | 12.087 | 12.120 |
-| soğuk ESR 120 mΩ (üst sınır) | 26 | 11.978 | 12.056 | 12.092 | 12.125 |
+| anma | 24.6 | 11.247 | 11.307 | 11.361 | 11.413 |
+| anma | 26 | 11.248 | 11.309 | 11.362 | 11.414 |
+| köşe L+%20, C−%20, ESR 35 mΩ | 24.6 | 11.245 | 11.316 | 11.384 | 11.450 |
+| köşe L+%20, C−%20, ESR 35 mΩ | 26 | 11.246 | 11.317 | 11.385 | 11.451 |
+| soğuk ESR 120 mΩ (üst sınır) | 24.6 | 11.630 | 11.690 | 11.725 | 11.757 |
+| soğuk ESR 120 mΩ (üst sınır) | 26 | 11.634 | 11.693 | 11.728 | 11.760 |
 
-Her PWM periyodu gecikme ≈ 70–90 mV ekler. **Soğuk ESR üst sınırıyla (120 mΩ) ilk sıçrama tek başına 0,9 V'tur ve tepe 12 V'u aşar** (11,97–12,13 V); bu varsayım Zmax'ın tamamını ESR sayar, gerçek değer ölçülmelidir. O1 portu için sonuç: yük atma bütçesi soğukta ESR'ye bağlıdır (§11).
+Her PWM periyodu gecikme ≈ 60–70 mV ekler. **`Cd + Rd` dalının ek kazanımı:** yük anında kesildiğinde ilk sıçrama `120 mΩ || 0,22 Ω ≈ 78 mΩ` üzerinden oluştuğundan, soğuk ESR üst sınırıyla (120 mΩ) bile tepe **11,97–12,13 V'tan 11,63–11,76 V'a düşer ve 3 periyot gecikmede dahi 12 V altında kalır** (bu senaryoda `Rd_toplam = 0,22 Ω` alınmıştır; soğukta `Cd` ESR'si de yükselip `Rd_toplam ≈ 0,35 Ω` olursa ilk sıçrama `7,5 A × (0,12 || 0,35 Ω) ≈ 0,67 V` olur ve yine 12 V altında kalır).
 
 ## 8. Köşe model setleri ve veri sayfası kanıtı
 
 Tek bir "en kötü" set yoktur: sönüm için en kötü olan (düşük direnç) kayıp için en iyidir. Bu yüzden ayrı setler kullanılır (`dogrula.py` `SECILEN`, `EN_AZ_SONUM`, `EN_AZ_SONUM_SICAK`, `EN_COK_KAYIP`, `SOGUK`).
 
-| Set | L / Cout | Cout ESR | DCR | S1 Ron | D1 (çift) | Kullanım |
+| Set | L / Cout / Cd | Cout ESR ve Rd | DCR | S1 Ron | D1 (çift) | Kullanım |
 |---|---|---|---|---|---|---|
-| Anma (şematik) | 33 µH / 1000 µF | 35 mΩ (Zmax, varsayım) | 7,81 mΩ (HESAP) | 5,6 mΩ (25 °C azami) | 0,38 V + 8 mΩ | §5 |
-| En az sönüm | × 1,2 / × 0,8 | 15 mΩ (pencere alt kenarı, **senaryo**) | 6,5 mΩ (denenen alt sınır) | 4,7 mΩ (25 °C tipik; en düşük değer yayımlanmamış) | 0,39 V + 4 mΩ (25 °C tipik, 10–20 A) | §6 |
-| En az sönüm, sıcak | × 1,2 / × 0,8 | 10 mΩ (**TAHMİN**; sıcakta ESR düşer, sayı ölçülmedi) | 7,81 mΩ | 6,6 mΩ (4,7 × 1,4) | 0,265 V + 6 mΩ (125 °C tipik) | §6 |
-| En çok kayıp | anma | 35 mΩ | 10,3 mΩ (100 °C bakır) | 7,84 mΩ (5,6 × 1,4, 100 °C) | 0,415 V + 4,5 mΩ (25 °C azami) | §6, §9 |
-| Soğuk | anma | 120 mΩ (−10 °C Zmax'ın tamamı ESR; **üst sınır**) | 7,81 mΩ | 5,6 mΩ | 0,38 V + 8 mΩ | §6, §7.3 |
+| Anma (şematik) | 33 µH / 1000 µF / 470 µF | ESR 35 mΩ (Zmax), Rd 0,22 Ω | 7,81 mΩ (HESAP) | 5,6 mΩ (25 °C azami) | 0,38 V + 8 mΩ | §5 |
+| En az sönüm | × 1,2 / × 0,8 / × 0,8 | ESR 15 mΩ (senaryo), Rd 0,22 Ω | 6,5 mΩ (denenen alt sınır) | 4,7 mΩ (25 °C tipik; en düşük değer yayımlanmamış) | 0,39 V + 4 mΩ (25 °C tipik, 10–20 A) | §6 |
+| En az sönüm, sıcak | × 1,2 / × 0,8 / × 0,8 | ESR 10 mΩ (**TAHMİN**), Rd 0,22 Ω | 7,81 mΩ | 6,6 mΩ (4,7 × 1,4) | 0,265 V + 6 mΩ (125 °C tipik) | §6 |
+| En çok kayıp | anma | ESR 35 mΩ, Rd 0,22 Ω | 10,3 mΩ (100 °C bakır) | 7,84 mΩ (5,6 × 1,4, 100 °C) | 0,415 V + 4,5 mΩ (25 °C azami) | §6, §9 |
+| Soğuk | anma | ESR 120 mΩ (−10 °C Zmax, **üst sınır**), Rd 0,22 Ω | 7,81 mΩ | 5,6 mΩ | 0,38 V + 8 mΩ | §6, §7.3 |
 
 - **D1 çifti (DATASHEET, STPS40M60C Doc ID 018813 Rev 1, Tablo 4, diyot başına):** 5 / 10 / 20 A'de VF tipik 0,430 / 0,470 / 0,540 V (25 °C), 0,325 / 0,385 / 0,475 V (125 °C); azami 0,460 / 0,505 / 0,595 V (25 °C). İki bacak paralelken aynı gerilimde akım iki katıdır; çiftin eğimi 10–20 A toplam aralığında 4 mΩ (25 °C tipik), 6 mΩ (125 °C tipik) olur. Şematikteki 8 mΩ tek diyodun eğimidir: **kayıp için kötümser, sönüm için iyimserdir.** 7,5 A toplamda (3,75 A/bacak) eğri bu doğrulardan daha diktir; o noktanın sayısı yayımlanmamıştır, bu yüzden 4–6 mΩ bir **senaryo aralığıdır**, üretici garantisi değildir.
 - **S1 (DATASHEET, STB100N6F7 DocID027210 Rev 2; aynı kırmık, TO-220 belgesi açılamadı):** RDS(on) 4,7 tipik / 5,6 mΩ azami; en düşük değer yok. Sıcaklık çarpanı eğriden okunmuştur.
@@ -511,11 +505,12 @@ Bu bölüm Adım 3'ün hesap kısmıdır. Sürücü, soğutucu ve yerleşim seç
      Vin 26.0 V: volt·saniye  64.9 µV·s, ΔB  17.0 mT t-t, çekirdek ≤ 0.142 W
      Çekirdek kaybı akım ripple'ına değil volt·saniyeye bağlıdır: L −%30 köşesinde (ΔIL 2,8 A) ΔB DEĞİŞMEZ.
    Vin     S1 iletim  S1 anaht. (Rg 5/10/25 Ω)   D1 iletim  L1 bakır  L1 çekirdek  Cin    Cout   toplam (Rg 10)  verim %   kapı sürme
-   20.0     0.18      0.32 / 0.50 / 1.05           1.44       0.44       0.09      0.10  0.007      2.76        96.77     30 mW
-   22.2     0.16      0.36 / 0.56 / 1.17           1.62       0.44       0.11      0.11  0.009      3.01        96.48     30 mW
-   24.6     0.15      0.40 / 0.63 / 1.30           1.78       0.44       0.13      0.11  0.010      3.25        96.22     30 mW
-   25.2     0.14      0.42 / 0.65 / 1.34           1.82       0.44       0.14      0.11  0.011      3.30        96.15     30 mW
-   26.0     0.14      0.43 / 0.67 / 1.39           1.86       0.44       0.14      0.10  0.011      3.37        96.07     30 mW
+   20.0     0.18      0.32 / 0.50 / 1.05           1.44       0.44       0.09      0.10  0.005      2.75        96.77     30 mW
+   22.2     0.16      0.36 / 0.56 / 1.17           1.62       0.44       0.11      0.11  0.006      3.01        96.48     30 mW
+   24.6     0.15      0.40 / 0.63 / 1.30           1.78       0.44       0.13      0.11  0.007      3.24        96.22     30 mW
+   25.2     0.14      0.42 / 0.65 / 1.34           1.82       0.44       0.14      0.11  0.008      3.30        96.16     30 mW
+   26.0     0.14      0.43 / 0.67 / 1.39           1.86       0.44       0.14      0.10  0.008      3.37        96.07     30 mW
+   Sönüm dalı (Cd=470 µF + Rd=0.22 Ω, 26 V): ripple akımı 76 mA RMS, Rd kaybı 1.3 mW (toplama dahildir).
    Geçiş süreleri (Rg 10 Ω, 26 V): açma 24 ns, kapama 24 ns; bileşenler: geçiş 0.48 W, Coss 0.05 W, D1 kapasitesi 0.15 W
    Snubber kaybı (kullanılırsa) C·V²·f: 1 nF → 68 mW, 2,2 nF → 149 mW (26 V). Sayılar kestirimdir; ölçülmedi.
 ```
@@ -558,7 +553,7 @@ Bu bölüm Adım 3'ün hesap kısmıdır. Sürücü, soğutucu ve yerleşim seç
    L1 @ 75 °C sargı: DCR 9.50 mΩ, bakır 0.54 W (bunun AC payı 3 mW) + çekirdek → 0.68 W; ΔT ≈ (mW/cm²)^0,833 = 5 K (Magnetics yaklaşık formülü)
    L1 @100 °C sargı: DCR 10.27 mΩ, bakır 0.58 W (bunun AC payı 3 mW) + çekirdek → 0.72 W; ΔT ≈ (mW/cm²)^0,833 = 5 K (Magnetics yaklaşık formülü)
    L1 doyma: L/L0 @8,9 A 97 %, @12 A 95 %, @20 A 88 %, @53 A 59 % (eğriden yaklaşık; ölçüm yok)
-   Cin ripple: 3.77 A toplam → adet başına 1.88 A (anma 3.25 A @105 °C); Cout: 0.57 A (anma 1.9 A)
+   Cin ripple: 3.77 A toplam → adet başına 1.88 A (anma 3.25 A @105 °C); Cout: 0.48 A (anma 1.9 A)
 ```
 
 - **D1 soğutucusuz kullanılamaz:** TO-220'nin soğutucusuz ısıl direnciyle (62,5 K/W, TAHMİN) sabit nokta yoktur; ters kaçak akımı sıcaklıkla üstel büyür ve ısıl kaçak oluşur. Bu bir model çıktısıdır (IR'nin sıcaklık ve gerilimle değişimi eğriden okunmuştur); "kaçar" hükmü ölçümle doğrulanmalıdır, ama soğutucu gereği modelden bağımsız olarak açıktır (1,7–1,9 W).
@@ -573,20 +568,20 @@ Veri sayfası değerlerinden **türetilmiş** VDMOS ve Schottky modeli (ST'nin S
 
 | Senaryo | Vin V | S1 VDS tepe V (anma 60) | D1 ters tepe V (anma 60) | V(sw) dip V | hücre barası tepe V | S1 toplam kayıp W | D1 kayıp W | snubber kaybı mW | ΔVo mV (Cout ESL 15 nH) |
 |---|---|---|---|---|---|---|---|---|---|
-| temel: bara 20 nH, Rg 10 Ω, MLCC yok, snubber yok | 26 | 46.1 | 63.1 | -4.1 | 45.5 | 0.41 | 1.78 | 0 | 83 |
-| bara 10 nH | 26 | 41.6 | 56.3 | -4.2 | 36.8 | 0.45 | 1.78 | 0 | 84 |
-| bara 40 nH | 26 | 54.7 | 69.6 | -3.9 | 56.1 | 0.39 | 1.78 | 0 | 82 |
-| Rg 4,7 Ω | 26 | 47.2 | 65.7 | -4.3 | 46.8 | 0.30 | 1.77 | 0 | 82 |
-| Rg 22 Ω | 26 | 43.3 | 58.5 | -3.5 | 43.2 | 0.62 | 1.79 | 0 | 89 |
-| MLCC 4,7 µF etkin | 26 | 37.0 | 47.6 | -4.4 | 26.8 | 0.50 | 1.76 | 0 | 80 |
-| MLCC + snubber 4,7 Ω / 1 nF | 26 | 36.6 | 41.2 | -5.2 | 26.6 | 0.49 | 1.76 | 52 | 80 |
-| MLCC + snubber 2,2 Ω / 2,2 nF | 26 | 32.3 | 36.2 | -4.5 | 26.6 | 0.49 | 1.76 | 86 | 81 |
-| MLCC + snubber 10 Ω / 470 pF | 26 | 37.2 | 44.3 | -4.9 | 26.7 | 0.49 | 1.76 | 32 | 80 |
-| snubber 4,7 Ω / 1 nF, MLCC yok | 26 | 43.6 | 51.1 | -4.9 | 40.4 | 0.39 | 1.77 | 102 | 84 |
-| bara 40 nH, Rg 4,7 Ω (en sert) | 26 | 56.1 | 69.9 | -4.0 | 56.1 | 0.29 | 1.77 | 0 | 80 |
-| temel, 28 V | 28 | 48.0 | 66.7 | -4.1 | 48.3 | 0.43 | 1.87 | 0 | 86 |
-| bara 40 nH, Rg 4,7 Ω, 28 V | 28 | 57.6 | 75.3 | -4.0 | 60.4 | 0.29 | 1.86 | 0 | 87 |
-| MLCC + snubber 4,7 Ω / 1 nF, 28 V | 28 | 38.5 | 43.6 | -5.2 | 28.8 | 0.53 | 1.86 | 57 | 86 |
+| temel: bara 20 nH, Rg 10 Ω, MLCC yok, snubber yok | 26 | 46.1 | 63.1 | -4.1 | 45.5 | 0.42 | 1.79 | 0 | 77 |
+| bara 10 nH | 26 | 41.6 | 56.3 | -4.2 | 36.8 | 0.46 | 1.79 | 0 | 77 |
+| bara 40 nH | 26 | 54.8 | 69.7 | -3.9 | 56.1 | 0.40 | 1.79 | 0 | 74 |
+| Rg 4,7 Ω | 26 | 47.3 | 65.7 | -4.3 | 46.8 | 0.31 | 1.78 | 0 | 74 |
+| Rg 22 Ω | 26 | 43.4 | 58.5 | -3.6 | 43.2 | 0.63 | 1.82 | 0 | 87 |
+| MLCC 4,7 µF etkin | 26 | 37.0 | 47.6 | -4.4 | 26.8 | 0.50 | 1.77 | 0 | 71 |
+| MLCC + snubber 4,7 Ω / 1 nF | 26 | 36.6 | 41.2 | -5.2 | 26.6 | 0.49 | 1.77 | 52 | 71 |
+| MLCC + snubber 2,2 Ω / 2,2 nF | 26 | 32.4 | 36.2 | -4.5 | 26.6 | 0.50 | 1.77 | 87 | 72 |
+| MLCC + snubber 10 Ω / 470 pF | 26 | 37.3 | 44.3 | -4.9 | 26.6 | 0.49 | 1.77 | 32 | 71 |
+| snubber 4,7 Ω / 1 nF, MLCC yok | 26 | 43.9 | 51.1 | -4.9 | 40.4 | 0.39 | 1.79 | 103 | 79 |
+| bara 40 nH, Rg 4,7 Ω (en sert) | 26 | 56.2 | 69.9 | -4.0 | 56.1 | 0.29 | 1.78 | 0 | 70 |
+| temel, 28 V | 28 | 48.1 | 66.7 | -4.1 | 48.3 | 0.44 | 1.89 | 0 | 79 |
+| bara 40 nH, Rg 4,7 Ω, 28 V | 28 | 57.8 | 75.3 | -4.0 | 60.4 | 0.29 | 1.87 | 0 | 73 |
+| MLCC + snubber 4,7 Ω / 1 nF, 28 V | 28 | 38.7 | 43.6 | -5.2 | 28.8 | 0.53 | 1.87 | 57 | 76 |
 
 - Bu sayılar **aynı fiziksel devrenin doğrulanmış tepe değerleri değildir**; modele ve yerleşime bağlı bir duyarlılık çalışmasıdır. Denetim raporlarındaki 60–88 V aralığı da aynı sınıftadır.
 - Seramik kondansatör olmadan elektrolitiklerin ESL'i hücre barasını 45–60 V'a sallar; **D1 ters gerilimi 60 V anmayı aşar** (63–75 V), S1 VDS 46–58 V ile anmaya dayanır (60 V mutlak sınıra pay yok).
@@ -605,95 +600,98 @@ Sıcak takma (`dogrula.py stres` §2; aynı süpürmenin HESAP karşılığı `h
 | 40 | 26.0 / 481 | 26.0 / 443 | 26.0 / 404 | 26.6 / 357 | 30.6 / 288 | 34.3 / 235 |
 | 80 | 26.0 / 281 | 26.0 / 269 | 26.0 / 256 | 26.0 / 238 | 26.1 / 207 | 28.1 / 179 |
 
-`*` = 35 V aşıldı. Kaynak direnci ≥ 40 mΩ ise tepe 26–34 V'tur; ≤ 20 mΩ ve ≥ 2–5 µH ile 35 V **aşılır** (43–45 V'a kadar). 6S paketin iç direnci ve kablo endüktansı ölçülmedi. Önceki belgedeki "takma anında ≈ 28 V" yalnız 20 mΩ / 1 µH civarı için doğrudur. Ani akım 180–1200 A'dir (kontak ve kondansatör için ayrı bir risk).
+`*` = 35 V aşıldı. Kaynak direnci ≥ 40 mΩ ise tepe 26–34 V'tur; ≤ 20 mΩ ve ≥ 2–5 µH ile 35 V **aşılır** (43–45 V'a, C −%20 ve sıcak ESR ile 46,5 V'a kadar). Kullanıcı kararıyla (12.11.2026) **Cin gerilim sınıfı ≥ 50 V** olarak belirlendiğinden bu aralık kondansatör anmasının altında kalır. Ani akım 180–1200 A'dir (kontak ve kondansatör için ayrı bir risk; Adım 7).
 
-S1 kısa devre (`dogrula.py stres` §3; ideal elemanlar, batarya + kablo varsayımı):
+S1 kısa devre (`dogrula.py stres` §3; ideal elemanlar, Cd=470 µF + Rd=0,22 Ω dahil, batarya + kablo varsayımı):
 
-| Batarya V | Yük | Vo tepe V | Vo son V | IL tepe A | Cout 25 V anması |
-|---|---|---|---|---|---|
-| 24.6 | 7,5 A direnç | 28.2 | 23.6 | 63 | AŞILIR |
-| 24.6 | 0,24 A direnç | 30.4 | 24.6 | 55 | AŞILIR |
-| 24.6 | 57,6 W sabit güç | 30.5 | 24.5 | 58 | AŞILIR |
-| 26 | 7,5 A direnç | 30.0 | 24.9 | 69 | AŞILIR |
-| 26 | 0,24 A direnç | 32.4 | 26.0 | 61 | AŞILIR |
-| 26 | 57,6 W sabit güç | 32.5 | 25.9 | 64 | AŞILIR |
+| Batarya V | Yük | Vo tepe V | Vo son V | IL tepe A | Cout 25 V anması | Cout/Cd 35 V kriteri |
+|---|---|---|---|---|---|---|
+| 24.6 | 7,5 A direnç | 27.3 | 23.6 | 70 | AŞILIR | içinde |
+| 24.6 | 0,24 A direnç | 29.2 | 24.6 | 62 | AŞILIR | içinde |
+| 24.6 | 57,6 W sabit güç | 29.2 | 24.5 | 65 | AŞILIR | içinde |
+| 26 | 7,5 A direnç | 29.0 | 24.9 | 76 | AŞILIR | içinde |
+| 26 | 0,24 A direnç | 31.1 | 26.0 | 69 | AŞILIR | içinde |
+| 26 | 57,6 W sabit güç | 31.1 | 25.9 | 72 | AŞILIR | içinde |
 
-- **Cout'un 25 V anması her durumda aşılır:** çıkış giriş gerilimine oturur (24–26 V) ve geçişte 28–32 V'a çıkar. Yüksüz açık çevrim çalışmada da çıkış girişe tırmanır.
+- Çıkış giriş gerilimine oturur (24–26 V) ve geçişte **27,3–31,1 V**'a çıkar (yüksüz açık çevrimde de girişe tırmanır). Kullanıcı kararıyla (12.11.2026) **Cout ve Cd gerilim sınıfı ≥ 35 V** olarak belirlendiğinden kondansatör anması aşılmaz (mevcut 25 V aday kesin seçimde 35 V parçayla değiştirilir).
 - O1 için: çıkış 12 V'un çok üstüne çıkar; bağımsız aşırı gerilim koruması şarttır (Adım 7).
 
 ```
 9) Gerilim sınıfları ve arıza arayüzü (HESAP; kaynak R/L VARSAYIM süpürmesi)
-   Sıcak takma: boş Cin'e 26 V basamak, tepe V(Cin) [V]; 35 V anma aşılırsa * (ESR 7,5 mΩ, C 2000 µF)
+   Sıcak takma: boş Cin'e 26 V basamak, tepe V(Cin) [V]; 35 V aşılırsa * (50 V kriteri altında kalır; ESR 7,5 mΩ, C 2000 µF)
      R kaynak mΩ \ L µH    0.2    0.5      1      2      5     10
           5              28.1   32.7   36.4*  39.8*  43.5*  45.7*
          10              26.1   29.2   32.8   36.5*  40.9*  43.6*
          20              26.0   26.1   28.2   31.7   36.6*  39.9*
          40              26.0   26.0   26.0   26.7   30.8   34.5
          80              26.0   26.0   26.0   26.0   26.1   28.2
-   C −%20 ve sıcak ESR (TAHMİN 2 × 7 mΩ) ile en kötü satır: R 5 mΩ, L 5 µH → 46.5 V
-   S1 kısa devre: çıkış kararlı hâlde giriş gerilimine çıkar (20–26 V) → Cout 25 V anması 26 V'ta AŞILIR;
-     LC basamağı aşımı ayrıca eklenir (SİM: dogrula.py stres). Yüksüz açık çevrimde de çıkış girişe tırmanır.
+   C −%20 ve sıcak ESR (TAHMİN 2 × 7 mΩ) ile en kötü satır: R 5 mΩ, L 5 µH → 46.5 V (< Cin 50 V kriteri)
+   S1 kısa devre: çıkış kararlı hâlde girişe çıkar (20–26 V), geçişte 27,3–31,1 V (SİM) → Cout ve Cd 35 V kriteri içinde (mevcut 25 V aday AŞILIR).
    S1 VDS: 60 V anma; 26 V girişte pay 34 V, 28 V'ta 32 V (zil hariç). D1 VRRM 60 V aynı.
 ```
 
-### 9.5 Bu aşamada varılan sonuçlar (şematiğe eleman eklenmedi)
+### 9.5 Bu aşamada varılan sonuçlar
 
 | Konu | Sonuç | Durum |
 |---|---|---|
-| Giriş seramik dekuplajı | Hücreye (S1 drain – D1 anot) yakın, 26 V'ta **etkin** ≥ 4,7 µF. X7R 50 V'luk parçada DC bias düşümü ≈ %50 varsayılırsa anma ≈ 2 × 4,7 µF; gerçek düşüm seçilen parçanın eğrisinden alınmalı | Değer adayı; MPN yok, bias eğrisi **DOĞRULANAMADI** |
-| RC sönümleyici (D1 üstü) | Başlangıç adayı 2,2 Ω + 2,2 nF (≈ 86 mW) veya 4,7 Ω + 1 nF (≈ 52 mW); kartta ölçülen zil frekansına göre ayarlanır | Yer ayrılacak (DNP olabilir); **PROTOTİPTE ÖLÇÜLECEK** |
-| Soğutucu | S1 + D1 ortak, Rth(s-a) ≤ 12 K/W (hedef ≤ 8), iki kılıf yalıtım pediyle | Hedef değer; MPN yok |
-| Cout gerilim sınıfı | 25 V, S1 kısa devresinde ve yüksüz açık çevrimde aşılır; 35 V sınıfı veya bağımsız çıkış aşırı gerilim koruması | **Açık karar** (kullanıcı; Adım 7 ile birlikte) |
-| Cin gerilim sınıfı | 35 V, düşük dirençli / uzun kablolu kaynakta aşılabilir; kaynak empedansı ölçülmeli, 50 V sınıfı veya ön şarj / TVS | **Açık karar**; kaynak ölçümü gerekli |
-| Çıkış sönümü | §10 | **Açık karar** |
+| Giriş seramik dekuplajı | Hücreye (S1 drain – D1 anot) yakın, 26 V'ta **etkin** ≥ 4,7 µF. X7R 50 V'luk parçada DC bias düşümü ≈ %50 varsayılırsa anma ≈ 2 × 4,7 µF; gerçek düşüm seçilen parçanın eğrisinden alınmalı | Hedef değer (§12.2'de MPN seçilir) |
+| RC sönümleyici (D1 üstü) | Başlangıç adayı 2,2 Ω + 2,2 nF (≈ 87 mW) veya 4,7 Ω + 1 nF (≈ 52 mW); kartta ölçülen zil frekansına göre ayarlanır | Yer ayrılacak (DNP olabilir); **PROTOTİPTE ÖLÇÜLECEK** |
+| Soğutucu | S1 + D1 ortak, Rth(s-a) ≤ 12 K/W (hedef ≤ 8), iki kılıf yalıtım pediyle | Hedef değer (§12.2'de MPN seçilir) |
+| Cout ve Cd gerilim sınıfı | **≥ 35 V** (kullanıcı kararı, 12.11.2026; S1 kısa devresi tepe 31,1 V'u kapsar; O1 portu için bağımsız OVP yine Adım 7'de) | **Kararlaştırıldı** |
+| Cin gerilim sınıfı | **≥ 50 V** (kullanıcı kararı, 12.11.2026; sıcak takma tepe 46,5 V'u kapsar; ani akım sınırlaması Adım 7'de) | **Kararlaştırıldı** |
+| Çıkış sönümü | **Çıkışa paralel Cd = 470 µF + seri Rd = 0,22 Ω** şematiğe eklendi ve doğrulandı (§6, §10) | **Uygulandı ve doğrulandı** |
 
-## 10. Sönüm seçenekleri (karşılaştırma; hiçbiri uygulanmadı)
+## 10. Sönüm seçenekleri ve seçilen sönüm dalı (`Cd = 470 µF + Rd = 0,22 Ω`)
 
-§6'daki köşe başarısızlığı için seçenekler aynı model setleriyle karşılaştırıldı (`hesap.py` §6b):
+Dalsız devredeki köşe başarısızlığı için seçenekler ve `Rd` kabul aralığı aynı model setleriyle karşılaştırıldı (`hesap.py` §6b):
 
 ```
-6b) Sönüm seçenekleri: Pkritik [W] (HESAP, 24,6 V; hiçbiri şematiğe uygulanmadı)
+6b) Sönüm seçenekleri ve Rd tolerans penceresi: Pkritik [W] (HESAP, 24,6 V; 470 µF + 0,22 Ω şematiğe uygulandı)
    Köşe = L +%20, ana Cout −%20, sönüm dalı kondansatörü −%20. ESR senaryoları: 15 mΩ (pencere alt kenarı) ve
    10 mΩ (TAHMİN, sıcak); paralel/büyük kondansatörde ESR parantezdeki oranla ölçeklenir (VARSAYIM, ölçüm yok).
    Rs: şematik (14,7 mΩ) ve en az sönüm (DCR 6,5, Ron 4,7, Rd 4 mΩ → 10,8 mΩ) setleri.
    seçenek                                              anma/35mΩ  köşe/15mΩ  köşe/10mΩ  en az sönüm köşe/15mΩ  köşe/10mΩ   ek kayıp
-   mevcut: 33 µH + 1000 µF                                  174         72         60                63            51      —
-   DCR +5 mΩ (≈ 12,8 mΩ)                                    188         84         72                75            63      +0,28 W
-   DCR +10 mΩ (≈ 17,8 mΩ)                                   201         95         84                86            75      +0,57 W
-   Cout 1500 µF (ESR × 0,67 varsayımı)                      199         90         78                76            64      —
-   Cout 2 × 680 µF (eşdeğer ESR × 0,5·1,3 varsayımı)        179         81         70                68            57      —
-   Cout 2 × 1000 µF (eşdeğer ESR × 0,5)                     223        107         95                89            77      —
-   sönüm dalı 470 µF + 0,22 Ω                               257        146        138               134           126      ≈ 2 mW
-   sönüm dalı 1000 µF + 0,15 Ω                              364        236        230               223           217      ≈ 3 mW
-   sönüm dalı 2200 µF + 0,10 Ω                              559        398        394               387           383      ≈ 5 mW
+   dalsız (eski): 33 µH + 1000 µF                           174         72         60                63            51      —
+   dalsız + DCR +5 mΩ (≈ 12,8 mΩ)                           188         84         72                75            63      +0,28 W
+   dalsız + DCR +10 mΩ (≈ 17,8 mΩ)                          201         95         84                86            75      +0,57 W
+   dalsız, Cout 1500 µF (ESR × 0,67 varsayımı)              199         90         78                76            64      —
+   dalsız, Cout 2 × 680 µF (eşdeğer ESR × 0,5·1,3)          179         81         70                68            57      —
+   dalsız, Cout 2 × 1000 µF (eşdeğer ESR × 0,5)             223        107         95                89            77      —
+   sönüm dalı 470 µF + 0,15 Ω (Rd alt kenar)                231        127        119               115           106      ≈ 2 mW
+   sönüm dalı 470 µF + 0,22 Ω (SEÇİLEN — şematik)           257        146        138               134           126      ≈ 1,2 mW
+   sönüm dalı 470 µF + 0,35 Ω (Rd + Cd ESR)                 285        171        162               160           151      ≈ 0,9 mW
+   sönüm dalı 470 µF + 0,60 Ω (soğuk Cd ESR üst sınır)      290        183        173               174           164      ≈ 0,5 mW
+   sönüm dalı 1000 µF + 0,15 Ω                              364        236        230               223           217      ≈ 2 mW
    sönüm dalı 1000 µF + 0,33 Ω                              395        284        276               276           268      ≈ 1 mW
    82,5 W zarfının üstünde kalan hücreler doğal (açık çevrim) kararlıdır; altında kalanlar kararsızdır.
 ```
 
-Sönüm dalının LTspice doğrulaması (`dogrula.py kararlilik` §3; 41,25 → 82,5 W, 200 ms, dal kondansatörü −%20):
+Sönüm dalı ve toplam dal direnci (`Rd_toplam = ayrık Rd + Cd ESR`) aralığının LTspice doğrulaması (`dogrula.py kararlilik` §3; 41,25 → 82,5 W, 200 ms, dal kondansatörü −%20 = 376 µF):
 
 | Model seti | Sönüm dalı | HESAP Pkritik W | SİM sönüm | Vmin V | Vmax V | 200 ms sonunda yavaş salınım mV | 9–12 V | karar |
 |---|---|---|---|---|---|---|---|---|
-| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 470 µF + 0,22 Ω (Cd −%20) | 145 | sönmüş | 10.26 | 11.64 | 1 | içinde | GEÇTİ |
-| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 1000 µF + 0,15 Ω (Cd −%20) | 235 | sönmüş | 10.38 | 11.53 | 1 | içinde | GEÇTİ |
-| el sarım: L+%8, C−%20, ESR 15 mΩ | 470 µF + 0,22 Ω (Cd −%20) | 160 | sönmüş | 10.30 | 11.61 | 1 | içinde | GEÇTİ |
-| el sarım: L+%8, C−%20, ESR 15 mΩ | 1000 µF + 0,15 Ω (Cd −%20) | 257 | sönmüş | 10.41 | 11.50 | 1 | içinde | GEÇTİ |
-| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 470 µF + 0,22 Ω (Cd −%20) | 134 | sönmüş | 10.26 | 11.65 | 1 | içinde | GEÇTİ |
-| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 1000 µF + 0,15 Ω (Cd −%20) | 223 | sönmüş | 10.39 | 11.54 | 1 | içinde | GEÇTİ |
-| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 470 µF + 0,22 Ω (Cd −%20) | 135 | sönmüş | 10.26 | 11.65 | 1 | içinde | GEÇTİ |
-| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 1000 µF + 0,15 Ω (Cd −%20) | 227 | sönmüş | 10.38 | 11.54 | 1 | içinde | GEÇTİ |
+| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | dalsız (eski) | 72 | sürekli salınım | 9.37 | 12.57 | 3125 | DIŞINDA | KALDI |
+| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 470 µF (−%20) + 0,15 Ω (alt kenar) | 127 | sönmüş | 10.26 | 11.64 | 1 | içinde | GEÇTİ |
+| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 470 µF (−%20) + 0,22 Ω (SEÇİLEN) | 145 | sönmüş | 10.26 | 11.64 | 1 | içinde | GEÇTİ |
+| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 470 µF (−%20) + 0,35 Ω (Rd + Cd ESR) | 170 | sönmüş | 10.25 | 11.65 | 1 | içinde | GEÇTİ |
+| pencere köşesi: L+%20, C−%20, ESR 15 mΩ | 470 µF (−%20) + 0,60 Ω (soğuk Cd ESR) | 182 | sönmüş | 10.22 | 11.68 | 1 | içinde | GEÇTİ |
+| el sarım: L+%8, C−%20, ESR 15 mΩ | dalsız (eski) | 80 | sürekli salınım | 9.49 | 12.95 | 2842 | DIŞINDA | KALDI |
+| el sarım: L+%8, C−%20, ESR 15 mΩ | 470 µF (−%20) + 0,15 Ω (alt kenar) | 140 | sönmüş | 10.30 | 11.61 | 1 | içinde | GEÇTİ |
+| el sarım: L+%8, C−%20, ESR 15 mΩ | 470 µF (−%20) + 0,22 Ω (SEÇİLEN) | 160 | sönmüş | 10.30 | 11.61 | 1 | içinde | GEÇTİ |
+| el sarım: L+%8, C−%20, ESR 15 mΩ | 470 µF (−%20) + 0,35 Ω (Rd + Cd ESR) | 185 | sönmüş | 10.29 | 11.62 | 1 | içinde | GEÇTİ |
+| el sarım: L+%8, C−%20, ESR 15 mΩ | 470 µF (−%20) + 0,60 Ω (soğuk Cd ESR) | 195 | sönmüş | 10.26 | 11.64 | 1 | içinde | GEÇTİ |
+| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | dalsız (eski) | 63 | sürekli salınım | 9.36 | 13.40 | 3208 | DIŞINDA | KALDI |
+| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 470 µF (−%20) + 0,15 Ω (alt kenar) | 114 | sönmüş | 10.26 | 11.65 | 1 | içinde | GEÇTİ |
+| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 470 µF (−%20) + 0,22 Ω (SEÇİLEN) | 134 | sönmüş | 10.26 | 11.65 | 1 | içinde | GEÇTİ |
+| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 470 µF (−%20) + 0,35 Ω (Rd + Cd ESR) | 160 | sönmüş | 10.25 | 11.66 | 1 | içinde | GEÇTİ |
+| en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ | 470 µF (−%20) + 0,60 Ω (soğuk Cd ESR) | 173 | sönmüş | 10.22 | 11.69 | 1 | içinde | GEÇTİ |
+| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | dalsız (eski) | 58 | sürekli salınım | 9.34 | 13.43 | 3254 | DIŞINDA | KALDI |
+| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 470 µF (−%20) + 0,15 Ω (alt kenar) | 117 | sönmüş | 10.25 | 11.65 | 1 | içinde | GEÇTİ |
+| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 470 µF (−%20) + 0,22 Ω (SEÇİLEN) | 135 | sönmüş | 10.26 | 11.65 | 1 | içinde | GEÇTİ |
+| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 470 µF (−%20) + 0,35 Ω (Rd + Cd ESR) | 160 | sönmüş | 10.24 | 11.66 | 1 | içinde | GEÇTİ |
+| en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 470 µF (−%20) + 0,60 Ω (soğuk Cd ESR) | 171 | sönmüş | 10.21 | 11.69 | 1 | içinde | GEÇTİ |
 
-| Seçenek | Köşede 82,5 W | Bedel | Değerlendirme |
-|---|---|---|---|
-| Mevcut hâl | Kalır (Pkritik 51–72 W) | — | Ancak Cout ESR'si ölçülüp ≥ ≈ 20 mΩ çıkarsa ve L1 toleransı dar tutulursa yeterli olabilir |
-| DCR'yi bilerek artırmak (+5 / +10 mΩ) | +10 mΩ ile bile en az sönüm setinde kalır (75–86 W) | +0,28 / +0,57 W sürekli kayıp, bobin ısısı | Tek başına yetmez |
-| Cout'u büyütmek veya paralellemek | 2 × 1000 µF bile en az sönüm / 10 mΩ senaryosunda kalır (77 W) | Hacim; sert kalkış akımı ve giriş geçişi kötüleşir (§4.3) | Paralel kondansatörde eşdeğer ESR de düşer; kapasite kazancını kısmen geri alır |
-| **Çıkışa paralel sönüm dalı** (Cd + seri Rd; ör. 470 µF + 0,22 Ω veya 1000 µF + 0,15 Ω) | Bütün setlerde geçer (Pkritik 126–236 W) | Bir kondansatör + bir direnç; kayıp birkaç mW; ripple'a etkisi yok | Ana Cout'un ESR'sinden **bağımsız** sönüm sağlar; ESR belirsizliğini konu dışı bırakan tek seçenek |
-| Kapalı çevrime bırakmak | Doğrulanmadı | — | Adım 6'da gösterilene kadar dondurmayı engeller |
-
-**Önerilen (teknik görüş, karar değil):** mevcut L1 ve Cout korunur; çıkışa 470–1000 µF + 0,15–0,33 Ω'luk bir sönüm dalı eklenir. Gerekçe: test edilen bütün köşe ve ESR senaryolarında 82,5 W'ı en az 1,5 kat payla sönümler, kayıp ve ripple bedeli yoktur, parça değişikliği gerektirmez. Kesin değer Cout ESR'si ölçüldükten sonra seçilir. Alternatif: Cout ESR'si ve L1 ölçülür; ESR ≥ ≈ 20 mΩ (0,9 kHz, sıcakta) ve L ≤ 36 µH doğrulanırsa mevcut hâl 82,5 W'ı karşılar (HESAP), ama pay dardır.
-
-Bu bir şematik değişikliğidir; devre kapsamına yeni eleman ekler. **Kullanıcı kararı olmadan uygulanmadı.**
+**Karar (kullanıcı onayı, 12.11.2026):** çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω`** sönüm dalı eklendi. Ayrık `0,22 Ω` direncin yanına `Cd` kondansatörünün kendi ESR'si (tipik 30–100 mΩ, soğukta ≤ 350 mΩ) eklense dahi toplam dal direnci **0,15–0,60 Ω** aralığında kaldığı sürece tüm köşelerde `Pkritik ≥ 106–171 W > 82,5 W` ve SİM çıkışı `10,21–11,69 V` (sönmüş) olarak doğrulanmıştır. Sürekli `Rd` kaybı yalnızca **1,3 mW**'tır (76 mA RMS).
 
 ## 11. Doğrulanamayanlar ve sonraki aşamalara devredilen şartlar
 
@@ -710,10 +708,10 @@ Bu bir şematik değişikliğidir; devre kapsamına yeni eleman ekler. **Kullan�
 **Adım 4–7'ye ölçülebilir arayüz şartı olarak devredilenler (şimdi devre eklenmedi):**
 
 - **Sürücü (Adım 4):** 100 kHz'te üst taraf N-MOSFET; kapı yükü 30 nC; toplam kapı direnci 5–25 Ω aralığında anahtarlama kaybı 0,4–1,4 W; yüksüz / DCM'de bootstrap yenilemesi sağlanmalı (anahtar düğümü kendiliğinden toprağa inmez).
-- **PWM ve yumuşak kalkış (Adım 5):** kalkışta bobin tepe akımı ≤ 12 A (L/L0 ≥ %95), çıkış ≤ 12 V; sert kalkış 53 A / 17 V'tur ve bobin bu akımda ≈ %59'a düşer. 5 ms'lik duty rampası varsayımı 10,7 A / 11,3 V verir.
-- **Geri besleme (Adım 6):** 20–26 V ve 0–7,5 A'de 11 V; Ton 2,1–5,6 µs; DCM/CCM geçişi ≈ 0,95 A; f0 ≈ 0,88 kHz (tolerans köşelerinde 0,73–1,0 kHz), ESR sıfırı 4,5–10,6 kHz; yük sabit güç karakterli (82,5 W'ta artımsal direnç −1,47 Ω); **köşe model setlerinde (§8) 82,5 W sabit güç yüküyle kararlılık gösterilmeli** (sönüm dalı eklenmezse bu şart tümüyle kontrole kalır); 0 A'de çıkışın girişe tırmanması önlenmeli.
-- **Yük atma bütçesi (Adım 6–7):** ideal sınır 11,29 V (82,5 → 0 W); her PWM periyodu gecikme ≈ +0,08 V; soğuk ESR üst sınırıyla ilk sıçrama 0,9 V (§7.3).
-- **Korumalar (Adım 7):** 7,5 A üstü talepte akım sınırlama; S1 kısa devresinde çıkış 24–32 V (O1 portu için bağımsız aşırı gerilim koruması, Cout gerilim sınıfı); giriş düşük gerilim; sıcak takmada ani akım (180–1200 A) ve Cin tepe gerilimi; ters polarite.
+- **PWM ve yumuşak kalkış (Adım 5):** kalkışta bobin tepe akımı ≤ 12 A (L/L0 ≥ %95), çıkış ≤ 12 V; sert kalkış 61,5 A / 16,6 V'tur (12,6 W'ta 63,1 A / 18,1 V) ve bobin bu akımda ≈ %53'e düşer. 5 ms'lik duty rampası anmada 11,8 A / 11,34 V, en düşük Z0 köşesinde 12,8 A verir (Adım 5'te ≥ 6 ms rampa veya akım sınırlamalı kalkış kullanılmalı).
+- **Geri besleme (Adım 6):** 20–26 V ve 0–7,5 A'de 11 V; Ton 2,1–5,6 µs; DCM/CCM geçişi ≈ 0,94 A; ana LC f0 ≈ 0,88 kHz, Cd–Rd köşesi ≈ 1,54 kHz, ESR sıfırı ≥ 4,5 kHz (3. derece çıkış filtresi kompanzasyonda dikkate alınmalı); yük sabit güç karakterli (82,5 W'ta artımsal direnç −1,47 Ω); açık çevrim köşe sönümü `Cd + Rd` dalıyla sağlanmıştır, kapalı çevrim faz/kazanç payı Adım 6'da gösterilmeli; 0 A'de çıkışın girişe tırmanması önlenmeli.
+- **Yük atma bütçesi (Adım 6–7):** ideal sınır 11,25 V (82,5 → 0 W); her PWM periyodu gecikme ≈ +0,06–0,07 V; soğuk ESR üst sınırıyla (120 mΩ || 0,22 Ω) 3 periyot gecikmede 11,76 V (§7.3).
+- **Korumalar (Adım 7):** 7,5 A üstü talepte akım sınırlama; S1 kısa devresinde çıkış 24–31,1 V (Cout/Cd ≥ 35 V ile kondansatör korunur; **O1 portu için bağımsız aşırı gerilim koruması zorunludur**); giriş düşük gerilim; sıcak takmada ani akım (180–1200 A; Cin ≥ 50 V gerilimi kapsar, kontak/akım sınırlaması Adım 7'de); ters polarite.
 - **Açık çevrimin bilinen sınırları (güç katı hatası değildir, ama PASS de sayılmaz):** giriş değişiminde çıkış oransal kayar (§5.7), hafif yükte ve yüksüz çıkış yükselir (§5.3, §5.4), sert kalkış aşımı (§5.6).
 
 **Doğrulanmamış veriler:**
@@ -738,26 +736,26 @@ Bu yüzden kapı iki basamaklıdır. **Simülasyon dondurması** değerleri ve p
 |---|---|---|---|
 | 1 | Başlangıç sürümü, test ortamı, yerel değişikliklerin korunması | ✅ | LTspice 26.1.1; `main` |
 | 2 | Ölçüm altyapısı güvenilir; 20 ms sahte geçiş kapandı | ✅ | §5.0, §6.1 |
-| 3 | Tam CPL sınırı ile uzun SİM birbirini açıklıyor | ✅ | §6 |
+| 3 | Tam 3. derece CPL sınırı ile uzun SİM birbirini açıklıyor | ✅ | §6.1, §6.2 |
 | 4 | Anma değerleri 0–82,5 W zarfında (CR / CC / CP) sönümlü | ✅ | §6.2, §7 |
-| 5 | **Tolerans penceresinin her köşesinde** 82,5 W sabit güç yükü sönümlü | ❌ **KALDI** | §4.4, §6.2: L +%20 / Cout −%20 / ESR 15 mΩ köşesi 73 W'ta kalıyor. Çözüm seçilmeli: sönüm dalı (§10) veya pencerenin daraltılması |
-| 6 | Parçaların tutacağı hedef aralıklar (L, DCR, Cout ESR, kapasite) simülasyonla doğrulanmış ve yazılı | ❌ | Kapı 5'e bağlı: mevcut pencere (ESR 15–35 mΩ, L ±%20) doğrulanmış değil |
-| 7 | Kayıp ve ısıl bütçe; soğutucu, seramik dekuplaj ve sönümleyici için hedef değerler | ✅ hedef değer (HESAP) | §9.1, §9.2, §9.5; parça numarası bu basamakta gerekmez |
-| 8 | Gerilim sınıfları: Cout (S1 kısa devresi) ve Cin (sıcak takma) | ⏳ **karar açık** | §9.4; 25 V / 35 V kalacak mı, yükseltilecek mi |
-| 9 | Genel modül sınırları (gerilim toleransı, ripple, geçici durum) | ⏳ kullanıcı onayı | §2.1; onaylanmazsa yalnız O1/S2E ölçütleriyle dondurulur |
+| 5 | **Tolerans penceresinin her köşesinde** 82,5 W sabit güç yükü sönümlü | ✅ | `Cd = 470 µF + Rd = 0,22 Ω` ile `pencere` üç satırda da GEÇTİ (§4.4); `kararlilik` 27/27 satırda ve 500 ms darbede GEÇTİ (§6.1, §6.2, §10) |
+| 6 | Parçaların tutacağı hedef aralıklar (L, DCR, Cout ESR, Cd, Rd) simülasyonla doğrulanmış ve yazılı | ✅ | §1, §10 ve [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md): L1 33 µH (±%8 el sarım / ±%20 satın alma), DCR 6,5–15 mΩ, Cout 1000 µF ±%20 / ESR ≤ 35 mΩ, Cd 470 µF ±%20, Rd_toplam 0,15–0,60 Ω |
+| 7 | Kayıp ve ısıl bütçe; soğutucu, seramik dekuplaj ve sönümleyici için hedef değerler | ✅ hedef değer (HESAP) | §9.1, §9.2, §9.5; parça numarası §12.2'de seçilir |
+| 8 | Gerilim sınıfları: Cout/Cd (S1 kısa devresi) ve Cin (sıcak takma) | ✅ | Kullanıcı kararı (12.11.2026): **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** (§1, §9.4) |
+| 9 | Genel modül sınırları (gerilim toleransı, ripple, geçici durum) | ✅ | Kullanıcı kararı (12.11.2026): ayrı sınır tanımlanmadı; O1/S2E uyumluluk ölçütleriyle (9–12 V, ≤ 165 mV, 200 ms sönüm) dondurulur (§2.1) |
 | 10 | Sürücü / yumuşak kalkış / geri besleme / korumaya devredilen şartlar yazılı | ✅ | §11 |
-| 11 | Kod / şematik / belgeler aynı değerleri taşıyor; testler koşuldu | ✅ | §13 |
-| 12 | Kullanıcının dondurma onayı | ❌ | — |
+| 11 | Kod / şematik / belgeler aynı değerleri taşıyor; bütün testler koşuldu | ✅ | `sematik_uret.py`, `hesap.py`, `dogrula.py` senkron; 8 koşunun tamamı çıkış kodu 0 ile tamamlandı (§13) |
+| 12 | Kullanıcının dondurma onayı | ✅ | Kullanıcı onayı alındı (12.11.2026) |
 
-**Karar: CONDITIONAL.** Simülasyon dondurmasını engelleyen tek teknik başarısızlık kapı 5'tir; kapı 6 ona bağlıdır. Kapı 8 ve 9 kullanıcı kararıdır. Bunlar kapanınca güç katı simülasyon düzeyinde dondurulabilir ve bobin o değerlere göre sarılır.
+**Karar: FROZEN (simülasyon dondurması, 12 Kasım 2026).** §12.1 kapısındaki 1–12 maddelerinin tamamı kapanmıştır; güç katı değerleri ve hedef aralıkları simülasyon düzeyinde dondurulmuştur. Sıradaki adım §12.2'dir (kesin parça seçimi ve bobinin dondurulan hedef aralıklara göre sarılması).
 
 ### 12.2 Parça sonrası doğrulama (dondurmadan sonra; şimdi engelleyici değil)
 
 | İş | Ne zaman |
 |---|---|
-| Beş parçanın kesin parça numarası; soğutucu, seramik kondansatör, sönümleyici parçaları | Dondurulan hedef aralıklara göre seçilir |
+| Altı güç katı elemanının (L1, Cout ≥35 V, Cd ≥35 V, Rd, Cin ≥50 V, S1, D1) kesin parça numarası; soğutucu, seramik kondansatör, RC sönümleyici parçaları | Dondurulan hedef aralıklara göre seçilir |
 | L1: L0, L(I), DCR, sıcaklık — hedef aralığın içinde mi | Bobin sarılınca |
-| Cout / Cin: kapasite, ESR / empedans (0,9 kHz ve 100 kHz, sıcak / soğuk) — hedef aralığın içinde mi | Parçalar gelince |
+| Cout / Cd / Cin: kapasite, ESR / empedans (0,9 kHz ve 100 kHz, sıcak / soğuk) ve Rd + Cd_ESR toplamı (0,15–0,60 Ω) — hedef aralığın içinde mi | Parçalar gelince |
 | Kaynak iç direnci, kablo R ve L | Batarya ve kablo belli olunca |
 | Gerçek parça değerleri üç dosyaya yazılır, `secilen`, `pencere`, `kararlilik`, `zarf` yeniden koşulur | Ölçümlerden sonra |
 | STP100N6F7 TO-220 belgesi, üretici SPICE modelleri | Parça kesinleşince |
@@ -780,6 +778,6 @@ python buck/dogrula.py mevcut       # en baştaki eski değerlerle aynı testler
 python buck/dogrula.py grafik       # buck/grafik/*.svg
 ```
 
-12 Kasım 2026'da `hesap.py`, `sayisal`, `secilen`, `pencere`, `kararlilik`, `zarf`, `stres` ve `grafik` koşuldu; hepsi çıkış kodu 0 ile bitti. `tarama` ve `mevcut` yeniden koşulmadı: §4.1–§4.3 ve §4.4'ün ilk tablosu 11 Kasım 2026 değerleridir (eski ölçüm altyapısı; ripple sütunları ≈ %5–9 yüksek olabilir, sıralamayı değiştirmez).
+12 Kasım 2026'da `Cd = 470 µF + Rd = 0,22 Ω` sönüm dalı eklendikten sonra `sematik_uret.py`, `hesap.py`, `sayisal`, `secilen`, `pencere`, `kararlilik`, `zarf`, `stres` ve `grafik` sırayla yeniden koşuldu; hepsi çıkış kodu 0 ile bitti. `tarama` ve `mevcut` yeniden koşulmadı: §4.1–§4.3 ve §4.4'ün ilk tablosu 11 Kasım 2026 dalsız seçim gerekçesi kayıtlarıdır.
 
 LTspice yolu farklıysa `LTSPICE` ortam değişkeniyle verilir. Test netlistleri geçici klasörde üretilir; ana şematiğe `.meas`, `.param`, yük modeli veya parça modeli eklenmez. §4.2, §4.3 ve §4.4'ün ilk tablosu tek seferlik koşulardır.

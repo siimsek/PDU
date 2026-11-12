@@ -2,18 +2,18 @@
 
 Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bir yapay zekâ aracı veya yeni biri depoyu açtığında önce burayı, sonra [AGENTS.md](AGENTS.md) dosyasını okur.
 
-**Son güncelleme:** 12 Kasım 2026 (dondurma hazırlığı doğrulama turu)
+**Son güncelleme:** 12 Kasım 2026 (çıkış sönüm dalı eklendi, tüm testler geçti; simülasyon dondurması **FROZEN**)
 
 ## Şu anki durum
 
 | | |
 |---|---|
 | **Proje** | Tekne için güç dağıtım kartı (PDU): 6S bataryadan (20–26 V) 11 V / 7,5 A üreten tek faz asenkron buck dönüştürücü |
-| **Modül zarfı** | 0–7,5 A / 82,5 W; dirençli, sabit akımlı ve sabit güçlü yükler. Genel gerilim toleransı / ripple / geçici durum sınırları **kullanıcı onayı bekliyor** |
+| **Modül zarfı** | 0–7,5 A / 82,5 W; dirençli, sabit akımlı ve sabit güçlü yükler. Kullanıcı kararıyla (12.11.2026) ayrı genel modül sınırı tanımlanmadı; dondurma O1/S2E uyumluluk ölçütleriyle yapıldı |
 | **Referans yükler** | T3 Gemstone O1 (5–12 V) ve SLAMTEC RPLIDAR S2E (9–28 V); cihaza özgü uyumluluk testi olarak, modülün tek tasarım sınırı olarak değil |
-| **Aktif adım** | **Adım 2 — Gerçek parçaların bulunması** (aday listesi hazır; kesin seçim yapılmadı). Adım 3'ün hesap kısmı (kayıp, ısı, gerilim stresi) kullanıcı isteğiyle 12.11.2026'da yapıldı; adım **kapanmadı** |
-| **Dondurma durumu** | **CONDITIONAL** (simülasyon dondurması, 12.11.2026): tolerans köşesinde 73–82,5 W sabit güç yükü sönümlenmiyor (çözüm seçilmedi); Cout 25 V / Cin 35 V sınıfı kararı açık. Parça ve bobin ölçümleri dondurmayı engellemez, sonraki basamaktır. Kapı listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12 |
-| **Bekleyen iş** | Simülasyon dondurması için kullanıcı kararları: (1) çıkış sönümü — sönüm dalı eklemek veya parça penceresini daraltmak ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §10); (2) Cout ve Cin gerilim sınıfı; (3) genel modül sınırları (isteğe bağlı). Dondurmadan **sonra**: parça seçimi, bobinin sarılması, ölçüm ve gerçek değerlerle yeniden test |
+| **Aktif adım** | **Adım 2 — Gerçek parçaların bulunması ve bobin sarımı (§12.2)**. Adım 3'ün hesap kısmı (kayıp, ısı, gerilim stresi) 12.11.2026'da yapıldı; adım parça sonrası doğrulamadan sonra kapanacak |
+| **Dondurma durumu** | **FROZEN** (simülasyon dondurması, 12.11.2026): çıkışa paralel `Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı eklendi, tüm köşe ve kararlılık testleri geçti; **Cout/Cd ≥ 35 V**, **Cin ≥ 50 V** kararlaştırıldı ve §12.1 kapısındaki 1–12 maddelerinin tamamı kullanıcı onayıyla kapandı ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.1) |
+| **Bekleyen iş** | **§12.2 Parça seçimi ve bobin sarımı:** dondurulan hedef aralıklara göre kesin parçaların seçilmesi (`Cout` ve `Cd` ≥ 35 V, `Rd` 0,22 Ω, `Cin` ≥ 50 V, `S1`, `D1`, soğutucu, giriş MLCC), `L1` bobininin sarılması, L/C/ESR/DCR ölçümleri ve gerçek değerlerle testlerin tekrarlanması |
 | **Sıradaki adım** | Adım 3 — Kayıp ve ısı. Adım 4 ve sonrası (sürücü, PWM, geri besleme, PCB) **kullanıcı isteyene kadar başlatılmaz** |
 | **Devrenin hâli** | Açık çevrim, soft-start yok. LTspice'ta doğrulandı; **fiziksel devre ve ölçüm yok** |
 | **Güvenlik** | Gerçek O1 / S2E **bağlanmaz**: açık çevrim 12 V üst sınırını garanti etmez |
@@ -28,13 +28,14 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 | Giriş | 24,6 V (ana nokta) | 6S batarya | 20–26 V |
 | Çıkış | 11 V / 7,5 A | — | — |
 | Anahtarlama | 100 kHz, Ton 4,59 µs | — | — |
-| L1 | 33 µH el sarım, DCR 7,81 mΩ (HESAP) | Magnetics Kool Mµ 40µ `0077536A7` 22 sarım (2. sıra: satın alma, Würth 74435583300) | 33 µH; DCR 6,5–15 mΩ (el sarım hedefi 8–10 mΩ). 39 µH ve 47 µH kaldı; 33 µH de tolerans köşesinde (L +%20) 200 ms'lik 73 W darbesinde kalır |
-| Cout | 1000 µF, ESR 35 mΩ | Nichicon UHE1E102MHD6TO | 1000 µF, ESR 15–35 mΩ (alt kenar köşede yetmiyor; ESR ölçülmedi), ≥ 25 V (S1 kısa devresinde aşılır) |
-| Cin | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 | toplam ripple akımı ≥ 4,5 A, ≥ 35 V (düşük dirençli kaynakla sıcak takmada aşılabilir) |
+| L1 | 33 µH el sarım, DCR 7,81 mΩ (HESAP) | Magnetics Kool Mµ 40µ `0077536A7` 22 sarım (2. sıra: satın alma, Würth 74435583300) | **33 µH** (el sarım 30,7–36,1 µH; satın alma ±%20 de geçti); DCR 6,5–15 mΩ (el sarım hedefi 7,5–10 mΩ) |
+| Cout | 1000 µF, ESR 35 mΩ | Nichicon UHE1E102MHD6TO *(R/C referansı; kesin parça ≥35 V seçilecek)* | 1000 µF ±%20, ESR ≤ 35 mΩ, **≥ 35 V** (S1 kısa devresinde 27,3–31,1 V) |
+| Cd + Rd | **470 µF + seri 0,22 Ω** | — (dondurma sonrası seçilecek) | Cd: 470 µF ±%20, **≥ 35 V**; Rd: 0,22 Ω (Rd + Cd_ESR toplamı **0,15–0,60 Ω**), ≥ 0,25 W |
+| Cin | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 *(R/C referansı; kesin parça ≥50 V seçilecek)* | toplam ripple akımı ≥ 4,5 A, **≥ 50 V** (sıcak takmada ≤ 46,5 V) |
 | S1 | Ron 5,6 mΩ | STP100N6F7 | RDS(on) ≤ 12 mΩ, VDS ≥ 55 V |
 | D1 | 0,38 V + 8 mΩ | STPS40M60CT (iki bacak paralel) | VF ≤ 0,58 V @ 7,5 A, VRRM ≥ 45 V |
 
-LTspice sonucu (24,6 V, 7,5 A): çıkış 11,000 V, ripple 64,3 mV t-t, bobin akımı 6,56–8,44 A, iletim kaybı 2,38 W; anahtarlama, çekirdek ve kondansatör kayıplarıyla kestirim ≈ 3,3 W (HESAP).
+LTspice sonucu (24,6 V, 7,5 A): çıkış 11,000 V, ripple 55,7 mV t-t, bobin akımı 6,56–8,44 A, iletim kaybı 2,38 W (Rd kaybı ≈ 1,3 mW); anahtarlama, çekirdek ve kondansatör kayıplarıyla kestirim ≈ 3,24 W (HESAP).
 Adayların sırası ve gerekçesi, doğrulama durumu ve kriterlerin nedenleri: [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md). Kanıt: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md).
 
 ## İş akışı
@@ -43,12 +44,14 @@ Sıra (kullanıcı kararı, 12.11.2026): **simülasyonda ayarla ve dondur → pa
 
 ### Sıradaki iş (12.11.2026 itibarıyla kalınan yer)
 
-Simülasyon dondurmasının önündeki tek teknik engel: tolerans köşesinde (L +%20, Cout −%20, ESR 15 mΩ) 73–82,5 W sabit güç yükü sönümlenmiyor ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4, §6).
+Güç katının **simülasyon dondurması (`FROZEN`, §12.1 #1–12)** tamamlandı:
+- Çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω`** sönüm dalı eklendi; `hesap.py`, `sayisal`, `secilen`, `pencere`, `kararlilik`, `zarf`, `stres` ve `grafik` koşularının tamamı geçti (tüm köşelerde `Pkritik ≥ 126 W > 82,5 W`, 200–500 ms darbede sönmüş, `9–12 V` içinde).
+- Gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak belirlendi; dondurma kullanıcı tarafından onaylandı.
 
-1. **Çıkış sönümü kararı (kullanıcı onayı bekliyor).** Önerilen: çıkışa paralel sönüm dalı, 470–1000 µF + 0,15–0,33 Ω (§10; HESAP ve SİM'de bütün köşelerde geçti). Diğer yol olan ESR alt sınırını ≈ 23–31 mΩ'a çekmek, veri sayfasından seçilemeyen bir hedef çıkarıyor. Onaylanırsa: eleman `sematik_uret.py`, `hesap.py` ve `dogrula.py` (`SECILEN` ve `netlist()`) içine birlikte eklenir; `secilen`, `pencere`, `kararlilik`, `zarf` yeniden koşulur; belgeler ve [AGENTS.md](AGENTS.md) §4.1'deki devre kapsamı güncellenir.
-2. **Gerilim sınıfı kararları:** Cout 25 V mi 35 V mi; Cin 35 V mi 50 V mi (§9.4).
-3. **Genel modül sınırları** (isteğe bağlı; §2.1).
-4. Bunlar kapanınca §12.1 kapısı yeniden değerlendirilir ve kullanıcı onayıyla güç katı simülasyon düzeyinde dondurulur; ardından parça seçimi ve bobin sarımı (§12.2).
+**Sıradaki basamak ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.2 — parça seçimi, bobin sarımı ve ölçüm):**
+1. Dondurulan hedef aralıklara ([buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md)) göre kesin parça numaralarının seçilmesi (`Cout` ≥ 35 V, `Cd` ≥ 35 V, `Rd` 0,22 Ω, `Cin` ≥ 50 V, `S1`, `D1`, ortak soğutucu `Rth(s-a) ≤ 12 K/W`, giriş MLCC etkin `≥ 4,7 µF`).
+2. `L1` bobininin sarılması (Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım) ve `L0`, `L(I)`, `DCR` ölçümü; `Cout` / `Cd` / `Cin` kapasite ve ESR ölçümü.
+3. Ölçülen gerçek değerlerin `sematik_uret.py`, `hesap.py` ve `dogrula.py` içine yazılıp `secilen`, `pencere`, `kararlilik`, `zarf` koşularının tekrarlanması.
 
 ## Ana aşamalar
 
@@ -92,10 +95,10 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
 ### 1. Ana güç devresi: değerler ve doğrulama — ✅ tamam
 
 - Güç katı değerleri gerçek yük senaryolarına (sabit güç yükü) göre seçildi ve LTspice'ta doğrulandı: 5 giriş noktası, yük adımları, yük atma, kalkış, giriş değişimi, tolerans köşeleri.
-- Kabul aralıkları: Cout 1000 µF, ESR 15–35 mΩ (35 mΩ maks. empedanstır, ESR varsayımı); L 33 µH el sarım (kullanıcı kararı, 12.11.2026; DCR 6,5–15 mΩ). Güncel şematik değerleriyle, düzeltilmiş ölçüm altyapısı ve 200 ms'lik darbeyle `secilen`, `pencere`, `kararlilik`, `zarf` koşuldu: anma değerleri sönümlü; **tolerans köşesinde 33 µH dahil üç endüktans da kaldı** (33 µH: 9,91–12,05 V; 39 / 47 µH: 12,59 / 12,86 V) ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4, §5, §6).
-- Bulunan temel sorunlar: sabit güç yüküyle eski değerler salınıyordu; açık çevrim hafif yükte ve giriş değişiminde 11 V'u tutamıyor; sert kalkışta 53 A / 17 V.
+- Kabul aralıkları: L 33 µH el sarım (DCR 6,5–15 mΩ, hedef 7,5–10 mΩ); Cout 1000 µF ±%20, ESR ≤ 35 mΩ, ≥ 35 V; çıkışa paralel sönüm dalı **Cd 470 µF ±%20 (≥ 35 V) + seri Rd 0,22 Ω** (Rd + Cd_ESR toplamı 0,15–0,60 Ω); Cin ≥ 50 V, ≥ 4,5 A ripple. `secilen`, `pencere`, `kararlilik`, `zarf`, `stres`, `sayisal` yeni şematikle koşuldu: **anma ve bütün tolerans/sıcaklık köşelerinde 200 ms ve 500 ms sabit güç darbeleri 9–12 V içinde ve sönmüş olarak GEÇTİ** ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4, §5, §6, §10).
+- Bulunan temel sorunlar: sabit güç yüküyle eski değerler ve dalsız tolerans köşesi salınıyordu (`Cd + Rd` dalıyla kapandı); açık çevrim hafif yükte ve giriş değişiminde 11 V'u tutamıyor; sert kalkışta 61,4 A / 16,6 V.
 - Çıktılar: [buck/ltspice/buck_guc_kati.asc](buck/ltspice/buck_guc_kati.asc), [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md), [buck/hesap.py](buck/hesap.py), [buck/dogrula.py](buck/dogrula.py).
-- **Ölçüt:** şematik değerleriyle `dogrula.py secilen` ve `pencere` koşuldu; yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV. **Güncel durum (12.11.2026): anma değerlerinde sağlanıyor, tolerans köşesinde sağlanmıyor** (`pencere` üç satırda da KALDI; `secilen` §8 "sönüm en zayıf" köşesi kaldı). Adım, 11.11.2026'da 20 ms'lik darbe testiyle "tamam" sayılmıştı; bu test yavaş büyüyen salınımı kaçırıyordu. Adımın yeniden açılıp açılmayacağı ve çözüm (bkz. Bekleyen iş) kullanıcı kararıdır.
+- **Ölçüt:** şematik değerleriyle `dogrula.py secilen` ve `pencere` koşuldu; yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV ve 200 ms darbede sönümlü. **Güncel durum (12.11.2026): anma ve tüm tolerans köşelerinde SAĞLANIYOR (`pencere` 3/3 GEÇTİ, `kararlilik` 27/27 GEÇTİ).**
 
 ### 2. Gerçek parçaların bulunması — 🔄 sürüyor (aday listesi hazır, kesin seçim bekliyor)
 
@@ -104,14 +107,15 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
   - Kriterlerle dış araştırma yapıldı; adaylar kriterlerle karşılaştırıldı.
   - Dört bobin/kondansatör kombinasyonu LTspice köşe testinden geçirildi. Araştırmanın önerdiği 47 µH + 18 mΩ kombinasyonu **kaldı** (12,83 V, 3 V salınım); 33 µH + 35 mΩ **geçti**.
   - Adaylar öncelik sırasına dizildi; kullanıcı kararıyla liste "olabilir" listesidir, kesin seçim değildir.
-  - 1. sıra adayların değerleri şematiğe, `hesap.py` ve `dogrula.py` içine yazıldı; `dogrula.py secilen` yeniden koşuldu: anma değerlerinde sınırların içinde, sönüm en zayıf tolerans köşesinde değil (12.11.2026).
+  - 1. sıra adayların değerleri ve `Cd = 470 µF + Rd = 0,22 Ω` sönüm dalı şematiğe, `hesap.py` ve `dogrula.py` içine yazıldı; `dogrula.py secilen` yeniden koşuldu: anma ve tüm tolerans köşelerinde sınırların içinde ve sönümlü (12.11.2026).
   - ST veri sayfaları okundu (STPS40M60C Doc ID 018813 Rev 1; STB100N6F7 DocID027210 Rev 2, STP100N6F7'nin D²PAK kardeşi) ve Magnetics `0077536A7` çekirdek veri sayfası (rev. 6/1/2022) doğrulandı.
-- **Kalan (kullanıcı):**
-  - Aday listesinden kesin parçaların belirlenmesi (bulunurluk, fiyat, delikli/yüzey montaj tercihi).
+  - Çıkış sönümü (`Cd = 470 µF + Rd = 0,22 Ω`) ve gerilim sınıfları (**Cout/Cd ≥ 35 V**, **Cin ≥ 50 V**) kararlaştırıldı.
+- **Kalan (kullanıcı — dondurma sonrası §12.2):**
+  - Dondurulan hedef aralıklara göre kesin parçaların belirlenmesi (`Cout` ve `Cd` ≥ 35 V, `Cin` ≥ 50 V, `Rd` 0,22 Ω dahil; bulunurluk, fiyat, delikli/yüzey montaj tercihi).
   - Kesinleşen parçaların değerlerinin üretici veri sayfasından teyidi (STP100N6F7'nin TO-220 belgesi açılamadı; Nichicon / TDK ESR yayımlamıyor).
-  - L1 ve Cout fiziksel ölçümü; sönüm, gerilim sınıfı, soğutucu ve seramik kondansatör kararları ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §9.5, §10, §11).
-  - Kesinleşen parça 1. sıradan farklıysa değerlerin şematiğe yazılıp testlerin yeniden koşulması.
-- **Ölçüt:** beş parçanın her biri **kesinleşmiş**, parça numarası, veri sayfası kaynağı ve kullanılan değerler tabloda; değerler üretici veri sayfasından teyitli; bu değerlerle `dogrula.py secilen` sınırların içinde.
+  - L1 bobininin sarılması; L1, Cout ve Cd fiziksel ölçümü; soğutucu ve seramik kondansatör parça seçimi ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §9.5, §11, §12.2).
+  - Gerçek parça ve sarım değerlerinin şematiğe yazılıp testlerin yeniden koşulması.
+- **Ölçüt:** tüm güç katı parçaları (`L1`, `Cout`, `Cd`, `Rd`, `Cin`, `S1`, `D1`) **kesinleşmiş**, parça numarası, veri sayfası kaynağı ve kullanılan değerler tabloda; değerler üretici veri sayfasından/ölçümden teyitli; bu değerlerle `dogrula.py secilen` sınırların içinde.
 
 ### 3. Kayıp ve ısı; güç katının dondurulması — ⏳ bekliyor (hesap kısmı yapıldı, adım kapanmadı)
 
@@ -131,12 +135,12 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
 
 ### 5. PWM üretimi ve yumuşak kalkış — ⛔ kapsam dışı
 
-PWM kontrolcü seçimi, frekans ayarı, duty rampası. Sert kalkıştaki 53 A / 17 V sorununu bu adım kapatır.
+PWM kontrolcü seçimi, frekans ayarı, duty rampası. Sert kalkıştaki 61,4 A / 16,6 V sorununu bu adım kapatır.
 **Ölçüt:** kalkışta çıkış 12 V'u aşmıyor; bobin tepe akımı doyma payının içinde.
 
 ### 6. Geri besleme ve kompanzasyon — ⛔ kapsam dışı
 
-Çıkış gerilimi algılama, hata yükselteci, kompanzasyon. Tasarım verileri: Ton aralığı 2,1–5,6 µs, DCM/CCM geçişi ≈ 0,95 A, f0 ≈ 0,88 kHz, ESR sıfırı 4,5–10,6 kHz (ESR penceresine göre), yük sabit güç karakterli, yük atma bütçesi ≈ 0,7 V (soğuk ESR'de daha az). Devredilen şartların tam listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §11; tolerans köşesinde 82,5 W sabit güç yüküyle kararlılık bu adımda gösterilmelidir (sönüm dalı eklenmezse).
+Çıkış gerilimi algılama, hata yükselteci, kompanzasyon. Tasarım verileri: Ton aralığı 2,1–5,6 µs, DCM/CCM geçişi ≈ 0,94 A, ana LC f0 ≈ 0,88 kHz, Cd–Rd köşesi ≈ 1,54 kHz, ESR sıfırı ≥ 4,5 kHz (3. derece çıkış filtresi), yük sabit güç karakterli, yük atma bütçesi ≈ 0,75 V (soğuk ESR'de 3 periyot gecikmeyle 11,76 V). Devredilen şartların tam listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §11; açık çevrim köşe sönümü `Cd + Rd` dalıyla sağlanmıştır, kapalı çevrim faz/kazanç payları bu adımda gösterilmelidir.
 **Ölçüt:** 20–26 V ve 0,24–7,5 A aralığında çıkış 11 V toleransında; 12 V üst sınırı her koşulda korunuyor; faz ve kazanç payları belgelenmiş.
 
 ### 7. Korumalar — ⛔ kapsam dışı
@@ -164,6 +168,9 @@ Yeni kararlar en üste eklenir. Bir değeri değiştirmeden önce burada ve [buc
 
 | Tarih | Karar | Neden |
 |---|---|---|
+| 12.11.2026 | Güç katı simülasyon dondurması **FROZEN** olarak onaylandı (§12.1 #1–12 tamamlandı) | Kullanıcı onayı. Sırada §12.2 (dondurulan hedef aralıklara göre kesin parça seçimi, bobin sarımı ve gerçek değerlerle yeniden doğrulama) var |
+| 12.11.2026 | Gerilim sınıfları: **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V**. Genel modül için ayrı sınır tanımlanmadı (dondurma O1/S2E uyumluluk ölçütleriyle yapılır) | Kullanıcı kararı. S1 kısa devresinde çıkış 27,3–31,1 V'a çıkıyor (25 V aşılıyor); düşük dirençli kaynakla sıcak takmada Cin 45–46,5 V'a çıkabiliyor (35 V aşılıyor). Kesin parçalar §12.2'de bu sınıflara göre seçilecek |
+| 12.11.2026 | Çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı** eklendi (`sematik_uret.py`, `hesap.py`, `dogrula.py`, `AGENTS.md` §4.1) | Kullanıcı kararı. Dalsız devrede `L +%20 / Cout −%20 / ESR 15 mΩ` köşesi 200 ms darbede salınıyordu (9,91–12,05 V). Sönüm dalıyla tüm köşelerde `Pkritik ≥ 126 W > 82,5 W`, `pencere` 3/3 ve `kararlilik` 27/27 GEÇTİ; `Rd` kaybı 1,3 mW; `Cout` alt ESR belirsizliği ortadan kalktı |
 | 12.11.2026 | Sıra: önce simülasyonda dondurma, sonra parça seçimi / bobin sarımı, sonra gerçek değerlerle test, sonra PCB. Dondurma kapısı iki basamağa ayrıldı | Kullanıcı kararı: elde bobin ve parça yok; bobin dondurulan değerlere göre sarılacak. Fiziksel ölçüm dondurmanın ön koşulu sayılmaz |
 | 12.11.2026 | Doğrulama düzeltmesi (değer değişmedi): test netlistlerinde anahtar yumuşak geçişli (`Vh=-0.5`); Ton ayarı yeniden yazıldı; yük adımı darbesi 200 ms ve sönüm ölçümü kabul kararına eklendi | Kullanıcı isteği (dondurma hazırlığı). `Vh=0` LTspice'ta ±1 ns titreme ve sahte ripple (70 mV yerine 64 mV) üretiyordu; 20 ms'lik darbe, zaman sabiti ≈ 0,2 s olan büyüyen salınımı kaçırıyordu. Sonuç: tolerans köşesinde 33 µH dahil hepsi **kaldı**; dondurma BLOCKED |
 | 12.11.2026 | Şematik: L1 DCR 14,52 → 7,81 mΩ (el sarım, HESAP @20 °C), Ton 4,61 → 4,59 µs. Cout 35 mΩ ve Cin 15 mΩ "maks. empedans, ESR varsayımı" olarak işaretlendi; polimer Cin (VINATech) ve Panasonic FR seçilmedi; STPS40M60CT korundu | Kullanıcı kararı. `secilen` ve `pencere` yeniden koşuldu: 33 µH geçti; 39 ve 47 µH kaldı |

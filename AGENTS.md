@@ -41,7 +41,7 @@ Güncel değerler ve aktif adım burada tekrar edilmez; [YOL-HARITASI.md](YOL-HA
 
 ### 4.1 Kapsam
 - Aktif kapsam [YOL-HARITASI.md](YOL-HARITASI.md) içindeki **aktif adımdır**. "Kapsam dışı" işaretli adımlara (kapı sürücüsü, PWM, geri besleme, soft-start, korumalar, PCB) kullanıcı açıkça istemeden başlanmaz; bu adımlara ait devre, dosya veya kod eklenmez.
-- Devre kapsamı şu an: DC kaynak, anahtar S1, diyot D1, bobin L1, giriş/çıkış kondansatörleri, direnç yükü. Anahtar LTspice `PULSE` kaynağıyla sürülür.
+- Devre kapsamı şu an: DC kaynak, anahtar S1, diyot D1, bobin L1, giriş/çıkış kondansatörleri, çıkışa paralel RC sönüm dalı (Cd + seri Rd), direnç yükü. Anahtar LTspice `PULSE` kaynağıyla sürülür.
 - İstenmeyen ek özellik, yeniden düzenleme veya "iyileştirme" yapılmaz. Daha iyi bir yol görülürse önerilir, uygulanmaz.
 
 ### 4.2 Değerler ve parçalar

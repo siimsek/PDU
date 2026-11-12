@@ -12,6 +12,7 @@ Veri sayfasi sabitlerinin kaynagi ve sinifi (DATASHEET / CIKARIM / TAHMIN) yanla
 """
 from __future__ import annotations
 
+import cmath
 import math
 
 VO_V = 11.0
@@ -21,11 +22,13 @@ VIN_ANA_V = 24.6
 FSW_HZ = 100_000.0
 
 # Ana sematikteki degerler: 1. sira aday parcalarin veri sayfasi degerleri; kesin secim degil (PARCA-HEDEFLERI.md).
-L_H = 33e-6             # el sarim Kool Mu 40u 0077536A7, 22 sarim (33,4 uH); satin alinan: 33 veya 47 uH
+L_H = 33e-6             # el sarim Kool Mu 40u 0077536A7, 22 sarim (33,4 uH); satin alinan: 33 uH
 DCR_OHM = 7.81e-3       # el sarim HESAP @20 C (sicak 9,5 mohm; denenen alt sinir 6,5 mohm)
 COUT_F = 1000e-6        # Nichicon UHE1E102MHD6TO
 ESR_OUT_OHM = 35e-3     # maks EMPEDANS (ESR degil); simulasyon varsayimi
 ESR_OUT_MIN_OHM, ESR_OUT_MAX_OHM = 15e-3, 35e-3   # kabul penceresi (alt sinir LC sonumu, ust sinir ripple)
+CD_F = 470e-6           # cikisa paralel sonum dali kondansatoru (kullanici karari, 12.11.2026)
+RDAL_OHM = 0.22         # sonum dali seri direnci (Cd ESR'si yaninda baskin)
 CIN_F = 2000e-6         # 2 x TDK B41859D7108M000
 ESR_IN_OHM = 7.5e-3     # 2 x 15 mohm paralel
 RON_OHM = 5.6e-3        # STP100N6F7, 25 C maks
@@ -89,9 +92,10 @@ D1_VRRM = 60.0
 D1_CJ = ((1, 2700e-12), (8, 1000e-12), (25, 600e-12))   # F/diyot, Sekil 9'dan EGRIDEN
 RTH_PED = 1.0                             # K/W TAHMIN: yalitim pedi + montaj (silikon ped tipik 0,5-1,5)
 
-# Kondansator anma degerleri (DATASHEET)
-COUT_VDC, COUT_IRIPPLE = 25.0, 1.90       # Nichicon UHE1E102MHD6TO: 25 V, 1,90 A (105 C, 100 kHz)
-CIN_VDC, CIN_IRIPPLE = 35.0, 3.25         # TDK B41859D7108M000: 35 V, 3,25 A/adet (105 C, 100 kHz)
+# Kondansator gerilim sinifi kriterleri (kullanici karari, 12.11.2026) ve 1. sira aday anmalari
+COUT_VDC_KRITER, CIN_VDC_KRITER = 35.0, 50.0  # dondurulan hedef siniflar (S1 kisa devresi ve sicak takma icin)
+COUT_VDC, COUT_IRIPPLE = 25.0, 1.90       # mevcut 1. sira aday Nichicon UHE1E102MHD6TO: 25 V (<35 V kriteri), 1,90 A
+CIN_VDC, CIN_IRIPPLE = 35.0, 3.25         # mevcut 1. sira aday TDK B41859D7108M000: 35 V (<50 V kriteri), 3,25 A/adet
 CIN_ESL_H = 26e-9                         # adet basina, PARCA-HEDEFLERI.md
 
 
@@ -114,7 +118,8 @@ def ripple_tt(di: float, esr: float, c: float, d: float, r_yuk: float | None = N
     return di * esr + ek
 
 
-def nokta(vin: float, io: float = IO_A, l: float = L_H, c: float = COUT_F, esr: float = ESR_OUT_OHM) -> dict:
+def nokta(vin: float, io: float = IO_A, l: float = L_H, c: float = COUT_F, esr: float = ESR_OUT_OHM,
+          cd: float = CD_F, rdal: float = RDAL_OHM) -> dict:
     d = duty(vin, io)
     di = (VO_V + VF_V + io * (DCR_OHM + RD_OHM)) * (1 - d) / (l * FSW_HZ)
     il_rms = math.sqrt(io**2 + di**2 / 12)
@@ -125,12 +130,18 @@ def nokta(vin: float, io: float = IO_A, l: float = L_H, c: float = COUT_F, esr: 
     p_d1 = VF_V * d_avg + RD_OHM * d_rms**2
     p_l1 = il_rms**2 * DCR_OHM
     kayip = p_s1 + p_d1 + p_l1
+    g_co = 1 / esr
+    g_dal = (1 / rdal) if cd > 0 else 0.0
+    g_yuk = io / VO_V
+    g_top = g_co + g_dal + g_yuk
+    iac_rms = di / math.sqrt(12)
     return {
         "vin": vin, "d": d, "ton_us": d / FSW_HZ * 1e6, "di": di, "ipk": io + di / 2,
         "ikritik": di / 2,                                   # bunun altinda DCM
         "icin_rms": math.sqrt(d * (1 - d) * io**2 + d * di**2 / 12),
-        "icout_rms": di / math.sqrt(12), "sw_rms": sw_rms, "d_rms": d_rms, "d_avg": d_avg, "il_rms": il_rms,
-        "dvout": ripple_tt(di, esr, c, d, VO_V / io),
+        "icout_rms": iac_rms * g_co / g_top, "idal_rms": iac_rms * g_dal / g_top,
+        "sw_rms": sw_rms, "d_rms": d_rms, "d_avg": d_avg, "il_rms": il_rms,
+        "dvout": ripple_tt(di, esr, c, d, 1 / (g_dal + g_yuk)),
         "dvin": io * d * (1 - d) / (FSW_HZ * CIN_F) + (io + di / 2) * ESR_IN_OHM,
         "p_s1": p_s1, "p_d1": p_d1, "p_l1": p_l1, "kayip": kayip,
         "verim": VO_V * io / (VO_V * io + kayip),
@@ -150,31 +161,47 @@ def acik_cevrim_vo(vin: float, d: float, r: float) -> float:
     return max(ccm, lo)
 
 
-def dinamik(l: float = L_H, c: float = COUT_F, esr: float = ESR_OUT_OHM, vin: float = VIN_ANA_V) -> dict:
+def dinamik(l: float = L_H, c: float = COUT_F, esr: float = ESR_OUT_OHM, vin: float = VIN_ANA_V,
+            cd: float = CD_F, rdal: float = RDAL_OHM) -> dict:
     d = duty(vin, IO_A)
     rs = DCR_OHM + d * RON_OHM + (1 - d) * RD_OHM
     z0 = math.sqrt(l / c)
     return {
         "f0_hz": 1 / (2 * math.pi * math.sqrt(l * c)), "z0": z0,
         "f_esr_hz": 1 / (2 * math.pi * esr * c),
-        # BASITLESTIRILMIS sinir (Rs·ESR terimi yok, Vo = 11 V sabit); tam ifade: cpl()
+        "f_dal_hz": 1 / (2 * math.pi * rdal * cd) if cd > 0 else 0.0,
+        # BASITLESTIRILMIS dalsiz sinir (Rs·ESR terimi ve Cd-Rd dali yok, Vo = 11 V sabit); tam ifade: cpl()
         "p_cpl_sinir_w": VO_V**2 * c * (rs + esr) / l,
-        # ideal kontrolcu (duty aninda 0) ile yuk atma tepe gerilimi, enerji dengesi
-        "atma_tepe_v": lambda i0, i1: math.sqrt(VO_V**2 + l * (i0**2 - i1**2) / c),
-        # sert kalkis kestirimi (LC'ye basamak): Itepe ~ Vo / Z0 (LTspice ile %3 icinde uyusuyor)
+        # ideal kontrolcu (duty aninda 0) ile yuk atma tepe gerilimi, kayipsiz enerji dengesi (Cout + Cd)
+        "atma_tepe_v": lambda i0, i1: math.sqrt(VO_V**2 + l * (i0**2 - i1**2) / (c + cd)),
+        # sert kalkis kestirimi (ana LC'ye basamak): Itepe ~ Vo / Z0 (Cd dali Rd uzerinden ek sonumlu akim ceker)
         "sert_kalkis_itepe_a": VO_V / z0,
     }
 
 
+def _kup_kokler(a2: float, a1: float, a0: float) -> list[complex]:
+    """s^3 + a2 s^2 + a1 s + a0 = 0 gercek katsayili denklemin uc koku (Cardano)."""
+    p = a1 - a2 * a2 / 3.0
+    q = 2.0 * a2 * a2 * a2 / 27.0 - a2 * a1 / 3.0 + a0
+    s = cmath.sqrt((q / 2.0) ** 2 + (p / 3.0) ** 3)
+    u0 = -q / 2.0 + s
+    if abs(u0) < abs(-q / 2.0 - s):
+        u0 = -q / 2.0 - s
+    u = (abs(u0) ** (1.0 / 3.0)) * cmath.exp(1j * cmath.phase(u0) / 3.0) if abs(u0) > 0 else 0j
+    v = -p / (3.0 * u) if abs(u) > 0 else 0j
+    w = cmath.exp(2j * math.pi / 3.0)
+    return [u + v - a2 / 3.0, u * w + v * w.conjugate() - a2 / 3.0, u * w.conjugate() + v * w - a2 / 3.0]
+
+
 # ---------------------------------------------------------------- 6) CPL kararliligi (tam ifade)
-def cpl(l: float, c: float, esr: float, rs: float, vth: float, p: float) -> dict:
-    """Sabit duty'li (acik cevrim) buck + sabit guc yuku: denge noktasi ve kucuk isaret kararliligi.
+def cpl(l: float, c: float, esr: float, rs: float, vth: float, p: float,
+        cd: float = 0.0, rdal: float = 1.0) -> dict:
+    """Sabit duty'li (acik cevrim) buck + sabit guc yuku (+ istege bagli Cd-Rd sonum dali): denge ve kararlilik.
 
     Model: Thevenin kaynagi vth = D·Vin - (1-D)·Vf, seri L + rs (rs = DCR + D·Ron + (1-D)·Rd_dyn),
-    paralel kol C + ESR, yuk i = P/v. Denge: vo = vth - rs·P/vo. Dengede yuk -R = -vo^2/P artimsal direnctir.
-    Karakteristik denklem:  L C (R - ESR) s^2 + [R C (ESR + rs) - L - rs ESR C] s + (R - rs) = 0
-    Kararlilik:  P < Pkritik = vo^2 (rs + ESR) / (L/C + rs ESR)      [birim: V^2·ohm / ohm^2 = W]
-    sonum > 0 kararli (1/s); sonum < 0 ise salinim exp(-sonum·t) ile BUYUR.
+    paralel kol C + ESR, paralel sonum dali cd + rdal (cd > 0 ise 3. derece durum uzayi), yuk i = P/v.
+    Denge: vo = vth - rs·P/vo (Cd DC'yi keser, denge noktasi aynidir). Dengede yuk -R = -vo^2/P artimsal direnctir.
+    sonum = en yavas ozdegerin sonum hizi (-max Re(s), 1/s); sonum > 0 kararli, < 0 ise salinim BUYUR.
 
     Gecerlilik siniri: CCM, ortalama model (f0 << fsw), ideal ve sonsuz bant genislikli CPL, dogrusal
     diyot/anahtar, ESL ve L(I) yok, kucuk isaret (buyuk salinimda sinir cevrimi olusur; genligi bu
@@ -186,6 +213,26 @@ def cpl(l: float, c: float, esr: float, rs: float, vth: float, p: float) -> dict
                 "f_hz": float("nan"), "kararli": False}
     vo = (vth + math.sqrt(disc)) / 2
     r = vo * vo / p if p > 0 else float("inf")
+    if cd > 0:
+        g = 1 / esr + 1 / rdal - (p / (vo * vo) if p > 0 else 0.0)
+        if g <= 0:
+            return {"vo": vo, "r": r, "pkritik": cpl_dalli_pkritik(l, c, esr, rs, vth, cd, rdal),
+                    "sonum": float("nan"), "f_hz": float("nan"), "kararli": False}
+        a = [[-rs / l - 1 / (g * l), -1 / (g * esr * l), -1 / (g * rdal * l)],
+             [1 / (g * esr * c), (1 / (g * esr) - 1) / (esr * c), 1 / (g * rdal * esr * c)],
+             [1 / (g * rdal * cd), 1 / (g * esr * rdal * cd), (1 / (g * rdal) - 1) / (rdal * cd)]]
+        tr = a[0][0] + a[1][1] + a[2][2]
+        m2 = sum(a[i][i] * a[j][j] - a[i][j] * a[j][i] for i, j in ((0, 1), (0, 2), (1, 2)))
+        det = (a[0][0] * (a[1][1] * a[2][2] - a[1][2] * a[2][1]) - a[0][1] * (a[1][0] * a[2][2] - a[1][2] * a[2][0])
+               + a[0][2] * (a[1][0] * a[2][1] - a[1][1] * a[2][0]))
+        a2, a1, a0 = -tr, m2, -det
+        kokler = _kup_kokler(a2, a1, a0)
+        osc = [z for z in kokler if abs(z.imag) > 1e-3]
+        sonum = -max(z.real for z in kokler)
+        pk = cpl_dalli_pkritik(l, c, esr, rs, vth, cd, rdal)
+        return {"vo": vo, "r": r, "pkritik": pk, "sonum": sonum,
+                "f_hz": abs(osc[0].imag) / (2 * math.pi) if osc else 0.0,
+                "kararli": a2 > 0 and a1 > 0 and a0 > 0 and a2 * a1 > a0}
     if p > 0:
         a = l * c * (r - esr)
         b = r * c * (esr + rs) - l - rs * esr * c
@@ -265,18 +312,20 @@ def cpl_dalli_pkritik(l, c, esr, rs, vth, cd=0.0, rd=1.0) -> float:
     return lo
 
 
-# Sonum secenekleri (FZ-F). Hicbiri sematige UYGULANMADI; karar kullanicinindir.
+# Sonum secenekleri karsilastirmasi (FZ-F). 470 uF + 0,22 ohm kullanici karariyla (12.11.2026) sematige eklendi.
 # (ad, L carpani, C [F] anma, ESR senaryosu [ohm], ek DCR [ohm], Cd [F], Rd [ohm], ek kayip aciklamasi)
 SONUM_SECENEKLERI = (
-    ("mevcut: 33 µH + 1000 µF", 1.0, 1000e-6, None, 0.0, 0.0, 1.0, "—"),
-    ("DCR +5 mΩ (≈ 12,8 mΩ)", 1.0, 1000e-6, None, 5e-3, 0.0, 1.0, "+0,28 W"),
-    ("DCR +10 mΩ (≈ 17,8 mΩ)", 1.0, 1000e-6, None, 10e-3, 0.0, 1.0, "+0,57 W"),
-    ("Cout 1500 µF (ESR × 0,67 varsayımı)", 1.0, 1500e-6, 0.67, 0.0, 0.0, 1.0, "—"),
-    ("Cout 2 × 680 µF (eşdeğer ESR × 0,5·1,3 varsayımı)", 1.0, 1360e-6, 0.65, 0.0, 0.0, 1.0, "—"),
-    ("Cout 2 × 1000 µF (eşdeğer ESR × 0,5)", 1.0, 2000e-6, 0.5, 0.0, 0.0, 1.0, "—"),
-    ("sönüm dalı 470 µF + 0,22 Ω", 1.0, 1000e-6, None, 0.0, 470e-6, 0.22, "≈ 2 mW"),
-    ("sönüm dalı 1000 µF + 0,15 Ω", 1.0, 1000e-6, None, 0.0, 1000e-6, 0.15, "≈ 3 mW"),
-    ("sönüm dalı 2200 µF + 0,10 Ω", 1.0, 1000e-6, None, 0.0, 2200e-6, 0.10, "≈ 5 mW"),
+    ("dalsız (eski): 33 µH + 1000 µF", 1.0, 1000e-6, None, 0.0, 0.0, 1.0, "—"),
+    ("dalsız + DCR +5 mΩ (≈ 12,8 mΩ)", 1.0, 1000e-6, None, 5e-3, 0.0, 1.0, "+0,28 W"),
+    ("dalsız + DCR +10 mΩ (≈ 17,8 mΩ)", 1.0, 1000e-6, None, 10e-3, 0.0, 1.0, "+0,57 W"),
+    ("dalsız, Cout 1500 µF (ESR × 0,67 varsayımı)", 1.0, 1500e-6, 0.67, 0.0, 0.0, 1.0, "—"),
+    ("dalsız, Cout 2 × 680 µF (eşdeğer ESR × 0,5·1,3)", 1.0, 1360e-6, 0.65, 0.0, 0.0, 1.0, "—"),
+    ("dalsız, Cout 2 × 1000 µF (eşdeğer ESR × 0,5)", 1.0, 2000e-6, 0.5, 0.0, 0.0, 1.0, "—"),
+    ("sönüm dalı 470 µF + 0,15 Ω (Rd alt kenar)", 1.0, 1000e-6, None, 0.0, 470e-6, 0.15, "≈ 2 mW"),
+    ("sönüm dalı 470 µF + 0,22 Ω (SEÇİLEN — şematik)", 1.0, 1000e-6, None, 0.0, 470e-6, 0.22, "≈ 1,2 mW"),
+    ("sönüm dalı 470 µF + 0,35 Ω (Rd + Cd ESR)", 1.0, 1000e-6, None, 0.0, 470e-6, 0.35, "≈ 0,9 mW"),
+    ("sönüm dalı 470 µF + 0,60 Ω (soğuk Cd ESR üst sınır)", 1.0, 1000e-6, None, 0.0, 470e-6, 0.60, "≈ 0,5 mW"),
+    ("sönüm dalı 1000 µF + 0,15 Ω", 1.0, 1000e-6, None, 0.0, 1000e-6, 0.15, "≈ 2 mW"),
     ("sönüm dalı 1000 µF + 0,33 Ω", 1.0, 1000e-6, None, 0.0, 1000e-6, 0.33, "≈ 1 mW"),
 )
 
@@ -385,8 +434,8 @@ if __name__ == "__main__":
         sys.stdout.reconfigure(encoding="utf-8")
     print("ANALİTİK HESAP (LTspice veya ölçüm değil)")
     print(f"L={L_H*1e6:g} µH/{DCR_OHM*1e3:g} mΩ  COUT={COUT_F*1e6:g} µF/{ESR_OUT_OHM*1e3:g} mΩ  "
-          f"CIN={CIN_F*1e6:g} µF/{ESR_IN_OHM*1e3:g} mΩ  Ron={RON_OHM*1e3:g} mΩ  Vf={VF_V:g} V+{RD_OHM*1e3:g} mΩ  "
-          f"fsw={FSW_HZ/1e3:g} kHz  Io={IO_A:g} A")
+          f"Cd={CD_F*1e6:g} µF+{RDAL_OHM:g} Ω  CIN={CIN_F*1e6:g} µF/{ESR_IN_OHM*1e3:g} mΩ  "
+          f"Ron={RON_OHM*1e3:g} mΩ  Vf={VF_V:g} V+{RD_OHM*1e3:g} mΩ  fsw={FSW_HZ/1e3:g} kHz  Io={IO_A:g} A")
 
     print("\n1) Kararlı durum, 11 V / 7,5 A (duty her girişte 11 V'a göre; düşümler dahil)")
     print("  Vin     D    Ton_us  dIL  ILtepe Ikritik ICINrms ICOUTrms S1rms D1ort dVout_mV dVin_mV  P_S1  P_D1  P_L1 toplam  verim%")
@@ -398,8 +447,8 @@ if __name__ == "__main__":
     print("  Verim yalnız iletim kayıplarıdır; anahtarlama, çekirdek ve sürücü kayıpları bölüm 7'dedir.")
     print("  Ton, PULSE kaynağının süresinden 10 ns uzundur (10 ns kenarların ortasında anahtarlanır).")
 
-    kose = nokta(max(VIN_V), l=L_H * (1 - L_DUSUK), c=COUT_F * (1 - C_TOL), esr=ESR_OUT_MAX_OHM)
-    print(f"\n2) Tolerans köşesi (26 V, L −%30, Cout −%20, ESR 35 mΩ): dIL={kose['di']:.2f} A, ILtepe={kose['ipk']:.2f} A,"
+    kose = nokta(max(VIN_V), l=L_H * (1 - L_DUSUK), c=COUT_F * (1 - C_TOL), esr=ESR_OUT_MAX_OHM, cd=CD_F * (1 - C_TOL))
+    print(f"\n2) Tolerans köşesi (26 V, L −%30, Cout ve Cd −%20, ESR 35 mΩ): dIL={kose['di']:.2f} A, ILtepe={kose['ipk']:.2f} A,"
           f" Isat ölçütü (+%30)={kose['ipk']*(1+SATURATION_MARGIN):.1f} A, dVout={kose['dvout']*1e3:.1f} mV")
 
     print("\n3) Yük uyumu (11 V çıkış) — referans yükler; genel modül zarfı 0–7,5 A / 82,5 W")
@@ -419,30 +468,32 @@ if __name__ == "__main__":
     print("  0 A'de (yüksüz) açık çevrim çıkışı giriş gerilimine tırmanır (tepe doğrultma): 20–26 V > Cout 25 V anma.")
 
     q = dinamik()
-    print(f"\n5) LC dinamiği: f0={q['f0_hz']:.0f} Hz, Z0={q['z0']:.3f} Ω, ESR sıfırı={q['f_esr_hz']/1e3:.1f} kHz")
-    qk = dinamik(L_H * (1 + L_YUKSEK), COUT_F * (1 - C_TOL), ESR_OUT_MIN_OHM)
+    print(f"\n5) LC dinamiği: ana f0={q['f0_hz']:.0f} Hz, Z0={q['z0']:.3f} Ω, ESR sıfırı={q['f_esr_hz']/1e3:.1f} kHz,"
+          f" Cd-Rd köşesi={q['f_dal_hz']/1e3:.2f} kHz")
+    qk = dinamik(L_H * (1 + L_YUKSEK), COUT_F * (1 - C_TOL), ESR_OUT_MIN_OHM, cd=CD_F * (1 - C_TOL))
     i0, i1 = O1_IMAX + i_s2e_k, (4.0 + P_S2E_CALISMA_W) / VO_V
-    print(f"  Yük atma {i0:.2f}→{i1:.2f} A, ideal kontrolcü sınırı: {q['atma_tepe_v'](i0, i1):.2f} V"
-          f" (köşe {qk['atma_tepe_v'](i0, i1):.2f} V); ESR sıçraması ΔI·ESR ayrıca eklenir"
-          f" (7,5 A × 35 mΩ = {7.5*0.035*1e3:.0f} mV; −10 °C Zmax 120 mΩ ile {7.5*0.12:.2f} V)")
-    print(f"  Sert kalkış kestirimi (yumuşak kalkış yok): ILtepe ≈ {q['sert_kalkis_itepe_a']:.0f} A;"
+    print(f"  Yük atma {i0:.2f}→{i1:.2f} A, kayıpsız enerji sınırı (Cout+Cd): {q['atma_tepe_v'](i0, i1):.2f} V"
+          f" (köşe {qk['atma_tepe_v'](i0, i1):.2f} V); ESR||Rd ilk sıçraması ayrıca eklenir"
+          f" (7,5 A × (35||220 mΩ) = {7.5*(0.035*0.22/0.255)*1e3:.0f} mV; −10 °C Zmax 120 mΩ ile {7.5*(0.12*0.22/0.34):.2f} V)")
+    print(f"  Sert kalkış kestirimi (yumuşak kalkış yok, ana LC): ILtepe ≈ {q['sert_kalkis_itepe_a']:.0f} A (Cd-Rd dalıyla SİM biraz daha yüksek);"
           f" bu akımda L/L0 ≈ {l1_bias(q['sert_kalkis_itepe_a'])*100:.0f} % (üretici bias eğrisi) → gerçek tepe daha yüksek")
 
-    print("\n6) Sabit güç yükü (CPL) ile açık çevrim kararlılığı — tam ifade, gerçek denge noktası")
-    print("   Pkritik = Vo²(Rs+ESR)/(L/C+Rs·ESR);  Rs = DCR + D·Ron + (1−D)·Rd;  duty 57,64 W'ta 11 V'a ayarlı, 24,6 V")
-    print("   sönüm > 0: salınım söner (zaman sabiti 1/sönüm); sönüm < 0: BÜYÜR. Geçerlilik: cpl() açıklaması.")
+    print("\n6) Sabit güç yükü (CPL) ile açık çevrim kararlılığı — 3. derece tam ifade (şematik Cd=470 µF + Rd=0,22 Ω dahil)")
+    print("   Durum uzayı [iL, vCout, vCd], gerçek denge noktası; C−%20 setlerinde Cd de −%20 (376 µF); duty 57,64 W'ta 11 V'a ayarlı, 24,6 V")
+    print("   sönüm = −max Re(s) > 0: salınım söner (zaman sabiti 1/sönüm); sönüm < 0: BÜYÜR. Geçerlilik: cpl() açıklaması.")
     print(f"   {'model seti':56s} Rs mΩ  Pkritik W | 57,64 W: sönüm 1/s | 73 W: Vo V  sönüm 1/s  τ ms   | 82,5 W: sönüm 1/s  τ ms")
     for ad, l, c, esr, dcr, ron, vf, rd in CPL_SETLERI:
         s = cpl_seti(ad, l, c, esr, dcr, ron, vf, rd)
-        a57, a73, a82 = (cpl(l, c, esr, s["rs"], s["vth"], pw) for pw in (57.64, 73.0, 82.5))
+        cd_s = CD_F * (0.8 if c < COUT_F else 1.0)
+        a57, a73, a82 = (cpl(l, c, esr, s["rs"], s["vth"], pw, cd_s, RDAL_OHM) for pw in (57.64, 73.0, 82.5))
         tau = lambda x: f"{1e3/abs(x['sonum']):6.0f}{'' if x['sonum'] > 0 else '↑'}"
         print(f"   {ad:56s} {s['rs']*1e3:5.1f}  {a73['pkritik']:7.1f}   | {a57['sonum']:+9.1f}          |"
               f" {a73['vo']:6.3f} {a73['sonum']:+9.1f} {tau(a73):>7s}   | {a82['sonum']:+9.1f} {tau(a82):>7s}")
-    print("   ↑ = büyüyen salınımın zaman sabiti. Basitleştirilmiş eski sınır (Rs·ESR yok, Vo = 11 V):"
+    print("   ↑ = büyüyen salınımın zaman sabiti. Dalsız basitleştirilmiş sınır (Rs·ESR ve Cd-Rd yok, Vo = 11 V):"
           f" anma {q['p_cpl_sinir_w']:.0f} W, köşe {qk['p_cpl_sinir_w']:.0f} W.")
-    print("   Gerekli pay tanımlı değildir (kullanıcı kararı); 82,5 W zarfı köşede Pkritik'in ÜSTÜNDEDİR.")
+    print("   Sönüm dalıyla (470 µF + 0,22 Ω) bütün model setlerinde Pkritik ≥ 126 W > 82,5 W modül zarfı.")
 
-    print("\n6b) Sönüm seçenekleri: Pkritik [W] (HESAP, 24,6 V; hiçbiri şematiğe uygulanmadı)")
+    print("\n6b) Sönüm seçenekleri ve Rd tolerans penceresi: Pkritik [W] (HESAP, 24,6 V; 470 µF + 0,22 Ω şematiğe uygulandı)")
     print("   Köşe = L +%20, ana Cout −%20, sönüm dalı kondansatörü −%20. ESR senaryoları: 15 mΩ (pencere alt kenarı) ve")
     print("   10 mΩ (TAHMİN, sıcak); paralel/büyük kondansatörde ESR parantezdeki oranla ölçeklenir (VARSAYIM, ölçüm yok).")
     print("   Rs: şematik (14,7 mΩ) ve en az sönüm (DCR 6,5, Ron 4,7, Rd 4 mΩ → 10,8 mΩ) setleri.")
@@ -473,9 +524,13 @@ if __name__ == "__main__":
         sw = [s1_anahtarlama(v, IO_A - k["di"] / 2, k["ipk"], rg) for rg in (5, 10, 25)]
         cin = k["icin_rms"] ** 2 * ESR_IN_OHM
         co = k["icout_rms"] ** 2 * ESR_OUT_OHM
+        dal = k["idal_rms"] ** 2 * RDAL_OHM
         cek = l1_cekirdek(v)["p_w"]
-        top = k["kayip"] + sw[1]["p_s1"] + cek + cin + co
+        top = k["kayip"] + sw[1]["p_s1"] + cek + cin + co + dal
         print(f"   {v:4.1f}    {k['p_s1']:5.2f}      {sw[0]['p_s1']:4.2f} / {sw[1]['p_s1']:4.2f} / {sw[2]['p_s1']:4.2f}          {k['p_d1']:5.2f}      {k['p_l1']:5.2f}      {cek:5.2f}     {cin:5.2f}  {co:5.3f}     {top:5.2f}        {VO_V*IO_A/(VO_V*IO_A+top)*100:5.2f}     {sw[1]['p_kapi']*1e3:.0f} mW")
+    k26 = nokta(26.0)
+    print(f"   Sönüm dalı (Cd={CD_F*1e6:g} µF + Rd={RDAL_OHM:g} Ω, 26 V): ripple akımı {k26['idal_rms']*1e3:.0f} mA RMS,"
+          f" Rd kaybı {k26['idal_rms']**2*RDAL_OHM*1e3:.1f} mW (toplama dahildir).")
     sw = s1_anahtarlama(26.0, 6.5, 8.5, 10)
     print(f"   Geçiş süreleri (Rg 10 Ω, 26 V): açma {sw['t_ac']*1e9:.0f} ns, kapama {sw['t_kapa']*1e9:.0f} ns;"
           f" bileşenler: geçiş {sw['p_gecis']:.2f} W, Coss {sw['p_coss']:.2f} W, D1 kapasitesi {sw['p_dkap']:.2f} W")
@@ -536,14 +591,14 @@ if __name__ == "__main__":
           f" (anma {CIN_IRIPPLE} A @105 °C); Cout: {max(nokta(v)['icout_rms'] for v in VIN_V):.2f} A (anma {COUT_IRIPPLE} A)")
 
     print("\n9) Gerilim sınıfları ve arıza arayüzü (HESAP; kaynak R/L VARSAYIM süpürmesi)")
-    print("   Sıcak takma: boş Cin'e 26 V basamak, tepe V(Cin) [V]; 35 V anma aşılırsa * (ESR 7,5 mΩ, C 2000 µF)")
+    print("   Sıcak takma: boş Cin'e 26 V basamak, tepe V(Cin) [V]; 35 V aşılırsa * (50 V kriteri altında kalır; ESR 7,5 mΩ, C 2000 µF)")
     ls = (0.2e-6, 0.5e-6, 1e-6, 2e-6, 5e-6, 10e-6)
     print("     R kaynak mΩ \\ L µH " + " ".join(f"{l*1e6:6g}" for l in ls))
     for r in (5e-3, 10e-3, 20e-3, 40e-3, 80e-3):
         print(f"     {r*1e3:6.0f}             " + " ".join(f"{(v:=sicak_takma(26.0, r, l)):5.1f}{'*' if v > CIN_VDC else ' '}" for l in ls))
     print("   C −%20 ve sıcak ESR (TAHMİN 2 × 7 mΩ) ile en kötü satır:"
-          f" R 5 mΩ, L 5 µH → {sicak_takma(26.0, 5e-3, 5e-6, CIN_F*0.8, 3.5e-3):.1f} V")
-    print(f"   S1 kısa devre: çıkış kararlı hâlde giriş gerilimine çıkar (20–26 V) → Cout {COUT_VDC:g} V anması 26 V'ta AŞILIR;")
-    print(f"     LC basamağı aşımı ayrıca eklenir (SİM: dogrula.py stres). Yüksüz açık çevrimde de çıkış girişe tırmanır.")
+          f" R 5 mΩ, L 5 µH → {sicak_takma(26.0, 5e-3, 5e-6, CIN_F*0.8, 3.5e-3):.1f} V (< Cin {CIN_VDC_KRITER:g} V kriteri)")
+    print(f"   S1 kısa devre: çıkış kararlı hâlde girişe çıkar (20–26 V), geçişte 27,3–31,1 V (SİM) → Cout ve Cd {COUT_VDC_KRITER:g} V kriteri içinde"
+          f" (mevcut 25 V aday AŞILIR).")
     print(f"   S1 VDS: {S1_VDS_MAX:g} V anma; 26 V girişte pay {S1_VDS_MAX-26:g} V, 28 V'ta {S1_VDS_MAX-28:g} V (zil hariç)."
           f" D1 VRRM {D1_VRRM:g} V aynı.")

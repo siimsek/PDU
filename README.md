@@ -4,7 +4,7 @@
 
 **Aşama: ANA GÜÇ DEVRESİ.** Güç katının değerleri belirlendi ve LTspice'ta sınandı; parçalar için aday listesi var, kesin seçim yapılmadı. PWM, geri besleme ve soft-start henüz yok; fiziksel devre kurulmadı.
 
-**Dondurma durumu: CONDITIONAL (12 Kasım 2026, simülasyon dondurması).** Şematik anma değerleri 0–82,5 W zarfında (dirençli, sabit akımlı ve sabit güçlü yük) sönümlüdür; tolerans köşesinde (bobin +%20, Cout −%20, ESR 15 mΩ) 73–82,5 W sabit güç yükü **sönümlenmez** ve çözümü seçilmedi. Sıra: simülasyonda dondur → parçaları seç, bobini sar → gerçek değerlerle yeniden test → PCB. Kapı listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.
+**Dondurma durumu: FROZEN (12 Kasım 2026, simülasyon dondurması).** Çıkışa paralel `Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı eklendi; şematik anma değerleri ve bütün tolerans/sıcaklık köşeleri 0–82,5 W zarfında (dirençli, sabit akımlı ve sabit güçlü yük, 200–500 ms darbe) sönümlü olarak doğrulandı. Gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak belirlendi ve simülasyon dondurması kullanıcı onayıyla tamamlandı. Sıra: dondurulan hedef aralıklara göre kesin parçaları seç ve bobini sar → gerçek değerlerle yeniden test → PCB. Kapı listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.
 
 **Nerede kaldık, sırada ne var:** [YOL-HARITASI.md](YOL-HARITASI.md) · **Çalışma kuralları (yapay zekâ araçları dahil):** [AGENTS.md](AGENTS.md)
 
@@ -16,18 +16,19 @@
 |---|---|---|---|
 | V1 | 24,6 V | 6S batarya | 20–26 V |
 | Vdrv | 100 kHz, Ton = 4,59 µs | — (sonraki aşamada sürücü + PWM) | — |
-| L1 | 33 µH el sarım, DCR 7,81 mΩ (HESAP, 20 °C) | Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım, 100 × 0,20 mm litz (2. sıra: satın alma, Würth 74435583300) | 33 µH; DCR 6,5–15 mΩ (el sarım hedefi 8–10 mΩ); 12 A'de L ≈ %95 (üretici bias eğrisi). 39 µH ve 47 µH kaldı. 33 µH de tolerans köşesinde 200 ms'lik 73 W darbesinde kalır |
-| Cout | 1000 µF, ESR 35 mΩ (**maks. empedans, ESR varsayımı**) | Nichicon UHE1E102MHD6TO (25 V) | 1000 µF, ESR 15–35 mΩ (alt kenar köşede yetmiyor; ölçülmeli), ≥ 25 V (S1 kısa devresinde aşılır) |
-| Cin1, Cin2 | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 (35 V) | toplam ripple akımı ≥ 4,5 A, ≥ 35 V (düşük dirençli kaynakla sıcak takmada aşılabilir) |
+| L1 | 33 µH el sarım, DCR 7,81 mΩ (HESAP, 20 °C) | Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım, 100 × 0,20 mm litz (2. sıra: satın alma, Würth 74435583300) | **33 µH** (el sarım 30,7–36,1 µH; satın alma ±%20 doğrulanmış); DCR 6,5–15 mΩ (el sarım hedefi 7,5–10 mΩ); 12 A'de L ≈ %95 |
+| Cout | 1000 µF, ESR 35 mΩ (**maks. empedans, ESR varsayımı**) | Nichicon UHE1E102MHD6TO *(elektriksel R/C referansı; kesin parça ≥35 V seçilecek)* | 1000 µF ±%20, ESR ≤ 35 mΩ, **≥ 35 V** (S1 kısa devresinde 27,3–31,1 V) |
+| Cd + Rd | 470 µF + seri 0,22 Ω (çıkış sönüm dalı) | — (dondurma sonrası seçilecek) | Cd: 470 µF ±%20, **≥ 35 V**; Rd: 0,22 Ω (Rd + Cd_ESR toplamı **0,15–0,60 Ω**), ≥ 0,25 W |
+| Cin1, Cin2 | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 *(elektriksel R/C referansı; kesin parça ≥50 V seçilecek)* | toplam ripple akımı ≥ 4,5 A, **≥ 50 V** (sıcak takmada ≤ 46,5 V) |
 | S1 | ideal anahtar, `Ron=5.6m` | STP100N6F7 (60 V, TO-220) | RDS(on) ≤ 12 mΩ, VDS ≥ 55 V |
 | D1 | ideal diyot, `Vf=0.38 Ron=8m` | STPS40M60CT (60 V, 2 × 20 A, iki bacak paralel) | VF ≤ 0,58 V @ 7,5 A, VRRM ≥ 45 V |
 | Rload | 1,467 Ω | ≥ 100 W direnç yükü | — |
 
 Şematik ideal elemanlıdır; değerler aday listesinin başındaki parçaların veri sayfasından alınmıştır. Bu bir satın alma kararı değildir. Adayların sırası ve nedeni, doğrulama durumu ve kriterlerin nedenleri: [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md). Seçim süreci ve test sonuçları: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md).
 
-LTspice sonucu (24,6 V giriş, kararlı durum, 19–20 ms): Vo = 11,000 V, çıkış ripple'ı 64,4 mV t-t, bobin akımı 6,56–8,44 A. Fiziksel ölçüm yoktur.
+LTspice sonucu (24,6 V giriş, kararlı durum, 19–20 ms): Vo = 11,000 V, çıkış ripple'ı 55,7 mV t-t, bobin akımı 6,56–8,44 A. Fiziksel ölçüm yoktur.
 
-Açık çevrim: Ton sabitken giriş veya yük değişirse çıkış 11 V'ta kalmaz; soft-start yoktur (sert kalkışta LTspice 53,3 A / 17,0 V gösterir). **Gerçek O1 veya S2E bağlanmaz.**
+Açık çevrim: Ton sabitken giriş veya yük değişirse çıkış 11 V'ta kalmaz; soft-start yoktur (sert kalkışta LTspice 61,4 A / 16,6 V gösterir). **Gerçek O1 veya S2E bağlanmaz.**
 
 ## LTspice'ta deneme
 
@@ -39,7 +40,7 @@ Açık çevrim: Ton sabitken giriş veya yük değişirse çıkış 11 V'ta kalm
 
 Şematikteki tek yönerge `.tran 20m` satırıdır (simülasyon süresi); LTspice bunu şematikte ister.
 
-Beklenen (24,6 V giriş, 19–20 ms): V(out) ortalama ≈ 11,00 V, ripple ≈ 64 mV t-t, I(L1) ≈ 6,6–8,4 A.
+Beklenen (24,6 V giriş, 19–20 ms): V(out) ortalama ≈ 11,00 V, ripple ≈ 56 mV t-t, I(L1) ≈ 6,6–8,4 A.
 
 ## Dosyalar
 

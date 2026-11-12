@@ -3,7 +3,7 @@
 **Tarih:** 12 Kasım 2026
 **Durum:** Parçalar **kesinleşmedi**. Aşağıdaki liste "olabilir" listesidir: kriterlerle yapılan dış araştırmanın adayları, LTspice köşe testindeki paya göre sıralanmıştır. Şematik, listenin başındaki **1. sıra adayların** değerlerini taşır (L1 için el sarım hesabı, diğerleri veri sayfası); bu bir satın alma kararı değildir. Kriterleri sağlayan başka bir parça aynı yolla (bkz. "Parça değiştiğinde") 1. sıraya geçebilir.
 **Sınıf:** analitik hesap (`hesap.py`) + LTspice, ideal elemanlar (`dogrula.py`). Fiziksel ölçüm yok.
-**Dondurma durumu:** CONDITIONAL (simülasyon dondurması) — tolerans köşesindeki sönüm sorunu ve gerilim sınıfı kararları açık; parçalar ve bobin, dondurulan değerlere göre **sonra** seçilir / sarılır. Ayrıntı [OPTIMIZASYON.md](OPTIMIZASYON.md) §12.
+**Dondurma durumu:** **FROZEN (simülasyon dondurması, 12 Kasım 2026)** — çıkış sönüm dalı (`Cd = 470 µF + seri Rd = 0,22 Ω`) eklendi, tüm köşe testleri geçti; gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak kararlaştırıldı ve simülasyon dondurması kullanıcı onayıyla tamamlandı. Parçalar ve bobin, bu belgedeki dondurulmuş hedef aralıklara göre seçilir / sarılır. Ayrıntı [OPTIMIZASYON.md](OPTIMIZASYON.md) §12.
 
 Çalışma noktası: Vin 20 / 22,2 / **24,6** / 25,2 / 26 V → 11 V / 7,5 A (82,5 W), fsw = 100 kHz. Seçim süreci ve test sonuçları: [OPTIMIZASYON.md](OPTIMIZASYON.md).
 
@@ -15,8 +15,9 @@
 |---|---|---|---|---|
 | **L1** (1. sıra, el sarım) | Magnetics **Kool Mµ 40µ `0077536A7`** toroid, 22 sarım, 100 × 0,20 mm litz | 33,4 µH (AL 69 nH ±%8 → 30,7–36,1 µH); Ae 174 mm², le 126 mm, Ve 22 cm³; DC bias %80 @ 58,5 Oe, %50 @ 133 Oe; çekirdek kaybı en çok 900 mW/cm³ @ 100 kHz / 100 mT (DATASHEET, 0077536A7 rev. 6/1/2022). L(8,9 A) ≈ %97, L(12 A) ≈ %95, L(53 A) ≈ %59 (bias eğrisinden okuma); DCR 7,81 mΩ @20 °C (HESAP), 9,5 mΩ @75 °C; kayıp 0,58 W @20 °C / 0,72 W @100 °C sargı (bakır 0,44–0,58 W + çekirdek ≤ 0,14 W, HESAP) — **fiziksel ölçüm yok** | 33 µH, `Rser=7.81m` | Çekirdek ve tel ayrı temin; ölçüm gerekir |
 | **L1** (2. sıra, satın alma) | Würth **74435583300** (WE-HCI, yüzey montaj, ekranlı) | 33 µH ±%20 (100 kHz, 10 mA); 30,5 µH tipik @ 11,5 A; Irms 11,5 A (ΔT 50 K); 10,6 A (ΔT 40 K); Isat 12,5 A (−%10) ve 15 A (−%30), **ikisi de tipik**; DCR 13,2 mΩ ±%10 @ 20 °C (maks 14,52 mΩ; sıcakta artar). 9 A'de düşüm ≈ %3 (L–I eğrisinden yaklaşık okuma, ikinci el rapor); çekirdek kaybı verisi datasheet'te yok | şematikte değil (el sarım 1. sırada) | Digi-Key 260 adet, 7,34 $ |
-| **Cout** | Nichicon **UHE1E102MHD6TO** | 1000 µF ±%20; 25 V; 105 °C; **empedans** en çok 35 mΩ (100 kHz, 20 °C) ve 120 mΩ (100 kHz, −10 °C) — ESR değildir; ripple akımı 1,90 A (105 °C, 100 kHz) | 1000 µF, `Rser=35m` | Mouser 336 adet, 1,22 € |
-| **Cin1, Cin2** | 2 × TDK **B41859D7108M000** | 1000 µF ±%20; 35 V; 105 °C; 16 × 20 mm; empedans (Zmax) 15 mΩ (100 kHz, 20 °C), 38 mΩ (−10 °C) — ESR değildir, ESL ≈ 26 nH ≈ 16 mΩ reaktans aynı büyüklükte; ripple akımı 3,25 A/adet (105 °C, 100 kHz) → 6,5 A | 2 × 1000 µF, `Rser=15m` | Farnell Türkiye 2.914 adet, 2,31 € + KDV |
+| **Cout** | Nichicon **UHE1E102MHD6TO** *(elektriksel R/C referansı; **25 V < yeni ≥35 V kriteri**)* | 1000 µF ±%20; 25 V; 105 °C; **empedans** en çok 35 mΩ (100 kHz, 20 °C) ve 120 mΩ (100 kHz, −10 °C) — ESR değildir; ripple akımı 1,90 A (105 °C, 100 kHz). **Not:** 12.11.2026 kararıyla Cout kriteri ≥ 35 V olduğundan kesin parça ≥ 35 V seçilecektir | 1000 µF, `Rser=35m` | Mouser 336 adet, 1,22 € |
+| **Cd + Rd** (çıkış sönüm dalı) | Henüz aday seçilmedi (§12.2'de seçilecek) | Hedef aralık: **Cd = 470 µF ±%20, ≥ 35 V**, 105 °C elektrolitik; **Rd = 0,22 Ω** ayrık direnç (Cd ESR'si dahil toplam dal direnci **0,15–0,60 Ω**), ≥ 0,25 W (anlık darbe dayanımlı) | `Cd=470u`, `Rd=0.22` | Standart E12 değerler |
+| **Cin1, Cin2** | 2 × TDK **B41859D7108M000** *(elektriksel R/C referansı; **35 V < yeni ≥50 V kriteri**)* | 1000 µF ±%20; 35 V; 105 °C; 16 × 20 mm; empedans (Zmax) 15 mΩ (100 kHz, 20 °C), 38 mΩ (−10 °C) — ESR değildir, ESL ≈ 26 nH ≈ 16 mΩ reaktans aynı büyüklükte; ripple akımı 3,25 A/adet (105 °C, 100 kHz) → 6,5 A. **Not:** 12.11.2026 kararıyla Cin kriteri ≥ 50 V olduğundan kesin parça ≥ 50 V seçilecektir (ör. 3. sıradaki 50 V aday) | 2 × 1000 µF, `Rser=15m` | Farnell Türkiye 2.914 adet, 2,31 € + KDV |
 | **S1** | STMicroelectronics **STP100N6F7** (TO-220) | 60 V; RDS(on) 4,7 tipik / 5,6 mΩ maks (VGS 10 V, 50 A, 25 °C; en düşük değer yayımlanmamış); ID 100 A; Qg 30 / Qgs 12,6 / Qgd 5,9 nC tipik; Coss 970 pF @25 V; Rth(j-c) 1,2 K/W; Tj 175 °C | `Ron=5.6m` | Digi-Key 2.105 adet, 2,08 $ |
 | **D1** | STMicroelectronics **STPS40M60CT** (TO-220AB, iki bacak paralel) | 60 V; 2 × 20 A; VF tipik/maks 0,430/0,460 V @ 5 A/bacak, 25 °C (125 °C: 0,325/0,355 V); IR maks 110 µA @25 °C, **85 mA @125 °C** (bacak başına, 60 V); Rth(j-c) toplam 0,95 K/W; Tj 150 °C | `Vf=0.38 Ron=8m` (7,5 A'de 0,44 V) | Digi-Key 1.010 adet, 2,81 $ |
 
@@ -93,40 +94,51 @@ Kaynaklar: [74435583300](https://www.we-online.com/en/components/products/datash
 
 Parantez içindeki "hedef", parça seçilmeden önce şematikte kullanılan değerdir. Ron, Vf ve DCR için hedef, kabul sınırının kendisidir. Daha düşük Ron, Vf veya DCR kaybı azaltır ama sabit güç yüklü LC'nin seri direncini (sönümünü) de düşürür; 47 µH'de payı daraltır (bkz. [OPTIMIZASYON.md](OPTIMIZASYON.md) §4.4), bu yüzden "yalnız kaybı azaltır" denemez.
 
-### L1 — bobin
+### L1 — bobin (sarım ve seçim hedef aralığı)
 
 | Kriter | Değer | Neden |
 |---|---|---|
-| Endüktans | **33 µH** (hedef; tolerans ne kadar darsa o kadar iyi, el sarımda AL ±%8). 39 µH ve 47 µH kabul değil | 33 µH'de akım ripple'ı %25. 22 µH'de CCM sınırı 1,4 A'e çıkar, tipik yük (≈ 1,2 A) kesintili iletimde kalır ve açık çevrim testinde çıkış 8,8 V'a düşer. Büyük L, Cout 1000 µF ile sönümü zayıflatır: güncel şematik değerleriyle (12.11.2026, 200 ms'lik darbe) 39 µH ve 47 µH köşede 12,59 / 12,86 V ile kaldı. **33 µH de L +%20 / Cout −%20 / ESR 15 mΩ köşesinde kalır** (9,91–12,05 V, salınım sönmüyor); anma değerlerinde ve L +%8 ile 73 W'ta geçer ([OPTIMIZASYON.md](OPTIMIZASYON.md) §4.4, §6). 47 µH için daha önce verilen "yalnız satın alınan parçayla, S2E kalkış süresi ölçülünce" koşulu 20 ms'lik darbe sonucuna dayanıyordu; 200 ms'lik testte anma değerlerinde bile sürekli salınır. |
-| Doyma akımı (Isat) | ≥ 12 A; 9 A'de endüktans düşümü ≤ %10 | Tepe akım en kötü köşede 8,9 A; %30 pay. Köşe testleri toleransla birlikte toplam −%30'a kadar koşuldu. |
+| Endüktans (sarım / seçim hedefi) | **33 µH** (el sarım hedefi: **30,7–36,1 µH** [AL 69 nH ±%8, 22 sarım]; satın alınan parçada ±%20 = **26,4–39,6 µH** da doğrulanmıştır). 39 µH ve 47 µH anma değerleri tercih edilmez | 33 µH'de akım ripple'ı %25, CCM sınırı 0,94 A < tipik yük (≈ 1,2 A). 22 µH'de tipik yük DCM'de kalır (çıkış 8,8 V). `Cd = 470 µF + Rd = 0,22 Ω` sönüm dalıyla L +%20 (39,6 µH) köşesinde 200 ms ve 500 ms sabit güç darbeleri **10,72–11,25 V** içinde ve sönmüş olarak geçer ([OPTIMIZASYON.md](OPTIMIZASYON.md) §4.4, §6). |
+| Doyma akımı (Isat) | ≥ 12 A; 8,9 A'de L/L0 ≥ %90 (el sarımda %97) | Tepe akım en kötü köşede 8,91 A; %30 pay. Köşe testleri toleransla birlikte toplam −%30'a (23,1 µH) kadar koşuldu. |
 | Isıl akım (Irms) | ≥ 9 A | 7,5 A sürekli; %20 pay. |
-| DCR | **6,5–15 mΩ** (hedef 8–10 mΩ el sarım; satın alınan parça için ≤ 15 mΩ, 33 µH'te 12–15 mΩ en geniş payı verir) | Bakır kaybı 0,85 W. Her +5 mΩ ≈ +0,28 W. 20 mΩ'a kadar kabul edilebilir (verim −%0,3). Alt sınır: DCR sönüm direncidir; 6,5 mΩ'ta köşe testi geçti (12 V'a 0,22 V pay, salınım 1,6 V), altı denenmedi. Vishay 5,1 mΩ'ta pay 0,02 V kaldı. |
-| Yapı | Ekranlı veya toroid güç bobini, 100 kHz'e uygun çekirdek | Çekirdek kaybı modelde yoktur; tezgâhta sıcaklık ölçülmelidir. |
+| DCR (sarım / seçim hedefi) | **6,5–15 mΩ** @ 20 °C (**el sarım hedefi: 7,5–10 mΩ** @ 20 °C, sıcak 75–100 °C'ta 9,5–10,5 mΩ; satın alınan parça ≤ 15 mΩ) | Her +5 mΩ ≈ +0,28 W bakır kaybı ekler (7,81 mΩ'da 0,44 W). `Cd + Rd` sönüm dalı varken DCR 6,5 mΩ alt sınırında ve sıcak ESR 10 mΩ köşesinde bile `Pkritik = 126–134 W > 82,5 W`'tır ([OPTIMIZASYON.md](OPTIMIZASYON.md) §6.2, §10). |
+| Yapı | Toroid toz çekirdek (el sarım, Kool Mµ 40µ) veya ekranlı güç bobini, 100 kHz'e uygun | Çekirdek kaybı ≤ 0,14 W (HESAP); sarıldıktan sonra L0, L(I), DCR ve sıcaklık ölçülür. |
 
 Tek parça bulunamazsa eşdeğer kurulumlar (elektriksel olarak aynı):
-- **İki eş bobin paralel:** her biri 68–100 µH, Isat ≥ 6 A, Irms ≥ 4,5 A, DCR ≤ 30 mΩ → toplam 34–50 µH.
-- **İki eş bobin seri:** her biri 18–22 µH, Isat ≥ 12 A, Irms ≥ 9 A, DCR ≤ 7,5 mΩ → toplam 36–44 µH.
+- **İki eş bobin paralel:** her biri 68 µH, Isat ≥ 6 A, Irms ≥ 4,5 A, DCR 13–30 mΩ → toplam 34 µH.
+- **İki eş bobin seri:** her biri 15–18 µH, Isat ≥ 12 A, Irms ≥ 9 A, DCR 3,5–7,5 mΩ → toplam 30–36 µH.
 
-### Cout — çıkış kondansatörü
+### Cout — ana çıkış kondansatörü (seçim hedef aralığı)
 
 | Kriter | Değer | Neden |
 |---|---|---|
-| Kapasite | **1000 µF** ±%20 (hedef 1000 µF) | Sabit güç yüküyle LC sönümü ve yük adımı. 680 µF en kötü köşede 12,06 V'a çıktı; 1000 µF ile aynı köşe 11,81 V. Yaygın standart değer. |
-| ESR (100 kHz) | **15–35 mΩ** (hedef 25 mΩ) | Alt sınır: ESR sönüm elemanıdır; altında köşede salınım büyür. Üst sınır: ripple (35 mΩ'da köşede ≈ 100 mV t-t). **Çok düşük ESR'li polimer tek başına uymaz; genel amaçlı (düşük ESR olmayan) elektrolitik de uymaz.** Pencerenin 15 mΩ alt kenarı tolerans köşesinde 73 W sabit güç yükünü **sönümlemez** (12.11.2026); sönümün güvenli olduğu ESR ≈ 20 mΩ ve üstüdür (HESAP) ve gerçek ESR ölçülmeden bilinemez. Alt sınırı konu dışı bırakan seçenek, çıkışa paralel sönüm dalıdır ([OPTIMIZASYON.md](OPTIMIZASYON.md) §10). |
-| Gerilim | ≥ 25 V (**açık risk:** 35 V sınıfı değerlendirilmeli) | Çıkış 11 V; soft-start olmadan sert kalkışta 17 V'a çıkar. 16 V'luk parça yetmez. **S1 kısa devre kalırsa veya açık çevrim yüksüz çalışırsa çıkış giriş gerilimine (26 V) çıkar; 25 V anma aşılır** ([OPTIMIZASYON.md](OPTIMIZASYON.md) §9.4). Ölçüt değiştirilmedi; 35 V'luk aday veya bağımsız çıkış aşırı gerilim koruması kararı kullanıcıda ve Adım 7'dedir. |
-| Ripple akımı | ≥ 1 A RMS (100 kHz) | Devrede 0,55 A. |
+| Kapasite | **1000 µF** ±%20 (800–1200 µF) | Yük adımı genliği ve 100 kHz filtreleme. Yaygın standart değer. |
+| ESR / empedans (100 kHz, 20 °C) | **≤ 35 mΩ** (hedef 15–35 mΩ; sönüm dalı varken 10–35 mΩ aralığının tamamı kararlıdır) | Üst sınır ripple içindir: 35 mΩ'da 24,6 V anmada 55,7 mV t-t, 26 V `L −%30 / C −%20` köşesinde **83,1 mV t-t** (≤ 165 mV sınırı). Eskiden 15 mΩ altında sönüm yetmiyordu; paralel `Cd + Rd` sönüm dalı eklendiğinden **10 mΩ sıcak ESR köşesi bile 135 W Pkritik ile geçer** ([OPTIMIZASYON.md](OPTIMIZASYON.md) §6.2, §10). Yine de çok düşük ESR'li polimer yerine 15–35 mΩ düşük empedanslı elektrolitik ek sönüm payı verir. −10 °C'ta Zmax ≤ 120 mΩ tercih edilir. |
+| Gerilim | **≥ 35 V** (kullanıcı kararı, 12.11.2026) | S1 kısa devre arızasında çıkış kararlı 24–26 V'a, LC geçişinde **27,3–31,1 V**'a çıkar; yüksüz açık çevrimde de giriş gerilimine tırmanır ([OPTIMIZASYON.md](OPTIMIZASYON.md) §9.4). 25 V anma aşılır; 35 V sınıfı bu arızayı kondansatör düzeyinde kapsar. |
+| Ripple akımı | ≥ 1,0 A RMS (100 kHz, 105 °C) | Devrede 0,48 A RMS (sönüm dalı akımın %14'ünü paylaşır). |
 | Tip | 105 °C, düşük empedanslı alüminyum elektrolitik, radyal | — |
 
-Eşdeğer: 2 × 470 µF paralel, her biri ESR 30–70 mΩ, ripple akımı ≥ 0,5 A.
+Eşdeğer: 2 × 470 µF / ≥ 35 V paralel, her biri ESR ≤ 70 mΩ, ripple akımı ≥ 0,5 A.
 
-### Cin — giriş kondansatörleri
+### Cd ve Rd — çıkışa paralel RC sönüm dalı
+
+| Eleman / Kriter | Değer | Neden |
+|---|---|---|
+| **Cd** kapasite | **470 µF** ±%20 (376–564 µF) | Sabit güç yükü (CPL) karşısında ≈ 0,9 kHz LC rezonansını sönümler; `Cout`'un yarısı mertebesinde kapasite en sert köşede `Pkritik ≥ 126 W > 82,5 W` sağlar ([OPTIMIZASYON.md](OPTIMIZASYON.md) §6, §10). |
+| **Cd** gerilim | **≥ 35 V** (kullanıcı kararı, 12.11.2026) | `Cout` ile aynı düğümdedir (`Rd` üzerinden DC akım geçmez, kararlı hâlde tüm çıkış gerilimi `Cd` üzerindedir); S1 kısa devresinde 27,3–31,1 V görür. |
+| **Cd** ESR (100 kHz, 20 °C) | **≤ 100 mΩ** (soğukta ≤ 350 mΩ) | Seri ayrık `Rd = 0,22 Ω` direnciyle toplanır; toplam dal direnci **0,15–0,60 Ω** penceresinde kaldığı sürece tüm köşeler sönümlüdür (`dogrula.py kararlilik` §3). Standart düşük empedanslı 105 °C radyal elektrolitik uygundur. |
+| **Cd** ripple akımı | ≥ 0,3 A RMS (100 kHz, 105 °C) | Devrede 100 kHz ripple akımı 76 mA RMS'tir; yük adımlarında geçici sönüm akımı taşır. |
+| **Rd** direnç | **0,22 Ω** ±%5 (veya ±%1); toplam `Rd + ESR(Cd)` hedefi **0,15–0,60 Ω** | `Z0 = √(L/Cout) ≈ 0,18 Ω` karakteristik empedansa uyumlu sönüm direnci; `Cd`'nin kendi ESR belirsizliğini bastırır, 100 kHz ripple'ı bozmaz. |
+| **Rd** güç ve yapı | **≥ 0,25 W** (tercihen **0,5 W**, ör. 1206/1210/2010 SMD veya THT film direnç, düşük endüktanslı / tel sarım olmayan) | Kararlı hâlde DC akım sıfırdır, 100 kHz ripple kaybı yalnız **1,3 mW**'tır. Sert kalkış veya S1 kısa devresi darbesinde anlık enerji `½·Cd·ΔV² ≈ 0,06–0,22 J` (birkaç ms) harcar; 0,25–0,5 W darbe dayanımlı film direnç yeterlidir. |
+
+### Cin — giriş kondansatörleri (seçim hedef aralığı)
 
 | Kriter | Değer | Neden |
 |---|---|---|
-| Toplam ripple akımı anma değeri | **≥ 4,5 A RMS** (100 kHz), paralel adetlerin toplamı | Devrede 3,8 A RMS; %20 pay. Boyutu belirleyen budur, kapasite değil. |
-| Gerilim | ≥ 35 V (**açık risk:** kaynak empedansına bağlı) | Giriş 26 V; batarya takılırken tepe 40 mΩ / 1 µH varsayımıyla 26 V, 20 mΩ / 1 µH ile ≈ 28 V. Düşük dirençli, uzun kablolu kaynakta (≤ 10 mΩ, ≥ 2 µH) tepe 35 V'u **aşar** (HESAP + SİM, [OPTIMIZASYON.md](OPTIMIZASYON.md) §9.4). Kaynak empedansı ölçülmeden 35 V yeterli sayılamaz; 50 V sınıfı (3. sıra aday) veya ön şarj / TVS Adım 7 kararıdır. |
-| Toplam kapasite | ≥ 440 µF (hedef 2 × 1000 µF) | 440 µF'ta giriş ripple'ı ≈ 125 mV t-t. 2 × 1000 µF / 35 V, ripple akımı şartını iki adetle sağlayan yaygın değerdir. |
-| ESR (100 kHz) | ≤ 40 mΩ/adet (hedef 20 mΩ) | Giriş ripple'ının büyük kısmı ESR'dendir. |
+| Toplam ripple akımı anma değeri | **≥ 4,5 A RMS** (100 kHz, 105 °C), paralel adetlerin toplamı | Devrede 3,77 A RMS; %20 pay. Boyutu belirleyen budur, kapasite değil. |
+| Gerilim | **≥ 50 V** (kullanıcı kararı, 12.11.2026) | 26 V bataryanın düşük dirençli / uzun kablolu kaynakla sıcak takılmasında tepe gerilim 35 V'u aşıp **45,3–46,5 V**'a çıkabilir (HESAP + SİM, [OPTIMIZASYON.md](OPTIMIZASYON.md) §9.4). 50 V sınıfı bu riski kondansatör düzeyinde kapatır (ör. listedeki 3. sıra aday KEMET ESY108M050AM2AA 50 V / 21 mΩ / 3,35 A). |
+| Toplam kapasite | ≥ 440 µF (hedef 2 × 1000 µF) | 440 µF'ta giriş ripple'ı ≈ 125 mV t-t. 2 × 1000 µF / 50 V (veya 3 × 470–680 µF / 50 V) ripple akımı şartını sağlayan standart kurulumdur. |
+| ESR (100 kHz) | ≤ 40 mΩ/adet (hedef 15–25 mΩ/adet) | Giriş ripple'ının büyük kısmı ESR'dendir. Hücreye yakın ayrıca etkin ≥ 4,7 µF / ≥ 50 V X7R seramik dekuplaj konacaktır ([OPTIMIZASYON.md](OPTIMIZASYON.md) §9.3, §9.5). |
 | Tip | 105 °C, düşük empedanslı alüminyum elektrolitik | — |
 
 ### S1 — anahtar (N-kanal MOSFET)
@@ -172,32 +184,33 @@ Kurallar:
 - Kriterin tamamını sağlamayan parçayı önerme; hangi kriterde kaldığını belirterek "uymuyor" listesine yaz.
 - Her kalem için en az 3 aday ver; en az 50 adet stoklu olanı öne al. Mümkünse delikli (THT) kılıf.
 
-1) Güç bobini (buck çıkış bobini, 100 kHz)
-   - Endüktans 33 µH veya 47 µH (39 µH değil), tolerans ≤ ±%20
+1) Güç bobini (buck çıkış bobini, 100 kHz) — satın alma alternatifi (1. sıra el sarım Kool Mµ 40µ 0077536A7, 22 sarım)
+   - Endüktans 33 µH, tolerans ≤ ±%20
    - Doyma akımı Isat ≥ 12 A ve 9 A'de endüktans düşümü ≤ %10 (veri sayfasındaki L–I eğrisinden veya iki noktadan yaz)
    - Isıl akım Irms ≥ 9 A
-   - DCR ≤ 15 mΩ (20 mΩ'a kadar olanları ayrı listele)
+   - DCR 6,5–15 mΩ (20 mΩ'a kadar olanları ayrı listele)
    - Ekranlı veya toroid
-   Tek parça yoksa şu iki kurulumdan birine uygun parça ara:
-   a) paralel bağlanacak 2 adet: 68–100 µH, Isat ≥ 6 A, Irms ≥ 4,5 A, DCR ≤ 30 mΩ
-   b) seri bağlanacak 2 adet: 18–22 µH, Isat ≥ 12 A, Irms ≥ 9 A, DCR ≤ 7,5 mΩ
 
-2) Çıkış kondansatörü
-   - 1000 µF ±%20, ≥ 25 V, 105 °C, radyal alüminyum elektrolitik
-   - 100 kHz ESR (veya empedans) 15–35 mΩ arasında — alt sınır da şarttır
+2) Ana çıkış kondansatörü (Cout)
+   - 1000 µF ±%20, ≥ 35 V, 105 °C, radyal alüminyum elektrolitik
+   - 100 kHz ESR (veya empedans) ≤ 35 mΩ (tercihen 15–35 mΩ)
    - 100 kHz ripple akımı ≥ 1 A RMS
 
-3) Giriş kondansatörü (2 adet paralel kullanılacak)
-   - ≥ 35 V, 105 °C, radyal alüminyum elektrolitik, 470–1000 µF
-   - 100 kHz ripple akımı adet başına ≥ 2,25 A RMS (toplam ≥ 4,5 A)
-   - 100 kHz ESR ≤ 40 mΩ
+3) Çıkış sönüm dalı (Cd + seri Rd)
+   - Cd: 470 µF ±%20, ≥ 35 V, 105 °C, radyal alüminyum elektrolitik, 100 kHz ESR ≤ 100 mΩ, ripple akımı ≥ 0,3 A RMS
+   - Rd: 0,22 Ω ±%5 (veya ±%1), ≥ 0,5 W, endüktanssız film direnç (THT veya 1210/2010 SMD)
 
-4) N-kanal güç MOSFET'i
-   - VDS ≥ 55 V, RDS(on) ≤ 12 mΩ (VGS = 10 V, 25 °C, maksimum değer), ID ≥ 30 A
+4) Giriş kondansatörü (Cin — 2 veya 3 adet paralel kullanılacak)
+   - ≥ 50 V, 105 °C, radyal alüminyum elektrolitik, toplam kapasite ≥ 1000 µF (ör. 2 × 1000 µF veya 3 × 680 µF)
+   - 100 kHz toplam ripple akımı ≥ 4,5 A RMS (2 adette ≥ 2,25 A/adet; 3 adette ≥ 1,5 A/adet)
+   - 100 kHz ESR ≤ 40 mΩ/adet
+
+5) N-kanal güç MOSFET'i (S1)
+   - VDS ≥ 55 V (60 V tercih), RDS(on) ≤ 12 mΩ (VGS = 10 V, 25 °C, maksimum değer), ID ≥ 30 A
    - Toplam kapı yükü Qg ≤ 160 nC (değeri yaz; düşük olan tercih)
    - TO-220
 
-5) Schottky diyot
+6) Schottky diyot (D1)
    - VRRM ≥ 45 V (60 V tercih), IF(AV) ≥ 15 A toplam
    - İleri gerilim VF ≤ 0,58 V, 7,5 A toplam akımda, 25 °C (çift diyotta bacak başına 3,75 A; veri sayfası eğrisinden oku)
    - TO-220 veya TO-247
@@ -216,7 +229,7 @@ Sonucu her kalem için tablo olarak ver: parça numarası, üretici, kriter değ
 Ölçülebilir arayüz şartlarının tam listesi: [OPTIMIZASYON.md](OPTIMIZASYON.md) §11.
 
 - **Kapı sürücüsü:** S1 üst taraftaki N-MOSFET'tir; kapısı anahtar düğümünün ≈ 10 V üstüne sürülmelidir (bootstrap'lı üst taraf sürücüsü). STP100N6F7'nin kapı yükü 30 nC (tipik): 100 kHz ve 10 V'ta sürücü gücü ≈ 30 mW. Yüksüz / DCM'de bootstrap kondansatörünün yenilenmesi ayrıca ele alınmalıdır (anahtar düğümü toprağa inmeyebilir).
-- **Kontrol:** Ton aralığı 2,1–5,6 µs (yük 0,24–7,5 A, giriş 20–26 V); DCM/CCM geçişi ≈ 0,95 A; f0 ≈ 0,88 kHz, ESR sıfırı 4,5 kHz (35 mΩ) – 10,6 kHz (15 mΩ). Yumuşak kalkış zorunlu (sert kalkış 53 A / 17 V; el sarım L1 bu akımda ≈ %59'a düşer, gerçek tepe daha yüksek olur). Sabit güç yükünde açık çevrim, tolerans köşesinde 82,5 W'ı doğal olarak sönümlemez; kapalı çevrim veya sönüm dalı gerekir.
+- **Kontrol:** Ton aralığı 2,1–5,6 µs (yük 0,24–7,5 A, giriş 20–26 V); DCM/CCM geçişi ≈ 0,94 A; ana LC f0 ≈ 0,88 kHz, Cd–Rd köşesi ≈ 1,54 kHz, ESR sıfırı ≥ 4,5 kHz. Yumuşak kalkış zorunlu (sert kalkış 61,5 A / 16,6 V; el sarım L1 bu akımda ≈ %53'e düşer, gerçek tepe daha yüksek olur). Çıkıştaki `Cd = 470 µF + Rd = 0,22 Ω` sönüm dalı bütün tolerans ve sıcaklık köşelerinde 82,5 W sabit güç yükünü doğal olarak sönümler; kapalı çevrim kompanzasyon tasarımında bu 3. derece filtre hesaba katılmalıdır.
 - **Isı:** D1 1,4–1,9 W iletim + sıcakta ters kaçak (125 °C'ta ≈ 1 W'a kadar, azami); **soğutucusuz ısıl kaçağa gider**, soğutucu zorunlu. S1 ≈ 0,15–0,2 W iletim + 0,4–1,4 W anahtarlama (kestirim). L1 ≈ 0,6–0,7 W.
 - **Akım ölçümü:** Bu aşamada yok; koruma/kontrol için sonraki aşamada eklenir.
 - **Montaj:** Anahtarlama çevrimi (Cin → S1 → D1 → Cin) kısa tutulmalıdır; elektrolitiklerin ESL'i (≈ 26 nH/adet) yüzünden hücreye yakın seramik kondansatör gerekir.

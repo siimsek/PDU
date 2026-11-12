@@ -52,8 +52,8 @@ MEVCUT = dict(L=33e-6, DCR=15e-3, Cout=330e-6, ESRo=15e-3, Cin=220e-6, ESRi=20e-
 # Cout Nichicon UHE1E102MHD6TO (35 mohm = maks EMPEDANS, ESR varsayimi),
 # Cin 2 x TDK B41859D7108M000 (15 mohm), S1 STP100N6F7 (5,6 mohm maks),
 # D1 STPS40M60CT iki bacak paralel (~0,38 V + 8 mohm; iki veri sayfasi noktasindan YAKLASIK).
-SECILEN = dict(L=33e-6, DCR=7.81e-3, Cout=1000e-6, ESRo=35e-3, Cin=1000e-6, ESRi=15e-3,
-               Ron=5.6e-3, Vf=0.38, Rd=8e-3, f=100e3)
+SECILEN = dict(L=33e-6, DCR=7.81e-3, Cout=1000e-6, ESRo=35e-3, Cd=470e-6, Rdal=0.22,
+               Cin=1000e-6, ESRi=15e-3, Ron=5.6e-3, Vf=0.38, Rd=8e-3, f=100e3)
 L_DUSUK, L_YUKSEK = 0.70, 1.20     # -%20 tolerans ve tepe akimda -%10 dusum birlikte; +%20 tolerans
 ESR_MIN, ESR_MAX = 15e-3, 35e-3    # Cout 100 kHz ESR kabul penceresi (tolerans dahil)
 # L: 33 uH (el sarim) veya 47 uH (satin alinan, DCR yuksek parca). 22 uH tipik yukte DCM'de kaldigi icin pencere disi.
@@ -125,6 +125,8 @@ def netlist(p: dict, *, vin, surucu: str, yuk: list[str], tstop: float, meas: li
         s.append(f"Vkelepce out 0 {VO}")
     else:
         s.append(f"Cout out 0 {eng(p['Cout'])} Rser={eng(p['ESRo'])}")
+        if p.get("Cd", 0) > 0:
+            s += [f"Cd out d_son {eng(p['Cd'])}", f"Rd d_son 0 {eng(p['Rdal'])}"]
         s += yuk
     s += ek or []
     s.append(f'.lib "{LIB}"' if sert else MODEL_TEST)
@@ -373,7 +375,7 @@ M_KARARLI = [
     "IDAVG AVG I(Vsd) FROM {a} TO {b}", "IDRMS RMS I(Vsd) FROM {a} TO {b}",
     "ICORMS RMS I(Cout) FROM {a} TO {b}", "ICIRMS RMS I(Cin1)+I(Cin2) FROM {a} TO {b}",
     "VINPP PP V(vin) FROM {a} TO {b}",
-    "PIN AVG V(vin)*I(Vss) FROM {a} TO {b}", "POUT AVG V(out)*(I(L1)-I(Cout)) FROM {a} TO {b}",
+    "PIN AVG V(vin)*I(Vss) FROM {a} TO {b}",
 ]
 
 
@@ -392,9 +394,12 @@ def kararli(p: dict, vin: float, io: float, *, direnc: bool = True, kaynak: str 
     ton = ton or ton_ayarla(p, vin, io)
     yuk = yuk_r(io) if direnc else yuk_guc(f"0 {io * VO}")
     ts = 16e-3
+    dalli = p.get("Cd", 0) > 0
+    ek_m = (["ICDRMS RMS I(Cd) FROM {a} TO {b}", "POUT AVG V(out)*(I(L1)-I(Cout)-I(Cd)) FROM {a} TO {b}"]
+            if dalli else ["POUT AVG V(out)*(I(L1)-I(Cout)) FROM {a} TO {b}"])
     n = netlist(p, vin=vin, surucu=surucu_ton(p, ton), yuk=yuk, tstop=ts, kaynak=kaynak, sert=sert,
                 ic=f"V(out)={VO} I(L1)={eng(il_baslangic(p, vin, io))}",
-                meas=olcumler(M_KARARLI, ts - 1e-3, ts)
+                meas=olcumler(M_KARARLI + ek_m, ts - 1e-3, ts)
                 + [f"VO2 AVG V(out) FROM {eng(ts - 2e-3)} TO {eng(ts - 1e-3)}"])
     m = kos(n, "kararli")
     m["kayma"] = m["vo"] - m["vo2"]
@@ -406,7 +411,8 @@ def kararli(p: dict, vin: float, io: float, *, direnc: bool = True, kaynak: str 
     m["kayip_d1"] = p["Vf"] * m["idavg"] + p["Rd"] * m["idrms"] ** 2
     m["kayip_l1"] = m["ilrms"] ** 2 * p["DCR"]
     m["kayip_co"] = m["icorms"] ** 2 * p["ESRo"]
-    m["kayip"] = m["kayip_s1"] + m["kayip_d1"] + m["kayip_l1"] + m["kayip_co"]
+    m["kayip_dal"] = (m["icdrms"] ** 2 * p["Rdal"]) if dalli else 0.0
+    m["kayip"] = m["kayip_s1"] + m["kayip_d1"] + m["kayip_l1"] + m["kayip_co"] + m["kayip_dal"]
     m["verim"] = m["pout"] / (m["pout"] + m["kayip"])
     return m
 
@@ -531,7 +537,7 @@ def acik_cevrim_egri(p: dict, vin: float, ton: float, amperler) -> list[tuple[fl
     s = []
     for a in amperler:
         r = VO / a
-        ts = max(12e-3, 8 * r * p["Cout"])
+        ts = max(12e-3, 8 * r * (p["Cout"] + p.get("Cd", 0.0)))
         n = netlist(p, vin=vin, surucu=surucu_ton(p, ton), yuk=[f"Rload out 0 {eng(r)}"], tstop=ts,
                     ic=f"V(out)={VO}", meas=[f"VO AVG V(out) FROM {eng(ts - 1e-3)} TO {eng(ts)}"])
         s.append((a, kos(n, "egri")["vo"]))
@@ -597,15 +603,15 @@ def pencere() -> None:
     sonuyor. Eski surum (3)'u yalniz 20 ms'lik darbeyle siniyordu; yavas buyuyen salinim (zaman sabiti
     ~0,2 s) 20 ms'de gorunmuyordu. 20 ms sutunu regresyon icin yazdirilir, tek basina karar degildir.
     """
-    print("## Kabul penceresi doğrulaması (LTspice, 24,6 V; köşeler: L −%30/+%20, Cout −%20)\n")
+    print("## Kabul penceresi doğrulaması (LTspice, 24,6 V; sönüm dalı Cd=470 µF + Rd=0,22 Ω; köşeler: L −%30/+%20, Cout ve Cd −%20)\n")
     sat = []
     for L, C in CIFTLER:
         p = dict(SECILEN, L=L, Cout=C)
         r_anma = kararli(dict(p, ESRo=ESR_MAX), VIN_ANA, 7.5)
-        r_kose = kararli(dict(p, L=L * L_DUSUK, Cout=C * 0.8, ESRo=ESR_MAX), 26.0, 7.5)
+        r_kose = kararli(dict(p, L=L * L_DUSUK, Cout=C * 0.8, Cd=p.get("Cd", 0.0) * 0.8, ESRo=ESR_MAX), 26.0, 7.5)
         a_anma = yuk_adimi(dict(p, ESRo=ESR_MIN), VIN_ANA, P_ZARF, P_ZARF_KALKIS)
         o_anma = yuk_adimi(dict(p, ESRo=ESR_MIN), VIN_ANA, P_HAFIF, P_ZARF)
-        q = dict(p, L=L * L_YUKSEK, Cout=C * 0.8, ESRo=ESR_MIN)
+        q = dict(p, L=L * L_YUKSEK, Cout=C * 0.8, Cd=p.get("Cd", 0.0) * 0.8, ESRo=ESR_MIN)
         a_kose = yuk_adimi(q, VIN_ANA, P_ZARF, P_ZARF_KALKIS)
         o_kose = yuk_adimi(q, VIN_ANA, P_HAFIF, P_ZARF)
         u_anma = yuk_adimi(dict(p, ESRo=ESR_MIN), VIN_ANA, P_ZARF, P_ZARF_KALKIS, sure=200e-3)
@@ -674,7 +680,7 @@ def sayisal() -> None:
     tablo(["Anahtar modeli", "iletim süresi ort. ns (Ton 4589 ns)", "titreme t-t ns", "titreme std ps",
            "ΔVo mV t-t", "dVo/dTon mV/ns (beklenen Vin/T = 2,46)", "doğrudan sapma maks mV (Ton 4580–4600 ns)",
            "ΔVo aralığı mV (aynı tarama)"], sat)
-    print("### 2. Beş girişte ripple: HESAP (ΔIL·ESR·R/(R+ESR)) ve iki anahtar modeli\n")
+    print("### 2. Beş girişte ripple: HESAP (ESR || Rd || Rload) ve iki anahtar modeli\n")
     import hesap
     sat = []
     for v in VIN_NOKTALARI:
@@ -698,7 +704,7 @@ def sayisal() -> None:
 
 # ---------------------------------------------------------------- FZ-D/E: CPL kararliligi
 def kose_seti(p: dict, kl: float = L_YUKSEK, kc: float = 0.8) -> dict:
-    return dict(p, L=p["L"] * kl, Cout=p["Cout"] * kc)
+    return dict(p, L=p["L"] * kl, Cout=p["Cout"] * kc, Cd=p.get("Cd", 0.0) * kc)
 
 
 CPL_SETLERI = (
@@ -715,17 +721,18 @@ CPL_SETLERI = (
 
 
 def cpl_hesap(p: dict, vin: float, p0: float, p1: float) -> dict:
-    """hesap.cpl() ile ayni model: duty p0'da 11 V'a ayarli, yuk p1."""
+    """hesap.cpl() ile ayni model (Cd + Rd sonum dali dahil): duty p0'da 11 V'a ayarli, yuk p1."""
     import hesap
     io = p0 / VO
     d = duty_ccm(p, vin, io)
     rs = p["DCR"] + d * p["Ron"] + (1 - d) * p["Rd"]
-    return hesap.cpl(p["L"], p["Cout"], p["ESRo"], rs, d * vin - (1 - d) * p["Vf"], p1)
+    return hesap.cpl(p["L"], p["Cout"], p["ESRo"], rs, d * vin - (1 - d) * p["Vf"], p1,
+                     p.get("Cd", 0.0), p.get("Rdal", 1.0))
 
 
 def kararlilik(hizli: bool = False) -> None:
     print("## Sabit güç yükü (CPL) ile açık çevrim kararlılığı (LTspice + HESAP), 24,6 V, Ton sabit\n")
-    print("### 1. Darbe süresinin etkisi: pencere köşesi (39,6 µH, 800 µF, ESR 15 mΩ, DCR 7,81 mΩ), 57,64 → 73 → 57,64 W\n")
+    print("### 1. Darbe süresinin etkisi: pencere köşesi (39,6 µH, 800 µF, ESR 15 mΩ, Cd 376 µF + Rd 0,22 Ω), 57,64 → 73 → 57,64 W\n")
     q = kose_seti(dict(SECILEN, ESRo=ESR_MIN))
     h = cpl_hesap(q, VIN_ANA, P_ZARF, P_ZARF_KALKIS)
     sat = []
@@ -742,7 +749,7 @@ def kararlilik(hizli: bool = False) -> None:
     print(f"HESAP (aynı köşe, 73 W): denge {h['vo']:.3f} V, Pkritik {h['pkritik']:.1f} W, sönüm {h['sonum']:+.1f} 1/s"
           f" → LC periyodu başına oran {math.exp(-h['sonum'] * lc_periyot(q)):.3f}, zaman sabiti {1e3 / abs(h['sonum']):.0f} ms\n")
 
-    print("### 2. Model setleri × yük: 200 ms darbe; HESAP (Pkritik, sönüm) ile SİM (oran, tepe) yan yana\n")
+    print("### 2. Model setleri × yük: 200 ms darbe (şematik Cd=470 µF + Rd=0,22 Ω; C−%20 setlerinde Cd=376 µF); HESAP ile SİM yan yana\n")
     sat = []
     yukler = ((P_ZARF, P_ZARF_KALKIS), (P_TAM / 2, P_TAM), (P_TAM / 4, 0.75 * P_TAM))
     for ad, ps in CPL_SETLERI:
@@ -763,26 +770,30 @@ def kararlilik(hizli: bool = False) -> None:
            f"{VO_MIN:g}–{VO_MAX:g} V", "karar"], sat)
     print("oran < 1 söner, > 1 büyür. 'sönmüş' satırlarda SİM oranı gürültüdür (salınım 20 mV altında).\n")
 
-    print("### 3. Seçenek denemesi (şematikte YOK): çıkışa paralel Cd + Rd sönüm dalı, 41,25 → 82,5 W, 200 ms\n")
+    print("### 3. Sönüm dalı karşılaştırması ve Rd kabul aralığı (dalsız vs Cd=376 µF [−%20] + Rd_toplam 0,15–0,60 Ω), 41,25 → 82,5 W, 200 ms\n")
     import hesap
     sat = []
     for ad, ps in CPL_SETLERI[1:5]:
-        for dal_ad, cd, rd in (("470 µF + 0,22 Ω", 470e-6, 0.22), ("1000 µF + 0,15 Ω", 1000e-6, 0.15)):
+        for dal_ad, cd, rd in (("dalsız (eski)", 0.0, 1.0),
+                               ("470 µF (−%20) + 0,15 Ω (alt kenar)", 470e-6 * 0.8, 0.15),
+                               ("470 µF (−%20) + 0,22 Ω (SEÇİLEN)", 470e-6 * 0.8, 0.22),
+                               ("470 µF (−%20) + 0,35 Ω (Rd + Cd ESR)", 470e-6 * 0.8, 0.35),
+                               ("470 µF (−%20) + 0,60 Ω (soğuk Cd ESR)", 470e-6 * 0.8, 0.60)):
+            ps_dal = dict(ps, Cd=cd, Rdal=rd)
             io = P_TAM / 2 / VO
-            d = duty_ccm(ps, VIN_ANA, io)
-            rs = ps["DCR"] + d * ps["Ron"] + (1 - d) * ps["Rd"]
-            pk = hesap.cpl_dalli_pkritik(ps["L"], ps["Cout"], ps["ESRo"], rs, d * VIN_ANA - (1 - d) * ps["Vf"],
-                                         cd * 0.8, rd)
-            a = yuk_adimi(ps, VIN_ANA, P_TAM / 2, P_TAM, sure=200e-3,
-                          ek=[f"Cdal out dal {eng(cd * 0.8)}", f"Rdal dal 0 {eng(rd)}"])
+            d = duty_ccm(ps_dal, VIN_ANA, io)
+            rs = ps_dal["DCR"] + d * ps_dal["Ron"] + (1 - d) * ps_dal["Rd"]
+            pk = hesap.cpl_dalli_pkritik(ps_dal["L"], ps_dal["Cout"], ps_dal["ESRo"], rs,
+                                         d * VIN_ANA - (1 - d) * ps_dal["Vf"], cd, rd)
+            a = yuk_adimi(ps_dal, VIN_ANA, P_TAM / 2, P_TAM, sure=200e-3)
             aralik = VO_MIN <= a["vmin"] and a["vmax"] <= VO_MAX
-            sat.append([ad, dal_ad + " (Cd −%20)", f"{pk:.0f}", a["durum"], f"{a['vmin']:.2f}", f"{a['vmax']:.2f}",
+            sat.append([ad, dal_ad, f"{pk:.0f}", a["durum"], f"{a['vmin']:.2f}", f"{a['vmax']:.2f}",
                         f"{a['lfb'] * 1e3:.0f}", "içinde" if aralik else "DIŞINDA",
                         "GEÇTİ" if aralik and a["kararli"] else "KALDI"])
             print(sat[-1], file=sys.stderr, flush=True)
     tablo(["Model seti", "Sönüm dalı", "HESAP Pkritik W", "SİM sönüm", "Vmin V", "Vmax V",
            "200 ms sonunda yavaş salınım mV", f"{VO_MIN:g}–{VO_MAX:g} V", "karar"], sat)
-    print("Bu bir seçenek karşılaştırmasıdır; şematiğe eleman eklenmedi, parça seçilmedi.\n")
+    print("Rd_toplam = ayrık Rd direnci + Cd kondansatörünün ESR'si. 0,15–0,60 Ω aralığının tamamında köşe setleri geçer.\n")
 
 
 # ---------------------------------------------------------------- FZ-B: genel modul zarfi
@@ -854,8 +865,10 @@ def netlist_gercek(vin: float, *, lbus: float = 20e-9, rg: float = 10.0, mlcc: f
           "Lk sw k 3.5n", "D1 a k D1M", "La 0 a 3.5n"]
     if snub:
         s += [f"Rsn sw sn {eng(snub[0])}", f"Csn sn 0 {eng(snub[1])}"]
-    s += [f"L1 sw out {eng(p['L'])} Rser={eng(p['DCR'])} Rpar=10k", f"Cout out 0 {eng(p['Cout'])} Rser={eng(p['ESRo'])} Lser=15n",
-          f"Rload out 0 {eng(VO / io)}", MODEL_GERCEK,
+    s += [f"L1 sw out {eng(p['L'])} Rser={eng(p['DCR'])} Rpar=10k", f"Cout out 0 {eng(p['Cout'])} Rser={eng(p['ESRo'])} Lser=15n"]
+    if p.get("Cd", 0) > 0:
+        s += [f"Cd out d_son {eng(p['Cd'])} Lser=15n", f"Rd d_son 0 {eng(p['Rdal'])}"]
+    s += [f"Rload out 0 {eng(VO / io)}", MODEL_GERCEK,
           f".tran 0 {eng(tstop)} 0 1n", f".ic V(out)={VO} I(L1)={eng(io - 0.95)}"]
     a, b = eng(tstop - 20 * T), eng(tstop)
     s += [f".meas tran {m}" for m in (
@@ -932,7 +945,8 @@ def stres() -> None:
 
 
 def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
-    print(f"## {ad}: L={p['L'] * 1e6:g} µH/{p['DCR'] * 1e3:g} mΩ, Cout={p['Cout'] * 1e6:g} µF/{p['ESRo'] * 1e3:g} mΩ, "
+    dal_bilgi = f", Cd={p['Cd'] * 1e6:g} µF+Rd={p['Rdal']:g} Ω" if p.get("Cd", 0) > 0 else ""
+    print(f"## {ad}: L={p['L'] * 1e6:g} µH/{p['DCR'] * 1e3:g} mΩ, Cout={p['Cout'] * 1e6:g} µF/{p['ESRo'] * 1e3:g} mΩ{dal_bilgi}, "
           f"Cin=2×{p['Cin'] * 1e6:g} µF/{p['ESRi'] * 1e3:g} mΩ, Ron={p['Ron'] * 1e3:g} mΩ, "
           f"Vf={p['Vf']:g} V+{p['Rd'] * 1e3:g} mΩ, {p['f'] / 1e3:g} kHz\n")
 
@@ -1011,13 +1025,13 @@ def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
         sat.append([f"{v0:g}→{v1:g}→{v0:g}", f"{g['vmin']:.2f}", f"{g['vmax']:.2f}", f"{g['v1son']:.2f}"])
     tablo(["Vin V (1 ms rampa)", "Vmin V", "Vmax V", "ara kararlı V"], sat)
 
-    print("### 8. Tolerans köşeleri (L −%30/+%20, Cout ±%20, ESR 15/35 mΩ), 7,5 A\n")
+    print("### 8. Tolerans köşeleri (L −%30/+%20, Cout ve Cd ±%20, ESR 15/35 mΩ), 7,5 A\n")
     sat = []
     for isim, kl, kc, esr, v in (("anma", 1, 1, p["ESRo"], VIN_ANA),
                                  ("ripple en kötü: L−, C−, ESR 35 mΩ", L_DUSUK, 0.8, ESR_MAX, 26.0),
                                  ("sönüm en zayıf: L+, C−, ESR 15 mΩ", L_YUKSEK, 0.8, ESR_MIN, VIN_ANA),
                                  ("Z0 en düşük: L−, C+, ESR 15 mΩ", L_DUSUK, 1.2, ESR_MIN, 26.0)):
-        q = dict(p, L=p["L"] * kl, Cout=p["Cout"] * kc, ESRo=esr)
+        q = dict(p, L=p["L"] * kl, Cout=p["Cout"] * kc, Cd=p.get("Cd", 0.0) * kc, ESRo=esr)
         k = kararli(q, v, 7.5)
         z = yuk_adimi(q, v, P_ZARF, P_ZARF_KALKIS, sure=200e-3)
         at = yuk_atma_sinir(q, v, P_ZARF_KALKIS, P_BOSTA)
@@ -1113,7 +1127,7 @@ def grafik() -> None:
     _, b = yuk_adimi(p, VIN_ANA, P_ZARF, P_ZARF_KALKIS, raw=True)
     svg_ciz(g / "yuk_adimi.svg", "S2E kalkış darbesi, O1 5 A zarfında (57,6→73→57,6 W sabit güç), 24,6 V, Ton sabit", [
         dict(ylabel="V(out) [V]", cizgiler=[(12.0, "12 V")],
-             seriler=[("Cout 330 µF / 15 mΩ (eski)", a["time"], a["V(out)"]), ("seçilen parçalar (1000 µF / 35 mΩ)", b["time"], b["V(out)"])]),
+             seriler=[("Cout 330 µF / 15 mΩ (eski)", a["time"], a["V(out)"]), ("seçilen (1000 µF / 35 mΩ + 470 µF / 0,22 Ω)", b["time"], b["V(out)"])]),
         dict(ylabel="I(L1) [A]", seriler=[("eski", a["time"], a["I(L1)"]), ("seçilen", b["time"], b["I(L1)"])])])
     n = netlist(p, vin=VIN_ANA, surucu=surucu_ton(p, ton), yuk=yuk_r(7.5), tstop=12.05e-3, tstart=12e-3,
                 ic=f"V(out)={VO} I(L1)=7.5", meas=["VO AVG V(out)"])
