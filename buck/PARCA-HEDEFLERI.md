@@ -5,7 +5,7 @@
 **Sınıf:** analitik hesap (`hesap.py`) + LTspice, ideal elemanlar (`dogrula.py`). Fiziksel ölçüm yok.
 **Dondurma durumu:** **FROZEN (simülasyon dondurması, 12 Kasım 2026)** — çıkış sönüm dalı (`Cd = 470 µF + seri Rd = 0,22 Ω`) eklendi, tüm köşe testleri geçti; gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak kararlaştırıldı ve simülasyon dondurması kullanıcı onayıyla tamamlandı. Parçalar ve bobin, bu belgedeki dondurulmuş hedef aralıklara göre seçilir / sarılır. Ayrıntı [OPTIMIZASYON.md](OPTIMIZASYON.md) §12.
 
-**Seçim öncesi sınır (13.11.2026):** Bu değerler aday eleme hedefidir, fiziksel güvenlik veya tüm tolerans kombinasyonları için garanti değildir. Gerilim sınıfları yalnız varsayılan kaynak/kablo ve arıza modellerindeki tepelere dayanır: 31,1 V'a karşı 35 V yaklaşık %12,5, 46,5 V'a karşı 50 V yaklaşık %7,5 nominal pay bırakır; yaşlanma, sıcaklık, tolerans ve gerçek darbeler kapsanmaz. Çalışma sıcaklığı aralığı, ortam, ömür ve gerçek kaynak empedansı belirlenmeden nihai termal pay ve gerilim deratingi belirlenemez. Anahtarlama zili için S1/D1 gerilim payı ölçülmelidir; simüle edilen 9–12 V O1/S2E ölçütü genel modül spesifikasyonu değildir.
+**Seçim öncesi sınır (13.11.2026):** Bu değerler aday eleme hedefidir, fiziksel güvenlik veya tüm tolerans kombinasyonları için garanti değildir. Gerilim sınıfları yalnız varsayılan kaynak/kablo ve arıza modellerindeki tepelere dayanır: 31,1 V'a karşı 35 V yaklaşık %12,5, örnek 48,0 V hesabına karşı 50 V yaklaşık %4 nominal pay bırakır; yaşlanma, sıcaklık, tolerans ve gerçek darbeler kapsanmaz. Çalışma sıcaklığı aralığı, ortam, ömür ve gerçek kaynak empedansı belirlenmeden nihai termal pay ve gerilim deratingi belirlenemez. Anahtarlama zili için S1/D1 gerilim payı ölçülmelidir; simüle edilen 9–12 V O1/S2E ölçütü genel modül spesifikasyonu değildir.
 
 Seçim sırasında her aday için belirtilen L/C, ESR/DCR ve dal direncinin **çalışma sıcaklığı, frekans, DC akım/gerilim, tolerans ve yaşlanma dahil** durumu; kondansatör ripple akımı ve ömrü; bobin L(I), doyum ve sıcaklığı; S1 için VDS, VGS, sıcak RDS(on), Qg ve SOA; D1 için VRRM, ortalama/RMS/darbe akımı, sıcak VF ve kaçak; Rd için sıcak güç ve darbe dayanımı; soğutucu ve yalıtım için toplam ısıl yol doğrulanmalıdır. Veri yoksa sınır **doğrulanmadı** olarak kalır. Fiziksel ölçüm ve gerçek parçalarla yeniden simülasyon henüz yapılmadı.
 
@@ -136,6 +136,8 @@ Parantez içindeki "hedef", parça seçilmeden önce şematikte kullanılan değ
 
 ### L1 — bobin (sarım ve seçim hedef aralığı)
 
+**Sarım için pratik hedef:** 100 kHz'te küçük işaretli, DC kutuplamasız **33 µH**; 20 °C'a düzeltilmiş dört telli DCR hedefi **7,5–10 mΩ**. 30,7–36,1 µH aralığı belirtilen çekirdeğin AL toleransından türetilmiş **öngörüdür**, her çekirdek ve sarım için genel garanti değildir. 8,9 A DC kutuplamada diferansiyel endüktansın L0'a oranı ≥ %90 hedeflenir; bu değer uygun DC bias'lı LCR düzeneğiyle doğrulanmalıdır. 7,5 A DC üzerine anahtarlama dalgalanması bindiğinde sıcaklık ve kayıp ayrıca ölçülmelidir. 12 A, sonraki akım sınırlaması tasarımına devredilen hedef olup sert kalkışta akımın 12 A ile sınırlanacağı anlamına gelmez. Sarım sayısı ve tel ancak eldeki çekirdek AL değeri, bias eğrisi, pencere ve ısı koşulları bilindiğinde belirlenir; örnek 22 sarım evrensel tarif değildir.
+
 | Kriter | Değer | Neden |
 |---|---|---|
 | Endüktans (sarım / seçim hedefi) | **33 µH** (el sarım hedefi: **30,7–36,1 µH** [AL 69 nH ±%8, 22 sarım]; satın alınan parçada ±%20 = **26,4–39,6 µH** da doğrulanmıştır). 39 µH ve 47 µH anma değerleri tercih edilmez | 33 µH'de akım ripple'ı %25, CCM sınırı 0,94 A < tipik yük (≈ 1,2 A). 22 µH'de tipik yük DCM'de kalır (çıkış 8,8 V). `Cd = 470 µF + Rd = 0,22 Ω` sönüm dalıyla L +%20 (39,6 µH) köşesinde 200 ms ve 500 ms sabit güç darbeleri **10,72–11,25 V** içinde ve sönmüş olarak geçer ([OPTIMIZASYON.md](OPTIMIZASYON.md) §4.4, §6). |
@@ -144,7 +146,7 @@ Parantez içindeki "hedef", parça seçilmeden önce şematikte kullanılan değ
 | DCR (sarım / seçim hedefi) | **6,5–15 mΩ** @ 20 °C (**el sarım hedefi: 7,5–10 mΩ** @ 20 °C, sıcak 75–100 °C'ta 9,5–10,5 mΩ; satın alınan parça ≤ 15 mΩ) | Her +5 mΩ ≈ +0,28 W bakır kaybı ekler (7,81 mΩ'da 0,44 W). `Cd + Rd` sönüm dalı varken DCR 6,5 mΩ alt sınırında ve sıcak ESR 10 mΩ köşesinde bile `Pkritik = 126–134 W > 82,5 W`'tır ([OPTIMIZASYON.md](OPTIMIZASYON.md) §6.2, §10). |
 | Yapı | Toroid toz çekirdek (el sarım, Kool Mµ 40µ) veya ekranlı güç bobini, 100 kHz'e uygun | Çekirdek kaybı ≤ 0,14 W (HESAP); sarıldıktan sonra L0, L(I), DCR ve sıcaklık ölçülür. |
 
-Tek parça bulunamazsa eşdeğer kurulumlar (elektriksel olarak aynı):
+Tek parça bulunamazsa ön değerlendirme için eşdeğer kurulumlar (eşit akım paylaşımı ve ihmal edilebilir manyetik kuplaj varsayımı; yerleşim ve toleranslarla doğrulanmalıdır):
 - **İki eş bobin paralel:** her biri 68 µH, Isat ≥ 6 A, Irms ≥ 4,5 A, DCR 13–30 mΩ → toplam 34 µH.
 - **İki eş bobin seri:** her biri 15–18 µH, Isat ≥ 12 A, Irms ≥ 9 A, DCR 3,5–7,5 mΩ → toplam 30–36 µH.
 
@@ -176,7 +178,7 @@ Eşdeğer: 2 × 470 µF / ≥ 35 V paralel, her biri ESR ≤ 70 mΩ, ripple akı
 | Kriter | Değer | Neden |
 |---|---|---|
 | Toplam ripple akımı anma değeri | **≥ 4,5 A RMS** (100 kHz, 105 °C), paralel adetlerin toplamı | Devrede 3,77 A RMS; %20 pay. Boyutu belirleyen budur, kapasite değil. |
-| Gerilim | **≥ 50 V** (kullanıcı kararı, 12.11.2026) | 26 V bataryanın düşük dirençli / uzun kablolu kaynakla sıcak takılmasında tepe gerilim 35 V'u aşıp **45,3–46,5 V**'a çıkabilir (HESAP + SİM, [OPTIMIZASYON.md](OPTIMIZASYON.md) §9.4). 50 V sınıfı bu riski kondansatör düzeyinde kapatır (ör. listedeki 3. sıra aday KEMET ESY108M050AM2AA 50 V / 21 mΩ / 3,35 A). |
+| Gerilim | **≥ 50 V** (kullanıcı kararı, 12.11.2026) | Örnek R/L ve sıcak ESR varsayımlarında 26 V ideal basamak hesabı 48,0 V'a ulaşır ([OPTIMIZASYON.md](OPTIMIZASYON.md) §9.4). 50 V'a yaklaşık %4 nominal pay kalır; gerçek kablo, tolerans ve darbeler bilinmeden bu sınıfın yeterliliği doğrulanmış değildir. |
 | Toplam kapasite | ≥ 440 µF (hedef 2 × 1000 µF) | 440 µF'ta giriş ripple'ı ≈ 125 mV t-t. 2 × 1000 µF / 50 V (veya 3 × 470–680 µF / 50 V) ripple akımı şartını sağlayan standart kurulumdur. |
 | ESR (100 kHz) | ≤ 40 mΩ/adet (hedef 15–25 mΩ/adet) | Giriş ripple'ının büyük kısmı ESR'dendir. Hücreye yakın ayrıca etkin ≥ 4,7 µF / ≥ 50 V X7R seramik dekuplaj konacaktır ([OPTIMIZASYON.md](OPTIMIZASYON.md) §9.3, §9.5). |
 | Tip | 105 °C, düşük empedanslı alüminyum elektrolitik | — |

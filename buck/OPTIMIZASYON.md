@@ -20,7 +20,7 @@ Bu belge güncel kararı anlatır. Değerler parça numarasından bağımsızdı
 | Cout | 1000 µF | 1000 µF ±%20; **≥ 35 V** (kullanıcı kararı, §9.4) | Sabit güç yüküyle LC dinamiği ve ripple. S1 kısa devresinde çıkış 27,3–31,1 V'a çıktığından 35 V sınıfı kabul edildi | §4.1, §4.4, §9.4 |
 | Cout ESR | 25 mΩ | **≤ 35 mΩ** @100 kHz, 20 °C (sönüm dalı varken 10–35 mΩ aralığının tamamı geçer) | Üst sınır ripple için (35 mΩ köşede 83 mV t-t). Alt sınır gereksinimini paralel Cd + Rd sönüm dalı devralır (§6, §10) | §4.2, §4.4, §6, §10 |
 | Çıkış sönüm dalı (Cd + seri Rd) | **470 µF + 0,22 Ω** | Cd: 470 µF ±%20, **≥ 35 V**; ayrık Rd: **0,22 Ω** (Cd ESR'si dahil toplam dal direnci **0,15–0,60 Ω**), ≥ 0,25 W | Ana Cout ESR'sinden bağımsız CPL sönümü: bütün köşe ve sıcak ESR (10 mΩ) senaryolarında Pkritik ≥ 126 W > 82,5 W; sürekli kayıp ≈ 1,3 mW | §6, §10 |
-| Cin | 2 × 1000 µF, 20 mΩ | toplam ripple akımı ≥ 4,5 A; **≥ 50 V** (kullanıcı kararı, §9.4); ≥ 440 µF | 3,8 A RMS giriş ripple akımı boyutu belirler; düşük dirençli kaynakla sıcak takmada tepe 45–46,5 V olabildiğinden 50 V sınıfı kabul edildi | §5.9, §9.4 |
+| Cin | 2 × 1000 µF, 15 mΩ/adet | toplam ripple akımı ≥ 4,5 A; **≥ 50 V** (kullanıcı kararı, §9.4); ≥ 440 µF | 3,8 A RMS giriş ripple akımı boyutu belirler; örnek sıcak takma hesabında tepe 48,0 V, gerçek kaynak ve gerilim payı doğrulanmadı | §5.9, §9.4 |
 | S1 | Ron 12 mΩ | RDS(on) ≤ 12 mΩ; VDS ≥ 55 V | İletim kaybı 0,32 W (şematik adayıyla 0,15 W) | §5.1 |
 | D1 | 0,5 V + 10 mΩ | VF ≤ 0,58 V @ 7,5 A; VRRM ≥ 45 V (tercihen 60 V) | İletim kaybının üçte ikisi (şematik adayıyla 1,78 W @ 24,6 V) | §5.1 |
 
@@ -600,7 +600,7 @@ Sıcak takma (`dogrula.py stres` §2; aynı süpürmenin HESAP karşılığı `h
 | 40 | 26.0 / 481 | 26.0 / 443 | 26.0 / 404 | 26.6 / 357 | 30.6 / 288 | 34.3 / 235 |
 | 80 | 26.0 / 281 | 26.0 / 269 | 26.0 / 256 | 26.0 / 238 | 26.1 / 207 | 28.1 / 179 |
 
-`*` = 35 V aşıldı. Kaynak direnci ≥ 40 mΩ ise tepe 26–34 V'tur; ≤ 20 mΩ ve ≥ 2–5 µH ile 35 V **aşılır** (43–45 V'a, C −%20 ve sıcak ESR ile 46,5 V'a kadar). Kullanıcı kararıyla (12.11.2026) **Cin gerilim sınıfı ≥ 50 V** olarak belirlendiğinden bu aralık kondansatör anmasının altında kalır. Ani akım 180–1200 A'dir (kontak ve kondansatör için ayrı bir risk; Adım 7).
+`*` = 35 V aşıldı. SİM tablosunda kaynak direnci ≥ 40 mΩ ise tepe 26–34 V'tur; daha düşük direnç ve yüksek endüktansla 35 V aşılabilir. C −%20 ve sıcak ESR senaryosunda ideal basamak HESAP 5 µH için 46,5 V, 10 µH için 48,0 V verir. Kullanıcının belirlediği **Cin ≥ 50 V** hedefine bu son örnekte yalnız %4 nominal pay kalır; gerçek kaynak ve geçici durum bilinmediğinden sınıfın yeterliliği açık risktir. Ani akım 180–1200 A'dir (kontak ve kondansatör için ayrı risk; Adım 7).
 
 S1 kısa devre (`dogrula.py stres` §3; ideal elemanlar, Cd=470 µF + Rd=0,22 Ω dahil, batarya + kablo varsayımı):
 
@@ -620,15 +620,19 @@ S1 kısa devre (`dogrula.py stres` §3; ideal elemanlar, Cd=470 µF + Rd=0,22 Ω
 9) Gerilim sınıfları ve arıza arayüzü (HESAP; kaynak R/L VARSAYIM süpürmesi)
    Sıcak takma: boş Cin'e 26 V basamak, tepe V(Cin) [V]; 35 V aşılırsa * (50 V kriteri altında kalır; ESR 7,5 mΩ, C 2000 µF)
      R kaynak mΩ \ L µH    0.2    0.5      1      2      5     10
-          5              28.1   32.7   36.4*  39.8*  43.5*  45.7*
-         10              26.1   29.2   32.8   36.5*  40.9*  43.6*
-         20              26.0   26.1   28.2   31.7   36.6*  39.9*
-         40              26.0   26.0   26.0   26.7   30.8   34.5
+          5              29.2   33.7   37.1*  40.2*  43.7*  45.8*
+         10              26.2   29.7   33.3   36.8*  41.0*  43.7*
+         20              26.0   26.1   28.4   31.9   36.7*  40.0*
+         40              26.0   26.0   26.0   26.8   30.8   34.5
          80              26.0   26.0   26.0   26.0   26.1   28.2
-   C −%20 ve sıcak ESR (TAHMİN 2 × 7 mΩ) ile en kötü satır: R 5 mΩ, L 5 µH → 46.5 V (< Cin 50 V kriteri)
+   C −%20 ve sıcak ESR (TAHMİN 2 × 7 mΩ), R 5 mΩ: L 5 µH → 46.5 V; L 10 µH → 48.0 V (HESAP, ideal basamak)
    S1 kısa devre: çıkış kararlı hâlde girişe çıkar (20–26 V), geçişte 27,3–31,1 V (SİM) → Cout ve Cd 35 V kriteri içinde (mevcut 25 V aday AŞILIR).
    S1 VDS: 60 V anma; 26 V girişte pay 34 V, 28 V'ta 32 V (zil hariç). D1 VRRM 60 V aynı.
 ```
+
+13.11.2026: HESAP tablosu düzeltildi. Eski ifade ideal kondansatör gerilimi tepesini uç gerilimi olarak kullanıyordu; güncel hesap seri ESR gerilimini de içerir. Üç örnek nokta, aynı seri RLC ve yaklaşık basamakla yapılan hedefli LTspice koşularıyla karşılaştırıldı (fark < 0,03 V). Yukarıdaki bağımsız `stres` SİM tablosu kendi ESL ve kaynak rampası varsayımlarını korur. Bu örnekler gerçek kablo ve batarya değerlerini doğrulamaz.
+
+Ayrıca 10 µH / 5 mΩ, C 1600 µF / ESR 3,5 mΩ örneğinde düzeltilmiş HESAP **47,976 V**, eşdeğer seri RLC için 1 ns basamaklı hedefli SİM **47,976 V** verdi. Kaynak ve kondansatör modeli basitleştirilmiştir; fiziksel ölçüm değildir. `cpl()` dalsız aşırı sönümlü durumun en yavaş gerçek kutbunu da artık doğru hesaplar; örnek ikinci derece polinom kökleriyle karşılaştırıldı. `Pkritik` araması 600 W sınırında hâlâ kararlıysa artık bu sınırı gerçek sonuç gibi yazmak yerine hata verir. Önceki uzun simülasyonlar bu hesap düzeltmeleri için yeniden koşulmadı.
 
 ### 9.5 Bu aşamada varılan sonuçlar
 
@@ -638,7 +642,7 @@ S1 kısa devre (`dogrula.py stres` §3; ideal elemanlar, Cd=470 µF + Rd=0,22 Ω
 | RC sönümleyici (D1 üstü) | Başlangıç adayı 2,2 Ω + 2,2 nF (≈ 87 mW) veya 4,7 Ω + 1 nF (≈ 52 mW); kartta ölçülen zil frekansına göre ayarlanır | Yer ayrılacak (DNP olabilir); **PROTOTİPTE ÖLÇÜLECEK** |
 | Soğutucu | S1 + D1 ortak, Rth(s-a) ≤ 12 K/W (hedef ≤ 8), iki kılıf yalıtım pediyle | Hedef değer (§12.2'de MPN seçilir) |
 | Cout ve Cd gerilim sınıfı | **≥ 35 V** (kullanıcı kararı, 12.11.2026; S1 kısa devresi tepe 31,1 V'u kapsar; O1 portu için bağımsız OVP yine Adım 7'de) | **Kararlaştırıldı** |
-| Cin gerilim sınıfı | **≥ 50 V** (kullanıcı kararı, 12.11.2026; sıcak takma tepe 46,5 V'u kapsar; ani akım sınırlaması Adım 7'de) | **Kararlaştırıldı** |
+| Cin gerilim sınıfı | **≥ 50 V** (kullanıcı kararı, 12.11.2026); örnek sıcak takma hesabı 48,0 V, gerçek gerilim ve pay doğrulanmadı; ani akım sınırlaması Adım 7'de | **Hedef, yeterlilik açık** |
 | Çıkış sönümü | **Çıkışa paralel Cd = 470 µF + seri Rd = 0,22 Ω** şematiğe eklendi ve doğrulandı (§6, §10) | **Uygulandı ve doğrulandı** |
 
 ## 10. Sönüm seçenekleri ve seçilen sönüm dalı (`Cd = 470 µF + Rd = 0,22 Ω`)

@@ -6,6 +6,8 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 
 **13 Kasım 2026 kanıt notu:** Dondurma geçmiş kullanıcı kararıdır; denenmiş model ve senaryoların dışına genellenmez. 200 ms testleri birden fazla model setinde, 500 ms testi ise ayrı bir pencere köşesi senaryosunda koşuldu. Kısa darbelerde sönüm kararı verilemez; sıfır süreç çıkış kodu elektriksel geçme anlamına gelmez. Ayrıntı: [OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §13.
 
+**Güncel çalışma sırası:** Kullanıcı isteğiyle önce teknik hazırlık ve bobin hedefleri netleştirilir; kesin malzeme seçimi sonradır. Bobin için 33 µH, 7,5–10 mΩ @20 °C hedef ve akım altındaki endüktans ölçüm koşulları [parça hedeflerinde](buck/PARCA-HEDEFLERI.md) açıklanır. Gerçek çekirdek ve sarım ölçülmeden hedefin sağlandığı söylenemez. Sıcak takmada örnek 48,0 V hesabı nedeniyle 50 V Cin gerilim payı ayrıca açık risktir.
+
 ## Şu anki durum
 
 | | |
@@ -15,9 +17,9 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 | **Referans yükler** | T3 Gemstone O1 (5–12 V) ve SLAMTEC RPLIDAR S2E (9–28 V); cihaza özgü uyumluluk testi olarak, modülün tek tasarım sınırı olarak değil |
 | **Aktif adım** | **Adım 2 — Gerçek parçaların bulunması ve bobin sarımı (§12.2)**. Adım 3'ün hesap kısmı (kayıp, ısı, gerilim stresi) 12.11.2026'da yapıldı; adım parça sonrası doğrulamadan sonra kapanacak |
 | **Dondurma durumu** | **FROZEN** (simülasyon dondurması, 12.11.2026): çıkışa paralel `Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı eklendi, tüm köşe ve kararlılık testleri geçti; **Cout/Cd ≥ 35 V**, **Cin ≥ 50 V** kararlaştırıldı ve §12.1 kapısındaki 1–12 maddelerinin tamamı kullanıcı onayıyla kapandı ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.1) |
-| **Bekleyen iş** | **§12.2 Parça seçimi ve bobin sarımı:** dondurulan hedef aralıklara göre kesin parçaların seçilmesi (`Cout` ve `Cd` ≥ 35 V, `Rd` 0,22 Ω, `Cin` ≥ 50 V, `S1`, `D1`, soğutucu, giriş MLCC), `L1` bobininin sarılması, L/C/ESR/DCR ölçümleri ve gerçek değerlerle testlerin tekrarlanması |
+| **Bekleyen iş** | Teknik hazırlık ve bobin hedeflerinin doğrulanması; ardından kullanıcıyla parça seçimi, L/C/ESR/DCR ölçümleri ve gerçek değerlerle testlerin tekrarlanması |
 | **Sıradaki adım** | Adım 3 — Kayıp ve ısı. Adım 4 ve sonrası (sürücü, PWM, geri besleme, PCB) **kullanıcı isteyene kadar başlatılmaz** |
-| **Devrenin hâli** | Açık çevrim, soft-start yok. LTspice'ta doğrulandı; **fiziksel devre ve ölçüm yok** |
+| **Devrenin hâli** | Açık çevrim, soft-start yok. LTspice'ta örnek senaryolar sınandı; **fiziksel devre ve ölçüm yok** |
 | **Güvenlik** | Gerçek O1 / S2E **bağlanmaz**: açık çevrim 12 V üst sınırını garanti etmez |
 | **Ana aşama** | **A — Ana güç devresi** (Adım 0–3); Adım 2'deyiz |
 | **Dal** | Bütün iş `main` dalında. Güncel hâl her zaman `main`'dedir |
@@ -33,7 +35,7 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 | L1 | 33 µH el sarım, DCR 7,81 mΩ (HESAP) | Magnetics Kool Mµ 40µ `0077536A7` 22 sarım (2. sıra: satın alma, Würth 74435583300) | **33 µH** (el sarım 30,7–36,1 µH; satın alma ±%20 de geçti); DCR 6,5–15 mΩ (el sarım hedefi 7,5–10 mΩ) |
 | Cout | 1000 µF, ESR 35 mΩ | Nichicon UHE1E102MHD6TO *(R/C referansı; kesin parça ≥35 V seçilecek)* | 1000 µF ±%20, ESR ≤ 35 mΩ, **≥ 35 V** (S1 kısa devresinde 27,3–31,1 V) |
 | Cd + Rd | **470 µF + seri 0,22 Ω** | — (dondurma sonrası seçilecek) | Cd: 470 µF ±%20, **≥ 35 V**; Rd: 0,22 Ω (Rd + Cd_ESR toplamı **0,15–0,60 Ω**), ≥ 0,25 W |
-| Cin | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 *(R/C referansı; kesin parça ≥50 V seçilecek)* | toplam ripple akımı ≥ 4,5 A, **≥ 50 V** (sıcak takmada ≤ 46,5 V) |
+| Cin | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 *(R/C referansı; kesin parça ≥50 V seçilecek)* | toplam ripple akımı ≥ 4,5 A, **≥ 50 V**; örnek sıcak takma hesabı 48,0 V, gerçek kaynak ve pay doğrulanmadı |
 | S1 | Ron 5,6 mΩ | STP100N6F7 | RDS(on) ≤ 12 mΩ, VDS ≥ 55 V |
 | D1 | 0,38 V + 8 mΩ | STPS40M60CT (iki bacak paralel) | VF ≤ 0,58 V @ 7,5 A, VRRM ≥ 45 V |
 
