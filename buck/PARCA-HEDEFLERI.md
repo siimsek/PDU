@@ -1,7 +1,7 @@
 # Parça Kriterleri ve Aday Parçalar — Ana Güç Devresi
 
 **Tarih:** 11 Kasım 2026
-**Durum:** Parçalar **kesinleşmedi**. Aşağıdaki liste "olabilir" listesidir: kriterlerle yapılan dış araştırmanın adayları, LTspice köşe testindeki paya göre sıralanmıştır. Şematik, listenin başındaki **1. sıra adayların** veri sayfası değerlerini taşır; bu bir satın alma kararı değildir. Kriterleri sağlayan başka bir parça aynı yolla (bkz. "Parça değiştiğinde") 1. sıraya geçebilir.
+**Durum:** Parçalar **kesinleşmedi**. Aşağıdaki liste "olabilir" listesidir: kriterlerle yapılan dış araştırmanın adayları, LTspice köşe testindeki paya göre sıralanmıştır. Şematik, listenin başındaki **1. sıra adayların** değerlerini taşır (L1 için el sarım hesabı, diğerleri veri sayfası); bu bir satın alma kararı değildir. Kriterleri sağlayan başka bir parça aynı yolla (bkz. "Parça değiştiğinde") 1. sıraya geçebilir.
 **Sınıf:** analitik hesap (`hesap.py`) + LTspice, ideal elemanlar (`dogrula.py`). Fiziksel ölçüm yok.
 
 Çalışma noktası: Vin 20 / 22,2 / **24,6** / 25,2 / 26 V → 11 V / 7,5 A (82,5 W), fsw = 100 kHz. Seçim süreci ve test sonuçları: [OPTIMIZASYON.md](OPTIMIZASYON.md).
@@ -12,9 +12,10 @@
 
 | Eleman | Parça | Veri sayfası değeri | Şematikte | Stok ve fiyat (11.11.2026) |
 |---|---|---|---|---|
-| **L1** | Würth **74435583300** (WE-HCI, yüzey montaj, ekranlı) | 33 µH ±%20; Irms 11,5 A; Isat 12,5 A (−%10, tipik); DCR 13,2 mΩ ±%10 (maks 14,52 mΩ); 9 A'de düşüm ≈ %3–5 | 33 µH, `Rser=14.5m` | Digi-Key 260 adet, 7,34 $ |
-| **Cout** | Nichicon **UHE1E102MHD6TO** | 1000 µF ±%20; 25 V; 105 °C; ESR 35 mΩ (100 kHz, maks); ripple akımı 1,90 A | 1000 µF, `Rser=35m` | Mouser 336 adet, 1,22 € |
-| **Cin1, Cin2** | 2 × TDK **B41859D7108M000** | 1000 µF ±%20; 35 V; 105 °C; 16 × 20 mm; empedans 15 mΩ (100 kHz, 20 °C), 38 mΩ (−10 °C); ripple akımı 3,25 A/adet → 6,5 A | 2 × 1000 µF, `Rser=15m` | Farnell Türkiye 2.914 adet, 2,31 € + KDV |
+| **L1** (1. sıra, el sarım) | Magnetics **Kool Mµ 40µ `0077536A7`** toroid, 22 sarım, 100 × 0,20 mm litz | 33,4 µH (AL 69 nH ±%8); L(8,9 A) %96,7, L(12 A) %94,6 (üretici μ%–H fit'i); DCR 7,81 mΩ @20 °C (HESAP), 9,5 mΩ @75 °C; kayıp ≈ 0,75 W (2,8 A ripple, HESAP) — **fiziksel ölçüm yok** | 33 µH, `Rser=7.81m` | Çekirdek ve tel ayrı temin; ölçüm gerekir |
+| **L1** (2. sıra, satın alma) | Würth **74435583300** (WE-HCI, yüzey montaj, ekranlı) | 33 µH ±%20 (100 kHz, 10 mA); 30,5 µH tipik @ 11,5 A; Irms 11,5 A (ΔT 50 K); 10,6 A (ΔT 40 K); Isat 12,5 A (−%10) ve 15 A (−%30), **ikisi de tipik**; DCR 13,2 mΩ ±%10 @ 20 °C (maks 14,52 mΩ; sıcakta artar). 9 A'de düşüm ≈ %3 (L–I eğrisinden yaklaşık okuma, ikinci el rapor); çekirdek kaybı verisi datasheet'te yok | şematikte değil (el sarım 1. sırada) | Digi-Key 260 adet, 7,34 $ |
+| **Cout** | Nichicon **UHE1E102MHD6TO** | 1000 µF ±%20; 25 V; 105 °C; **empedans** en çok 35 mΩ (100 kHz, 20 °C) ve 120 mΩ (100 kHz, −10 °C) — ESR değildir; ripple akımı 1,90 A (105 °C, 100 kHz) | 1000 µF, `Rser=35m` | Mouser 336 adet, 1,22 € |
+| **Cin1, Cin2** | 2 × TDK **B41859D7108M000** | 1000 µF ±%20; 35 V; 105 °C; 16 × 20 mm; empedans (Zmax) 15 mΩ (100 kHz, 20 °C), 38 mΩ (−10 °C) — ESR değildir, ESL ≈ 26 nH ≈ 16 mΩ reaktans aynı büyüklükte; ripple akımı 3,25 A/adet (105 °C, 100 kHz) → 6,5 A | 2 × 1000 µF, `Rser=15m` | Farnell Türkiye 2.914 adet, 2,31 € + KDV |
 | **S1** | STMicroelectronics **STP100N6F7** (TO-220) | 60 V; RDS(on) 5,6 mΩ maks (VGS 10 V, 25 °C); ID 100 A; Qg 30 nC tipik | `Ron=5.6m` | Digi-Key 2.105 adet, 2,08 $ |
 | **D1** | STMicroelectronics **STPS40M60CT** (TO-220AB, iki bacak paralel) | 60 V; 2 × 20 A; VF maks 0,46 V @ 5 A/bacak, 25 °C; 3,75 A/bacakta ≈ 0,42–0,45 V | `Vf=0.38 Ron=8m` (7,5 A'de 0,44 V) | Digi-Key 1.010 adet, 2,81 $ |
 
@@ -27,14 +28,40 @@
 | 47 µH (7443783533470) | Nichicon UHE, 35 mΩ | 46 / 69 mV | 10,57–11,37 V | 9,86–11,93 V | Geçti; 12 V'a 0,07 V pay |
 | 47 µH (7443783533470) | 18 mΩ'luk aday | 24 / 33 mV | 9,24–12,83 V | 9,62–12,24 V | **Kaldı**; 2,6–3,6 V salınım |
 
-- **Cout için 35 mΩ'luk parça bilerek öne alındı.** Veri sayfasındaki ESR en yüksek değerdir; gerçek parça bunun altındadır. Bu testte ESR alt kenarı veri sayfası değerinin %60'ı alındı (**varsayım**; üretici alt değer vermez). 35 mΩ'luk parçada gerçek değer kabul penceresinin (15–35 mΩ) ortasına düşer; 18 mΩ'luk parçada pencerenin altına inebilir.
+- **Cout için 35 mΩ'luk parça bilerek öne alındı.** Veri sayfasındaki 35 mΩ **en büyük empedanstır** (|Z| 100 kHz'te), ESR değildir; üretici ESR için ne alt ne tipik değer verir. Modeldeki `Rser=35m` ve 15 mΩ alt kenar (35 mΩ'un ≈ %43'ü; eski %60 ifadesi tutmuyordu) **varsayımdır**, veri sayfası değeri değildir. Soğukta (−10 °C) Zmax 120 mΩ'dur; bu koşul simülasyonda yoktur. 15–35 mΩ penceresi bu parça için ancak 0,5–2 kHz ve 100 kHz'te, sıcaklığa göre ölçümle kanıtlanır.
 - **S1 için en düşük dirençli değil, en düşük kapı yüklü aday öne alındı.** İletim kaybı 5,6 mΩ'da zaten 0,15 W'tır; 30 nC kapı yükü sonraki aşamada sürücüyü kolaylaştırır ve anahtarlama kaybını düşürür.
-- **L1 için 33 µH**, 47 µH'den daha geniş sönüm payı verir. 1. sıradaki parça yüzey montajdır ve doyma akımı (12,5 A) kriterin hemen üstündedir; stoku bol olduğu için öne alındı. Delikli 7443783533330 elektriksel olarak daha iyidir (aşağıda 2. sıra).
+- **L1 için 33 µH**, 47 µH'den daha geniş sönüm payı verir. 1. sıra el sarım bobindir (hocanın önerisi; hazır bobinlerin Isat değeri garanti edilmez); satın alınan Würth 74435583300 2. sıradadır (Isat tipik).
 
 **Doğrulama durumu:**
-- TDK B41859D7108M000 değerleri üretici veri sayfasından doğrulandı (DATASHEET).
-- Diğer dört parçanın değerleri dış araştırma raporundan alındı; veri sayfaları bu depoda çalışan araçla metin olarak okunamadı. Bir aday kesinleştirilmeden önce özellikle Nichicon'un 35 mΩ ve Würth'ün 12,5 A doyma değeri veri sayfasından teyit edilmelidir.
-- D1 modeli (0,38 V + 8 mΩ) raporda verilen iki noktadan çıkarıldı; **yaklaşıktır**.
+- Üretici PDF'inden okunup doğrulandı (DATASHEET, 12.11.2026; Würth rev. 002.001 2025-02-06, Nichicon CAT.8100M, TDK B41859): Würth 74435583300, Nichicon UHE1E102MHD6TO (seri PDF + parça sayfası), TDK B41859D7108M000. TDK sipariş kodu geri çekilen ürün listesinde yoktur (rapora göre; sayfa 1). Würth L–I eğrisi (eğriden, yaklaşık): 9 A'de ≈ 32,0 µH, 11,5 A'de 30,5 µH, 12,5 A'de ≈ 29,5 µH; bu "%3–5 düşüm" ifadesini destekler (düşük L köşesi −%30 bunu kapsar). Doğrulananlar ve koşulları yukarıdaki tabloda; Isat tipiktir, 35 / 15 mΩ en büyük empedanstır.
+- **ST parçaları (ikinci el):** STP100N6F7 (DocID027212 Rev 2) ve STPS40M60C (Doc ID 018813 Rev 1) değerleri ayrı bir araştırma raporundan alındı; PDF'ler bu ortamda açılamadı, bu yüzden bağımsız doğrulanmadı. Rapora göre: VGS(th) 2–4 V (tipik yok); RDS(on) 4,7 tipik / 5,6 mΩ maks; Qg 30 nC (VDD 30 V, ID 100 A); Rth(j-c) 1,2 °C/W; Tj 175 °C. Diyot: VF tipik/maks 5 A'de 0,430/0,460 V, 10 A'de 0,470/0,505 V, 20 A'de 0,540/0,595 V (25 °C); IR 25 µA tipik / 110 µA maks (25 °C), 85 mA maks (125 °C); iletim kaybı P = 0,395·IF(AV) + 0,007·IF²(RMS) (diyot başına, geçerlilik koşulu yayımlanmamış). Rapora göre yayımlanmayanlar: 3,75 ve 7,5 A/diyot VF'sinin sayısal değeri, 150 °C VF, Qc/trr, Würth kayıp verisi ve REDEXPERT sonucu, Nichicon/TDK ESR, ESR–frekans ve ripple sıcaklık katsayıları, UHE/B41859 SPICE modeli. RDS(on)'ın sıcaklık çarpanı (100 °C ≈ ×1,40) eğriden yaklaşık okunmuştur.
+- Ron = 5,6 mΩ 25 °C, VGS = 10 V, ID = 50 A'de **azami** değerdir; eklem sıcaklığında artar ve model sıcaklık, anahtarlama kaybı ve kapı yükünü içermez (ideal anahtar).
+- D1 modeli (0,38 V + 8 mΩ) iki tipik noktadan çıkarıldı; **yaklaşıktır**. 7,5 A'de 0,44 V verir: 5 A/diyot'ta 25 °C tipik 0,430 / azami 0,460 V (dolaylı kaynak) ile uyumlu, azami veya sıcaklık garantisi değildir. İki iç diyotun paralel eşdeğeri olarak (7,5 A toplam = 3,75 A/bacak) kurulmuştur; çift diyotun akım paylaşımı modelde yoktur.
+
+### L1 için sıralama kararı (kullanıcı, 12.11.2026)
+
+**1. sıra: el sarım bobin. 2. sıra: satın alma** (Würth 74435583300 ve aşağıdaki diğer adaylar). Neden: hazır bobinlerin doyma akımı (Isat) değerleri tipiktir, garanti edilmez; el sarımda Isat çekirdek verisinden hesaplanır ve ölçülür (hocanın önerisi). Şematik (33 µH, DCR 7,81 mΩ @20 °C) el sarım değerlerini taşır; sarılıp ölçülünce DCR güncellenir.
+
+| Tasarım (ChatGPT raporu, HESAP; fiziksel ölçüm yok) | L0 | L(8,9 A) / L(12 A) | DCR 20 °C / 75 °C | Toplam kayıp (2,8 A ripple) | Sonuç |
+|---|---|---|---|---|---|
+| **Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım, 100 × 0,20 mm litz** | 33,4 µH (AL 69 nH ±%8) | 32,3 / 31,6 µH (%96,7 / %94,6, üretici μ%–H fit'i) | 7,81 / 9,50 mΩ | ≈ 0,75 W (çekirdek 0,22 + bakır 0,53) | **1. sıra**; bias ölçütünü rahat sağlar |
+| Micrometals T130-52, 21 sarım | 34,8 µH | 28,6 / 25,2 µH (8,9 A'de %18 düşüm) | 5,45 / 6,63 mΩ | ≈ 2,5 W, ΔT ≈ 60–125 °C (TAHMİN) | Elenir: 9 A düşüm ölçütü ve kayıp |
+| TDK N87 ETD39, ayarlı aralık, 18 sarım | hedef 32,4 µH | DOĞRULANAMADI | 8,5 / 10,4 mΩ | DOĞRULANAMADI | Ölçüm olmadan kabul edilemez |
+
+Bağımsız kontrol (HESAP, 12.11.2026): AL = μ0·μ·Ae/le = 69,4 nH; N = 22 → 33,4 µH; H(8,9 A) = 19,5 Oe → μ% = %96,7; DCR20 = 7,8 mΩ; çekirdek kaybı 5,1 mW/cm³. Rapordaki sayılar tutarlı çıktı. Çekirdek, bobin ve sarım Türkiye'de ayrı ayrı temin edilir (Magnetics `0077536A7` Farnell/Mouser/TME/RS'de bu kodla doğrulanamadı; Micrometals ve TDK çekirdekleri TME'de listeli).
+
+**SİM köşe testi (20 °C, Cout Nichicon 35 mΩ, köşe: L −%30/+%20, Cout −%20; `pencere()` kararı):**
+
+| El sarım değişkeni | Köşe ripple | 73 W zarf adımı | 73 W salınım (57,6 / 73 W) | O1 adımı | Karar |
+|---|---|---|---|---|---|
+| 33 µH, DCR 9,5 mΩ (sıcak) | 96 mV | 10,53–11,43 V | 170 / 738 mV | 9,98–11,85 V | GEÇTİ |
+| 33 µH, DCR 7,81 mΩ (20 °C) | 102 mV | 10,43–11,54 V | 309 / 1100 mV | 9,98–11,86 V | GEÇTİ |
+| 33 µH, DCR 6,5 mΩ (tel/sarım toleransı alt sınırı) | 96 mV | 10,19–11,78 V | 567 / 1593 mV | 9,98–11,87 V | GEÇTİ (12 V'a 0,22 V pay) |
+| **47 µH (26 sarım, 46,6 µH), DCR 9,2 mΩ** | 69 mV | 9,45–**12,61 V** | 2567 / 3165 mV | 9,65–12,24 V | **KALDI** |
+
+Karşılaştırma: Würth 74435583300 (DCR 14,5 mΩ) 51 / 216 mV salınım verir. **Sonuç:** 33 µH el sarım simülasyonda geçer, ama DCR düştükçe sönüm zayıflar ve 73 W darbesinde salınım büyür; bu yüzden **DCR için alt sınır gerekir (≥ 6,5 mΩ, 20 °C; hedef 8–10 mΩ)**, ESR alt sınırıyla aynı nedenle. 47 µH el sarım DCR yüksek olmadığı için sönümsüz kalır ve kalır; 47 µH seçeneği yalnız satın alınan Würth 7443783533470 (DCR en çok 12,98 mΩ) ile denenebilir.
+
+**Karar (kullanıcı, 12.11.2026):** şematiğe nominal DCR 7,81 mΩ (20 °C) yazıldı; 9,5 mΩ (75 °C) sıcak çalışma köşesi, 6,5 mΩ şimdiye kadar denenen en düşük sönüm köşesi. Doğrulanmış DCR sınırı 6,5–15 mΩ; el sarım hedefi 8–10 mΩ. Gerçek bobin sarılınca DCR ölçülüp model güncellenir. `secilen` ve `pencere` bu değerlerle yeniden koşuldu ([OPTIMIZASYON.md](OPTIMIZASYON.md) §4.4, §5). Fiziksel doğrulama adımları: 100 kHz'te L0 ve 4 telli DCR; 0 / 5 / 8,9 / 10,6 / 12 A DC bias'ta L(I) (8,9 A'de ≥ %90); 50 °C ortamda 7,5 A DC + 2,8 A ripple ile sıcaklık; 10–12 A kalkış darbesi.
 
 ### Diğer adaylar (öncelik sırasıyla)
 
@@ -60,16 +87,16 @@ Kaynaklar: [74435583300](https://www.we-online.com/en/components/products/datash
 
 ## Kriterler
 
-Parantez içindeki "hedef", parça seçilmeden önce şematikte kullanılan değerdir. Ron, Vf ve DCR için hedef, kabul sınırının kendisidir: daha iyi parça yalnız kaybı azaltır, başka bir şeyi bozmaz.
+Parantez içindeki "hedef", parça seçilmeden önce şematikte kullanılan değerdir. Ron, Vf ve DCR için hedef, kabul sınırının kendisidir. Daha düşük Ron, Vf veya DCR kaybı azaltır ama sabit güç yüklü LC'nin seri direncini (sönümünü) de düşürür; 47 µH'de payı daraltır (bkz. [OPTIMIZASYON.md](OPTIMIZASYON.md) §4.4), bu yüzden "yalnız kaybı azaltır" denemez.
 
 ### L1 — bobin
 
 | Kriter | Değer | Neden |
 |---|---|---|
-| Endüktans | **33–47 µH**, tolerans ≤ ±%20 (hedef 33 µH) | 33 µH'de akım ripple'ı %25. 22 µH'de CCM sınırı 1,4 A'e çıkar, tipik yük (≈ 1,2 A) kesintili iletimde kalır ve açık çevrim testinde çıkış 8,8 V'a düşer. 47 µH üstü Cout 1000 µF ile sönümü zayıflatır. Güncel şematik değerleriyle tolerans köşesi testinde 33 µH geçti, 39 µH kaldı (12,06 V), 47 µH 0,04 V payla ve yalnız 20 ms'lik S2E kalkış darbesi varsayımıyla geçti ([OPTIMIZASYON.md](OPTIMIZASYON.md) §4.4). Doğrulanmış değer 33 µH'dir; 39–47 µH için aralık yeniden karar bekliyor. |
+| Endüktans | **33 µH veya 47 µH** (39 µH kabul değil), tolerans ≤ ±%20 (hedef 33 µH) | 33 µH'de akım ripple'ı %25. 22 µH'de CCM sınırı 1,4 A'e çıkar, tipik yük (≈ 1,2 A) kesintili iletimde kalır ve açık çevrim testinde çıkış 8,8 V'a düşer. 47 µH üstü Cout 1000 µF ile sönümü zayıflatır. Güncel şematik değerleriyle tolerans köşesi testinde 33 µH geçti, 39 µH kaldı (12,06 V), 47 µH 0,04 V payla ve yalnız 20 ms'lik S2E kalkış darbesi varsayımıyla geçti ([OPTIMIZASYON.md](OPTIMIZASYON.md) §4.4). Kullanıcı kararı (12.11.2026): 33 ve 47 µH iki seçenek olarak kalır; 47 µH yalnız 35 mΩ'luk Cout ile ve kalkış darbesi ≈ 32 ms'yi aşmıyorsa geçerlidir (S2E kalkış süresi yayımlanmamış). |
 | Doyma akımı (Isat) | ≥ 12 A; 9 A'de endüktans düşümü ≤ %10 | Tepe akım en kötü köşede 8,9 A; %30 pay. Köşe testleri toleransla birlikte toplam −%30'a kadar koşuldu. |
 | Isıl akım (Irms) | ≥ 9 A | 7,5 A sürekli; %20 pay. |
-| DCR | ≤ 15 mΩ (hedef 15 mΩ) | Bakır kaybı 0,85 W. Her +5 mΩ ≈ +0,28 W. 20 mΩ'a kadar kabul edilebilir (verim −%0,3). |
+| DCR | **6,5–15 mΩ** (hedef 8–10 mΩ el sarım; satın alınan parça için ≤ 15 mΩ, 33 µH'te 12–15 mΩ en geniş payı verir) | Bakır kaybı 0,85 W. Her +5 mΩ ≈ +0,28 W. 20 mΩ'a kadar kabul edilebilir (verim −%0,3). Alt sınır: DCR sönüm direncidir; 6,5 mΩ'ta köşe testi geçti (12 V'a 0,22 V pay, salınım 1,6 V), altı denenmedi. Vishay 5,1 mΩ'ta pay 0,02 V kaldı. |
 | Yapı | Ekranlı veya toroid güç bobini, 100 kHz'e uygun çekirdek | Çekirdek kaybı modelde yoktur; tezgâhta sıcaklık ölçülmelidir. |
 
 Tek parça bulunamazsa eşdeğer kurulumlar (elektriksel olarak aynı):
@@ -142,7 +169,7 @@ Kurallar:
 - Her kalem için en az 3 aday ver; en az 50 adet stoklu olanı öne al. Mümkünse delikli (THT) kılıf.
 
 1) Güç bobini (buck çıkış bobini, 100 kHz)
-   - Endüktans 33–47 µH, tolerans ≤ ±%20
+   - Endüktans 33 µH veya 47 µH (39 µH değil), tolerans ≤ ±%20
    - Doyma akımı Isat ≥ 12 A ve 9 A'de endüktans düşümü ≤ %10 (veri sayfasındaki L–I eğrisinden veya iki noktadan yaz)
    - Isıl akım Irms ≥ 9 A
    - DCR ≤ 15 mΩ (20 mΩ'a kadar olanları ayrı listele)

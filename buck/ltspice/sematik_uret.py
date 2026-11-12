@@ -9,7 +9,7 @@ Ton, 24,6 V giriste (ana calisma noktasi) ortalama cikis 11 V olacak sekilde LTs
 import sys
 from pathlib import Path
 
-TON_US = 4.61          # 24,6 V -> 11 V icin LTspice ile ayarli iletim suresi (T = 10 us)
+TON_US = 4.59          # 24,6 V -> 11 V icin LTspice ile ayarli iletim suresi (T = 10 us)
 ton = float(sys.argv[1]) if len(sys.argv) > 1 else TON_US
 
 W = []  # wires
@@ -45,7 +45,7 @@ SYMS = [
     ("anahtar", 176, 64, "R270", "S1", "anahtar", "Ron=5.6m", ["WINDOW 0 64 56 VTop 2", "WINDOW 39 40 56 VTop 2"]),
     ("voltage", 256, 160, "R0", "Vdrv", f"PULSE(0 10 0 10n 10n {ton:g}u 10u)", None, []),
     ("diyot", 768, 208, "R180", "D1", "diyot", "Vf=0.38 Ron=8m", []),
-    ("ind", 768, 80, "R270", "L1", "33u", "Rser=14.5m",
+    ("ind", 768, 80, "R270", "L1", "33u", "Rser=7.81m",
      ["WINDOW 0 32 56 VTop 2", "WINDOW 3 5 56 VBottom 2", "WINDOW 39 -20 56 VBottom 2"]),
     ("polcap", 928, 144, "R0", "Cout", "1000u", "Rser=35m", CAPW),
     ("res", 1088, 128, "R0", "Rload", "1.4667", None, []),

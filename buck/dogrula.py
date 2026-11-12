@@ -43,15 +43,17 @@ P_O1_BOSTA = 4.0            # W  TAHMIN
 
 MEVCUT = dict(L=33e-6, DCR=15e-3, Cout=330e-6, ESRo=15e-3, Cin=220e-6, ESRi=20e-3,
               Ron=10e-3, Vf=0.5, Rd=10e-3, f=100e3)
-# Ana sematikteki degerler: 1. sira aday parcalarin veri sayfasi degerleri; kesin secim degil (PARCA-HEDEFLERI.md).
-# L1 Wurth 74435583300 (33 uH, DCR maks 14,52 mohm), Cout Nichicon UHE1E102MHD6TO (ESR maks 35 mohm),
+# Ana sematikteki degerler: 1. sira adaylar; kesin secim degil (PARCA-HEDEFLERI.md).
+# L1 el sarim Magnetics Kool Mu 40u 0077536A7, 22 sarim (33 uH, DCR HESAP 7,81 mohm @20 C; olculunce guncellenir),
+# Cout Nichicon UHE1E102MHD6TO (35 mohm = maks EMPEDANS, ESR varsayimi),
 # Cin 2 x TDK B41859D7108M000 (15 mohm), S1 STP100N6F7 (5,6 mohm maks),
 # D1 STPS40M60CT iki bacak paralel (~0,38 V + 8 mohm; iki veri sayfasi noktasindan YAKLASIK).
-SECILEN = dict(L=33e-6, DCR=14.52e-3, Cout=1000e-6, ESRo=35e-3, Cin=1000e-6, ESRi=15e-3,
+SECILEN = dict(L=33e-6, DCR=7.81e-3, Cout=1000e-6, ESRo=35e-3, Cin=1000e-6, ESRi=15e-3,
                Ron=5.6e-3, Vf=0.38, Rd=8e-3, f=100e3)
 L_DUSUK, L_YUKSEK = 0.70, 1.20     # -%20 tolerans ve tepe akimda -%10 dusum birlikte; +%20 tolerans
 ESR_MIN, ESR_MAX = 15e-3, 35e-3    # Cout 100 kHz ESR kabul penceresi (tolerans dahil)
-# Dogrulanan L penceresi (Cout 1000 uF ile): 33-47 uH. 22 uH tipik yukte DCM'de kaldigi icin pencere disi.
+# L: 33 uH (el sarim) veya 47 uH (satin alinan, DCR yuksek parca). 22 uH tipik yukte DCM'de kaldigi icin pencere disi.
+# DCR (el sarim) kabul penceresi: 6,5-15 mohm (6,5 mohm en dusuk denenen sonum kosesi).
 CIFTLER = ((33e-6, 1000e-6), (39e-6, 1000e-6), (47e-6, 1000e-6))
 VO_MIN, VO_MAX = 9.0, 12.0         # S2E alt siniri, O1 ust siniri
 RIPPLE_MAX = 0.165                 # V t-t; cikisin %1,5'i (S2E siniri +-%3)
@@ -249,6 +251,10 @@ def ton_ayarla(p: dict, vin: float, io: float) -> float:
         a, ha, b = b, hb, b - hb * (b - a) / (hb - ha)
         b = min(max(b, 0.02 * T), 0.98 * T)
         hb = hata(b)
+    if abs(hb) >= 3e-3:
+        # Yakinsamadi: sonuc yine kullanilir (davranis degismedi) ama sessiz kalmaz.
+        print(f"UYARI ton_ayarla yakinsamadi: Vin={vin} V, Io={io} A, kalan akim hatasi {hb * 1000:.0f} mA (olcut 3 mA)",
+              file=sys.stderr, flush=True)
     return b
 
 
@@ -428,7 +434,9 @@ def tarama() -> None:
 
 
 def pencere() -> None:
-    """Kabul pencerelerinin kenarlarini kosar: uc L/Cout cifti, ESR 20-35 mohm, tolerans koseleri."""
+    """Kabul pencerelerinin kenarlarini kosar: uc L/Cout cifti, ESR 15-35 mohm, tolerans koseleri.
+    Karar yalniz Vo araligi ve kose t-t ripple'ina bakar; 'kose salinim' sutunu (yavas LC salinimi
+    dahil toplam t-t) yalniz yazdirilir, karara girmez."""
     print("## Kabul penceresi doğrulaması (LTspice, 24,6 V; köşeler: L −%30/+%20, Cout −%20)\n")
     sat = []
     for L, C in CIFTLER:

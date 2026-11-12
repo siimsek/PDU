@@ -13,9 +13,9 @@
 | Eleman | Şematikteki değer | 1. sıra aday (kesin değil) | Kabul aralığı |
 |---|---|---|---|
 | V1 | 24,6 V | 6S batarya | 20–26 V |
-| Vdrv | 100 kHz, Ton = 4,61 µs | — (sonraki aşamada sürücü + PWM) | — |
-| L1 | 33 µH, DCR 14,5 mΩ | Würth 74435583300 | 33–47 µH (39 µH güncel köşe testinde kaldı; aralık yeniden karar bekliyor), Isat ≥ 12 A, DCR ≤ 15 mΩ |
-| Cout | 1000 µF, ESR 35 mΩ | Nichicon UHE1E102MHD6TO (25 V) | 1000 µF, ESR 15–35 mΩ, ≥ 25 V |
+| Vdrv | 100 kHz, Ton = 4,59 µs | — (sonraki aşamada sürücü + PWM) | — |
+| L1 | 33 µH el sarım, DCR 7,81 mΩ (HESAP, 20 °C) | Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım, 100 × 0,20 mm litz (2. sıra: satın alma, Würth 74435583300) | 33 µH; DCR 6,5–15 mΩ (el sarım hedefi 8–10 mΩ); 12 A'de L düşümü üreticinin μ%–H eğrisinden %94,6. 47 µH yalnız satın alınan parçayla ve S2E kalkış süresi ölçülünce; 39 µH ve 47 µH el sarım kaldı |
+| Cout | 1000 µF, ESR 35 mΩ (**maks. empedans, ESR varsayımı**) | Nichicon UHE1E102MHD6TO (25 V) | 1000 µF, ESR 15–35 mΩ, ≥ 25 V |
 | Cin1, Cin2 | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 (35 V) | toplam ripple akımı ≥ 4,5 A, ≥ 35 V |
 | S1 | ideal anahtar, `Ron=5.6m` | STP100N6F7 (60 V, TO-220) | RDS(on) ≤ 12 mΩ, VDS ≥ 55 V |
 | D1 | ideal diyot, `Vf=0.38 Ron=8m` | STPS40M60CT (60 V, 2 × 20 A, iki bacak paralel) | VF ≤ 0,58 V @ 7,5 A, VRRM ≥ 45 V |
@@ -25,7 +25,7 @@
 
 LTspice sonucu (24,6 V giriş, kararlı durum, 19–20 ms): Vo = 11,000 V, çıkış ripple'ı 64,4 mV t-t, bobin akımı 6,56–8,44 A. Fiziksel ölçüm yoktur.
 
-Açık çevrim: Ton sabitken giriş veya yük değişirse çıkış 11 V'ta kalmaz; soft-start yoktur (sert kalkışta LTspice 52,2 A / 16,7 V gösterir). **Gerçek O1 veya S2E bağlanmaz.**
+Açık çevrim: Ton sabitken giriş veya yük değişirse çıkış 11 V'ta kalmaz; soft-start yoktur (sert kalkışta LTspice 53,3 A / 17,0 V gösterir). **Gerçek O1 veya S2E bağlanmaz.**
 
 ## LTspice'ta deneme
 

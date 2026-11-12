@@ -11,7 +11,7 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 | **Proje** | Tekne için güç dağıtım kartı (PDU): 6S bataryadan (20–26 V) 11 V / 7,5 A üreten tek faz asenkron buck dönüştürücü |
 | **Beslenecek yükler** | T3 Gemstone O1 (5–12 V) ve SLAMTEC RPLIDAR S2E (9–28 V) |
 | **Aktif adım** | **Adım 2 — Gerçek parçaların bulunması** (aday listesi hazır, 1. sıra adaylar simülasyonda doğrulandı; kesin seçim yapılmadı) |
-| **Bekleyen iş** | Kullanıcı: aday listesinden kesin parçaları belirlemek; kesinleşen parçaların değerlerini üretici veri sayfasından teyit etmek; L1 kabul aralığını (33–47 µH) güncel `pencere` sonucuna göre yeniden karara bağlamak. Sonra Adım 2 kapanır |
+| **Bekleyen iş** | Kullanıcı: aday listesinden kesin parçaları belirlemek; kesinleşen parçaların değerlerini üretici veri sayfasından teyit etmek; L1 el sarım bobinin sarılıp ölçülmesi (L0, DCR, L(I), sıcaklık) ve DCR'nin modele yazılması; Cout'un gerçek ESR'sinin ölçülmesi. Sonra Adım 2 kapanır |
 | **Sıradaki adım** | Adım 3 — Kayıp ve ısı. Adım 4 ve sonrası (sürücü, PWM, geri besleme, PCB) **kullanıcı isteyene kadar başlatılmaz** |
 | **Devrenin hâli** | Açık çevrim, soft-start yok. LTspice'ta doğrulandı; **fiziksel devre ve ölçüm yok** |
 | **Güvenlik** | Gerçek O1 / S2E **bağlanmaz**: açık çevrim 12 V üst sınırını garanti etmez |
@@ -25,14 +25,14 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 |---|---|---|---|
 | Giriş | 24,6 V (ana nokta) | 6S batarya | 20–26 V |
 | Çıkış | 11 V / 7,5 A | — | — |
-| Anahtarlama | 100 kHz, Ton 4,61 µs | — | — |
-| L1 | 33 µH, DCR 14,5 mΩ | Würth 74435583300 | 33–47 µH (39 µH güncel köşe testinde kaldı; aralık yeniden karar bekliyor), Isat ≥ 12 A, DCR ≤ 15 mΩ |
+| Anahtarlama | 100 kHz, Ton 4,59 µs | — | — |
+| L1 | 33 µH el sarım, DCR 7,81 mΩ (HESAP) | Magnetics Kool Mµ 40µ `0077536A7` 22 sarım (2. sıra: satın alma, Würth 74435583300) | 33 µH; DCR 6,5–15 mΩ (el sarım hedefi 8–10 mΩ). 47 µH yalnız satın alınan parçayla ve S2E kalkış süresi ölçülünce; 39 µH ve 47 µH el sarım kaldı |
 | Cout | 1000 µF, ESR 35 mΩ | Nichicon UHE1E102MHD6TO | 1000 µF, ESR 15–35 mΩ, ≥ 25 V |
 | Cin | 2 × 1000 µF, ESR 15 mΩ | 2 × TDK B41859D7108M000 | toplam ripple akımı ≥ 4,5 A, ≥ 35 V |
 | S1 | Ron 5,6 mΩ | STP100N6F7 | RDS(on) ≤ 12 mΩ, VDS ≥ 55 V |
 | D1 | 0,38 V + 8 mΩ | STPS40M60CT (iki bacak paralel) | VF ≤ 0,58 V @ 7,5 A, VRRM ≥ 45 V |
 
-LTspice sonucu (24,6 V, 7,5 A): çıkış 11,000 V, ripple 64,4 mV t-t, bobin akımı 6,56–8,44 A, iletim kaybı 2,75 W.
+LTspice sonucu (24,6 V, 7,5 A): çıkış 11,000 V, ripple 64,4 mV t-t, bobin akımı 6,56–8,44 A, iletim kaybı 2,38 W.
 Adayların sırası ve gerekçesi, doğrulama durumu ve kriterlerin nedenleri: [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md). Kanıt: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md).
 
 ## Ana aşamalar
@@ -77,8 +77,8 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
 ### 1. Ana güç devresi: değerler ve doğrulama — ✅ tamam
 
 - Güç katı değerleri gerçek yük senaryolarına (sabit güç yükü) göre seçildi ve LTspice'ta doğrulandı: 5 giriş noktası, yük adımları, yük atma, kalkış, giriş değişimi, tolerans köşeleri.
-- Kabul aralıkları: Cout 1000 µF, ESR 15–35 mΩ; L için şematikteki 33 µH doğrulandı. 33–47 µH aralığı aday parçalardan önceki hedef değerlerle doğrulanmıştı; güncel şematik değerleriyle `pencere` yeniden koşuldu (12.11.2026): 39 µH köşede 12,06 V ile **kaldı**, 47 µH 0,04 V payla geçti. Aralık yeniden karar bekliyor ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4).
-- Bulunan temel sorunlar: sabit güç yüküyle eski değerler salınıyordu; açık çevrim hafif yükte ve giriş değişiminde 11 V'u tutamıyor; sert kalkışta 52 A / 17 V.
+- Kabul aralıkları: Cout 1000 µF, ESR 15–35 mΩ (35 mΩ maks. empedanstır, ESR varsayımı); L 33 µH el sarım (kullanıcı kararı, 12.11.2026; DCR 6,5–15 mΩ). Güncel şematik değerleriyle `secilen` ve `pencere` koşuldu: 33 µH geçti, 39 µH ve 47 µH köşede 12,81 / 12,86 V ile **kaldı** ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4, §5).
+- Bulunan temel sorunlar: sabit güç yüküyle eski değerler salınıyordu; açık çevrim hafif yükte ve giriş değişiminde 11 V'u tutamıyor; sert kalkışta 53 A / 17 V.
 - Çıktılar: [buck/ltspice/buck_guc_kati.asc](buck/ltspice/buck_guc_kati.asc), [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md), [buck/hesap.py](buck/hesap.py), [buck/dogrula.py](buck/dogrula.py).
 - **Ölçüt (şematik değeri 33 µH için sağlandı):** şematik değerleriyle `dogrula.py secilen` ve `pencere` koşuldu; 33 µH ile yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV. `pencere`nin 39 µH satırı kalmıştır.
 
@@ -111,7 +111,7 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
 
 ### 5. PWM üretimi ve yumuşak kalkış — ⛔ kapsam dışı
 
-PWM kontrolcü seçimi, frekans ayarı, duty rampası. Sert kalkıştaki 52 A / 17 V sorununu bu adım kapatır.
+PWM kontrolcü seçimi, frekans ayarı, duty rampası. Sert kalkıştaki 53 A / 17 V sorununu bu adım kapatır.
 **Ölçüt:** kalkışta çıkış 12 V'u aşmıyor; bobin tepe akımı doyma payının içinde.
 
 ### 6. Geri besleme ve kompanzasyon — ⛔ kapsam dışı
@@ -144,6 +144,9 @@ Yeni kararlar en üste eklenir. Bir değeri değiştirmeden önce burada ve [buc
 
 | Tarih | Karar | Neden |
 |---|---|---|
+| 12.11.2026 | Şematik: L1 DCR 14,52 → 7,81 mΩ (el sarım, HESAP @20 °C), Ton 4,61 → 4,59 µs. Cout 35 mΩ ve Cin 15 mΩ "maks. empedans, ESR varsayımı" olarak işaretlendi; polimer Cin (VINATech) ve Panasonic FR seçilmedi; STPS40M60CT korundu | Kullanıcı kararı. `secilen` ve `pencere` yeniden koşuldu: 33 µH geçti; 39 ve 47 µH kaldı |
+| 12.11.2026 | L1 için 1. sıra el sarım (Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım, ≈ 33,4 µH), 2. sıra satın alma | Kullanıcı kararı (hocanın önerisi: hazır bobinlerin Isat değeri garanti edilmiyor). SİM: DCR 6,5–9,5 mΩ ile köşe testi geçti; 47 µH el sarım kaldı (12,61 V). Şematik DCR değeri ölçüm sonrası kesinleşir |
+| 12.11.2026 | L1: 33 µH ve 47 µH iki seçenek olarak kalır; 39 µH kabul edilmez | Kullanıcı kararı. Güncel `pencere`: 39 µH köşede 12,06 V ile kaldı; 47 µH 0,04 V payla geçti ve S2E kalkış süresine (yayımlanmamış, eşik ≈ 32 ms) bağlı |
 | 11.11.2026 | Dal ve milestone yalnız ana aşamalarda (A–D) açılır; adımlar ve küçük değişiklikler yalnız `main`'e commit | Kullanıcı kararı: her değişiklikte yeni dal/milestone istenmiyor |
 | 11.11.2026 | Parçalar kesin seçim değil, öncelik sıralı aday listesidir; şematik 1. sıra adayların değerlerini taşır (Würth 74435583300, Nichicon UHE1E102MHD6TO, 2 × TDK B41859D7108M000, STP100N6F7, STPS40M60CT) | Kullanıcı kararı. 1. sıra: dış araştırma adayları arasından LTspice köşe testini en geniş payla geçen set |
 | 11.11.2026 | Cout için 18 mΩ değil 35 mΩ'luk kondansatör | Veri sayfası ESR'si en yüksek değerdir; 18 mΩ'luk parçanın gerçek ESR'si sönüm alt sınırının altına inebilir (47 µH ile 12,83 V) |

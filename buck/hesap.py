@@ -16,10 +16,10 @@ VIN_ANA_V = 24.6
 FSW_HZ = 100_000.0
 
 # Ana sematikteki degerler: 1. sira aday parcalarin veri sayfasi degerleri; kesin secim degil (PARCA-HEDEFLERI.md).
-L_H = 33e-6             # Wurth 74435583300; kabul penceresi 33-47 uH
-DCR_OHM = 14.52e-3      # maks
+L_H = 33e-6             # el sarim Kool Mu 40u 0077536A7, 22 sarim (33,4 uH); satin alinan: 33 veya 47 uH
+DCR_OHM = 7.81e-3       # el sarim HESAP @20 C (sicak 9,5 mohm; denenen alt sinir 6,5 mohm)
 COUT_F = 1000e-6        # Nichicon UHE1E102MHD6TO
-ESR_OUT_OHM = 35e-3     # veri sayfasi maks; gercek deger daha dusuktur
+ESR_OUT_OHM = 35e-3     # maks EMPEDANS (ESR degil); simulasyon varsayimi
 ESR_OUT_MIN_OHM, ESR_OUT_MAX_OHM = 15e-3, 35e-3   # kabul penceresi (alt sinir LC sonumu, ust sinir ripple)
 CIN_F = 2000e-6         # 2 x TDK B41859D7108M000
 ESR_IN_OHM = 7.5e-3     # 2 x 15 mohm paralel
