@@ -4,6 +4,8 @@
 
 **Aşama: ANA GÜÇ DEVRESİ.** Güç katının değerleri belirlendi ve LTspice'ta sınandı; parçalar için aday listesi var, kesin seçim yapılmadı. PWM, geri besleme ve soft-start henüz yok; fiziksel devre kurulmadı.
 
+**Güncel yol:** Önce gereksinimler ve kontrol/sürücü/koruma mimarisi belirlenir; sonra kontrolcü ile güç katı adayları birlikte değerlendirilir ve parçalar kullanıcıyla kesinleştirilir. Bobin için 33 µH başlangıç hedefidir; kapalı çevrim uyumu ve gerçek sarım ölçümü henüz yoktur. Devamında gerçek değerlerle simülasyon ve tezgâh doğrulaması yapılır. [Yol haritası](YOL-HARITASI.md) bağımlılıkları ve açık işleri gösterir.
+
 **Dondurma durumu: FROZEN (12 Kasım 2026, simülasyon dondurması).** Çıkışa paralel `Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı eklendi. Örneklenen model setlerinde 200 ms ve ayrı bir köşede 500 ms sabit güç darbeleri sönümlü raporlandı; bütün yük, sıcaklık ve tolerans kombinasyonları doğrulanmış değildir. Gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak belirlendi. Açık çevrim güvenli 11 V regülasyonu sağlamaz; fiziksel ölçüm yoktur ve hassas yükler bağlanmamalıdır. Kanıt ve kalan işler: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12–13.
 
 **Nerede kaldık, sırada ne var:** [YOL-HARITASI.md](YOL-HARITASI.md) · **Çalışma kuralları (yapay zekâ araçları dahil):** [AGENTS.md](AGENTS.md)

@@ -730,7 +730,7 @@ Sönüm dalı ve toplam dal direnci (`Rd_toplam = ayrık Rd + Cd ESR`) aralığ�
 
 ## 12. Dondurma kapısı (12 Kasım 2026)
 
-Sıra (kullanıcı kararı, 12.11.2026): **simülasyonda ayarla ve dondur → parçaları seç, bobini bu değerlere göre sar → gerçek parça değerleriyle testi tekrarla → PCB**. Fiziksel ölçüm dondurmanın ön koşulu değildir; dondurmadan sonra gelir.
+12.11.2026'da açık çevrim değerleri simülasyon düzeyinde donduruldu. **13.11.2026 güncel iş sırası:** önce kontrol/sürücü/koruma mimarisinin gereksinimleri, sonra kontrolcü ile güç katı adaylarının birlikte değerlendirilmesi ve kullanıcıyla kesin seçim; ardından gerçek değerlerle güç katı ve kapalı çevrim doğrulaması, tezgâh ve PCB. Açık çevrim dondurması kapalı çevrim performansını veya fiziksel güvenliği kanıtlamaz. [YOL-HARITASI.md](../YOL-HARITASI.md) güncel iş sırasıdır.
 
 Bu yüzden kapı iki basamaklıdır. **Simülasyon dondurması** değerleri ve parçaların tutması gereken ölçülebilir hedef aralıkları sabitler; bobin ve parçalar buna göre yapılır / seçilir. **Parça sonrası doğrulama** ayrı bir basamaktır ve simülasyon dondurmasını engellemez.
 
@@ -751,17 +751,18 @@ Bu yüzden kapı iki basamaklıdır. **Simülasyon dondurması** değerleri ve p
 | 11 | Kod / şematik / belgeler aynı değerleri taşıyor; bütün testler koşuldu | ✅ | `sematik_uret.py`, `hesap.py`, `dogrula.py` senkron; 8 koşunun tamamı çıkış kodu 0 ile tamamlandı (§13) |
 | 12 | Kullanıcının dondurma onayı | ✅ | Kullanıcı onayı alındı (12.11.2026) |
 
-**Karar: FROZEN (simülasyon dondurması, 12 Kasım 2026).** §12.1 kapısındaki 1–12 maddelerinin tamamı kapanmıştır; güç katı değerleri ve hedef aralıkları simülasyon düzeyinde dondurulmuştur. Sıradaki adım §12.2'dir (kesin parça seçimi ve bobinin dondurulan hedef aralıklara göre sarılması).
+**Karar: FROZEN (açık çevrim simülasyon dondurması, 12 Kasım 2026).** §12.1 tarihli karar kaydıdır. Kontrolcüyle uyum, kapalı çevrim ve gerçek parça değerleri bu kararın kapsamı dışındadır; güncel iş sırası yol haritasındadır.
 
-### 12.2 Parça sonrası doğrulama (dondurmadan sonra; şimdi engelleyici değil)
+### 12.2 Parça ve kontrol sonrası doğrulama
 
 | İş | Ne zaman |
 |---|---|
-| Altı güç katı elemanının (L1, Cout ≥35 V, Cd ≥35 V, Rd, Cin ≥50 V, S1, D1) kesin parça numarası; soğutucu, seramik kondansatör, RC sönümleyici parçaları | Dondurulan hedef aralıklara göre seçilir |
+| Güç katı elemanları ve kontrolcü; soğutucu, seramik kondansatör, RC sönümleyici parçaları | Kontrol mimarisi ve güç katı uyumu değerlendirildikten sonra kullanıcıyla seçilir; gerilim ve ısıl paylar ayrıca doğrulanır |
 | L1: L0, L(I), DCR, sıcaklık — hedef aralığın içinde mi | Bobin sarılınca |
 | Cout / Cd / Cin: kapasite, ESR / empedans (0,9 kHz ve 100 kHz, sıcak / soğuk) ve Rd + Cd_ESR toplamı (0,15–0,60 Ω) — hedef aralığın içinde mi | Parçalar gelince |
 | Kaynak iç direnci, kablo R ve L | Batarya ve kablo belli olunca |
 | Gerçek parça değerleri üç dosyaya yazılır, `secilen`, `pencere`, `kararlilik`, `zarf` yeniden koşulur | Ölçümlerden sonra |
+| Kapalı çevrim kararlılığı, yük/giriş değişimi, hafif yük, kalkış ve koruma senaryoları | Kontrol tasarımı ve kullanılan parça modelleriyle; daha sonra tezgâhta da doğrulanır |
 | STP100N6F7 TO-220 belgesi, üretici SPICE modelleri | Parça kesinleşince |
 | Zil, sıcaklık ve verim ölçümleri | Tezgâh prototipi (Adım 8) |
 

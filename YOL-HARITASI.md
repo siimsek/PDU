@@ -2,11 +2,11 @@
 
 Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bir yapay zekâ aracı veya yeni biri depoyu açtığında önce burayı, sonra [AGENTS.md](AGENTS.md) dosyasını okur.
 
-**Son güncelleme:** 12 Kasım 2026 (çıkış sönüm dalı eklendi, tüm testler geçti; simülasyon dondurması **FROZEN**)
+**Son güncelleme:** 13 Kasım 2026 (kontrol mimarisi ile güç katı parçalarının birlikte değerlendirilmesi iş sırasına alındı)
 
 **13 Kasım 2026 kanıt notu:** Dondurma geçmiş kullanıcı kararıdır; denenmiş model ve senaryoların dışına genellenmez. 200 ms testleri birden fazla model setinde, 500 ms testi ise ayrı bir pencere köşesi senaryosunda koşuldu. Kısa darbelerde sönüm kararı verilemez; sıfır süreç çıkış kodu elektriksel geçme anlamına gelmez. Ayrıntı: [OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §13.
 
-**Güncel çalışma sırası:** Kullanıcı isteğiyle önce teknik hazırlık ve bobin hedefleri netleştirilir; kesin malzeme seçimi sonradır. Bobin için 33 µH, 7,5–10 mΩ @20 °C hedef ve akım altındaki endüktans ölçüm koşulları [parça hedeflerinde](buck/PARCA-HEDEFLERI.md) açıklanır. Gerçek çekirdek ve sarım ölçülmeden hedefin sağlandığı söylenemez. Sıcak takmada örnek 48,0 V hesabı nedeniyle 50 V Cin gerilim payı ayrıca açık risktir.
+**Güncel çalışma sırası:** Önce kalan teknik denetim ve sistem gereksinimleri; ardından PWM, geri besleme, sürücü ve korumaların **mimari ve arayüz gereksinimleri**; sonra kontrolcü ve güç katı adaylarının birlikte değerlendirilmesi, kesin seçim, doğrulama ve prototip. Bobin için 33 µH, 7,5–10 mΩ @20 °C başlangıç hedefidir ([parça hedefleri](buck/PARCA-HEDEFLERI.md)); gerçek çekirdek ve sarım ölçülmeden ve kontrolcü uyumu görülmeden nihai değildir. Örnek 48,0 V sıcak takma hesabına karşı 50 V Cin payı açık risktir.
 
 ## Şu anki durum
 
@@ -15,13 +15,13 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 | **Proje** | Tekne için güç dağıtım kartı (PDU): 6S bataryadan (20–26 V) 11 V / 7,5 A üreten tek faz asenkron buck dönüştürücü |
 | **Modül zarfı** | 0–7,5 A / 82,5 W; dirençli, sabit akımlı ve sabit güçlü yükler. Kullanıcı kararıyla (12.11.2026) ayrı genel modül sınırı tanımlanmadı; dondurma O1/S2E uyumluluk ölçütleriyle yapıldı |
 | **Referans yükler** | T3 Gemstone O1 (5–12 V) ve SLAMTEC RPLIDAR S2E (9–28 V); cihaza özgü uyumluluk testi olarak, modülün tek tasarım sınırı olarak değil |
-| **Aktif adım** | **Adım 2 — Gerçek parçaların bulunması ve bobin sarımı (§12.2)**. Adım 3'ün hesap kısmı (kayıp, ısı, gerilim stresi) 12.11.2026'da yapıldı; adım parça sonrası doğrulamadan sonra kapanacak |
-| **Dondurma durumu** | **FROZEN** (simülasyon dondurması, 12.11.2026): çıkışa paralel `Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı eklendi, tüm köşe ve kararlılık testleri geçti; **Cout/Cd ≥ 35 V**, **Cin ≥ 50 V** kararlaştırıldı ve §12.1 kapısındaki 1–12 maddelerinin tamamı kullanıcı onayıyla kapandı ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.1) |
-| **Bekleyen iş** | Teknik hazırlık ve bobin hedeflerinin doğrulanması; ardından kullanıcıyla parça seçimi, L/C/ESR/DCR ölçümleri ve gerçek değerlerle testlerin tekrarlanması |
-| **Sıradaki adım** | Adım 3 — Kayıp ve ısı. Adım 4 ve sonrası (sürücü, PWM, geri besleme, PCB) **kullanıcı isteyene kadar başlatılmaz** |
+| **Aktif iş** | Adım 2–3 hazırlığı ve Adım 4–7 için **mimari / gereksinim çalışması**. Kontrol devresi tasarımı, uygulaması ve parça seçimi henüz yapılmadı. |
+| **Dondurma durumu** | **FROZEN** (açık çevrim simülasyon dondurması, 12.11.2026): örneklenen koşullar sınandı, `Cd = 470 µF + seri Rd = 0,22 Ω` ve gerilim sınıfı hedefleri onaylandı. Kapalı çevrim ve gerçek parçalar doğrulanmadı ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.1). |
+| **Bekleyen iş** | Kalan kod/hesap denetimi; ortam, kaynak ve genel çıkış şartları; kontrol mimarisi ve güç katı uyumluluğu; ardından kullanıcıyla parça seçimi ve doğrulama |
+| **Sıradaki iş** | Gereksinimleri ve kontrol mimarisini belirlemek; kapalı çevrim tasarımı ve gerçek parçalarla doğrulama daha sonra, PCB henüz kapsam dışı |
 | **Devrenin hâli** | Açık çevrim, soft-start yok. LTspice'ta örnek senaryolar sınandı; **fiziksel devre ve ölçüm yok** |
 | **Güvenlik** | Gerçek O1 / S2E **bağlanmaz**: açık çevrim 12 V üst sınırını garanti etmez |
-| **Ana aşama** | **A — Ana güç devresi** (Adım 0–3); Adım 2'deyiz |
+| **Ana aşama** | **A — Ana güç devresi** sürüyor; B kontrol aşamasının arayüz ve mimari hazırlığı paralel ele alınacak |
 | **Dal** | Bütün iş `main` dalında. Güncel hâl her zaman `main`'dedir |
 | **Aşama kaydı** | Aşama A: `ANA-GUC-DEVRESI` dalı (ara kayıt: hedef değerlerin doğrulandığı hâl, etiket `ana-guc-devresi-v2`) ve [ANA GÜÇ DEVRESİ](https://github.com/siimsek/PDU/milestone/1) milestone'u (açık). İkisi de Aşama A kapanınca (Adım 3 sonu) güncellenir/kapatılır |
 
@@ -44,18 +44,18 @@ Adayların sırası ve gerekçesi, doğrulama durumu ve kriterlerin nedenleri: [
 
 ## İş akışı
 
-Sıra (kullanıcı kararı, 12.11.2026): **simülasyonda ayarla ve dondur → parçaları seç, bobini bu değerlere göre sar → gerçek parça değerleriyle testi tekrarla → PCB**. Fiziksel ölçüm dondurmanın ön koşulu değildir; dondurmadan sonra gelir. Adım 2'deki "kesin parça" ve ölçüm işleri bu yüzden simülasyon dondurmasından sonra yapılır; dondurmanın çıktısı, parçaların ve sarımın tutması gereken hedef aralıklardır.
+Sıra (13.11.2026 güncellemesi): **gereksinimleri ve kalan denetimi tamamla → kontrol / sürücü / koruma mimarisini belirle → kontrolcü ve güç katı adaylarını birlikte değerlendir → kullanıcıyla parçaları kesinleştir ve bobini ölç → gerçek değerlerle güç katı ve kapalı çevrimi doğrula → tezgâh → PCB**. Adım numaraları bağımlılıkları anlatır, katı yürütme sırası değildir. 12.11.2026 açık çevrim simülasyon dondurması tarihî bir referans olarak korunur; kapalı çevrim uyumu veya fiziksel doğrulama değildir. Uyum sorunu çıkarsa değişiklik kullanıcı kararıyla ve yeniden doğrulanarak ele alınır.
 
-### Sıradaki iş (12.11.2026 itibarıyla kalınan yer)
+### Sıradaki iş
 
 Güç katının **simülasyon dondurması (`FROZEN`, §12.1 #1–12)** tamamlandı:
 - Çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω`** sönüm dalı eklendi; tarihli koşular ve senaryo bazındaki sonuçları [OPTIMIZASYON.md](buck/OPTIMIZASYON.md) içindedir. 200 ms model setleri ile tek 500 ms köşesi ayrı değerlendirilir; açık çevrim kalkış ve giriş değişimi güvenli regülasyon sağlamaz.
 - Gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak belirlendi; dondurma kullanıcı tarafından onaylandı.
 
-**Sıradaki basamak ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.2 — parça seçimi, bobin sarımı ve ölçüm):**
-1. Dondurulan hedef aralıklara ([buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md)) göre kesin parça numaralarının seçilmesi (`Cout` ≥ 35 V, `Cd` ≥ 35 V, `Rd` 0,22 Ω, `Cin` ≥ 50 V, `S1`, `D1`, ortak soğutucu `Rth(s-a) ≤ 12 K/W`, giriş MLCC etkin `≥ 4,7 µF`).
-2. `L1` bobininin sarılması (Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım) ve `L0`, `L(I)`, `DCR` ölçümü; `Cout` / `Cd` / `Cin` kapasite ve ESR ölçümü.
-3. Ölçülen gerçek değerlerin `sematik_uret.py`, `hesap.py` ve `dogrula.py` içine yazılıp `secilen`, `pencere`, `kararlilik`, `zarf` koşularının tekrarlanması.
+1. Kalan kod/hesap denetimini bitir; çalışma sıcaklığı, batarya/kablo, genel çıkış toleransı ve geçici durum şartlarını kullanıcıyla belirle. Önceki genel sınır kararını kendiliğinden değiştirme.
+2. Kontrol yöntemini, üst taraf sürme, frekans ve duty sınırlarını, hafif yük, soft-start, akım sınırı ve bağımsız aşırı gerilim koruması arayüzlerini belirle. Çıktı devre seçimi değil, karşılaştırılabilir gereksinimlerdir.
+3. Kontrolcü adaylarının 33 µH, Cout ve Cd–Rd filtresi, CPL yük, S1 kapı yükü ve çalışma köşeleriyle uyumunu değerlendir; uyumsuzluk varsa kullanıcıya sun. 33 µH için deneme sarımı yapılabilir; 22 sarım yalnız belirtilen çekirdeğe ait örnektir.
+4. Kullanıcıyla kontrolcü ve güç katı parçalarını tek tek seç; bobin ve parçaları ölç. Gerçek değerlerle güç katı testlerini ve kapalı çevrim kararlılık, kalkış, yük/giriş değişimi ile koruma senaryolarını doğrula. Fiziksel devre ve ölçüm yapılmadan sonuçları ölçüm olarak sunma.
 
 ## Ana aşamalar
 
@@ -63,8 +63,8 @@ Adımlar dört ana aşamada toplanır. **Dal ve milestone yalnız ana aşama dü
 
 | Ana aşama | Adımlar | Dal | Milestone | Durum |
 |---|---|---|---|---|
-| **A — Ana güç devresi** | 0–3 | `ANA-GUC-DEVRESI` (var) | [ANA GÜÇ DEVRESİ](https://github.com/siimsek/PDU/milestone/1) (açık) | 🔄 Sürüyor (Adım 2) |
-| **B — Kontrol** | 4–7 (sürücü, PWM ve yumuşak kalkış, geri besleme, korumalar) | açılmadı | açılmadı | ⛔ Kullanıcı başlatır |
+| **A — Ana güç devresi** | 0–3 | `ANA-GUC-DEVRESI` (var) | [ANA GÜÇ DEVRESİ](https://github.com/siimsek/PDU/milestone/1) (açık) | 🔄 Sürüyor; parça seçimi kontrol mimarisiyle birlikte değerlendirilecek |
+| **B — Kontrol** | 4–7 (sürücü, PWM ve yumuşak kalkış, geri besleme, korumalar) | açılmadı | açılmadı | ⏳ Mimari / arayüz hazırlığı sırada; tasarım yapılmadı |
 | **C — Prototip ve ölçüm** | 8 | açılmadı | açılmadı | ⛔ Kullanıcı başlatır |
 | **D — PCB ve gerçek yük** | 9–10 | açılmadı | açılmadı | ⛔ Kullanıcı başlatır |
 
@@ -79,12 +79,12 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
 |---|---|---|
 | 0 | Gereksinimler ve yükler | ✅ Tamam |
 | 1 | Ana güç devresi: değerler ve doğrulama | ✅ Tamam |
-| 2 | Gerçek parçaların bulunması | 🔄 Sürüyor |
+| 2 | Gerçek parçaların bulunması | 🔄 Adaylar var; kesin seçim kontrol mimarisiyle birlikte |
 | 3 | Kayıp ve ısı; güç katının dondurulması | ⏳ Bekliyor |
-| 4 | Kapı sürücüsü | ⛔ Kapsam dışı (kullanıcı başlatır) |
-| 5 | PWM üretimi ve yumuşak kalkış | ⛔ Kapsam dışı |
-| 6 | Geri besleme ve kompanzasyon | ⛔ Kapsam dışı |
-| 7 | Korumalar | ⛔ Kapsam dışı |
+| 4 | Kapı sürücüsü | ⏳ Mimari ve arayüz gereksinimleri sırada |
+| 5 | PWM üretimi ve yumuşak kalkış | ⏳ Mimari ve arayüz gereksinimleri sırada |
+| 6 | Geri besleme ve kompanzasyon | ⏳ Mimari ve arayüz gereksinimleri sırada |
+| 7 | Korumalar | ⏳ Mimari ve arayüz gereksinimleri sırada |
 | 8 | Tezgâh prototipi ve ölçüm | ⛔ Kapsam dışı |
 | 9 | PCB | ⛔ Kapsam dışı |
 | 10 | Gerçek yüklerin bağlanması | ⛔ Kapsam dışı |
@@ -133,22 +133,22 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
 - Sönümleyici (snubber) ve giriş/çıkış seramik kondansatörlerinin gerekip gerekmediğine karar verilir.
 - **Ölçüt:** sıcaklık dahil kayıp bütçesi yazılı; güç katı eleman listesi değişmeyecek şekilde kayıtlı.
 
-### 4. Kapı sürücüsü — ⛔ kapsam dışı
+### 4. Kapı sürücüsü — ⏳ mimari hazırlığı sırada
 
 Şematikteki `PULSE` kaynağının yerini gerçek sürücü alır. Üst taraftaki N-MOSFET için sürme yöntemi (bootstrap), sürücü entegresi, kapı direnci, sürücü beslemesi.
 **Ölçüt:** sürücülü simülasyonda verim ve gerilim zorlanmaları Adım 1 sonuçlarıyla karşılaştırılmış.
 
-### 5. PWM üretimi ve yumuşak kalkış — ⛔ kapsam dışı
+### 5. PWM üretimi ve yumuşak kalkış — ⏳ mimari hazırlığı sırada
 
 PWM kontrolcü seçimi, frekans ayarı, duty rampası. Sert kalkıştaki 61,4 A / 16,6 V sorununu bu adım kapatır.
 **Ölçüt:** kalkışta çıkış 12 V'u aşmıyor; bobin tepe akımı doyma payının içinde.
 
-### 6. Geri besleme ve kompanzasyon — ⛔ kapsam dışı
+### 6. Geri besleme ve kompanzasyon — ⏳ mimari hazırlığı sırada
 
 Çıkış gerilimi algılama, hata yükselteci, kompanzasyon. Tasarım verileri: Ton aralığı 2,1–5,6 µs, DCM/CCM geçişi ≈ 0,94 A, ana LC f0 ≈ 0,88 kHz, Cd–Rd köşesi ≈ 1,54 kHz, ESR sıfırı ≥ 4,5 kHz (3. derece çıkış filtresi), yük sabit güç karakterli, yük atma bütçesi ≈ 0,75 V (soğuk ESR'de 3 periyot gecikmeyle 11,76 V). Devredilen şartların tam listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §11; açık çevrim köşe sönümü `Cd + Rd` dalıyla sağlanmıştır, kapalı çevrim faz/kazanç payları bu adımda gösterilmelidir.
 **Ölçüt:** 20–26 V ve 0,24–7,5 A aralığında çıkış 11 V toleransında; 12 V üst sınırı her koşulda korunuyor; faz ve kazanç payları belgelenmiş.
 
-### 7. Korumalar — ⛔ kapsam dışı
+### 7. Korumalar — ⏳ mimari hazırlığı sırada
 
 Aşırı akım, çıkış aşırı gerilim (anahtar kısa devre kalırsa çıkış giriş gerilimine çıkar; O1 için bağımsız koruma), giriş düşük gerilim, sigorta ve ters polarite, batarya takma anındaki ani akım.
 **Ölçüt:** her arıza senaryosu için O1 girişi 12 V altında kaldığı gösterilmiş.
@@ -173,6 +173,7 @@ Yeni kararlar en üste eklenir. Bir değeri değiştirmeden önce burada ve [buc
 
 | Tarih | Karar | Neden |
 |---|---|---|
+| 13.11.2026 | Kesin parça seçiminden önce kontrol ve koruma mimarisinin gereksinimleri belirlenir; kontrolcü ile güç katı adayları birlikte değerlendirilir | Kullanıcı isteği: PWM/geri besleme ile L, çıkış filtresi ve MOSFET sürme gereksinimleri birbirine bağlıdır. 12.11 tarihli açık çevrim dondurması ve aday sırası korunur; yeni kapalı çevrim tasarımı veya seçim yapılmadı. |
 | 12.11.2026 | Güç katı simülasyon dondurması **FROZEN** olarak onaylandı (§12.1 #1–12 tamamlandı) | Kullanıcı onayı. Sırada §12.2 (dondurulan hedef aralıklara göre kesin parça seçimi, bobin sarımı ve gerçek değerlerle yeniden doğrulama) var |
 | 12.11.2026 | Gerilim sınıfları: **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V**. Genel modül için ayrı sınır tanımlanmadı (dondurma O1/S2E uyumluluk ölçütleriyle yapılır) | Kullanıcı kararı. S1 kısa devresinde çıkış 27,3–31,1 V'a çıkıyor (25 V aşılıyor); düşük dirençli kaynakla sıcak takmada Cin 45–46,5 V'a çıkabiliyor (35 V aşılıyor). Kesin parçalar §12.2'de bu sınıflara göre seçilecek |
 | 12.11.2026 | Çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı** eklendi (`sematik_uret.py`, `hesap.py`, `dogrula.py`, `AGENTS.md` §4.1) | Kullanıcı kararı. Dalsız devrede `L +%20 / Cout −%20 / ESR 15 mΩ` köşesi 200 ms darbede salınıyordu (9,91–12,05 V). Sönüm dalıyla tüm köşelerde `Pkritik ≥ 126 W > 82,5 W`, `pencere` 3/3 ve `kararlilik` 27/27 GEÇTİ; `Rd` kaybı 1,3 mW; `Cout` alt ESR belirsizliği ortadan kalktı |
