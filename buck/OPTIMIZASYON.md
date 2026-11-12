@@ -2,7 +2,7 @@
 
 **Tarih:** 12 Kasım 2026 · **Araç:** LTspice 26.1.1 (toplu kip), Python 3.14.5 · ideal anahtar/diyot, L/C + ESR/DCR (§9.3 ve §9.4'teki ideal olmayan senaryolar ayrıca belirtilmiştir) · **Fiziksel ölçüm yok.**
 
-**Dondurma durumu: BLOCKED** (§12). Kaynak sürümü: `a7badd0` + bu belgeyle birlikte gelen, commit edilmemiş değişiklikler.
+**Dondurma durumu: CONDITIONAL** (simülasyon dondurması, §12): tolerans köşesindeki sönüm sorunu ve iki gerilim sınıfı kararı açık. Parça ölçümleri dondurmadan sonraki basamaktır.
 
 Etiketler: **DATASHEET** üretici belgesi · **ÇIKARIM** üretici şemasından veya eğrisinden okunan, doğrulanmamış · **TAHMİN** yayımlanmış değer yok · **HESAP** `python buck/hesap.py` · **SİM** `python buck/dogrula.py` · **ÖLÇÜM** fiziksel (bu belgede hiç yok).
 
@@ -33,7 +33,7 @@ Bu değerler güç katının **elektriksel temelidir**; devre açık çevrim kal
 - Ölçüm altyapısındaki iki hata giderildi: ripple'ı 64 → 70 mV gösteren anahtar zamanlama titremesi ve yakınsamayan Ton ayarı (§5.0).
 - Yük adımı testi 20 ms'lik darbeyle yavaş büyüyen salınımı kaçırıyordu; 200 ms'lik darbe ve sönüm ölçümü eklendi. Şematik **anma** değerleri 82,5 W sabit güç yüküne kadar sönümlüdür; **tolerans köşesi** (L +%20, Cout −%20, ESR 15 mΩ) 73 W'ta kalır (§4.4, §6).
 - Kayıp, ısı, gerilim stresi ve arıza gerilimleri ilk kez hesaplandı (§9); sönüm seçenekleri karşılaştırıldı (§10).
-- Güç katı **dondurulamaz**: parçalar kesin değil, L1 ve Cout ölçülmedi (§12).
+- Simülasyon dondurması **koşulludur** (§12): tolerans köşesindeki sönüm sorununun çözümü ve iki gerilim sınıfı kararı açık. Parça seçimi, bobin sarımı ve ölçümler dondurmadan sonra gelir.
 
 ## 2. Gereksinimler: genel modül zarfı ve referans yükler
 
@@ -728,25 +728,42 @@ Bu bir şematik değişikliğidir; devre kapsamına yeni eleman ekler. **Kullan�
 
 ## 12. Dondurma kapısı (12 Kasım 2026)
 
+Sıra (kullanıcı kararı, 12.11.2026): **simülasyonda ayarla ve dondur → parçaları seç, bobini bu değerlere göre sar → gerçek parça değerleriyle testi tekrarla → PCB**. Fiziksel ölçüm dondurmanın ön koşulu değildir; dondurmadan sonra gelir.
+
+Bu yüzden kapı iki basamaklıdır. **Simülasyon dondurması** değerleri ve parçaların tutması gereken ölçülebilir hedef aralıkları sabitler; bobin ve parçalar buna göre yapılır / seçilir. **Parça sonrası doğrulama** ayrı bir basamaktır ve simülasyon dondurmasını engellemez.
+
+### 12.1 Simülasyon dondurması
+
 | # | Kapı | Durum | Kanıt / eksik |
 |---|---|---|---|
-| 1 | Başlangıç sürümü, test ortamı, yerel değişikliklerin korunması | ✅ | `a7badd0` (yerel = uzak `main`); LTspice 26.1.1; kullanıcının iki plan dosyasına dokunulmadı |
-| 2 | Genel modül gereksinimi ile O1/S2E uyumluluğu ayrıldı | ✅ belge · ⏳ sınırlar | §2; genel tolerans / ripple / geçici durum sınırları **kullanıcı onayı bekliyor** |
-| 3 | Ölçüm altyapısı güvenilir; 20 ms sahte geçiş kapandı | ✅ | §5.0, §6.1; `dogrula.py sayisal`, `kararlilik` |
-| 4 | Tam CPL sınırı ile uzun SİM birbirini açıklıyor; köşe sonucu gizlenmiyor | ✅ (sonuç: köşe **KALDI**) | §6 |
-| 5 | Geniş yük / sıcaklık / tolerans matrisi; kontrole kalan blokajlar yazılı | ✅ SİM/HESAP · ❌ fiziksel | §6–§9, §11 |
-| 6 | L1: L0, L(I), DCR, ısı ölçümle kabul edildi | ❌ **ÖLÇÜM YOK** | bobin sarılmadı |
-| 7 | Cout / Cin: kapasite, ESR/empedans, ripple akımı, gerilim sınıfı | ❌ **ÖLÇÜM YOK**; gerilim sınıfları açık | §8, §9.4 |
-| 8 | S1 / D1: üretici belgesi, doğru model, derating | ⚠️ kısmen | D1 belgesi okundu; S1 TO-220 belgesi açılamadı; üretici SPICE modeli yok |
-| 9 | Kayıp bileşenleri ve ısıl bütçe hesaplandı | ✅ HESAP (kestirim) | §9.1, §9.2 |
-| 10 | Giriş dekuplajı, sönümleyici, soğutucu kararı | ⚠️ aday değerler var, parça yok | §9.5 |
-| 11 | Sıcak takma ve S1 kısa devresi; gerilim sınıfları ve koruma arayüzü | ⚠️ incelendi, **karar açık** | §9.4 |
-| 12 | Sürücü / yumuşak kalkış / geri besleme / korumaya devredilen şartlar | ✅ | §11 |
-| 13 | Beş parçanın kesin parça numarası, kaynağı, malzeme listesi | ❌ | parçalar aday; kesin seçim kullanıcıda |
-| 14 | Kod / şematik / belgeler aynı değerleri taşıyor; testler koşuldu | ✅ | şematik değerleri değişmedi; §13 |
-| 15 | Kullanıcının nihai parça seçimi ve Adım 3 dondurma onayı | ❌ | — |
+| 1 | Başlangıç sürümü, test ortamı, yerel değişikliklerin korunması | ✅ | LTspice 26.1.1; `main` |
+| 2 | Ölçüm altyapısı güvenilir; 20 ms sahte geçiş kapandı | ✅ | §5.0, §6.1 |
+| 3 | Tam CPL sınırı ile uzun SİM birbirini açıklıyor | ✅ | §6 |
+| 4 | Anma değerleri 0–82,5 W zarfında (CR / CC / CP) sönümlü | ✅ | §6.2, §7 |
+| 5 | **Tolerans penceresinin her köşesinde** 82,5 W sabit güç yükü sönümlü | ❌ **KALDI** | §4.4, §6.2: L +%20 / Cout −%20 / ESR 15 mΩ köşesi 73 W'ta kalıyor. Çözüm seçilmeli: sönüm dalı (§10) veya pencerenin daraltılması |
+| 6 | Parçaların tutacağı hedef aralıklar (L, DCR, Cout ESR, kapasite) simülasyonla doğrulanmış ve yazılı | ❌ | Kapı 5'e bağlı: mevcut pencere (ESR 15–35 mΩ, L ±%20) doğrulanmış değil |
+| 7 | Kayıp ve ısıl bütçe; soğutucu, seramik dekuplaj ve sönümleyici için hedef değerler | ✅ hedef değer (HESAP) | §9.1, §9.2, §9.5; parça numarası bu basamakta gerekmez |
+| 8 | Gerilim sınıfları: Cout (S1 kısa devresi) ve Cin (sıcak takma) | ⏳ **karar açık** | §9.4; 25 V / 35 V kalacak mı, yükseltilecek mi |
+| 9 | Genel modül sınırları (gerilim toleransı, ripple, geçici durum) | ⏳ kullanıcı onayı | §2.1; onaylanmazsa yalnız O1/S2E ölçütleriyle dondurulur |
+| 10 | Sürücü / yumuşak kalkış / geri besleme / korumaya devredilen şartlar yazılı | ✅ | §11 |
+| 11 | Kod / şematik / belgeler aynı değerleri taşıyor; testler koşuldu | ✅ | §13 |
+| 12 | Kullanıcının dondurma onayı | ❌ | — |
 
-**Karar: BLOCKED.** Engelleyenler: (a) L1 ve Cout fiziksel ölçümü yok (kapı 6, 7) — CPL kararlılık sonucu doğrudan bu iki ölçüme bağlı; (b) tolerans köşesinde 73–82,5 W sabit güç yükü sönümlenmiyor ve çözüm (sönüm dalı veya kapalı çevrim kanıtı) seçilmedi; (c) beş parça kesinleşmedi; (d) Cout 25 V ve Cin 35 V sınıfları arıza / sıcak takma senaryolarında yetersiz kalabiliyor, karar verilmedi; (e) soğutucu ve seramik kondansatör parçaları seçilmedi. Yazılım, hesap ve belge tarafında yapılabilecek her şey yapıldı; kalanlar ölçüm ve kullanıcı kararıdır.
+**Karar: CONDITIONAL.** Simülasyon dondurmasını engelleyen tek teknik başarısızlık kapı 5'tir; kapı 6 ona bağlıdır. Kapı 8 ve 9 kullanıcı kararıdır. Bunlar kapanınca güç katı simülasyon düzeyinde dondurulabilir ve bobin o değerlere göre sarılır.
+
+### 12.2 Parça sonrası doğrulama (dondurmadan sonra; şimdi engelleyici değil)
+
+| İş | Ne zaman |
+|---|---|
+| Beş parçanın kesin parça numarası; soğutucu, seramik kondansatör, sönümleyici parçaları | Dondurulan hedef aralıklara göre seçilir |
+| L1: L0, L(I), DCR, sıcaklık — hedef aralığın içinde mi | Bobin sarılınca |
+| Cout / Cin: kapasite, ESR / empedans (0,9 kHz ve 100 kHz, sıcak / soğuk) — hedef aralığın içinde mi | Parçalar gelince |
+| Kaynak iç direnci, kablo R ve L | Batarya ve kablo belli olunca |
+| Gerçek parça değerleri üç dosyaya yazılır, `secilen`, `pencere`, `kararlilik`, `zarf` yeniden koşulur | Ölçümlerden sonra |
+| STP100N6F7 TO-220 belgesi, üretici SPICE modelleri | Parça kesinleşince |
+| Zil, sıcaklık ve verim ölçümleri | Tezgâh prototipi (Adım 8) |
+
+Bu basamaktaki hiçbir iş yapılmadı ve hiçbiri "doğrulandı" sayılmaz; yalnız sıraları dondurmadan sonradır.
 
 ## 13. Tekrar üretme
 

@@ -4,7 +4,7 @@
 
 **Aşama: ANA GÜÇ DEVRESİ.** Güç katının değerleri belirlendi ve LTspice'ta sınandı; parçalar için aday listesi var, kesin seçim yapılmadı. PWM, geri besleme ve soft-start henüz yok; fiziksel devre kurulmadı.
 
-**Dondurma durumu: BLOCKED (12 Kasım 2026).** Şematik anma değerleri 0–82,5 W zarfında (dirençli, sabit akımlı ve sabit güçlü yük) sönümlüdür; tolerans köşesinde (bobin +%20, Cout −%20, ESR 15 mΩ) 73–82,5 W sabit güç yükü **sönümlenmez**. L1 ve Cout ölçülmedi, parçalar kesin değil. Ayrıntı ve kapı listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.
+**Dondurma durumu: CONDITIONAL (12 Kasım 2026, simülasyon dondurması).** Şematik anma değerleri 0–82,5 W zarfında (dirençli, sabit akımlı ve sabit güçlü yük) sönümlüdür; tolerans köşesinde (bobin +%20, Cout −%20, ESR 15 mΩ) 73–82,5 W sabit güç yükü **sönümlenmez** ve çözümü seçilmedi. Sıra: simülasyonda dondur → parçaları seç, bobini sar → gerçek değerlerle yeniden test → PCB. Kapı listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.
 
 **Nerede kaldık, sırada ne var:** [YOL-HARITASI.md](YOL-HARITASI.md) · **Çalışma kuralları (yapay zekâ araçları dahil):** [AGENTS.md](AGENTS.md)
 

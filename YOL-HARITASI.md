@@ -12,8 +12,8 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 | **Modül zarfı** | 0–7,5 A / 82,5 W; dirençli, sabit akımlı ve sabit güçlü yükler. Genel gerilim toleransı / ripple / geçici durum sınırları **kullanıcı onayı bekliyor** |
 | **Referans yükler** | T3 Gemstone O1 (5–12 V) ve SLAMTEC RPLIDAR S2E (9–28 V); cihaza özgü uyumluluk testi olarak, modülün tek tasarım sınırı olarak değil |
 | **Aktif adım** | **Adım 2 — Gerçek parçaların bulunması** (aday listesi hazır; kesin seçim yapılmadı). Adım 3'ün hesap kısmı (kayıp, ısı, gerilim stresi) kullanıcı isteğiyle 12.11.2026'da yapıldı; adım **kapanmadı** |
-| **Dondurma durumu** | **BLOCKED** (12.11.2026): tolerans köşesinde 73–82,5 W sabit güç yükü sönümlenmiyor; L1 ve Cout ölçülmedi; parçalar kesin değil; Cout 25 V / Cin 35 V sınıfları arıza ve sıcak takmada açık. Kapı listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12 |
-| **Bekleyen iş** | Kullanıcı kararları: (1) çıkış sönümü — sönüm dalı eklemek, ölçümle mevcut hâli doğrulamak veya kapalı çevrime bırakmak ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §10); (2) genel modül sınırları; (3) Cout ve Cin gerilim sınıfı; (4) kesin parçalar, soğutucu ve seramik kondansatör. Ölçümler: L1 (L0, L(I), DCR, sıcaklık), Cout ESR / empedans (0,9 kHz ve 100 kHz, sıcak ve soğuk), kaynak iç direnci ve kablo endüktansı. Sonra Adım 2 kapanır |
+| **Dondurma durumu** | **CONDITIONAL** (simülasyon dondurması, 12.11.2026): tolerans köşesinde 73–82,5 W sabit güç yükü sönümlenmiyor (çözüm seçilmedi); Cout 25 V / Cin 35 V sınıfı kararı açık. Parça ve bobin ölçümleri dondurmayı engellemez, sonraki basamaktır. Kapı listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12 |
+| **Bekleyen iş** | Simülasyon dondurması için kullanıcı kararları: (1) çıkış sönümü — sönüm dalı eklemek veya parça penceresini daraltmak ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §10); (2) Cout ve Cin gerilim sınıfı; (3) genel modül sınırları (isteğe bağlı). Dondurmadan **sonra**: parça seçimi, bobinin sarılması, ölçüm ve gerçek değerlerle yeniden test |
 | **Sıradaki adım** | Adım 3 — Kayıp ve ısı. Adım 4 ve sonrası (sürücü, PWM, geri besleme, PCB) **kullanıcı isteyene kadar başlatılmaz** |
 | **Devrenin hâli** | Açık çevrim, soft-start yok. LTspice'ta doğrulandı; **fiziksel devre ve ölçüm yok** |
 | **Güvenlik** | Gerçek O1 / S2E **bağlanmaz**: açık çevrim 12 V üst sınırını garanti etmez |
@@ -36,6 +36,19 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 
 LTspice sonucu (24,6 V, 7,5 A): çıkış 11,000 V, ripple 64,3 mV t-t, bobin akımı 6,56–8,44 A, iletim kaybı 2,38 W; anahtarlama, çekirdek ve kondansatör kayıplarıyla kestirim ≈ 3,3 W (HESAP).
 Adayların sırası ve gerekçesi, doğrulama durumu ve kriterlerin nedenleri: [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md). Kanıt: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md).
+
+## İş akışı
+
+Sıra (kullanıcı kararı, 12.11.2026): **simülasyonda ayarla ve dondur → parçaları seç, bobini bu değerlere göre sar → gerçek parça değerleriyle testi tekrarla → PCB**. Fiziksel ölçüm dondurmanın ön koşulu değildir; dondurmadan sonra gelir. Adım 2'deki "kesin parça" ve ölçüm işleri bu yüzden simülasyon dondurmasından sonra yapılır; dondurmanın çıktısı, parçaların ve sarımın tutması gereken hedef aralıklardır.
+
+### Sıradaki iş (12.11.2026 itibarıyla kalınan yer)
+
+Simülasyon dondurmasının önündeki tek teknik engel: tolerans köşesinde (L +%20, Cout −%20, ESR 15 mΩ) 73–82,5 W sabit güç yükü sönümlenmiyor ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4, §6).
+
+1. **Çıkış sönümü kararı (kullanıcı onayı bekliyor).** Önerilen: çıkışa paralel sönüm dalı, 470–1000 µF + 0,15–0,33 Ω (§10; HESAP ve SİM'de bütün köşelerde geçti). Diğer yol olan ESR alt sınırını ≈ 23–31 mΩ'a çekmek, veri sayfasından seçilemeyen bir hedef çıkarıyor. Onaylanırsa: eleman `sematik_uret.py`, `hesap.py` ve `dogrula.py` (`SECILEN` ve `netlist()`) içine birlikte eklenir; `secilen`, `pencere`, `kararlilik`, `zarf` yeniden koşulur; belgeler ve [AGENTS.md](AGENTS.md) §4.1'deki devre kapsamı güncellenir.
+2. **Gerilim sınıfı kararları:** Cout 25 V mi 35 V mi; Cin 35 V mi 50 V mi (§9.4).
+3. **Genel modül sınırları** (isteğe bağlı; §2.1).
+4. Bunlar kapanınca §12.1 kapısı yeniden değerlendirilir ve kullanıcı onayıyla güç katı simülasyon düzeyinde dondurulur; ardından parça seçimi ve bobin sarımı (§12.2).
 
 ## Ana aşamalar
 
@@ -151,6 +164,7 @@ Yeni kararlar en üste eklenir. Bir değeri değiştirmeden önce burada ve [buc
 
 | Tarih | Karar | Neden |
 |---|---|---|
+| 12.11.2026 | Sıra: önce simülasyonda dondurma, sonra parça seçimi / bobin sarımı, sonra gerçek değerlerle test, sonra PCB. Dondurma kapısı iki basamağa ayrıldı | Kullanıcı kararı: elde bobin ve parça yok; bobin dondurulan değerlere göre sarılacak. Fiziksel ölçüm dondurmanın ön koşulu sayılmaz |
 | 12.11.2026 | Doğrulama düzeltmesi (değer değişmedi): test netlistlerinde anahtar yumuşak geçişli (`Vh=-0.5`); Ton ayarı yeniden yazıldı; yük adımı darbesi 200 ms ve sönüm ölçümü kabul kararına eklendi | Kullanıcı isteği (dondurma hazırlığı). `Vh=0` LTspice'ta ±1 ns titreme ve sahte ripple (70 mV yerine 64 mV) üretiyordu; 20 ms'lik darbe, zaman sabiti ≈ 0,2 s olan büyüyen salınımı kaçırıyordu. Sonuç: tolerans köşesinde 33 µH dahil hepsi **kaldı**; dondurma BLOCKED |
 | 12.11.2026 | Şematik: L1 DCR 14,52 → 7,81 mΩ (el sarım, HESAP @20 °C), Ton 4,61 → 4,59 µs. Cout 35 mΩ ve Cin 15 mΩ "maks. empedans, ESR varsayımı" olarak işaretlendi; polimer Cin (VINATech) ve Panasonic FR seçilmedi; STPS40M60CT korundu | Kullanıcı kararı. `secilen` ve `pencere` yeniden koşuldu: 33 µH geçti; 39 ve 47 µH kaldı |
 | 12.11.2026 | L1 için 1. sıra el sarım (Magnetics Kool Mµ 40µ `0077536A7`, 22 sarım, ≈ 33,4 µH), 2. sıra satın alma | Kullanıcı kararı (hocanın önerisi: hazır bobinlerin Isat değeri garanti edilmiyor). SİM: DCR 6,5–9,5 mΩ ile köşe testi geçti; 47 µH el sarım kaldı (12,61 V). Şematik DCR değeri ölçüm sonrası kesinleşir |

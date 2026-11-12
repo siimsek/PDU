@@ -3,7 +3,7 @@
 **Tarih:** 12 Kasım 2026
 **Durum:** Parçalar **kesinleşmedi**. Aşağıdaki liste "olabilir" listesidir: kriterlerle yapılan dış araştırmanın adayları, LTspice köşe testindeki paya göre sıralanmıştır. Şematik, listenin başındaki **1. sıra adayların** değerlerini taşır (L1 için el sarım hesabı, diğerleri veri sayfası); bu bir satın alma kararı değildir. Kriterleri sağlayan başka bir parça aynı yolla (bkz. "Parça değiştiğinde") 1. sıraya geçebilir.
 **Sınıf:** analitik hesap (`hesap.py`) + LTspice, ideal elemanlar (`dogrula.py`). Fiziksel ölçüm yok.
-**Dondurma durumu:** BLOCKED — beş parça kesinleşmedi, L1 ve Cout ölçülmedi; ayrıntı [OPTIMIZASYON.md](OPTIMIZASYON.md) §12.
+**Dondurma durumu:** CONDITIONAL (simülasyon dondurması) — tolerans köşesindeki sönüm sorunu ve gerilim sınıfı kararları açık; parçalar ve bobin, dondurulan değerlere göre **sonra** seçilir / sarılır. Ayrıntı [OPTIMIZASYON.md](OPTIMIZASYON.md) §12.
 
 Çalışma noktası: Vin 20 / 22,2 / **24,6** / 25,2 / 26 V → 11 V / 7,5 A (82,5 W), fsw = 100 kHz. Seçim süreci ve test sonuçları: [OPTIMIZASYON.md](OPTIMIZASYON.md).
 
