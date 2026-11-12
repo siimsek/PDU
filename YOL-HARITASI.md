@@ -110,6 +110,7 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
   - 1. sıra adayların değerleri ve `Cd = 470 µF + Rd = 0,22 Ω` sönüm dalı şematiğe, `hesap.py` ve `dogrula.py` içine yazıldı; `dogrula.py secilen` yeniden koşuldu: anma ve tüm tolerans köşelerinde sınırların içinde ve sönümlü (12.11.2026).
   - ST veri sayfaları okundu (STPS40M60C Doc ID 018813 Rev 1; STB100N6F7 DocID027210 Rev 2, STP100N6F7'nin D²PAK kardeşi) ve Magnetics `0077536A7` çekirdek veri sayfası (rev. 6/1/2022) doğrulandı.
   - Çıkış sönümü (`Cd = 470 µF + Rd = 0,22 Ω`) ve gerilim sınıfları (**Cout/Cd ≥ 35 V**, **Cin ≥ 50 V**) kararlaştırıldı.
+  - Yeni gerilim sınıflarına (`Cout ≥ 35 V`, `Cd ≥ 35 V`, `Rd 0,22 Ω`, `Cin ≥ 50 V`) ve yardımcı elemanlara (giriş MLCC, ortak soğutucu + TO-220 yalıtım, D1 RC sönümleyici) uygun Türkiye ve yurt dışı stoklu adaylar üretici veri sayfalarından doğrulandı, 5 kondansatör seti geçici LTspice köşe testinden geçirildi (5/5 geçti) ve [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md) aday listesine eklendi (şematik 1. sıra değerleri kullanıcı seçim yapana kadar değiştirilmedi, 12.11.2026).
 - **Kalan (kullanıcı — dondurma sonrası §12.2):**
   - Dondurulan hedef aralıklara göre kesin parçaların belirlenmesi (`Cout` ve `Cd` ≥ 35 V, `Cin` ≥ 50 V, `Rd` 0,22 Ω dahil; bulunurluk, fiyat, delikli/yüzey montaj tercihi).
   - Kesinleşen parçaların değerlerinin üretici veri sayfasından teyidi (STP100N6F7'nin TO-220 belgesi açılamadı; Nichicon / TDK ESR yayımlamıyor).
