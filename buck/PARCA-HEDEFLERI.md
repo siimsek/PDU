@@ -5,6 +5,10 @@
 **Sınıf:** analitik hesap (`hesap.py`) + LTspice, ideal elemanlar (`dogrula.py`). Fiziksel ölçüm yok.
 **Dondurma durumu:** **FROZEN (simülasyon dondurması, 12 Kasım 2026)** — çıkış sönüm dalı (`Cd = 470 µF + seri Rd = 0,22 Ω`) eklendi, tüm köşe testleri geçti; gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak kararlaştırıldı ve simülasyon dondurması kullanıcı onayıyla tamamlandı. Parçalar ve bobin, bu belgedeki dondurulmuş hedef aralıklara göre seçilir / sarılır. Ayrıntı [OPTIMIZASYON.md](OPTIMIZASYON.md) §12.
 
+**Seçim öncesi sınır (13.11.2026):** Bu değerler aday eleme hedefidir, fiziksel güvenlik veya tüm tolerans kombinasyonları için garanti değildir. Gerilim sınıfları yalnız varsayılan kaynak/kablo ve arıza modellerindeki tepelere dayanır: 31,1 V'a karşı 35 V yaklaşık %12,5, 46,5 V'a karşı 50 V yaklaşık %7,5 nominal pay bırakır; yaşlanma, sıcaklık, tolerans ve gerçek darbeler kapsanmaz. Çalışma sıcaklığı aralığı, ortam, ömür ve gerçek kaynak empedansı belirlenmeden nihai termal pay ve gerilim deratingi belirlenemez. Anahtarlama zili için S1/D1 gerilim payı ölçülmelidir; simüle edilen 9–12 V O1/S2E ölçütü genel modül spesifikasyonu değildir.
+
+Seçim sırasında her aday için belirtilen L/C, ESR/DCR ve dal direncinin **çalışma sıcaklığı, frekans, DC akım/gerilim, tolerans ve yaşlanma dahil** durumu; kondansatör ripple akımı ve ömrü; bobin L(I), doyum ve sıcaklığı; S1 için VDS, VGS, sıcak RDS(on), Qg ve SOA; D1 için VRRM, ortalama/RMS/darbe akımı, sıcak VF ve kaçak; Rd için sıcak güç ve darbe dayanımı; soğutucu ve yalıtım için toplam ısıl yol doğrulanmalıdır. Veri yoksa sınır **doğrulanmadı** olarak kalır. Fiziksel ölçüm ve gerçek parçalarla yeniden simülasyon henüz yapılmadı.
+
 Çalışma noktası: Vin 20 / 22,2 / **24,6** / 25,2 / 26 V → 11 V / 7,5 A (82,5 W), fsw = 100 kHz. Seçim süreci ve test sonuçları: [OPTIMIZASYON.md](OPTIMIZASYON.md).
 
 ## Aday parçalar (kesin seçim değil)
@@ -162,7 +166,7 @@ Eşdeğer: 2 × 470 µF / ≥ 35 V paralel, her biri ESR ≤ 70 mΩ, ripple akı
 |---|---|---|
 | **Cd** kapasite | **470 µF** ±%20 (376–564 µF) | Sabit güç yükü (CPL) karşısında ≈ 0,9 kHz LC rezonansını sönümler; `Cout`'un yarısı mertebesinde kapasite en sert köşede `Pkritik ≥ 126 W > 82,5 W` sağlar ([OPTIMIZASYON.md](OPTIMIZASYON.md) §6, §10). |
 | **Cd** gerilim | **≥ 35 V** (kullanıcı kararı, 12.11.2026) | `Cout` ile aynı düğümdedir (`Rd` üzerinden DC akım geçmez, kararlı hâlde tüm çıkış gerilimi `Cd` üzerindedir); S1 kısa devresinde 27,3–31,1 V görür. |
-| **Cd** ESR (100 kHz, 20 °C) | **≤ 100 mΩ** (soğukta ≤ 350 mΩ) | Seri ayrık `Rd = 0,22 Ω` direnciyle toplanır; toplam dal direnci **0,15–0,60 Ω** penceresinde kaldığı sürece tüm köşeler sönümlüdür (`dogrula.py kararlilik` §3). Standart düşük empedanslı 105 °C radyal elektrolitik uygundur. |
+| **Cd** ESR (100 kHz, 20 °C) | **≤ 100 mΩ** (soğukta ≤ 350 mΩ) | Seri ayrık `Rd = 0,22 Ω` ile toplam direncin 0,15 / 0,22 / 0,35 / 0,60 Ω değerleri seçili model setlerinde sınandı (`dogrula.py kararlilik` §3); aradaki tüm kombinasyonlar kanıtlanmış değildir. Adayın sıcaklık ve frekans davranışı doğrulanmalıdır. |
 | **Cd** ripple akımı | ≥ 0,3 A RMS (100 kHz, 105 °C) | Devrede 100 kHz ripple akımı 76 mA RMS'tir; yük adımlarında geçici sönüm akımı taşır. |
 | **Rd** direnç | **0,22 Ω** ±%5 (veya ±%1); toplam `Rd + ESR(Cd)` hedefi **0,15–0,60 Ω** | `Z0 = √(L/Cout) ≈ 0,18 Ω` karakteristik empedansa uyumlu sönüm direnci; `Cd`'nin kendi ESR belirsizliğini bastırır, 100 kHz ripple'ı bozmaz. |
 | **Rd** güç ve yapı | **≥ 0,25 W** (tercihen **0,5 W**, ör. 1206/1210/2010 SMD veya THT film direnç, düşük endüktanslı / tel sarım olmayan) | Kararlı hâlde DC akım sıfırdır, 100 kHz ripple kaybı yalnız **1,3 mW**'tır. Sert kalkış veya S1 kısa devresi darbesinde anlık enerji `½·Cd·ΔV² ≈ 0,06–0,22 J` (birkaç ms) harcar; 0,25–0,5 W darbe dayanımlı film direnç yeterlidir. |

@@ -33,7 +33,7 @@ Bu değerler güç katının **elektriksel temelidir**; devre açık çevrim kal
 **12 Kasım 2026 doğrulama ve sönüm dalı turunun özeti:**
 - Ölçüm altyapısındaki iki hata giderildi: sahte ripple üreten `Vh=0` anahtar zamanlama titremesi ve yakınsamayan Ton ayarı (§5.0).
 - 200 ms darbe testinde dalsız devrenin tolerans köşesinde (`L +%20`, `Cout −%20`, `ESR 15 mΩ`) 73–82,5 W sabit güç yüküyle salındığı görüldü; kullanıcı onayıyla çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı** şematiğe, `hesap.py`'ye ve `dogrula.py`'ye eklendi (§6, §10).
-- Bütün test kipleri (`hesap.py`, `sayisal`, `secilen`, `pencere`, `kararlilik`, `zarf`, `stres`, `grafik`) yeni devreyle baştan koşuldu: **anma ve tüm tolerans/sıcaklık köşe setlerinde 200 ms ve 500 ms sabit güç darbeleri 9–12 V içinde ve sönmüş olarak GEÇTİ**; çıkış ripple'ı 24,6 V'ta 64,3 → 55,7 mV'a, 26 V en kötü köşede 96,1 → 83,1 mV'a, soğuk ESR yük atma tepesi 12,13 → 11,76 V'a indi.
+- Test kipleri (`hesap.py`, `sayisal`, `secilen`, `pencere`, `kararlilik`, `zarf`, `stres`, `grafik`) yeni devreyle koşuldu: §6.2'deki 200 ms model setleri ve §6.1'deki ayrı 500 ms pencere köşesi 9–12 V içinde sönmüş olarak raporlandı; çıkış ripple'ı 24,6 V'ta 64,3 → 55,7 mV'a, 26 V örneklenen köşede 96,1 → 83,1 mV'a, soğuk ESR yük atma tepesi 12,13 → 11,76 V'a indi. Açık çevrim kalkış ve giriş değişimi sonuçları ayrıca sınır dışıdır.
 - Kullanıcı kararıyla gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak belirlendi; genel modül için ayrı sınır tanımlanmayıp O1/S2E uyumluluk ölçütleriyle simülasyon dondurmasına gidilmesi kararlaştırıldı (§12.1).
 
 ## 2. Gereksinimler: genel modül zarfı ve referans yükler
@@ -691,7 +691,7 @@ Sönüm dalı ve toplam dal direnci (`Rd_toplam = ayrık Rd + Cd ESR`) aralığ�
 | en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 470 µF (−%20) + 0,35 Ω (Rd + Cd ESR) | 160 | sönmüş | 10.24 | 11.66 | 1 | içinde | GEÇTİ |
 | en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ | 470 µF (−%20) + 0,60 Ω (soğuk Cd ESR) | 171 | sönmüş | 10.21 | 11.69 | 1 | içinde | GEÇTİ |
 
-**Karar (kullanıcı onayı, 12.11.2026):** çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω`** sönüm dalı eklendi. Ayrık `0,22 Ω` direncin yanına `Cd` kondansatörünün kendi ESR'si (tipik 30–100 mΩ, soğukta ≤ 350 mΩ) eklense dahi toplam dal direnci **0,15–0,60 Ω** aralığında kaldığı sürece tüm köşelerde `Pkritik ≥ 106–171 W > 82,5 W` ve SİM çıkışı `10,21–11,69 V` (sönmüş) olarak doğrulanmıştır. Sürekli `Rd` kaybı yalnızca **1,3 mW**'tır (76 mA RMS).
+**Karar (kullanıcı onayı, 12.11.2026):** çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω`** sönüm dalı eklendi. Yukarıdaki dört model seti ve dört ayrık toplam dal direnci (0,15 / 0,22 / 0,35 / 0,60 Ω) için `Pkritik` yaklaşık 106–183 W ve SİM çıkışı 10,21–11,69 V'tur (sönmüş). Bu örnekler aralıktaki tüm kombinasyonları kanıtlamaz; Cd ESR'si sıcaklık ve frekansta ayrıca doğrulanmalıdır. Sürekli `Rd` kaybı yaklaşık **1,3 mW**'tır (76 mA RMS, anma senaryosu).
 
 ## 11. Doğrulanamayanlar ve sonraki aşamalara devredilen şartlar
 
@@ -738,7 +738,7 @@ Bu yüzden kapı iki basamaklıdır. **Simülasyon dondurması** değerleri ve p
 | 2 | Ölçüm altyapısı güvenilir; 20 ms sahte geçiş kapandı | ✅ | §5.0, §6.1 |
 | 3 | Tam 3. derece CPL sınırı ile uzun SİM birbirini açıklıyor | ✅ | §6.1, §6.2 |
 | 4 | Anma değerleri 0–82,5 W zarfında (CR / CC / CP) sönümlü | ✅ | §6.2, §7 |
-| 5 | **Tolerans penceresinin her köşesinde** 82,5 W sabit güç yükü sönümlü | ✅ | `Cd = 470 µF + Rd = 0,22 Ω` ile `pencere` üç satırda da GEÇTİ (§4.4); `kararlilik` 27/27 satırda ve 500 ms darbede GEÇTİ (§6.1, §6.2, §10) |
+| 5 | Örneklenen tolerans model setlerinde sabit güç yükü sönümü | ✅ örneklenen senaryolar | `pencere` 3/3; `kararlilik` 200 ms için 27/27 satır ve ayrı bir 500 ms senaryosu (§6.1–6.2). Tüm sürekli parametre kombinasyonları sınanmadı. |
 | 6 | Parçaların tutacağı hedef aralıklar (L, DCR, Cout ESR, Cd, Rd) simülasyonla doğrulanmış ve yazılı | ✅ | §1, §10 ve [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md): L1 33 µH (±%8 el sarım / ±%20 satın alma), DCR 6,5–15 mΩ, Cout 1000 µF ±%20 / ESR ≤ 35 mΩ, Cd 470 µF ±%20, Rd_toplam 0,15–0,60 Ω |
 | 7 | Kayıp ve ısıl bütçe; soğutucu, seramik dekuplaj ve sönümleyici için hedef değerler | ✅ hedef değer (HESAP) | §9.1, §9.2, §9.5; parça numarası §12.2'de seçilir |
 | 8 | Gerilim sınıfları: Cout/Cd (S1 kısa devresi) ve Cin (sıcak takma) | ✅ | Kullanıcı kararı (12.11.2026): **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** (§1, §9.4) |
@@ -779,5 +779,7 @@ python buck/dogrula.py grafik       # buck/grafik/*.svg
 ```
 
 12 Kasım 2026'da `Cd = 470 µF + Rd = 0,22 Ω` sönüm dalı eklendikten sonra `sematik_uret.py`, `hesap.py`, `sayisal`, `secilen`, `pencere`, `kararlilik`, `zarf`, `stres` ve `grafik` sırayla yeniden koşuldu; hepsi çıkış kodu 0 ile bitti. `tarama` ve `mevcut` yeniden koşulmadı: §4.1–§4.3 ve §4.4'ün ilk tablosu 11 Kasım 2026 dalsız seçim gerekçesi kayıtlarıdır.
+
+**Kanıtın sınırı (13.11.2026 kod incelemesi):** Çıkış kodu 0 tek başına elektriksel geçme kararı değildir; tabloların karar ve ölçüm sütunları ayrıca incelenmelidir. Önceki kod, LC sönümünü değerlendirmek için kısa kalan darbeye de GEÇTİ yazabiliyordu; bu satırlar sönüm açısından **belirsizdir**. 200 ms ve 500 ms sonuçları bu kısa-darbe sınıflandırmasına dayanmaz. Yeni kod eksik veya sonlu olmayan `.meas` sonuçlarını reddeder ve aynı adlı eski çıktıları koşudan önce siler. Bu değişikliklerin ardından geçmiş uzun koşular yeniden çalıştırılmadı; yukarıdaki tablolar tarihli önceki koşuların kaydıdır.
 
 LTspice yolu farklıysa `LTSPICE` ortam değişkeniyle verilir. Test netlistleri geçici klasörde üretilir; ana şematiğe `.meas`, `.param`, yük modeli veya parça modeli eklenmez. §4.2, §4.3 ve §4.4'ün ilk tablosu tek seferlik koşulardır.

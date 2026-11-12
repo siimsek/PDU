@@ -4,6 +4,8 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 
 **Son güncelleme:** 12 Kasım 2026 (çıkış sönüm dalı eklendi, tüm testler geçti; simülasyon dondurması **FROZEN**)
 
+**13 Kasım 2026 kanıt notu:** Dondurma geçmiş kullanıcı kararıdır; denenmiş model ve senaryoların dışına genellenmez. 200 ms testleri birden fazla model setinde, 500 ms testi ise ayrı bir pencere köşesi senaryosunda koşuldu. Kısa darbelerde sönüm kararı verilemez; sıfır süreç çıkış kodu elektriksel geçme anlamına gelmez. Ayrıntı: [OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §13.
+
 ## Şu anki durum
 
 | | |
@@ -45,7 +47,7 @@ Sıra (kullanıcı kararı, 12.11.2026): **simülasyonda ayarla ve dondur → pa
 ### Sıradaki iş (12.11.2026 itibarıyla kalınan yer)
 
 Güç katının **simülasyon dondurması (`FROZEN`, §12.1 #1–12)** tamamlandı:
-- Çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω`** sönüm dalı eklendi; `hesap.py`, `sayisal`, `secilen`, `pencere`, `kararlilik`, `zarf`, `stres` ve `grafik` koşularının tamamı geçti (tüm köşelerde `Pkritik ≥ 126 W > 82,5 W`, 200–500 ms darbede sönmüş, `9–12 V` içinde).
+- Çıkışa paralel **`Cd = 470 µF + seri Rd = 0,22 Ω`** sönüm dalı eklendi; tarihli koşular ve senaryo bazındaki sonuçları [OPTIMIZASYON.md](buck/OPTIMIZASYON.md) içindedir. 200 ms model setleri ile tek 500 ms köşesi ayrı değerlendirilir; açık çevrim kalkış ve giriş değişimi güvenli regülasyon sağlamaz.
 - Gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak belirlendi; dondurma kullanıcı tarafından onaylandı.
 
 **Sıradaki basamak ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.2 — parça seçimi, bobin sarımı ve ölçüm):**
@@ -94,8 +96,8 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
 
 ### 1. Ana güç devresi: değerler ve doğrulama — ✅ tamam
 
-- Güç katı değerleri gerçek yük senaryolarına (sabit güç yükü) göre seçildi ve LTspice'ta doğrulandı: 5 giriş noktası, yük adımları, yük atma, kalkış, giriş değişimi, tolerans köşeleri.
-- Kabul aralıkları: L 33 µH el sarım (DCR 6,5–15 mΩ, hedef 7,5–10 mΩ); Cout 1000 µF ±%20, ESR ≤ 35 mΩ, ≥ 35 V; çıkışa paralel sönüm dalı **Cd 470 µF ±%20 (≥ 35 V) + seri Rd 0,22 Ω** (Rd + Cd_ESR toplamı 0,15–0,60 Ω); Cin ≥ 50 V, ≥ 4,5 A ripple. `secilen`, `pencere`, `kararlilik`, `zarf`, `stres`, `sayisal` yeni şematikle koşuldu: **anma ve bütün tolerans/sıcaklık köşelerinde 200 ms ve 500 ms sabit güç darbeleri 9–12 V içinde ve sönmüş olarak GEÇTİ** ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4, §5, §6, §10).
+- Güç katı değerleri referans yük senaryolarına (sabit güç yükü) göre seçildi ve LTspice'ta sınandı: 5 giriş noktası, yük adımları, yük atma, kalkış, giriş değişimi, örneklenen tolerans köşeleri. Bazı senaryolar sınır dışıdır; aşağıya bakınız.
+- Kabul aralıkları: L 33 µH el sarım (DCR 6,5–15 mΩ, hedef 7,5–10 mΩ); Cout 1000 µF ±%20, ESR ≤ 35 mΩ, ≥ 35 V; çıkışa paralel sönüm dalı **Cd 470 µF ±%20 (≥ 35 V) + seri Rd 0,22 Ω** (Rd + Cd_ESR toplamı 0,15–0,60 Ω); Cin ≥ 50 V, ≥ 4,5 A ripple. Örneklenen model setlerinin 200 ms sonuçları ve bir 500 ms köşe senaryosu 9–12 V içinde sönümlü raporlandı ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4, §5, §6, §10).
 - Bulunan temel sorunlar: sabit güç yüküyle eski değerler ve dalsız tolerans köşesi salınıyordu (`Cd + Rd` dalıyla kapandı); açık çevrim hafif yükte ve giriş değişiminde 11 V'u tutamıyor; sert kalkışta 61,4 A / 16,6 V.
 - Çıktılar: [buck/ltspice/buck_guc_kati.asc](buck/ltspice/buck_guc_kati.asc), [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md), [buck/hesap.py](buck/hesap.py), [buck/dogrula.py](buck/dogrula.py).
 - **Ölçüt:** şematik değerleriyle `dogrula.py secilen` ve `pencere` koşuldu; yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV ve 200 ms darbede sönümlü. **Güncel durum (12.11.2026): anma ve tüm tolerans köşelerinde SAĞLANIYOR (`pencere` 3/3 GEÇTİ, `kararlilik` 27/27 GEÇTİ).**

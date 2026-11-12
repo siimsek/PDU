@@ -4,7 +4,7 @@
 
 **Aşama: ANA GÜÇ DEVRESİ.** Güç katının değerleri belirlendi ve LTspice'ta sınandı; parçalar için aday listesi var, kesin seçim yapılmadı. PWM, geri besleme ve soft-start henüz yok; fiziksel devre kurulmadı.
 
-**Dondurma durumu: FROZEN (12 Kasım 2026, simülasyon dondurması).** Çıkışa paralel `Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı eklendi; şematik anma değerleri ve bütün tolerans/sıcaklık köşeleri 0–82,5 W zarfında (dirençli, sabit akımlı ve sabit güçlü yük, 200–500 ms darbe) sönümlü olarak doğrulandı. Gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak belirlendi ve simülasyon dondurması kullanıcı onayıyla tamamlandı. Sıra: dondurulan hedef aralıklara göre kesin parçaları seç ve bobini sar → gerçek değerlerle yeniden test → PCB. Kapı listesi: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12.
+**Dondurma durumu: FROZEN (12 Kasım 2026, simülasyon dondurması).** Çıkışa paralel `Cd = 470 µF + seri Rd = 0,22 Ω` sönüm dalı eklendi. Örneklenen model setlerinde 200 ms ve ayrı bir köşede 500 ms sabit güç darbeleri sönümlü raporlandı; bütün yük, sıcaklık ve tolerans kombinasyonları doğrulanmış değildir. Gerilim sınıfları **Cout ve Cd ≥ 35 V**, **Cin ≥ 50 V** olarak belirlendi. Açık çevrim güvenli 11 V regülasyonu sağlamaz; fiziksel ölçüm yoktur ve hassas yükler bağlanmamalıdır. Kanıt ve kalan işler: [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §12–13.
 
 **Nerede kaldık, sırada ne var:** [YOL-HARITASI.md](YOL-HARITASI.md) · **Çalışma kuralları (yapay zekâ araçları dahil):** [AGENTS.md](AGENTS.md)
 
