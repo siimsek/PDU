@@ -241,6 +241,9 @@ def cpl(l: float, c: float, esr: float, rs: float, vth: float, p: float,
         a, b, k = l * c, c * (esr + rs), 1.0
     sonum = b / (2 * a)
     w2 = k / a - sonum * sonum
+    # Asiri sonumlu durumda yavas gercek kutup -sonum degildir.
+    if w2 < 0:
+        sonum -= math.sqrt(-w2)
     # Pkritik kendi denge gerilimiyle: P = vo(P)^2 (rs+ESR)/(L/C + rs ESR), sabit nokta
     pk = VO_V ** 2 * (rs + esr) / (l / c + rs * esr)
     for _ in range(30):
@@ -306,6 +309,8 @@ def cpl_dalli_pkritik(l, c, esr, rs, vth, cd=0.0, rd=1.0) -> float:
     lo, hi = 1.0, 600.0
     if not cpl_dalli_kararli(l, c, esr, rs, vth, lo, cd, rd):
         return 0.0
+    if cpl_dalli_kararli(l, c, esr, rs, vth, hi, cd, rd):
+        raise ValueError("Pkritik 600 W arama sinirinin ustunde; sinir degeri sonuc olarak kullanilamaz")
     for _ in range(50):
         mid = (lo + hi) / 2
         lo, hi = (mid, hi) if cpl_dalli_kararli(l, c, esr, rs, vth, mid, cd, rd) else (lo, mid)
@@ -421,11 +426,24 @@ def sicak_takma(vbat: float, r_kaynak: float, l_kaynak: float, c: float = CIN_F,
     r = r_kaynak + esr
     w0 = 1 / math.sqrt(l_kaynak * c)
     z = r / 2 * math.sqrt(c / l_kaynak)
-    if z >= 1:
-        return vbat
-    wd = w0 * math.sqrt(1 - z * z)
-    # kapasitor gerilimi tepe: vbat (1 + exp(-z pi / sqrt(1-z^2))); ESR uzerindeki dusum tepede sifirdir (i = 0)
-    return vbat * (1 + math.exp(-z * math.pi / math.sqrt(1 - z * z)))
+    a = r / (2 * l_kaynak)
+    # Terminal gerilimi = ideal C gerilimi + ESR * akim; tepe anlari ayni degildir.
+    if z < 1 - 1e-8:
+        wd = w0 * math.sqrt(1 - z * z)
+        b = (a - esr / l_kaynak) / wd
+        t = (math.pi - math.atan2(esr / l_kaynak, a * b + wd)) / wd
+        return vbat * (1 - math.exp(-a * t) * (math.cos(wd * t) + b * math.sin(wd * t)))
+    if abs(z - 1) <= 1e-8:
+        b = a - esr / l_kaynak
+        t = -esr / l_kaynak / (a * b) if b < 0 else float('inf')
+        return vbat * (1 - math.exp(-a * t) * (1 + b * t)) if math.isfinite(t) else vbat
+    s = math.sqrt(a * a - w0 * w0)
+    r1, r2 = -a + s, -a - s
+    aa = (esr / l_kaynak + r2) / (r1 - r2)
+    bb = -1 - aa
+    oran = -bb * r2 / (aa * r1) if aa else -1
+    t = math.log(oran) / (r1 - r2) if oran > 0 else -1
+    return max(vbat, vbat * (1 + aa * math.exp(r1 * t) + bb * math.exp(r2 * t))) if t > 0 else vbat
 
 
 if __name__ == "__main__":
@@ -596,8 +614,9 @@ if __name__ == "__main__":
     print("     R kaynak mΩ \\ L µH " + " ".join(f"{l*1e6:6g}" for l in ls))
     for r in (5e-3, 10e-3, 20e-3, 40e-3, 80e-3):
         print(f"     {r*1e3:6.0f}             " + " ".join(f"{(v:=sicak_takma(26.0, r, l)):5.1f}{'*' if v > CIN_VDC else ' '}" for l in ls))
-    print("   C −%20 ve sıcak ESR (TAHMİN 2 × 7 mΩ) ile en kötü satır:"
-          f" R 5 mΩ, L 5 µH → {sicak_takma(26.0, 5e-3, 5e-6, CIN_F*0.8, 3.5e-3):.1f} V (< Cin {CIN_VDC_KRITER:g} V kriteri)")
+    print("   C −%20 ve sıcak ESR (TAHMİN 2 × 7 mΩ), R 5 mΩ:"
+          f" L 5 µH → {sicak_takma(26.0, 5e-3, 5e-6, CIN_F*0.8, 3.5e-3):.1f} V;"
+          f" L 10 µH → {sicak_takma(26.0, 5e-3, 10e-6, CIN_F*0.8, 3.5e-3):.1f} V (HESAP, ideal basamak)")
     print(f"   S1 kısa devre: çıkış kararlı hâlde girişe çıkar (20–26 V), geçişte 27,3–31,1 V (SİM) → Cout ve Cd {COUT_VDC_KRITER:g} V kriteri içinde"
           f" (mevcut 25 V aday AŞILIR).")
     print(f"   S1 VDS: {S1_VDS_MAX:g} V anma; 26 V girişte pay {S1_VDS_MAX-26:g} V, 28 V'ta {S1_VDS_MAX-28:g} V (zil hariç)."
