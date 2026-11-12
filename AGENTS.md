@@ -86,16 +86,21 @@ Güncel değerler ve aktif adım burada tekrar edilmez; [YOL-HARITASI.md](YOL-HA
 |---|---|---|
 | `python buck/ltspice/sematik_uret.py [Ton_us]` | `.asc` ve `.svg` üretir | anlık |
 | `python buck/hesap.py` | Analitik özet (LTspice değildir) | anlık |
-| `python buck/dogrula.py secilen` | Şematik değerleriyle tüm testler: 5 giriş, gerçek yük senaryoları, yük adımı, yük atma, kalkış, giriş değişimi, tolerans köşeleri, giriş tarafı | ≈ 15 dk |
+| `python buck/dogrula.py secilen` | Şematik değerleriyle tüm testler: 5 giriş, gerçek yük senaryoları, yük adımı, yük atma, kalkış, giriş değişimi, tolerans köşeleri, giriş tarafı | ≈ 20 dk |
 | `python buck/dogrula.py pencere` | L / Cout / ESR kabul aralıklarının kenarları | ≈ 12 dk |
 | `python buck/dogrula.py tarama` | İlk 9 adaylık L × Cout karşılaştırması | ≈ 15 dk |
 | `python buck/dogrula.py mevcut` | En baştaki eski değerlerle aynı testler | ≈ 15 dk |
 | `python buck/dogrula.py grafik` | `buck/grafik/*.svg` | ≈ 2 dk |
+| `python buck/dogrula.py sayisal` | Ölçüm altyapısı regresyonu: anahtar zamanlama titremesi, ripple, Ton yakınsaması | ≈ 3 dk |
+| `python buck/dogrula.py kararlilik` | Sabit güç yükü: darbe süresi 1–500 ms, sönüm/büyüme, köşe model setleri, HESAP karşılaştırması | ≈ 25 dk |
+| `python buck/dogrula.py zarf` | Genel modül zarfı: 0–82,5 W kararlı durum, CR/CC/CP yük adımları, yük atma gecikmesi | ≈ 10 dk |
+| `python buck/dogrula.py stres` | İdeal olmayan senaryolar (yalnız geçici netlistte): anahtarlama zili, sıcak takma, S1 kısa devre | ≈ 2 dk |
 
 - LTspice yolu `LTSPICE` ortam değişkeniyle verilebilir (varsayılan `C:\Program Files\ADI\LTspice\LTspice.exe`).
 - `dogrula.py` LTspice'ı görünmeyen ayrı bir Windows masaüstünde başlatır; kullanıcının pencere odağını almaz. Bu davranış bozulmamalıdır.
 - Uzun koşular arka planda çalıştırılır; aynı anda iki koşu başlatılmaz (birbirini yavaşlatır).
-- Kabul ölçütü: yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV t-t (`dogrula.py` içindeki `VO_MIN`, `VO_MAX`, `RIPPLE_MAX`).
+- Kabul ölçütü (O1/S2E uyumluluğu): yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV t-t (`dogrula.py` içindeki `VO_MIN`, `VO_MAX`, `RIPPLE_MAX`); sabit güç yükü darbesi 200 ms sürdüğünde de aralıkta kalmalı ve yavaş (LC) salınım sönmelidir. 20 ms'lik darbe tek başına geçme kanıtı değildir. Genel modül (0–7,5 A / 82,5 W) için ayrı sınırlar kullanıcı onaylayana kadar tanımlı değildir.
+- Test netlistleri `idealler.lib` ile aynı değerleri taşıyan ama anahtarı yumuşak geçişli (`Vh=-0.5`) bir model kullanır: `Vh=0` LTspice'ta ±1 ns iletim süresi titremesi ve sahte ripple üretir (`dogrula.py sayisal`). `idealler.lib` ve ana şematik değişmez.
 
 ## 6. Bir iş nasıl yapılır
 

@@ -10,6 +10,10 @@ Kullanim:
   python buck/dogrula.py pencere     # L/Cout/ESR kabul pencerelerinin kenarlari
   python buck/dogrula.py grafik      # buck/grafik/*.svg
   python buck/dogrula.py mevcut      # ana sematigin (eski degerler) yeniden kosusu
+  python buck/dogrula.py sayisal     # olcum altyapisi regresyonu: anahtar zamanlama titremesi, Ton yakinsamasi
+  python buck/dogrula.py kararlilik  # sabit guc yuku (CPL): darbe suresi 1-200 ms, sonum/buyume, kose model setleri
+  python buck/dogrula.py zarf        # genel modul zarfi: 0-82,5 W, CR/CC/CP yuk adimlari, yuk atma gecikmesi
+  python buck/dogrula.py stres       # ideal OLMAYAN senaryolar: anahtarlama zili, sicak takma, S1 kisa devre
 
 Siniflar: buradaki her sayi IDEAL ELEMANLI LTspice SIMULASYONUDUR; fiziksel olcum degildir.
 Yuk gucleri icin kaynak/varsayim ayrimi OPTIMIZASYON.md dosyasindadir.
@@ -59,13 +63,50 @@ VO_MIN, VO_MAX = 9.0, 12.0         # S2E alt siniri, O1 ust siniri
 RIPPLE_MAX = 0.165                 # V t-t; cikisin %1,5'i (S2E siniri +-%3)
 
 
+# --- Kose model setleri (FZ-E). Her deger icin kaynak sinifi OPTIMIZASYON.md §8'dedir. ---
+# D1 cifti (iki bacak paralel), STPS40M60C Doc ID 018813 Rev 1 Tablo 4 (diyot basina) noktalarindan dogrusal model:
+#   25 C tipik, 10-20 A toplam: 0,430 / 0,470 V  -> 0,39 V + 4 mohm      (artimsal direnc ALT senaryosu)
+#   125 C tipik, 10-20 A toplam: 0,325 / 0,385 V -> 0,265 V + 6 mohm
+#   25 C azami, 10-20 A toplam: 0,460 / 0,505 V  -> 0,415 V + 4,5 mohm   (kayip UST senaryosu)
+# 7,5 A toplamda (3,75 A/bacak) egri bu dogrulardan daha diktir; veri sayfasinda o noktanin sayisi yoktur.
+# S1: RDS(on) 4,7 tipik / 5,6 azami (25 C); en dusuk deger YAYIMLANMAMIS (4,7 tipik kullanildi);
+#     100 C carpani ~1,40 (egriden). Cout ESR: uretici ESR yayimlamaz; 15 ve 10 mohm SENARYODUR (olcum yok).
+EN_AZ_SONUM = dict(SECILEN, DCR=6.5e-3, ESRo=ESR_MIN, Ron=4.7e-3, Vf=0.39, Rd=4e-3)       # + L x1,2, Cout x0,8 kosede
+EN_AZ_SONUM_SICAK = dict(EN_AZ_SONUM, ESRo=10e-3, DCR=7.81e-3, Vf=0.265, Rd=6e-3, Ron=6.6e-3)  # ESR 10 mohm TAHMIN
+EN_COK_KAYIP = dict(SECILEN, DCR=10.3e-3, Ron=7.84e-3, Vf=0.415, Rd=4.5e-3)                # 100 C bakir/RDS(on), 25 C azami VF
+SOGUK = dict(SECILEN, ESRo=120e-3, ESRi=38e-3)                                              # -10 C Zmax'in tamami ESR sayilir (UST SINIR)
+LF_ESIK = 0.020                    # V t-t; bunun altindaki yavas (LC) salinim "sonmus" sayilir
+P_TAM = VO * 7.5                   # 82,5 W modul zarfi
+
+
 def eng(x: float) -> str:
     return f"{x:.6g}"
 
 
+def eng9(x: float) -> str:
+    """Ton icin: 6 basamak 10 ps'ye yuvarlar (kelepceli ayarda 1,6 mA); 9 basamak kullanilir."""
+    return f"{x:.9g}"
+
+
+# Test netlistlerinde kullanilan ideal modeller. idealler.lib ile AYNI degerler; tek fark anahtarin
+# Vh=-0.5 (yumusak gecis) olmasidir. Neden: Vh=0 (sert gecis) ile LTspice anahtarlama anini zaman
+# adimina gore +-1 ns kaydirir (periyottan periyoda titreme); bu LC'yi uyarir, ripple olcumunu
+# 64 -> 70 mV'a cikarir ve Vo(Ton) egrisini basamakli yapar (`dogrula.py sayisal`). Ana sematik ve
+# idealler.lib degismez; sert=True ile kutuphanedeki model aynen kullanilir (regresyon icin).
+MODEL_TEST = """.subckt anahtar A B CP CN params: Ron=10m
+S1 A B CP CN SWM
+.model SWM SW(Ron={Ron} Vt=5 Vh=-0.5)
+.ends
+.subckt diyot A K params: Vf=0.5 Ron=10m
+D1 A K DM
+.model DM D(Ron={Ron} Vfwd={Vf})
+.ends"""
+
+
 # ---------------------------------------------------------------- netlist
 def netlist(p: dict, *, vin, surucu: str, yuk: list[str], tstop: float, meas: list[str],
-            ic: str = "", kaynak: str = "ideal", tstart: float = 0.0, cikis_sabit: bool = False) -> str:
+            ic: str = "", kaynak: str = "ideal", tstart: float = 0.0, cikis_sabit: bool = False,
+            sert: bool = False, ek: list[str] | None = None, maxstep: float | None = None) -> str:
     T = 1 / p["f"]
     s = ["* dogrula.py"]
     if kaynak == "ideal":
@@ -85,7 +126,9 @@ def netlist(p: dict, *, vin, surucu: str, yuk: list[str], tstop: float, meas: li
     else:
         s.append(f"Cout out 0 {eng(p['Cout'])} Rser={eng(p['ESRo'])}")
         s += yuk
-    s += [f'.lib "{LIB}"', f".tran 0 {eng(tstop)} {eng(tstart)} {eng(T / 200)}"]
+    s += ek or []
+    s.append(f'.lib "{LIB}"' if sert else MODEL_TEST)
+    s.append(f".tran 0 {eng(tstop)} {eng(tstart)} {eng(maxstep or T / 200)}")
     if ic:
         s.append(f".ic {ic}")
     s += [f".meas tran {m}" for m in meas]
@@ -94,7 +137,7 @@ def netlist(p: dict, *, vin, surucu: str, yuk: list[str], tstop: float, meas: li
 
 
 def surucu_ton(p: dict, ton: float, gecikme: float = 0.0) -> str:
-    return f"Vdrv pwm 0 PULSE(0 10 {eng(gecikme)} 10n 10n {eng(ton)} {eng(1 / p['f'])})"
+    return f"Vdrv pwm 0 PULSE(0 10 {eng(gecikme)} 10n 10n {eng9(ton)} {eng(1 / p['f'])})"
 
 
 def surucu_duty(p: dict, pwl: str) -> str:
@@ -112,6 +155,18 @@ def yuk_r(amper: float) -> list[str]:
 def yuk_guc(pwl_w: str, vmin: float = 5.0, ad: str = "y") -> list[str]:
     """Sabit guc yuku: I = P(t)/V; vmin altinda sabit akima doner."""
     return [f"Vp{ad} p{ad} 0 PWL({pwl_w})", f"B{ad} out 0 I=V(p{ad})/max(V(out),{vmin})"]
+
+
+def yuk_tipli(tip: str, noktalar: list[tuple[float, float]]) -> list[str]:
+    """(t, P[W] @11 V) noktalarindan yuk: 'cp' sabit guc, 'cc' sabit akim (P/11), 'cr' direnc (11^2/P)."""
+    if tip == "cp":
+        return yuk_guc(" ".join(f"{eng(t)} {eng(w)}" for t, w in noktalar))
+    if tip == "cc":
+        return ["Iyuk out 0 PWL(" + " ".join(f"{eng(t)} {eng(w / VO)}" for t, w in noktalar) + ")"]
+    if tip == "cr":
+        return ["Vg g 0 PWL(" + " ".join(f"{eng(t)} {eng(w / VO ** 2)}" for t, w in noktalar) + ")",
+                "Byr out 0 I=V(out)*V(g)"]
+    raise ValueError(tip)
 
 
 # ---------------------------------------------------------------- kosu
@@ -229,33 +284,85 @@ def duty_ccm(p: dict, vin: float, io: float) -> float:
     return (VO + p["Vf"] + io * (p["DCR"] + p["Rd"])) / (vin + p["Vf"] + io * (p["Rd"] - p["Ron"]))
 
 
+def rs_esdeger(p: dict, vin: float, io: float) -> float:
+    """CCM'de LC'ye seri gorunen ortalama direnc: DCR + D Ron + (1-D) Rd."""
+    d = duty_ccm(p, vin, io)
+    return p["DCR"] + d * p["Ron"] + (1 - d) * p["Rd"]
+
+
+def dil_ccm(p: dict, vin: float, io: float) -> float:
+    d = duty_ccm(p, vin, io)
+    return (VO + p["Vf"] + io * (p["DCR"] + p["Rd"])) * (1 - d) / (p["L"] * p["f"])
+
+
+def il_baslangic(p: dict, vin: float, io: float) -> float:
+    """.ic icin bobin akimi: iletim baslangicindaki VADI degeri (ortalama degil).
+    Ortalama ile baslatmak dIL/2'lik bir basamak uyarimi yaratir ve LC'yi sallar."""
+    return max(io - dil_ccm(p, vin, io) / 2, 0.0)
+
+
+TON_TOL_V = 1e-3      # V: Ton ayarinin cikis gerilimi cinsinden hedef dogrulugu (11 V'un %0,01'i)
+_TON_ONBELLEK: dict = {}
+
+
 def ton_ayarla(p: dict, vin: float, io: float) -> float:
-    """Ideal regulasyon varsayimi: cikis 11 V'ta tutulurken ortalama bobin akimi = io olan Ton."""
+    """Ideal regulasyon varsayimi: cikis 11 V'ta tutulurken ortalama bobin akimi = io olan Ton.
+
+    Cikis 11 V'a kelepcelenir (LC'nin oturmasi beklenmez; DCM'de RC sabiti onlarca ms'dir) ve
+    I(L1) ortalamasi olculur. Kok, iki yandan sarilmis sekant (regula falsi, Illinois) ile aranir.
+    Olcut fizikseldir: akim hatasi x esdeger seri direnc <= TON_TOL_V (CCM'de 1 mV ~ 0,4 ns), ayrica
+    akim hatasi <= io'nun %0,5'i (DCM). Yakinsamazsa sonuc KULLANILMAZ, hata verilir.
+    """
+    anahtar = (tuple(sorted(p.items())), vin, io)
+    if anahtar in _TON_ONBELLEK:
+        return _TON_ONBELLEK[anahtar]
     T = 1 / p["f"]
+    rs = rs_esdeger(p, vin, io)
+    tol = min(TON_TOL_V / rs, max(0.005 * io, 1e-3))
+    tau = p["L"] / rs
+    ts = max(6e-3, 5 * tau + 1e-3)
+    il0 = il_baslangic(p, vin, io)
 
     def hata(ton: float) -> float:
-        n = netlist(p, vin=vin, surucu=surucu_ton(p, ton), yuk=[], tstop=6e-3, cikis_sabit=True,
-                    ic=f"I(L1)={io}", meas=["IL AVG I(L1) FROM 5m TO 6m"])
+        n = netlist(p, vin=vin, surucu=surucu_ton(p, ton), yuk=[], tstop=ts, cikis_sabit=True,
+                    ic=f"I(L1)={eng(il0)}", meas=[f"IL AVG I(L1) FROM {eng(ts - 1e-3)} TO {eng(ts)}"])
         return kos(n, "ton")["il"] - io
 
     d_ccm = duty_ccm(p, vin, io)
     # DCM tahmini: io = D^2 T (vin-VO)(vin+Vf) / (2 L (VO+Vf))
     d_dcm = math.sqrt(max(io, 1e-3) * 2 * p["L"] * (VO + p["Vf"]) / (T * (vin - VO) * (vin + p["Vf"])))
-    a = min(d_ccm, d_dcm) * T
+    a = min(d_ccm, d_dcm) * T - 10e-9          # PULSE kenarlari (10 n) iletimi 10 ns uzatir
     ha = hata(a)
-    b = a * (1.002 if ha < 0 else 0.998)
-    hb = hata(b)
-    for _ in range(12):
-        if abs(hb) < 3e-3 or hb == ha:
-            break
-        a, ha, b = b, hb, b - hb * (b - a) / (hb - ha)
-        b = min(max(b, 0.02 * T), 0.98 * T)
+    # koku saran ikinci nokta: adim buyuterek ara
+    adim = (0.002 if ha < 0 else -0.002) * T
+    b, hb = a, ha
+    for _ in range(8):
+        b = min(max(b + adim, 0.02 * T), 0.98 * T)
         hb = hata(b)
-    if abs(hb) >= 3e-3:
-        # Yakinsamadi: sonuc yine kullanilir (davranis degismedi) ama sessiz kalmaz.
-        print(f"UYARI ton_ayarla yakinsamadi: Vin={vin} V, Io={io} A, kalan akim hatasi {hb * 1000:.0f} mA (olcut 3 mA)",
-              file=sys.stderr, flush=True)
-    return b
+        if hb * ha <= 0:
+            break
+        a, ha = b, hb
+        adim *= 2
+    else:
+        raise RuntimeError(f"ton_ayarla: kok sarilamadi (Vin={vin} V, Io={io} A)")
+    sonuc, hs = (a, ha) if abs(ha) < abs(hb) else (b, hb)
+    for _ in range(25):
+        if abs(hs) <= tol:
+            break
+        c = b - hb * (b - a) / (hb - ha)
+        hc = hata(c)
+        if hc * hb < 0:
+            a, ha = b, hb
+        else:
+            ha *= 0.5                              # Illinois: ayni yanda kalan ucu hafiflet
+        b, hb = c, hc
+        if abs(hc) < abs(hs):
+            sonuc, hs = c, hc
+    if abs(hs) > tol:
+        raise RuntimeError(f"ton_ayarla yakinsamadi: Vin={vin} V, Io={io} A, kalan akim hatasi "
+                           f"{hs * 1e3:.1f} mA (olcut {tol * 1e3:.1f} mA)")
+    _TON_ONBELLEK[anahtar] = sonuc
+    return sonuc
 
 
 M_KARARLI = [
@@ -275,20 +382,25 @@ def olcumler(sablon: list[str], a: float, b: float) -> list[str]:
 
 
 def kararli(p: dict, vin: float, io: float, *, direnc: bool = True, kaynak: str = "ideal",
-            ton: float | None = None, _ince: int = 0) -> dict:
-    """11 V'a ayarli Ton ile kararli durum. io: 11 V'taki yuk akimi."""
-    ayarli = ton is None or _ince > 0
+            ton: float | None = None, sert: bool = False) -> dict:
+    """11 V'a ayarli Ton ile kararli durum. io: 11 V'taki yuk akimi.
+
+    Ton yalniz ton_ayarla() ile bulunur; sonradan kosullu ince ayar YAPILMAZ (eski surum CCM'de
+    cikisa bakarak Ton'u oynatiyordu, DCM'de oynatmiyordu). Olcum son 1 ms'dir (100 periyot);
+    bir onceki 1 ms ile farki 'kayma' olarak verilir: oturmamis kosu boyle gorulur.
+    """
     ton = ton or ton_ayarla(p, vin, io)
     yuk = yuk_r(io) if direnc else yuk_guc(f"0 {io * VO}")
     ts = 16e-3
-    n = netlist(p, vin=vin, surucu=surucu_ton(p, ton), yuk=yuk, tstop=ts, kaynak=kaynak,
-                ic=f"V(out)={VO} I(L1)={io}", meas=olcumler(M_KARARLI, ts - 1e-3, ts))
+    n = netlist(p, vin=vin, surucu=surucu_ton(p, ton), yuk=yuk, tstop=ts, kaynak=kaynak, sert=sert,
+                ic=f"V(out)={VO} I(L1)={eng(il_baslangic(p, vin, io))}",
+                meas=olcumler(M_KARARLI, ts - 1e-3, ts)
+                + [f"VO2 AVG V(out) FROM {eng(ts - 2e-3)} TO {eng(ts - 1e-3)}"])
     m = kos(n, "kararli")
-    if ayarli and m["ilmin"] > 0.05 and abs(m["vo"] - VO) > 2e-3:
-        # CCM ince ayar: cikis ripple'i kelepceli ayarda yok; kalan birkac mV'u Ton ile kapat
-        if _ince < 3:
-            return kararli(p, vin, io, direnc=direnc, kaynak=kaynak,
-                           ton=ton + (VO - m["vo"]) / (vin * p["f"]), _ince=_ince + 1)
+    m["kayma"] = m["vo"] - m["vo2"]
+    if m["ilmin"] > 0.05 and (abs(m["vo"] - VO) > 5e-3 or abs(m["kayma"]) > 2e-3):
+        print(f"UYARI kararli: Vin={vin} V, Io={io} A: Vo={m['vo']:.4f} V, kayma {m['kayma'] * 1e3:.1f} mV/ms "
+              f"(beklenen 11 V +-5 mV, oturmus)", file=sys.stderr, flush=True)
     m["ton"] = ton
     m["kayip_s1"] = m["isrms"] ** 2 * p["Ron"]
     m["kayip_d1"] = p["Vf"] * m["idavg"] + p["Rd"] * m["idrms"] ** 2
@@ -317,40 +429,84 @@ def kalkis_yumusak(p: dict, vin: float, io: float, ton: float, sure: float = 5e-
     return kos(n, "yumusak", raw)
 
 
+def lc_periyot(p: dict) -> float:
+    """LC dogal periyodu, anahtarlama periyodunun tam katina yuvarlanmis."""
+    T = 1 / p["f"]
+    return round(2 * math.pi * math.sqrt(p["L"] * p["Cout"]) / T) * T
+
+
 def yuk_adimi(p: dict, vin: float, p0: float, p1: float, *, ton: float | None = None,
-              t1: float = 4e-3, t2: float = 24e-3, tstop: float = 44e-3, raw: bool = False):
-    """Sabit Ton (acik cevrim), sabit guc yuku p0 -> p1 -> p0 [W]."""
+              t1: float = 4e-3, sure: float = 20e-3, kuyruk: float = 20e-3, tip: str = "cp",
+              ek: list[str] | None = None, raw: bool = False):
+    """Sabit Ton (acik cevrim), yuk p0 -> p1 -> p0 [W @11 V]; tip: cp / cc / cr. Darbe suresi `sure`.
+
+    Tepe ve dip yaninda yavas (LC) salinimin ZARFI olculur: cikis 4,8 kHz RC'den gecirilir (100 kHz
+    ripple ~20 kat zayiflar) ve darbenin son iki LC periyodundaki tepe-tepe degerleri (lfa, lfb)
+    karsilastirilir. durum: sonmus (lfb < LF_ESIK) / sonuyor (lfb < 0,98 lfa) / surekli salinim
+    (oran 0,98-1,02: cok yavas sonen, cok yavas buyuyen veya sinir cevrimine oturmus) / buyuyor
+    (lfb > 1,02 lfa). 'surekli salinim' ve 'buyuyor' kabul edilmez: tepe degeri darbe suresine baglidir.
+    Darbe 4 LC periyodundan kisaysa zarf degerlendirilemez (durum = 'kisa').
+    """
     io = p0 / VO
     ton = ton or ton_ayarla(p, vin, io)
-    pwl = f"0 {p0} {eng(t1)} {p0} {eng(t1 + 20e-6)} {p1} {eng(t2)} {p1} {eng(t2 + 20e-6)} {p0}"
-    n = netlist(p, vin=vin, surucu=surucu_ton(p, ton), yuk=yuk_guc(pwl), tstop=tstop,
-                ic=f"V(out)={VO} I(L1)={io}",
-                meas=[f"VMAX MAX V(out) FROM {eng(t1)} TO {eng(tstop)}",
-                      f"VMIN MIN V(out) FROM {eng(t1)} TO {eng(tstop)}",
-                      f"V1SON AVG V(out) FROM {eng(t2 - 2e-3)} TO {eng(t2)}",
-                      f"V1PP PP V(out) FROM {eng(t2 - 2e-3)} TO {eng(t2)}",
-                      f"V0SON AVG V(out) FROM {eng(tstop - 2e-3)} TO {eng(tstop)}",
-                      f"V0PP PP V(out) FROM {eng(tstop - 2e-3)} TO {eng(tstop)}",
-                      f"ILMAX MAX I(L1) FROM {eng(t1)} TO {eng(tstop)}"])
+    t2 = t1 + sure
+    tstop = t2 + kuyruk
+    tw = lc_periyot(p)
+    yuk = yuk_tipli(tip, [(0, p0), (t1, p0), (t1 + 20e-6, p1), (t2, p1), (t2 + 20e-6, p0)])
+    son = min(2e-3, sure / 2)
+    meas = [f"VMAX MAX V(out) FROM {eng(t1)} TO {eng(tstop)}",
+            f"VMIN MIN V(out) FROM {eng(t1)} TO {eng(tstop)}",
+            f"V1SON AVG V(out) FROM {eng(t2 - son)} TO {eng(t2)}",
+            f"V1PP PP V(out) FROM {eng(t2 - son)} TO {eng(t2)}",
+            f"V0SON AVG V(out) FROM {eng(tstop - 2e-3)} TO {eng(tstop)}",
+            f"V0PP PP V(out) FROM {eng(tstop - 2e-3)} TO {eng(tstop)}",
+            f"ILMAX MAX I(L1) FROM {eng(t1)} TO {eng(tstop)}",
+            f"LF0 PP V(lf) FROM {eng(tstop - tw)} TO {eng(tstop)}"]
+    zarf = sure >= 4 * tw
+    if zarf:
+        meas += [f"LFA PP V(lf) FROM {eng(t2 - 2 * tw)} TO {eng(t2 - tw)}",
+                 f"LFB PP V(lf) FROM {eng(t2 - tw)} TO {eng(t2)}"]
+    n = netlist(p, vin=vin, surucu=surucu_ton(p, ton), yuk=yuk, tstop=tstop,
+                ic=f"V(out)={VO} I(L1)={eng(il_baslangic(p, vin, io))}",
+                ek=["Rlf out lf 10k", "Clf lf 0 3.3n"] + (ek or []), meas=meas)
     r = kos(n, "adim", raw)
-    (r[0] if raw else r)["ton"] = ton
+    m = r[0] if raw else r
+    m["ton"] = ton
+    if not zarf:
+        m["lfa"] = m["lfb"] = float("nan")
+        m["oran"], m["durum"] = float("nan"), "kısa"
+    else:
+        m["oran"] = m["lfb"] / m["lfa"] if m["lfa"] > 0 else float("nan")
+        if m["lfb"] < LF_ESIK:
+            m["durum"] = "sönmüş"
+        elif m["oran"] < 0.98:
+            m["durum"] = "sönüyor"
+        elif m["oran"] <= 1.02:
+            m["durum"] = "sürekli salınım"
+        else:
+            m["durum"] = "büyüyor"
+    m["kararli"] = m["durum"] in ("sönmüş", "sönüyor", "kısa")
     return r
 
 
-def yuk_atma_sinir(p: dict, vin: float, p0: float, p1: float) -> dict:
-    """Ideal kontrolcu siniri: yuk p0 -> p1 dustugu anda duty 0 olur (en iyi durum).
+def yuk_atma_sinir(p: dict, vin: float, p0: float, p1: float, gecikme: int = 0) -> dict:
+    """Kontrolcu siniri: yuk p0 -> p1 dustukten `gecikme` PWM periyodu sonra duty 0 olur.
 
-    Atma, bobin akiminin tepe aninda (iletim sonu) yapilir. Atma oncesi yuk sabit akimdir
-    (sabit guc yuku acik cevrimde salinir ve siniri kirletir). vmax = 11 V + olculen artis.
+    gecikme = 0 ideal (en iyi) durumdur. Atma, bobin akiminin tepe aninda (iletim sonu) yapilir.
+    Atma oncesi yuk sabit akimdir (sabit guc yuku acik cevrimde salinir ve siniri kirletir).
+    vmax = 11 V + olculen artis.
     """
     io = p0 / VO
     ton = ton_ayarla(p, vin, io)
-    d = ton * p["f"]
-    t1 = 3e-3 + ton
-    pwl = f"0 {io} {eng(t1)} {io} {eng(t1 + 1e-6)} {p1 / VO}"
-    n = netlist(p, vin=vin, surucu=surucu_duty(p, f"0 {eng(d)} {eng(t1)} {eng(d)} {eng(t1 + 1e-7)} 0"),
-                yuk=[f"Iyuk out 0 PWL({pwl})"], tstop=5e-3, ic=f"V(out)={VO} I(L1)={io}",
-                meas=[f"VTEPE MAX V(out) FROM {eng(t1)} TO 5m",
+    T = 1 / p["f"]
+    d = (ton + 10e-9) * p["f"]
+    t1 = 3e-3 + ton + 10e-9
+    tk = t1 + gecikme * T
+    pwl = f"0 {io} {eng9(t1)} {io} {eng9(t1 + 1e-6)} {p1 / VO}"
+    n = netlist(p, vin=vin, surucu=surucu_duty(p, f"0 {eng(d)} {eng9(tk)} {eng(d)} {eng9(tk + 1e-7)} 0"),
+                yuk=[f"Iyuk out 0 PWL({pwl})"], tstop=5e-3 + gecikme * T,
+                ic=f"V(out)={VO} I(L1)={eng(il_baslangic(p, vin, io))}",
+                meas=[f"VTEPE MAX V(out) FROM {eng9(t1)} TO {eng(5e-3 + gecikme * T)}",
                       f"VONCE AVG V(out) FROM {eng(3e-3 - 2e-4)} TO 3m"])
     m = kos(n, "atma")
     m["artis"] = m["vtepe"] - m["vonce"]
@@ -364,7 +520,7 @@ def giris_adimi(p: dict, v0: float, v1: float, pw: float, raw: bool = False):
     ton = ton_ayarla(p, v0, io)
     vin = f"PWL(0 {v0} 4m {v0} 5m {v1} 20m {v1} 21m {v0})"
     n = netlist(p, vin=vin, surucu=surucu_ton(p, ton), yuk=yuk_guc(f"0 {pw}"), tstop=36e-3,
-                ic=f"V(out)={VO} I(L1)={io}",
+                ic=f"V(out)={VO} I(L1)={eng(il_baslangic(p, v0, io))}",
                 meas=["VMAX MAX V(out) FROM 4m TO 36m", "VMIN MIN V(out) FROM 4m TO 36m",
                       "V1SON AVG V(out) FROM 18m TO 20m"])
     return kos(n, "giris", raw)
@@ -435,8 +591,12 @@ def tarama() -> None:
 
 def pencere() -> None:
     """Kabul pencerelerinin kenarlarini kosar: uc L/Cout cifti, ESR 15-35 mohm, tolerans koseleri.
-    Karar yalniz Vo araligi ve kose t-t ripple'ina bakar; 'kose salinim' sutunu (yavas LC salinimi
-    dahil toplam t-t) yalniz yazdirilir, karara girmez."""
+
+    Karar: (1) butun yuk adimlarinda ve yuk atmada Vo 9-12 V, (2) 26 V kose ripple'i <= 165 mV,
+    (3) S2E kalkis darbesi (57,6 -> 73 W) 200 ms surdugunde de Vo 9-12 V icinde VE yavas salinim
+    sonuyor. Eski surum (3)'u yalniz 20 ms'lik darbeyle siniyordu; yavas buyuyen salinim (zaman sabiti
+    ~0,2 s) 20 ms'de gorunmuyordu. 20 ms sutunu regresyon icin yazdirilir, tek basina karar degildir.
+    """
     print("## Kabul penceresi doğrulaması (LTspice, 24,6 V; köşeler: L −%30/+%20, Cout −%20)\n")
     sat = []
     for L, C in CIFTLER:
@@ -448,20 +608,327 @@ def pencere() -> None:
         q = dict(p, L=L * L_YUKSEK, Cout=C * 0.8, ESRo=ESR_MIN)
         a_kose = yuk_adimi(q, VIN_ANA, P_ZARF, P_ZARF_KALKIS)
         o_kose = yuk_adimi(q, VIN_ANA, P_HAFIF, P_ZARF)
+        u_anma = yuk_adimi(dict(p, ESRo=ESR_MIN), VIN_ANA, P_ZARF, P_ZARF_KALKIS, sure=200e-3)
+        u_kose = yuk_adimi(q, VIN_ANA, P_ZARF, P_ZARF_KALKIS, sure=200e-3)
         atma = yuk_atma_sinir(dict(q, ESRo=ESR_MAX), VIN_ANA, P_ZARF_KALKIS, P_BOSTA)
-        vmin = min(a_anma["vmin"], o_anma["vmin"], a_kose["vmin"], o_kose["vmin"])
-        vmax = max(a_anma["vmax"], o_anma["vmax"], a_kose["vmax"], o_kose["vmax"], atma["vmax"])
-        gecti = vmin >= VO_MIN and vmax <= VO_MAX and r_kose["vpp"] <= RIPPLE_MAX
+        hepsi = (a_anma, o_anma, a_kose, o_kose, u_anma, u_kose)
+        vmin = min(x["vmin"] for x in hepsi)
+        vmax = max(max(x["vmax"] for x in hepsi), atma["vmax"])
+        eski = (min(x["vmin"] for x in hepsi[:4]) >= VO_MIN
+                and max(max(x["vmax"] for x in hepsi[:4]), atma["vmax"]) <= VO_MAX and r_kose["vpp"] <= RIPPLE_MAX)
+        gecti = (vmin >= VO_MIN and vmax <= VO_MAX and r_kose["vpp"] <= RIPPLE_MAX
+                 and u_anma["kararli"] and u_kose["kararli"])
         sat.append([f"{L * 1e6:g}", f"{C * 1e6:g}", f"{r_anma['ilmax'] - r_anma['ilmin']:.2f}", f"{r_kose['ilmax']:.2f}",
                     f"{r_anma['vpp'] * 1e3:.0f} / {r_kose['vpp'] * 1e3:.0f}",
                     f"{a_anma['vmin']:.2f}–{a_anma['vmax']:.2f}", f"{o_anma['vmin']:.2f}–{o_anma['vmax']:.2f}",
                     f"{a_kose['vmin']:.2f}–{a_kose['vmax']:.2f}", f"{o_kose['vmin']:.2f}–{o_kose['vmax']:.2f}",
-                    f"{a_kose['v0pp'] * 1e3:.0f} / {a_kose['v1pp'] * 1e3:.0f}", f"{atma['vmax']:.2f}",
-                    "GEÇTİ" if gecti else "KALDI"])
+                    f"{u_anma['vmin']:.2f}–{u_anma['vmax']:.2f} {u_anma['durum']}",
+                    f"{u_kose['vmin']:.2f}–{u_kose['vmax']:.2f} {u_kose['durum']} (×{u_kose['oran']:.3f})",
+                    f"{u_kose['lfb'] * 1e3:.0f}", f"{atma['vmax']:.2f}",
+                    "geçti" if eski else "kaldı", "GEÇTİ" if gecti else "KALDI"])
         print(sat[-1], file=sys.stderr, flush=True)
     tablo(["L µH", "Cout µF", "ΔIL A", "IL tepe köşe A", "ΔVo ESR 35 mΩ: anma / köşe mV",
-           "S2E kalkışı @zarf V", "O1 tipik→zarf V", "köşe: S2E kalkışı @zarf V", "köşe: O1 tipik→zarf V",
-           "köşe salınım 57,6 / 73 W mV", "köşe yük atma sınırı V", f"{VO_MIN:g}–{VO_MAX:g} V ve ≤{RIPPLE_MAX * 1e3:.0f} mV"], sat)
+           "S2E kalkışı @zarf, 20 ms V", "O1 tipik→zarf V", "köşe: S2E kalkışı @zarf, 20 ms V", "köşe: O1 tipik→zarf V",
+           "anma: 73 W 200 ms V, sönüm", "köşe: 73 W 200 ms V, sönüm (LC periyodu başına oran)",
+           "köşe: 200 ms sonunda yavaş salınım mV t-t", "köşe yük atma sınırı V",
+           "eski karar (yalnız 20 ms)", f"KARAR: {VO_MIN:g}–{VO_MAX:g} V, ≤{RIPPLE_MAX * 1e3:.0f} mV, 200 ms'de sönümlü"], sat)
+
+
+# ---------------------------------------------------------------- FZ-C: olcum altyapisi regresyonu
+def sayisal() -> None:
+    """Sert (Vh=0, idealler.lib) ve yumusak (Vh=-0.5, test modeli) anahtarla ayni olcumler yan yana."""
+    import statistics
+    p = SECILEN
+    print("## Ölçüm altyapısı regresyonu (LTspice; 24,6 V, 7,5 A direnç yük)\n")
+    print("### 1. Anahtar iletim süresinin periyottan periyoda titremesi ve Vo(Ton) doğrusallığı\n")
+    sat = []
+    for ad, sert in (("idealler.lib (Vh=0, sert geçiş)", True), ("test modeli (Vh=−0,5, yumuşak geçiş)", False)):
+        n = netlist(p, vin=VIN_ANA, surucu=surucu_ton(p, 4.589e-6), yuk=yuk_r(7.5), tstop=16e-3, tstart=15e-3,
+                    ic=f"V(out)={VO} I(L1)=7.5", sert=sert, meas=["VPP PP V(out) FROM 15m TO 16m"])
+        m, w = kos(n, "jit", raw=True)
+        t, sw = w["time"], w["V(sw)"]
+        ons, son = [], None
+        for i in range(1, len(t)):
+            a, b = sw[i - 1], sw[i]
+            if (a - VIN_ANA / 2) * (b - VIN_ANA / 2) < 0:
+                tc = t[i - 1] + (VIN_ANA / 2 - a) / (b - a) * (t[i] - t[i - 1])
+                if b > a:
+                    son = tc
+                elif son is not None:
+                    ons.append(tc - son)
+                    son = None
+        xs, ys, pp = [], [], []
+        for k in range(0, 21, 2):
+            ton = 4.580e-6 + k * 1e-9
+            n = netlist(p, vin=VIN_ANA, surucu=surucu_ton(p, ton), yuk=yuk_r(7.5), tstop=16e-3, sert=sert,
+                        ic=f"V(out)={VO} I(L1)=7.5",
+                        meas=["VO AVG V(out) FROM 15m TO 16m", "VPP PP V(out) FROM 15m TO 16m"])
+            r = kos(n, "tar")
+            xs.append(ton * 1e9), ys.append(r["vo"]), pp.append(r["vpp"] * 1e3)
+        mx, my = sum(xs) / len(xs), sum(ys) / len(ys)
+        egim = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sum((x - mx) ** 2 for x in xs)
+        kal = max(abs(y - (my + egim * (x - mx))) for x, y in zip(xs, ys)) * 1e3
+        sat.append([ad, f"{statistics.mean(ons) * 1e9:.3f}", f"{(max(ons) - min(ons)) * 1e9:.3f}",
+                    f"{statistics.pstdev(ons) * 1e12:.0f}", f"{m['vpp'] * 1e3:.1f}", f"{egim * 1e3:.3f}",
+                    f"{kal:.2f}", f"{min(pp):.1f}–{max(pp):.1f}"])
+    tablo(["Anahtar modeli", "iletim süresi ort. ns (Ton 4589 ns)", "titreme t-t ns", "titreme std ps",
+           "ΔVo mV t-t", "dVo/dTon mV/ns (beklenen Vin/T = 2,46)", "doğrudan sapma maks mV (Ton 4580–4600 ns)",
+           "ΔVo aralığı mV (aynı tarama)"], sat)
+    print("### 2. Beş girişte ripple: HESAP (ΔIL·ESR·R/(R+ESR)) ve iki anahtar modeli\n")
+    import hesap
+    sat = []
+    for v in VIN_NOKTALARI:
+        ton = ton_ayarla(p, v, 7.5)
+        y = kararli(p, v, 7.5, ton=ton)
+        x = kararli(p, v, 7.5, ton=ton, sert=True)
+        h = hesap.nokta(v)
+        sat.append([f"{v:g}", f"{ton * 1e6:.4f}", f"{h['dvout'] * 1e3:.1f}", f"{y['vpp'] * 1e3:.1f}", f"{y['vo']:.4f}",
+                    f"{x['vpp'] * 1e3:.1f}", f"{x['vo']:.4f}"])
+    tablo(["Vin V", "Ton µs", "HESAP ΔVo mV", "yumuşak: ΔVo mV", "yumuşak: Vo V", "sert: ΔVo mV", "sert: Vo V"], sat)
+    print("### 3. Ton ayarının yakınsaması (kelepçeli çıkış; ölçüt 1 mV eşdeğeri veya io'nun %0,5'i)\n")
+    sat = []
+    for v in VIN_NOKTALARI:
+        h = []
+        for io in (0.24, 0.6, 1.15, 2.5, 7.5):
+            h.append(f"{ton_ayarla(p, v, io) * 1e6:.4f}")
+        sat.append([f"{v:g}"] + h)
+    tablo(["Vin V \\ yük A", "0,24", "0,6", "1,15", "2,5", "7,5"], sat)
+    print("Yakınsamayan nokta olsaydı koşu hata ile dururdu (ton_ayarla sonucu sessizce kullanmaz).\n")
+
+
+# ---------------------------------------------------------------- FZ-D/E: CPL kararliligi
+def kose_seti(p: dict, kl: float = L_YUKSEK, kc: float = 0.8) -> dict:
+    return dict(p, L=p["L"] * kl, Cout=p["Cout"] * kc)
+
+
+CPL_SETLERI = (
+    ("anma (şematik)", SECILEN),
+    ("pencere köşesi: L+%20, C−%20, ESR 15 mΩ", kose_seti(dict(SECILEN, ESRo=ESR_MIN))),
+    ("el sarım: L+%8, C−%20, ESR 15 mΩ", kose_seti(dict(SECILEN, ESRo=ESR_MIN), 1.08)),
+    ("en az sönüm: köşe + DCR 6,5, Ron 4,7, Rd 4 mΩ", kose_seti(EN_AZ_SONUM)),
+    ("en az sönüm sıcak: köşe + ESR 10 mΩ (TAHMİN), Rd 6 mΩ", kose_seti(EN_AZ_SONUM_SICAK)),
+    ("anma L/C, ESR 15 mΩ, Rd 4 mΩ", dict(SECILEN, ESRo=ESR_MIN, Ron=4.7e-3, Vf=0.39, Rd=4e-3)),
+    ("anma L/C, ESR 10 mΩ (TAHMİN), Rd 4 mΩ", dict(SECILEN, ESRo=10e-3, Ron=4.7e-3, Vf=0.39, Rd=4e-3)),
+    ("en çok kayıp (sıcak bakır/RDS, VF azami)", EN_COK_KAYIP),
+    ("soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır)", SOGUK),
+)
+
+
+def cpl_hesap(p: dict, vin: float, p0: float, p1: float) -> dict:
+    """hesap.cpl() ile ayni model: duty p0'da 11 V'a ayarli, yuk p1."""
+    import hesap
+    io = p0 / VO
+    d = duty_ccm(p, vin, io)
+    rs = p["DCR"] + d * p["Ron"] + (1 - d) * p["Rd"]
+    return hesap.cpl(p["L"], p["Cout"], p["ESRo"], rs, d * vin - (1 - d) * p["Vf"], p1)
+
+
+def kararlilik(hizli: bool = False) -> None:
+    print("## Sabit güç yükü (CPL) ile açık çevrim kararlılığı (LTspice + HESAP), 24,6 V, Ton sabit\n")
+    print("### 1. Darbe süresinin etkisi: pencere köşesi (39,6 µH, 800 µF, ESR 15 mΩ, DCR 7,81 mΩ), 57,64 → 73 → 57,64 W\n")
+    q = kose_seti(dict(SECILEN, ESRo=ESR_MIN))
+    h = cpl_hesap(q, VIN_ANA, P_ZARF, P_ZARF_KALKIS)
+    sat = []
+    for sure in (1e-3, 5e-3, 20e-3, 50e-3, 200e-3) + (() if hizli else (500e-3,)):
+        a = yuk_adimi(q, VIN_ANA, P_ZARF, P_ZARF_KALKIS, sure=sure)
+        aralik = VO_MIN <= a["vmin"] and a["vmax"] <= VO_MAX
+        sat.append([f"{sure * 1e3:g}", f"{a['vmin']:.2f}", f"{a['vmax']:.2f}", f"{a['v1pp'] * 1e3:.0f}",
+                    "—" if math.isnan(a["oran"]) else f"{a['lfa'] * 1e3:.0f} → {a['lfb'] * 1e3:.0f}",
+                    "—" if math.isnan(a["oran"]) else f"{a['oran']:.3f}", a["durum"],
+                    "içinde" if aralik else "DIŞINDA", "GEÇTİ" if aralik and a["kararli"] else "KALDI"])
+        print(sat[-1], file=sys.stderr, flush=True)
+    tablo(["Darbe ms", "Vmin V", "Vmax V", "darbe sonu t-t mV", "yavaş salınım, son iki LC periyodu mV",
+           "oran", "sönüm", f"{VO_MIN:g}–{VO_MAX:g} V", "karar"], sat)
+    print(f"HESAP (aynı köşe, 73 W): denge {h['vo']:.3f} V, Pkritik {h['pkritik']:.1f} W, sönüm {h['sonum']:+.1f} 1/s"
+          f" → LC periyodu başına oran {math.exp(-h['sonum'] * lc_periyot(q)):.3f}, zaman sabiti {1e3 / abs(h['sonum']):.0f} ms\n")
+
+    print("### 2. Model setleri × yük: 200 ms darbe; HESAP (Pkritik, sönüm) ile SİM (oran, tepe) yan yana\n")
+    sat = []
+    yukler = ((P_ZARF, P_ZARF_KALKIS), (P_TAM / 2, P_TAM), (P_TAM / 4, 0.75 * P_TAM))
+    for ad, ps in CPL_SETLERI:
+        for p0, p1 in yukler:
+            h = cpl_hesap(ps, VIN_ANA, p0, p1)
+            a = yuk_adimi(ps, VIN_ANA, p0, p1, sure=200e-3)
+            bek = math.exp(-h["sonum"] * lc_periyot(ps))
+            aralik = VO_MIN <= a["vmin"] and a["vmax"] <= VO_MAX
+            # sonum |.| < 10 1/s ise (zaman sabiti > 100 ms) 200 ms'de sonme/buyume ayirt edilemez
+            uyum = ("evet" if (h["sonum"] > 0) == a["kararli"] else
+                    "evet (sınırda)" if abs(h["sonum"]) < 10 and (a["oran"] < 1) == (h["sonum"] > 0) else "HAYIR")
+            sat.append([ad, f"{p0:.1f}→{p1:.1f}", f"{h['pkritik']:.0f}", f"{h['sonum']:+.0f}", f"{bek:.3f}",
+                        f"{a['oran']:.3f}", a["durum"], f"{a['vmin']:.2f}", f"{a['vmax']:.2f}", f"{a['lfb'] * 1e3:.0f}",
+                        uyum, "içinde" if aralik else "DIŞINDA", "GEÇTİ" if aralik and a["kararli"] else "KALDI"])
+            print(sat[-1], file=sys.stderr, flush=True)
+    tablo(["Model seti", "P W", "HESAP Pkritik W", "HESAP sönüm 1/s", "HESAP oran/periyot", "SİM oran/periyot",
+           "SİM sönüm", "Vmin V", "Vmax V", "200 ms sonunda yavaş salınım mV", "HESAP–SİM aynı yönde",
+           f"{VO_MIN:g}–{VO_MAX:g} V", "karar"], sat)
+    print("oran < 1 söner, > 1 büyür. 'sönmüş' satırlarda SİM oranı gürültüdür (salınım 20 mV altında).\n")
+
+    print("### 3. Seçenek denemesi (şematikte YOK): çıkışa paralel Cd + Rd sönüm dalı, 41,25 → 82,5 W, 200 ms\n")
+    import hesap
+    sat = []
+    for ad, ps in CPL_SETLERI[1:5]:
+        for dal_ad, cd, rd in (("470 µF + 0,22 Ω", 470e-6, 0.22), ("1000 µF + 0,15 Ω", 1000e-6, 0.15)):
+            io = P_TAM / 2 / VO
+            d = duty_ccm(ps, VIN_ANA, io)
+            rs = ps["DCR"] + d * ps["Ron"] + (1 - d) * ps["Rd"]
+            pk = hesap.cpl_dalli_pkritik(ps["L"], ps["Cout"], ps["ESRo"], rs, d * VIN_ANA - (1 - d) * ps["Vf"],
+                                         cd * 0.8, rd)
+            a = yuk_adimi(ps, VIN_ANA, P_TAM / 2, P_TAM, sure=200e-3,
+                          ek=[f"Cdal out dal {eng(cd * 0.8)}", f"Rdal dal 0 {eng(rd)}"])
+            aralik = VO_MIN <= a["vmin"] and a["vmax"] <= VO_MAX
+            sat.append([ad, dal_ad + " (Cd −%20)", f"{pk:.0f}", a["durum"], f"{a['vmin']:.2f}", f"{a['vmax']:.2f}",
+                        f"{a['lfb'] * 1e3:.0f}", "içinde" if aralik else "DIŞINDA",
+                        "GEÇTİ" if aralik and a["kararli"] else "KALDI"])
+            print(sat[-1], file=sys.stderr, flush=True)
+    tablo(["Model seti", "Sönüm dalı", "HESAP Pkritik W", "SİM sönüm", "Vmin V", "Vmax V",
+           "200 ms sonunda yavaş salınım mV", f"{VO_MIN:g}–{VO_MAX:g} V", "karar"], sat)
+    print("Bu bir seçenek karşılaştırmasıdır; şematiğe eleman eklenmedi, parça seçilmedi.\n")
+
+
+# ---------------------------------------------------------------- FZ-B: genel modul zarfi
+def zarf() -> None:
+    p = SECILEN
+    print("## Genel modül zarfı: 0–7,5 A / 82,5 W (LTspice, şematik değerleri)\n")
+    print("Genel modül için gerilim toleransı, ripple ve geçici durum sınırları KULLANICI TARAFINDAN ONAYLANMADI; "
+          "bu yüzden aşağıda genel GEÇTİ/KALDI kararı yoktur. 9–12 V sütunu yalnız O1/S2E uyumluluğudur.\n")
+    print("### 1. Kararlı durum, Ton her noktada 11 V'a ayarlı (yük tipi kararlı noktayı değiştirmez)\n")
+    sat = []
+    for v in VIN_NOKTALARI:
+        for ad, io in (("düşük 0,24 A", 0.24), ("%25", 1.875), ("%50", 3.75), ("%75", 5.625), ("%100", 7.5)):
+            k = kararli(p, v, io)
+            sat.append([f"{v:g}", ad, f"{k['ton'] * 1e6:.3f}", "DCM" if k["ilmin"] < 0.02 else "CCM", f"{k['vo']:.3f}",
+                        f"{k['kayma'] * 1e3:+.1f}", f"{k['vpp'] * 1e3:.1f}", f"{k['ilmax']:.2f}", f"{k['kayip']:.2f}"])
+    tablo(["Vin V", "Yük", "Ton µs", "Kip", "Vo V", "kayma mV/ms", "ΔVo mV", "IL tepe A", "iletim kaybı W"], sat)
+    print("0 A (tam yüksüz): sabit Ton'da çıkış giriş gerilimine tırmanır; açık çevrimde tanımlı değildir, "
+          "geri besleme (Adım 6) gerektirir. DCM satırlarında 'kayma' sıfır değilse 16 ms'de oturmamıştır "
+          "(RC sabiti onlarca ms); Ton kelepçeli ayardan gelir.\n")
+
+    print("### 2. Yük adımları, Ton sabit (açık çevrim), yük tipi CP / CC / CR\n")
+    sat = []
+    for v in (20.0, VIN_ANA, 26.0):
+        for p0, p1 in ((P_TAM / 4, 0.75 * P_TAM), (P_TAM / 2, P_TAM)):
+            for tip in ("cp", "cc", "cr"):
+                a = yuk_adimi(p, v, p0, p1, tip=tip, sure=200e-3 if tip == "cp" else 50e-3)
+                sat.append([f"{v:g}", tip.upper(), f"{p0:.1f}→{p1:.1f}→{p0:.1f}", f"{a['vmin']:.2f}", f"{a['vmax']:.2f}",
+                            f"{a['v1son']:.2f}", f"{a['v0son']:.2f}", a["durum"], f"{a['ilmax']:.1f}",
+                            "içinde" if VO_MIN <= a["vmin"] and a["vmax"] <= VO_MAX else "DIŞINDA"])
+                print(sat[-1], file=sys.stderr, flush=True)
+    tablo(["Vin V", "Tip", "P W (@11 V)", "Vmin V", "Vmax V", "ara kararlı V", "son kararlı V", "sönüm",
+           "IL tepe A", "O1/S2E 9–12 V"], sat)
+
+    print("### 3. Tam yük atma 82,5 → 0 W: kontrolcü gecikmesi 0–3 PWM periyodu (duty gecikme sonunda 0)\n")
+    sat = []
+    for ad, ps in (("anma", p), ("köşe L+%20, C−%20, ESR 35 mΩ", kose_seti(dict(p, ESRo=ESR_MAX))),
+                   ("soğuk ESR 120 mΩ (üst sınır)", SOGUK)):
+        for v in (VIN_ANA, 26.0):
+            h = [f"{yuk_atma_sinir(ps, v, P_TAM, 0.0, g)['vmax']:.3f}" for g in (0, 1, 2, 3)]
+            sat.append([ad, f"{v:g}"] + h)
+    tablo(["Model", "Vin V", "0 periyot V", "1 periyot V", "2 periyot V", "3 periyot V"], sat)
+    print("Yük anında kesildiğinde ilk sıçrama ΔI·ESR'dir (7,5 A × ESR); ardından bobin enerjisi Cout'a boşalır.\n")
+
+
+# ---------------------------------------------------------------- FZ-H: ideal olmayan senaryolar
+# S1: STB/STP100N6F7 veri sayfasi degerlerinden TURETILMIS yaklasik VDMOS (ST SPICE modeli DEGILDIR):
+# RDS(on) 4,7 mohm tipik, Ciss 1980 p, Coss 970 p ve Crss 86 p @25 V, plato ~5 V @7,5 A. Rg ic direnci TAHMIN.
+# D1: STPS40M60C cifti; 25 C tipik VF noktalarina (10/20/40 A toplam) ve Cj egrisine uydurulmus Schottky.
+MODEL_GERCEK = """.model S1M VDMOS(Rg=2 Vto=4.5 Kp=100 Rd=2.4m Rs=0.5m Rb=3m Cgdmax=0.7n Cgdmin=0.06n Cgs=1.9n Cjo=2.6n M=0.3 Vj=0.7 Is=10p)
+.model D1M D(Is=2.8u N=1.04 Rs=2.4m Cjo=7n M=0.45 Vj=0.5 Eg=0.69 Xti=2)"""
+
+
+def netlist_gercek(vin: float, *, lbus: float = 20e-9, rg: float = 10.0, mlcc: float = 0.0,
+                   snub: tuple[float, float] | None = None, io: float = 7.5, tstop: float = 0.6e-3) -> str:
+    """Parazitikli anahtarlama hucresi (VARSAYIM degerler): elektrolitik ESL 26 nH/adet, bara lbus,
+    TO-220 bacaklari (S1 drain 3,5 n, source 7,5 n ortak-kaynak; D1 2 x 3,5 n), MLCC ESL 1 n / 5 mohm.
+    Kapi: sw'ye gore yuzen ideal 0/10 V kaynak + rg (surucu SECILMEDI; yalniz gecis hizi senaryosu)."""
+    p = SECILEN
+    T = 1 / p["f"]
+    ton = (VO + 0.42 + io * 0.012) / (vin + 0.4) * T
+    s = ["* dogrula.py stres", f"V1 bus 0 {vin}",
+         f"Cin1 bus 0 {eng(p['Cin'])} Rser={eng(p['ESRi'])} Lser=26n",
+         f"Cin2 bus 0 {eng(p['Cin'])} Rser={eng(p['ESRi'])} Lser=26n",
+         f"Lbus bus hot {eng(lbus)} Rser=1m"]
+    if mlcc:
+        s.append(f"Cm hot 0 {eng(mlcc)} Rser=5m Lser=1n")
+    s += ["Ld hot d 3.5n", "M1 d g s S1M", "Ls s sw 7.5n",
+          f"Vg gd sw PULSE(0 10 0 5n 5n {eng9(ton)} {eng(T)})", f"Rg gd g {eng(rg)}",
+          "Lk sw k 3.5n", "D1 a k D1M", "La 0 a 3.5n"]
+    if snub:
+        s += [f"Rsn sw sn {eng(snub[0])}", f"Csn sn 0 {eng(snub[1])}"]
+    s += [f"L1 sw out {eng(p['L'])} Rser={eng(p['DCR'])} Rpar=10k", f"Cout out 0 {eng(p['Cout'])} Rser={eng(p['ESRo'])} Lser=15n",
+          f"Rload out 0 {eng(VO / io)}", MODEL_GERCEK,
+          f".tran 0 {eng(tstop)} 0 1n", f".ic V(out)={VO} I(L1)={eng(io - 0.95)}"]
+    a, b = eng(tstop - 20 * T), eng(tstop)
+    s += [f".meas tran {m}" for m in (
+        f"VDSPK MAX V(d,s) FROM {a} TO {b}", f"VRPK MAX V(k,a) FROM {a} TO {b}",
+        f"VSWMAX MAX V(sw) FROM {a} TO {b}", f"VSWMIN MIN V(sw) FROM {a} TO {b}",
+        f"VHOTPK MAX V(hot) FROM {a} TO {b}",
+        f"PS1 AVG V(d,s)*Id(M1) FROM {a} TO {b}", f"PD1 AVG V(a,k)*I(D1) FROM {a} TO {b}",
+        f"VO AVG V(out) FROM {a} TO {b}", f"VOPP PP V(out) FROM {a} TO {b}")]
+    if snub:
+        s.append(f".meas tran PSN AVG V(sw,sn)*I(Rsn) FROM {a} TO {b}")
+    s.append(".end")
+    return "\n".join(s) + "\n"
+
+
+def stres() -> None:
+    p = SECILEN
+    print("## İdeal olmayan senaryolar (LTspice). Parazitik ve kaynak değerleri VARSAYIMDIR; fiziksel ölçüm yoktur\n")
+    print("### 1. Anahtarlama zili: veri sayfasından türetilmiş VDMOS + Schottky, 7,5 A (ST SPICE modeli değil)\n")
+    sat = []
+    for ad, vin, kw in (
+            ("temel: bara 20 nH, Rg 10 Ω, MLCC yok, snubber yok", 26.0, {}),
+            ("bara 10 nH", 26.0, dict(lbus=10e-9)),
+            ("bara 40 nH", 26.0, dict(lbus=40e-9)),
+            ("Rg 4,7 Ω", 26.0, dict(rg=4.7)),
+            ("Rg 22 Ω", 26.0, dict(rg=22.0)),
+            ("MLCC 4,7 µF etkin", 26.0, dict(mlcc=4.7e-6)),
+            ("MLCC + snubber 4,7 Ω / 1 nF", 26.0, dict(mlcc=4.7e-6, snub=(4.7, 1e-9))),
+            ("MLCC + snubber 2,2 Ω / 2,2 nF", 26.0, dict(mlcc=4.7e-6, snub=(2.2, 2.2e-9))),
+            ("MLCC + snubber 10 Ω / 470 pF", 26.0, dict(mlcc=4.7e-6, snub=(10.0, 470e-12))),
+            ("snubber 4,7 Ω / 1 nF, MLCC yok", 26.0, dict(snub=(4.7, 1e-9))),
+            ("bara 40 nH, Rg 4,7 Ω (en sert)", 26.0, dict(lbus=40e-9, rg=4.7)),
+            ("temel, 28 V", 28.0, {}),
+            ("bara 40 nH, Rg 4,7 Ω, 28 V", 28.0, dict(lbus=40e-9, rg=4.7)),
+            ("MLCC + snubber 4,7 Ω / 1 nF, 28 V", 28.0, dict(mlcc=4.7e-6, snub=(4.7, 1e-9)))):
+        m = kos(netlist_gercek(vin, **kw), "zil")
+        sat.append([ad, f"{vin:g}", f"{m['vdspk']:.1f}", f"{m['vrpk']:.1f}", f"{m['vswmin']:.1f}", f"{m['vhotpk']:.1f}",
+                    f"{m['ps1']:.2f}", f"{m['pd1']:.2f}", f"{m.get('psn', 0) * 1e3:.0f}", f"{m['vopp'] * 1e3:.0f}"])
+        print(sat[-1], file=sys.stderr, flush=True)
+    tablo(["Senaryo", "Vin V", "S1 VDS tepe V (anma 60)", "D1 ters tepe V (anma 60)", "V(sw) dip V", "hücre barası tepe V",
+           "S1 toplam kayıp W", "D1 kayıp W", "snubber kaybı mW", "ΔVo mV (Cout ESL 15 nH)"], sat)
+    print("Tepe değerler modele ve yerleşime bağlıdır; kart üzerinde ölçülmeden doğrulanmış sayılmaz (PROTOTİPTE ÖLÇÜLECEK).\n")
+
+    print("### 2. Batarya sıcak takma: 26 V basamak, anahtar kapalı, yüksüz; kaynak R / L süpürmesi; tepe V(Cin)\n")
+    ls = (0.2e-6, 0.5e-6, 1e-6, 2e-6, 5e-6, 10e-6)
+    sat = []
+    for r in (5e-3, 10e-3, 20e-3, 40e-3, 80e-3):
+        h = []
+        for l in ls:
+            n = "\n".join(["* sicak takma", "V1 bat 0 PWL(0 0 1u 26)", f"Rk bat b1 {eng(r)}", f"Lk b1 vin {eng(l)}",
+                           f"Cin1 vin 0 {eng(p['Cin'])} Rser={eng(p['ESRi'])} Lser=26n",
+                           f"Cin2 vin 0 {eng(p['Cin'])} Rser={eng(p['ESRi'])} Lser=26n",
+                           ".tran 0 5m 0 1u", ".meas tran VPK MAX V(vin)", ".meas tran IPK MAX I(Lk)", ".end"]) + "\n"
+            m = kos(n, "tak")
+            h.append(f"{m['vpk']:.1f}{'*' if m['vpk'] > 35 else ''} / {m['ipk']:.0f}")
+        sat.append([f"{r * 1e3:g}"] + h)
+    tablo(["R kaynak mΩ \\ L kaynak µH (V tepe / A tepe)"] + [f"{l * 1e6:g}" for l in ls], sat)
+    print("* = 35 V anma gerilimi aşıldı. 6S paket iç direnci ve kablo endüktansı ölçülmedi.\n")
+
+    print("### 3. S1 kısa devre arızası: 11 V kararlı durumdan duty = 1 (ideal elemanlar), çıkış ve bobin akımı\n")
+    sat = []
+    for v in (VIN_ANA, 26.0):
+        for ad, yuk, io in (("7,5 A direnç", yuk_r(7.5), 7.5), ("0,24 A direnç", yuk_r(0.24), 0.24),
+                            ("57,6 W sabit güç", yuk_guc(f"0 {P_ZARF}"), P_ZARF / VO)):
+            d = (ton_ayarla(p, v, io) + 10e-9) * p["f"]
+            n = netlist(p, vin=v, surucu=surucu_duty(p, f"0 {eng(d)} 3m {eng(d)} 3.0001m 2"), yuk=yuk, tstop=30e-3,
+                        kaynak="bat", ic=f"V(out)={VO} I(L1)={eng(il_baslangic(p, v, io))}",
+                        meas=["VPK MAX V(out)", "IPK MAX I(L1)", "VSON AVG V(out) FROM 29m TO 30m"])
+            m = kos(n, "kisa")
+            sat.append([f"{v:g}", ad, f"{m['vpk']:.1f}", f"{m['vson']:.1f}", f"{m['ipk']:.0f}",
+                        "AŞILIR" if m["vpk"] > 25 else "içinde"])
+    tablo(["Batarya V", "Yük", "Vo tepe V", "Vo son V", "IL tepe A", "Cout 25 V anması"], sat)
+    print("Kaynak: batarya + kablo VARSAYIMI (40 mΩ + 1 µH / 10 mΩ). Bobin doğrusal alınmıştır; gerçek bobin bu akımda "
+          "doyar (L/L0 ≈ %60), tepe akım daha yüksek olur.\n")
 
 
 def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
@@ -508,11 +975,12 @@ def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
                          ("O1 tipik→zarf→tipik, S2E çalışıyor", P_HAFIF, P_ZARF),
                          ("S2E kalkışı, O1 zarf", P_ZARF, P_ZARF_KALKIS),
                          ("O1 zarf→boşta→zarf, S2E çalışıyor", P_ZARF, P_BOSTA)):
-        a = yuk_adimi(p, VIN_ANA, p0, p1)
+        a = yuk_adimi(p, VIN_ANA, p0, p1, sure=200e-3)
         sat.append([isim, f"{p0:.1f}→{p1:.1f}", f"{a['vmin']:.2f}", f"{a['vmax']:.2f}", f"{a['v1son']:.2f}",
-                    f"{a['v1pp'] * 1e3:.0f}", f"{a['v0son']:.2f}", f"{a['v0pp'] * 1e3:.0f}", f"{a['ilmax']:.1f}"])
-    tablo(["Adım", "P W", "Vmin V", "Vmax V", "ara kararlı V", "ara salınım mV", "son kararlı V",
-           "son salınım mV", "IL tepe A"], sat)
+                    f"{a['v1pp'] * 1e3:.0f}", f"{a['v0son']:.2f}", f"{a['v0pp'] * 1e3:.0f}", f"{a['ilmax']:.1f}",
+                    a["durum"]])
+    tablo(["Adım (200 ms)", "P W", "Vmin V", "Vmax V", "ara kararlı V", "ara salınım mV", "son kararlı V",
+           "son salınım mV", "IL tepe A", "yavaş salınım"], sat)
 
     print("### 5. Yük atma, ideal kontrolcü sınırı (yük düştüğü anda duty = 0; en iyi durum)\n")
     sat = []
@@ -551,15 +1019,15 @@ def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
                                  ("Z0 en düşük: L−, C+, ESR 15 mΩ", L_DUSUK, 1.2, ESR_MIN, 26.0)):
         q = dict(p, L=p["L"] * kl, Cout=p["Cout"] * kc, ESRo=esr)
         k = kararli(q, v, 7.5)
-        z = yuk_adimi(q, v, P_ZARF, P_ZARF_KALKIS)
+        z = yuk_adimi(q, v, P_ZARF, P_ZARF_KALKIS, sure=200e-3)
         at = yuk_atma_sinir(q, v, P_ZARF_KALKIS, P_BOSTA)
         c = kalkis_sert(q, v, 7.5, k["ton"])
         y = kalkis_yumusak(q, v, 7.5, k["ton"])
         sat.append([isim, f"{v:g}", f"{k['vpp'] * 1e3:.1f}", f"{k['ilmax']:.2f}", f"{z['vmin']:.2f}/{z['vmax']:.2f}",
-                    f"{z['v1pp'] * 1e3:.0f}", f"{at['vmax']:.2f}", f"{c['ipk']:.1f}/{c['vpk']:.1f}",
+                    f"{z['v1pp'] * 1e3:.0f}", z["durum"], f"{at['vmax']:.2f}", f"{c['ipk']:.1f}/{c['vpk']:.1f}",
                     f"{y['ipk']:.1f}/{y['vpk']:.2f}"])
-    tablo(["Köşe", "Vin V", "ΔVo mV", "IL tepe A", "zarf adım Vmin/Vmax", "73 W salınım mV", "yük atma sınırı V",
-           "sert kalkış A/V", "rampalı kalkış A/V"], sat)
+    tablo(["Köşe", "Vin V", "ΔVo mV", "IL tepe A", "zarf adım (200 ms) Vmin/Vmax", "73 W darbe sonu t-t mV",
+           "yavaş salınım", "yük atma sınırı V", "sert kalkış A/V", "rampalı kalkış A/V"], sat)
 
     print("### 9. Giriş tarafı, batarya+kablo modeli (VARSAYIM 40 mΩ + 1 µH/10 mΩ), 7,5 A\n")
     sat = []
@@ -675,6 +1143,14 @@ def main() -> None:
             secilen(MEVCUT, "Mevcut (eski) değerler")
         elif kip == "grafik":
             grafik()
+        elif kip == "sayisal":
+            sayisal()
+        elif kip == "kararlilik":
+            kararlilik("hizli" in sys.argv[2:])
+        elif kip == "zarf":
+            zarf()
+        elif kip == "stres":
+            stres()
         else:
             sys.exit(__doc__)
     finally:
