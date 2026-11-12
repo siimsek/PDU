@@ -249,6 +249,9 @@ def ltspice_kos(cir: Path) -> None:
 def kos(metin: str, ad: str = "k", raw: bool = False):
     d = calisma()
     cir = d / f"{ad}.cir"
+    # Ayni adli onceki kosunun ciktisi basarisiz yeni kosuya kanit olmasin.
+    for uz in (".log", ".raw", ".op.raw", ".db"):
+        (d / f"{ad}{uz}").unlink(missing_ok=True)
     cir.write_text(metin, encoding="ascii")
     ltspice_kos(cir)
     log = (d / f"{ad}.log").read_bytes()
@@ -256,6 +259,11 @@ def kos(metin: str, ad: str = "k", raw: bool = False):
     m = {k.lower(): float(v) for k, v in re.findall(r"^(\w+):.*?=(-?[\d.]+(?:[eE][-+]?\d+)?)", log, re.M)}
     if not m:
         raise RuntimeError("olcum yok:\n" + log[-1500:])
+    beklenen = {ad.lower() for ad in re.findall(r"^\s*\.meas(?:ure)?\s+tran\s+(\w+)", metin, re.I | re.M)}
+    eksik = beklenen - m.keys()
+    gecersiz = {ad for ad in beklenen & m.keys() if not math.isfinite(m[ad])}
+    if eksik or gecersiz:
+        raise RuntimeError(f"Eksik olcumler: {sorted(eksik)}; gecersiz olcumler: {sorted(gecersiz)}\n{log[-1500:]}")
     dalga = oku_raw(d / f"{ad}.raw") if raw else None
     for uz in (".raw", ".op.raw", ".db"):
         (d / f"{ad}{uz}").unlink(missing_ok=True)
@@ -491,7 +499,8 @@ def yuk_adimi(p: dict, vin: float, p0: float, p1: float, *, ton: float | None = 
             m["durum"] = "sürekli salınım"
         else:
             m["durum"] = "büyüyor"
-    m["kararli"] = m["durum"] in ("sönmüş", "sönüyor", "kısa")
+    # Kisa darbe icin kararlilik degerlendirilemez; gecmis olmakla karistirilmaz.
+    m["kararli"] = m["durum"] in ("sönmüş", "sönüyor")
     return r
 
 
@@ -742,7 +751,8 @@ def kararlilik(hizli: bool = False) -> None:
         sat.append([f"{sure * 1e3:g}", f"{a['vmin']:.2f}", f"{a['vmax']:.2f}", f"{a['v1pp'] * 1e3:.0f}",
                     "—" if math.isnan(a["oran"]) else f"{a['lfa'] * 1e3:.0f} → {a['lfb'] * 1e3:.0f}",
                     "—" if math.isnan(a["oran"]) else f"{a['oran']:.3f}", a["durum"],
-                    "içinde" if aralik else "DIŞINDA", "GEÇTİ" if aralik and a["kararli"] else "KALDI"])
+                    "içinde" if aralik else "DIŞINDA",
+                    "KALDI" if not aralik else "BELİRSİZ" if a["durum"] == "kısa" else "GEÇTİ" if a["kararli"] else "KALDI"])
         print(sat[-1], file=sys.stderr, flush=True)
     tablo(["Darbe ms", "Vmin V", "Vmax V", "darbe sonu t-t mV", "yavaş salınım, son iki LC periyodu mV",
            "oran", "sönüm", f"{VO_MIN:g}–{VO_MAX:g} V", "karar"], sat)
@@ -793,7 +803,7 @@ def kararlilik(hizli: bool = False) -> None:
             print(sat[-1], file=sys.stderr, flush=True)
     tablo(["Model seti", "Sönüm dalı", "HESAP Pkritik W", "SİM sönüm", "Vmin V", "Vmax V",
            "200 ms sonunda yavaş salınım mV", f"{VO_MIN:g}–{VO_MAX:g} V", "karar"], sat)
-    print("Rd_toplam = ayrık Rd direnci + Cd kondansatörünün ESR'si. 0,15–0,60 Ω aralığının tamamında köşe setleri geçer.\n")
+    print("Rd_toplam = ayrık Rd direnci + Cd kondansatörünün ESR'si. Yalnız tabloda listelenen direnç ve model setleri sınanmıştır.\n")
 
 
 # ---------------------------------------------------------------- FZ-B: genel modul zarfi
