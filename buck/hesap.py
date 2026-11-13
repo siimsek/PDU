@@ -75,7 +75,7 @@ S1_VPLATO = 5.0                           # CIKARIM: aktarim egrisinden 7,5 A ic
 S1_RTH_JC = 1.2                           # K/W DATASHEET
 S1_TJ_MAX = 175.0
 S1_VDS_MAX = 60.0
-TO220_RTH_JA = 62.5                       # K/W TAHMIN: sogutucusuz TO-220 icin yaygin deger (bu parcanin belgesinde yok)
+TO220_RTH_JA = 62.5                       # K/W DATASHEET: STP100N6F7 DocID027212 Rev 2, Tablo 3
 
 # D1: STPS40M60C Doc ID 018813 Rev 1 (May 2011), Tablo 2-4 (DATASHEET, diyot basina)
 # Cift (iki bacak paralel) icin dogrusal model V = V0 + R I (I toplam akim), 10-20 A toplam noktalarindan:
@@ -483,7 +483,7 @@ if __name__ == "__main__":
     print("  Vin \\ yük A@11V " + " ".join(f"{a:6g}" for a in amper))
     for v in VIN_V:
         print(f"  {v:5.1f}           " + " ".join(f"{acik_cevrim_vo(v, d0, VO_V / a):6.2f}" for a in amper))
-    print("  0 A'de (yüksüz) açık çevrim çıkışı giriş gerilimine tırmanır (tepe doğrultma): 20–26 V > Cout 25 V anma.")
+    print("  0 A'de (yüksüz) açık çevrim çıkışı giriş gerilimine tırmanır (tepe doğrultma): 20–26 V; R/C referansı Cout 25 V, hedef ≥ 35 V.")
 
     q = dinamik()
     print(f"\n5) LC dinamiği: ana f0={q['f0_hz']:.0f} Hz, Z0={q['z0']:.3f} Ω, ESR sıfırı={q['f_esr_hz']/1e3:.1f} kHz,"
@@ -509,7 +509,7 @@ if __name__ == "__main__":
               f" {a73['vo']:6.3f} {a73['sonum']:+9.1f} {tau(a73):>7s}   | {a82['sonum']:+9.1f} {tau(a82):>7s}")
     print("   ↑ = büyüyen salınımın zaman sabiti. Dalsız basitleştirilmiş sınır (Rs·ESR ve Cd-Rd yok, Vo = 11 V):"
           f" anma {q['p_cpl_sinir_w']:.0f} W, köşe {qk['p_cpl_sinir_w']:.0f} W.")
-    print("   Sönüm dalıyla (470 µF + 0,22 Ω) bütün model setlerinde Pkritik ≥ 126 W > 82,5 W modül zarfı.")
+    print("   Sönüm dalıyla (470 µF + 0,22 Ω) yukarıdaki model setlerinde Pkritik > 82,5 W; diğer kombinasyonlar kanıtlanmaz.")
 
     print("\n6b) Sönüm seçenekleri ve Rd tolerans penceresi: Pkritik [W] (HESAP, 24,6 V; 470 µF + 0,22 Ω şematiğe uygulandı)")
     print("   Köşe = L +%20, ana Cout −%20, sönüm dalı kondansatörü −%20. ESR senaryoları: 15 mΩ (pencere alt kenarı) ve")
@@ -531,10 +531,10 @@ if __name__ == "__main__":
     print("   82,5 W zarfının üstünde kalan hücreler doğal (açık çevrim) kararlıdır; altında kalanlar kararsızdır.")
 
     print("\n7) Kayıp bütçesi, 7,5 A (HESAP; sürücü seçilmedi: Rg toplam ve 10 V sürme VARSAYIM)")
-    print("   L1 çekirdek: ΔB = volt·saniye/(N·Ae); kayıp 900 mW/cm³ @100 kHz/100 mT AZAMİ noktasından B² ile ölçeklendi (ÇIKARIM)")
+    print("   L1 çekirdek: ΔB = volt·saniye/(N·Ae); 900 mW/cm³ @100 kHz/100 mT noktasından B² ile ölçekleme (TAHMİN, üst sınır değil)")
     for v in VIN_V:
         c = l1_cekirdek(v)
-        print(f"     Vin {v:4.1f} V: volt·saniye {c['volt_s']*1e6:5.1f} µV·s, ΔB {c['db']*1e3:5.1f} mT t-t, çekirdek ≤ {c['p_w']:.3f} W")
+        print(f"     Vin {v:4.1f} V: volt·saniye {c['volt_s']*1e6:5.1f} µV·s, ΔB {c['db']*1e3:5.1f} mT t-t, çekirdek ≈ {c['p_w']:.3f} W")
     print("     Çekirdek kaybı akım ripple'ına değil volt·saniyeye bağlıdır: L −%30 köşesinde (ΔIL 2,8 A) ΔB DEĞİŞMEZ.")
     print("   Vin     S1 iletim  S1 anaht. (Rg 5/10/25 Ω)   D1 iletim  L1 bakır  L1 çekirdek  Cin    Cout   toplam (Rg 10)  verim %   kapı sürme")
     for v in VIN_V:
@@ -570,7 +570,7 @@ if __name__ == "__main__":
         d = d1_kayip(tj, 26.0, "azami")
         print(f"     D1 azami @Tj {tj:3d} °C, 26 V: iletim {d['p_il']:.2f} W + ters {d['p_ters']:.2f} W (IR {d['ir_ma']:.0f} mA toplam) = {d['p']:.2f} W")
     print("   S1 (RDS(on) azami, Rg 10 Ω, 20 V giriş = en yüksek iletim):")
-    for ad, rth in (("soğutucusuz (62,5 K/W, TAHMİN)", TO220_RTH_JA), ("ped + 12 K/W", S1_RTH_JC + RTH_PED + 12), ("ped + 8 K/W", S1_RTH_JC + RTH_PED + 8)):
+    for ad, rth in (("soğutucusuz (62,5 K/W, DATASHEET)", TO220_RTH_JA), ("ped + 12 K/W", S1_RTH_JC + RTH_PED + 12), ("ped + 8 K/W", S1_RTH_JC + RTH_PED + 8)):
         h = []
         for ta in (25, 50, 60):
             tj, pw, ok = isil_denge(lambda t: s1_kayip(t, 20.0, 10), rth, ta, S1_TJ_MAX)

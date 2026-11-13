@@ -18,8 +18,8 @@ Bu belge güncel kararı anlatır. Değerler parça numarasından bağımsızdı
 | Ton | 4,59 µs | — | 24,6 V / 7,5 A'de 11 V (SİM 11,000 V). İletim süresi PULSE kenarları yüzünden Ton + 10 ns'dir | §5.1 |
 | L1 | 33 µH el sarım, 7,81 mΩ (@20 °C, HESAP) | **33 µH** (el sarım AL ±%8 → 30,7–36,1 µH; satın alınan ±%20 penceresi de geçer); Isat ≥ 12 A; DCR 6,5–15 mΩ (el sarım hedefi 8–10) | Akım ripple'ı %25; CCM sınırı 0,94 A tipik yükün (≈ 1,2 A) altında. 22 µH elendi (tipik yük DCM'de, çıkış 8,8 V'a düşer). 39 ve 47 µH sönüm dalıyla `pencere`'yi geçse de kullanıcı kararıyla 33 µH seçilmiştir | §4.1, §4.4 |
 | Cout | 1000 µF | 1000 µF ±%20; **≥ 35 V** (kullanıcı kararı, §9.4) | Sabit güç yüküyle LC dinamiği ve ripple. S1 kısa devresinde çıkış 27,3–31,1 V'a çıktığından 35 V sınıfı kabul edildi | §4.1, §4.4, §9.4 |
-| Cout ESR | 25 mΩ | **≤ 35 mΩ** @100 kHz, 20 °C (sönüm dalı varken 10–35 mΩ aralığının tamamı geçer) | Üst sınır ripple için (35 mΩ köşede 83 mV t-t). Alt sınır gereksinimini paralel Cd + Rd sönüm dalı devralır (§6, §10) | §4.2, §4.4, §6, §10 |
-| Çıkış sönüm dalı (Cd + seri Rd) | **470 µF + 0,22 Ω** | Cd: 470 µF ±%20, **≥ 35 V**; ayrık Rd: **0,22 Ω** (Cd ESR'si dahil toplam dal direnci **0,15–0,60 Ω**), ≥ 0,25 W | Ana Cout ESR'sinden bağımsız CPL sönümü: bütün köşe ve sıcak ESR (10 mΩ) senaryolarında Pkritik ≥ 126 W > 82,5 W; sürekli kayıp ≈ 1,3 mW | §6, §10 |
+| Cout ESR | 25 mΩ | **≤ 35 mΩ** @100 kHz, 20 °C (10 mΩ dahil belirli senaryolar sınandı; aralığın tamamı kanıtlanmadı) | Üst sınır ripple için (35 mΩ köşede 83 mV t-t). Cd + Rd sınanan düşük ESR senaryolarında sönüm sağlar; diğer kombinasyonlar ayrıca değerlendirilir (§6, §10) | §4.2, §4.4, §6, §10 |
+| Çıkış sönüm dalı (Cd + seri Rd) | **470 µF + 0,22 Ω** | Cd: 470 µF ±%20, **≥ 35 V**; ayrık Rd: **0,22 Ω** (Cd ESR'si dahil toplam dal direnci **0,15–0,60 Ω**), ≥ 0,25 W | Sınanan köşe ve sıcak ESR (10 mΩ) senaryolarında Pkritik ≥ 126 W > 82,5 W; sürekli kayıp ≈ 1,3 mW. Tüm ESR kombinasyonları sınanmadı | §6, §10 |
 | Cin | 2 × 1000 µF, 15 mΩ/adet | toplam ripple akımı ≥ 4,5 A; **≥ 50 V** (kullanıcı kararı, §9.4); ≥ 440 µF | 3,8 A RMS giriş ripple akımı boyutu belirler; örnek sıcak takma hesabında tepe 48,0 V, gerçek kaynak ve gerilim payı doğrulanmadı | §5.9, §9.4 |
 | S1 | Ron 12 mΩ | RDS(on) ≤ 12 mΩ; VDS ≥ 55 V | İletim kaybı 0,32 W (şematik adayıyla 0,15 W) | §5.1 |
 | D1 | 0,5 V + 10 mΩ | VF ≤ 0,58 V @ 7,5 A; VRRM ≥ 45 V (tercihen 60 V) | İletim kaybının üçte ikisi (şematik adayıyla 1,78 W @ 24,6 V) | §5.1 |
@@ -164,7 +164,7 @@ Son pencere (Cout 1000 µF, ESR 15–35 mΩ, paralel sönüm dalı **Cd = 470 µ
 - Karar üç şeye bakar: (1) bütün yük adımlarında ve yük atmada 9–12 V, (2) 26 V köşe ripple'ı ≤ 165 mV, (3) S2E kalkış darbesi (57,6 → 73 W) **200 ms** sürdüğünde de 9–12 V ve yavaş (LC) salınımın sönmesi.
 - Sönüm dalı eklenmeden önce aynı koşuda 33 / 39 / 47 µH satırlarının üçü de köşede **kalıyordu** (33 µH: 9,91–12,05 V, 2082 mV t-t sürekli salınım; 39 / 47 µH: 12,59 / 12,86 V). **`Cd = 470 µF + Rd = 0,22 Ω` sönüm dalıyla üç satır da GEÇTİ**: 33 µH köşede 73 W 200 ms darbesi **10,72–11,25 V** içinde kalır ve darbe sonundaki yavaş salınım 1 mV t-t'dir (tamamen sönmüş).
 - **Seçilen hedef L1 = 33 µH'dir** (kullanıcı kararı korunmuştur; en geniş geçici durum payını [köşe O1 adımı 10,22–11,67 V] ve en hızlı LC dinamiğini verir). Sönüm dalı sayesinde L1 toleransı +%20'ye (39,6 µH) ve hatta 47 µH +%20'ye çıksa dahi sönüm bozulmaz; el sarımda (AL ±%8 → 30,7–36,1 µH) çok geniş üretim payı oluşur.
-- Sönüm artık ana `Cout`'un ESR alt sınırına veya yüksek DCR'ye muhtaç değildir (§6, §10). Ölçülebilir parça ve sarım hedef aralıkları: [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md).
+- Sınanan model setlerinde sönüm dalı, daha önce sorun yaratan düşük Cout ESR ve DCR senaryolarında sönüm sağlar (§6, §10). Tüm kombinasyonlar sınanmadı. Ölçülebilir parça ve sarım hedef aralıkları: [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md).
 
 ## 5. Şematik değerleriyle test sonuçları (SİM)
 
@@ -391,7 +391,7 @@ Tam 3. derece durum uzayı ifadesi ve geçerlilik sınırı (`hesap.py` `cpl()`)
    en çok kayıp (sıcak bakır/RDS, VF azami)                  16.3    262.0   |    +672.0          | 10.977    +627.2       2   |    +599.1       2
    soğuk: ESR 120 mΩ (Zmax −10 °C, üst sınır)                14.7    430.1   |   +1282.3          | 10.979   +1247.3       1   |   +1225.1       1
    ↑ = büyüyen salınımın zaman sabiti. Dalsız basitleştirilmiş sınır (Rs·ESR ve Cd-Rd yok, Vo = 11 V): anma 182 W, köşe 73 W.
-   Sönüm dalıyla (470 µF + 0,22 Ω) bütün model setlerinde Pkritik ≥ 126 W > 82,5 W modül zarfı.
+   Sönüm dalıyla (470 µF + 0,22 Ω) yukarıdaki model setlerinde Pkritik > 82,5 W; diğer kombinasyonlar kanıtlanmaz.
 ```
 
 - **9 model seti × 3 sabit güç adımı = 27 satırın tamamında HESAP ve SİM uyuşur ve tamamı GEÇER** (`10,26–11,65 V`, darbe sonunda yavaş salınım ≤ 6 mV t-t).
@@ -485,7 +485,7 @@ Tek bir "en kötü" set yoktur: sönüm için en kötü olan (düşük direnç) 
 | Soğuk | anma | ESR 120 mΩ (−10 °C Zmax, **üst sınır**), Rd 0,22 Ω | 7,81 mΩ | 5,6 mΩ | 0,38 V + 8 mΩ | §6, §7.3 |
 
 - **D1 çifti (DATASHEET, STPS40M60C Doc ID 018813 Rev 1, Tablo 4, diyot başına):** 5 / 10 / 20 A'de VF tipik 0,430 / 0,470 / 0,540 V (25 °C), 0,325 / 0,385 / 0,475 V (125 °C); azami 0,460 / 0,505 / 0,595 V (25 °C). İki bacak paralelken aynı gerilimde akım iki katıdır; çiftin eğimi 10–20 A toplam aralığında 4 mΩ (25 °C tipik), 6 mΩ (125 °C tipik) olur. Şematikteki 8 mΩ tek diyodun eğimidir: **kayıp için kötümser, sönüm için iyimserdir.** 7,5 A toplamda (3,75 A/bacak) eğri bu doğrulardan daha diktir; o noktanın sayısı yayımlanmamıştır, bu yüzden 4–6 mΩ bir **senaryo aralığıdır**, üretici garantisi değildir.
-- **S1 (DATASHEET, STB100N6F7 DocID027210 Rev 2; aynı kırmık, TO-220 belgesi açılamadı):** RDS(on) 4,7 tipik / 5,6 mΩ azami; en düşük değer yok. Sıcaklık çarpanı eğriden okunmuştur.
+- **S1 (DATASHEET, [STP100N6F7 DocID027212 Rev 2](https://www.st.com/resource/en/datasheet/stp100n6f7.pdf), Tablo 4):** VGS=10 V, ID=50 A koşulunda RDS(on) 4,7 mΩ tipik / 5,6 mΩ azami; en düşük değer yok. Sıcaklık çarpanı eğriden okunmuştur.
 - **Cout / Cin:** üretici **ESR yayımlamaz**; 35 / 15 mΩ (20 °C) ve 120 / 38 mΩ (−10 °C) 100 kHz'teki en büyük **empedanstır** (|Z|), ESR değildir. Cin'de ESL reaktansı (≈ 26 nH → 16 mΩ @100 kHz) aynı büyüklüktedir. tanδ 120 Hz'te verilir ve 0,9 kHz ESR'sini doğrudan vermez. 15 ve 10 mΩ senaryodur. **ÖLÇÜM YOK.**
 - **L1:** AL 69 nH ±%8 (DATASHEET) → 30,7–36,1 µH; DCR ve L(I) HESAP. **ÖLÇÜM YOK.** Köşe testlerindeki +%20, satın alınan bobinin toleransıdır; el sarım için +%8 ayrı satırda verilmiştir.
 
@@ -497,12 +497,12 @@ Bu bölüm Adım 3'ün hesap kısmıdır. Sürücü, soğutucu ve yerleşim seç
 
 ```
 7) Kayıp bütçesi, 7,5 A (HESAP; sürücü seçilmedi: Rg toplam ve 10 V sürme VARSAYIM)
-   L1 çekirdek: ΔB = volt·saniye/(N·Ae); kayıp 900 mW/cm³ @100 kHz/100 mT AZAMİ noktasından B² ile ölçeklendi (ÇIKARIM)
-     Vin 20.0 V: volt·saniye  50.2 µV·s, ΔB  13.1 mT t-t, çekirdek ≤ 0.085 W
-     Vin 22.2 V: volt·saniye  56.5 µV·s, ΔB  14.8 mT t-t, çekirdek ≤ 0.108 W
-     Vin 24.6 V: volt·saniye  62.1 µV·s, ΔB  16.2 mT t-t, çekirdek ≤ 0.130 W
-     Vin 25.2 V: volt·saniye  63.3 µV·s, ΔB  16.5 mT t-t, çekirdek ≤ 0.136 W
-     Vin 26.0 V: volt·saniye  64.9 µV·s, ΔB  17.0 mT t-t, çekirdek ≤ 0.142 W
+   L1 çekirdek: ΔB = volt·saniye/(N·Ae); 900 mW/cm³ @100 kHz/100 mT noktasından B² ile ölçekleme (TAHMİN, üst sınır değil)
+     Vin 20.0 V: volt·saniye  50.2 µV·s, ΔB  13.1 mT t-t, çekirdek ≈ 0.085 W
+     Vin 22.2 V: volt·saniye  56.5 µV·s, ΔB  14.8 mT t-t, çekirdek ≈ 0.108 W
+     Vin 24.6 V: volt·saniye  62.1 µV·s, ΔB  16.2 mT t-t, çekirdek ≈ 0.130 W
+     Vin 25.2 V: volt·saniye  63.3 µV·s, ΔB  16.5 mT t-t, çekirdek ≈ 0.136 W
+     Vin 26.0 V: volt·saniye  64.9 µV·s, ΔB  17.0 mT t-t, çekirdek ≈ 0.142 W
      Çekirdek kaybı akım ripple'ına değil volt·saniyeye bağlıdır: L −%30 köşesinde (ΔIL 2,8 A) ΔB DEĞİŞMEZ.
    Vin     S1 iletim  S1 anaht. (Rg 5/10/25 Ω)   D1 iletim  L1 bakır  L1 çekirdek  Cin    Cout   toplam (Rg 10)  verim %   kapı sürme
    20.0     0.18      0.32 / 0.50 / 1.05           1.44       0.44       0.09      0.10  0.005      2.75        96.77     30 mW
@@ -516,7 +516,7 @@ Bu bölüm Adım 3'ün hesap kısmıdır. Sürücü, soğutucu ve yerleşim seç
 ```
 
 - İdeal model verimi (%97,1–97,6) **gerçek verim değildir**; anahtarlama, çekirdek ve giriş kondansatörü kayıplarıyla kestirim %96,1–96,8'dir (Rg 10 Ω varsayımıyla).
-- **Çekirdek kaybı ≤ 0,09–0,14 W.** ΔB volt·saniyeden hesaplanır (13–17 mT t-t); veri sayfasının tek noktası (900 mW/cm³ azami @ 100 kHz / 100 mT) B² ile ölçeklendi (ÇIKARIM). Denetim raporlarındaki 0,11 W bu aralığın içindedir; 0,22 W bu hesapla **doğrulanamadı**. Kayıp, akım ripple'ı büyük olan L −%30 köşesine göre ölçeklenmişse hatalıdır: endüktans düşünce ripple akımı artar ama akı salınımı (volt·saniye / N·Ae) değişmez.
+- **Çekirdek kaybı ≈ 0,09–0,14 W (TAHMİN).** ΔB volt·saniyeden hesaplanır (13–17 mT t-t); veri sayfasının tek noktası (900 mW/cm³ azami @ 100 kHz / 100 mT) B² ile ölçeklendi. Bu varsayım ilgili düşük akı ve DC bias koşullarında üreticinin garanti ettiği bir üst sınır değildir. 0,22 W bu hesapla doğrulanamadı. Aynı volt·saniye ve sarım varsayımında L −%30 köşesinde ΔB değişmez.
 - S1 anahtarlama kaybı toplam kapı direncine doğrusal bağlıdır (0,4–1,4 W). Parazitikli SİM (§9.3) aynı büyüklükte sonuç verir (S1 toplam 0,3–0,6 W).
 
 ### 9.2 Isıl denge ve soğutucu
@@ -542,7 +542,7 @@ Bu bölüm Adım 3'ün hesap kısmıdır. Sürücü, soğutucu ve yerleşim seç
      D1 azami @Tj 125 °C, 26 V: iletim 1.42 W + ters 0.96 W (IR 85 mA toplam) = 2.38 W
      D1 azami @Tj 150 °C, 26 V: iletim 1.30 W + ters 4.08 W (IR 360 mA toplam) = 5.38 W
    S1 (RDS(on) azami, Rg 10 Ω, 20 V giriş = en yüksek iletim):
-     soğutucusuz (62,5 K/W, TAHMİN)      69 °C / 0.71 W      96 °C / 0.74 W     107 °C / 0.75 W
+     soğutucusuz (62,5 K/W, DATASHEET)   69 °C / 0.71 W      96 °C / 0.74 W     107 °C / 0.75 W
      ped + 12 K/W                        35 °C / 0.68 W      60 °C / 0.70 W      70 °C / 0.71 W
      ped + 8 K/W                         32 °C / 0.68 W      57 °C / 0.70 W      67 °C / 0.71 W
    Ortak soğutucu (S1 + D1 aynı soğutucuda, ayrı pedlerle), D1 azami, S1 azami, 26 V:
@@ -722,7 +722,7 @@ Sönüm dalı ve toplam dal direnci (`Rd_toplam = ayrık Rd + Cd ESR`) aralığ�
 - O1'in gerçek tüketimi, kalkış akımı, mutlak maksimum gerilimi ve ripple toleransı yayımlanmamış; 4 / 10 W değerleri tahmindir.
 - O1 giriş koruması (eFuse OVLO ≈ 14,7 V, TVS, TPS62180) v0.2 şemasının metin katmanından çıkarıldı; devre bağlantıları görülerek doğrulanmadı. 12 V üstü için dayanım varsayılmamalıdır.
 - S2E kalkış darbesinin süresi ve 11 V'taki değeri (datasheet 12 V verir).
-- STP100N6F7'nin TO-220 belgesi açılamadı (D²PAK sürümünün belgesi okundu); TO-220'ye özgü Rth(j-amb) ve ayak izi **DOĞRULANAMADI**. ST'nin SPICE modelleri kullanılmadı (edinilemedi); §9.3 modeli veri sayfasından türetilmiştir.
+- [STP100N6F7 TO-220 veri sayfası](https://www.st.com/resource/en/datasheet/stp100n6f7.pdf), DocID027212 Rev 2, Tablo 3 Rth(j-amb) = 62,5 °C/W verir; kılıf boyutları belgede bulunur ancak bir kütüphane ayak iziyle karşılaştırılmadı. ST'nin SPICE modeli kullanılmadı; §9.3 modeli veri sayfasından türetilmiştir.
 - Seramik kondansatörün DC bias eğrisi, soğutucu ve yalıtım pedi ısıl dirençleri: parça seçilmedi.
 - Soğuk köşe: −10 °C'ta Zmax'ın tamamı ESR sayılırsa (Cout 120 mΩ, Cin 38 mΩ) 26 V / L −%30 / Cout −%20 köşesinde ripple 165 mV ölçütünü **aşar** (11.11.2026 koşusu: 318 mV); kabul ölçütü değiştirilmedi, gerçek ESR ölçülmelidir.
 
@@ -763,7 +763,7 @@ Bu yüzden kapı iki basamaklıdır. **Simülasyon dondurması** değerleri ve p
 | Kaynak iç direnci, kablo R ve L | Batarya ve kablo belli olunca |
 | Gerçek parça değerleri üç dosyaya yazılır, `secilen`, `pencere`, `kararlilik`, `zarf` yeniden koşulur | Ölçümlerden sonra |
 | Kapalı çevrim kararlılığı, yük/giriş değişimi, hafif yük, kalkış ve koruma senaryoları | Kontrol tasarımı ve kullanılan parça modelleriyle; daha sonra tezgâhta da doğrulanır |
-| STP100N6F7 TO-220 belgesi, üretici SPICE modelleri | Parça kesinleşince |
+| STP100N6F7 TO-220 ayak izinin veri sayfasıyla karşılaştırılması, üretici SPICE modellerinin değerlendirilmesi | Parça kesinleşince |
 | Zil, sıcaklık ve verim ölçümleri | Tezgâh prototipi (Adım 8) |
 
 Bu basamaktaki hiçbir iş yapılmadı ve hiçbiri "doğrulandı" sayılmaz; yalnız sıraları dondurmadan sonradır.
