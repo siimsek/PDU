@@ -46,7 +46,7 @@ Güncel değerler ve aktif adım burada tekrar edilmez; [YOL-HARITASI.md](YOL-HA
 
 ### 4.2 Değerler ve parçalar
 - **Tek doğruluk kaynağı:** şematik değerleri `buck/ltspice/sematik_uret.py`, `buck/hesap.py` ve `buck/dogrula.py` (`SECILEN`) içinde aynı olmalıdır. Biri değişirse üçü birlikte değişir, testler yeniden koşulur, belgelerdeki sayılar yenilenir.
-- Bir değeri değiştirmeden önce nedenini oku ([buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md), yol haritasındaki karar günlüğü). Bilerek alınmış kararlar: Cout ESR'sinin **alt sınırı** vardır (bu yüzden 18 mΩ değil 35 mΩ'luk kondansatör seçildi); 22 µH ve 680 µF **elenmiştir**; Cout/L büyütmek giriş değişimi etkisini düzeltmez; S1 en düşük dirençli değil en düşük kapı yüklü adaydır.
+- Bir değeri değiştirmeden önce nedenini oku ([buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md), yol haritasındaki karar günlüğü). Bilerek alınmış kararlar: Cout ESR'sinin alt sınırı eski dalsız devrede sönüm için önemliydi; Cd + Rd dalı eklenince sınanan düşük ESR senaryolarında sönüm sağlandı, tüm ESR ve tolerans kombinasyonları doğrulanmadı. 22 µH ve 680 µF **elenmiştir**; Cout/L büyütmek giriş değişimi etkisini düzeltmez; S1 en düşük dirençli değil en düşük kapı yüklü adaydır.
 - Parçalar **kesinleşmemiştir**. [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md) içinde öncelik sırasına dizilmiş bir aday listesi vardır; şematik **1. sıra adayların** veri sayfası değerlerini taşır. Bu değerler "satın alınacak parça" diye sunulmaz. Aday sırasını ve 1. sırayı kullanıcı belirler; araç kendi başına parça seçip şematiğe yazmaz, sırayı değiştirmez. Parça araması yalnız kullanıcı isterse yapılır ve sonuç "kriteri tutan aday" olarak sunulur.
 - Kullanıcı yeni bir parça getirdiğinde: veri sayfası değerlerini kriterlerle tek tek karşılaştır → adayı geçici olarak (depoyu değiştirmeden) LTspice köşe testinden geçir → sonucu sun → kullanıcı 1. sıraya almak isterse değerleri üç dosyaya yaz → `dogrula.py secilen` koş → belgeleri güncelle. Veri sayfasında bulunmayan değer tahmin edilmez; "doğrulanamadı" yazılır.
 
@@ -118,7 +118,7 @@ Bu bölüm ileriye dönüktür. PCB işine kullanıcı açıkça başlatmadan gi
 ### 7.1 Başlamadan önce
 - Güç katı dondurulmuş (Adım 3), sürücü, PWM, geri besleme ve korumalar tasarlanmış (Adım 4–7) ve tezgâhta ölçülmüş (Adım 8) olmalıdır. Eksik adımla PCB'ye geçilecekse kullanıcıya açıkça söylenir.
 - Araç, katman sayısı, bakır kalınlığı ve kart üreticisinin tasarım kuralları kullanıcıyla netleştirilir (önceki tasarımda KiCad kullanılmıştı; varsayılmaz, sorulur).
-- PCB'ye geçmeden önce parçalar **kesinleştirilmiş** olmalıdır. Her parçanın kılıfı ve ayak izi kesinleşen parçanın veri sayfasından alınır; kütüphane ayak izi veri sayfası ölçüleriyle karşılaştırılır. Şu anki 1. sıra adaylar: L1 yüzey montaj (Würth 74435583300), Cout radyal, Cin radyal 16 × 20 mm, S1 ve D1 TO-220.
+- PCB'ye geçmeden önce parçalar **kesinleştirilmiş** olmalıdır. Her parçanın kılıfı ve ayak izi kesinleşen parçanın veri sayfasından alınır; kütüphane ayak izi veri sayfası ölçüleriyle karşılaştırılır. Güncel aday sırası ve henüz kesinleşmeyen kılıflar [buck/PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md) içindedir; L1 için 1. sıra el sarım, Würth 74435583300 ikinci sıradır.
 
 ### 7.2 Tasarım girdileri (bu depodan)
 - Akımlar: çıkış 7,5 A sürekli; bobin tepe 8,9 A; giriş ortalama ≈ 4,3 A (20 V'ta); Cin ripple akımı 3,8 A RMS; S1 5,7 A RMS; D1 4,2 A ortalama. Sert kalkış ve arıza akımları ayrıca (Adım 5 ve 7 sonuçlarıyla) ele alınır.

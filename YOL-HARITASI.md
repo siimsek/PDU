@@ -4,7 +4,9 @@ Bu dosya projenin **nerede olduğunu** ve **sırada ne olduğunu** gösterir. Bi
 
 **Son güncelleme:** 13 Kasım 2026 (kontrol mimarisi ile güç katı parçalarının birlikte değerlendirilmesi iş sırasına alındı)
 
-**13 Kasım 2026 kanıt notu:** Dondurma geçmiş kullanıcı kararıdır; denenmiş model ve senaryoların dışına genellenmez. 200 ms testleri birden fazla model setinde, 500 ms testi ise ayrı bir pencere köşesi senaryosunda koşuldu. Kısa darbelerde sönüm kararı verilemez; sıfır süreç çıkış kodu elektriksel geçme anlamına gelmez. Ayrıntı: [OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §13.
+**13 Kasım 2026 kanıt notu:** Dondurma geçmiş kullanıcı kararıdır; denenmiş model ve senaryoların dışına genellenmez. 200 ms testleri birden fazla model setinde, 500 ms testi ise ayrı bir pencere köşesi senaryosunda koşuldu. 200 ms'den kısa darbede gözlenen sönüm tek başına geçme kanıtı değildir; ihlal veya büyüme ise başarısızlıktır. Sıfır süreç çıkış kodu elektriksel geçme anlamına gelmez. Ayrıntı: [OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §13.
+
+**13 Kasım 2026 tekrar koşuları:** Analitik hesap, ana şematik ve `sayisal`, `secilen`, `pencere`, `kararlilik`, `zarf`, `stres`, `tarama`, `mevcut`, `grafik` kipleri koşuldu. Belirli pencere ve 200 ms kararlılık senaryoları geçti; açık çevrim hafif yük, sert kalkış, bazı parazitik stresler ve eski dalsız modellerde sınır dışı sonuçlar da tekrar görüldü. 200 ms'den kısa darbelerin yanlış GEÇTİ etiketi düzeltildi ve `kararlilik` güncel kodla tam olarak yeniden koşuldu: kısa, sınır içi örnekler BELİRSİZ; 27 adet 200 ms model-yük satırı ve ayrı 500 ms örneği GEÇTİ; dört eski dalsız karşılaştırma KALDI. Ölçüm ve diğer sınırlar [OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §13'tedir.
 
 **Güncel çalışma sırası:** Önce kalan teknik denetim ve sistem gereksinimleri; ardından PWM, geri besleme, sürücü ve korumaların **mimari ve arayüz gereksinimleri**; sonra kontrolcü ve güç katı adaylarının birlikte değerlendirilmesi, kesin seçim, doğrulama ve prototip. Bobin için 33 µH, 7,5–10 mΩ @20 °C başlangıç hedefidir ([parça hedefleri](buck/PARCA-HEDEFLERI.md)); gerçek çekirdek ve sarım ölçülmeden ve kontrolcü uyumu görülmeden nihai değildir. Örnek 48,0 V sıcak takma hesabına karşı 50 V Cin payı açık risktir.
 
@@ -102,7 +104,7 @@ Sıra takvim değildir. Her adımın bir tamamlanma ölçütü vardır; ölçüt
 - Kabul aralıkları: L 33 µH el sarım (DCR 6,5–15 mΩ, hedef 7,5–10 mΩ); Cout 1000 µF ±%20, ESR ≤ 35 mΩ, ≥ 35 V; çıkışa paralel sönüm dalı **Cd 470 µF ±%20 (≥ 35 V) + seri Rd 0,22 Ω** (Rd + Cd_ESR toplamı 0,15–0,60 Ω); Cin ≥ 50 V, ≥ 4,5 A ripple. Örneklenen model setlerinin 200 ms sonuçları ve bir 500 ms köşe senaryosu 9–12 V içinde sönümlü raporlandı ([buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §4.4, §5, §6, §10).
 - Bulunan temel sorunlar: sabit güç yüküyle eski değerler ve dalsız tolerans köşesi salınıyordu (`Cd + Rd` dalıyla kapandı); açık çevrim hafif yükte ve giriş değişiminde 11 V'u tutamıyor; sert kalkışta 61,4 A / 16,6 V.
 - Çıktılar: [buck/ltspice/buck_guc_kati.asc](buck/ltspice/buck_guc_kati.asc), [buck/OPTIMIZASYON.md](buck/OPTIMIZASYON.md), [buck/hesap.py](buck/hesap.py), [buck/dogrula.py](buck/dogrula.py).
-- **Ölçüt:** şematik değerleriyle `dogrula.py secilen` ve `pencere` koşuldu; yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV ve 200 ms darbede sönümlü. **12.11.2026 kaydı:** sınanan anma ve tolerans senaryolarında sonuçlar sağlandı (`pencere` 3/3, `kararlilik` 27/27 satır); tüm tolerans kombinasyonları sınanmadı.
+- **Ölçüt:** belirtilen referans yük ve tolerans senaryolarında 9–12 V, ripple ≤ 165 mV ve 200 ms darbede sönüm aranır. `pencere` 3/3 ve `kararlilik` 27/27 sonuçları yalnız o tabloların sınanan senaryolarına aittir; tüm tolerans kombinasyonları sınanmadı. `secilen` içinde sabit duty ile 57,6 → 6,6 W hafif yüke geçişte 16,07 V görülür; bu senaryo 9–12 V koşulunu sağlamaz ve geri beslemeye devredilir ([OPTIMIZASYON.md](buck/OPTIMIZASYON.md) §5.4).
 
 ### 2. Gerçek parçaların bulunması — 🔄 sürüyor (aday listesi hazır, kesin seçim bekliyor)
 
@@ -184,7 +186,7 @@ Yeni kararlar en üste eklenir. Bir değeri değiştirmeden önce burada ve [buc
 | 12.11.2026 | L1: 33 µH ve 47 µH iki seçenek olarak kalır; 39 µH kabul edilmez | Kullanıcı kararı. Güncel `pencere`: 39 µH köşede 12,06 V ile kaldı; 47 µH 0,04 V payla geçti ve S2E kalkış süresine (yayımlanmamış, eşik ≈ 32 ms) bağlı |
 | 11.11.2026 | Dal ve milestone yalnız ana aşamalarda (A–D) açılır; adımlar ve küçük değişiklikler yalnız `main`'e commit | Kullanıcı kararı: her değişiklikte yeni dal/milestone istenmiyor |
 | 11.11.2026 | Parçalar kesin seçim değil, öncelik sıralı aday listesidir; şematik 1. sıra adayların değerlerini taşır (Würth 74435583300, Nichicon UHE1E102MHD6TO, 2 × TDK B41859D7108M000, STP100N6F7, STPS40M60CT) | Kullanıcı kararı. 1. sıra: dış araştırma adayları arasından LTspice köşe testini en geniş payla geçen set |
-| 11.11.2026 | Cout için 18 mΩ değil 35 mΩ'luk kondansatör | Veri sayfası ESR'si en yüksek değerdir; 18 mΩ'luk parçanın gerçek ESR'si sönüm alt sınırının altına inebilir (47 µH ile 12,83 V) |
+| 11.11.2026 | Cout için 18 mΩ değil 35 mΩ'luk kondansatör | Veri sayfasındaki 18 ve 35 mΩ değerleri 100 kHz maksimum empedanstır, ESR değildir; gerçek ESR eski dalsız modelin sönüm alt sınırının altına inebilir (47 µH ile 12,83 V) |
 | 11.11.2026 | S1 için en düşük dirençli değil en düşük kapı yüklü aday (30 nC) | İletim kaybı zaten 0,15 W; düşük kapı yükü sürücü aşamasını kolaylaştırır |
 | 11.11.2026 | Parçayı araç seçmez; kriterler yazılır, kullanıcı bulur ve kesinleştirir | Kullanıcı kararı: önce Türkiye'de kolay bulunan değerler |
 | 11.11.2026 | Cout 680 → 1000 µF | 680 µF en kötü tolerans köşesinde 12,06 V; 1000 µF aynı köşede 11,81 V ve daha yaygın değer |

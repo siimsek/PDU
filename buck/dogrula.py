@@ -739,6 +739,15 @@ def cpl_hesap(p: dict, vin: float, p0: float, p1: float) -> dict:
                      p.get("Cd", 0.0), p.get("Rdal", 1.0))
 
 
+def darbe_karari(sure: float, aralik: bool, durum: str) -> str:
+    """Kisa darbe kararlilik gecisi kaniti degildir; gorulen ihlal veya buyume kalir."""
+    if not aralik or durum in ("sürekli salınım", "büyüyor"):
+        return "KALDI"
+    if sure < 200e-3 or durum == "kısa":
+        return "BELİRSİZ"
+    return "GEÇTİ" if durum in ("sönmüş", "sönüyor") else "BELİRSİZ"
+
+
 def kararlilik(hizli: bool = False) -> None:
     print("## Sabit güç yükü (CPL) ile açık çevrim kararlılığı (LTspice + HESAP), 24,6 V, Ton sabit\n")
     print("### 1. Darbe süresinin etkisi: pencere köşesi (39,6 µH, 800 µF, ESR 15 mΩ, Cd 376 µF + Rd 0,22 Ω), 57,64 → 73 → 57,64 W\n")
@@ -752,7 +761,7 @@ def kararlilik(hizli: bool = False) -> None:
                     "—" if math.isnan(a["oran"]) else f"{a['lfa'] * 1e3:.0f} → {a['lfb'] * 1e3:.0f}",
                     "—" if math.isnan(a["oran"]) else f"{a['oran']:.3f}", a["durum"],
                     "içinde" if aralik else "DIŞINDA",
-                    "KALDI" if not aralik else "BELİRSİZ" if a["durum"] == "kısa" else "GEÇTİ" if a["kararli"] else "KALDI"])
+                    darbe_karari(sure, aralik, a["durum"])])
         print(sat[-1], file=sys.stderr, flush=True)
     tablo(["Darbe ms", "Vmin V", "Vmax V", "darbe sonu t-t mV", "yavaş salınım, son iki LC periyodu mV",
            "oran", "sönüm", f"{VO_MIN:g}–{VO_MAX:g} V", "karar"], sat)
@@ -845,7 +854,7 @@ def zarf() -> None:
             h = [f"{yuk_atma_sinir(ps, v, P_TAM, 0.0, g)['vmax']:.3f}" for g in (0, 1, 2, 3)]
             sat.append([ad, f"{v:g}"] + h)
     tablo(["Model", "Vin V", "0 periyot V", "1 periyot V", "2 periyot V", "3 periyot V"], sat)
-    print("Yük anında kesildiğinde ilk sıçrama ΔI·ESR'dir (7,5 A × ESR); ardından bobin enerjisi Cout'a boşalır.\n")
+    print("Yük anında kesildiğinde ilk sıçrama yaklaşık ΔI·(ESR || Rd) ile belirlenir; ardından enerji Cout ve Cd koluna aktarılır.\n")
 
 
 # ---------------------------------------------------------------- FZ-H: ideal olmayan senaryolar
@@ -993,7 +1002,7 @@ def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
         sat.append([f"{v:g}"] + [f"{vo:.2f}" for _, vo in e])
     tablo(["Vin V \\ yük A@11V"] + [f"{a:g}" for a in amper], sat)
 
-    print("### 4. Yük adımları, 24,6 V, Ton sabit (kontrolcü tepki vermiyor = kötümser sınır)\n")
+    print("### 4. Yük adımları, 24,6 V, Ton sabit (kontrolcü tepki vermiyor; genel en kötü durum olduğu kanıtlanmadı)\n")
     sat = []
     for isim, p0, p1 in (("S2E kalkışı, O1 tipik", P_HAFIF, P_HAFIF_KALKIS),
                          ("O1 tipik→zarf→tipik, S2E çalışıyor", P_HAFIF, P_ZARF),

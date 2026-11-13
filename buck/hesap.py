@@ -205,7 +205,7 @@ def cpl(l: float, c: float, esr: float, rs: float, vth: float, p: float,
 
     Gecerlilik siniri: CCM, ortalama model (f0 << fsw), ideal ve sonsuz bant genislikli CPL, dogrusal
     diyot/anahtar, ESL ve L(I) yok, kucuk isaret (buyuk salinimda sinir cevrimi olusur; genligi bu
-    hesap vermez). Gercek yuklerin giris DC-DC'si sonlu bantlidir; bu hesap kotumser yondedir.
+    hesap vermez). Gercek yuklerin giris DC-DC'si sonlu bantlidir; modelin her kosulda kotumser oldugu kanitlanmamistir.
     """
     disc = vth * vth - 4 * rs * p
     if disc < 0:
