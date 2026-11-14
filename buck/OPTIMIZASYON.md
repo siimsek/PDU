@@ -4,9 +4,103 @@
 
 **Dondurma durumu: FROZEN (simülasyon dondurması, 12 Kasım 2026):** çıkış sönüm dalı (`Cd = 470 µF + seri Rd = 0,22 Ω`) eklendi ve §13'te belirtilen test kipleri koşuldu; `Cout` ve `Cd` için ≥ 35 V, `Cin` için ≥ 50 V gerilim sınıfı kabul edildi; §12.1 kapısındaki 1–12 numaralı maddelerin tamamı kullanıcı onayı dahil kapandı. Güncel iş sırası: gereksinimler ve kontrol mimarisi, ardından birlikte parça değerlendirmesi ve ölçümler (§12.2).
 
+**Güncel gereksinim notu (13.11.2026):** Kullanıcı, sonraki kapalı çevrim tasarımı için genel 0–7,5 A modülde 11 V ±%5 kararlı durum ve ≤ 165 mV t-t ripple hedeflerini onayladı. Referans cihazların ortak çalışma aralığı 9–12 V'tur; arızada enerjinin kesilmesi kabul edilir, O1 girişinde 12 V üst sınırı korunmalıdır. Kullanıcı amacı her olası yük basamağında gerilimi sürdürmek değil arızada cihazları korumak olarak açıkladı; geçiş ve arıza kapsamları ayrıntılandırılacak, hedefler henüz doğrulanmadı. §12.1 ve §13'te genel sınırların tanımsızlığına ilişkin ifadeler 12.11.2026 dondurma ve tarihli koşuların koşuludur, güncel karar değildir. Mimari ara değerlendirme [yol haritasındadır](../YOL-HARITASI.md).
+
 Etiketler: **DATASHEET** üretici belgesi · **ÇIKARIM** üretici şemasından veya eğrisinden okunan, doğrulanmamış · **TAHMİN** yayımlanmış değer yok · **HESAP** `python buck/hesap.py` · **SİM** `python buck/dogrula.py` · **ÖLÇÜM** fiziksel (bu belgede hiç yok).
 
 Bu belge güncel kararı anlatır. Değerler parça numarasından bağımsızdır; parça kriterleri [PARCA-HEDEFLERI.md](PARCA-HEDEFLERI.md) dosyasındadır.
+
+### Kontrol ve bağımsız koruma mimarisi karşılaştırması (13.11.2026)
+
+Bu bölüm mimari değerlendirmedir; aşağıdaki ayrı bölümde geçici kapalı çevrim SİM sonuçları yer alır. Parça sırası değiştirilmedi, kalıcı kontrol veya koruma devresi tasarlanmadı ve fiziksel ÖLÇÜM yapılmadı. Maliyet sırası nicel fiyat karşılaştırması değildir: üretici, stok, tedarik, ek elemanlar, soğutma ve işçilik bilinmeden en ucuz seçenek belirlenemez. Sınırlar: girişte 20–26 V referans aralığı, +5…+50 °C geçici ortam, 11 V ±%5 kararlı çıkış, 0–7,5 A, ≤ 165 mV t-t ripple, O1 girişinde 12 V üst sınırı; arızada ortak çıkış kesilebilir.
+
+**Kontrol yöntemleri:**
+
+1. **Akım kipli sabit frekanslı analog kontrolcü + harici S1/D1:** 100 kHz'lik asenkron referansla birlikte ilk incelenecek mimaridir. Akım algılama ve döngü başına sınırlama bazı kontrolcülerde bulunur; dış kompanzasyon, akım algılama elemanları ve sürme beslemesi kontrolcüye göre değişir. D≈%50 üzeri çalışmada eğim kompanzasyonu, gürültü, kısa devre davranışı ve akım sınırının toleransı kontrol edilmelidir. Sınır tepe bobin akımıdır, 7,5 A ortalama yük akımıyla aynı değildir. Üretici karşılaştırması: [Analog Devices, Choose the Right Regulator, Part 1](https://www.analog.com/en/resources/technical-articles/2022/07/16/11/59/choose-the-right-regulator-for-the-job-part-1-regulator-control-schemes.html).
+2. **Gerilim kipli sabit frekanslı kontrol:** mevcut güç katıyla prensipte kullanılabilir; akım sınırı ve kompanzasyon uygulaması farklı olabilir. LC çift kutbu, Cd–Rd kolu, CPL ve CCM/DCM geçişinde yeterli kararlılık gösterilmelidir. Önceki genel PI örneği yöntemi elemez; 14.11'de açık RC durumlarıyla kurulan Type-III model seçilmiş geçici testleri geçti (§15). Daha ucuz olduğu veya daha çok parça gerektireceği seçim yapılmadan söylenemez. [TI, Buck Converter Architectures](https://www.ti.com/content/dam/videos/external-videos/en-us/1/3816841626001/3873670638001.mp4/subassets/4.1-overview-presentation.pdf).
+3. **Sabit iletim süreli / histeretik veya iç kompanzasyonlu kontrol:** az harici ayar elemanı sunabilir; frekans ve ripple yükle değişebilir, belirli çıkış filtresi ve ESR aralığı gerekebilir. 33 µH, 1000 µF, 470 µF + 0,22 Ω, 0 A ve ≤ 165 mV ripple uyumu aday veri sayfası ve kapalı çevrim testleriyle gösterilmeden basit sayılmaz. Sabit 100 kHz açık çevrim test sonuçları doğrudan aktarılmaz.
+4. **Tümleşik anahtarlı dönüştürücü / senkron güç katı:** ayrı anahtar veya diyodu azaltabilir ve verimi değiştirebilir; mevcut asenkron güç katını değiştirir, dolayısıyla korunmuş başlangıç referansı olarak seçilemez. Kullanıcı isterse sonradan ayrı karşılaştırma ve yeniden doğrulama gerekir.
+5. **Ortalama akım kipli analog kontrol:** akımın ortalamasını ayrıca düzenleyebilir ve akım paylaşımı / sabit akım gerekirse yarar sağlayabilir; bu PDU'nun ana ihtiyacı sabit 11 V olduğundan ek akım döngüsü ve kompanzasyonu ilk seçim için gerekçelendirilmedi. 33 µH, DCM/CCM geçişi ve 0,9–4,5 kHz çıkış kutup/sıfırlarıyla test edilmedi.
+6. **Dijital PWM (MCU):** Vin/yük kestirimi, kaydedilebilir hata ve daha esnek başlatma mantığı sağlar; ADC örnekleme gecikmesi, PWM/ölçüm çözünürlüğü, firmware hatası, watchdog ve güvenli varsayılan çıkış gibi yeni işler getirir. Bu basit bir 11 V buck için en ucuz/kolay seçenek gösterilmedi; hızlı bağımsız OVP yine analog donanım olmalıdır. Dijital kontrol simüle edilmedi.
+
+**Geri besleme yapısı:** Gerilim döngüsü, çıkış bölücüsünden 11 V hedefini tutar; akım kipli PWM'in çevrim içi akım algısı ayrı iç kontrol/koruma sinyalidir. Akım limiti, PDU'yu sabit akım kaynağına çevirme hedefi değildir. İlk düzenlemede gerilim geri beslemesi Cout uçlarından (koruma kesicisinden önce) Kelvin alınır; OVP ise anahtarın yük tarafındaki gerçek ortak porta bakar. Böylece OVP açıldığında kontrolör yanlışlıkla sıfır geri besleme görüp duty'yi sona sürmez. Bu seçim koruma MOSFET'inin seri direncindeki düşümü telafi etmez; 7,5 A'de örnek 10 mΩ 75 mV/0,56 W'tır. Portun 10,45–11,55 V regülasyonu ayrıca doğrulanır. OVP eşiğinin **en düşük** değeri normal/165 mV ripple tepesinin üstünde, en yüksek eşik + tolerans + algılama/kapama gecikmesi kaynaklı aşım ise O1 portunda 12 V'un altında olmalıdır. Yaklaşık 285 mV'luk (11,715→12 V) en ihtiyatlı örnek pay; kontrol, koruma ve yük portu toleranslarına ayrılmadan eşik değeri seçilemez.
+
+**Kontrol yöntemi karar matrisi (parça değil):**
+
+| Yöntem | Bu güç katıyla uyum | Güçlü yön | Ana risk/ek iş | Bu projedeki kanıt | Şu anki karar |
+|---|---|---|---|---|---|
+| Sabit frekans tepe akım kipli analog | Yüksek; harici üst N-MOSFET/asenkron D1'le doğrudan denetleyici bulunabilir | Hat/yük geçişi başına hızlı PWM tepkisi; akım sınırı ve soft-start bazı tek çiplerde | Akım algı gürültüsü, slope compensation, threshold toleransı, algılama elemanı kaybı | LT3844 modeli iyi davranış gösterdi; akım sınırı marjı yok, gerçek OVP ayrı | **Önerilen başlangıç yöntemi** |
+| Sabit frekans gerilim kipli analog | Topolojiye bağlı | Normal gerilim döngüsü akım kipinden ayrıdır; akım algı elemanı tasarrufu olasılığı | LC/CPL kompanzasyonu; çevrim-başı sınır için ayrıca gerçek akım algılama gerekir | Genel PI örneği zayıftı; Type-III RC modeli §15'te seçilmiş testleri geçti, gerçek entegre/sense yok | Akım kipiyle eş aday; maliyet/verim kanıtı yok |
+| Histeretik/COT | Adaya bağlı | Bazı IC'lerde az dış kompanzasyon | Frekans değişkenliği, ESR/filtre ve ripple bağımlılığı | Bu güç katında test yok | Puanlanmadı |
+| Ortalama akım analog | Harici güç katıyla mümkün | Akım düzenleme daha hassas | İkinci döngü, ölçüm ve kompanzasyon maliyeti | Test yok; sabit 11 V için gerekli değil | Şimdilik fazla karmaşık |
+| Dijital PWM/MCU | Harici güç katıyla mümkün | Ayarlanabilir ve tanılama esnekliği | Firmware, ADC gecikmesi/çözünürlüğü, doğrulama ve yine de bağımsız analog OVP | Test yok | Hedef için gereksiz karmaşıklık |
+| Senkron/tümleşik buck | Güç katısını değiştirir | Potansiyel verim/BOM avantajı | D1 yerine alt anahtar ve yeni doğrulama; açık çevrim dondurmasını değiştirir | Bu istekte test edilmedi | Kullanıcı onayı olmadan kapsam dışı |
+
+**Sürücü ve kalkış:** Üst taraf N-MOSFET sürmek için gate gerilimi source'a göre sağlanmalı; bootstrap bir olasılıktır ama hafif yükte ve sıfır akımda yeterli şarj süresi kanıtlanmalıdır. [Analog Devices AN-2582](https://www.analog.com/en/resources/app-notes/an-2582.html) bu sorunu açıklar; belgede verilen koşullar bu devrede oluşmuş ölçüm değildir. `hesap.py` 20–26 V / 7,5 A için 4,36–5,64 µs iletim süresi verir; hafif yükte farklıdır ve kontrolcünün minimum iletim/kapanma süreleri ayrıca incelenir. 5 ms ideal duty rampası en düşük Z0 köşesinde 12,8 A verdi (§5.8); kontrolcüye ait soft-start süresi bu testteki duty rampasıyla eşit sayılamaz. Kalkış akımı, gerçek soft-start yöntemi, yük ve toleranslarla yeniden sınanmalıdır.
+
+**Aşırı gerilim mimarileri:**
+
+- **Yalnız kontrolcü OVP / PWM kapama:** ek işlev içeriyorsa devre basitleşebilir, fakat S1 fiziksel kısa devresinde giriş hâlâ çıkışa ulaşabilir; bağımsız yük koruması yerine kabul edilmez. [Analog Devices, LTM4641 koruma açıklaması](https://www.analog.com/en/resources/technical-articles/10a-module-step-down-regulator-with-advanced-input-and-load-protection.html).
+- **Dönüştürücü çıkışından sonra bağımsız elektronik ayırıcı:** ayrı referans/eşik ve seri geçiş anahtarı veya uygun entegre koruma ile her iki cihaz aynı anda ayrılabilir. İlk araştırma için mantıklı yön; fakat 7,5 A sürekli akım, tolerans, başlatma, ısınma ve arızada kapalı kalma, en yüksek hatalı giriş gerilimi, algılama noktası, tepki süresi, kapasite ve çıkış parazitleri gösterilmelidir. Koruma anahtarının body-diyot yönü/ters akım yolları incelenmeli; tek MOSFET her yönde engeller varsayılmaz. [TI, karşılaştırıcılı OVP](https://www.ti.com/tool/CIRCUIT060079); [Analog Devices, sistem koruması](https://www.analog.com/en/resources/technical-articles/complete-system-power-protection-design-guide.html).
+- **Giriş ayırıcı:** güç katı arızasında kaynağı kesebilir, ancak bobin ve Cout/Cd'deki enerji ve hatalı S1 üzerinden akım yolu çıkışa aktarılabileceğinden tek başına O1 gerilim tepesini koruduğu varsayılamaz. Ayrı yük ayırıcısıyla karşılaştırılmalıdır.
+- **Crowbar + sigorta:** aşırı gerilimde çıkışı kısa devre ederek sigortanın açmasını amaçlar. Büyük akım ve enerji, LiPo kaynağı, sigorta açma süresi ve kesme kapasitesi, anahtar dayanımı ve 12 V aşımı ayrıca gösterilmelidir. Yalnız bir sigorta gerilimi algılamaz. Örnek prensip: [TI, TPS5210 uygulama notu](https://www.ti.com/lit/an/slva044/slva044.pdf).
+- **TVS / zener:** kısa darbelerde yardımcı olabilir; kelepçeleme gerilimi akımla yükselir ve sürekli güçlü arızada enerji kapasitesi aşılabilir. 11 V normal çalışma ile 12 V mutlak üst sınırı arasındaki dar pencerede tek başına yeterlilik kanıtlanmadı; ek koruma olarak bile gerçek eğri ve enerji incelenmeli.
+- **Röle:** yalıtım sağlayabilir fakat açılma süresi, kontak ömrü, sıçrama ve bobin beslemesi nedeniyle hızlı aşımın tek koruması olduğu varsayılmaz. Gerçek süre ve O1 gerilim eğrisiyle doğrulanmalıdır.
+
+**HESAP örnekleri — seçilmiş parça veya garanti değildir:** 7,5 A'de seri anahtar direnci 5 / 10 / 20 mΩ ise gerilim düşümü 37,5 / 75 / 150 mV, iletim kaybı 0,281 / 0,563 / 1,125 W olur (`I·R`, `I²·R`); gerçek sıcak direnç, akım dağılımı ve ısıl yol bilinmiyor. 11,55 V kararlı ortalama üst sınırı ve 165 mV t-t ripple için, dalga şekli simetrisi varsaymadan tüm ripple'ın yukarıda olduğu ihtiyatlı örnekte 11,715 V tepe ve 12 V'a 285 mV kalır; toleranslar, transient ve ölçüm noktası ayrıca değerlendirilir. Örnek olarak 8 A yalnız 100 µF'ye akarsa dV/dt = 0,08 V/µs; 1 µs'de 80 mV artış olur. Bu kapasite ve akım cihazların gerçek değerleri değildir; gerçek ağ ve arıza akımıyla kapanma öncesi aşım hesaplanmalıdır.
+
+**Algılama ve doğrulama:** Koruma öncesi ve cihaz tarafı gerilimler farklıdır; koruma sonrası algılama, hat düşümü ve yük kapasitansı kompanzasyon kararlılığını etkileyebilir. Dönüştürücü tarafında algılama daha basit olabilir ama seri kayıp yükteki gerilimi düşürür; hangisi seçilirse açık anahtar, kablo kopması, prebias, yük kapasitansı ve geri besleme kararlılığı sınanır. Koruma bağımsız referans ve besleme dahil arıza etki alanı için incelenir; UVLO, başlangıçta varsayılan kapalı durum, arızadan sonra yeniden açılma ve kısa aralıklı denemelerde tekrarlanan aşım değerlendirilir. O1 portunda ve koruma öncesinde aynı anda en yüksek gerilim, eşik min/maks ve gecikme dahil gösterilmeden koruma PASS değildir.
+
+**Açık kararlar:** Uygun kontrolcü/koruma adayları araştırıldı; gerçek fiyat/BOM ve üretilebilirlik karşılaştırması eksiktir, mevcut parça sırası değişmez. Motor kaynaklı geçiciler çalışma kapsamı dışı bırakıldı; bu koşullar veya yayımlanmamış O1 mutlak maksimumu hakkında garanti verilmez. Giriş 20 V altı / 26 V üstü kesme ve OVP sonrası latch/otomatik yeniden başlatma seçilmedi. Kod denetimi kısmi; `zarf` çıktısında genel sınırlar onaylanmadı ifadesi eskidir, test açık çevrimdir ve kapalı çevrim sonucu vermez.
+
+### Geçici kapalı çevrim ve koruma denemeleri (13.11.2026)
+
+**Kapsam ve sınır:** Kullanıcı isteğiyle dosyalar depo dışındaki `%TEMP%\pdu-control-study-20261113` altında üretildi; ana `.asc`, değerler ve aday sırası değiştirilmedi. LTspice 26.1.1, üretici LT3844/LTC4365 modelleri; güç anahtarı/diyot ideal veya aşağıda belirtilen yaklaşık VDMOS'tur. Güç katı referans değerleri L=33 µH, DCR=7,81 mΩ, Cout=1000 µF/35 mΩ, Cd=470 µF/Rd=0,22 Ω, Cin=2×1000 µF/15 mΩ, S1=5,6 mΩ, D1=0,38 V+8 mΩ. LT3844 için **yalnız geçici testte** indüktör çıkışına 10 mΩ algılama direnci eklendi; orijinal dondurma güncellenmedi. FSET=191 kΩ ile ham dalgadaki tam yük anahtarlaması yaklaşık **106 kHz**, tam 100 kHz değil; 150 kΩ ile yapılan önceki yaklaşık 130 kHz denemeleri bu karşılaştırmaya katılmadı. Çalışma 27 °C simülatör ayarında; gerçek +5…+50 °C tolerans köşeleri değildir. Gerilim kipli PI örneği genel davranışsal modeldir, gerçek entegre değildir; akım sınırı, gerçek sürücü ve koruma içermez.
+
+**Kontrol denemeleri — SİM:**
+
+| Durum | LT3844 üretici modeli + ideal güç katı | Genel PI + ideal güç katı | Sınır |
+|---|---|---|---|
+| 20 V, 7,5 A direnç | 10,9937 V ortalama; 42,48 mV t-t | 11,0000 V; 44,98 mV t-t | 25–30 ms ortalama, 29–30 ms ripple |
+| 24,6 V, 7,5 A direnç | 10,99516 V; 52,70 mV t-t | 11,0000 V; 55,67 mV t-t | LT 100 ns; PI 100 ns |
+| 26 V, 7,5 A direnç | 10,99552 V; 55,03 mV t-t | 11,0000 V; 58,19 mV t-t | 25–30 ms ortalama |
+| 200 ms CPL 41,25→82,5 W→41,25 W | 10,8385–11,1519 V; bobin tepe 9,889 A | 10,6354–11,3528 V; bobin tepe 11,315 A | 24,6 V; 20 µs yük rampası; 20–230 ms ölçüm; öncesinde direnç yükünden CPL'ye geçiş |
+| Giriş 24,6→20→26 V | 10,9551–11,0436 V; bobin tepe 8,701 A | 9,6610–12,8937 V; bobin tepe 19,139 A | 7,5 A direnç; her giriş rampası 100 µs; 20–40 ms ölçüm |
+| 0,24 A ve 0 A | yaklaşık VDMOS ile sırasıyla 11,00145 V/30,59 mV, 11,00269 V/7,97 mV | sırasıyla 11,1796 V/52,97 mV, 12,00184 V/0,013 mV | 24,6 V; 25–30 ms ortalama, 29–30 ms ripple; 0 A, 1 GΩ model yükü |
+
+LT hafif yük ilk ideal-SW denemesi aşırı yavaş ilerledi ve kesildi; daha sonra depodaki §9.3'ten **veri sayfasından türetilmiş yaklaşık VDMOS** kullanıldı, ST üretici MOSFET modeli değildir. 0 A'da PI yaklaşık 12 V'ta kaldı ve 11 V ±%5 kararlı durum hedefini sağlamadı; ideal 1 GΩ yükte aşırı gerilim boşalmasının gerçek yüklerle aynı olacağı varsayılmaz. LT giriş ve CPL sonuçları koruma devresi olmadan; her yöntem farklı kontrol ayarı ve eklerle test edildiğinden yalnız bu somut modeller karşılaştırılabilir. PI giriş testi başlangıçta iç integratörün gerçekçi olmayan DC başlangıcı nedeniyle geçersizdi; `.ic V(integ)=0` ile düzeltildi ve yukarıdaki sonuçlar tekrar koşuldu. PI için Kp=0,01/0,03/0,05 ve integratör katsayısı 0,00003/0,0001/0,0003 A/V dokuz kombinasyonda giriş testinde tepe 12,468–14,622 V oldu; tüm PI yöntemlerinin sınırı değildir. En düşük tepe 50 ns tekrarında 12,474 V'tur.
+
+**Bağımsız kontrol ve sayısal yakınsama:** `.meas` çıktılarındaki Vmin/Vmax ve ortalamalar, ham `.raw` dalgasının bağımsız NumPy zaman ağırlıklı analiziyle karşılaştırıldı. LT tam yük 24,6 V: 100/50 ns'te 10,995163/10,995164 V ve 52,697/52,506 mV. 200 ms CPL: 200/100 ns LT 10,83850–11,15188 / 10,83890–11,15148 V; PI 10,63545–11,35282 / 10,63790–11,35132 V. Son iki 1,2 ms pencerede filtrelenmiş salınım LT yaklaşık 2,0 mV t-t; sonuç yalnız bu yük/model içindir. Giriş testi LT 100/50 ns 10,95510–11,04360 / 10,95501–11,04348 V; PI 9,66098–12,89368 / 9,66264–12,89577 V. İki zaman adımı ve ayrı okuma **aynı modelin sayısal kontrolüdür**; bağımsız fiziksel doğrulama veya bağımsız model değildir.
+
+**Koruma denemeleri — SİM, koşul bağımlı:** LTC4365 üretici modeli ve 10 mΩ ideal seri ayırıcı, 2,2 nF ideal gate yükü, cihaz tarafında 100 µF/20 mΩ ve 1,4667 Ω yük ile LT3844 güç katına bağlandı. 24,6 V ideal kaynak, 48 ms'de anahtara paralel 1 mΩ kısa devre: koruma öncesi tepe 32,6368 V, cihaz tarafı 11,79703 V, bobin tepe 72,18 A; 50 ns tekrarında 32,6368 V / 11,79708 V / 72,18 A. Kısa devre bobini doğrusal kabul eder; gate ideal ve FET gövde diyodu, kapı–dren kapasitansı ve gerçek yük bilinmez. 72 A'de bobin doyumu/gerçek kaynak empedansı kapsanmaz. Yalnız **bu benzetim köşesinde** cihaz tarafı 12 V altındadır; koruma veya güç elemanlarının güvenliği doğrulanmadı.
+
+Aynı birleşik kısa devre denemesinde, yalnız yük tarafındaki varsayılan kapasite 10 µF ve 1000 µF yapıldığında cihaz tarafı tepeleri sırasıyla **11,81995 V ve 11,66786 V**; koruma öncesi tepeler 32,59353 V ve 32,86535 V, bobin tepeleri 71,79 A ve 74,22 A oldu (100 ns). 50 ns tekrarında cihaz tarafı tepeleri sırasıyla 11,82014 V ve 11,66806 V'tur; her iki kapasitede tepe ayrıca ham dalgadan okundu. Bu üç kapasite cihazların ölçülmüş giriş kapasiteleri değildir; 1000 µF koşusunda ayırmadan sonra depolanan enerji nedeniyle 51–52 ms arası cihaz tarafı ortalaması hâlâ yaklaşık 1,15 V'tur. Bu sonuçlar doğrusal bobin ve ideal ayırıcı sınırlarını ortadan kaldırmaz.
+
+Ayrı bir **sentetik sert giriş** testinde aynı LTC4365 modeli, 10 mΩ ideal ayırıcı, 11→25 V ideal kaynak rampası, 1,4667 Ω yük, cihaz tarafı 10/100/1000 µF (20 mΩ ESR) ile denendi. 1 µs rampada tepeler sırasıyla 23,401 / 20,834 / 20,227 V; 10 µs rampada 13,293 / 12,806 / 12,624 V'tur. 10 µF/1 µs örneği 20 ns tekrarında 23,277 V; 100 µF/10 µs 50 ns tekrarında 12,807 V. Bütün tepeler ayrı ham dalga okumalarıyla da kontrol edildi. 1 µs veya 10 µs rampalar gerçek PDU arıza dalgası olarak doğrulanmadı; bunlar modele zorla uygulanan sınama girdileridir. LTC4365-1'de 100 µF/10 µs koşusu 100/50 ns'te 13,060/13,061 V. Bu sonuçlar, seçilen ayırıcı modelinin ve eşiğin söz konusu zorlanmalarda yetersiz olduğunu gösterir; entegrelerin bütün gerçek devrelerde başarısızlığını göstermez.
+
+Ek **davranışsal ideal koruma** testinde 11,7 V nominal eşik, 100 µF/20 mΩ yük tarafı kapasitesi, 10 mΩ ideal seri anahtar ve sabit 0,2/1/4 µs gecikme varsayıldı; gerçek koruma entegresi veya gerçek MOSFET modeli değildir. 11→25 V / 1 µs giriş rampası için sırasıyla 13,294 / 20,973 / 23,415 V; 10 µs rampası için 11,611 / 12,467 / 16,109 V tepe bulundu. 0,2 µs gecikme / 1 µs rampası 10 ns tekrarında 13,293 V'tur. Eşik/kapı toleransı, parazitikler ve gerçek cihaz kapasitesi bilinmemektedir.
+
+**LM5088 ve diğerleri:** TI'nin şifresiz PSpice transient modeli LTspice'ta nominal ilk koşuda ve Gear/UIC denemesinde yakınsamadı; bir üçüncü kısa denemede tolerans uyarılarıyla ilerleme durdu ve kesildi. Bu, LM5088'in elektriksel başarısızlığı değildir. Model metninde RST pini yalnız 1 GΩ ile toprağa bağlanmış göründüğünden hiccup işlevi bu modelle doğrulanmış sayılamaz. MAX6495 üretici modeli, gerçek direnç/kapasitör toleransları, gerçek MOSFET kapama/parazitleri, ısıl davranış, diğer adaylar ve gerçek ölçüm test edilmedi. Kesin sıralama veya tüm olasılıkların tarandığı iddia edilmez.
+
+**Puanlama — yeniden koşulan belirli modeller, 100 puanlık tarama:** Güç katına uyum 15; 20–26 V tam-yük regülasyonu 10; giriş geçişi 15; 200 ms CPL adımı 15; hafif/yüksüz çalışma 10; yumuşak kalkış ve akım sınırı 15; bağımsız OVP 10; maliyet/uygulama kolaylığı 5; verim kanıtı 5. Bu, aynı anda gerçekten kurulmuş iki eşdeğer devrenin karşılaştırması değildir: PI genel davranışsal örnektir, LT3844'te güç anahtarı/diyot çoğu koşuda idealdir. **LT3844 test düzeni:** 15+10+15+15+10+6+0+[0–5]+[0–5] = **71–81/100**. **PI test örneği:** 15+10+0+15+0+0+0+[0–5]+[0–5] = **40–50/100**. Maliyet ve verim için veri olmadığı için aralık bırakılmıştır; LT'nin OVP testi 12 V'u aştığından koruma puanı sıfırdır. Bu puanlar yalnız test edilmiş örneklere aittir, analog akım kipinin veya gerilim kipinin genel puanı değildir. LM5088 yakınsamadığından puanlanamaz. OVP **zorunlu güvenlik kapısıdır**: puan aralığı ne olursa olsun, portta 12 V sınırı kanıtlanmadığı için gerçek yüke geçişe izin vermez.
+
+### Önceki yöntem önerisi (13.11.2026; 14.11 Type-III testinden önce)
+
+Bu tarihli öneri, yalnız 13.11'e kadar mevcut kanıta dayanır. Güncel genişletilmiş yöntem karşılaştırması ve bir sonraki karar §16'dadır.
+
+Bu, incelenen kanıtlara dayalı **şimdilik en uygun yöntem önerisidir; kullanıcının mimariyi veya bir parçayı onayladığı anlamına gelmez**. Mevcut asenkron S1/D1 güç katısını koruyarak sabit frekanslı (yaklaşık 100 kHz) analog **tepe akım kipli** kontrolcü kullanılsın. 11 V regülasyon geri beslemesi Cout uçlarından, bağımsız ortak çıkış kesicisinden **önce** Kelvin bağlantıyla alınsın. Bobin akım algılaması ayrı işlev olsun; başlangıçta yumuşak kalkış, her anahtarlama çevriminde akım sınırı ve uzun süreli aşırı yükte otomatik hiccup yeniden denemesi bulunsun. O1/S2E portunu izleyen bağımsız aşırı gerilim koruması ise tetiklenince kilitlenip kullanıcı müdahalesine kadar kapalı kalsın. Bu ayrım, sıradan aşırı akımın otomatik toparlanmasına izin verirken O1'i tehlikeye sokabilecek çıkış arızasının tekrar tekrar bağlanmasını önler. Bunlar yöntem düzeyinde öneridir; eşiği, zamanlamayı, parçayı veya devre değerini seçmez.
+
+**13.11 tarihli yöntem değerlendirmesi:** Test edilmiş LT3844 örneği, giriş geçişi ve hafif/yüksüz durumda PI örneğinden belirgin biçimde iyi; 200 ms CPL adımında ikisi de seçilen 9–12 V bandında kaldı. O tarihte analog akım kipi, davranışsal PI'dan daha iyi başlangıç yönüydü. 14.11'deki Type-III RC gerilim-kipi modeli bu sonucu değiştirdi: artık gerilim kipi yöntem düzeyinde elenmiş değildir (§15). Sabit-açık-zaman/histeretik, ortalama akım kipi ve dijital PWM için bu güç katısıyla aynı test paketi koşulmadı; bunlara sayısal sıralama verilmesi dayanaksız olur.
+
+**Algılama noktası gerekçesi — HESAP:** Koruma ayırıcısı açıldığında normal geri besleme bağlantısının kopmaması ve açık ayırıcıyı ana düzenleme döngüsüne katmamak için Cout tarafı ilk incelenecek yöndür. Dezavantajı, ayırıcı ve bağlantıların gerilim düşümünü düzeltmemesidir: yalnız 10 mΩ seri eleman varsayımıyla 7,5 A'de 75 mV düşüm ve 0,5625 W kayıp olur; Cout 11,00 V ise yük 10,925 V'tur. Gerçek sıcak direnç, olası iki MOSFET, konnektör/kablo ve koruma ekleri bilinmediğinden portun tüm koşullarda 10,45–11,55 V içinde kaldığı gösterilmedi. Koruma sonrası algılama yükte düşümü telafi edebilir fakat ayırıcı açılması, bağlantı kopması ve ilave dinamikler için özel davranış ve kararlılık kanıtı gerekir. Tercih, port regülasyon ve koruma gereksinimleriyle birlikte doğrulanacaktır.
+
+**Kontrolcü adayları — DATASHEET / SİM / HESAP:** LT3844, bu yöntem için test edilebilen somut örnektir, kesin veya en ucuz seçim değildir. Üretici belgesi akım kipini, harici N-MOS sürmeyi, programlanabilir frekansı ve soft-start'ı doğrular; 100–500 kHz aralığı 100 kHz hedefini kapsar. Fakat geçici düzen 191 kΩ FSET ile yaklaşık 106 kHz'te koştu ve 10 mΩ algılama direnci ekledi; 200 ms CPL tepesinde simüle bobin akımı 9,89 A olurken 90–115 mV eşik yalnızca 9–11,5 A aralığı verir. Düşük eşik ucunda normal/geçici tepeye pay kalmıyor. S1 kısa devre akımının doyumlu bobinle ne olacağı da test modelinden bilinemez. Bu nedenle **LT3844 parça olarak önerilmiyor**; yöntemi sınamak için kullanılmıştır. Direnç/eşik ve bobin güvenli akımı beraber çözümlenmeden akım sınırı seçilmez. [LT3844 veri sayfası](https://www.analog.com/media/en/technical-documentation/data-sheets/3844fc.pdf).
+
+TI LM5088-2 veri sayfası harici üst N-MOS, asenkron akım kipli buck, 50 kHz–1 MHz ve soft-start/hiccup işlevlerini desteklediğinden mimariyle kâğıt üstünde uyumludur. Üretici PSpice modeli üç denemede yakınsamadı; modelin çıkış kodu 1 ve tolerans gevşetme döngüsü verdi. Bu **elektriksel elenme değildir**, ancak tekrar üretilebilir geçici SİM elde edilmeden bu proje için puanlanamaz. Veri sayfası akım algılama ve emüle rampasının gerçek bobin/Cd–Rd ile tasarlanmasını gerektirir. [LM5088 veri sayfası Rev. J](https://www.ti.com/lit/ds/symlink/lm5088.pdf).
+
+**Koruma:** Çıkıştan sonra ortak, seri MOSFET'li, bağımsız ve tercihen aşırı gerilimde latch-off bir kesici yöntem olarak önerilir; bu gerçek bir 7,5 A devreyle doğrulanmadı. LTC4365 üretici modeli ve bu modele bağlanan 2,2 nF/ideal FET ayırıcı, 11→25 V sentetik sert girişte cihaz portunda 10–1000 µF varsayımına göre 12,624–23,401 V gördü; 100 µF/10 µs LTC4365 koşusu 12,806 V, LTC4365-1 varyantı 13,061 V oldu. 50 ns tekrarı aynı sonucu verdi. Bunlar modelin zorlanmış testidir; gerçek O1 arıza eğrisi değil, fakat bu ayar 12 V kapısını geçmez. Birleşik S1-kısa devre testindeki 11,797 V (100 µF) ve 11,668 V (1000 µF) sonuçları yalnız o benzetim köşesine özgüdür; tek başına yeterlilik göstermez. LTC4365 veri sayfası 0,5 V OV karşılaştırıcısı, 1–2 µs hata yayılımı ve 2,2 nF gate için 2–4 µs hızlı kapama belirtir; bu ayrı tanımlı zamanların basitçe toplanması veya gerçek port tepesini garanti etmesi doğru değildir. [LTC4365 veri sayfası](https://www.analog.com/media/en/technical-documentation/data-sheets/ltc4365.pdf).
+
+MAX6497/MAX6499 ailesindeki latch-off ve harici MOSFET sürme, çıkış kesicisi için sonraki araştırma adayıdır; 0,494–0,518 V OVSET toleransı, bölücü dahil eşik penceresi, gate gecikmesi/kapasitansı, 7,5 A ısı ve S1 kısa devresi testi gösterilmeden uygun sayılmaz. MAX6498 otomatik tekrar dener; O1'in katı 12 V sınırı nedeniyle aşırı gerilim arızasında latch-off tercih edilir. [MAX6495–MAX6499 veri sayfası](https://www.analog.com/media/en/technical-documentation/data-sheets/max6495-max6499.pdf).
 
 ## 1. Karar
 
@@ -800,3 +894,272 @@ python buck/dogrula.py grafik       # buck/grafik/*.svg
 `grafik` yeniden koşuldu ve üç SVG dosyasında değişiklik oluşmadı. Şematik üreticisi geçici kopyada çalıştırıldığında `.asc` ve şematik `.svg` depodaki dosyalarla bayt düzeyinde eşleşti. Ana `.asc` ayrı bir geçici kopyada LTspice ile çalıştırıldı: 19–20 ms aralığında zamana göre ortalama **10,99987 V**, ripple **55,722 mV t-t** (SİM). Bu ana şematik koşusu sert anahtar modelini kullanır; fiziksel ölçüm değildir.
 
 LTspice yolu farklıysa `LTSPICE` ortam değişkeniyle verilir. Test netlistleri geçici klasörde üretilir; ana şematiğe `.meas`, `.param`, yük modeli veya parça modeli eklenmez. §4.2, §4.3 ve §4.4'ün ilk tablosu tek seferlik koşulardır.
+
+### 13.11.2026 tam tekrar koşusu ve kontrol çalışması
+
+Kullanıcı isteğiyle bütün depo test kipleri `main` dalındaki dondurulmuş güç katı üzerinde yeniden ve **seri** çalıştırıldı: `hesap`, `sayisal`, `secilen`, `pencere`, `tarama`, `mevcut`, `kararlilik`, `zarf`, `stres`, `grafik`. Her komut LTspice/Python süreç çıkışı 0 ile bitti; bu yalnız koşunun tamamlandığı anlamına gelir. Geçen/kalan/uyarı sonuçları ilgili bölümlerde tutulur. Başlangıç/bitiş aralığı 13.11.2026 21:50–23:08 (Türkiye saati); tam konsol kaydı `%TEMP%\pdu-full-rerun-20261113.txt` altındadır. `grafik` SVG'leri depodaki dosyalarla aynı olduğundan çalışma ağacında değişmedi. Ana `.asc`, şematik değerleri ve açık çevrim FROZEN kararı değiştirilmedi.
+
+**Kapalı çevrim ve OVP geçici tekrarları:** Dosyaların tamamı `%TEMP%\pdu-control-study-20261113` içindedir; depoya alınmadı. LT3844 üretici modeli 24,6→20→26 V giriş değişiminde 100/50 ns adımlarla 10,9550–11,0436 V aralığında ve yaklaşık 8,70 A bobin tepesinde sonuç verdi. 200 ms 41,25→82,5→41,25 W CPL testinde 10,8385–11,1519 V ve 9,889 A tepe; 100 ns tekrarı neredeyse aynıydı. 20 / 24,6 / 26 V tam yükte ortalama yaklaşık 10,994–10,996 V, ripple 42,5 / 52,5 / 55,0 mV'tur. Bu düzen 10 mΩ algılama direnci kullanır, yaklaşık 106 kHz'te çalışır ve çoğu güç elemanı idealdir; ana devrenin aynısı veya gerçek cihaz sonucu değildir.
+
+LT3844'ün yüksüz ve 0,24 A testleri, veri sayfasından türetilmiş **yaklaşık** VDMOS modeliyle 100/50 ns'te tekrarlandı. 0,24 A'de ortalama yaklaşık 11,0015 V ve ripple 30,5 mV; 1 GΩ yüksüz örnekte yaklaşık 11,0027 V ve 7,9 mV'tur. 27 °C ideal kaynak/çevre ve model varsayımları, gerçek ST MOSFET'i, +5…+50 °C ve tam toleransları temsil etmez. Tam yük açılış modelinde LT3844'ün CSS çalışırken bobin akım tepesi yaklaşık 10,05 A ve çıkışın ilk tepe değeri 11,23 V civarı görüldü; bu, gerçek soft-start devresinin tolerans ve akım limiti doğrulaması değildir.
+
+PI modeli için giriş değişiminde Kp=0,01/0,03/0,05 ve Ki=0,00003/0,0001/0,0003 ile dokuz ayrı ayar koşuldu. **Dokuzunun hepsi 11 V ±%5 anlık bandını ihlal etti**; en iyi taranan ayarda 9,8489–12,4676 V ve 17,31 A bobin tepesi görüldü. 100/50 ns giriş dalgası değerleri ve bağımsız `.raw` okuması tutarlıydı. Bu yalnız seçilen davranışsal PI örneğini eler; bütün gerilim-kipli analog kontrolcüleri veya iyi tasarlanmış kompanzasyonu elemez.
+
+OVP tekrarında üretici LTC4365 modeliyle sert kaynak geçişi 11→25 V, cihaz portu 10/100/1000 µF ve iki geçiş süresinde sınandı. 100 µF/10 µs'te port tepe gerilimi 12,806 V; aynı testin `LTC4365-1` örneğinde 13,060 V'tur. Her iki sonuç 50 ns adımında 0,002 V içinde tekrarlandı ve **12 V üst sınırını geçemedi**. Bununla birlikte LTC4365 + ideal seri kesici ve LT3844'ün birleşik S1-kısa devre senaryosunda 100 µF varsayımında 11,797 V, 1000 µF varsayımında 11,668 V elde edildi. Kaynak arızası/rampa, port kapasitesi, MOSFET dinamiği ve model değişince sonuç değiştiğinden yalnız birleşik kısa devre köşesi koruma yeterliliği değildir.
+
+TI LM5088 makromodeli nominal ve Gear/UIC koşularında çıkış kodu 1 ile başarısız oldu. Üçüncü probe koşusu logda aynı simülasyon zamanında sonsuza doğru büyüyen “tolerance relaxed” adımları üretip ham dalga yazmadı; sonuç oluşmadığı için süreç durduruldu. Bu **elektriksel başarısızlık sonucu değildir**. Özet tekrar kaydı `%TEMP%\pdu-closed-loop-rerun-20261113.txt` içindedir; bu çevrimdeki tamamlanmamış/kesilmiş denemeler raporda açık bırakılmıştır.
+
+**Karar özeti:** Şimdilik en iyi kontrol yönü, donmuş asenkron S1/D1 güç katısını koruyan sabit frekanslı analog tepe akım kipidir; 11 V çıkış gerilimi döngüsü Cout'tan ölçer, bobin akım sınırı ayrı işlevdir. Üretici LT3844 testi bu yöntem için destekleyici ama parçayı seçtirmeyen kanıttır: 10 mΩ örneğinin 9 A düşük eşik ucu, 9,89 A geçici tepeye pay bırakmaz. LM5088-2 kâğıt üstünde uyumlu alternatif, SİM'de sonuçsuzdur. OVP için ortak porttan algılayan ayrı latch-off MOSFET ayırıcı yöntemi araştırılmalı; LTC4365 örneği 12 V sınırını geçemedi, MAX6497 ailesi ise test edilmedi. Maliyet, gerçek verim, akım eşiği ve OVP port tepe gerilimi çözülmeden parça veya devre değeri kesinleşmez. Kullanıcının sonraki kararı beklenmeden devreye aktarım yapılmaz.
+
+### 14. 14.11.2026 tam tekrar ve geçici analog kontrol ağı taraması
+
+Bu bölüm, 14.11.2026 tarihinde `main` dalındaki güç katı dondurması korunarak yapılan tekrarları ve yeni **geçici** kapalı çevrim çalışmalarını kaydeder. Geçici netlist, log ve tablolar `%TEMP%\pdu-control-opt-20261114` içindedir; depodaki `.asc`, `hesap.py`, `dogrula.py`, parça sırası ve açık çevrim değerleri değiştirilmedi. LTspice sürümü 26.1.1'dir. Bu kayıt **fiziksel ölçüm veya parça seçimi değildir**.
+
+#### 14.1 Depo testlerinin 14 Kasım tekrarı
+
+`hesap`, `sayisal`, `secilen`, `pencere`, `tarama`, `mevcut`, `kararlilik`, `zarf`, `stres` ve `grafik` kipleri seri olarak yeniden koşuldu; on komutun tamamı süreç çıkış kodu 0 ile bitti. Özet `%TEMP%\pdu-full-rerun-20261114-summary.csv`, kip çıktıları `%TEMP%\pdu-rerun-20261114-<kip>.txt` dosyalarındadır. Bu, bütün elektriksel senaryoların GEÇTİ anlamına gelmez: `secilen` içindeki sabit duty hafif-yük geçişi yaklaşık 16,07 V'a yükseldi; sert kalkış, bazı stresler ve eski dalsız modellerde sınır dışı sonuçlar vardır. `kararlilik`te yalnız tabloda ayrı ayrı listelenen 200 ms / 500 ms senaryoları geçer; kısa darbeler sönüm için belirsizdir. `zarf` genel modül kabul sınırı olarak onaylanmadığı için genel modül PASS kararı değildir. Güncel kodun ölçüm tabloları bu bölümün önceki tarihli satırlarında yer alır. **Çıkış kodu 0, elektriksel geçme kararı değildir.**
+
+#### 14.2 Kompanzasyon araması — geçici test aralığı
+
+Kontrolcü parçası seçilmeden önce, ADI LT3844 üretici makromodeli yalnız analog tepe akım mimarisini ve hata yükselteci ağını incelemek için kullanıldı. Frekans ayarı modelde yaklaşık 100 kHz'e kalibre edildi; açık çevrim güç katına akım algılama direnci eklendi. Diğer elemanlar ideal/parametrik kaldı; indüktör doyumu, anahtarlama kaybı, fiziksel MOSFET, parça sıcaklık eğrileri ve PCB parazitleri yoktur.
+
+İlk kaba tarama zayıf-sönüm 20 V köşesinde 45 Rcomp/Ccomp/Cpole birleşimini, ardından sınırın devam edip etmediğini görmek için 24 genişletilmiş birleşimi koştu. Kaba FRA örneklemesi 500 Hz–50 kHz, oktav başına bir nokta, 0,5 mV enjeksiyon ve ortak kaydedilmiş çalışma noktası kullandı; bu nedenle yalnız eleme taramasıdır, her hücre için son doğrulama değildir. En iyi satırlar:
+
+| Geçici ağ (Rcomp / Ccomp / Cpole) | 500 Hz–50 kHz kaba SİM, zayıf 20 V: crossover | Faz payı | Yorum |
+|---|---:|---:|---|
+| 49,9 kΩ / 1,5 nF / 47 pF | 4,167 kHz | 61,2° | İlk 45'li taramanın en iyisi; sonraki genişletmede aşıldı |
+| 68 kΩ / 2,2 nF / 22 pF | 5,254 kHz | 75,0° | Genişletilmiş tarama |
+| 100 kΩ / 3,3 nF / 22 pF | 7,746 kHz | 76,0° | Daha yüksek bant genişliği; ilk hassas köşe taramasına finalist seçildi |
+| 49,9 kΩ / 3,3 nF / 22 pF | 3,856 kHz | 78,7° | Daha düşük crossover; 68 kΩ ağı tarafından hem marj hem bant bakımından kaba gridde geçildi |
+| 68 kΩ / 3,3 nF / 22 pF | 5,328 kHz | 78,9° | Genişletilmiş taramanın en yüksek faz paylı/orta bantlı ağı; ikinci hassas finalist |
+
+Genişletilmiş gridin sınırlarında Rcomp/Ccomp artırıldığında hem crossover hem faz payı değişmeye devam etti; bu nedenle tarama matematiksel/global optimum kanıtı değildir. ADI tasarım rehberi 45° üstünü genel alt hedef, 60°'yi iyi sonuç; döngü bant genişliği için anahtarlama frekansının yaklaşık 1/10–1/5 aralığını pratik üst sınır olarak verir. Bu tavsiye, burada ölçülen makro-model faz payını üretici garantisine dönüştürmez.
+
+#### 14.3 Hassas FRA finalistleri ve ölçüm kararlılığı
+
+İki genişletilmiş finalist her köşede kendi LT3844 çalışma noktası oluşturularak 500 Hz–20 kHz, oktav başına dört nokta, 100 ns azami adım, 10 ms bekleme ve 0,5 mV enjeksiyon ile ölçüldü. Aday D için zayıf köşede 0,25 mV tekrar da koşuldu.
+
+| Geçici ağ | Köşe / uyarım | Crossover | LTspice FRA faz payı | Kazanç payı |
+|---|---|---:|---:|---|
+| D: 68 kΩ / 3,3 nF / 22 pF | Zayıf 20 V / 0,5 mV | 5,116 kHz | 80,9° | 500 Hz–20 kHz içinde −180° kesişimi yok |
+| D | Zayıf 20 V / 0,25 mV | 4,761 kHz | 90,5° | Aynı |
+| D | Sıcak-kayıplı 20 V | 5,781 kHz | 113,1° | Aynı |
+| D | Nominal 26 V | 5,796 kHz | 109,3° | Aynı |
+| F: 100 kΩ / 3,3 nF / 22 pF | Zayıf 20 V | 7,609 kHz | 76,0° | 500 Hz–20 kHz içinde −180° kesişimi yok |
+| F | Sıcak-kayıplı 20 V | 8,717 kHz | 103,5° | Aynı |
+| F | Nominal 26 V | 12,647 kHz | 98,3° | Aynı |
+
+`FRA` ham verisi bağımsız olarak okundu: örneklenen kesişim frekansları LTspice özet satırlarıyla eşleşti. Bununla birlikte D ağında 0,5 mV ve 0,25 mV uyarım crossover'ı yaklaşık %7, faz payını 9,6° değiştirdi. Daha küçük 0,1 mV / 20 ms bekleme denemesinde hem D hem F için ham büyüklük/faz noktaları gürültülüydü ve LTspice 0 dB kesişimi bulmadı; bu devre kararsızlığı değil, bu uyarımda geçerli FRA ölçümü alınamamasıdır. Bu yüzden FRA sayıları bir ölçüm genliği bağımsızlığı göstermiyor; kazanç payı pozitif/sonlu bir değer olarak saptanmadı. **Adım 6 tamamlanmış/kararlılık kesin kanıtlanmış sayılamaz.** ADI, birden fazla gain/phase kesişimine veya anahtarlama frekansının yarısında yükselen ikinci kazanç tepesine dikkat edilmesini önerir; buradaki 23 frekanslı tarama bunların tümünü dışlamaz. Referanslar: [LT3844 veri sayfası](https://www.analog.com/media/en/technical-documentation/data-sheets/3844fc.pdf), [ADI loop-stability tasarım hedefleri](https://www.analog.com/en/resources/technical-articles/power-supply-loop-stability-compensation-part-3.html).
+
+#### 14.4 D ve F ağlarının zaman alanı kıyası
+
+Her iki finalist aynı LT3844 makromodeli ve aynı dondurulmuş filtre değerleriyle (zayıf 20 V köşesi: L=39,6 µH, Cout=800 µF/15 mΩ; nominal 26 V köşesi: L=33 µH, Cout=1000 µF/35 mΩ) koşuldu. 200 ms CPL basamağı 41,25→82,5→41,25 W idi; 20↔26 V çizgi basamağı zayıf parazitik modelde uygulandı. Hafif yük 0,24 A eşdeğer direnç, yüksüz model 1 GΩ'dur.
+
+| Ağ | Senaryo | Vout min–max | Son 1 ms ripple | Bobin tepe | Model ölçütü |
+|---|---|---:|---:|---:|---|
+| D | 20 V, 200 ms CPL | 10,8895–11,0032 V | 18,1 mV t-t | 8,43 A | 9–12 V / 165 mV içinde |
+| D | 26 V, 200 ms CPL | 10,8766–11,0254 V | 60,6 mV t-t | 8,78 A | İçinde |
+| D | 20↔26 V, CPL | 10,8895–11,0325 V | 18,1 mV t-t | 8,85 A | İçinde |
+| F | 20 V, 200 ms CPL | 10,9120–11,0032 V | 18,1 mV t-t | 8,30 A | İçinde |
+| F | 26 V, 200 ms CPL | 10,8921–11,0254 V | 60,6 mV t-t | 8,66 A | İçinde |
+| F | 20↔26 V, CPL | 10,9118–11,0265 V | 18,1 mV t-t | 8,79 A | İçinde |
+
+İki ağın da bu **listelenmiş model** 200 ms dalgalarında zarf gerilimi aralık içinde kaldı; adım sonrası zarf ölçümündeki son pencere girişin tekrar 20 V'a dönmesini içerdiği için tekdüze sönüm ölçüsü değildir. İki ağ arasındaki min/max farkı yaklaşık 15–23 mV; aday F zayıf ve çizgi basamağı köşesinde biraz daha yüksek minimum verdi. Bu küçük fark, gerçek yük veya tüm toleranslar için performans sıralaması değildir.
+
+| Ağ | 20 V hafif yük (0,24 A) | 26 V hafif yük (0,24 A) | 26 V yüksüz (1 GΩ) |
+|---|---:|---:|---:|
+| D | 10,9965–11,0083 V; 11,8 mV ripple | 10,9936–11,0238 V; 30,2 mV | 10,9897–11,0431 V; 5,9 mV |
+| F | 10,9965–11,0083 V; 11,8 mV ripple | 10,9937–11,0239 V; 30,2 mV | 10,9898–11,0323 V; 5,9 mV |
+
+Tam rezistif 7,5 A yükle kalkışta 20 V köşesinde her iki ağ da yaklaşık 9,08 A bobin tepesini, 11,02 V çıkış tepesini verdi; 26 V köşesinde tepe yaklaşık 9,67 A ve 11,04 V'tur. F ağında 90 mV akım algılama eşiğini temsilen LT3844'ün tipik 100 mV eşiği altında Rsense=10,9529 mΩ kullanıldığında 26 V kalkış tepe akımı 9,20 A, çıkış tepesi 11,125 V oldu. Bu eşdeğer direnç fiziksel sense toleransını, yol direncini de artırarak taklit eder; üretim toleransı modelinin tam karşılığı değildir. Makro-model yumuşak kalkışının bu koşuları çıkışın 12 V üstüne çıkmadığını gösterir, gerçek pin toleransları/akım sınırı doğrulaması değildir.
+
+F ağı 20 V / tam yük CPL testinde `.temp 5` ve `.temp 50` ile de koşuldu: ikisinde yaklaşık 10,9119–11,0032 V ve 8,298 A elde edildi. 27 °C model sonucundan fark <0,1 mV civarındadır; bu makromodelde sıcaklık tepkisinin çok az olduğuna işaret eder, pasiflerin DCR/ESR, L(I), kondansatör kapasitesi, MOSFET ve fiziksel termal koşulların +5…+50 °C doğrulaması değildir.
+
+#### 14.5 Sense direnci ve dondurulmuş güç katıyla arayüz
+
+LT3844 veri sayfası SENSE uçlarını buck uygulamasında bobin yolundaki seri direncin iki yanına bağlar; tipik eşik 100 mV, sınır aralığı bu incelemede 90–115 mV ve önerilen ilk hesap `Rsense = 70 mV / Iout(max)`'tır. 7,5 A için bu denklem **9,33 mΩ HESAP** verir. 9,76 mΩ ±1% örneğinde datasheet eşikleri kullanılarak ilk eşik hesabı **9,13–11,90 A HESAP**tır; bu parça seçimi değildir ve dinamik akım davranışını içermez. Bu eşik genişliği, yaklaşık 12 A bobin doyma hedefiyle az pay bırakır.
+
+9,76 mΩ seri direnç 7,5 A'de yaklaşık **73,2 mV ve 0,549 W HESAP** ekler (±1%: yaklaşık 0,544–0,555 W). Dondurulmuş L1 DCR'si 7,81 mΩ ise bobin ve sense dirençlerinin toplamı yaklaşık 17,57 mΩ olur; bu, yalnız bobin için yazılı 6,5–15 mΩ DCR kriterinin yerine geçmez fakat dondurulmuş açık çevrim çıkış yolunda bulunmayan ilave seri direnç ve yaklaşık 0,55 W kayıptır. Kapalı çevrim testleri bu direnci içerdi; `.asc` / açık çevrim dondurma içermez. Akım algılama yönteminin verim, filtre sönümü, CPL ve akım marjına etkisi için kontrol mimarisi–güç katı arayüzü kararı gerekir; burada dondurulmuş değer değiştirilmedi.
+
+#### 14.6 Önceki sonuç ve açık işler (Type-III gerilim-kipi testinden önce)
+
+**Arama kapsamı ve “optimum” sınırı:** Bu araştırma, ilk 45 ağ ve ardından 24 genişletilmiş ağdan oluşan **69 noktalı kaba taramadır**; sürekli değer uzayının tamamı, tüm toleranslar, tüm çalışma noktaları ve tüm fiziksel parazitler taranmadı. Hassas FRA yalnız iki finalist ve üç makromodel köşesinde yapıldı; ölçüm uyarım genliğine duyarlı kaldı. Bu yüzden matematiksel/global optimum, üretim toleranslarına dayanıklı kompanzasyon veya gerçek devre kararlılığı kanıtı yoktur. Bu 13.11 akım-kipi taramasının sınırları içinde **D, sıradaki geçici akım-kipi model turu için başlangıç ağı olarak önerilmişti**; 14.11 Type-III gerilim-kipi karşılaştırması yeni bölüm §15'tedir.
+
+- **13.11 yöntem yönü:** sabit frekanslı analog tepe akım kipi, Cout'tan gerilim geri beslemesi, ayrı soft-start/akım sınırı ve O1 portunu gözeten bağımsız latch-off OVP ilk mimari adayı olarak önerilmişti. LT3844 yalnız test makromodelidir. 14.11 Type-III gerilim-kipi modeli de geçici aday oldu (§15); mimari/onay hâlâ açık.
+- Geçici kompanzasyon ağı D, daha düşük crossover nedeniyle o tarihli çalışma için muhafazakâr başlangıç adayıydı; F daha hızlı yanıt veren karşılaştırma ağıydı. FRA'nın uyarım genliği duyarlılığı ve sonlu gain margin bulunamaması nedeniyle **D veya F kesin seçilmedi**. Bu kayıt, Type-III yöntem testinin yerini almaz.
+- LT3844 sense direnci güç yoluna ek seri R/kayıp getirir ve açık çevrim dondurmasında yoktur. Emüle akım algılama gibi alternatiflerin makromodeli/uyumu bu çalışmada doğrulanmadı; bu yöntem veya direnç yerleşimi için parça araştırması yapılmadı.
+- Bağımsız OVP hâlâ geçmedi: §13'teki LT4365 sert arıza geçişi portta 12 V üstünü gösterdi. D/F zaman alanı kontrolleri çıkış regülasyonunu test eder; O1'i kısa devre, kontrolcü hatası veya hızlı kaynak arızasında korumaz. Gerçek O1/S2E bağlanmaz, fiziksel prototip/PCB adımı açılmaz.
+- Bu 13.11 kaydının sonraki karar önerisi, önce §15'teki Type-III testiyle genişletilmiş, ardından D/F ve ortalama-akım denemeleri de eklenerek §16'da karşılaştırılmıştır. Güncel yöntem özeti §16'dadır.
+
+### 15. Gerilim kipli analog Type-III kontrol modeli (14.11.2026)
+
+Bu test, kullanıcı isteğiyle **aynı dondurulmuş açık çevrim güç katısına** geçici gerilim geri beslemesi ekleyerek yöntem düzeyinde yapıldı. Netlist, log ve ham dalgalar `%TEMP%\pdu-vmode-20261114` altındadır; depodaki `.asc`, `sematik_uret.py`, `hesap.py`, `dogrula.py`, parça değerleri ve aday sırası değişmedi. LTspice 26.1.1 kullanıldı. Gerçek kontrol entegresi, MOSFET sürücüsü, OVP veya fiziksel ölçüm yoktur.
+
+#### 15.1 Geçici model ve sınırları
+
+Güç katı değerleri dondurulmuş örnekle aynıdır: Vin=20–26 V; 100 kHz; Cin=2×1000 µF/15 mΩ; S1 Ron=5,6 mΩ; D1 Vf=0,38 V + 8 mΩ; L1=33 µH/7,81 mΩ; Cout=1000 µF/35 mΩ; Cd=470 µF ve Rd=0,22 Ω. Gerçek parça veya tolerans seçimi anlamına gelmez.
+
+Kontrol, 0–1 V test rampasını 100 kHz'de karşılaştıran sabit frekans PWM, 11 V referansını 6 ms'de yükselten soft-start ve doyumda integratör birikimini durduran davranışsal Type-III kompanzasyonla modellendi. Kompanzasyon iki açık RC durum ağıyla kuruldu:
+
+- `H1(s)=(1+s/(2π·500 Hz))/(1+s/(2π·4,5 kHz))`: 35,3678 kΩ + 1 nF alçak geçiren durum ve ideal aktif ağırlıklı toplam.
+- `H2(s)=(1+s/(2π·900 Hz))/(1+s/(2π·20 kHz))`: 7,95775 kΩ + 1 nF alçak geçiren durum ve ideal aktif ağırlıklı toplam.
+- Denenen integratör katsayıları `Ki=500` ve `1000 s⁻¹`; bunlar **model değişkenidir, seçilmiş devre değeri değildir**. PWM duty aralığı 0–0,95 olarak sınırlandı.
+- Ayrı çevrim-başı akım kesimi için model `I(L1)` değerini doğrudan izleyen **11 A ideal eşik** kullandı. Bu gerçek akım algı devresi, eşik toleransı veya kullanıcı kararı değildir; donanımda akım algısının kayıp ve maliyeti henüz modellenmedi.
+
+#### 15.2 Zaman alanı sonuçları — SİM
+
+| Deneme | Sonuç | Durum ve ölçüm aralığı |
+|---|---|---|
+| 24,6 V, 7,5 A direnç; Ki=500 | 10,9994 V ortalama; 55,9 mV t-t; başlangıçta 11,028 V maksimum; bobin 11,000 A maksimum, son kararlı pencerede 8,449 A | 8–10 ms ortalama, 9–10 ms ripple; 0–12 ms başlangıç. Başlangıç tepesinde modeldeki 11 A sınırı devreye girdi. |
+| 24,6→20→26 V giriş rampası, 7,5 A direnç; Ki=200 | 10,213–11,786 V; 11 V±%5 bandı dışı, 9–12 V bandı içi | Her giriş değişimi 100 µs; 14,9–35,1 ms penceresi. |
+| Aynı giriş geçişi; Ki=500 | 10,642–11,424 V; 20 V ve 26 V kararlı pencerelerinde sırasıyla 11,0000 ve 11,0000 V ortalama; ripple 45,0 ve 58,2 mV t-t; bobin tepe 11,000 A | 14,9–35,1 ms geçiş penceresi; son kontrol 100 ns azami adımla tekrarlandı. Ki=500 satırında ideal 11 A kesimi geçiş tepesini sınırladı. |
+| Aynı giriş geçişi; Ki=1000 | 10,811–11,233 V; bobin tepe 10,488 A | 200 ns azami adım. Listelenen bu giriş/yük koşulunda 11 A ideal kesimi devreye girmedi. |
+| 200 ms sabit-güç basamağı; Ki=500 | 10,830–11,057 V; 200 ms darbenin son 1 ms'sinde 58,0 mV t-t; bobin tepe 9,397 A | 24,6 V; 41,25 W'tan 82,5 W'a 20 µs rampalı geçiş, 200 ms tutma ve 20 µs dönüş rampası; geçiş dâhil 39,9–240,02 ms ölçümü. İlk 1 ms'deki toplam tepe-tepe hareketi 227 mV'dur; bu yük geçişini de içerir, kararlı ripple değildir. |
+| Aynı CPL basamağı; Ki=1000 | 10,849–11,039 V; son 1 ms ripple 58,0 mV t-t; bobin tepe 9,064 A | Aynı giriş, yük rampası ve 100 ns adım. İlk 1 ms toplam tepe-tepe hareketi 191 mV'dur. |
+| 0,24 A; Ki=500 | 10,9994 V ortalama; 29,7 mV t-t; kararlı min–maks 10,991–11,022 V | 35–39 ms ortalaması, 38–39 ms ripple. |
+| Yüksüz, 1 GΩ; Ki=500 | 11,3967 V ortalama; 0 mV simüle ripple; başlangıç maksimumu 11,404 V | 35–39 ms penceresi. 11,55 V geçici üst hedefe yalnızca yaklaşık 0,15 V pay kalır; modelde yük yokken dönüştürücü çıkıştan enerji çekemez. |
+
+#### 15.3 Soft-start ve model ayarlarının etkisi — SİM
+
+Tam yükte soft-start süresi artırıldığında başlangıç tepe akımı azaldı, fakat çıkışın 9 V'a ulaşması gecikti. Aynı anda ölçülen 11 A model sınırı yalnız 6 ms satırında devreye girdi:
+
+| Referans rampası | Bobin başlangıç tepe akımı | Çıkışın 9 V'a erişme zamanı | 30–35 ms ortalama çıkış |
+|---:|---:|---:|---:|
+| 6 ms | 11,000 A (11 A model sınırı) | 4,983 ms | 11,000 V |
+| 12 ms | 9,737 A | 9,874 ms | 11,000 V |
+| 20 ms | 9,219 A | 16,404 ms | 11,000 V |
+
+Yüksüz kalkışta 6/12/20 ms rampalar için 30–35 ms ortalama çıkış sırasıyla 11,397/11,414/11,383 V; tepe değerleri 11,404/11,422/11,391 V oldu. Daha yavaş soft-start yüksüz gerilim payını anlamlı biçimde artırmadı. Başlatma süresi ve akım sınırı, sistem ihtiyacıyla birlikte seçilmelidir.
+
+#### 15.4 Küçük-sinyal çapraz kontrolü — HESAP + AC SİM
+
+Tam yükte CCM ortalama buck bitkisi, `Zp = 1/(1/Ryük + 1/ZCout + 1/ZCd)` ve `Gvd = Vin·Zp/(RL+sL+Zp)` ile hesaplandı. Aynı güç katının bağımsız LTspice AC ortalama devresinde 100 Hz, 878 Hz, 1 kHz, 3 kHz ve 5,5 kHz noktaları karşılaştırıldı; en büyük fark yaklaşık 0,005 dB ve 0,11° idi. RC kompanzasyon bloğunun ayrıca ölçülen AC cevabı analitik `Ki/s·H1·H2` ile eşleşti. Bu, yalnızca seçilen küçük-sinyal ortalama modelinin çapraz kontrolüdür.
+
+| Ki | Tam yük direnç modeli: crossover / faz payı | 82,5 W CPL küçük-sinyal modeli: crossover / faz payı |
+|---:|---:|---:|
+| 500 s⁻¹ | 2,95 kHz / 66,3° | 3,08 kHz / 63,6° |
+| 1000 s⁻¹ | 5,48 kHz / 66,6° | 5,71 kHz / 64,7° |
+
+Faz payları açık RC transferi ile ortalama CCM bitkisinin çarpımından hesaplandı; LT3844 benzeri üretici FRA sonucu değildir. 0,1 Hz–1 MHz hesabında −180° faz kesişimi bulunmadı; bu nedenle sonlu bir kazanç payı değeri raporlanmıyor. DCM, anahtarlama/sürücü gecikmesi, gerçek op-amp/kontrolcü dinamiği, tolerans ve parazitikler dâhil değildir.
+
+#### 15.5 İlk deneme hatası, yorum ve açık riskler
+
+İlk geçici denemede aynı lead transferleri LTspice `LAPLACE` kaynaklarıyla temsil edildi. Uzun 250 ms koşuda bu temsil yaklaşık 1,2 V sürekli salınım verdi; akım sınırı 50 A'a yükseltilen tanı koşusunda 13,17 V ve 28,1 A görüldü. Sonra aynı transferler açık RC durum elemanlarıyla yeniden kuruldu: ortalama CPL modeli ve anahtarlamalı güç katı 200 ms testlerinde kararlı çıktı. LTspice `LAPLACE` kaynaklarının 500 ms pencereli bu uzun geçici koşudaki sonucu bağımsız RC modeliyle uyuşmadığından **geçerli devre sonucu sayılmadı ve yöntem elemesi için kullanılmadı**; şüphe edilen neden modelin geçici/FFT temsilidir. Bu test-kurulum sorunu kayıtlı kalır.
+
+Önceki genel PI testinde dokuz kazanç ayarının başarısız olması, tüm gerilim-kipi analog çözümlerini elememiştir. Açık RC Type-III modeli seçilmiş nominal testleri geçti; bu nedenle gerilim kipi artık akım kipiyle birlikte model düzeyinde adaydır. Şu anki kanıt, nihai yöntemi veya kontrol değerlerini seçmek için yeterli değildir:
+
+- Bu modelde anahtarlama MOSFET'i/diyotun dondurulmuş kayıpları dışında gerçek kontrolcü, kapı sürücüsü, analog doyum/bant genişliği, gürültü ve besleme davranışı yoktur. İdeal `I(L1)` izleyicisi gerçek çevrim-başı akım algılama devresini kanıtlamaz.
+- +5…+50 °C, L/C/ESR/R/DCR toleransları, batarya+kablo empedansı, daha geniş CPL köşeleri ve 11 A sınırının eşiği/tepki toleransı bu testte taranmadı. Ki=500 ve Ki=1000 de nihai değer değildir.
+- Gerçek OVP, S1 kısa devresi, hızlı kaynak arızası ve yük portu koruması bu denemeye dâhil değildir. Normal çalışma testinde çıkışın 12 V altında olması bağımsız O1 korumasını kanıtlamaz. **Gerçek O1/S2E bağlanmaz.**
+- Her iki yöntem de analog olabilir; mevcut simülasyonlardan gerçek maliyet, üretilebilirlik veya verim sıralaması çıkarılamaz. Gerilim kipinde düzenleme için akım algı direncinden kaçınma olasılığı, ayrı güvenli akım sınırı gereksinimini ortadan kaldırmaz.
+- Güç katı dondurması, parça sırası ve açık çevrim testleri değiştirilmedi; bu bölüm yeni parça araştırması veya mimari onay değildir.
+
+**§15 ara sonucu (14.11.2026, genişletilmiş §16 karşılaştırmasından önce):** tepe-akım kipli analog (LT3844 test makromodelinde D/F) ve sabit-frekans gerilim kipli analog (Type-III RC davranışsal model) iki aday olarak görülüyordu. O bölümde akım kipi seçilmiş testlerde daha küçük çizgi-geçiş aralığı verdi; gerilim kipi Ki=500/1000 örneklerinde 200 ms CPL ve kararlı ripple ölçütlerini tuttu. D/F ve Type-III'nin daha sonraki ortak koşulları, ortalama-akım karşılaştırması, puanlama ve güncel geçici yön önerisi §16'dadır. Akım algılama kaybı, ideal akım sınırı farkı, FRA belirsizliği, OVP ve gerçek maliyet/verim çözülmeden mimari onayı veya parça seçimi yapılmaz.
+
+### 16. Genişletilmiş kontrol yöntemi karşılaştırması (14.11.2026)
+
+Bu turda yalnız `%TEMP%\pdu-control-compare-20261114` altındaki geçici netlistler, hesaplar ve loglar kullanıldı. Açık çevrim dondurması, şematik, güç katı değerleri, parça sırası ve aday listesi değiştirilmedi. LTspice 26.1.1 kullanıldı. Bütün sonuçlar **SİM** veya **HESAP** olarak etiketlenmiştir; fiziksel devre ve ölçüm yoktur. 11 V ±%5 kararlı durum, ≤165 mV t-t ripple ve geçişte 9–12 V sınırları bu karşılaştırmanın tasarım hedefleridir. Gerçek O1/S2E bağlanmaz.
+
+#### 16.1 Karşılaştırılan modeller
+
+- **Sabit-frekans analog tepe-akım kipi, D/F:** ADI LT3844 üretici makromodeli; D ağında Rcomp=68 kΩ, F ağında 100 kΩ; her ikisinde Ccomp=3,3 nF ve Cpole=22 pF. D/F, seçilmiş güç katı parçası değildir. Geçici model 9,76 mΩ akım algılama direnci içerir; 7,5 A'de bu direnç **73,2 mV ve 0,549 W HESAP** ekler (82,5 W çıkışın yaklaşık %0,67'si). Açık çevrim dondurulmuş güç yolunda bu direnç yoktur.
+- **Sabit-frekans Type-III gerilim kipi, Ki=200 s⁻¹:** H1 sıfır/kutup 350 Hz/8 kHz; H2 600 Hz/30 kHz; 12 ms referans rampası ve 100 kHz davranışsal PWM. Gerçek op-amp, PWM entegresi, MOSFET sürücüsü veya analog akım algısı yoktur. Modeldeki I(L1) kesimi ideal karşılaştırıcıdır; donanım eşik toleransı ve gecikmesi içermez.
+- **Ortalama-akım kipi, geçici iki-çevrim modeli:** dış Type-II gerilim çevrimi (Ki=1000, fz=50 Hz, fp=20 kHz), iç P akım çevrimi (Kpi=0,04, 1 kΩ/8,2 nF ölçüm filtresi) ve 9,5 A ideal tepe kesimi. Sadece yöntem uygulanabilirliğini görmek için kuruldu; akım algılama, iç çevrim ve kontrolcü tümü davranışsal/ideal modeldir.
+- **Gerilim-kipi PI ve Type-II:** 24,6 V ortalama bitkisi üzerinde 7 pasif köşe × 4 yük türü HESAP taraması. Bu, bütün analog gerilim-kipi tasarımlarının testi değildir.
+- **Diğer olasılıklar:** COT/histeretik ve dijital kontrol için bu turda PDU zaman-alanı netlisti kurulmadı. COT/histeretik, seçili 100 kHz sabit frekans hedefiyle doğrudan örtüşmeyen değişken frekans ve geri besleme ripple koşulları taşır; TI [AN-1481](https://www.ti.com/lit/an/snva166a/snva166a.pdf) bu frekans değişimini ve geri besleme ripple ihtiyacını açıklar. Dijital kontrol için ADC/PWM gecikmesi, firmware hata yönetimi ve ayrı donanım OVP arayüzü henüz tanımlı değildir. Bu yöntemler puanlamada düşük kanıt güveniyle tutulur.
+
+#### 16.2 Ortak zaman-alanı testleri — SİM
+
+| Koşul | Tepe-akım D | Tepe-akım F | Type-III Ki=200, Ilim=9 A |
+|---|---:|---:|---:|
+| 20 V, tam-yük kalkışı | Vort=10,993 V; ilk tepe 11,033 V; bobin tepe 9,438 A | Vort=10,993 V; ilk tepe 11,027 V; bobin tepe 9,438 A | Vort=11,000 V; ripple=45,0 mV; bobin tepe=9,000 A (ideal limit) |
+| 0,24→7,5→0,24 A, 10 ms doğrusal rampalar | 10,950–11,049 V; ripple=56,81 mV; Ipk=8,468 A | 10,951–11,046 V; ripple=56,79 mV; Ipk=8,464 A | 10,085–11,221 V; ripple=56,83 mV; Ipk=8,471 A |
+| 0,24→7,5→0,24 A, 20 µs doğrusal rampalar | 10,764–11,193 V; Ipk=9,096 A | 10,794–11,164 V; Ipk=8,817 A | 9,763–11,544 V; ripple=56,83 mV; Ipk=9,000 A (ideal limit) |
+| 20→26→20 V, 200 ms CPL | 10,887–11,047 V; son 1 ms ripple=46,77 mV; Ipk=8,932 A | 10,904–11,043 V; son 1 ms ripple=46,76 mV; Ipk=8,878 A | Ilim=9 A: 10,338–11,505 V; son 1 ms ripple=46,88 mV; Ipk=9,000 A (ideal limit) |
+| 26 V yüksüz, 1 GΩ | Vlate=11,0028 V; son ripple=5,89 mV; başlangıç tepesi=11,082 V | Vlate=11,0028 V; son ripple=5,89 mV; başlangıç tepesi=11,071 V | Vlate=11,6303 V; başlangıç tepesi=11,6367 V; kararlı hedefin 11,55 V üst sınırını aşar, ancak seçilmiş modelde 12 V altında |
+
+D/F 10 ms rampalı yük koşuları 100 ms, 20 µs rampalı yük koşuları 80 ms, Type-III hızlı yük koşusu 100 ms sürdü. Bunlar tam basamak değil doğrusal rampa profilleridir. LT3844 D/F hızlı yük testleri ayrı ayrı koşturuldu; Type-III hızlı yük testinin ikinci koşusu ilk ölçümlerle aynı log değerlerini verdi.
+
+Type-III Ki=100, 11 A ideal kesimle 20–26–20 V ve 200 ms CPL birleşiminde **9,812–12,066 V** verdi ve 12 V üst sınırını aştı. Ki=200 için aynı testte kesim 11/10/9,5/9 A'ya indirildiğinde tepe akımları yaklaşık 11/10/9,5/9 A oldu; en düşük çıkış 10,338 V'ta değişmedi, üst tepe 11,650/11,607/11,570/11,505 V'a indi. 20 µs yük testindeki 9 A sonucu tekrarlandı. Bu, yalnız ideal çevrim-başı sınır davranışıdır; gerçek bobin marjı veya akım limit devresi kanıtı değildir.
+
+Yüksüz Type-III Ki=200 modeline test amacıyla 4,7 kΩ direnç eklenip 500 ms çalıştırıldığında son 4 ms ortalaması 11,0034 V, son 1 ms ripple 3,60 mV ve başlangıçtan itibaren en yüksek değer 11,6341 V oldu. **HESAP:** 11 V'ta 4,7 kΩ yaklaşık 2,34 mA ve 25,7 mW tüketir. Bu direnç depoya veya ana şematiğe eklenmedi; 250 ms ölçümü kararlı olmadığı için yalnız 500 ms sonucu kullanıldı.
+
+#### 16.3 Ortalama-akım ve kompanzasyon ekranı — HESAP + sınırlı SİM
+
+Dış Type-II Ki=1000/fz=50 Hz/fp=20 kHz ve geçici iç çevrimle tam-yük kalkışı 24,6 V'ta 11,000 V ortalama, 55,8 mV ripple ve 9,351 A tepe verdi. Aynı model 0,24 A hafif yükte başlayıp 20 µs doğrusal yük rampasına geçtiğinde Kiv=1000/200/2000 denemeleri 20–70 ms test penceresinde sırasıyla **16,87/19,66/16,83 V** tepe verdi; Ki=200 örneğinde en düşük değer 6,55 V oldu. Toplam kalkış tepeleri sırasıyla 19,16/21,29/18,70 V'tu. Bunlar seçilen davranışsal kurulum/kazanç denemelerinin başarısız sonuçlarıdır, ortalama-akım yönteminin bütün ayarlarının elendiği anlamına gelmez. Kiv=100 koşusu beş dakika içinde transient ölçüm üretmedi; ilgili LTspice işlemi durduruldu ve bu satır **tamamlanmadı**, PASS/FAIL sayılmadı. Bu nedenle yöntem anahtarlamalı performans açısından açık aday/risktir.
+
+Ayrı HESAP ekranında ortalama-akım iç çevrimi 5/10/20 kHz tek kutup ve yarım periyot gecikmesiyle **ideal** kabul edildi. 648 Type-II/PI ayarı PM≥45° ve crossover≤10 kHz ölçütünü sağladı; bu ayarların PDU anahtarlamalı modeliyle doğrulaması yoktur. Aynı 7 pasif köşe × 4 yük ekranında:
+
+- 1.170 gerilim-kipi Type-II ağı tarandı; 127 ayar kaba ölçütü sağladı, ancak bunların en yüksek crossover'ı 19,8 Hz idi. Crossover'ı 100 Hz üstünde ve PM≥45° olan üç ağın her birinde birden fazla 0 dB kesişimi bulundu; bunlar robust aday sayılmadı.
+- 14 PI kazanç ayarının hepsinde en kötü köşe faz payı negatif çıktı.
+- Type-III Ki=200, 350/600 Hz sıfırlar ve 8/30 kHz kutuplarla bağımsız yoğun frekans hesabında 84 VIN/köşe/yük birleşiminde tek crossover verdi. En kötü PM **59,084°**, crossover **4,581 kHz** (26 V, düşük-L/düşük-ESR köşesi, 82,5 W CPL); 24,6 V'ta en kötü 59,852°/4,384 kHz oldu. Bu sonuç ikinci bir skaler karmaşık-sayı hesaplamasıyla tekrarlandı; fark <0,001°. Küçük-sinyal ortalama CCM modeli, fiziksel kararlılık ölçümü değildir.
+
+ADI [AN-149](https://www.analog.com/en/resources/app-notes/an-149.html), küçük-sinyal modelinin çalışma noktası çevresinde lineerleştirildiğini ve zaman-alanı/PCB etkilerinin ayrıca değerlendirilmesi gerektiğini belirtir. Buradaki HESAP sonuçları aynı sınırı taşır.
+
+#### 16.4 Mimari karşılaştırma ve ön puan
+
+Puanlar bir **mühendislik ön taramasıdır**, ölçülmüş maliyet/verim veya sertifikasyon puanı değildir. Ağırlıklar: çıkış hedefleri + 100 kHz + dondurulmuş güç yoluna uyum %35, kanıt gücü %25, uygulama sadeliği %15, beklenen devre maliyeti %10, güç yoluna ek kayıp %10, koruma bütünlüğü %5. Her başlık 0–100; yüksek maliyet/kayıp puanı görece daha az maliyet/ek kayıp beklentisi demektir. Maliyet puanı BOM teklifi değil, beklenen parça ve devre karmaşıklığına dayalı TAHMİN'dir; ADI/DigiKey sayıları yalnız kaynakta görülen ürün fiyatlarıdır. Ağırlıklı toplam yuvarlanmıştır. Kesin fiyat/BOM ve fiziksel test yoktur; yaklaşık 10 puandan küçük farklar karar gücü taşımaz.
+
+| Yöntem / temsil | Uyum (35%) | Kanıt (25%) | Uygulama kolaylığı (15%) | Maliyet tahmini (10%) | Ek kayıp (10%) | Koruma (5%) | Ağırlıklı ön puan | Kanıt güveni |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| Sabit-frekans tepe-akım, LT3844 F makromodeli; 9,76 mΩ seri algı direnciyle | 75 | 85 | 70 | 60 | 65 | 60 | **74/100** | Orta: üretici makromodeli, fakat geçici güç yolunda dondurulmuş katta olmayan algı direnci var |
+| Gerilim-kipi Type-III Ki=200; 48 ms referans rampası ve 9 A ideal akım kesimi | 80 | 65 | 50 | 60 | 90 | 35 | **69/100** | Düşük-orta: RC davranış modeli ve ideal akım izleyici; gerçek akım koruması yok |
+| Histeretik 25 mV, sabit-100-kHz şartıyla | 55 | 60 | 75 | 80 | 80 | 30 | **63/100** | Düşük: ideal karşılaştırıcı/kilit ve ideal akım eşiği; ölçülen frekans 100 kHz sabit değil |
+| Histeretik 25 mV, frekansın değişmesine izin verilirse (koşullu) | 95 | 60 | 75 | 80 | 80 | 30 | **77/100** | Düşük: model davranışı iyi, donanım denetleyicisi ve gürültü/blanking doğrulanmadı |
+| Ortalama-akım çift çevrim, ilk geçici model | 40 | 45 | 35 | 40 | 50 | 30 | **41/100** | Düşük: yalnız ideal HESAP olumlu; anahtarlamalı hafif-yük koşusu sınır dışı/tamamlanmamış |
+| Gerilim-kipi Type-II | 25 | 20 | 60 | 60 | 50 | 25 | **35/100** | Düşük: bir hızlı-geçiş örneği başarısız; tüm ayarlar taranmadı |
+| Analog PI gerilim kipi | 15 | 10 | 85 | 80 | 50 | 25 | **35/100** | Düşük: yalnız sınırlı HESAP taraması |
+| Dijital PWM + yazılım PI | 25 | 20 | 25 | 35 | 55 | 40 | **29/100** | Çok düşük: bu turda PDU zaman-alanı modeli veya firmware yok |
+
+Uyum puanı hem 9–12 V / ±%5 / 165 mV hedeflerini hem 100 kHz ve dondurulmuş güç yoluyla uyumu tartar. Maliyet ve ek kayıp puanları tam BOM/verim hesabı değildir. Bu puanlar mühendislik yargısıdır; özellikle 5 puanlık koruma ağırlığı güvenlik kabulü anlamına gelmez. 10 puandan küçük toplam farklar anlamlı sıralama sayılmaz. LT3844 makromodeli geçişleri iyi tuttu, ancak 9,76 mΩ seri algı direnci dondurulmuş güç yolunda bulunmuyor. Type-III modelinde seri direnç yoktu; fakat 9 A akım sınırı gerçek algılayıcı değil, simülasyonda doğrudan `I(L1)` izleyen ideal bir karşılaştırıcıydı. Bu nedenle hiçbir satır gerçek donanım veya O1 aşırı-gerilim güvenliği onayı değildir.
+
+#### 16.5 Geçici sonuç ve açık kapılar
+
+**Sonuç:** sabit 100 kHz ve LT3844 modelinin eklediği 9,76 mΩ algı direncine izin verilirse, tepe-akım kipi bu test setinde en güçlü ve en çok doğrulanmış analog adaydır; bu dirençte 7,5 A için **0,549 W HESAP** kayıp vardır. Güç yolu kesinlikle aynı kalacaksa bu, doğrudan uygulanabilir kazanan değildir. Seri algı direnci eklenmeyen Type-III, 48 ms soft-start ile seçilen testleri tuttu; ancak gerçek akım algılama/koruma hâlâ çözülmedi. Değişken-frekans histeretik model en dar çıkış penceresini verdi ama 20–26–20 V sırasında 93,7–121,2 kHz'e kaydı ve ideal donanım modelidir. Dolayısıyla mevcut dondurma koşulunda henüz fiziksel olarak uygulanabilir nihai kontrol mimarisi kanıtlanmış değildir. Parça veya güç yolu değeri seçilmedi.
+
+#### 16.6 Bağımsız yeniden test, ek yöntemler ve pazar karşılaştırması — SİM + DATASHEET
+
+Bu ek turda LTspice 26.1.1 ile yalnız geçici dosyalar kullanıldı; güç katının repo içindeki değerleri, şematiği ve aday sırası değiştirilmedi. Yeni netlistler `%TEMP%\pdu-control-reassessment-20261114-final`, HESAP ekranları `%TEMP%\pdu-control-compare-20261114` altında tutuldu. Depodaki açık-çevrim on test kipi bu turda yeniden koşturulmadı: güç katı değişmedi ve 14 Kasım tarihli tam tekrar kaydı §13–14'tedir. Aşağıdaki değerler SİM veya HESAP'tır; fiziksel ölçüm değildir.
+
+**LT3844 F, 100 kHz sabit-frekanslı tepe-akım makromodeli:** üretici modeli tam-yük 20 V kalkışında 11,027 V tepe / 10,993 V ortalama ve 9,440 A bobin tepesi verdi. Ham bobin akımı tepe aralıkları 40–50 ms tam-yük penceresinde yaklaşık **99,95 kHz** sayıldı. 20–26–20 V ve 200 ms sabit-güç yük testinde 10,904–11,043 V, son 1 ms'de 46,76 mV ripple, 8,878 A tepe; giriş 20 V'a döndükten sonra 10,970–11,099 V aralığı ölçüldü. Taze 20 µs yük rampası tekrarı 10,794–11,165 V ve 8,817 A verdi; tam yükte kararlı ripple yaklaşık 56,81 mV idi. 26 V yüksüz başlangıç ölçümünde ilk tepe 11,071 V, geç değer yaklaşık 11,003 V'tu. Simüle edilen sense direnci 9,76 mΩ olup dondurulmuş katın parçası değildir; çıkış akım yoluna eklenmiş bu direnç 7,5 A'ta **73,2 mV / 0,549 W HESAP** eder. Makromodelün ilk çalışma noktası Gear ile bulunamadı ama Gmin adımlamasıyla bulundu ve transient tamamlandı; sonuç bu nedenle sayıldı.
+
+**Type-III Ki=200, feed-forward, 9 A ideal çevrim-başı akım sınırı:** 20 V tam-yük kalkışı 11,031 V tepe / 11,000 V ortalama ve 8,596 A verdi. 20 µs yük rampası 9,809–11,478 V, 56,85 mV ripple ve 9,000 A ideal eşik verdi. 200 ms CPL ve 20–26–20 V testinde 10,857–11,047 V, 46,88 mV ripple ve 8,774 A; kaynak döndüğünde son aralık 10,977–11,024 V oldu. Yüksüzde 20 V için 48 ms referans rampasıyla tam 120 ms simülasyon yapıldı: çıkışın ilk tepe değeri 11,413 V, 115–119 ms geç aralığı 11,410 V oldu; böylece 11 V ±%5 üst sınırı 11,55 V içinde kaldı. Önceki 40 ms koşusu referans rampası tamamlanmadan bittiği için 35–39 ms'deki 11,584 V son durum ölçütü olarak kullanılmadı. Aynı modelde 60 ms rampasıyla geç değer 11,353 V, 80 ms rampasıyla 11,290 V; 26 V'ta 48 ms örneği 11,328 V verdi. 48 ms bu seçilen yüksüz senaryoları geçirdi; bu değer donanım kararı değildir. 1 GΩ kaçak yolu sadece yüksüz test modelinde, düğümün sayısal olarak yüzmemesi için kullanıldı; gerçek devreye direnç eklenmedi.
+
+Bu FF ağı için küçük-sinyal ortalama CCM **HESAP**'ı ayrıca 3 VIN × 7 pasif köşe × 4 yük = 84 senaryoda tekrarlandı: tek crossover bulunan her senaryoda en kötü faz payı **54,554°**, crossover **6,230 kHz** (26 V, düşük-L/düşük-ESR, 82,5 W CPL); en yüksek crossover 7,526 kHz oldu. Vektör ve skaler hesap farkı 0,001°'den küçüktür. Ayrı geniş ağ taramasında 3.116 PI/Type-II/Type-III ayarından 198'i ilk faz payı/bant genişliği ölçütünü geçti; en iyi Type-III hesabı K=100, 350/400 Hz sıfırlar ve 8/30 kHz kutuplarla 65,753° / 3,457 kHz verdi. Ancak bu K=100 ağı zaman-alanı testinde 26 V yüksüzde 12,007 V'a ve hızlı yükte 9,712–11,730 V'a ulaştı. Bu nedenle daha iyi HESAP faz payı tek başına iyi kontrol sonucu değildir; K=100 seçilmedi. K=200 ağının küçük-sinyal hesabı lineer CCM yaklaşımıdır ve doyum, DCM, gecikme, gerçek PWM/akım algısı veya OVP'yi kanıtlamaz.
+
+**Histeretik karşılaştırıcı ve pulse-skip, 25/50 mV histerezis:** 25 mV modelinde tam-yükte 10,975–11,025 V, yaklaşık 50,02 mV ripple ve 9,000 A ideal tepe eşiği görüldü; ortalama darbe frekansı yaklaşık 111,33 kHz'ti. 20 µs yük rampasında 10,975–11,043 V / 50,02 mV / 8,715 A / 113,62 kHz ölçüldü. 200 ms CPL ve 20–26–20 V koşusunda 10,975–11,025 V / 50,02 mV / 8,326 A çıktı; darbe frekansı 20 V'ta 93,73 kHz, 26 V'ta 121,24 kHz, geri dönüşte 93,73 kHz olarak ham anahtarlama izlerinden sayıldı. 50 mV histerezisli örnekte tam-yükte 10,950–11,039 V / 89,00 mV / 62,58 kHz; hızlı geçişte 10,950–11,082 V / 90,62 mV / 62,73 kHz oldu; 25 mV örneğine göre daha geniş çıkış salınımı ve daha düşük ortalama frekans verdi. Yüksüzde 25 mV karşılaştırıcı darbe atlayıp 26 V başlangıç tepesini 11,025 V'ta tuttu; bu yalnız ideal mandal/karşılaştırıcıdır. Gerçek histerezis denetleyicisi, ölçüm filtresi, blanking, gürültü bağışıklığı ve akım algısı kurulmadı.
+
+**İki bağımsız kontrol:** üç uzun koşunun kaydedilmiş `.raw` dalga şekillerinden NumPy ile yeniden hesaplanan Vmin/Vmax/ripple, LTspice `.meas` günlükleriyle sayısal çözünürlük içinde eşleşti. Histeretik 20–26–20 V frekansı ayrıca `V(q)` yükselen kenarlarını ham dosyadan sayarak tekrarlandı. Eksik veya geçersiz denemeler PASS sayılmadı: ilk CPL netlistindeki ölçüm penceresi/transient süresi uyuşmazlığı düzeltilip yeniden koşuldu; davranışsal yüksüz yük kaynağının çıkışı yüzdürmesi 1 GΩ test kaçağıyla giderildi; ilk 10 mV pulse-skip denemesi LTspice yakınsama toleransını gevşetip durduğu ve ölçümleri üretmediği için kullanılmadı. Bu düzeltmeler yalnız geçici test dosyalarındadır.
+
+**Üretici ve satılabilir ürün karşılaştırması:**
+
+- ADI [LT3844 veri sayfası](https://www.analog.com/media/en/technical-documentation/data-sheets/3844fc.pdf) ve [ürün sayfası](https://www.analog.com/en/products/lt3844.html) 100–500 kHz sabit-frekans, N-kanal MOSFET kapı sürücüsü, burst/light-load çalışma, soft-start, UVLO, akım sınırı ve termal kapatma işlevlerini belgeler. ADI sayfası 1 ku liste fiyatını 4,71 USD'den başlatıyor; bu yalnız denetleyici fiyatıdır, PDU BOM'u veya Türkiye'ye teslim maliyeti değildir. Veri sayfası buck'ta endüktör akımı algısı için seri `RSENSE` tarif eder; modeldeki güç yolu farkı gerçektir.
+- ADI [AN-149](https://www.analog.com/en/resources/app-notes/an-149.html) gerilim-kipi için Type-III kompanzasyonun daha çok RC elemanı gerektirebildiğini ve akım algısının şönt, bobin DCR'si veya MOSFET RDS(on) üzerinden yapılabildiğini açıklar. DCR/RDS algısı bu turda LT3844 ile doğrulanmadı; ayrı devre ve kontrolcü uyum testi gerekir.
+- TI [PMP10799](https://www.ti.com/tool/PMP10799) 19–32 V'tan 12 V/8 A'a senkron buck referansıdır; üretici 24 V'ta 4,5–8 A aralığı için >%97 verim, 50 mVpp ripple ve 8 A adımında <%2 çıkış değişimi bildirir. Raporunda 24 V / 8 A'da 36,4 kHz bant genişliği ve 64° faz payı gösterilir. Bu kart test için üretilmiş, satılmıyor; senkron güç katı kullandığından PDU'nun asenkron dondurmasına doğrudan taşınamaz.
+- TI [TPS40170 veri sayfası](https://www.ti.com/lit/ds/symlink/tps40170.pdf) başka bir uygulanmış kontrol örneğidir: gerilim-kipi, giriş feed-forward, 100–600 kHz, soft-start ve akım/kısa-devre korumaları vardır. Ancak senkron alt MOSFET üzerinden OCP algısı kullanır; mevcut diyotlu kat için doğrudan uyumlu değildir. Bu örnek sabit-frekans gerilim kipinin endüstride geçerli olduğunu gösterir, fakat PDU için test sonucu sağlamaz.
+- TI [LM5085 veri sayfasındaki](https://www.ti.com/lit/ds/symlink/lm5085.pdf) COT örneği harici P-kanal MOSFET kullanır ve FB'de en az 25 mV ripple gerektirir. Bu PDU'nun harici N-kanal anahtarına doğrudan uymaz; bizim histeretik modelimiz de LM5085 modeli değildir. Anahtarlama frekansı/geri-besleme ripple davranışı yük ve çalışma kipine göre ayrıca kontrol gerektirir.
+- Satışta bulunan [RECOM RPMGE12-10](https://recom-power.com/en/products/switching-regulators/rec-p-RPMGE12-10.html) 18–75 V girişli, 8–15 V ayarlanabilir çıkışlı, 10 A / 120 W, üretici beyanıyla %95'e kadar verimli ve OCP/OTP/SCP korumalı tam DC/DC modülüdür. [DigiKey ABD sayfasında](https://sc-b.digikeyassets.com/en/products/detail/recom-power/RPMGE12-10/23346895) bu inceleme sırasında 1 adet fiyatı 34,50 USD, stok 253 ve üretici termin süresi 30 hafta gösterildi; fiyat/tedarik ülkeye ve zamana göre değişir. Bu ürün kontrol katı değil, güç katının tamamının yerine geçer; 11 V'a trimlenmesi ve cihazın 12 V tavanını güvenle koruması ayrıca doğrulanmadan aday sayılamaz.
+
+PMP10799 gibi sabit-frekans gerilim-kipi örneği, COT/histeretik ürünler ve hazır modül piyasada mevcut yöntemleri gösterir. Hiçbir dış örneğin performansı PDU'da ölçülmüş gibi kullanılmadı; satılabilir modülün verimi de ideal/simüle PDU yöntem puanlarıyla doğrudan kıyaslanamaz.
+
+**Bu turun nihai ara kararı:** 100 kHz hedefi korunursa, zaman-alanı kanıtı en güçlü kontrol yöntemi LT3844 tipi sabit-frekans tepe-akım kontrolüdür; ancak bu modeldeki 9,76 mΩ seri algı direnci güç yolunu ve ısı kaybını değiştirir. Güç yolu hiç değişmeyecekse 48 ms soft-start'lı Type-III, daha düşük toplam puanla test edilebilir bir sonraki kontrol adayıdır; gerçek akım algısı/koruması ve bütün çalışma köşeleri hâlâ gösterilmedi. Histeretik model yalnız değişken frekans kabul edilirse karşılaştırılabilir alternatif olur. Dondurulmuş kat, parça sırası ve değerleri değişmedi; gerçek O1/S2E, fiziksel prototip ve PCB aşamalarına geçilmedi.
+
+Her üç yöntem için bağımsız OVP, 12 V altında kesme, bobinin gerçek sıcaklık/doyum marjı ve arıza testleri çözülmedi. Normal çalışma SİM'inde 12 V altında kalmak hata durumunda güvenlik kanıtı değildir. Gerçek yük, fiziksel prototip ve PCB aşamalarına geçilmez.
+
+#### 16.7 Ön puanın 90 üzerine çıkma koşulları ve sınırlı güç katı değişikliği — HESAP + DATASHEET
+
+Mevcut tablo puanları sabit ağırlıklarla değerlendirilmelidir; yeni bir güç katı fikri için önceden puan artışı varsayılmaz. Sabit 100 kHz adayları içinde en yüksek puan LT3844 F'nin **74/100** değeridir. **77/100** histeretik sonuç, frekansın girişle yaklaşık 93,7–121,2 kHz değişmesine izin veren koşullu senaryodur ve 100 kHz sabit gereksinimini karşılamaz.
+
+LT3844 satırının mevcut alt puanları uyum=75, kanıt=85, kolaylık=70, maliyet=60, ek kayıp=65, koruma=60'tır. Ağırlıklı ham toplam:
+
+`0,35×75 + 0,25×85 + 0,15×70 + 0,10×60 + 0,10×65 + 0,05×60 = 73,5` → yuvarlanmış **74/100**.
+
+Yalnız güç katına uyumu ve ek kaybı kusursuz 100'e yükseltip diğer alt puanları aynı bıraksak bile:
+
+`0,35×100 + 0,25×85 + 0,15×70 + 0,10×60 + 0,10×100 + 0,05×60 = 85,75` → yaklaşık **86/100**.
+
+Bu nedenle küçük güç yolu iyileştirmesi tek başına 90 puanı sağlamaz. Aynı rubrikte örnek olarak uyum=95, kanıt=90, kolaylık=85, maliyet=85, ek kayıp=95, koruma=90 toplamı **91/100** eder. Bu yalnızca matematiksel örnektir; hiçbir mimari için bu puanlar verilmiş değildir. Gerçek test kanıtı, maliyet ve koruma tasarımı ayrıca elde edilmelidir. Ayrıca puan tablosundaki koruma ağırlığı yalnız %5'tir; 90+ sonuç O1 için bağımsız 12 V aşırı gerilim koruması koşulunu gevşetmez. OVP ve arıza anındaki port gerilimi doğrulanmadan güvenlik kapısı kapanmış sayılmaz.
+
+**Şöntsüz akım algısı için araştırma yönü:** Dondurulmuş çıkış akım yoluna seri direnç eklememek için bobin sargısının DCR düşümü, bobine paralel bir RC algı ağı ile izlenebilir. TI'nin [LM5137-Q1 veri sayfası](https://www.ti.com/lit/ds/symlink/lm5137-q1.pdf) bu yöntemi, eşleşmiş `R_CS C_CS = L/DCR` zaman sabitiyle bobin DCR gerilimini taklit eden kayıpsız ve sürekli akım ölçümü olarak anlatır. Aynı belge, oda sıcaklığında tipik akım sınırı doğruluğunu %10–15 verir ve bu yöntemi hassas akım sınırı gerektirmeyen uygulamalar için ayırır. Belgedeki kontrolcü **senkron buck** içindir; bu örnek mevcut asenkron S1+D1 katıyla doğrudan uyum kanıtı değildir. ADI'nin [akım algılama konumları notu](https://www.analog.com/en/resources/technical-articles/switch-mode-power-supply-current-sensing-part-2-where-to-place-the-sense-resistor.html) da bobin DCR algısının harici seri şöntün kayıp ve maliyetini azaltabileceğini belirtir.
+
+PDU'daki bobin DCR değeri henüz fiziksel ölçülmedi; sıcaklık katsayısı, endüktans ve DCR toleransı, RC eşleşmesi, anahtarlama düğümü gürültüsü, algı yükselteci/kontrolcü ortak-mod aralığı ve hata anındaki akım tepkisi çözülmedi. Bu nedenle DCR algısı **en az güç yolu değişikliğiyle araştırılabilecek bir adaydır**, seçilmiş yöntem veya güvenlik koruması değildir. DCR ağı, daha düşük değerli seri şönt ve senkron doğrultma ancak kullanıcı kapsamı netleştirdikten sonra geçici modellerde karşılaştırılabilir; açık çevrim dondurması, parça sırası ve değerleri değişmez. Bu bölümde yeni LTspice koşusu veya fiziksel test yapılmadı.
