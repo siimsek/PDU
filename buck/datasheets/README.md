@@ -1,17 +1,74 @@
-# Datasheet arşivi
+# Parça PDF arşivi
 
-Bu klasör, 14 Kasım 2026 denetiminde doğrulanan üretici veri sayfasının yerel kopyasını ve kaynağını kaydeder.
+**Arşivleme tarihi:** 14 Kasım 2026.
 
-## LM5137-Q1
+Bu klasör, projede olumlu aday veya araştırma adayı olarak anılan elemanlara ait erişilebilen PDF belgelerini içerir. Dosya arşivlenmesi, parçanın kesin seçildiği veya PDU'ya uygunluğunun bütünüyle doğrulandığı anlamına gelmez. Bir seri PDF'i birden fazla parça numarasını kapsayabilir. İndirilen her dosyanın PDF olarak açıldığı kontrol edildi; SHA-256 değeri arşivdeki kopyayı tanımlar.
 
-- Dosya: [LM5137-Q1_SNVSCU2B_RevB_2025-08.pdf](LM5137-Q1_SNVSCU2B_RevB_2025-08.pdf)
-- Üretici: Texas Instruments
-- Üretici kaynağı: https://www.ti.com/lit/ds/symlink/lm5137-q1.pdf
-- Belge kimliği / revizyonu: SNVSCU2B, Rev. B; Ağustos 2024, Ağustos 2025'te revize edildi.
-- Arşivleme tarihi: 2026-11-14
-- SHA-256: 11A14BB256E520D66F18CD5433507CF323FA11E96F9580E7A36A5D0B565DB09B
-- İlgili proje notları: `buck/OPTIMIZASYON.md` §16.7 ve `buck/PARCA-HEDEFLERI.md` içindeki DCR akım algısı notu.
+Bazı resmî indirme sunucuları bu oturumda erişimi engellediği için aynı üretici belgesinin dağıtıcı kopyası kullanıldı. Kaynak sütunu indirilen adresi gösterir; kullanıcı tarafından eklenen Würth PDF'i için üretici bağlantısı ve dosyanın kökeni ayrıca belirtilmiştir. Özellikle `Analog Devices LT3844 Current Mode Buck Controller.pdf` (3844fb) ve `Analog Devices LTC4365 Overvoltage Protection Controller.pdf` (4365fa) üreticinin bugün bağlantıladığı revizyondan eski olabilir; tasarım kararında güncel üretici sürümü yeniden kontrol edilmelidir.
 
-Veri sayfası LM5137-Q1'i çift kanallı senkron buck denetleyicisi olarak tanımlar. §7.3.11.2, bobin DCR algısını paralel RC ağıyla açıklar; `RCS × CCS = L / DCR` zaman sabitini verir ve oda sıcaklığında tipik %10–15 akım sınır doğruluğu belirtir. Aynı bölüm yöntemi hassas akım sınırı koruması gerektirmeyen uygulamalar için önerir. Bu tipik değer bir güvenlik sınırı garantisi değildir; senkron örnek de mevcut asenkron PDU ile doğrudan uyumluluk kanıtlamaz.
+`SLAMTEC RPLIDAR S2E Datasheet Chinese Rev 1.8.pdf` üreticinin Çince v1.8 belgesinin Seeed kopyasıdır. `TDK C3225X7S2A475K200AB Distributor Product Summary.pdf` üretici veri sayfası değil, dağıtıcı ürün özetidir; ayrıntılı üretici belgesi henüz arşivlenemedi.
 
-PDF, TI'nin resmi URL'sinden indirilmiştir. Yeniden doğrulama için üretici kaynağını kullanın; yerel kopya ve SHA-256 bu arşivleme anındaki sürümü tanımlar.
+`T3 Gemstone O1 Hardware Schematic Rev 0.2.pdf` O1 ürün veri sayfası değil, üreticinin yayımladığı donanım şemasıdır.
+
+## Yerel PDF'ler
+
+| PDF | Kaynak | SHA-256 |
+|---|---|---|
+| [Analog Devices LT1638 Op Amp.pdf](Analog%20Devices%20LT1638%20Op%20Amp.pdf) | [PDF](https://www.tme.eu/Document/88dcea7a07c38ac03c1e05d5cec86397/lt1638cs8.pdf) | `3A8A139552D620ABFA873C7A5D7461C2588D4C3B9679E217EDFE055F3235756E` |
+| [Analog Devices LT3844 Current Mode Buck Controller.pdf](Analog%20Devices%20LT3844%20Current%20Mode%20Buck%20Controller.pdf) | [PDF](https://datasheet.octopart.com/LT3844EFE-Linear-Technology-datasheet-8858392.pdf) | `485FA9607027BC916E86E5A2A5ED83726422EC701899264A664D841E40F83A30` |
+| [Analog Devices LTC4365 Overvoltage Protection Controller.pdf](Analog%20Devices%20LTC4365%20Overvoltage%20Protection%20Controller.pdf) | [PDF](https://www.tme.eu/Document/8cab658556391ab7db398e0dab957d7e/LTC4365.pdf) | `87C7FEAEA66431EBE3666E9B328280A556FECB6F353377397624E838A88D3C3B` |
+| [Analog Devices MAX6495-MAX6499 Overvoltage Protection Series.pdf](Analog%20Devices%20MAX6495-MAX6499%20Overvoltage%20Protection%20Series.pdf) | [PDF](https://media.digikey.com/pdf/Data%20Sheets/Maxim%20PDFs/MAX6495-99_Rev16_4-17-18.pdf) | `43E6ACBFF368DBF023667F03BEF943F067A0EB54F0551E7059DABE3ED82636B1` |
+| [Bergquist HI-FLOW THF 1600P Thermal Pad.pdf](Bergquist%20HI-FLOW%20THF%201600P%20Thermal%20Pad.pdf) | [PDF](https://datasheets.tdx.henkel.com/BERGQUIST-HI-FLOW-THF-1600P-en_GL.pdf) | `F49D769EAF46C0D09A480B4E76B1D69C0DE33C458DBB5D0F64C035476ED45621` |
+| [Bourns CRM2512 Current Sense Resistor Series.pdf](Bourns%20CRM2512%20Current%20Sense%20Resistor%20Series.pdf) | [PDF](https://www.bourns.com/docs/product-datasheets/crm.pdf) | `DD72C578F48227DBC38ED5C531D965920166B267DA3CF4D0494253143732A94D` |
+| [Boyd Board Level Heatsinks Catalog.pdf](Boyd%20Board%20Level%20Heatsinks%20Catalog.pdf) | [PDF](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/5880/BoydBoardLevelHeatsinksCatalog.pdf) | `2B21B91813DB64D9CD1B1BCA6B699A6648AAC466333E045EF7582617CFB50EEE` |
+| [Fischer Heatsinks and Thermal Materials Catalog.pdf](Fischer%20Heatsinks%20and%20Thermal%20Materials%20Catalog.pdf) | [PDF](https://www.tme.eu/Document/f32987f5c8d637e03c14d438f4f9eb03/catalogfischer.pdf) | `5ADC8393006D9E38A2F8C3590D9350217777B4C126A068FF175599D66E24A225` |
+| [Infineon IPP030N06NF2S 60V MOSFET.pdf](Infineon%20IPP030N06NF2S%2060V%20MOSFET.pdf) | [PDF](https://www.infineon.com/assets/row/public/documents/24/49/infineon-ipp030n06nf2s-datasheet-en.pdf) | `CDF377FC7D743430281525C8A77F203DF504ABF14890DD35F1B91D16840BF03B` |
+| [Infineon IPP034N08N5 80V MOSFET.pdf](Infineon%20IPP034N08N5%2080V%20MOSFET.pdf) | [PDF](https://www.infineon.com/assets/row/public/documents/24/49/infineon-ipp034n08n5-ds-en.pdf) | `5D832D3E9D6B9EF50FA4C954D52E633CA1F939AF6E5C830737C74ADEA1FF4B88` |
+| [IXYS DSB60C60HB Schottky Diode.pdf](IXYS%20DSB60C60HB%20Schottky%20Diode.pdf) | [PDF](https://www.ic-components.sk/files/44/DSB60C60HB.pdf) | `5BB8B71EC2C48DD4046D9FA7DE06419C9F54923D673D9D7BBBACFFCB5B6DA692` |
+| [KEMET ESY108M035AL4AA 1000uF 35V Capacitor.pdf](KEMET%20ESY108M035AL4AA%201000uF%2035V%20Capacitor.pdf) | [PDF](https://search.kemet.com/component-documentation/download/specsheet/ESY108M035AL4AA) | `F89AAAAADCFDD6194C6E413C4841440E1B8C018ED16415A6820AE93BAACBFCF0` |
+| [KEMET ESY108M050AM2AA 1000uF 50V Capacitor.pdf](KEMET%20ESY108M050AM2AA%201000uF%2050V%20Capacitor.pdf) | [PDF](https://search.kemet.com/component-documentation/download/specsheet/ESY108M050AM2AA) | `8335EC33A48ACCC4490592CE5E73EDE306A15F6A903584F4260F8113629B7C37` |
+| [Koshin KLH-050V471MG200 470uF 50V Capacitor.pdf](Koshin%20KLH-050V471MG200%20470uF%2050V%20Capacitor.pdf) | [PDF](https://cdn.ozdisan.com/public/product/assets/KLH-050V471MG200.pdf) | `CC4C1100C461AD3420307AF0A0F28B578FA289D99F9D7EE7246AA72B5EECF41A` |
+| [Magnetics 0077536A7 Kool Mu 40 Toroid Core.pdf](Magnetics%200077536A7%20Kool%20Mu%2040%20Toroid%20Core.pdf) | [PDF](https://www.mag-inc.com/Media/Magnetics/Datasheets/0077536A7.pdf) | `A4F1677BCFC737DD2894DD3522F48D6BCA400F2CE47620C80B8DA90882B09342` |
+| [Magnetics Powder Cores 2025 Catalog.pdf](Magnetics%20Powder%20Cores%202025%20Catalog.pdf) | [PDF](https://www.mag-inc.com/Media/Magnetics/File-Library/Product%20Literature/Powder%20Core%20Literature/Magnetics-Powder-Core-Catalog.pdf) | `FF3FD6505D1AD4D1FEDF4A5710612B6543438792C478AA89983FEAEA99A39532` |
+| [Murata Ceramic Capacitors Catalog GRM3195C2A222JA01D.pdf](Murata%20Ceramic%20Capacitors%20Catalog%20GRM3195C2A222JA01D.pdf) | [PDF](https://prod-1251541497.cos.ap-guangzhou.myqcloud.com/zixun_pc/qijian/szlcsc/pdf/atta.szlcsc.com-upload-public-pdf-source-20180326-C127924_664184ECFB9B5A675FEC1DB7E54BB632.pdf) | `4F9B93C6078770C82B2C41878231F3B1F042BC46F4005874895E9F18C0EB3076` |
+| [Murata GRM2165C2A102JA01D 1nF 100V Ceramic Capacitor.pdf](Murata%20GRM2165C2A102JA01D%201nF%20100V%20Ceramic%20Capacitor.pdf) | [PDF](https://docs.rs-online.com/84f9/A700000008995507.pdf) | `2DFB209DCCA58361057A6B5EFB705AEB04E88E7329D2055F27581C57BA6FF6D3` |
+| [Murata GRM2165C2A222JA01D 2n2 100V Ceramic Capacitor.pdf](Murata%20GRM2165C2A222JA01D%202n2%20100V%20Ceramic%20Capacitor.pdf) | [PDF](https://cdn.promelec.ru/upload/items/2024/05/02/GRM2165C2A222JA01%23.pdf) | `EF3A91834E9292B76183BC6638E360DA506D0195E4024A8E56231E5920D03131` |
+| [Murata GRM32EC72A106KE05L 10uF 100V Ceramic Capacitor.pdf](Murata%20GRM32EC72A106KE05L%2010uF%20100V%20Ceramic%20Capacitor.pdf) | [PDF](https://www.unikeyic.com/media/datasheet/4f/77/71e7/4f7771e77a6d3dd52d031c687e8c2f65.pdf) | `4F4B1D1909E1E4E75C661C325218D667AD36A9C3759EEADD040593DD40A81F91` |
+| [Nichicon UHE Aluminum Electrolytic Capacitor Series.pdf](Nichicon%20UHE%20Aluminum%20Electrolytic%20Capacitor%20Series.pdf) | [PDF](https://www.nichicon.co.jp/english/series_items/catalog_pdf/e-uhe.pdf) | `FCC5554836ADBF921499F2969FB661B03A22E0EE37874D7DB5BD5F9CCD499267` |
+| [Nichicon UHW Aluminum Electrolytic Capacitor Series.pdf](Nichicon%20UHW%20Aluminum%20Electrolytic%20Capacitor%20Series.pdf) | [PDF](https://www.nichicon.co.jp/english/series_items/catalog_pdf/e-uhw.pdf) | `E2D077E81944507025911A29CAFB5E2530F7BDBF0983D847A71474E772892D82` |
+| [Panasonic ERJ-8B Current Sense Resistor Series.pdf](Panasonic%20ERJ-8B%20Current%20Sense%20Resistor%20Series.pdf) | [PDF](https://industrial.panasonic.com/cdbs/www-data/pdf/RDN0000/AOA0000C313.pdf) | `862E7D5FFF1ED6E44F61298912BB7A3FC84298E53E17D1348EDD7641444A90CC` |
+| [Panasonic FC Aluminum Electrolytic Capacitor Series.pdf](Panasonic%20FC%20Aluminum%20Electrolytic%20Capacitor%20Series.pdf) | [PDF](https://cdn.ozdisan.com/public/product/assets/FC_A_SERI_PANASONIC.pdf) | `E277FCC151D78816C28A3BCD22C4EE660009D96E5180AFE1531E19EA3DA35C09` |
+| [Panasonic FM Aluminum Electrolytic Capacitor Series.pdf](Panasonic%20FM%20Aluminum%20Electrolytic%20Capacitor%20Series.pdf) | [PDF](https://uploadcdn.oneyac.com/attachments/files/brand_pdf/panasonic/ABA0000C1018.pdf) | `F2ED61A4EC74556B78E4109514466ADA617BDFCD82911FF67BEC56E11B169C0D` |
+| [Panasonic FR Aluminum Electrolytic Capacitor Series.pdf](Panasonic%20FR%20Aluminum%20Electrolytic%20Capacitor%20Series.pdf) | [PDF](https://uploadcdn.oneyac.com/attachments/files/brand_pdf/panasonic/ABA0000C1259.pdf) | `9EEBDAD742225332A8AC64D1CA6E2D8F73E353D7FFB330FFA4270738F0A1D3C4` |
+| [Panasonic FS Aluminum Electrolytic Capacitor Series.pdf](Panasonic%20FS%20Aluminum%20Electrolytic%20Capacitor%20Series.pdf) | [PDF](https://cdn.ozdisan.com/public/product/assets/ABA0000C1255_fs_series.pdf) | `4987AC143CE25C958988D2069E8DC4BDE99C544723C75B34BD62A87F3146AED5` |
+| [Rubycon ZLH Aluminum Electrolytic Capacitor Series.pdf](Rubycon%20ZLH%20Aluminum%20Electrolytic%20Capacitor%20Series.pdf) | [PDF](https://www.rubycon.co.jp/wp-content/uploads/catalog-aluminum/ZLH.pdf) | `F28D0524C711CD7F04A88708BD8FA2D2FB1EF81E9CC00C5576CE03BC7E4BF1BC` |
+| [Rubycon ZLJ Aluminum Electrolytic Capacitor Series.pdf](Rubycon%20ZLJ%20Aluminum%20Electrolytic%20Capacitor%20Series.pdf) | [PDF](https://www.rubycon.co.jp/wp-content/uploads/catalog-aluminum/ZLJ.pdf) | `05F8A580B5A700ADB8B93A0A4F4B98D5BD144548819FC0D52788AE8F9DF2ADF8` |
+| [Samsung CL31B475KBHNNNE 4u7 50V Ceramic Capacitor.pdf](Samsung%20CL31B475KBHNNNE%204u7%2050V%20Ceramic%20Capacitor.pdf) | [PDF](https://media.digikey.com/pdf/Data%20Sheets/Samsung%20PDFs/CL31B475KBHNNNE_Spec.pdf) | `E1186D609AB2A93ECF0E8802246475CCDC2AD2E87076C340D30870B1DFCA8F37` |
+| [Samsung CL32B106KBJNNNE 10uF 50V Ceramic Capacitor.pdf](Samsung%20CL32B106KBJNNNE%2010uF%2050V%20Ceramic%20Capacitor.pdf) | [PDF](https://media.digikey.com/pdf/Data%20Sheets/Samsung%20PDFs/CL32B106KBJNNNE_Spec.pdf) | `E23030D12683C8AC2346BC88D5C2F3E2EE6888BD39076D6C7BAC7AE41BB8EA76` |
+| [Samwha LQ Aluminum Electrolytic Capacitor Series.pdf](Samwha%20LQ%20Aluminum%20Electrolytic%20Capacitor%20Series.pdf) | [PDF](https://cdn.ozdisan.com/public/product/assets/LQ%20SER%C4%B0ES.pdf) | `89D477FD5FB5408B2B44BD9E72FAFA37AAACB8CD6EC9EBCD67E4D1B73C663D51` |
+| [SLAMTEC RPLIDAR S2E Datasheet Chinese Rev 1.8.pdf](SLAMTEC%20RPLIDAR%20S2E%20Datasheet%20Chinese%20Rev%201.8.pdf) | [PDF](https://files.seeedstudio.com/wiki/robotics/Sensor/Lidar/slamtec/SLAMTEC_rplidar_datasheet_S2E_v1.8_cn.pdf) | `54AEA89D0F563984D082794B19E1B1B677E0C2395DED050F0F05FF4862D152A0` |
+| [ST STP100N6F7 60V MOSFET.pdf](ST%20STP100N6F7%2060V%20MOSFET.pdf) | [PDF](https://media.digikey.com/pdf/Data%20Sheets/ST%20Microelectronics%20PDFS/STP100N6F7.pdf) | `8F2CFD709CB8FF58EDD2661C080D24A5D477DC8CF8D47658DC6FC1134E189411` |
+| [ST STP75NF75 75V MOSFET.pdf](ST%20STP75NF75%2075V%20MOSFET.pdf) | [PDF](https://datasheet.octopart.com/STP75NF75-STMicroelectronics-datasheet-10496271.pdf) | `880C057E46F67E0BC14349387919A8064CDBD10921F72CE498CA8F1D5343CA8A` |
+| [ST STPS30L45C 45V Schottky Diode.pdf](ST%20STPS30L45C%2045V%20Schottky%20Diode.pdf) | [PDF](https://wiki.adom.inc/api/pages/adom/stps30l45ct/files/docs/stps30l45ct-datasheet.pdf?v=adc51659d8f4.b1) | `89A0DD0641AA4FC9AD79EA2B36899439D85C388F6D0CDA0DD7189918317D5C69` |
+| [ST STPS30L60C 60V Schottky Diode.pdf](ST%20STPS30L60C%2060V%20Schottky%20Diode.pdf) | [PDF](https://datasheet.octopart.com/STPS30L60CW-STMicroelectronics-datasheet-10837142.pdf) | `7CAFA51C808DDB0ADA623304A23FE60B4699754C14D92BC406F04BA26A55E391` |
+| [ST STPS40M60C 60V Schottky Diode.pdf](ST%20STPS40M60C%2060V%20Schottky%20Diode.pdf) | [PDF](https://wiki.adom.inc/api/pages/adom/stps40m60ct/files/docs/stps40m60ct-datasheet.pdf?v=fe34958692cf.b1) | `4B06FEAA171D32ED995861DCB5501803130E96B368DFB608E9C0AA47DAC3A155` |
+| [T3 Gemstone O1 Hardware Schematic Rev 0.2.pdf](T3%20Gemstone%20O1%20Hardware%20Schematic%20Rev%200.2.pdf) | [PDF](https://raw.githubusercontent.com/t3gemstone/hardware/main/design/t3-gem-o1-v0_2.pdf) | `0FD2A0892A814D659F769E8043535159F79F0E9D775530DD9E903C2DA154A98F` |
+| [TDK C3225X7S2A475K200AB Distributor Product Summary.pdf](TDK%20C3225X7S2A475K200AB%20Distributor%20Product%20Summary.pdf) | [PDF](https://www.ariat-tech.com/datasheets/30d326364/C3225X7S2A475K200AB.pdf) | `49F941471AAB728E833612270A66E557D68D8EFBB07FD3E4C8492C858CE851BA` |
+| [TI LM5088 Non-Synchronous Buck Controller.pdf](TI%20LM5088%20Non-Synchronous%20Buck%20Controller.pdf) | [PDF](https://www.ti.com/lit/ds/symlink/lm5088.pdf) | `471A76480F35DC1D29EF888090C1B7EADCB6F4082FA0F8C97E843672D029D699` |
+| [TI LM5137-Q1 Synchronous Buck Controller Rev B.pdf](TI%20LM5137-Q1%20Synchronous%20Buck%20Controller%20Rev%20B.pdf) | [PDF](https://www.ti.com/lit/ds/symlink/lm5137-q1.pdf) | `11A14BB256E520D66F18CD5433507CF323FA11E96F9580E7A36A5D0B565DB09B` |
+| [Vishay D-CRCW Thick Film Chip Resistor Series.pdf](Vishay%20D-CRCW%20Thick%20Film%20Chip%20Resistor%20Series.pdf) | [PDF](https://www.vishay.com/docs/20035/dcrcwe3.pdf) | `2D355E653E551AB67D6B7E3F1979449E21E5F6B0FC89489E2BE6860CA6F568A9` |
+| [Vishay PR01-PR03 Metal Film Resistor Series.pdf](Vishay%20PR01-PR03%20Metal%20Film%20Resistor%20Series.pdf) | [PDF](https://wwwlegacy.vishay.com/docs/28729/pr010203.pdf) | `1B65216400497850AFB3E740F378A10A77CD584809E647AE7FCDB707D9B6A2BC` |
+| [Vishay WSL Power Metal Strip Resistor Series.pdf](Vishay%20WSL%20Power%20Metal%20Strip%20Resistor%20Series.pdf) | [PDF](https://www.vishay.com/docs/30100/wsl.pdf) | `96C2DC89AE1E3039815ED6C41F566A6E9F6B53035F8E45EA2ADA1697935A44DC` |
+| [Wurth 74435583300 WE-HCI 33uH Inductor.pdf](Wurth%2074435583300%20WE-HCI%2033uH%20Inductor.pdf) | [PDF](https://www.micro-semiconductor.de/datasheet/f8-74435583300.pdf) | `2A2967C1801D01C1367F42A84918CC6A8EC825D3786FA0F3B7C2F320B83FDF79` |
+| [Wurth 7443763540470 WE-HCFT 47uH Inductor.pdf](Wurth%207443763540470%20WE-HCFT%2047uH%20Inductor.pdf) | [PDF](https://www.hestore.eu/sk/prod_getfile.php?id=18076) | `146905D9F6BF20EAFCE6E75CBFE01C57729AA98956377466A5A8D57041CB93F5` |
+| [Wurth 7443783533330 WE-HCFT 33uH Inductor.pdf](Wurth%207443783533330%20WE-HCFT%2033uH%20Inductor.pdf) | [Üretici PDF bağlantısı](https://www.we-online.com/components/products/datasheet/7443783533330.pdf); dosya kullanıcı tarafından arşive kaydedildi | `40A33B6376CECFFE7F0D6C62046DB66C86953DEF6CC5D0C210CACF15DE08C08A` |
+| [Wurth 7443783533470 WE-HCFT 47uH Inductor.pdf](Wurth%207443783533470%20WE-HCFT%2047uH%20Inductor.pdf) | [PDF](https://www.farnell.com/datasheets/4476556.pdf) | `24EA8E3EB0DED07EAE3AF1BC0BC47CD24EAD5353030CC9770B656405F274D9C3` |
+| [YAGEO MFR Metal Film Resistor Series.pdf](YAGEO%20MFR%20Metal%20Film%20Resistor%20Series.pdf) | [PDF](https://yageogroup.com/content/datasheet/asset/file/YAGEO-MFR_DATASHEET) | `B460ACDB476469774E0785A8EF85AEC79E2D95FE41BEAA79C5A414E4E95E3FE0` |
+| [YAGEO RL Low Ohmic Chip Resistor Series.pdf](YAGEO%20RL%20Low%20Ohmic%20Chip%20Resistor%20Series.pdf) | [PDF](https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RL_GROUP_521_ROHS_L.pdf) | `A222719ABA3461370FBCD2C95711A1B9F7B1DBC45460D5939751CAE05531804E` |
+
+## Eksik kalan PDF'ler
+
+- `ALPA AL-701` termal macunu için ürün sayfası bulundu, doğrulanmış teknik PDF bulunamadı.
+- Fischer `SK 459 50 2 x TO 220 STIS`, `AOS 220` / `IB 6` / `KAP 220 G` ve Boyd `6380BG` / `6396B-P2G` üstteki seri kataloglarında yer alır; tekil koda ait ayrı PDF doğrulanamadı.
+
+Kriter dışı bırakılmış eski 25/35 V kondansatör referansları ve açıkça elenen parçalar bu arşive aday olarak eklenmedi. Arşiv, `buck/PARCA-HEDEFLERI.md` içindeki aday sırasını ve şematik değerlerini değiştirmez.
