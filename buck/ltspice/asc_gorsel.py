@@ -35,7 +35,7 @@ def esc(t: str) -> str:
 
 
 def load_symbol(name: str):
-    local = Path(__file__).with_name(f"{name}.asy")      # once sematigin yanindaki ozel semboller
+    local = Path(__file__).parent / f"{name}.asy"      # once sematigin yanindaki ozel semboller
     raw = (local if local.exists() else SYM / f"{name}.asy").read_bytes()
     txt = raw.decode("utf-16-le") if raw[1:2] == b"\x00" else raw.decode("latin-1")
     prim, win = [], {}

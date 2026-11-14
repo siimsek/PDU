@@ -1,6 +1,6 @@
 # Güç katı optimizasyonu ve doğrulama
 
-**Tarih:** 12 Kasım 2026 · **Araç:** LTspice 26.1.1 (toplu kip), Python 3.14.5 · ideal anahtar/diyot, L/C + ESR/DCR + çıkış sönüm dalı Cd–Rd (§9.3 ve §9.4'teki ideal olmayan senaryolar ayrıca belirtilmiştir) · **Fiziksel ölçüm yok.**
+**Tarih:** 14 Kasım 2026 · **Araç:** LTspice 26.1.1 (toplu kip), Python 3.14.5 · ideal anahtar/diyot, L/C + ESR/DCR + çıkış sönüm dalı Cd–Rd (§9.3 ve §9.4'teki ideal olmayan senaryolar ayrıca belirtilmiştir) · **Fiziksel ölçüm yok.**
 
 **Dondurma durumu: FROZEN (simülasyon dondurması, 12 Kasım 2026):** çıkış sönüm dalı (`Cd = 470 µF + seri Rd = 0,22 Ω`) eklendi ve §13'te belirtilen test kipleri koşuldu; `Cout` ve `Cd` için ≥ 35 V, `Cin` için ≥ 50 V gerilim sınıfı kabul edildi; §12.1 kapısındaki 1–12 numaralı maddelerin tamamı kullanıcı onayı dahil kapandı. Güncel iş sırası: gereksinimler ve kontrol mimarisi, ardından birlikte parça değerlendirmesi ve ölçümler (§12.2).
 
@@ -149,7 +149,7 @@ Genel modül için ayrı sınır tanımlanmadığından bu belgede "genel modül
 
 ### 2.2 Referans yükler (cihaza özgü uyumluluk)
 
-| | T3 Gemstone O1 | SLAMTEC RPLIDAR S2E |
+| Ölçüt | T3 Gemstone O1 | SLAMTEC RPLIDAR S2E |
 |---|---|---|
 | Besleme aralığı | 5–12 V DC konnektör, 5 A — DATASHEET | 9–28 V, tipik 12 V — DATASHEET |
 | 11 V uygun mu | Evet; üst çalışma sınırına 1 V pay | Evet; alt sınıra 2 V pay |
@@ -219,7 +219,7 @@ ESR, LC'nin sönüm direncidir. Bu eski dalsız modelde düşük ESR sönümü a
 
 Ton sabit, ESR 25 mΩ (SİM):
 
-| | A: 33 µH / 680 µF | 47 µH / 1000 µF | 68 µH / 1500 µF | 33 µH / 1000 µF |
+| Ölçüt / koşul | A: 33 µH / 680 µF | 47 µH / 1000 µF | 68 µH / 1500 µF | 33 µH / 1000 µF |
 |---|---|---|---|---|
 | Kararlı çıkış, 20 / 22,2 / 24,6 / 25,2 / 26 V giriş (7,5 A) | 8,89 / 9,90 / 11,00 / 11,27 / 11,64 V | aynı | aynı | aynı |
 | Giriş 24,6 → 20 V rampası (57,6 W): Vmin / Vmax | 8,68 / 11,15 V | 8,14 / 11,59 V | 7,58 / 11,98 V | 8,53 / 11,27 V |
@@ -1163,3 +1163,51 @@ Bu nedenle küçük güç yolu iyileştirmesi tek başına 90 puanı sağlamaz. 
 **Şöntsüz akım algısı için araştırma yönü:** Dondurulmuş çıkış akım yoluna seri direnç eklememek için bobin sargısının DCR düşümü, bobine paralel bir RC algı ağı ile izlenebilir. TI'nin [LM5137-Q1 veri sayfası](https://www.ti.com/lit/ds/symlink/lm5137-q1.pdf) bu yöntemi, eşleşmiş `R_CS C_CS = L/DCR` zaman sabitiyle bobin DCR gerilimini taklit eden kayıpsız ve sürekli akım ölçümü olarak anlatır. Aynı belge, oda sıcaklığında tipik akım sınırı doğruluğunu %10–15 verir ve bu yöntemi hassas akım sınırı gerektirmeyen uygulamalar için ayırır. Belgedeki kontrolcü **senkron buck** içindir; bu örnek mevcut asenkron S1+D1 katıyla doğrudan uyum kanıtı değildir. ADI'nin [akım algılama konumları notu](https://www.analog.com/en/resources/technical-articles/switch-mode-power-supply-current-sensing-part-2-where-to-place-the-sense-resistor.html) da bobin DCR algısının harici seri şöntün kayıp ve maliyetini azaltabileceğini belirtir.
 
 PDU'daki bobin DCR değeri henüz fiziksel ölçülmedi; sıcaklık katsayısı, endüktans ve DCR toleransı, RC eşleşmesi, anahtarlama düğümü gürültüsü, algı yükselteci/kontrolcü ortak-mod aralığı ve hata anındaki akım tepkisi çözülmedi. Bu nedenle DCR algısı **en az güç yolu değişikliğiyle araştırılabilecek bir adaydır**, seçilmiş yöntem veya güvenlik koruması değildir. DCR ağı, daha düşük değerli seri şönt ve senkron doğrultma ancak kullanıcı kapsamı netleştirdikten sonra geçici modellerde karşılaştırılabilir; açık çevrim dondurması, parça sırası ve değerleri değişmez. Bu bölümde yeni LTspice koşusu veya fiziksel test yapılmadı.
+
+#### 16.8 Kullanıcı yöntem yönü ve DCR eşik ön hesabı — HESAP + DATASHEET
+
+Kullanıcı, sonraki kontrol arayüzü çalışması için **sabit 100 kHz analog tepe-akım kipini yöntem önceliği** olarak seçti. Ön puan 74/100'dür; 77 puanlı histeretik model girişe göre 93,7–121,2 kHz değiştiğinden sabit 100 kHz koşulunu karşılamaz. Bu yönlendirme kontrolcü, kompanzasyon ağı, akım algı elemanı veya güç yolu değeri seçimi değildir. LT3844'ün 9,76 mΩ test şöntü dondurulmuş açık çevrim güç yoluna eklenmeyecek.
+
+**HESAP ön elemesi:** LT3844 veri sayfasındaki akım algı eşiği 90–115 mV, tipik 100 mV'tur. Dondurulmuş modelde kullanılan L1 değeri 7,81 mΩ @20 °C HESAP'tır; bu DCR'nin doğrudan algılanması 9 A'da `9 A × 7,81 mΩ = 70,3 mV` verir. İdeal ve yükselteçsiz DCR algısında bu eşik aralığı, yalnız 20 °C nominal DCR varsayımıyla yaklaşık **11,52–14,72 A** akım sınırına karşılık gelir; tipik eşik yaklaşık **12,80 A**'dır. Bunlar gerçek bobin ölçümü veya sistem akım sınırı değildir. 75 °C için yaklaşık 9,5 mΩ TAHMİN değerinde alt eşik 9,47 A'a iner; DCR sıcaklıkla değiştiği için sıcak/soğuk uçlar farklı sonuç verir. Bobin DCR/indüktans toleransı, sense ağı hatası, gürültü, LT3844 slope compensation ve gerçek akım tepkisi dahil değildir. Bu nedenle doğrudan DCR bağlantısı, 12 A bobin hedefi için güvenilir akım koruması olarak kabul edilemez.
+
+Bu alt bölüm yazılırken sıradaki iş, açık çevrim dondurmasını referans tutarak sabit 100 kHz tepe-akım yöntemine uygun akım algı arayüzünü belirlemekti. Sonraki geçici DCR koşuları §16.9'da kaydedildi; parça veya devre değeri seçilmedi. ADI LT3844 veri sayfası: https://www.analog.com/media/en/technical-documentation/data-sheets/3844fc.pdf.
+
+#### 16.9 DCR algı arayüzü ön denemeleri — SİM + DATASHEET + HESAP
+
+Bu bölümdeki koşular yalnızca geçici netlist kopyalarında çalıştırıldı. `buck/ltspice/buck_guc_kati.asc`, dondurulmuş güç katı, parça sırası ve şema değerleri değiştirilmedi. Fiziksel yük/ölçüm yapılmadı; gerçek O1 veya RPLIDAR bağlanmadı.
+
+**Yöntem ve varsayımlar:** 33 µH / 7,81 mΩ L1 için eşleşme zaman sabiti `L/DCR = 4,225 ms` HESAP'tır; 10 kΩ / 422 nF geçici RC ağı yaklaşık aynı sabiti verir. LT3844'ün SENSE+/- pinleri bobin üzerindeki bu pasif ağı doğrudan gördüğünde 20 V ve 26 V koşularında son 10 ms Vout ortalaması sırasıyla 2,77 mV ve 2,78 mV, `V(SENSE+) − V(SENSE−)` yaklaşık 0,834 V oldu; model çıkışı başlatmadı. Bu, LT3844 veri sayfasında ortak-mod >4 V için belirtilen toplam sense giriş akımı (−170 µA) bulunan yüksek empedanslı DCR ağıyla uyumsuzluk işaretidir. Veri sayfası giriş akımını hesaba katmadan pasif ağı doğrudan bağlamak geçerli tasarım sayılmaz.
+
+Tamponlu modelde DCR ağının giriş empedansı yükseltildi; LT1638 üretici makromodeli VIN ile beslendi ve Vout çevresinde 1,25 kazançlı fark yükselteci olarak bağlandı (100 kΩ / 25 kΩ geri besleme). Bu yalnızca **aday arayüz modeli**dir. LT3844 makromodeli 90–115 mV gerçek eşik tolerans köşelerini, bobin DCR toleransını veya fiziksel gürültüyü kanıtlamaz.
+
+**SİM sonuçları:** Yükler direnç eşdeğerleriyle temsil edildi; bu nedenle akım Vout ile orantılıdır. Gemstone eşdeğeri 2,75 Ω (11 V'ta 4 A); RPLIDAR eşdeğeri ilk 10 ms için 7,333 Ω (11 V'ta 1,5 A), sonra 52,381 Ω (11 V'ta 0,21 A) idi. 10 ms başlangıç süresi yalnızca varsayımdır. 7,5 A sınırı ayrıca 1,4667 Ω sabit dirençle koşuldu.
+
+| Koşul | Vin | Vout ort. (10–20 ms) | Vout min–maks. (10–20 ms) | L1 tepe (0–20 ms) |
+|---|---:|---:|---:|---:|
+| 4 A + 1,5 A→0,21 A profili, oda DCR | 20 V | 10,991 V | 10,968–11,048 V | 8,81 A |
+| 4 A + 1,5 A→0,21 A profili, oda DCR | 26 V | 10,992 V | 10,963–11,049 V | 9,02 A |
+| 7,5 A sabit direnç, oda DCR | 20 V | 10,987 V | 10,965–11,008 V | 10,46 A |
+| 7,5 A sabit direnç, oda DCR | 26 V | 10,988 V | 10,961–11,016 V | 10,48 A |
+| 7,5 A sabit direnç, DCR=9,5 mΩ TAHMİN @75 °C; RC oda değerinde | 26 V | 10,986 V | 10,958–11,014 V | 9,61 A |
+
+9,5 mΩ, 75 °C sargı DCR'si için yaklaşık TAHMİN'dir; bobin ölçümü değildir. Sıcak DCR koşusu `R_CS C_CS` değerini yeniden eşleştirmedi; bu nedenle sıcaklık/tolerans doğrulaması sayılamaz. LT1638 datasheet'i 2,5–44 V toplam besleme, 1,2 MHz GBW ve 0,4 V/µs slew rate bildirir; ayrıca 10 V ve üzeri toplam beslemede beslemenin 1 V/µs'den hızlı yükseltilmemesini ister. Bu geçici koşuda VIN adım kaynağıydı; yükselteç besleme rampası sınanmadı. [ADI LT1638 datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/16389fg.pdf).
+
+**Eşik ve marj:** Oda sıcaklığı nominal DCR'de 9,02 A bobin tepesi `9,02 A × 7,81 mΩ × 1,25 ≈ 88 mV` SENSE sinyaline karşılık gelir; bu, LT3844'ün 90 mV alt eşiğine yakındır. 7,5 A yükün açılışında simüle bobin tepesi yaklaşık 10,48 A oldu; bu da nominal DCR ile yaklaşık 102 mV tamponlu sinyal eder ve makromodelin tipik eşiğine yaklaşır. Akım sınırının başlangıcı yavaşlatması, min/max eşik ve DCR/RC/gain toleransları henüz taranmadı. ADI LT3844 veri sayfası sense eşiğini 90–115 mV, tipik 100 mV; SENSE ortak-mod >4 V'ta toplam giriş akımını −170 µA olarak verir. TI'nin [LM5137-Q1 datasheet'indeki DCR örneği](https://www.ti.com/lit/ds/symlink/lm5137-q1.pdf) eşleşmiş RC ağıyla birlikte dahili gain-10 current-sense amplifier kullanır ve senkron buck topolojisindedir; bu, LT3844/asenkron kat için doğrudan uyum kanıtı değildir.
+
+**Ara sonuç:** Pasif eşleşmiş DCR RC ağını LT3844 SENSE pinlerine doğrudan bağlama yolu bu makromodelde başarısızdır. Tamponlu LT1638 makromodeli seçilen nominal koşullarda regülasyon gösterdi; yükselteç besleme rampası, gerçek DCR/indüktans, sıcaklık ve tolerans, akım-sınırı alt/üst köşeleri ve gürültü doğrulanmadığından çözüm seçilmiş veya güvenlik koruması kabul edilmiş değildir. Ön eşik/loss hesabı §16.10'dadır; eşik-toleranslı aynı-koşul LTspice karşılaştırması henüz yapılmadı. Kullanıcı tercihi olmadan güç yolu, kontrolcü, parça veya değer seçilmez.
+
+#### 16.10 Akım algısı yollarının ön hesabı — HESAP + DATASHEET
+
+Bu karşılaştırma yalnız eşik hesabı ve I²R hesabıdır; her iki yol için de LT3844'ün gerçek eşik min/typ/max köşelerini içeren aynı-koşul simülasyon değildir. [ADI LT3844 veri sayfasındaki](https://www.analog.com/media/en/technical-documentation/data-sheets/3844fc.pdf) 90/100/115 mV sense eşiklerine göre, örnek 9,76 mΩ şönt ve 7,81 mΩ oda sıcaklığı DCR × 1,25 kazanç benzer nominal akım sınırları verir. 75 °C için 9,5 mΩ DCR değeri TAHMİN'dir; kazanç sabit tutulursa DCR yolu eşik akımını düşürür.
+
+| Algı yolu / varsayım | Eşdeğer algı direnci | 90 mV eşik | 100 mV eşik | 115 mV eşik |
+|---|---:|---:|---:|---:|
+| Seri şönt (yalnız hesap örneği) | 9,76 mΩ | 9,22 A | 10,25 A | 11,78 A |
+| Tamponlu DCR, 20 °C nominal (`7,81 mΩ × 1,25`) | 9,76 mΩ | 9,22 A | 10,24 A | 11,78 A |
+| Tamponlu DCR, 75 °C tahmini (`9,5 mΩ × 1,25`) | 11,88 mΩ | 7,58 A | 8,42 A | 9,68 A |
+
+Kullanıcının 5,5 A kalkış / 4,21 A sürekli profili için LT1638 makromodelindeki 26 V bobin tepesi 9,02 A'dır; oda DCR'sindeki 90 mV eşiğe göre hesaplanan 9,22 A sınırın payı yaklaşık 0,20 A'dır. Modülün 7,5 A yükündeki DCR makromodel tepesi 10,48 A olmuştur. Bunlar SİM akım talepleri ile veri sayfası eşiklerinden yapılan karşılaştırmadır; eşik köşeleri aynı netlistte koşulmamış, gerçek akım koruması doğrulanmamıştır.
+
+Şönt örneği için saf DC `I²R` hesabı 7,5 A'ta 0,549 W / 73,2 mV; kullanıcı profili kalkışındaki 5,5 A'ta 0,295 W / 53,7 mV; 4,21 A'ta 0,173 W / 41,1 mV verir. Ripple akımının ek RMS kaybı bu basit hesapta yoktur. Şönt akım algısı daha basit bir eşik yolu sunar, fakat 7,5 A noktasında güç kaybı ve ısıl tasarım ister. DCR, ana akım yoluna ayrı algı direnci eklemez; buna karşılık sargı sıcaklığı ve eşleşme hatası doğrudan akım sınırına yansır. TI, [LM5137-Q1 veri sayfasındaki](https://www.ti.com/lit/ds/symlink/lm5137-q1.pdf) **senkron buck** DCR örneği için oda sıcaklığında tipik %10–15 akım sınırı doğruluğu verir ve yöntemi hassas akım-sınırı koruması gerekmeyen uygulamalara ayırır; bu, buradaki asenkron kat için doğrudan uyumluluk kanıtı değildir.
+
+**Yön önerisi:** Şimdiki kanıtla 7,5 A modül sınırı ve öngörülebilir akım koruması için önce şöntlü arayüzü referans almak daha az riskli görünür; 0,549 W yalnız nominal DC hesabıdır ve kabul edilebilir termal pay ayrıca değerlendirilmelidir. DCR yolu ancak sıcaklık/tolerans etkisi giderilip doğrulandıktan sonra eşdeğer aday olabilir. Kullanıcı bu kayıp/karmaşıklık tercihini vermeden örnek 9,76 mΩ şönt veya başka bir değer/parça seçilmiş sayılmaz. Sabit 100 kHz yönü, açık çevrim dondurması ve ana şematik değişmedi.
