@@ -1210,4 +1210,119 @@ Kullanıcının 5,5 A kalkış / 4,21 A sürekli profili için LT1638 makromodel
 
 Şönt örneği için saf DC `I²R` hesabı 7,5 A'ta 0,549 W / 73,2 mV; kullanıcı profili kalkışındaki 5,5 A'ta 0,295 W / 53,7 mV; 4,21 A'ta 0,173 W / 41,1 mV verir. Ripple akımının ek RMS kaybı bu basit hesapta yoktur. Şönt akım algısı daha basit bir eşik yolu sunar, fakat 7,5 A noktasında güç kaybı ve ısıl tasarım ister. DCR, ana akım yoluna ayrı algı direnci eklemez; buna karşılık sargı sıcaklığı ve eşleşme hatası doğrudan akım sınırına yansır. TI, [LM5137-Q1 veri sayfasındaki](https://www.ti.com/lit/ds/symlink/lm5137-q1.pdf) **senkron buck** DCR örneği için oda sıcaklığında tipik %10–15 akım sınırı doğruluğu verir ve yöntemi hassas akım-sınırı koruması gerekmeyen uygulamalara ayırır; bu, buradaki asenkron kat için doğrudan uyumluluk kanıtı değildir.
 
-**Yön önerisi:** Şimdiki kanıtla 7,5 A modül sınırı ve öngörülebilir akım koruması için önce şöntlü arayüzü referans almak daha az riskli görünür; 0,549 W yalnız nominal DC hesabıdır ve kabul edilebilir termal pay ayrıca değerlendirilmelidir. DCR yolu ancak sıcaklık/tolerans etkisi giderilip doğrulandıktan sonra eşdeğer aday olabilir. Kullanıcı bu kayıp/karmaşıklık tercihini vermeden örnek 9,76 mΩ şönt veya başka bir değer/parça seçilmiş sayılmaz. Sabit 100 kHz yönü, açık çevrim dondurması ve ana şematik değişmedi.
+**Yöntem kararı:** Kullanıcı şönt akım algılama yolunu sonraki arayüz çalışması için seçti. Bu seçim şönt değerini/parçasını, kontrolcüyü veya devreyi kesinleştirmez. 0,549 W, 9,76 mΩ örneği için 7,5 A'taki nominal DC kaybıdır; ripple, direnç sıcaklığı ve termal ortam dahil değildir. DCR bu turda seçilmedi. Sabit 100 kHz yönü, açık çevrim dondurması ve ana şematik değişmedi.
+
+#### 16.11 Şönt algılama yolu kararı ve ideal eşik penceresi — HESAP + DATASHEET + KULLANICI KARARI
+
+Kullanıcı şönt algılamayı geliştirme yönü olarak seçti. Bu yöntem kararıdır; LT3844 veya başka bir kontrolcü, şönt direnci, parça ya da şematik bağlantı seçimi değildir.
+
+HESAP'ta, 9,02 A olan önceki 26 V kullanıcı yük profili SİM tepesinin LT3844 minimum 90 mV eşiğinde akım sınırına takılmaması için şöntün en çok 9,98 mΩ olması gerekir. 12 A bobin akım hedefini LT3844 maksimum 115 mV eşiğinde aşmamak için şönt en az 9,58 mΩ olmalıdır. Bu iki koşulun **ideal nominal penceresi 9,58–9,98 mΩ**'dur; yalnız eşik ve bu iki akım koşulunu içerir, ek hata veya geçiş payı içermez. 12 A değeri bobin hedefidir; gerçek bobinin bu akımı güvenle taşıdığı ölçülmüş değildir.
+
+Örnek olarak şöntün yalnız ±1% toleransı hesaba katılırsa nominal değer penceresi yaklaşık **9,68–9,88 mΩ** olur. 9,76 mΩ nominal örneği, 90 mV eşik ve +1% dirençte yaklaşık 9,13 A; 115 mV eşik ve −1% dirençte yaklaşık 11,90 A sınır verir. Bu ideal uçlar 9,02 A simüle tepeye ve 12 A hedefe yalnız yaklaşık 0,11 A ve 0,10 A pay bırakır.
+
+Bu marjlar; gerçek akım dalgalanmasını, kontrolcü gecikmesini, akım algı gürültüsünü, eğim telafisini, şöntün sıcaklık katsayısını ve ısınmasını, bobinin L(I)/doyum davranışını ve gerçek bobin akım kapasitesini kapsamaz. Şönt seçmeden önce bu hata bütçesi tamamlanmalı; ardından geçici doğrulama netlistlerinde eşik, tolerans ve dinamik köşeler birlikte sınanmalıdır. Bu güncellemede yeni LTspice koşusu veya fiziksel ölçüm yapılmadı; ana şematik ve üç doğruluk kaynağındaki devre değerleri değiştirilmedi.
+
+#### 16.12 Şönt taramasının gerçek 100 kHz'te tekrarı — DATASHEET + SİM
+
+İlk şönt taraması 191 kΩ FSET direnciyle yapılmıştı. ADI veri sayfası bu direnci tipik 100 kHz için tablolar; ancak LTspice 26.1.1'deki şifreli LT3844 makromodelinde 100 anahtarlama periyodu ölçümü yaklaşık 105,88 kHz verdi. Bu yüzden o taramanın sayıları 100 kHz kanıtı değildir.
+
+Test netlistinde yalnız makromodel frekansını 100 kHz'e kalibre etmek için Rfreq=204,53 kΩ kullanıldı. 19–20 ms aralığında 100 kapı darbesi üzerinden tüm koşularda 99,981–100,006 kHz ölçüldü. Bu kalibrasyon geçici makromodel netlistine aittir; fiziksel LT3844 için yeni RSET seçimi değildir. Kaynak: [ADI LT3844](https://www.analog.com/media/en/technical-documentation/data-sheets/3844fc.pdf).
+
+Koşullar: Vin=26 V; LT3844 referans makromodeli; iç karşılaştırıcı tipik 100 mV eşiğinde, ideal Escale kaynağıyla veri sayfası 90/115 mV köşelerine eşdeğer; doğrusal bobin; şönt toleransı ±1%. Her değer için kullanıcı yük profili (düşük eşik/yüksek şönt), 7,5 A kalkışı (düşük eşik/yüksek şönt) ve 0,75 Ω yapay aşırı yük (yüksek eşik/düşük şönt) koşuldu.
+
+| Rnom | Normal profil sense tepesi / 90 mV payı | 7,5 A açılışı IL tepesi / Vout en az | Yapay aşırı yük IL tepesi / 12 A payı |
+|---:|---:|---:|---:|
+| 9,70 mΩ | 89,08 mV / +0,92 mV | 9,265 A / 10,965 V | 12,063 A / −0,063 A |
+| 9,76 mΩ | 89,63 mV / +0,37 mV | 9,209 A / 10,965 V | 11,989 A / +0,011 A |
+| 9,77 mΩ | 89,72 mV / +0,28 mV | 9,200 A / 10,965 V | 11,977 A / +0,023 A |
+| 9,78 mΩ | 89,84 mV / +0,16 mV | 9,191 A / 10,965 V | 11,965 A / +0,035 A |
+| 9,79 mΩ | 89,91 mV / +0,09 mV | 9,181 A / 10,965 V | 11,953 A / +0,047 A |
+| 9,80 mΩ | 89,98 mV / +0,02 mV | 9,172 A / 10,965 V | 11,941 A / +0,059 A |
+| 9,82 mΩ | 90,17 mV / −0,17 mV | 9,154 A / 10,965 V | 11,917 A / +0,083 A |
+| 9,85 mΩ | 90,49 mV / −0,49 mV | 9,127 A / 10,965 V | 11,881 A / +0,119 A |
+
+**Tarama sonucu:** Bu test ızgarasında en geniş en-kötü-marj 9,77 mΩ'da çıktı: normal profilde +0,28 mV; 12 A yönünde 0,023 A × 9,6723 mΩ ≈ +0,223 mV. Bu ±1% varsayımlı geçici SİM'dir; global optimum, parça seçimi veya güvenlik kanıtı değildir. 7,5 A kalkışında Vout en az 10,965 V oldu. Yapay aşırı yükte çıkış 9 V altına düştü; bu test regülasyon ölçütü değildir.
+
+#### 16.13 Hata ve gecikme bütçesi — HESAP + SİM
+
+9,77 mΩ ±1% örneğinde normal profil, en yüksek şönt değeri 9,8677 mΩ ile 89,72 mV sense tepesi verdi. LT3844 minimum 90 mV eşiğe kalan pozitif sense hata payı yalnız **0,28 mV**'tur.
+
+Yüksek eşik/yüksek akım koşusunda en düşük şönt 9,6723 mΩ ve simüle tepe 11,977 A oldu. 12 A hedefine kalan **0,023 A / yaklaşık 0,223 mV**'u ek negatif algı hatası ve makromodelde bulunmayan ek kapanma gecikmesi paylaşır. Bobinin L=30,7 µH doğrusal kaldığı varsayımıyla çıkış sıfıra yaklaşırken di/dt ≈ 0,847 A/µs olur:
+
+V_hata,negatif (mV) + 0,00819 × t_ek (ns) ≤ 0,223 mV
+
+Algı hatası sıfırsa ek gecikme üst sınırı yaklaşık **27 ns**'dir. Bu comparator gecikmesi ölçümü değildir; kalan payın HESAP zaman eşdeğeridir. Doyumla L düşerse akım daha hızlı artabilir.
+
+9,77 mΩ örneğinin tolerans duyarlılığı 26 V ve 100 kHz'te tekrarlandı:
+
+| Şönt toleransı | Normal sense tepesi / 90 mV payı | Aşırı yük tepe / 12 A akım payı | Üst akım sense payı |
+|---:|---:|---:|---:|
+| ±1% | 89,72 mV / 0,28 mV | 11,977 A / 0,023 A | 0,223 mV |
+| ±0,5% | 89,27 mV / 0,73 mV | 11,918 A / 0,082 A | 0,797 mV |
+| ±0,25% | 89,05 mV / 0,95 mV | 11,888 A / 0,112 A | 1,092 mV |
+| ±0,1% | 88,94 mV / 1,06 mV | 11,871 A / 0,129 A | 1,259 mV |
+
+Daha sıkı direnç toleransı marjı artırıyor; ancak gecikme, yükselteç/yerleşim hatası, gürültü, TCR ve bobin doyumu doğrulanmadı. Şöntün 7,5 A'taki DC kaybı 9,77 mΩ için yaklaşık **0,55 W HESAP**'tır; ripple ve termal ortam ayrıca ölçülmelidir.
+
+#### 16.14 Kontrolcü veri sayfası sınırları — DATASHEET + ÇIKARIM
+
+**LT3844:** Akım eşiği tam sıcaklık aralığında 90/100/115 mV (min/typ/max); SENSE ortak-mod aralığı 0–36 V'tur. Veri sayfası comparator için azami akım-kesme gecikmesi vermez. 2200 pF kapı yükündeki 40 ns TG yükselme/düşme değeri comparator gecikmesi değildir. Bu nedenle 9,77 mΩ taramasındaki 0,223 mV / yaklaşık 27 ns üst akım bütçesi garantiyle kapatılamaz. [ADI LT3844 veri sayfası](https://www.analog.com/media/en/technical-documentation/data-sheets/3844fc.pdf).
+
+**LM5088-2:** Döngü başına eşik VRAMP=0 V koşulunda 112/120/136 mV (min/typ/max) verilir. 280 ns akım-sınırı gecikmesi yalnız **25 °C tipik** değerdir ve VRAMP=2,5 V koşuluyla ölçülmüştür; azami garanti değildir. Emüle tepe-akım algısı serbest dolaşım diyodu akımını örnekler, dolayısıyla doğrudan şönt taraması bu kontrolcüye aktarılamaz. Önceki LTspice makromodeli yakınsamadığından devre SİM sonucu yoktur. [TI LM5088 veri sayfası, Rev. J](https://www.ti.com/lit/ds/symlink/lm5088.pdf).
+
+**Sonuç:** Mevcut iki kontrolcü adayı 12 A sert üst sınırını veri sayfası garantileriyle doğrulamıyor. 12 A kesin güvence olacaksa hızlı akım kesme arayüzü, tolerans/gecikme bütçesi ve gerçek bobinin L(I)/akım dayanımı birlikte doğrulanmalı. 12 A yalnız tasarım hedefiyse simülasyon ve fiziksel testler bu hedefe yaklaşımı ölçebilir, ancak sert maksimum garantisi veremez. Şönt değeri, kontrolcü ve devre seçilmedi.
+
+#### 16.16 Bobin sarım turu kıyası — HESAP + geçici SİM
+
+Kullanıcı bobin sarım yaklaşımını maliyet, verim ve yapım kolaylığına göre belirlemeyi devretti. 12 A için sert garanti yerine **tasarım hedefi** kullanmak en düşük ek maliyetli yol olarak seçildi; bu, 12 A üstünün güvenli olduğuna dair garanti değildir. Ana şematik ve üç değer kaynağı değiştirilmedi.
+
+**HESAP:** Magnetics `0077536A7` için üretici `AL=69 nH/T² ±%8`, DC-bias eğrisi ve sarım başına tel uzunluğu kullanıldı. 22 sarımda 25% sarım faktörü / 66,5 mm/sarım başlangıç kabulü ölçeklendi; diğer sarımlarda üretici tablosundan sarım başı uzunluk enterpole edildi. Tel alanı ve bakır özdirenci aynı varsayıldı. Bunlar fiziksel sarım ölçümü değildir.
+
+| Sarım | Anma L0 | HESAP L(8,9 A) / L(12 A) | HESAP DCR @20 °C | Tel uzunluğu | 7,5 A bakır kaybı (HESAP) |
+|---:|---:|---:|---:|---:|---:|
+| 22 tur | 33,4 µH | 32,45 / 31,58 µH | 7,81 mΩ | 1,463 m | 0,439 W |
+| 24 tur | 39,74 µH | 38,38 / 37,20 µH | 8,60 mΩ | 1,611 m | 0,484 W |
+| 26 tur | 46,64 µH | 44,71 / 43,21 µH | 9,41 mΩ | 1,762 m | 0,529 W |
+| 28 tur | 54,10 µH | 51,47 / 49,60 µH | 10,27 mΩ | 1,925 m | 0,578 W |
+
+Çekirdek kaybını aynı volt-saniye ve `B²` varsayımıyla ölçekleyince 26 turda yaklaşık %28 azalır; fakat bu modeldir, ölçüm değildir. 26 tur toplam bobin kaybını yaklaşık 0,05 W artırır (bakır kaybı +0,09 W, tahmini çekirdek kaybı −0,04 W). Daha çok tur, tel miktarını ve sarım işini artırır.
+
+**Geçici SİM karşılaştırması:** LT3844 referans makromodeli Rfreq=204,53 kΩ ile 100 kHz'e kalibre edildi. Şönt 9,77 mΩ ±1% yalnız karşılaştırma varsayımıdır. Bobin doğrusal modellendi; fiziksel DCR/L(I), comparator gecikmesi ve gürültü yoktur. 26 tur testinde şönt ağı için 9,41 mΩ HESAP DCR kullanıldı. Önceki geçici güç katı yük adımı testi 9,20 mΩ ara DCR ile yapılmıştı; bu DCR farkı sonucu fiziksel/son tasarım verisi yapmaz.
+
+| Ölçüt | 22 tur / 33,4 µH / 7,81 mΩ | 26 tur / 46,64 µH / 9,41 mΩ* |
+|---|---:|---:|
+| 26 V, 7,5 A, kararlı ripple / bobin tepe akımı | 57,5 mV / 8,47 A | 41,2 mV / 8,20 A |
+| 24,6 V, 57,6→73 W, 200 ms: Vmin–Vmax | 10,766–11,209 V | 10,731–11,241 V** |
+| L=%88, Cout/Cd −%20, ESR 35 mΩ, 26 V: Vmin–Vmax | 10,750–11,225 V | 10,713–11,258 V** |
+| 26 V, 7,5 A sert açılış: akım tepesi / çıkış tepesi | 61,17 A / 16,63 V | 53,34 A / 16,80 V** |
+| 12 A yapay aşırı yükte simüle tepe / kalan akım payı | 11,977 A / 0,023 A (16.12) | 11,951 A / 0,049 A |
+
+\* 26 tur için güç katı geçici durumlarının bu tablosundaki sonuçlar 9,20 mΩ ile koşuldu; 9,41 mΩ'a güncellenmiş kararlı durum ve akım-sınırı koşuları ripple=41,18 mV, ILtepe=8,196 A, bakır kaybı=0,531 W ve yapay aşırı yük tepe akımı=11,951 A verdi.
+\** Doğrusal, geçici LTspice netlisti; gerçek kontrol döngüsü, soft-start veya parça toleranslarını kanıtlamaz.
+
+**Karar:** 26 tur ripple'ı düşürüp 12 A yönündeki geçici akım payını 23 mA'dan 49 mA'a çıkarıyor; ancak bu marj comparator gecikmesi/hata bütçesini kapatmıyor ve fiziksel 12 A dayanımını kanıtlamıyor. Üstelik bakır kaybı, tel ve sarım işi artıyor; 200 ms açık çevrim adımı 22 tura göre biraz daha fazla sapıyor. Bu nedenle maliyet/verim/kolaylık önceliğiyle mevcut **22 tur / 33 µH hedefi korunuyor**; 26 tur şematiğe alınmadı. **12 A tasarım hedefidir, sert akım maksimumu değildir.** Sert maksimum istenirse ayrıca garantili hızlı kesme ve fiziksel bobin doğrulaması gerekir.
+
+#### 16.17 Kontrolcü adaylarının maliyet ve akım algısı ön elemesi — HESAP + DATASHEET + SİM
+
+Kullanıcının seçtiği 100 kHz tepe-akım + şönt yönünde iki doğrudan aday karşılaştırıldı. Bu, kontrolcü veya şönt seçimi değildir; ana şematik/güç katı değişmedi.
+
+| Başlık | LT3844 | LM5088-2 |
+|---|---|---|
+| Mevcut asenkron N-MOSFET + diyot katına uyum | Uygun; indüktör akımını seri şöntle doğrudan algılar | Uygun; harici yüksek-taraf N-MOSFET, diyot ve serbest-dolaşım akımından emüle tepe-akım algısı |
+| 100 kHz / yumuşak başlatma | 100–500 kHz; soft-start | 50 kHz–1 MHz; soft-start ve `-2` sürümünde aşırı yük sonrası hiccup |
+| Şöntün örnek yeri | Bobin/çıkışla seri; 9,77 mΩ örneği 7,5 A'ta ≈0,55 W HESAP | Serbest-dolaşım diyodu akım yolunda; veri sayfası denkleminden ≈9,49 mΩ başlangıç hesabı ve ≈0,31 W HESAP |
+| Akım eşiği ve gecikme | 90/100/115 mV; azami comparator gecikmesi yayımlanmamış | 112/120/136 mV; 280 ns yalnız 25 °C tipik, azami gecikme yayımlanmamış |
+| Geçici makromodel kanıtı | Önceki LTspice testleri var; sense/şönt hata bütçesi 12 A hedefini kapatmıyor | TI transient ve average modelleri denendi; LTspice'ta geçerli kontrol sonucu alınamadı (§16.17) |
+| Dağıtıcı liste fiyatı (15.11.2026 kontrolü) | Mouser: 1 adet 10,02 USD | Mouser: 1 adet 5,07 USD |
+
+**LM5088 HESAP kontrolü:** TI'nin akım-şönt boyutlama denklemine 26 V giriş, 11 V çıkış, 7,5 A yük, 1,92 A ripple, 33 µH bobin ve örnek %10 yük payı girildiğinde `R_S ≈ 9,49 mΩ` çıkar; bu satın alma veya devre değeri seçimi değildir. 26 V'ta serbest-dolaşım kolu yaklaşık 5,71 A RMS olur; bu örnek dirençte yaklaşık **0,31 W** harcar. LT3844'ün 9,77 mΩ seri örneği aynı yük/ripple koşulunda yaklaşık **0,55 W** harcar; fark yaklaşık **0,24 W**'tır. Şönt geometrisi, sıcaklığı ve gerçek anahtarlama dalga şekli ölçülmedi. TI'nin `C_RAMP = gm × L / (A × R_S)` ilişkisiyle bu başlangıç hesabında yaklaşık **1,74 nF** gerekir; gerçek bobin ölçülünce yeniden hesaplanmalıdır.
+
+**Eşik HESAP'ı ve eksik:** Veri sayfası `V_CS(TH)=112/120/136 mV` değerlerini `V_RAMP=0` için verir. Denklemle bulunan 9,49 mΩ başlangıç hesabında, 26 V / 11 V çalışma noktasında emüle rampayla eşik yaklaşık **11,16/12,00/13,68 A**; çıkış kısa devreye yaklaştığında ramp terimi azalacağından yaklaşık **11,80/12,64/14,33 A** olur. Bunlar DATASHEET denkleminin HESAP sonuçlarıdır, güvenlik garantisi değildir. Ayrıca VOUT=11 V ve VIN=20 V noktasında duty yaklaşık %55'tir; TI, VOUT>5 V ve düşük girişte iç slope compensation'ın bazı çalışma koşullarında yetersiz kalabileceğini belirtir. İlave `R_RAMP` gerekip gerekmediği 20–26 V köşelerinde analiz edilmelidir. Akım-limit gecikmesi 280 ns yalnız 25 °C tipik değerdir, azami garanti değildir; gerçek bobinin sıcak L(I) eğrisi ve şönt termali de doğrulanmadı.
+
+**15.11.2026 geçici makromodel denemeleri (SİM; sonuç geçerli kontrol kanıtı değil):** TI ürün sayfasındaki şifresiz PSpice transient (`SNVM956`) ve average (`SNVM957`) modelleri yalnız geçici klasöre alındı; ana şematik ve model dosyaları depoya eklenmedi. TINA-TI modeli LTspice'ta açılabilir metin modeli değildi. Transient model, TI'nin 5 V / 7 A örnek bağlantısına ve yaklaşık örnek kompanzasyona göre koşuldu. Üretici dosyasındaki değersiz `V6 PGND 0` kaynağı test kopyasında açıkça 0 V yapıldı. İdeal anahtar yaklaşımıyla çözücü koşuyu bitirdi; ancak 5 V referans örneğinde ölçülen çıkış **1,981–2,018 V** kaldı ve modelin kapı düğümü yaklaşık **107 V** gösterdi. Bunlar fiziksel LM5088 davranışı olarak yorumlanamaz. Kapıya 3,3 nF temsili yük eklenen tekrar, yaklaşık **0,345 ms** simülasyon zamanında çözücü adım küçültme hatalarına takıldı; 3,3 nF gerçek MOSFET modeli değil, yalnız model davranışını ayırma denemesiydi.
+
+TI average modeli dış L-C filtresi, 33 µH bobin, 1000 µF çıkış ve sönüm kolu ile 11 V / 7,5 A koşulunda denendi. DC çalışma noktası bulundu; transient çözümü yaklaşık **2,025 fs** civarında tekrar eden zaman-adımı küçültme hatasında ilerlemedi. İki model de LTspice için yayımlanmış/uyumluluğu doğrulanmış model değildir. TI'nin hedef simülatörleri bu bilgisayarda kurulu değil; kullanıcı TINA-TI için TI hesabı açarken hata aldığını bildirdi. Bu nedenle TINA-TI üretici modeli henüz koşulmadı. Bu, elektriksel sonuç değil erişim engelidir. LM5088 modelleri silikonun başarısız olduğunu göstermez ve aday sırasını değiştirmez. Geçici netlist/model dosyaları `%TEMP%` altındadır; depoya eklenmedi. Kaynak: [TI LM5088 ürün/model sayfası](https://www.ti.com/product/LM5088), [TI TINA-TI](https://www.ti.com/tool/TINA-TI), [TI PSpice for TI](https://www.ti.com/tool/PSPICE-FOR-TI), [TI LM5088 veri sayfası, Rev. J](https://www.ti.com/lit/ds/symlink/lm5088.pdf).
+
+Üçüncü aday olarak TI LM5146 tarandı: 100 V senkron, gerilim-kipi bir kontrolcü ve alçak-taraf FET üzerinden vadi-akım sınırı kullanır. Daha düşük diyot kaybı potansiyeli vardır; fakat ikinci MOSFET ve yeni güç katı/yerleşim ekler, seçilmiş 100 kHz tepe-akım mimarisiyle doğrudan aynı değildir. Bu nedenle şu aşamada düşük maliyet/kolaylık aday listesine alınmadı; verim önceliği mimari değişiklik maliyetini aşarsa tekrar açılabilir.
+
+**Ara öneri ve devam planı:** LM5088-2 düşük maliyet hesabı açısından araştırmaya değer, fakat geçerli kapalı çevrim SİM kanıtı yoktur; kullanıcı TI hesabı açarken hata aldığından TINA-TI'ye şu an erişilemiyor. Projeyi bekletmemek için LTspice'ta mevcut LT3844 makromodeli yalnız referans olarak kullan: 100 kHz'e ayarlı şönt algılı çevrimi, güç katı köşelerini, yük/giriş geçişlerini ve akım sınırı davranışını geçici netlistlerde doğrula. Bu, LT3844 parçasını veya 9,77 mΩ şöntü seçmez. Sonuçlar ölçütleri karşılamazsa hangi sınırın sorun olduğunu kaydet; açık çevrim ana şematiğini değiştirme. LM5088 adayı seçimsiz kalsın; TI erişimi ileride açılırsa üretici referans modelinde ayrıca kıyaslansın. Kaynaklar: [TI LM5088 ürün/model sayfası](https://www.ti.com/product/LM5088), [TI TINA-TI](https://www.ti.com/tool/TINA-TI), [TI PSpice for TI](https://www.ti.com/tool/PSPICE-FOR-TI), [TI LM5088 veri sayfası](https://www.ti.com/lit/ds/symlink/lm5088.pdf), [ADI LT3844 veri sayfası](https://www.analog.com/media/en/technical-documentation/data-sheets/3844fc.pdf), [TI LM5146 veri sayfası](https://www.ti.com/lit/ds/symlink/lm5146.pdf), [Mouser LM5088-2](https://www.mouser.com/en/c/semiconductors/integrated-circuits-ics/power-management-ics/voltage-regulators-voltage-controllers/switching-controllers/?series=LM5088), [Mouser LT3844](https://www.mouser.com/ProductDetail/Analog-Devices/LT3844EFEPBF?qs=hVkxg5c3xu%252BkZJnUsMlzyA%3D%3D). Fiyatlar ülke, vergi, stok ve zamana göre değişir.

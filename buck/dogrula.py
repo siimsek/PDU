@@ -14,8 +14,11 @@ Kullanim:
   python buck/dogrula.py kararlilik  # sabit guc yuku (CPL): darbe suresi 1-200 ms, sonum/buyume, kose model setleri
   python buck/dogrula.py zarf        # genel modul zarfi: 0-82,5 W, CR/CC/CP yuk adimlari, yuk atma gecikmesi
   python buck/dogrula.py stres       # ideal OLMAYAN senaryolar: anahtarlama zili, sicak takma, S1 kisa devre
+  python buck/dogrula.py sunt        # LT3844 referans modeliyle gecici sunt esik/tolerans kosesi
+  python buck/dogrula.py sunt_tarama [Rnom_mOhm ...] # gecici tarama (parca secimi degil)
+  python buck/dogrula.py sunt_tol_tarama [tol_% ...] # 9.77 mOhm tarama referansi, tolerans duyarliligi
 
-Siniflar: buradaki her sayi IDEAL ELEMANLI LTspice SIMULASYONUDUR; fiziksel olcum degildir.
+Siniflar: bu betikteki her sayi, ilgili kipte ideal guc kati veya uretici makromodeliyle LTspice SIM'dir; fiziksel olcum degildir.
 Yuk gucleri icin kaynak/varsayim ayrimi OPTIMIZASYON.md dosyasindadir.
 """
 from __future__ import annotations
@@ -256,7 +259,7 @@ def kos(metin: str, ad: str = "k", raw: bool = False):
     ltspice_kos(cir)
     log = (d / f"{ad}.log").read_bytes()
     log = log.decode("utf-16-le") if log[:2] in (b"\xff\xfe",) or log[1:2] == b"\x00" else log.decode("latin1")
-    m = {k.lower(): float(v) for k, v in re.findall(r"^(\w+):.*?=(-?[\d.]+(?:[eE][-+]?\d+)?)", log, re.M)}
+    m = {k.lower(): float(v) for k, v in re.findall(r"^(\w+):?.*?=(-?[\d.]+(?:[eE][-+]?\d+)?)", log, re.M)}
     if not m:
         raise RuntimeError("olcum yok:\n" + log[-1500:])
     beklenen = {ad.lower() for ad in re.findall(r"^\s*\.meas(?:ure)?\s+tran\s+(\w+)", metin, re.I | re.M)}
@@ -963,6 +966,121 @@ def stres() -> None:
           "doyar (L/L0 ≈ %60), tepe akım daha yüksek olur.\n")
 
 
+def sunt_koseleri(r_nom: float = 9.76e-3, yalniz: tuple[str, ...] | None = None,
+                   r_tol: float = 0.01, r_freq: float = 204.53e3) -> None:
+    """LT3844 referans makromodelinde ideal sense olceklemesiyle gecici esik kosesi.
+
+    LT3844.sub makromodelinin ic comparator esigi parametrelenebilir degil. E-sense kaynagi,
+    100 mV tipik esikli modeli datasheet min/max esiklerine matematiksel olarak esdeger olcekler;
+    bu gercek bir analog on-yuz, amplifier veya yeni controller modeli degildir.
+    """
+    vth_typ = 100e-3                   # LT3844 datasheet tipik esigi
+    cases = (
+        ("profil_90mV_Rart", 26.0, 90e-3, +r_tol, "profil"),
+        ("7p5A_90mV_Rart", 26.0, 90e-3, +r_tol, "tam_yuk"),
+        ("7p5A_115mV_Raz", 26.0, 115e-3, -r_tol, "tam_yuk"),
+        ("asiri_yuk_115mV_Raz", 26.0, 115e-3, -r_tol, "asiri_yuk"),
+    )
+    if yalniz is not None:
+        cases = tuple(c for c in cases if c[0] in yalniz)
+    print("## Şönt eşiği / toleransı — LT3844 referans makromodeli, geçici netlist\n")
+    print(f"Rfreq={r_freq / 1e3:.2f} kΩ (LT3844 makromodelinde 19–20 ms aralığında ölçülen frekansa kalibre); "
+          "E-sense ideal ölçeklemesi, LT3844.sub içindeki tipik eşiği 90/115 mV köşelerine eşdeğerler; "
+          f"gerçek sense yükselteci veya comparator gecikme modeli değildir. Rnom={r_nom * 1e3:.2f} mΩ ve "
+          f"±{r_tol * 100:g}% yalnız tarama varsayımıdır.\n")
+    sat = []
+    for ad, vin, vth, tol, yuk_tipi in cases:
+        r_sense = r_nom * (1 + tol)
+        kazanc = vth_typ / vth
+        if yuk_tipi == "profil":
+            yuk = "Bload out 0 I=V(out)*(1/2.75+if(time<0.01,1/7.3333333333,1/52.380952381))"
+        elif yuk_tipi == "asiri_yuk":
+            yuk = "Rload out 0 0.75"
+        else:
+            yuk = f"Rload out 0 {eng(VO / 7.5)}"
+        lines = [
+            f"* dogrula.py sunt: {ad}; LT3844 model typical threshold with ideal sense scaling",
+            f"V1 vin 0 {eng(vin)}",
+            f"Cin1 vin 0 {eng(SECILEN['Cin'])} Rser={eng(SECILEN['ESRi'])}",
+            f"Cin2 vin 0 {eng(SECILEN['Cin'])} Rser={eng(SECILEN['ESRi'])}",
+            "S1 vin sw gate sw pdu_switch",
+            f".model pdu_switch SW(Ron={eng(SECILEN['Ron'])} Roff=1G Vt=5 Vh=-0.5)",
+            "Cgate gate sw 2n",
+            f"Dfree 0 sw d_free",
+            f".model d_free D(Ron={eng(SECILEN['Rd'])} Vfwd={eng(SECILEN['Vf'])})",
+            f"L1 sw sense {eng(SECILEN['L'])} Rser={eng(SECILEN['DCR'])}",
+            f"Rsense sense out {eng(r_sense)}",
+            f"Escale sense_model out sense out {eng(kazanc)}",
+            f"Cout out 0 {eng(SECILEN['Cout'])} Rser={eng(SECILEN['ESRo'])}",
+            f"Cd out cdn {eng(SECILEN['Cd'])}",
+            f"Rd cdn 0 {eng(SECILEN['Rdal'])}",
+            yuk,
+            "Venable en 0 2",
+            "Css soft 0 10n",
+            f"Rfreq fset 0 {eng(r_freq)}",
+            "Rfb1 out fb 79.4k",
+            "Rfb2 fb 0 10k",
+            "Ccomp vc 0 680p Rser=10k Cpar=120p",
+            "Rsync sync 0 1Meg",
+            "Cboot boost sw 220n",
+            "Cvcc vcc 0 1u",
+            "Dboot vcc boost DGEN",
+            "Dvcc out vcc DGEN",
+            ".model DGEN D(Is=2.52n Rs=0.568 N=1.752 Cjo=4p)",
+            "XU1 vin en soft vcc fb vc sync fset 0 out sense_model 0 vcc sw gate boost LT3844",
+            ".lib LT3844.sub",
+            ".save V(out) V(sense,out) V(sense_model,out) V(gate,sw) I(L1)",
+            ".tran 0 30m 0 100n startup",
+            ".meas tran VO_AVG AVG V(out) FROM 25m TO 30m",
+            ".meas tran VO_MIN MIN V(out) FROM 10m TO 30m",
+            ".meas tran VO_MAX MAX V(out) FROM 0 TO 30m",
+            ".meas tran VO_PP PP V(out) FROM 29m TO 30m",
+            ".meas tran IL_PEAK MAX I(L1) FROM 0 TO 30m",
+            ".meas tran IL_25_30 MAX I(L1) FROM 25m TO 30m",
+            ".meas tran VSENSE_PEAK MAX V(sense,out) FROM 0 TO 30m",
+            ".meas tran VSCALE_PEAK MAX V(sense_model,out) FROM 0 TO 30m",
+            ".meas tran TPER TRIG V(gate,sw) VAL=5 RISE=2000 TARG V(gate,sw) VAL=5 RISE=2100",
+            ".end",
+        ]
+        r_etiket = f"{r_nom * 1e3:.2f}".replace(".", "p")
+        tol_etiket = f"{r_tol * 100:g}".replace(".", "p")
+        m = kos("\n".join(lines) + "\n", f"sunt_{ad}_r{r_etiket}_t{tol_etiket}")
+        f_khz = 100 / m["tper"] / 1000
+        sat.append([ad, f"{r_nom * 1e3:.2f}", f"{vin:g}", f"{vth * 1e3:g}", f"{r_sense * 1e3:.4f}", f"{kazanc:.6f}",
+                    f"{m['vo_avg']:.3f}", f"{m['vo_min']:.3f}", f"{m['vo_max']:.3f}", f"{m['vo_pp'] * 1e3:.1f}",
+                    f"{m['il_peak']:.3f}", f"{m['il_25_30']:.3f}", f"{m['vsense_peak'] * 1e3:.2f}", f"{m['vscale_peak'] * 1e3:.2f}",
+                    f"{f_khz:.3f}"])
+        print(sat[-1], file=sys.stderr, flush=True)
+    tablo(["Köşe", "Rnom mΩ", "Vin V", "Eşik mV", "Rsense mΩ", "Escale", "Vo ort. V", "Vo min V (10–30ms)",
+           "Vo tepe V", "ΔVo mV", "IL tepe A (0–30ms)", "IL tepe A (25–30ms)", "Gerçek sense tepe mV",
+           "Ölçekli sense tepe mV", "fSW kHz (19–20 ms)"], sat)
+    print("Bu koşular yalnız referans makromodel ve ideal sense ölçeklemesiyle yapılan geçici SİM'dir. "
+          "Şöntün fiziksel TCR/ısınması, gerçek comparator gecikmesi, L(I), gürültü ve 12 A bobin dayanımı doğrulanmaz.\n")
+
+
+def sunt_tarama(degerler: tuple[float, ...] | None = None) -> None:
+    """Dar shunt penceresinde gecici LTspice taramasi; sonuc parca secimi degildir."""
+    if degerler is None:
+        degerler = (9.70e-3, 9.76e-3, 9.82e-3, 9.85e-3)
+    koseler = ("profil_90mV_Rart", "7p5A_90mV_Rart", "asiri_yuk_115mV_Raz")
+    print("## Şönt nominal değer taraması — geçici netlistler; değer seçimi değildir\n")
+    for r_nom in degerler:
+        print(f"### Rnom = {r_nom * 1e3:.2f} mΩ ±1%\n")
+        sunt_koseleri(r_nom, koseler)
+
+
+def sunt_tol_tarama(toleranslar: tuple[float, ...] | None = None) -> None:
+    """100 kHz taramasının en dengeli nominal örneğinde şönt toleransı duyarlılığı; parça seçimi değildir."""
+    if toleranslar is None:
+        toleranslar = (1.0, 0.5, 0.25, 0.1)
+    koseler = ("profil_90mV_Rart", "7p5A_90mV_Rart", "asiri_yuk_115mV_Raz")
+    r_nom = 9.77e-3
+    print(f"## Şönt toleransı duyarlılığı — Rnom={r_nom * 1e3:.2f} mΩ, geçici LTspice netlistleri\n")
+    for tol_yuzde in toleranslar:
+        print(f"### Tolerans = ±{tol_yuzde:g}%\n")
+        sunt_koseleri(r_nom, koseler, r_tol=tol_yuzde / 100)
+
+
 def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
     dal_bilgi = f", Cd={p['Cd'] * 1e6:g} µF+Rd={p['Rdal']:g} Ω" if p.get("Cd", 0) > 0 else ""
     print(f"## {ad}: L={p['L'] * 1e6:g} µH/{p['DCR'] * 1e3:g} mΩ, Cout={p['Cout'] * 1e6:g} µF/{p['ESRo'] * 1e3:g} mΩ{dal_bilgi}, "
@@ -1184,6 +1302,14 @@ def main() -> None:
             zarf()
         elif kip == "stres":
             stres()
+        elif kip == "sunt":
+            sunt_koseleri()
+        elif kip == "sunt_tarama":
+            degerler = tuple(float(x) * 1e-3 for x in sys.argv[2:]) or None
+            sunt_tarama(degerler)
+        elif kip == "sunt_tol_tarama":
+            toleranslar = tuple(float(x) for x in sys.argv[2:]) or None
+            sunt_tol_tarama(toleranslar)
         else:
             sys.exit(__doc__)
     finally:
