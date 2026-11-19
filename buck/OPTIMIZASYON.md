@@ -1437,3 +1437,68 @@ Bütün köşelerde yavaş salınım zarfı sönmüştür (≤ 3,3 mV), yani bu 
 Çöküş eşiği bu koşullarda 26,4 ile 28,0 µH arasındadır; el sarım alt sınırı bunun ≈ %6 üstündedir. Bu pay doğrusal bobin, ideal sense ve tipik makromodel gecikmesiyle bulunmuştur; gerçek comparator gecikmesi ve şönt TCR'si payı daraltabilir. Satın alma bobininin sırası değişmedi, fakat bu yönde L(9 A) ≥ 29,8 µH garanti edilmedikçe uygun değildir. Ana şematik (33 µH) ve dondurulmuş güç katı değişmedi.
 
 Trap integrasyonu bu turda da bir köşede (Z0, 20 V, 57,6→6,6 W) ve üç tanı koşusunun üçünde takıldı; hepsi gear ile tamamlandı.
+
+#### 16.21 Akım algı hata bütçesi ve bağımsız OVP adayları — DATASHEET + HESAP + SİM (19.11.2026)
+
+Bu bölüm adayları üretici garantileriyle değerlendirir; kontrolcü, şönt, OVP entegresi veya FET **seçilmedi**, aday sırası ve şematik değişmedi. Fiyat ve stoklar o günkü sayfa görüntüleridir (1 adet; KDV, gümrük ve kargo hariç).
+
+**1. Akım algı bütçesi (HESAP).** §16.12 SİM'inden normal profil tepe akımı 89,72 mV / 9,8677 mΩ = **9,092 A** (26 V), yapay aşırı yükte makromodelin ideal sınırın üstündeki aşımı ≈ 87 mA'dır. 12 A hedefi ile normal tepe arasındaki izin oranı (12 − 0,087) / 9,092 = 1,310'dur. LT3844'ün garantili eşik oranı 115 / 90 = 1,278 olduğundan şönt toleransı, TCR, ısınma, kayma ve ek gecikmenin hepsine kalan toplam pay **±%1,25**'tir. Bobin L ≥ 29,8 µH ile 26 V'ta kısa devreye yakın di/dt ≈ 0,87 A/µs; her 100 ns ek gecikme ≈ 87 mA tüketir.
+
+Bütçe iki tarafa ayrılır:
+
+- **Normal tarafta sınıra takılmama** yalnız garantili 90 mV ve şöntün en kötü üst değerine bağlıdır; comparator gecikmesi bu tarafı etkilemez. Koşul `Rmax × 9,092 A < 90 mV` → `Rmax < 9,898 mΩ`. 25→105 °C şönt gövdesi (TAHMİN) ile:
+
+| Şönt sınıfı (DATASHEET/satıcı) | Rnom üst sınırı | Bu Rnom'da üst tepe (gecikme hariç) |
+|---|---:|---:|
+| Vishay WSK2512, ±%0,1, ±35 ppm/°C | 9,861 mΩ | 11,76 A |
+| Vishay WSK2512, ±%0,5, ±35 ppm/°C | 9,822 mΩ | 11,85 A |
+| Ohmite PCS1206, ±%0,5, ±50 ppm/°C | 9,810 mΩ | 11,87 A |
+| Vishay WSL2010, ±%1, ±75 ppm/°C | 9,743 mΩ | 12,01 A |
+| Bourns CRM2512, ±%1, ±100 ppm/°C | 9,723 mΩ | 12,03 A |
+
+  Standart **10 mΩ** anma değeri hiçbir sınıfta normal tarafı tutmaz; 9 mΩ normal tarafı tutar fakat üst tepe ≈ 12,9 A olur. ≈ 9,8 mΩ standart bir değer değildir; ör. 10 mΩ ∥ 680 mΩ = 9,855 mΩ (paralel direnç Kelvin bağlantısını ve yerleşim payını etkiler; doğrulanmadı).
+
+- **Üst tarafta (12 A tasarım hedefi)** hassas şöntle en kötü tepe gecikme hariç 11,76–11,87 A çıkar; 12 A'ya kalan pay ≈ 150–275 ns gecikmeye eşdeğerdir (önceki ±%1 hesabında 27 ns). LT3844 azami comparator gecikmesini yayımlamadığından bu taraf **doğrulanamadı**; 12 A sert sınır değildir.
+
+**Açık risk — uzun dönem kayma (DATASHEET):** Vishay [WSL](https://www.vishay.com/docs/30100/wsl.pdf) ve [WSK2512](https://www.vishay.com/docs/30108/wsk2512.pdf) veri sayfaları ömür testinde ±(%1,0 + 0,0005 Ω), lehim ısısında ±(%0,5 + 0,0005 Ω) kaymaya izin verir; 10 mΩ'da bu ±%5,5–6'dır. Bourns CSS2H ömür sınırı %1'dir. Bu garanti sınırları dahil edilirse hiçbir şönt ±%1,25 bütçesini tutmaz; yukarıdaki tablo kaymayı içermez. WSL2512'nin 10 mΩ bileşen TCR'si ±110 ppm/°C, Panasonic ERJ-8B'nin 10–15 mΩ TCR'si 0…+300 ppm/°C'dir (depodaki veri sayfaları).
+
+**Kontrolcü:** Asenkron, harici N-MOSFET'li, eşiği ±%5 ve azami gecikmesi garantili bir kontrolcü arama sonucunda bulunamadı. LM5088-2'nin eşik oranı 136/112 = 1,214'tür, ancak emüle algı farklı yerdedir ve LTspice modeli yakınsamamıştır (§16.17).
+
+**2. Bağımsız OVP eşik penceresi (HESAP).** S1 kısa devresinde çıkış L–C üzerinden yükselir: ΔV ≈ (26 − 11) / L · t² / (2C). 29,8 µH ve 1470 µF ile 11,6→12 V ≈ 48 µs'dir; eski 11→25 V / 10 µs sentetik rampası bundan çok daha serttir. Eşik ve gecikme garantileri (DATASHEET, depodaki veri sayfaları):
+
+| Aday | OV eşiği min–maks | Gecikme | Not |
+|---|---|---|---|
+| LTC4365 | 492,5–507,5 mV | yayılım 2 µs maks (50 mV aşırı sürüş) + hızlı kapama 4 µs maks (2,2 nF) | Garantili azami değer veren tek aday |
+| MAX6495 | 1,22–1,26 V | OVSET→GATE 0,6 µs **yalnız tipik** | Azami gecikme yok |
+| MAX6497/98 | 0,494–0,518 V | 0,6 µs (6 nF) | Pencereye sığmaz |
+| TI LM74502 | 1,165–1,333 V | — | ±%6,8, elendi ([veri sayfası](https://www.ti.com/lit/ds/symlink/lm74502.pdf)) |
+| TI TLV3012 (karşılaştırıcı + referans) | 1,208–1,276 V, VOS ≤ 15 mV | — | Elendi ([veri sayfası](https://www.ti.com/lit/ds/symlink/tlv3012.pdf)) |
+| LTC4367 / LTC4368 | — | — | Veri sayfasına erişilemedi; **doğrulanamadı** |
+
+**3. LTC4365 S1 kısa devre SİM'i.** Geçici netlist: güç katı ortalama modelle 11 V'ta oturmuş, t0'da anahtar düğümü ideal 26 V'a sabitlenir; Cout 1000 µF / 15 mΩ, Cd 470 µF + 0,22 Ω, DCR 7,81 mΩ, doğrusal bobin. LTC4365-1 üretici modeli, OV bölücüsü buck çıkışından; ortak source bağlı iki temsili 60 V FET (Infineon BSC028N06LS3, Qg 59 nC ve BSC067N06LS3, Qg 23 nC; seçim değil); port tarafında 22 µF (O1/S2E giriş kapasitesi yayımlanmamış, TAHMİN) ve 7,5 A ya da 0,24 A direnç yükü. Model eşiği tipik 500 mV; eşik köşeleri bölücü oranıyla ayarlandı. 24 koşu, gear, azami adım 20 ns.
+
+| OV eşiği ayarı | Eşik → FAULT | Eşik → kapı kapalı (VGS < 1 V) | O1 port tepesi | Buck tarafı tepe | IL tepe |
+|---|---:|---:|---:|---:|---:|
+| 11,45 V | 8,0–8,6 µs | 9,9–11,7 µs | 11,53–11,66 V | 36,5–36,8 V | 84–90 A |
+| 11,77 V | 7,1–7,6 µs | 9,0–10,8 µs | 11,87–**12,007 V** | 36,5–36,9 V | 84–90 A |
+| 11,85 V | 7,0–7,5 µs | 8,9–10,6 µs | 11,95–**12,092 V** | 36,5–36,9 V | 84–90 A |
+
+En yüksek port tepesi hafif yük ve ağır kapı yüklü FET'te görüldü. Gecikme, veri sayfasının ani 50 mV aşırı sürüş koşulundan uzundur, çünkü gerçek kısa devrede aşırı sürüş kademeli artar; ayar eşiğinin üstündeki port aşımı ≈ 210–240 mV'tur. Önceki HESAP'taki ≈ 151 mV (veri sayfası azami gecikmelerinin toplamı) bu nedenle iyimserdi.
+
+**Sonuç (ÇIKARIM):** Port tepesinin 12 V altında kalması için LTC4365 eşiğinin en kötü üst değeri **≤ ≈ 11,75 V** olmalıdır. Eşik toleransı ve %0,1'lik bölücüyle alt uç **≈ 11,36 V** olur; normal çalışmada çıkış hiçbir koşulda 11,36 V'u geçmemelidir. Şöntlü CPL testlerinde görülen en yüksek değer 11,19 V'tur (§16.19–16.20); kontrolcü referans toleransı, bölücü TCR'si ve ölçüm gürültüsü bu pencereye henüz katılmadı. Kullanıcı kararı bekleniyor.
+
+**Yeni risk — ayırma sonrası buck tarafı aşırı gerilimi (SİM):** OVP yükü ayırınca L–C yüksüz kalır ve Cout/Cd uçları **36,5–36,9 V**'a çıkar. Bu, onaylı **Cout/Cd ≥ 35 V** sınıfını aşar (12.11.2026 dondurmasındaki 27,3–31,1 V yük bağlıyken ölçülmüştü). Giriş kaynağı ideal 26 V'tur; Cin, kablo empedansı, sigorta ve bobin doyumu modellenmedi. LTC4365 giriş mutlak maksimumu 60 V'tur; 60 V FET'ler bu senaryoda yeterlidir, 40 V sınıfı dar kalır. Seçenekler (karar kullanıcıda): Cout/Cd gerilim sınıfını yükseltmek (ör. 50 V) veya giriş tarafında ek koruma (sigorta, TVS, giriş ayırıcı).
+
+**4. Türkiye'de bulunurluk (19.11.2026):**
+
+| Parça | Özdisan | Mouser Türkiye (EUR, Türkiye'ye gönderim) | Diğer |
+|---|---|---|---|
+| LT3844EFE#PBF | listede yok | 307 stok, 8,21 € | — |
+| LM5088MH-2 / MHX-2 | listede, **stok 0**, fiyat talep üzerine | 387 / 392 stok, 5,43 / 4,50 € | — |
+| LTC4365 (çeşitli) | listede yok | yüksek stok, 4,11–5,59 € | Çakır Elektronik: LTC4365HTS8, 14 stok, 7,00 USD + KDV |
+| MAX6495ATT+T | listede yok | 3.955 stok, 9,40 € | MAX6497 Mouser listesinde yok |
+| WSK2512R0100DTA (10 mΩ ±%0,5) | listede yok | 1.402 stok, 3,95 € | WSK2512 9 mΩ stokta yok |
+| Ohmite PCS1206DR0100ET (10 mΩ ±%0,5, ±50 ppm/°C) | **563 stok, 22,67 TL** | — | TCR satıcı listelemesinden; üretici belgesi doğrulanamadı |
+| WSL2010R0100FEA (10 mΩ ±%1) | 5.260 stok, 22,83 TL | — | — |
+
+Özdisan'daki 9 mΩ ve WSL2512 kayıtlarının tamamı stokta yoktur. TME (bot doğrulaması) ve DigiKey Türkiye (geçersiz TLS sertifikası) kontrol edilemedi; Mouser'ın Türkiye kargo eşiği, gümrük ve KDV koşulları doğrulanmadı. Kaynaklar: [Mouser LT3844](https://www.mouser.com.tr/tr/ProductDetail/Analog-Devices/LT3844EFEPBF?qs=hVkxg5c3xu%252BkZJnUsMlzyA%3D%3D), [Mouser LM5088](https://www.mouser.com.tr/c/?q=LM5088MH-2%2FNOPB), [Mouser LTC4365](https://www.mouser.com.tr/c/?q=LTC4365), [Mouser MAX649x](https://www.mouser.com.tr/c/?q=MAX6497), [Mouser WSK2512](https://www.mouser.com.tr/c/?q=WSK2512R0100), [Özdisan LM5088](https://www.ozdisan.com/ps/dc-dc-voltaj-kontrolorleri-274?f=&s=LM5088), [Özdisan 10 mΩ](https://www.ozdisan.com/ps/smt-smd-ve-cip-direncler-194?f=&s=R010), [Çakır Elektronik](https://www.cakirelektronik.com/marka/linear-technology), [Ohmite PCS1206 (DigiKey)](https://www.digikey.de/en/products/detail/ohmite/PCS1206DR0100ET/10670883).
