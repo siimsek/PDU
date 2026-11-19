@@ -19,6 +19,7 @@ Kullanim:
   python buck/dogrula.py sunt_tol_tarama [tol_% ...] # 9.77 mOhm tarama referansi, tolerans duyarliligi
   python buck/dogrula.py sunt_giris  # LT3844/sunt kosesi, 5 giris noktasi x profil/tam yuk/akim siniri
   python buck/dogrula.py sunt_cpl    # LT3844/sunt cevrimi, 3 giris x 4 sabit guc yuku adimi, 200 ms darbe
+  python buck/dogrula.py sunt_cpl_tol  # ayni test, 4 guc kati tolerans kosesi x 20/26 V x 2 zor adim
 
 Siniflar: bu betikteki her sayi, ilgili kipte ideal guc kati veya uretici makromodeliyle LTspice SIM'dir; fiziksel olcum degildir.
 Yuk gucleri icin kaynak/varsayim ayrimi OPTIMIZASYON.md dosyasindadir.
@@ -1020,7 +1021,7 @@ def stres() -> None:
 
 
 def sunt_govde(baslik: str, vin: float, r_sense: float, kazanc: float, r_freq: float,
-               yuk: list[str]) -> list[str]:
+               yuk: list[str], p: dict = SECILEN) -> list[str]:
     """LT3844 referans makromodeli + dondurulmus guc kati + seri sunt; .tran/.meas haric gecici netlist govdesi.
 
     Kompanzasyon ve geri besleme (Rfb 79,4k/10k, Vc: 10k + 680p, 120p paralel; Css 10n; Cgate 2n temsili kapi)
@@ -1029,19 +1030,19 @@ def sunt_govde(baslik: str, vin: float, r_sense: float, kazanc: float, r_freq: f
     return [
         baslik,
         f"V1 vin 0 {eng(vin)}",
-        f"Cin1 vin 0 {eng(SECILEN['Cin'])} Rser={eng(SECILEN['ESRi'])}",
-        f"Cin2 vin 0 {eng(SECILEN['Cin'])} Rser={eng(SECILEN['ESRi'])}",
+        f"Cin1 vin 0 {eng(p['Cin'])} Rser={eng(p['ESRi'])}",
+        f"Cin2 vin 0 {eng(p['Cin'])} Rser={eng(p['ESRi'])}",
         "S1 vin sw gate sw pdu_switch",
-        f".model pdu_switch SW(Ron={eng(SECILEN['Ron'])} Roff=1G Vt=5 Vh=-0.5)",
+        f".model pdu_switch SW(Ron={eng(p['Ron'])} Roff=1G Vt=5 Vh=-0.5)",
         "Cgate gate sw 2n",
         "Dfree 0 sw d_free",
-        f".model d_free D(Ron={eng(SECILEN['Rd'])} Vfwd={eng(SECILEN['Vf'])})",
-        f"L1 sw sense {eng(SECILEN['L'])} Rser={eng(SECILEN['DCR'])}",
+        f".model d_free D(Ron={eng(p['Rd'])} Vfwd={eng(p['Vf'])})",
+        f"L1 sw sense {eng(p['L'])} Rser={eng(p['DCR'])}",
         f"Rsense sense out {eng(r_sense)}",
         f"Escale sense_model out sense out {eng(kazanc)}",
-        f"Cout out 0 {eng(SECILEN['Cout'])} Rser={eng(SECILEN['ESRo'])}",
-        f"Cd out cdn {eng(SECILEN['Cd'])}",
-        f"Rd cdn 0 {eng(SECILEN['Rdal'])}",
+        f"Cout out 0 {eng(p['Cout'])} Rser={eng(p['ESRo'])}",
+        f"Cd out cdn {eng(p['Cd'])}",
+        f"Rd cdn 0 {eng(p['Rdal'])}",
         *yuk,
         "Venable en 0 2",
         "Css soft 0 10n",
@@ -1175,8 +1176,19 @@ SUNT_CPL_ADIMLARI = (
 )
 
 
+# Guc kati tolerans koseleri (secilen §8 ve kararlilik CPL_SETLERI ile ayni tanimlar). Kapali cevrimde L, Cout/Cd ve
+# ESR akim kipi egimini, LC rezonansini ve ESR sifirini birlikte kaydirir; L- ayrica bobin tepe akimini sinira yaklastirir.
+SUNT_CPL_KOSELERI = (
+    ("sönüm en zayıf: L+%20, C−%20, ESR 15 mΩ", kose_seti(dict(SECILEN, ESRo=ESR_MIN))),
+    ("en az sönüm sıcak: L+%20, C−%20, ESR 10 mΩ (TAHMİN)", kose_seti(EN_AZ_SONUM_SICAK)),
+    ("ripple en kötü: L−%30, C−%20, ESR 35 mΩ", kose_seti(dict(SECILEN, ESRo=ESR_MAX), L_DUSUK, 0.8)),
+    ("Z0 en düşük: L−%30, C+%20, ESR 15 mΩ", kose_seti(dict(SECILEN, ESRo=ESR_MIN), L_DUSUK, 1.2)),
+)
+
+
 def sunt_cpl(vinler: tuple[float, ...] = (20.0, VIN_ANA, 26.0), r_nom: float = 9.77e-3,
-             r_tol: float = 0.01, r_freq: float = 204.53e3, sure: float = 200e-3) -> None:
+             r_tol: float = 0.01, r_freq: float = 204.53e3, sure: float = 200e-3,
+             koseler: tuple = (("anma", SECILEN),), adimlar: tuple = SUNT_CPL_ADIMLARI) -> None:
     """Sontlu LT3844 referans cevriminde 200 ms sabit guc yuku darbesi (AGENTS.md kabul olcutu).
 
     Normal yuk icin en kotu akim siniri yonu kullanilir: 90 mV esik + R +%1 (ideal E-sense olceklemesi).
@@ -1188,42 +1200,46 @@ def sunt_cpl(vinler: tuple[float, ...] = (20.0, VIN_ANA, 26.0), r_nom: float = 9
     t1, kuyruk = 25e-3, 30e-3
     t2 = t1 + sure
     tstop = t2 + kuyruk
-    tw = lc_periyot(SECILEN)
     son = 2e-3
     print("## Şöntlü LT3844 referans çevrimi — 200 ms sabit güç yükü darbesi (geçici netlist)\n")
+    tw = lc_periyot(SECILEN)
     print(f"Rnom={r_nom * 1e3:.2f} mΩ, R+{r_tol * 100:g}% ve 90 mV eşik (ideal E-sense ölçeklemesi; normal yükte en düşük "
           f"akım sınırı yönü); Rfreq={r_freq / 1e3:.2f} kΩ (makromodel 100 kHz kalibrasyonu). Kompanzasyon: "
           "Vc 10 kΩ + 680 pF, 120 pF paralel; Rfb 79,4k/10k; Css 10 nF. Yük CPL, 5 V altında sabit akım. "
           f"Darbe {sure * 1e3:g} ms, yavaş salınım zarfı 4,8 kHz RC ile darbenin son iki LC periyodunda (≈{tw * 1e3:.2f} ms).\n")
+    print("Güç katı köşeleri: " + "; ".join(k for k, _ in koseler) + ". LF penceresi her köşenin kendi LC "
+          "periyoduna göre alınır.\n")
     isler, meta = [], []
-    for vin in vinler:
-        for ad, p0, p1 in SUNT_CPL_ADIMLARI:
-            pwl = (f"0 0 10m 0 11m {p0:g} {eng(t1)} {p0:g} {eng(t1 + 20e-6)} {p1:g} "
-                   f"{eng(t2)} {p1:g} {eng(t2 + 20e-6)} {p0:g}")
-            lines = sunt_govde(f"* dogrula.py sunt_cpl: {p0:g} W -> {p1:g} W, Vin={vin:g} V", vin, r_sense, kazanc, r_freq,
-                               yuk_guc(pwl) + ["Rlf out lf 10k", "Clf lf 0 3.3n"]) + [
-                ".save V(out) V(lf) I(L1)",
-                f".tran 0 {eng(tstop)} 0 100n startup",
-                f".meas tran VPRE AVG V(out) FROM {eng(t1 - son)} TO {eng(t1)}",
-                f".meas tran VMAX MAX V(out) FROM {eng(t1)} TO {eng(tstop)}",
-                f".meas tran VMIN MIN V(out) FROM {eng(t1)} TO {eng(tstop)}",
-                f".meas tran V1SON AVG V(out) FROM {eng(t2 - son)} TO {eng(t2)}",
-                f".meas tran V1PP PP V(out) FROM {eng(t2 - son)} TO {eng(t2)}",
-                f".meas tran V0SON AVG V(out) FROM {eng(tstop - son)} TO {eng(tstop)}",
-                f".meas tran V0PP PP V(out) FROM {eng(tstop - son)} TO {eng(tstop)}",
-                f".meas tran ILMAX MAX I(L1) FROM {eng(t1)} TO {eng(tstop)}",
-                f".meas tran LFA PP V(lf) FROM {eng(t2 - 2 * tw)} TO {eng(t2 - tw)}",
-                f".meas tran LFB PP V(lf) FROM {eng(t2 - tw)} TO {eng(t2)}",
-                f".meas tran LF0 PP V(lf) FROM {eng(tstop - tw)} TO {eng(tstop)}",
-                ".end",
-            ]
-            isler.append((f"sunt_cpl Vin={vin:g} V, {p0:.1f}→{p1:.1f} W", "\n".join(lines) + "\n",
-                          f"sunt_cpl_{vin:g}_{p0:.0f}_{p1:.0f}".replace(".", "p")))
-            meta.append((vin, ad, p0, p1))
-    # 255 ms koşu tek başına ≈ 6 dk, 3 paralelde ≈ 7 dk. LT3844 makromodeli trap integrasyonunda bazı köşelerde
+    for ki, (kose, q) in enumerate(koseler):
+        tw = lc_periyot(q)
+        for vin in vinler:
+            for ad, p0, p1 in adimlar:
+                pwl = (f"0 0 10m 0 11m {p0:g} {eng(t1)} {p0:g} {eng(t1 + 20e-6)} {p1:g} "
+                       f"{eng(t2)} {p1:g} {eng(t2 + 20e-6)} {p0:g}")
+                lines = sunt_govde(f"* dogrula.py sunt_cpl: {p0:g} W -> {p1:g} W, Vin={vin:g} V", vin, r_sense, kazanc, r_freq,
+                                   yuk_guc(pwl) + ["Rlf out lf 10k", "Clf lf 0 3.3n"], q) + [
+                    ".save V(out) V(lf) I(L1)",
+                    f".tran 0 {eng(tstop)} 0 100n startup",
+                    f".meas tran VPRE AVG V(out) FROM {eng(t1 - son)} TO {eng(t1)}",
+                    f".meas tran VMAX MAX V(out) FROM {eng(t1)} TO {eng(tstop)}",
+                    f".meas tran VMIN MIN V(out) FROM {eng(t1)} TO {eng(tstop)}",
+                    f".meas tran V1SON AVG V(out) FROM {eng(t2 - son)} TO {eng(t2)}",
+                    f".meas tran V1PP PP V(out) FROM {eng(t2 - son)} TO {eng(t2)}",
+                    f".meas tran V0SON AVG V(out) FROM {eng(tstop - son)} TO {eng(tstop)}",
+                    f".meas tran V0PP PP V(out) FROM {eng(tstop - son)} TO {eng(tstop)}",
+                    f".meas tran ILMAX MAX I(L1) FROM {eng(t1)} TO {eng(tstop)}",
+                    f".meas tran LFA PP V(lf) FROM {eng(t2 - 2 * tw)} TO {eng(t2 - tw)}",
+                    f".meas tran LFB PP V(lf) FROM {eng(t2 - tw)} TO {eng(t2)}",
+                    f".meas tran LF0 PP V(lf) FROM {eng(tstop - tw)} TO {eng(tstop)}",
+                    ".end",
+                ]
+                isler.append((f"sunt_cpl [{kose}] Vin={vin:g} V, {p0:.1f}→{p1:.1f} W", "\n".join(lines) + "\n",
+                              f"sunt_cpl_k{ki}_{vin:g}_{p0:.0f}_{p1:.0f}".replace(".", "p")))
+                meta.append((kose, vin, ad, p0, p1))
+    # 255 ms koşu tek başına ≈ 6 dk, 3 paralelde en çok ≈ 9 dk. LT3844 makromodeli trap integrasyonunda bazı köşelerde
     # zaman adımını ~1e-16 s'ye düşürüp ilerlemiyor (19.11.2026, 26 V / 41,25→82,5 W). Bu yüzden süre sınırı dar
     # tutulur ve trap'te başarısız olan köşe yalnız bir kez `.options method=gear` ile tekrarlanır; tabloda yazılır.
-    sonuc = kos_paralel(isler, zaman_asimi=1200.0)
+    sonuc = kos_paralel(isler, zaman_asimi=900.0)
     yontem = {kad: "trap" for _, _, kad in isler}
     tekrar = [(e + " [gear]", metin.replace(".end\n", ".options method=gear\n.end\n"), kad + "_gear")
               for e, metin, kad in isler if isinstance(sonuc[kad], Exception)]
@@ -1234,11 +1250,11 @@ def sunt_cpl(vinler: tuple[float, ...] = (20.0, VIN_ANA, 26.0), r_nom: float = 9
             kad = gad[:-len("_gear")]
             sonuc[kad], yontem[kad] = ikinci[gad], f"gear (trap: {type(sonuc[kad]).__name__})"
     sat = []
-    for (vin, ad, p0, p1), (_, _, kad) in zip(meta, isler):
+    for (kose, vin, ad, p0, p1), (_, _, kad) in zip(meta, isler):
             m = sonuc[kad]
             if isinstance(m, Exception):
                 _hata_isaretle()
-                sat.append([f"{vin:g}", ad, f"{p0:.1f}→{p1:.1f}"] + ["—"] * 9
+                sat.append([kose, f"{vin:g}", ad, f"{p0:.1f}→{p1:.1f}"] + ["—"] * 9
                            + ["—", yontem[kad], f"KOŞU HATASI: {type(m).__name__}"])
                 continue
             oran = m["lfb"] / m["lfa"] if m["lfa"] > 0 else float("nan")
@@ -1253,12 +1269,12 @@ def sunt_cpl(vinler: tuple[float, ...] = (20.0, VIN_ANA, 26.0), r_nom: float = 9
             aralik = VO_MIN <= m["vmin"] and m["vmax"] <= VO_MAX
             ripple_ok = max(m["v1pp"], m["v0pp"]) <= RIPPLE_MAX
             karar = darbe_karari(sure, aralik and ripple_ok, durum)
-            sat.append([f"{vin:g}", ad, f"{p0:.1f}→{p1:.1f}", f"{m['vpre']:.3f}", f"{m['vmin']:.3f}",
+            sat.append([kose, f"{vin:g}", ad, f"{p0:.1f}→{p1:.1f}", f"{m['vpre']:.3f}", f"{m['vmin']:.3f}",
                         f"{m['vmax']:.3f}", f"{m['v1son']:.3f}", f"{m['v1pp'] * 1e3:.1f}", f"{m['v0son']:.3f}",
                         f"{m['v0pp'] * 1e3:.1f}", f"{m['ilmax']:.3f}",
                         f"{m['lfa'] * 1e3:.1f}/{m['lfb'] * 1e3:.1f}/{m['lf0'] * 1e3:.1f}", durum, yontem[kad], karar])
             print(sat[-1], file=sys.stderr, flush=True)
-    tablo(["Vin V", "Adım", "P W", "önce V", "Vmin V", "Vmax V", "darbe sonu V", "darbe sonu t-t mV",
+    tablo(["Güç katı", "Vin V", "Adım", "P W", "önce V", "Vmin V", "Vmax V", "darbe sonu V", "darbe sonu t-t mV",
            "dönüş sonu V", "dönüş sonu t-t mV", "IL tepe A", "LF zarfı A/B/son mV", "yavaş salınım", "integrasyon", "karar"], sat)
     print("Karar: 9–12 V, ripple ≤ 165 mV t-t (darbe ve dönüş sonu 2 ms) ve 200 ms darbede yavaş salınımın sönmesi. "
           "Geçici LT3844 makromodeli + ideal sense ölçeklemesidir; gerçek comparator gecikmesi, şönt TCR/ısı, "
@@ -1498,6 +1514,9 @@ def main() -> None:
             sunt_giris_tarama()
         elif kip == "sunt_cpl":
             sunt_cpl()
+        elif kip == "sunt_cpl_tol":
+            # Uç girişler ve en zor iki adım (en büyük düşüş ve tam güç / akım sınırı); 4 köşe x 2 giriş x 2 adım.
+            sunt_cpl(vinler=(20.0, 26.0), koseler=SUNT_CPL_KOSELERI, adimlar=SUNT_CPL_ADIMLARI[2:])
         else:
             sys.exit(__doc__)
     finally:

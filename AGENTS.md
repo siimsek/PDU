@@ -101,6 +101,7 @@ Güncel değerler ve aktif adım burada tekrar edilmez; [YOL-HARITASI.md](YOL-HA
 | `python buck/dogrula.py sunt_tol_tarama [% ...]` | 9,77 mΩ'da şönt toleransı duyarlılığı | ≈ 6 dk |
 | `python buck/dogrula.py sunt_giris` | 5 giriş noktası × 4 profil/eşik köşesi (30 ms) | ≈ 9 dk |
 | `python buck/dogrula.py sunt_cpl` | Şöntlü çevrimde 20 / 24,6 / 26 V × 4 sabit güç yükü adımı, **200 ms darbe** (kabul ölçütü); trap'te tamamlanmayan köşe gear ile tekrarlanır | ≈ 45 dk (3 paralel) |
+| `python buck/dogrula.py sunt_cpl_tol` | Aynı 200 ms CPL testi: 4 güç katı tolerans köşesi × 20 / 26 V × 2 zor adım (57,6→6,6 ve 41,25→82,5 W) | ≈ 40 dk (3 paralel) |
 
 - LTspice yolu `LTSPICE` ortam değişkeniyle verilebilir (varsayılan `C:\Program Files\ADI\LTspice\LTspice.exe`).
 - `dogrula.py` LTspice'ı görünmeyen ayrı bir Windows masaüstünde başlatır; kullanıcının pencere odağını almaz. Bu davranış bozulmamalıdır.

@@ -1386,3 +1386,54 @@ Not: §16.18 koşuları 30 ms'dir ve profil yükü 10 ms'de değişir; AGENTS.md
 **Sayısal not (SİM):** 26 V / 41,25→82,5 W köşesi trap integrasyonunda (LTspice varsayılanı) 255 ms'yi tamamlamadı. 60 dk sınırlı tekrarında simülasyon 39,9 ms'de (darbenin 15. ms'si) zaman adımı ≈ 5·10⁻¹⁶ s'ye çökerek ilerlemedi; o anda Vout 11,02 V, IL 8,46 A normaldi. Vin 25,99 V denemesi 1,17 ms'de "Time step too small … instance xu1" ile durdu. Sorun LT3844 makromodelinin trap altındaki sayısal kırılganlığıdır; devre kararsızlığı kanıtı değildir. `.options method=gear` ile aynı köşe 186 s'de tamamlandı. Gear'ın sonucu değiştirmediği, trap'in tamamlandığı iki köşede (24,6 V; 41,25→82,5 ve 57,6→6,6 W) karşılaştırıldı: Vmin/Vmax/ripple farkı ≤ 1 mV, IL tepe farkı ≤ 4 mA, LF zarfı aynı. `sunt_cpl` bu yüzden trap'te tamamlanmayan köşeyi bir kez gear ile tekrarlar ve tabloda yazar.
 
 Sonuçlar geçici LT3844 makromodeli, ideal sense ölçeklemesi, doğrusal bobin ve ortak test kompanzasyonu ile alınmıştır. Gerçek comparator gecikmesi, şönt ısısı/TCR, L(I), sense gürültüsü, OVP, tüm güç katı toleransları (bu koşular anma L/C/ESR'dedir) ve fiziksel ölçüm doğrulanmadı. Kontrolcü, şönt veya kompanzasyon seçilmedi; ana şematik ve dondurulmuş güç katı değişmedi.
+
+#### 16.20 200 ms CPL testi güç katı tolerans köşelerinde — SİM (19.11.2026)
+
+`python buck/dogrula.py sunt_cpl_tol` ile §16.19'daki test dört güç katı köşesinde, uç girişlerde (20 ve 26 V) ve en zor iki adımda (57,6→6,6 W düşüş; 41,25→82,5 W tam güç) koşuldu: 16 koşu, 3 paralel, 37 dk. Köşeler `secilen` §8 ve `kararlilik` ile aynı tanımlardır; L −%30, −%20 tolerans ile tepe akımdaki −%10 düşümü birlikte temsil eder. Şönt, eşik ve kompanzasyon §16.19 ile aynıdır (90 mV / R+%1, ≈ 9,12 A akım sınırı HESAP).
+
+| Güç katı köşesi | VIN (V) | Adım (W) | Vmin (V) | Vmax (V) | Ripple darbe/dönüş (mV) | IL tepe (A) | Karar |
+|---|---:|---|---:|---:|---:|---:|---|
+| Sönüm en zayıf: L+%20, C−%20, ESR 15 mΩ | 20 | 57,6→6,6 | 10,798 | 11,197 | 17,6 / 18,0 | 9,154 | GEÇTİ |
+| | 20 | 41,25→82,5 | 10,833 | 11,159 | 18,0 / 17,9 | 9,155 | GEÇTİ |
+| | 26 | 57,6→6,6 | 10,785 | 11,193 | 20,3 / 23,2 | 9,177 | GEÇTİ |
+| | 26 | 41,25→82,5 | 10,834 | 11,156 | 23,3 / 23,1 | 9,177 | GEÇTİ |
+| En az sönüm sıcak: L+%20, C−%20, ESR 10 mΩ (TAHMİN) | 20 | 57,6→6,6 | 10,792 | 11,202 | 12,0 / 12,3 | 9,154 | GEÇTİ |
+| | 20 | 41,25→82,5 | 10,829 | 11,162 | 12,2 / 12,6 | 9,155 | GEÇTİ |
+| | 26 | 57,6→6,6 | 10,781 | 11,197 | 14,0 / 15,8 | 9,177 | GEÇTİ |
+| | 26 | 41,25→82,5 | 10,832 | 11,160 | 15,8 / 15,7 | 9,177 | GEÇTİ |
+| Ripple en kötü: L−%30, C−%20, ESR 35 mΩ | 20 | 57,6→6,6 | 10,759 | 11,199 | 50,2 / 66,3 | 8,620 | GEÇTİ |
+| | 20 | 41,25→82,5 | **−1,512** | 11,473 | — | 20,006 | **KALDI** |
+| | 26 | 57,6→6,6 | 10,745 | 11,204 | 56,9 / 85,9 | 8,938 | GEÇTİ |
+| | 26 | 41,25→82,5 | 10,816 | 11,171 | 86,5 / 85,4 | 9,218 | GEÇTİ |
+| Z0 en düşük: L−%30, C+%20, ESR 15 mΩ | 20 | 57,6→6,6 | 10,811 | 11,151 | 23,6 / 30,7 | 9,178 | GEÇTİ (gear) |
+| | 20 | 41,25→82,5 | **−1,373** | 11,011 | — / 128,8 | 19,879 | **KALDI** |
+| | 26 | 57,6→6,6 | 10,805 | 11,154 | 26,7 / 39,7 | 9,217 | GEÇTİ |
+| | 26 | 41,25→82,5 | 10,864 | 11,126 | 39,9 / 39,6 | 9,218 | GEÇTİ |
+
+Bütün köşelerde yavaş salınım zarfı sönmüştür (≤ 3,3 mV), yani bu köşelerde LC/çevrim kararsızlığı görülmedi. İki KALDI satırında 82,5 W basamağından sonra çıkış ≈ −0,8 V'a çöktü ve darbe boyunca toparlanmadı; Z0 köşesinde yük 41,25 W'a döndükten sonra da 4,956 V'ta kaldı (dönüş sonu ripple 128,8 mV). Gerçek O1/S2E senaryolarının en zoru olan 57,6→6,6 W adımı 8/8 köşede geçti.
+
+**Tanı koşuları (SİM, gear; 20 V, 41,25→82,5 W, C−%20, ESR 35 mΩ):**
+
+| Varyant | Vmin / Vmax (V) | IL tepe (A) | Sonuç |
+|---|---:|---:|---|
+| L = 30,7 µH (el sarım alt sınırı), 90 mV / R+%1 | 10,828 / 11,163 | 9,164 | GEÇTİ |
+| L = 26,4 µH (satın alma bobini −%20), 90 mV / R+%1 | −1,583 / 11,481 | 20,197 | KALDI |
+| L = 23,1 µH (−%30), tipik 100 mV / R nominal | 10,830 / 11,163 | 10,069 | GEÇTİ |
+
+**Neden (ÇIKARIM):** Tam güç basamağında çevrim, Cout'u yeniden doldurmak için anma bobinde bile ≈ 9,16 A tepe ister (§16.19). L küçüldükçe ripple büyür ve tepe akım en düşük eşikteki ≈ 9,12 A sınırına dayanır. Akım sınırlanınca çıkış düşer; sabit güç yükü düşen gerilimde daha çok akım çektiği için çöküş kendini besler. Tipik eşikte (≈ 10,2 A sınır) aynı L ile geçmesi bunu destekler. LT3844 veri sayfası akım sınırının görev oranından etkilenmediğini (antislope) belirtir; slope telafisi için gereken en küçük L ise 20 V'ta ≈ 2,0 µH'dir (HESAP, `L > VOUT·(2D−1)·RSENSE·8,33/(D·fSW)`). Bu yüzden ne akım sınırının görev oranıyla düşmesi ne de alt-harmonik salınım açıklama olarak görünüyor. 26 V'ta neden geçtiği ayrıca incelenmedi.
+
+**Model sınırı:** Çöküşte görülen ≈ 20 A, CPL yük modelinin 5 V altında 82,5 W / 5 V = 16,5 A sabit akım çekmesinden ve negatif gerilimde de çekmeye devam etmesinden kaynaklanır; gerçek kısa devre veya cihaz davranışı değildir. Gerçek arıza akımı korumalar adımında (Adım 7) ayrıca ele alınır.
+
+**Tasarım sonucu (ÇIKARIM, karar kullanıcıda):** LT3844'ün 90–115 mV eşik penceresi (oran ≈ 1,28) ve 9,77 mΩ şöntle, en düşük eşikte tam güç basamağının payı sıfıra yakındır. 12 A tasarım hedefi ise en yüksek eşik tarafını sınırlar. Seçenekler: (a) L alt sınırını el sarım aralığıyla (≥ 30,7 µH) sınırlamak; bu kontrolcüyle ±%20 satın alma bobini uygun olmaz. (b) Şöntü küçültüp en düşük sınırı yükseltmek; bu durumda en yüksek eşikte sınır 12 A'ın üstüne çıkar. (c) Genel modül için 41,25→82,5 W ani basamağını kabul ölçütünden çıkarmak veya yükselme hızını sınırlamak. (d) Eşik toleransı daha dar bir kontrolcü veya akım algı arayüzü aramak.
+
+**Karar (19.11.2026, kullanıcı araca devretti): (a).** Güç katını, kabul ölçütünü ve 12 A hedefini değiştirmeyen tek seçenek budur; el sarım zaten 1. sıra adaydır. Alt sınır, el sarım aralığının alt ucunun tepe akımdaki değeridir: 30,7 µH × %97 (HESAP, Kool Mµ DC kutuplama) ≈ **29,8 µH**. Doğrulama (SİM, gear, 20 V, 41,25→82,5 W, 90 mV / R+%1):
+
+| L | C / ESR | Vmin / Vmax (V) | IL tepe (A) | Sonuç |
+|---|---|---:|---:|---|
+| 29,8 µH | C−%20, 35 mΩ | 10,828 / 11,163 | 9,165 | GEÇTİ |
+| 29,8 µH | C+%20, 15 mΩ | 10,867 / 11,123 | 9,166 | GEÇTİ |
+| 28,0 µH (pay noktası) | C−%20, 35 mΩ | 10,828 / 11,163 | 9,168 | GEÇTİ |
+
+Çöküş eşiği bu koşullarda 26,4 ile 28,0 µH arasındadır; el sarım alt sınırı bunun ≈ %6 üstündedir. Bu pay doğrusal bobin, ideal sense ve tipik makromodel gecikmesiyle bulunmuştur; gerçek comparator gecikmesi ve şönt TCR'si payı daraltabilir. Satın alma bobininin sırası değişmedi, fakat bu yönde L(9 A) ≥ 29,8 µH garanti edilmedikçe uygun değildir. Ana şematik (33 µH) ve dondurulmuş güç katı değişmedi.
+
+Trap integrasyonu bu turda da bir köşede (Z0, 20 V, 57,6→6,6 W) ve üç tanı koşusunun üçünde takıldı; hepsi gear ile tamamlandı.
