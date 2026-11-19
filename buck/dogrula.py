@@ -18,6 +18,7 @@ Kullanim:
   python buck/dogrula.py sunt_tarama [Rnom_mOhm ...] # gecici tarama (parca secimi degil)
   python buck/dogrula.py sunt_tol_tarama [tol_% ...] # 9.77 mOhm tarama referansi, tolerans duyarliligi
   python buck/dogrula.py sunt_giris  # LT3844/sunt kosesi, 5 giris noktasi x profil/tam yuk/akim siniri
+  python buck/dogrula.py sunt_cpl    # LT3844/sunt cevrimi, 3 giris x 4 sabit guc yuku adimi, 200 ms darbe
 
 Siniflar: bu betikteki her sayi, ilgili kipte ideal guc kati veya uretici makromodeliyle LTspice SIM'dir; fiziksel olcum degildir.
 Yuk gucleri icin kaynak/varsayim ayrimi OPTIMIZASYON.md dosyasindadir.
@@ -32,6 +33,8 @@ import struct
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 from pathlib import Path
 
 BURADA = Path(__file__).resolve().parent
@@ -179,6 +182,11 @@ def yuk_tipli(tip: str, noktalar: list[tuple[float, float]]) -> list[str]:
 _CALISMA = None
 _MASAUSTU = None
 MASAUSTU_ADI = "buck_dogrula"
+_KILIT = threading.Lock()
+# Ayni anda en cok bu kadar LTspice sureci (kos_paralel). LTspice tek koşuda da birden çok çekirdek kullanır;
+# 6 çekirdekli makinede 3 üstü her koşuyu belirgin yavaşlatır.
+PARALEL = int(os.environ.get("DOGRULA_PARALEL", "3"))
+HATA_KLASORU = Path(tempfile.gettempdir()) / "buck_dogrula_hatalar"
 
 
 def calisma() -> Path:
@@ -188,7 +196,7 @@ def calisma() -> Path:
     return _CALISMA
 
 
-def ltspice_kos(cir: Path) -> None:
+def ltspice_kos(cir: Path, zaman_asimi: float = 900.0) -> None:
     """LTspice'i toplu kipte kosar.
 
     Windows'ta LTspice -b her baslatildiginda on plandaki pencerenin odagini alir. Bunu onlemek
@@ -196,7 +204,7 @@ def ltspice_kos(cir: Path) -> None:
     ve klavye odagi etkilenmez.
     """
     if os.name != "nt":
-        subprocess.run([LTSPICE, "-b", str(cir)], check=True, timeout=900)
+        subprocess.run([LTSPICE, "-b", str(cir)], check=True, timeout=zaman_asimi)
         return
     import ctypes
     from ctypes import wintypes as w
@@ -226,10 +234,11 @@ def ltspice_kos(cir: Path) -> None:
     k.CloseHandle.argtypes = [w.HANDLE]
 
     global _MASAUSTU
-    if _MASAUSTU is None:
-        _MASAUSTU = u.CreateDesktopW(MASAUSTU_ADI, None, None, 0, 0x10000000, None)  # GENERIC_ALL
-        if not _MASAUSTU:
-            raise OSError(ctypes.get_last_error(), "CreateDesktop basarisiz")
+    with _KILIT:  # kos_paralel: masaustu yalniz bir kez olusturulur
+        if _MASAUSTU is None:
+            _MASAUSTU = u.CreateDesktopW(MASAUSTU_ADI, None, None, 0, 0x10000000, None)  # GENERIC_ALL
+            if not _MASAUSTU:
+                raise OSError(ctypes.get_last_error(), "CreateDesktop basarisiz")
     si = STARTUPINFOW()
     si.cb = ctypes.sizeof(si)
     si.lpDesktop = MASAUSTU_ADI
@@ -238,7 +247,7 @@ def ltspice_kos(cir: Path) -> None:
     if not k.CreateProcessW(None, komut, None, None, False, 0, None, None, ctypes.byref(si), ctypes.byref(pi)):
         raise OSError(ctypes.get_last_error(), "LTspice baslatilamadi")
     try:
-        if k.WaitForSingleObject(pi.hProcess, 900_000) != 0:
+        if k.WaitForSingleObject(pi.hProcess, int(zaman_asimi * 1000)) != 0:
             k.TerminateProcess(pi.hProcess, 1)
             raise TimeoutError(f"LTspice zaman asimi: {cir}")
         kod = w.DWORD()
@@ -250,14 +259,14 @@ def ltspice_kos(cir: Path) -> None:
         k.CloseHandle(pi.hThread)
 
 
-def kos(metin: str, ad: str = "k", raw: bool = False):
+def kos(metin: str, ad: str = "k", raw: bool = False, zaman_asimi: float = 900.0):
     d = calisma()
     cir = d / f"{ad}.cir"
     # Ayni adli onceki kosunun ciktisi basarisiz yeni kosuya kanit olmasin.
     for uz in (".log", ".raw", ".op.raw", ".db"):
         (d / f"{ad}{uz}").unlink(missing_ok=True)
     cir.write_text(metin, encoding="ascii")
-    ltspice_kos(cir)
+    ltspice_kos(cir, zaman_asimi)
     log = (d / f"{ad}.log").read_bytes()
     log = log.decode("utf-16-le") if log[:2] in (b"\xff\xfe",) or log[1:2] == b"\x00" else log.decode("latin1")
     m = {k.lower(): float(v) for k, v in re.findall(r"^(\w+):?.*?=(-?[\d.]+(?:[eE][-+]?\d+)?)", log, re.M)}
@@ -272,6 +281,49 @@ def kos(metin: str, ad: str = "k", raw: bool = False):
     for uz in (".raw", ".op.raw", ".db"):
         (d / f"{ad}{uz}").unlink(missing_ok=True)
     return (m, dalga) if raw else m
+
+
+_KOSU_HATASI = False
+
+
+def _hata_isaretle() -> None:
+    """Paralel koşulardan biri başarısızsa tablo yine yazılır, süreç sonunda çıkış kodu 1 olur."""
+    global _KOSU_HATASI
+    _KOSU_HATASI = True
+
+
+def kos_paralel(isler: list[tuple[str, str, str]], zaman_asimi: float = 900.0,
+                n: int | None = None) -> dict[str, dict | Exception]:
+    """isler: [(etiket, netlist, ad)]. En cok `n` (PARALEL) LTspice sureci ayni anda kosar.
+
+    Her koşunun başlangıcı/bitişi süresiyle stderr'e yazılır. Hata veya zaman aşımında koşu durdurulmaz,
+    sonuç sözlüğüne istisna konur; .cir ve .log HATA_KLASORU altına kopyalanır (çalışma klasörü silinse de kalır).
+    """
+    from concurrent.futures import ThreadPoolExecutor
+    calisma()
+    n = n or PARALEL
+
+    def tek(is_):
+        etiket, metin, ad = is_
+        t0 = time.time()
+        print(f"[başladı] {etiket}", file=sys.stderr, flush=True)
+        try:
+            m = kos(metin, ad, zaman_asimi=zaman_asimi)
+        except Exception as e:  # noqa: BLE001 - koşu hatası tabloda raporlanır
+            HATA_KLASORU.mkdir(exist_ok=True)
+            for uz in (".cir", ".log"):
+                kaynak = calisma() / f"{ad}{uz}"
+                if kaynak.exists():
+                    shutil.copy2(kaynak, HATA_KLASORU / kaynak.name)
+            ilk = (str(e).splitlines() or [""])[0]
+            print(f"[HATA {time.time() - t0:.0f} s] {etiket}: {type(e).__name__}: {ilk}; günlük: {HATA_KLASORU}",
+                  file=sys.stderr, flush=True)
+            return e
+        print(f"[bitti {time.time() - t0:.0f} s] {etiket}", file=sys.stderr, flush=True)
+        return m
+
+    with ThreadPoolExecutor(max_workers=n) as ex:
+        return dict(zip((a for _, _, a in isler), ex.map(tek, isler)))
 
 
 def oku_raw(yol: Path) -> dict[str, list[float]]:
@@ -967,6 +1019,47 @@ def stres() -> None:
           "doyar (L/L0 ≈ %60), tepe akım daha yüksek olur.\n")
 
 
+def sunt_govde(baslik: str, vin: float, r_sense: float, kazanc: float, r_freq: float,
+               yuk: list[str]) -> list[str]:
+    """LT3844 referans makromodeli + dondurulmus guc kati + seri sunt; .tran/.meas haric gecici netlist govdesi.
+
+    Kompanzasyon ve geri besleme (Rfb 79,4k/10k, Vc: 10k + 680p, 120p paralel; Css 10n; Cgate 2n temsili kapi)
+    tum `sunt*` kiplerinde ortaktir. Bu degerler gecici test agidir; D/F aday aglari veya parca secimi degildir.
+    """
+    return [
+        baslik,
+        f"V1 vin 0 {eng(vin)}",
+        f"Cin1 vin 0 {eng(SECILEN['Cin'])} Rser={eng(SECILEN['ESRi'])}",
+        f"Cin2 vin 0 {eng(SECILEN['Cin'])} Rser={eng(SECILEN['ESRi'])}",
+        "S1 vin sw gate sw pdu_switch",
+        f".model pdu_switch SW(Ron={eng(SECILEN['Ron'])} Roff=1G Vt=5 Vh=-0.5)",
+        "Cgate gate sw 2n",
+        "Dfree 0 sw d_free",
+        f".model d_free D(Ron={eng(SECILEN['Rd'])} Vfwd={eng(SECILEN['Vf'])})",
+        f"L1 sw sense {eng(SECILEN['L'])} Rser={eng(SECILEN['DCR'])}",
+        f"Rsense sense out {eng(r_sense)}",
+        f"Escale sense_model out sense out {eng(kazanc)}",
+        f"Cout out 0 {eng(SECILEN['Cout'])} Rser={eng(SECILEN['ESRo'])}",
+        f"Cd out cdn {eng(SECILEN['Cd'])}",
+        f"Rd cdn 0 {eng(SECILEN['Rdal'])}",
+        *yuk,
+        "Venable en 0 2",
+        "Css soft 0 10n",
+        f"Rfreq fset 0 {eng(r_freq)}",
+        "Rfb1 out fb 79.4k",
+        "Rfb2 fb 0 10k",
+        "Ccomp vc 0 680p Rser=10k Cpar=120p",
+        "Rsync sync 0 1Meg",
+        "Cboot boost sw 220n",
+        "Cvcc vcc 0 1u",
+        "Dboot vcc boost DGEN",
+        "Dvcc out vcc DGEN",
+        ".model DGEN D(Is=2.52n Rs=0.568 N=1.752 Cjo=4p)",
+        "XU1 vin en soft vcc fb vc sync fset 0 out sense_model 0 vcc sw gate boost LT3844",
+        ".lib LT3844.sub",
+    ]
+
+
 def sunt_koseleri(r_nom: float = 9.76e-3, yalniz: tuple[str, ...] | None = None,
                    r_tol: float = 0.01, r_freq: float = 204.53e3,
                    vin: float = 26.0) -> None:
@@ -992,6 +1085,7 @@ def sunt_koseleri(r_nom: float = 9.76e-3, yalniz: tuple[str, ...] | None = None,
           f"gerçek sense yükselteci veya comparator gecikme modeli değildir. Rnom={r_nom * 1e3:.2f} mΩ ve "
           f"±{r_tol * 100:g}% yalnız tarama varsayımıdır.\n")
     sat = []
+    isler = []
     for ad, vth, tol, yuk_tipi in cases:
         r_sense = r_nom * (1 + tol)
         kazanc = vth_typ / vth
@@ -1001,37 +1095,8 @@ def sunt_koseleri(r_nom: float = 9.76e-3, yalniz: tuple[str, ...] | None = None,
             yuk = "Rload out 0 0.75"
         else:
             yuk = f"Rload out 0 {eng(VO / 7.5)}"
-        lines = [
-            f"* dogrula.py sunt: {ad}; LT3844 model typical threshold with ideal sense scaling",
-            f"V1 vin 0 {eng(vin)}",
-            f"Cin1 vin 0 {eng(SECILEN['Cin'])} Rser={eng(SECILEN['ESRi'])}",
-            f"Cin2 vin 0 {eng(SECILEN['Cin'])} Rser={eng(SECILEN['ESRi'])}",
-            "S1 vin sw gate sw pdu_switch",
-            f".model pdu_switch SW(Ron={eng(SECILEN['Ron'])} Roff=1G Vt=5 Vh=-0.5)",
-            "Cgate gate sw 2n",
-            f"Dfree 0 sw d_free",
-            f".model d_free D(Ron={eng(SECILEN['Rd'])} Vfwd={eng(SECILEN['Vf'])})",
-            f"L1 sw sense {eng(SECILEN['L'])} Rser={eng(SECILEN['DCR'])}",
-            f"Rsense sense out {eng(r_sense)}",
-            f"Escale sense_model out sense out {eng(kazanc)}",
-            f"Cout out 0 {eng(SECILEN['Cout'])} Rser={eng(SECILEN['ESRo'])}",
-            f"Cd out cdn {eng(SECILEN['Cd'])}",
-            f"Rd cdn 0 {eng(SECILEN['Rdal'])}",
-            yuk,
-            "Venable en 0 2",
-            "Css soft 0 10n",
-            f"Rfreq fset 0 {eng(r_freq)}",
-            "Rfb1 out fb 79.4k",
-            "Rfb2 fb 0 10k",
-            "Ccomp vc 0 680p Rser=10k Cpar=120p",
-            "Rsync sync 0 1Meg",
-            "Cboot boost sw 220n",
-            "Cvcc vcc 0 1u",
-            "Dboot vcc boost DGEN",
-            "Dvcc out vcc DGEN",
-            ".model DGEN D(Is=2.52n Rs=0.568 N=1.752 Cjo=4p)",
-            "XU1 vin en soft vcc fb vc sync fset 0 out sense_model 0 vcc sw gate boost LT3844",
-            ".lib LT3844.sub",
+        lines = sunt_govde(f"* dogrula.py sunt: {ad}; LT3844 model typical threshold with ideal sense scaling",
+                           vin, r_sense, kazanc, r_freq, [yuk]) + [
             ".save V(out) V(sense,out) V(sense_model,out) V(gate,sw) I(L1)",
             ".tran 0 30m 0 100n startup",
             ".meas tran VO_AVG AVG V(out) FROM 25m TO 30m",
@@ -1047,7 +1112,16 @@ def sunt_koseleri(r_nom: float = 9.76e-3, yalniz: tuple[str, ...] | None = None,
         ]
         r_etiket = f"{r_nom * 1e3:.2f}".replace(".", "p")
         tol_etiket = f"{r_tol * 100:g}".replace(".", "p")
-        m = kos("\n".join(lines) + "\n", f"sunt_{ad}_r{r_etiket}_t{tol_etiket}")
+        isler.append((f"sunt {ad}, Vin={vin:g} V, R={r_nom * 1e3:.2f} mΩ ±{r_tol * 100:g}%",
+                      "\n".join(lines) + "\n", f"sunt_{ad}_r{r_etiket}_t{tol_etiket}"))
+    sonuc = kos_paralel(isler)
+    for (ad, vth, tol, _), (_, _, kad) in zip(cases, isler):
+        r_sense, kazanc, m = r_nom * (1 + tol), vth_typ / vth, sonuc[kad]
+        if isinstance(m, Exception):
+            _hata_isaretle()
+            sat.append([ad, f"{r_nom * 1e3:.2f}", f"{vin:g}", f"{vth * 1e3:g}", f"{r_sense * 1e3:.4f}",
+                        f"{kazanc:.6f}"] + [f"KOŞU HATASI: {type(m).__name__}"] + ["—"] * 8)
+            continue
         f_khz = 100 / m["tper"] / 1000
         sat.append([ad, f"{r_nom * 1e3:.2f}", f"{vin:g}", f"{vth * 1e3:g}", f"{r_sense * 1e3:.4f}", f"{kazanc:.6f}",
                     f"{m['vo_avg']:.3f}", f"{m['vo_min']:.3f}", f"{m['vo_max']:.3f}", f"{m['vo_pp'] * 1e3:.1f}",
@@ -1091,6 +1165,104 @@ def sunt_giris_tarama() -> None:
     for vin in VIN_NOKTALARI:
         print(f"### Vin = {vin:g} V\n")
         sunt_koseleri(9.77e-3, r_tol=0.01, vin=vin)
+
+
+SUNT_CPL_ADIMLARI = (
+    ("O1 tipik→zarf→tipik, S2E çalışıyor", P_HAFIF, P_ZARF),
+    ("S2E kalkışı, O1 zarf", P_ZARF, P_ZARF_KALKIS),
+    ("O1 zarf→boşta→zarf, S2E çalışıyor", P_ZARF, P_BOSTA),
+    ("Modül yarım→tam güç→yarım", P_TAM / 2, P_TAM),
+)
+
+
+def sunt_cpl(vinler: tuple[float, ...] = (20.0, VIN_ANA, 26.0), r_nom: float = 9.77e-3,
+             r_tol: float = 0.01, r_freq: float = 204.53e3, sure: float = 200e-3) -> None:
+    """Sontlu LT3844 referans cevriminde 200 ms sabit guc yuku darbesi (AGENTS.md kabul olcutu).
+
+    Normal yuk icin en kotu akim siniri yonu kullanilir: 90 mV esik + R +%1 (ideal E-sense olceklemesi).
+    Yuk 10-11 ms arasinda p0'a rampalanir (kalkista CPL'nin akim sinirina takilmasini onlemek icin), t1=25 ms'de
+    20 us icinde p1'e cikar, `sure` sonra p0'a doner. Yavas salinim yuk_adimi() ile ayni 4,8 kHz RC zarfiyla olculur.
+    """
+    vth_typ, vth = 100e-3, 90e-3
+    r_sense, kazanc = r_nom * (1 + r_tol), vth_typ / vth
+    t1, kuyruk = 25e-3, 30e-3
+    t2 = t1 + sure
+    tstop = t2 + kuyruk
+    tw = lc_periyot(SECILEN)
+    son = 2e-3
+    print("## Şöntlü LT3844 referans çevrimi — 200 ms sabit güç yükü darbesi (geçici netlist)\n")
+    print(f"Rnom={r_nom * 1e3:.2f} mΩ, R+{r_tol * 100:g}% ve 90 mV eşik (ideal E-sense ölçeklemesi; normal yükte en düşük "
+          f"akım sınırı yönü); Rfreq={r_freq / 1e3:.2f} kΩ (makromodel 100 kHz kalibrasyonu). Kompanzasyon: "
+          "Vc 10 kΩ + 680 pF, 120 pF paralel; Rfb 79,4k/10k; Css 10 nF. Yük CPL, 5 V altında sabit akım. "
+          f"Darbe {sure * 1e3:g} ms, yavaş salınım zarfı 4,8 kHz RC ile darbenin son iki LC periyodunda (≈{tw * 1e3:.2f} ms).\n")
+    isler, meta = [], []
+    for vin in vinler:
+        for ad, p0, p1 in SUNT_CPL_ADIMLARI:
+            pwl = (f"0 0 10m 0 11m {p0:g} {eng(t1)} {p0:g} {eng(t1 + 20e-6)} {p1:g} "
+                   f"{eng(t2)} {p1:g} {eng(t2 + 20e-6)} {p0:g}")
+            lines = sunt_govde(f"* dogrula.py sunt_cpl: {p0:g} W -> {p1:g} W, Vin={vin:g} V", vin, r_sense, kazanc, r_freq,
+                               yuk_guc(pwl) + ["Rlf out lf 10k", "Clf lf 0 3.3n"]) + [
+                ".save V(out) V(lf) I(L1)",
+                f".tran 0 {eng(tstop)} 0 100n startup",
+                f".meas tran VPRE AVG V(out) FROM {eng(t1 - son)} TO {eng(t1)}",
+                f".meas tran VMAX MAX V(out) FROM {eng(t1)} TO {eng(tstop)}",
+                f".meas tran VMIN MIN V(out) FROM {eng(t1)} TO {eng(tstop)}",
+                f".meas tran V1SON AVG V(out) FROM {eng(t2 - son)} TO {eng(t2)}",
+                f".meas tran V1PP PP V(out) FROM {eng(t2 - son)} TO {eng(t2)}",
+                f".meas tran V0SON AVG V(out) FROM {eng(tstop - son)} TO {eng(tstop)}",
+                f".meas tran V0PP PP V(out) FROM {eng(tstop - son)} TO {eng(tstop)}",
+                f".meas tran ILMAX MAX I(L1) FROM {eng(t1)} TO {eng(tstop)}",
+                f".meas tran LFA PP V(lf) FROM {eng(t2 - 2 * tw)} TO {eng(t2 - tw)}",
+                f".meas tran LFB PP V(lf) FROM {eng(t2 - tw)} TO {eng(t2)}",
+                f".meas tran LF0 PP V(lf) FROM {eng(tstop - tw)} TO {eng(tstop)}",
+                ".end",
+            ]
+            isler.append((f"sunt_cpl Vin={vin:g} V, {p0:.1f}→{p1:.1f} W", "\n".join(lines) + "\n",
+                          f"sunt_cpl_{vin:g}_{p0:.0f}_{p1:.0f}".replace(".", "p")))
+            meta.append((vin, ad, p0, p1))
+    # 255 ms koşu tek başına ≈ 6 dk, 3 paralelde ≈ 7 dk. LT3844 makromodeli trap integrasyonunda bazı köşelerde
+    # zaman adımını ~1e-16 s'ye düşürüp ilerlemiyor (19.11.2026, 26 V / 41,25→82,5 W). Bu yüzden süre sınırı dar
+    # tutulur ve trap'te başarısız olan köşe yalnız bir kez `.options method=gear` ile tekrarlanır; tabloda yazılır.
+    sonuc = kos_paralel(isler, zaman_asimi=1200.0)
+    yontem = {kad: "trap" for _, _, kad in isler}
+    tekrar = [(e + " [gear]", metin.replace(".end\n", ".options method=gear\n.end\n"), kad + "_gear")
+              for e, metin, kad in isler if isinstance(sonuc[kad], Exception)]
+    if tekrar:
+        print(f"{len(tekrar)} köşe trap ile tamamlanmadı; gear ile tekrar.", file=sys.stderr, flush=True)
+        ikinci = kos_paralel(tekrar, zaman_asimi=1800.0)
+        for _, _, gad in tekrar:
+            kad = gad[:-len("_gear")]
+            sonuc[kad], yontem[kad] = ikinci[gad], f"gear (trap: {type(sonuc[kad]).__name__})"
+    sat = []
+    for (vin, ad, p0, p1), (_, _, kad) in zip(meta, isler):
+            m = sonuc[kad]
+            if isinstance(m, Exception):
+                _hata_isaretle()
+                sat.append([f"{vin:g}", ad, f"{p0:.1f}→{p1:.1f}"] + ["—"] * 9
+                           + ["—", yontem[kad], f"KOŞU HATASI: {type(m).__name__}"])
+                continue
+            oran = m["lfb"] / m["lfa"] if m["lfa"] > 0 else float("nan")
+            if m["lfb"] < LF_ESIK:
+                durum = "sönmüş"
+            elif oran < 0.98:
+                durum = "sönüyor"
+            elif oran <= 1.02:
+                durum = "sürekli salınım"
+            else:
+                durum = "büyüyor"
+            aralik = VO_MIN <= m["vmin"] and m["vmax"] <= VO_MAX
+            ripple_ok = max(m["v1pp"], m["v0pp"]) <= RIPPLE_MAX
+            karar = darbe_karari(sure, aralik and ripple_ok, durum)
+            sat.append([f"{vin:g}", ad, f"{p0:.1f}→{p1:.1f}", f"{m['vpre']:.3f}", f"{m['vmin']:.3f}",
+                        f"{m['vmax']:.3f}", f"{m['v1son']:.3f}", f"{m['v1pp'] * 1e3:.1f}", f"{m['v0son']:.3f}",
+                        f"{m['v0pp'] * 1e3:.1f}", f"{m['ilmax']:.3f}",
+                        f"{m['lfa'] * 1e3:.1f}/{m['lfb'] * 1e3:.1f}/{m['lf0'] * 1e3:.1f}", durum, yontem[kad], karar])
+            print(sat[-1], file=sys.stderr, flush=True)
+    tablo(["Vin V", "Adım", "P W", "önce V", "Vmin V", "Vmax V", "darbe sonu V", "darbe sonu t-t mV",
+           "dönüş sonu V", "dönüş sonu t-t mV", "IL tepe A", "LF zarfı A/B/son mV", "yavaş salınım", "integrasyon", "karar"], sat)
+    print("Karar: 9–12 V, ripple ≤ 165 mV t-t (darbe ve dönüş sonu 2 ms) ve 200 ms darbede yavaş salınımın sönmesi. "
+          "Geçici LT3844 makromodeli + ideal sense ölçeklemesidir; gerçek comparator gecikmesi, şönt TCR/ısı, "
+          "L(I), OVP ve fiziksel ölçüm doğrulanmaz.\n")
 
 
 def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
@@ -1324,11 +1496,15 @@ def main() -> None:
             sunt_tol_tarama(toleranslar)
         elif kip == "sunt_giris":
             sunt_giris_tarama()
+        elif kip == "sunt_cpl":
+            sunt_cpl()
         else:
             sys.exit(__doc__)
     finally:
         if _CALISMA:
             shutil.rmtree(_CALISMA, ignore_errors=True)
+    if _KOSU_HATASI:
+        sys.exit(f"Bazı LTspice koşuları başarısız; .cir/.log: {HATA_KLASORU}")
 
 
 if __name__ == "__main__":

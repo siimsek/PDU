@@ -33,6 +33,7 @@ Güncel değerler ve aktif adım burada tekrar edilmez; [YOL-HARITASI.md](YOL-HA
 | `buck/ltspice/buck_guc_kati.asc` / `.svg` | LTspice şematiği ve görseli (**üretilir**, elle yazılmaz) | `sematik_uret.py` ile |
 | `buck/ltspice/sematik_uret.py`, `asc_gorsel.py` | Şematik ve görsel üreteci | Değer değişince |
 | `buck/ltspice/anahtar.asy`, `diyot.asy`, `idealler.lib` | İdeal anahtar/diyot tanımları | Değişmez |
+| `buck/ltspice/ornek_kapali_cevrim_lt3844.asc` / `.svg` | LT3844 makromodelli **örnek** kapalı çevrim (parça seçimi değil; Rset 204,53 kΩ makromodelde 100 kHz) | Elle; `.svg` için `asc_gorsel.py <dosya>` |
 | `buck/hesap.py` | Analitik hesap | Değer değişince |
 | `buck/dogrula.py` | LTspice doğrulama koşuları | Değer veya test değişince |
 | `buck/grafik/*.svg` | Dalga şekilleri (**üretilir**) | `dogrula.py grafik` ile |
@@ -95,10 +96,15 @@ Güncel değerler ve aktif adım burada tekrar edilmez; [YOL-HARITASI.md](YOL-HA
 | `python buck/dogrula.py kararlilik` | Sabit güç yükü: darbe süresi 1–500 ms, sönüm/büyüme, köşe model setleri, HESAP karşılaştırması | ≈ 25 dk |
 | `python buck/dogrula.py zarf` | Genel modül zarfı: 0–82,5 W kararlı durum, CR/CC/CP yük adımları, yük atma gecikmesi | ≈ 10 dk |
 | `python buck/dogrula.py stres` | İdeal olmayan senaryolar (yalnız geçici netlistte): anahtarlama zili, sıcak takma, S1 kısa devre | ≈ 2 dk |
+| `python buck/dogrula.py sunt` | LT3844 referans makromodeli + seri şönt: 26 V'ta profil / 7,5 A / yapay aşırı yük, ideal ölçeklemeyle 90/115 mV eşik köşeleri (30 ms) | ≈ 2 dk |
+| `python buck/dogrula.py sunt_tarama [mΩ ...]` | Aynı köşeler, birkaç şönt nominali (değer seçimi değildir) | ≈ 6 dk |
+| `python buck/dogrula.py sunt_tol_tarama [% ...]` | 9,77 mΩ'da şönt toleransı duyarlılığı | ≈ 6 dk |
+| `python buck/dogrula.py sunt_giris` | 5 giriş noktası × 4 profil/eşik köşesi (30 ms) | ≈ 9 dk |
+| `python buck/dogrula.py sunt_cpl` | Şöntlü çevrimde 20 / 24,6 / 26 V × 4 sabit güç yükü adımı, **200 ms darbe** (kabul ölçütü); trap'te tamamlanmayan köşe gear ile tekrarlanır | ≈ 45 dk (3 paralel) |
 
 - LTspice yolu `LTSPICE` ortam değişkeniyle verilebilir (varsayılan `C:\Program Files\ADI\LTspice\LTspice.exe`).
 - `dogrula.py` LTspice'ı görünmeyen ayrı bir Windows masaüstünde başlatır; kullanıcının pencere odağını almaz. Bu davranış bozulmamalıdır.
-- Uzun koşular arka planda çalıştırılır; aynı anda iki koşu başlatılmaz (birbirini yavaşlatır).
+- Uzun koşular arka planda çalıştırılır. Aynı anda iki `dogrula.py` komutu başlatılmaz (birbirini yavaşlatır). Bir komutun içinde `sunt*` kipleri köşeleri `kos_paralel` ile en çok **3 paralel** LTspice süreciyle koşturur (`DOGRULA_PARALEL` ortam değişkeni; 6 çekirdekli makine için kullanıcı kararı). Her köşenin başlangıcı/bitişi süresiyle yazılır; hata veya zaman aşımında koşu durmaz, tabloda "KOŞU HATASI" görünür, `.cir`/`.log` `%TEMP%\buck_dogrula_hatalar` altına kopyalanır ve çıkış kodu 1 olur.
 - Kabul ölçütü (O1/S2E uyumluluğu): yük adımlarında çıkış 9–12 V içinde, ripple ≤ 165 mV t-t (`dogrula.py` içindeki `VO_MIN`, `VO_MAX`, `RIPPLE_MAX`); sabit güç yükü darbesi 200 ms sürdüğünde de aralıkta kalmalı ve yavaş (LC) salınım sönmelidir. 20 ms'lik darbe tek başına geçme kanıtı değildir. Genel modül (0–7,5 A / 82,5 W) için ayrı sınırlar kullanıcı onaylayana kadar tanımlı değildir.
 - Test netlistleri `idealler.lib` ile aynı değerleri taşıyan ama anahtarı yumuşak geçişli (`Vh=-0.5`) bir model kullanır: `Vh=0` LTspice'ta ±1 ns iletim süresi titremesi ve sahte ripple üretir (`dogrula.py sayisal`). `idealler.lib` ve ana şematik değişmez.
 
