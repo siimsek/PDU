@@ -17,6 +17,7 @@ Kullanim:
   python buck/dogrula.py sunt        # LT3844 referans modeliyle gecici sunt esik/tolerans kosesi
   python buck/dogrula.py sunt_tarama [Rnom_mOhm ...] # gecici tarama (parca secimi degil)
   python buck/dogrula.py sunt_tol_tarama [tol_% ...] # 9.77 mOhm tarama referansi, tolerans duyarliligi
+  python buck/dogrula.py sunt_giris  # LT3844/sunt kosesi, 5 giris noktasi x profil/tam yuk/akim siniri
 
 Siniflar: bu betikteki her sayi, ilgili kipte ideal guc kati veya uretici makromodeliyle LTspice SIM'dir; fiziksel olcum degildir.
 Yuk gucleri icin kaynak/varsayim ayrimi OPTIMIZASYON.md dosyasindadir.
@@ -967,7 +968,8 @@ def stres() -> None:
 
 
 def sunt_koseleri(r_nom: float = 9.76e-3, yalniz: tuple[str, ...] | None = None,
-                   r_tol: float = 0.01, r_freq: float = 204.53e3) -> None:
+                   r_tol: float = 0.01, r_freq: float = 204.53e3,
+                   vin: float = 26.0) -> None:
     """LT3844 referans makromodelinde ideal sense olceklemesiyle gecici esik kosesi.
 
     LT3844.sub makromodelinin ic comparator esigi parametrelenebilir degil. E-sense kaynagi,
@@ -976,20 +978,21 @@ def sunt_koseleri(r_nom: float = 9.76e-3, yalniz: tuple[str, ...] | None = None,
     """
     vth_typ = 100e-3                   # LT3844 datasheet tipik esigi
     cases = (
-        ("profil_90mV_Rart", 26.0, 90e-3, +r_tol, "profil"),
-        ("7p5A_90mV_Rart", 26.0, 90e-3, +r_tol, "tam_yuk"),
-        ("7p5A_115mV_Raz", 26.0, 115e-3, -r_tol, "tam_yuk"),
-        ("asiri_yuk_115mV_Raz", 26.0, 115e-3, -r_tol, "asiri_yuk"),
+        ("profil_90mV_Rart", 90e-3, +r_tol, "profil"),
+        ("7p5A_90mV_Rart", 90e-3, +r_tol, "tam_yuk"),
+        ("7p5A_115mV_Raz", 115e-3, -r_tol, "tam_yuk"),
+        ("asiri_yuk_115mV_Raz", 115e-3, -r_tol, "asiri_yuk"),
     )
     if yalniz is not None:
         cases = tuple(c for c in cases if c[0] in yalniz)
     print("## Şönt eşiği / toleransı — LT3844 referans makromodeli, geçici netlist\n")
-    print(f"Rfreq={r_freq / 1e3:.2f} kΩ (LT3844 makromodelinde 19–20 ms aralığında ölçülen frekansa kalibre); "
+    print(f"Vin={vin:g} V; Rfreq={r_freq / 1e3:.2f} kΩ (26 V'ta LT3844 makromodelinde 19–20 ms aralığında ölçülen "
+          "frekansa kalibre); "
           "E-sense ideal ölçeklemesi, LT3844.sub içindeki tipik eşiği 90/115 mV köşelerine eşdeğerler; "
           f"gerçek sense yükselteci veya comparator gecikme modeli değildir. Rnom={r_nom * 1e3:.2f} mΩ ve "
           f"±{r_tol * 100:g}% yalnız tarama varsayımıdır.\n")
     sat = []
-    for ad, vin, vth, tol, yuk_tipi in cases:
+    for ad, vth, tol, yuk_tipi in cases:
         r_sense = r_nom * (1 + tol)
         kazanc = vth_typ / vth
         if yuk_tipi == "profil":
@@ -1079,6 +1082,15 @@ def sunt_tol_tarama(toleranslar: tuple[float, ...] | None = None) -> None:
     for tol_yuzde in toleranslar:
         print(f"### Tolerans = ±{tol_yuzde:g}%\n")
         sunt_koseleri(r_nom, koseler, r_tol=tol_yuzde / 100)
+
+
+def sunt_giris_tarama() -> None:
+    """Ayni gecici sunt/esik koselerini besleme giris araliginda tekrarlar."""
+    print("## LT3844/sunt giris kosesi taramasi — 5 giris noktasi, gecici netlistler\n")
+    print("Rnom=9.77 mΩ, tolerans=±1%; esik uçlari ve yuk profilleri mevcut sunt modelinin varsayimlarini izler.\n")
+    for vin in VIN_NOKTALARI:
+        print(f"### Vin = {vin:g} V\n")
+        sunt_koseleri(9.77e-3, r_tol=0.01, vin=vin)
 
 
 def secilen(p: dict = SECILEN, ad: str = "Secilen") -> None:
@@ -1310,6 +1322,8 @@ def main() -> None:
         elif kip == "sunt_tol_tarama":
             toleranslar = tuple(float(x) for x in sys.argv[2:]) or None
             sunt_tol_tarama(toleranslar)
+        elif kip == "sunt_giris":
+            sunt_giris_tarama()
         else:
             sys.exit(__doc__)
     finally:

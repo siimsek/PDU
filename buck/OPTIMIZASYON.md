@@ -1,6 +1,6 @@
 # Güç katı optimizasyonu ve doğrulama
 
-**Tarih:** 14 Kasım 2026 · **Araç:** LTspice 26.1.1 (toplu kip), Python 3.14.5 · ideal anahtar/diyot, L/C + ESR/DCR + çıkış sönüm dalı Cd–Rd (§9.3 ve §9.4'teki ideal olmayan senaryolar ayrıca belirtilmiştir) · **Fiziksel ölçüm yok.**
+**Güncel kayıt:** 19 Kasım 2026 · **Araç:** LTspice 26.1.1 (toplu kip), Python 3.14.5 · ideal anahtar/diyot, L/C + ESR/DCR + çıkış sönüm dalı Cd–Rd (§9.3 ve §9.4'teki ideal olmayan senaryolar ayrıca belirtilmiştir) · **Fiziksel ölçüm yok.**
 
 **Dondurma durumu: FROZEN (simülasyon dondurması, 12 Kasım 2026):** çıkış sönüm dalı (`Cd = 470 µF + seri Rd = 0,22 Ω`) eklendi ve §13'te belirtilen test kipleri koşuldu; `Cout` ve `Cd` için ≥ 35 V, `Cin` için ≥ 50 V gerilim sınıfı kabul edildi; §12.1 kapısındaki 1–12 numaralı maddelerin tamamı kullanıcı onayı dahil kapandı. Güncel iş sırası: gereksinimler ve kontrol mimarisi, ardından birlikte parça değerlendirmesi ve ölçümler (§12.2).
 
@@ -1326,3 +1326,34 @@ TI average modeli dış L-C filtresi, 33 µH bobin, 1000 µF çıkış ve sönü
 Üçüncü aday olarak TI LM5146 tarandı: 100 V senkron, gerilim-kipi bir kontrolcü ve alçak-taraf FET üzerinden vadi-akım sınırı kullanır. Daha düşük diyot kaybı potansiyeli vardır; fakat ikinci MOSFET ve yeni güç katı/yerleşim ekler, seçilmiş 100 kHz tepe-akım mimarisiyle doğrudan aynı değildir. Bu nedenle şu aşamada düşük maliyet/kolaylık aday listesine alınmadı; verim önceliği mimari değişiklik maliyetini aşarsa tekrar açılabilir.
 
 **Ara öneri ve devam planı:** LM5088-2 düşük maliyet hesabı açısından araştırmaya değer, fakat geçerli kapalı çevrim SİM kanıtı yoktur; kullanıcı TI hesabı açarken hata aldığından TINA-TI'ye şu an erişilemiyor. Projeyi bekletmemek için LTspice'ta mevcut LT3844 makromodeli yalnız referans olarak kullan: 100 kHz'e ayarlı şönt algılı çevrimi, güç katı köşelerini, yük/giriş geçişlerini ve akım sınırı davranışını geçici netlistlerde doğrula. Bu, LT3844 parçasını veya 9,77 mΩ şöntü seçmez. Sonuçlar ölçütleri karşılamazsa hangi sınırın sorun olduğunu kaydet; açık çevrim ana şematiğini değiştirme. LM5088 adayı seçimsiz kalsın; TI erişimi ileride açılırsa üretici referans modelinde ayrıca kıyaslansın. Kaynaklar: [TI LM5088 ürün/model sayfası](https://www.ti.com/product/LM5088), [TI TINA-TI](https://www.ti.com/tool/TINA-TI), [TI PSpice for TI](https://www.ti.com/tool/PSPICE-FOR-TI), [TI LM5088 veri sayfası](https://www.ti.com/lit/ds/symlink/lm5088.pdf), [ADI LT3844 veri sayfası](https://www.analog.com/media/en/technical-documentation/data-sheets/3844fc.pdf), [TI LM5146 veri sayfası](https://www.ti.com/lit/ds/symlink/lm5146.pdf), [Mouser LM5088-2](https://www.mouser.com/en/c/semiconductors/integrated-circuits-ics/power-management-ics/voltage-regulators-voltage-controllers/switching-controllers/?series=LM5088), [Mouser LT3844](https://www.mouser.com/ProductDetail/Analog-Devices/LT3844EFEPBF?qs=hVkxg5c3xu%252BkZJnUsMlzyA%3D%3D). Fiyatlar ülke, vergi, stok ve zamana göre değişir.
+
+#### 16.18 Şöntlü LT3844 giriş/yük köşeleri — SİM (19.11.2026)
+
+`python buck/dogrula.py sunt_giris` ile 20 geçici LTspice netlisti seri koşuldu: `VIN_NOKTALARI` içindeki 20, 22,2, 24,6, 25,2 ve 26 V girişlerin her birinde dört yük/eşik durumu. Şönt nominali 9,77 mΩ, tarama toleransı ±%1 ve FSET direnci 204,53 kΩ'dur. FSET 26 V makromodelinde yaklaşık 100 kHz'e kalibre edildi; beş giriş noktasında ölçülen anahtarlama frekansı **99,984–100,012 kHz** aralığındadır.
+
+Makromodelin iç eşiği 100 mV tipiktir. E-sense bağımlı kaynakla 90 mV ve 115 mV uçları matematiksel olarak ölçeklendi; bu gerçek comparator, yükselteç, gecikme veya tolerans modeli değildir. `Rsense` güç yolunda seri dirençtir; şöntün fiziksel TCR/ısınması ve Kelvin yerleşimi modellenmedi. Her koşu 30 ms transient, azami 100 ns adımla çalıştı. Çıkış ortalaması 25–30 ms, minimum 10–30 ms, maksimum 0–30 ms, ripple 29–30 ms; akım tepesi 0–30 / 25–30 ms pencerelerinde ölçüldü. Eşik ve direncin en kötü yönleri normal yük için 90 mV / R+%1, 7,5 A yüksek eşik ve yapay aşırı yük için 115 mV / R−%1'dir.
+
+| VIN (V) | Köşe | Vout ort. (V) | Vout min. (V) | Vout maks. (V) | Ripple (mV t-t) | IL tepe 0–30 / 25–30 ms (A) | fSW (kHz) |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 20 | Profil, 90 mV / R+%1 | 10,997 | 10,962 | 11,072 | 45,4 | 8,862 / 4,978 | 100,010 |
+| 20 | 7,5 A, 90 mV / R+%1 | 10,992 | 10,970 | 11,119 | 44,9 | 9,172 / 8,263 | 99,998 |
+| 20 | 7,5 A, 115 mV / R−%1 | 10,995 | 10,973 | 11,067 | 44,9 | 10,862 / 8,265 | 100,006 |
+| 20 | Yapay aşırı yük, 115 mV / R−%1 | 8,383 | 8,354 | 8,405 | 44,4 | 11,950 / 11,941 | 99,998 |
+| 22,2 | Profil, 90 mV / R+%1 | 10,997 | 10,960 | 11,075 | 51,0 | 8,961 / 5,073 | 100,012 |
+| 22,2 | 7,5 A, 90 mV / R+%1 | 10,993 | 10,968 | 11,169 | 50,6 | 9,182 / 8,360 | 100,002 |
+| 22,2 | 7,5 A, 115 mV / R−%1 | 10,996 | 10,971 | 11,069 | 50,6 | 10,960 / 8,362 | 100,002 |
+| 22,2 | Yapay aşırı yük, 115 mV / R−%1 | 8,347 | 8,316 | 8,371 | 47,8 | 11,960 / 11,951 | 100,000 |
+| 24,6 | Profil, 90 mV / R+%1 | 10,998 | 10,958 | 11,077 | 56,1 | 9,047 / 5,159 | 100,004 |
+| 24,6 | 7,5 A, 90 mV / R+%1 | 10,994 | 10,966 | 11,166 | 55,8 | 9,193 / 8,448 | 99,984 |
+| 24,6 | 7,5 A, 115 mV / R−%1 | 10,997 | 10,969 | 11,071 | 55,8 | 11,051 / 8,451 | 99,990 |
+| 24,6 | Yapay aşırı yük, 115 mV / R−%1 | 8,317 | 8,285 | 8,342 | 50,7 | 11,971 / 11,962 | 99,987 |
+| 25,2 | Profil, 90 mV / R+%1 | 10,998 | 10,957 | 11,078 | 57,2 | 9,068 / 5,178 | 100,001 |
+| 25,2 | 7,5 A, 90 mV / R+%1 | 10,994 | 10,966 | 11,164 | 56,8 | 9,196 / 8,466 | 100,003 |
+| 25,2 | 7,5 A, 115 mV / R−%1 | 10,997 | 10,968 | 11,072 | 56,8 | 11,067 / 8,468 | 100,007 |
+| 25,2 | Yapay aşırı yük, 115 mV / R−%1 | 8,311 | 8,279 | 8,336 | 51,4 | 11,974 / 11,965 | 99,990 |
+| 26 | Profil, 90 mV / R+%1 | 10,998 | 10,957 | 11,078 | 58,7 | 9,092 / 5,203 | 99,985 |
+| 26 | 7,5 A, 90 mV / R+%1 | 10,994 | 10,965 | 11,164 | 58,2 | 9,200 / 8,491 | 100,004 |
+| 26 | 7,5 A, 115 mV / R−%1 | 10,997 | 10,968 | 11,072 | 58,3 | 11,097 / 8,493 | 100,002 |
+| 26 | Yapay aşırı yük, 115 mV / R−%1 | 8,303 | 8,270 | 8,329 | 52,2 | 11,977 / 11,969 | 100,000 |
+
+**Sonuç:** 15 profil/tam-yük örneğinin tümünde ölçülen Vout 9–12 V içinde kaldı; Vout aralığı 10,957–11,169 V, ripple 44,9–58,7 mV t-t'tir. Beş yapay aşırı yük satırında ripple 44,4–52,2 mV t-t olurken simüle bobin akımı 11,950–11,977 A'a sınırlanmış ve Vout 8,270–8,354 V'a düşmüştür; bu normal çalışma kabulü değildir ve yük sürdürme kanıtı sayılmaz. Sayısal olarak 12 A'a yakınlık, comparator gecikmesi ve ek hata payı modellenmediğinden 12 A üst sınırını garanti etmez. Sonuçlar geçici LT3844 SİM'idir; 12 A bobin dayanımı, gerçek L(I), şönt ısısı/TCR, sense gürültüsü, gerçek analog arayüz ve OVP doğrulanmadı. Kontrolcü, şönt değeri veya parçası seçilmedi; ana şematik ve dondurulmuş güç katı değişmedi.
