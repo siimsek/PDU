@@ -275,6 +275,9 @@ def switch_reference(library, directory, skip_spice):
     output["replay"] = spice.replay(directory / "replay", data["duty"], config.turn_on,
                                    config.turn_off, .2, 7.5, .034)
     compare(output["replay"], host, {**SPICE_LIMITS, "ripple_v": .004})
+    output["hotplug"] = spice.hotplug(directory / "hotplug")
+    peak = {k: item["peak_v"] for k, item in output["hotplug"].items()}
+    need(peak["inductive"] > peak["damped"] >= 26., "Hot-plug sensitivity failed")
     return output
 
 
@@ -333,6 +336,8 @@ def cross_platform(paths):
     need({first["system"], second["system"]} == {"Linux", "Windows"}, "A Windows and a Linux run are required")
     for key in ("baseline", "host", "replay"):
         compare(first["reference"][key], second["reference"][key], SPICE_LIMITS)
+    for key, value in first["reference"]["hotplug"].items():
+        compare(value, second["reference"]["hotplug"][key], {"peak_v": .05, "peak_i": 1.})
     for group in ("matrix", "startups", "additional"):
         need(first[group].keys() == second[group].keys(), f"Mismatched scenario set in {group}")
         for label in first[group]:

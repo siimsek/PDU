@@ -1,4 +1,5 @@
 """Native ngspice reference and replay of firmware-generated gate pulses."""
+import math
 import os
 from pathlib import Path
 import re
@@ -35,7 +36,7 @@ Cd cd 0 {p.cd}
 """
 
 
-def execute(work, circuit):
+def execute(work, circuit, names=("mean_v", "ripple_v", "peak_i", "min_i")):
     work = Path(work)
     work.mkdir(parents=True, exist_ok=True)
     (work / "power.cir").write_text(circuit, encoding="ascii")
@@ -49,7 +50,7 @@ def execute(work, circuit):
     if re.search(r"^\s*(?:error|fatal)|simulation\(s\) aborted", log, re.I | re.M):
         raise RuntimeError(f"ngspice reported an error in {log_path}")
     metrics = {}
-    for name in ("mean_v", "ripple_v", "peak_i", "min_i"):
+    for name in names:
         match = re.search(rf"^{name}\s*=\s*([-+.\deE]+)", log, re.M)
         if not match:
             raise RuntimeError(f"{name} missing from {log_path}")
@@ -82,6 +83,30 @@ def replay(work, duty, turn_on, turn_off, amps_before, amps_after, load_step):
             "Bload out 0 I=v(conductance)*v(out)\nRfeedback out 0 10000")
     ending = len(duty) * p.period
     return execute(work, netlist(p, p.vin, "\n".join(gate), load, ending, ending - .001, 75e-9))
+
+
+def hotplug(work):
+    """Input cable-energy sensitivity with the buck disabled and Cin discharged."""
+    p = schematic()
+    results = {}
+    for name, cable_l, cable_r in (("inductive", 5e-6, .005), ("damped", 5e-6, .12)):
+        circuit = f"""PDU ideal hot-plug cable and installed Cin
+Vbattery src 0 PULSE(0 26 100n 1u 1u 4m 8m)
+Lwire src wire {cable_l}
+Rwire wire vin {cable_r}
+Resr vin ci {p.cin_esr}
+Cin ci 0 {p.cin}
+.tran .25u 3m 0 .25u
+.meas tran peak_v MAX v(vin) FROM=0 TO=3m
+.meas tran peak_i MAX i(Lwire) FROM=0 TO=3m
+.end
+"""
+        samples = execute(Path(work) / name, circuit, ("peak_v", "peak_i"))
+        # Ideal step approximation for the capacitor, excluding the instantaneous ESR voltage.
+        zeta = (cable_r + p.cin_esr) / 2 * math.sqrt(p.cin / cable_l)
+        cap_peak = 26 * (1 + math.exp(-math.pi * zeta / math.sqrt(1 - zeta ** 2))) if zeta < 1 else 26.
+        results[name] = {**samples, "capacitor_ideal_step_v": cap_peak}
+    return results
 
 
 if __name__ == "__main__":

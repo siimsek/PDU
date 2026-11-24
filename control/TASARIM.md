@@ -61,3 +61,22 @@ Firmwarenin tezgâh imajında TA1 donanımsal olarak susturulur, PA8 GPIO-low ka
 - [TI TPS2663, giriş eFuse aday sınıfı](https://www.ti.com/lit/ds/symlink/tps2663.pdf)
 
 Teknik uygunluk ve Türkiye’den temin için üretici sipariş kodu üzerinden yeniden fiyat, stok, teslim ve kılıf sorgusu yapılır. Yukarıdaki parçalar ilk laboratuvar adaylarıdır.
+
+### S1 kısa devresi için ikinci kesme yolu
+
+İki bağımsız analog kanal, PCB tasarımı için karşılaştırıldı. Vout OVP ve yükseltilmiş bobin akımı eşiği ayrı ayrı giriş ayırıcısının donanım kilidini sürebilir. CBC düşük eşikte yalnız PWM darbesini keser. Yüksek eşik S1’in kısa olduğu durumda da çalışmalı. Önerilen akış `kaynak → Cin → bağımsız seri ayırıcı → S1 → L1 → Cout`. OVP, CBC ve ikinci eşik için MCU saatine bağlı olmayan hata enjeksiyonu gerekir.
+
+Davranışsal denemede 11,5 A üst akım köşesi, 0,65 µs akım kanalı kesme gecikmesi ve OVP sonrası 0,60 µs ayırıcı gecikmesi kullanıldı. 26 V’ta 6 güç katı köşesi ve 3 ön yükle 18 S1 kısa devresi koşusunun en yüksek değerleri 11,990 V ve 12,067 A. Soğuk ESR/yüksüz köşe OVP ile, diğer koşular akım kanalıyla açıldı. Aynı soğuk durumda OVP sonrası 2 µs ile sonuç 12,048 V. Yük ayırma/klemp ve bobin doyum payı için tezgâh kanıtı gerekiyor. Model, ideal açık duruma geçiş ve sabit L varsayıyor. Öngörülen tepe akım, bobin ve ayırıcı OR/SOA doğrulamasının girdisidir. Ayrıca ayrı yük ayırıcı için LTC4365 sınıfı değerlendirilebilir. Veri sayfasındaki tipik algılama süresi ve harici MOSFET kapı söndürme gecikmesi dar bütçeye karşı sınanmalıdır. [ADI LTC4365](https://www.analog.com/media/en/technical-documentation/data-sheets/ltc4365.pdf)
+
+ngspice sıcak takma duyarlılık modeli 26 V, 5 µH kablo, 2 mF boş Cin ve 5 mΩ kaynak/kablo direnci varsayıyor. Giriş tepesinde 43,70 V ve ideal kaynak yüzünden 433 A akım görülüyor. 120 mΩ örnek sönümle 26,00 V ve 161 A. Bu fark giriş ön şarjı ve kaynak empedansı bütçesinin önemini gösteriyor. Dönüştürücünün gerçek devresi için giriş akımı sınırı, kablo aralığı ve ek yükler ölçülecek.
+
+### G474 pinleri ve osiloskop imajı
+
+LQFP64 pin eşlemesi PA8 AF13 TA1, PC12 AF3 EEV1 ve PA12 AF13 FLT1. EEV1 ve FLT1 hatları aktif yüksek, varsayılan pull-up arıza durumuna gider. Varsayılan imajın duty isteği SWD ile okunabilir. Güç katı ve sürücü fiziksel olarak bağlantısızken, ayrı bir CMake derleme dizininde `-DPDU_SCOPE_PWM=ON` ile PA8’e osiloskop darbesi alınabilir. PA3 düşükken çıkış susturulur. Ayrı prob kaynaklarıyla EEV1 ve FLT1 durumu kontrol edilir. Bu derleme kart üstünde çalıştırılmayı bekliyor.
+
+Nucleo-64, gömülü ST-LINK ve tezgâh başlıklarıyla ilk adımda çıplak LQFP’ye göre daha hızlı erişim sağlıyor. 24.11.2026 tedarik incelemesinde Robotistan NUCLEO-G474RE listeledi. Çıplak STM32G474RET6 DigiKey ve Mouser sayfalarında geri siparişte görünüyordu. UCC27282 SOIC tüp seçeneği düşük adetli prototipte makara varyantına göre daha erişilebilirdi. TLV3501 SOIC seçeneği de Mouser Türkiye seri listesinde bulunuyordu. Stok, fiyat ve teslimat satıcıya göre değişiyor.
+
+- [Robotistan NUCLEO-G474RE](https://www.robotistan.com/stm32-islemci-kiti-nucleo-g474re)
+- [DigiKey STM32G474RET6](https://www.digikey.com/en/products/detail/stmicroelectronics/STM32G474RET6/10326780)
+- [Mouser Türkiye UCC27282](https://www.mouser.com.tr/tr/c/semiconductors/integrated-circuits-ics/power-management-ics/?series=UCC27282)
+- [Mouser Türkiye TLV3501](https://www.mouser.com.tr/en/c/semiconductors/amplifier-ics/analog-comparators/?series=TLV3501)
