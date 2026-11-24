@@ -9,10 +9,9 @@ from scipy.linalg import expm
 from scipy.optimize import differential_evolution
 from scipy.signal import ss2tf
 
+from .configure import ADC_TRIGGER_S, CURRENT_APERTURE_S, METHODS, VOUT_APERTURE_S
 from .plant import IRATED, VIN_POINTS, VREF, schematic
 
-SAMPLE = 7.1e-6
-METHODS = ("pi", "ff_pi", "type_ii", "type_iii", "cascade")
 FREQUENCY = np.geomspace(10, 49_980, 1100)
 MIN_PM, MIN_GM = 40, 6
 REFERENCE = schematic()
@@ -52,11 +51,12 @@ def sampled(p, vin, current, load):
     a, b, y = plant_model(p, vin, current, load)
     ab = np.block([[a, b], [np.zeros((1, 4))]])
     period = expm(ab * p.period)
-    sample = expm(ab * SAMPLE)
-    # State at the start of the period, measurement at SAMPLE within it.
-    c = y @ sample[:3, :3]
-    d = y @ sample[:3, 3:]
-    return ss2tf(period[:3, :3], period[:3, 3:], c, d)
+    # Output-voltage and inductor-current ranks have separate apertures.
+    measurement = np.array([
+        row @ expm(ab * (ADC_TRIGGER_S + aperture))[:3]
+        for row, aperture in zip(y, (VOUT_APERTURE_S, CURRENT_APERTURE_S))
+    ])
+    return ss2tf(period[:3, :3], period[:3, 3:], measurement[:, :3], measurement[:, 3:])
 
 
 def parameters(method, raw):

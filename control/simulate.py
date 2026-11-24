@@ -5,8 +5,8 @@ import sys
 
 import numpy as np
 
-from .configure import METHODS
-from .design import REFERENCE, SAMPLE
+from .configure import ADC_FRAME_S, ADC_TRIGGER_S, METHODS
+from .design import REFERENCE
 
 CR, CC, CP = range(3)
 DISABLED, STALE_ADC, ADC_RAIL, SHORTED_S1, UVLO, ADC_STUCK_LOW = (1, 2, 4, 8, 16, 32)
@@ -38,7 +38,7 @@ class Result(ct.Structure):
 def model(method, plant=REFERENCE, **overrides):
     parameters = dict(l=plant.inductance, dcr=plant.dcr, c=plant.cout, esr=plant.esr,
                       cd=plant.cd, rd=plant.rd, ron=plant.ron, vf=plant.vf, diode_r=plant.diode_r,
-                      max_step=100e-9, sample_time=SAMPLE, adc_latency=1.4e-6, execute_time=.65e-6,
+                      max_step=100e-9, sample_time=ADC_TRIGGER_S, adc_latency=ADC_FRAME_S, execute_time=.65e-6,
                       jitter=35e-9, noise_v=.002, noise_i=.015, turn_on=45e-9, turn_off=60e-9,
                       limit_i=9.8, blank_time=.1e-6, ocp_delay=.18e-6,
                       limit_v=11.9, ovp_delay=.35e-6, isolate_delay=1e9,

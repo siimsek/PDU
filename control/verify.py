@@ -81,11 +81,11 @@ def firmware_metrics(directory):
     image = (directory / "firmware/pdu_g474.bin").read_bytes()
     words = struct.unpack_from("<85I", image)
     stack, reset = words[:2]
-    adc, timer = words[16 + 18], words[16 + 68]
+    dma, adc, timer = (words[16 + irq] for irq in (11, 18, 68))
     need(stack == 0x20018000, f"Invalid SRAM vector {stack:#x}")
     need(len(image) < 32768, f"Unexpected bench image footprint {len(image)} bytes")
-    need(len({reset, adc, timer}) == 3, "Reset and the two IRQs need separate handlers")
-    for handler in (reset, adc, timer):
+    need(len({reset, dma, adc, timer}) == 4, "Reset, DMA, ADC and HRTIM need separate handlers")
+    for handler in (reset, dma, adc, timer):
         need(handler & 1 and 0x08000000 < handler < 0x08000000 + len(image),
              f"Invalid Thumb vector {handler:#x}")
     return {"bytes": len(image), "arm_gcc": version("arm-none-eabi-gcc")}
@@ -156,7 +156,7 @@ def additional(library, full, stress=False):
         configurations.extend([
             ("sense_shunt", model(METHOD, replace(nominal, dcr=nominal.dcr + interface.current_shunt_ohm))),
             ("noise", model(METHOD, jitter=120e-9, noise_v=.008, noise_i=.05,
-                            adc_latency=1.40e-6, execute_time=.50e-6)),
+                            execute_time=.50e-6)),
         ])
     rng = np.random.default_rng(474)
     for index in range(48 if full else 8):

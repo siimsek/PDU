@@ -6,10 +6,11 @@ set(CMAKE_C_EXTENSIONS OFF)
 find_package(Python3 3.12 REQUIRED COMPONENTS Interpreter)
 
 set(GAINS_HEADER "${CMAKE_CURRENT_BINARY_DIR}/gains.h")
-add_custom_command(OUTPUT "${GAINS_HEADER}"
-    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/control/configure.py" "${GAINS_HEADER}"
+set(TIMING_HEADER "${CMAKE_CURRENT_BINARY_DIR}/pdu_timing.h")
+add_custom_command(OUTPUT "${GAINS_HEADER}" "${TIMING_HEADER}"
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/control/configure.py" "${GAINS_HEADER}" "${TIMING_HEADER}"
     DEPENDS control/configure.py control/gains.json VERBATIM)
-add_library(pdu_control STATIC firmware/control.c "${GAINS_HEADER}")
+add_library(pdu_control STATIC firmware/control.c "${GAINS_HEADER}" "${TIMING_HEADER}")
 target_include_directories(pdu_control PUBLIC firmware "${CMAKE_CURRENT_BINARY_DIR}")
 set_target_properties(pdu_control PROPERTIES POSITION_INDEPENDENT_CODE ON)
 

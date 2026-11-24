@@ -1,20 +1,24 @@
 #include "stm32g4xx.h"
 #include "control.h"
 #include "gains.h"
+#include "pdu_timing.h"
 
 // The default image keeps PA8 low. Scope mode is for a disconnected power stage.
 enum {
-    CORE_HZ = 170000000u,
-    ADC_TRIGGER_TICKS = 38624u,
-    UPDATE_DEADLINE_TICKS = 52224u,
-    MISSED_FRAME_LIMIT = 3u
+    MISSED_FRAME_LIMIT = 3u,
+    ADC1_DMA_REQUEST = 5u
 };
+
+_Static_assert(PDU_ADC_RANKS == 6, "The ADC sequence expects two ranks per channel");
+static volatile uint16_t adc_frame[PDU_ADC_RANKS];
+static uint8_t discard_first_frame = 1;
 
 typedef struct {
     uint32_t good_frames;
     uint32_t missed_frames;
     uint32_t late_frames;
     uint32_t worst_control_cycles;
+    uint32_t acquisition_faults;
     uint16_t pwm_request;
     uint8_t stopped;
 } Diagnostics;
@@ -54,7 +58,7 @@ static void configure_clock(void)
         __NOP();
     }
     RCC->CFGR &= ~RCC_CFGR_HPRE;
-    SystemCoreClock = CORE_HZ;
+    SystemCoreClock = PDU_CORE_HZ;
 }
 
 static void configure_pins(void)
@@ -77,6 +81,19 @@ static void configure_pins(void)
 #endif
 }
 
+static void configure_dma(void)
+{
+    RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN | RCC_AHB1ENR_DMAMUX1EN;
+    (void)RCC->AHB1ENR;
+    DMAMUX1_Channel0->CCR = ADC1_DMA_REQUEST;
+    DMA1_Channel1->CPAR = (uint32_t)(uintptr_t)&ADC1->DR;
+    DMA1_Channel1->CMAR = (uint32_t)(uintptr_t)adc_frame;
+    DMA1_Channel1->CNDTR = PDU_ADC_RANKS;
+    DMA1->IFCR = DMA_IFCR_CGIF1;
+    DMA1_Channel1->CCR = DMA_CCR_PL_1 | DMA_CCR_MSIZE_0 | DMA_CCR_PSIZE_0 |
+        DMA_CCR_MINC | DMA_CCR_CIRC | DMA_CCR_TEIE | DMA_CCR_TCIE | DMA_CCR_EN;
+}
+
 static void configure_adc(void)
 {
     RCC->AHB2ENR |= RCC_AHB2ENR_ADC12EN;
@@ -87,7 +104,7 @@ static void configure_adc(void)
     ADC12_COMMON->CCR = ADC_CCR_CKMODE; // HCLK / 4 = 42.5 MHz
     ADC1->CR &= ~ADC_CR_DEEPPWD;
     ADC1->CR |= ADC_CR_ADVREGEN;
-    for (uint32_t begin = DWT->CYCCNT; DWT->CYCCNT - begin < CORE_HZ / 40000u;) {
+    for (uint32_t begin = DWT->CYCCNT; DWT->CYCCNT - begin < PDU_CORE_HZ / 40000u;) {
         __NOP();
     }
     ADC1->CR |= ADC_CR_ADCAL;
@@ -96,16 +113,19 @@ static void configure_adc(void)
         __NOP();
     }
     ADC1->SMPR1 = ADC_SMPR1_SMP1_0 | ADC_SMPR1_SMP2_0 | ADC_SMPR1_SMP3_0;
-    // Three conversions, 6.5 sample + 12.5 conversion cycles each. TRG2 = JEXTSEL 19.
-    ADC1->JSQR = ADC_JSQR_JL_1 | ADC_JSQR_JEXTEN_0
-        | ADC_JSQR_JEXTSEL_4 | ADC_JSQR_JEXTSEL_1 | ADC_JSQR_JEXTSEL_0
-        | (1u << ADC_JSQR_JSQ1_Pos) | (2u << ADC_JSQR_JSQ2_Pos) | (3u << ADC_JSQR_JSQ3_Pos);
+    // ES0430: repeat each channel and use the first rank of each pair.
+    // The regular group is triggered by HRTIM ADC TRG1 (EXTSEL = 21).
+    ADC1->SQR1 = (PDU_ADC_RANKS - 1u) | (1u << ADC_SQR1_SQ1_Pos) |
+        (1u << ADC_SQR1_SQ2_Pos) | (2u << ADC_SQR1_SQ3_Pos) | (2u << ADC_SQR1_SQ4_Pos);
+    ADC1->SQR2 = (3u << ADC_SQR2_SQ5_Pos) | (3u << ADC_SQR2_SQ6_Pos);
+    ADC1->CFGR = ADC_CFGR_DMAEN | ADC_CFGR_DMACFG | ADC_CFGR_JQDIS |
+        ADC_CFGR_EXTSEL_4 | ADC_CFGR_EXTSEL_2 | ADC_CFGR_EXTSEL_0 | ADC_CFGR_EXTEN_0;
     ADC1->ISR = ADC_ISR_ADRDY;
     ADC1->CR |= ADC_CR_ADEN;
     wait_for(&ADC1->ISR, ADC_ISR_ADRDY, ADC_ISR_ADRDY);
-    ADC1->ISR = ADC_ISR_JEOS | ADC_ISR_JEOC | ADC_ISR_JQOVF;
-    ADC1->IER = ADC_IER_JEOSIE;
-    ADC1->CR |= ADC_CR_JADSTART;
+    ADC1->ISR = ADC_ISR_EOS | ADC_ISR_EOC | ADC_ISR_OVR;
+    ADC1->IER = ADC_IER_OVRIE;
+    ADC1->CR |= ADC_CR_ADSTART;
 }
 
 static void configure_timer(void)
@@ -120,14 +140,14 @@ static void configure_timer(void)
     HRTIM1_TIMA->PERxR = PDU_PWM_TICKS;
     HRTIM1_TIMA->REPxR = 0;
     HRTIM1_TIMA->CMP1xR = PDU_PWM_MIN;
-    HRTIM1_TIMA->CMP4xR = ADC_TRIGGER_TICKS;
+    HRTIM1_TIMA->CMP4xR = PDU_ADC_TRIGGER_TICKS;
     HRTIM1_TIMA->SETx1R = HRTIM_SET1R_PER;
     HRTIM1_TIMA->RSTx1R = HRTIM_RST1R_CMP1 | HRTIM_RST1R_EXTVNT1;
     HRTIM1_TIMA->OUTxR = HRTIM_OUTR_FAULT1_1;
     HRTIM1_TIMA->FLTxR = HRTIM_FLTR_FLT1EN;
     HRTIM1_COMMON->EECR1 = HRTIM_EECR1_EE1FAST; // EEV1 pad, active high level
     HRTIM1_COMMON->FLTINR1 = HRTIM_FLTINR1_FLT1E | HRTIM_FLTINR1_FLT1P;
-    HRTIM1_COMMON->ADC2R = HRTIM_ADC2R_AD2TAC4;
+    HRTIM1_COMMON->ADC1R = HRTIM_ADC1R_AD1TAC4;
     HRTIM1_COMMON->CR2 = HRTIM_CR2_TASWU;
     HRTIM1_TIMA->TIMxICR = HRTIM_TIMICR_REPC;
     HRTIM1_TIMA->TIMxDIER = HRTIM_TIMDIER_REPIE;
@@ -139,31 +159,59 @@ static void inhibit(void)
     pdu_diagnostics.pwm_request = 0;
 }
 
+static void acquisition_fault(void)
+{
+    ++pdu_diagnostics.acquisition_faults;
+    pdu_diagnostics.stopped = 1;
+    inhibit();
+}
+
 void ADC1_2_IRQHandler(void)
 {
+    if (ADC1->ISR & ADC_ISR_OVR) {
+        ADC1->ISR = ADC_ISR_OVR;
+        acquisition_fault();
+    }
+}
+
+void DMA1_Channel1_IRQHandler(void)
+{
     const uint32_t begin = DWT->CYCCNT;
-    const uint32_t status = ADC1->ISR;
-    if (!(status & ADC_ISR_JEOS)) {
+    const uint32_t begin_counter = HRTIM1_TIMA->CNTxR;
+    const uint32_t status = DMA1->ISR;
+    const uint32_t overrun = ADC1->ISR & ADC_ISR_OVR;
+    DMA1->IFCR = DMA_IFCR_CGIF1;
+    if ((status & DMA_ISR_TEIF1) || overrun) {
+        ADC1->ISR = overrun;
+        acquisition_fault();
+        return;
+    }
+    if (!(status & DMA_ISR_TCIF1)) {
+        return;
+    }
+    if (discard_first_frame) {
+        // ES0430: the first conversion after calibration/idle may be invalid.
+        discard_first_frame = 0;
         return;
     }
     uint8_t enabled = !pdu_diagnostics.stopped;
-    uint8_t fault = (status & ADC_ISR_JQOVF) != 0;
+    uint8_t fault = 0;
 #if PDU_SCOPE_PWM
     enabled = enabled && (GPIOA->IDR & GPIO_IDR_ID3);
     fault = fault || (HRTIM1_COMMON->ISR & HRTIM_ISR_FLT1);
 #endif
     const ControlSample sample = {
-        .vin = (uint16_t)ADC1->JDR3, .vout = (uint16_t)ADC1->JDR2, .current = (uint16_t)ADC1->JDR1,
+        .vin = adc_frame[4], .vout = adc_frame[2], .current = adc_frame[0],
         .enabled = enabled, .fault = fault
     };
-    ADC1->ISR = ADC_ISR_JEOS | ADC_ISR_JEOC | ADC_ISR_JQOVF;
     uint16_t ticks = pdu_step(&control, &pdu_configs[PDU_TYPE_III], sample);
     const uint32_t elapsed = DWT->CYCCNT - begin;
     if (elapsed > pdu_diagnostics.worst_control_cycles) {
         pdu_diagnostics.worst_control_cycles = elapsed;
     }
     const uint32_t counter = HRTIM1_TIMA->CNTxR;
-    if (counter < ADC_TRIGGER_TICKS || counter >= UPDATE_DEADLINE_TICKS) {
+    if (begin_counter < PDU_ADC_EARLIEST_TICKS || counter < begin_counter ||
+        counter >= PDU_UPDATE_DEADLINE_TICKS || elapsed >= PDU_PWM_TICKS / 32u) {
         ++pdu_diagnostics.late_frames;
         pdu_diagnostics.stopped = 1;
     }
@@ -212,6 +260,7 @@ int main(void)
     DWT->CYCCNT = 0;
     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
     configure_pins();
+    configure_dma();
     configure_adc();
     configure_timer();
 #if PDU_SCOPE_PWM
@@ -226,8 +275,10 @@ int main(void)
     wait_for(&IWDG->SR, IWDG_SR_PVU | IWDG_SR_RVU, 0);
     IWDG->KR = 0xaaaau;
 
-    NVIC_SetPriority(ADC1_2_IRQn, 0);
+    NVIC_SetPriority(DMA1_Channel1_IRQn, 0);
+    NVIC_SetPriority(ADC1_2_IRQn, 1);
     NVIC_SetPriority(HRTIM1_TIMA_IRQn, 1);
+    NVIC_EnableIRQ(DMA1_Channel1_IRQn);
     NVIC_EnableIRQ(ADC1_2_IRQn);
     NVIC_EnableIRQ(HRTIM1_TIMA_IRQn);
     HRTIM1->sMasterRegs.MCR |= HRTIM_MCR_TACEN;
