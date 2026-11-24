@@ -11,6 +11,7 @@ from .design import REFERENCE, SAMPLE
 CR, CC, CP = range(3)
 DISABLED, STALE_ADC, ADC_RAIL, SHORTED_S1, UVLO, ADC_STUCK_LOW = (1, 2, 4, 8, 16, 32)
 CBC, OVP, WATCHDOG, ISOLATED, SOFT_UVLO, BAD_SAMPLE, DCM, OVERLOAD_LATCH, LOAD_UV_LATCH = (1, 2, 4, 8, 16, 32, 64, 128, 256)
+BACKUP_OCP = 512
 PERIOD = REFERENCE.period
 
 
@@ -18,7 +19,7 @@ class Model(ct.Structure):
     _fields_ = [(name, ct.c_double) for name in (
         "l dcr c esr cd rd ron vf diode_r max_step sample_time adc_latency execute_time jitter "
         "noise_v noise_i turn_on turn_off limit_i blank_time ocp_delay limit_v ovp_delay "
-        "isolate_delay leak_g lin_switch fixed_duty initial_v initial_i sense_delay").split()]
+        "isolate_delay leak_g lin_switch fixed_duty initial_v initial_i sense_delay backup_limit_i backup_delay").split()]
     _fields_ += [("watchdog_cycles", ct.c_uint), ("cbc_latch_cycles", ct.c_uint),
                  ("seed", ct.c_uint32), ("method", ct.c_int)]
 
@@ -43,6 +44,7 @@ def model(method, plant=REFERENCE, **overrides):
                       limit_v=11.9, ovp_delay=.35e-6, isolate_delay=1e9,
                       leak_g=1/10000, lin_switch=60e-9, fixed_duty=-1.,
                       initial_v=0., initial_i=0., sense_delay=150e-9,
+                      backup_limit_i=1e9, backup_delay=.65e-6,
                       watchdog_cycles=3, cbc_latch_cycles=96, seed=474,
                       method=METHODS.index(method))
     unknown = overrides.keys() - parameters.keys()
@@ -98,7 +100,7 @@ def metrics(data, settle_cycles=300):
         "settle_ms": None if settled == len(data) else settled * PERIOD * 1000,
         "estimated_efficiency": float(tail["pout"].mean() / max(1e-20, (tail["pout"] + tail["loss"]).mean())),
         "loss_w": float(tail["loss"].mean()),
-        "fault_cycles": int(np.count_nonzero(data["flags"] & (OVP | WATCHDOG | OVERLOAD_LATCH | LOAD_UV_LATCH))),
+        "fault_cycles": int(np.count_nonzero(data["flags"] & (OVP | WATCHDOG | OVERLOAD_LATCH | LOAD_UV_LATCH | BACKUP_OCP))),
         "cbc_cycles": int(np.count_nonzero(mask(data, CBC))),
         "dcm_cycles": int(np.count_nonzero(mask(data, DCM))),
     }

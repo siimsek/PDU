@@ -12,7 +12,7 @@ Python ve PATH üzerinde ngspice ile repo kökünde `python -m control.spice` no
 
 ## Windows 11 ve CachyOS
 
-Her iki sistemde x64 Python 3.12, Git ve yerel C derleyicisi kullanılır. Windows’ta Visual Studio Build Tools 2022 içindeki **Desktop development with C++** iş yükü, Windows SDK ve 7-Zip gerekir. CachyOS’ta sistem paketleri için `sudo pacman -S --needed base-devel ngspice`. Ubuntu CI, dağıtımın ngspice paketini kullanır.
+Her iki sistemde x64 Python 3.12, Git ve yerel C derleyicisi kullanılır. Windows’ta Visual Studio Build Tools 2022 veya 2026 içindeki **Desktop development with C++** iş yükü, Windows SDK ve 7-Zip gerekir. CachyOS’ta sistem paketleri için `sudo pacman -S --needed base-devel ngspice`. Depoda Python 3.12 yoksa örneğin `uv python install 3.12.12` ile yerel yorumlayıcı kurulabilir. Ubuntu CI, dağıtımın ngspice paketini kullanır.
 
 Repo kökünde sanal ortam oluştur:
 
@@ -35,6 +35,6 @@ python -m control.verify --firmware
 - `python -m control.interface` ilk donanım eşiklerini ve tolerans bütçelerini hesaplar.
 - `python -m control.verify --strict-stress --firmware` aynı ölçütleri birleşik yüksek ESR stres koşullarına da uygular. Bu koşullar sonuç dosyasında olağan doğrulamada da raporlanır.
 
-CSV yerine kullanılabilir, senaryo bazında sonuçlar `build/verify/results.json` dosyasındadır. Aynı klasörde Bode ve geçici rejim SVG’leri, ngspice logları ve `--firmware` ile `target/firmware/pdu_g474.{elf,bin,map}` oluşur. İki platformdan alınan JSON için `python -m control.verify --compare linux.json windows.json`. Workflow aynı komutları Ubuntu ve Windows Server 2025 x64 üzerinde çalıştırır. Windows 11 masaüstü ve fiziksel hedef kart ayrı doğrulama aşamalarıdır.
+Senaryo bazında sonuçlar `build/verify/results.json` dosyasındadır. Aynı klasörde Bode ve geçici rejim SVG’leri, ngspice logları ve `--firmware` ile `target/firmware/pdu_g474.{elf,bin,map}` oluşur. İki platformdan alınan JSON için `python -m control.verify --compare linux.json windows.json`. Workflow aynı komutları Ubuntu ve Windows Server 2025 x64 üzerinde çalıştırır. Windows 11 masaüstü ve fiziksel hedef kart ayrı doğrulama aşamalarıdır.
 
 [Kontrol yöntemleri, model ve donanım arayüzü](control/TASARIM.md)

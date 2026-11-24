@@ -20,13 +20,13 @@ from .interface import Interface
 from .plant import ROOT, VIN_POINTS
 from .tools import ARM_LINUX
 from .simulate import (
-    ADC_RAIL, ADC_STUCK_LOW, BAD_SAMPLE, CBC, CC, CP, CR, DCM, DISABLED,
+    ADC_RAIL, ADC_STUCK_LOW, BACKUP_OCP, BAD_SAMPLE, CBC, CC, CP, CR, DCM, DISABLED,
     ISOLATED, LOAD_UV_LATCH, OVP, OVERLOAD_LATCH, SHORTED_S1, STALE_ADC,
     WATCHDOG, host_library, mask, metrics, model, run,
 )
 
 METHOD = "type_iii"
-LATCHES = OVP | WATCHDOG | LOAD_UV_LATCH | OVERLOAD_LATCH
+LATCHES = OVP | WATCHDOG | LOAD_UV_LATCH | OVERLOAD_LATCH | BACKUP_OCP
 SPICE_LIMITS = {"mean_v": .02, "ripple_v": .002, "peak_i": .05, "min_i": .05}
 LTSPICE_BASELINE = {"mean_v": 11.000, "ripple_v": .0557, "peak_i": 8.44, "min_i": 6.56}
 
@@ -47,6 +47,20 @@ def compare(actual, expected, tolerance):
              f"{key}: {value} vs {expected[key]}, allowed delta {limit}")
 
 
+def windows_generator():
+    installation_root = os.environ.get("ProgramFiles(x86)", os.environ.get("ProgramFiles", ""))
+    vswhere = Path(installation_root) / "Microsoft Visual Studio" / "Installer" / "vswhere.exe"
+    need(vswhere.is_file(), "Install Visual Studio Build Tools with Desktop development with C++")
+    installed = subprocess.check_output(
+        [str(vswhere), "-latest", "-products", "*", "-requires",
+         "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property", "installationVersion"],
+        text=True, timeout=20).strip()
+    generators = {"17": "Visual Studio 17 2022", "18": "Visual Studio 18 2026"}
+    major = installed.partition(".")[0]
+    need(major in generators, f"Supported Visual Studio C++ compiler missing (found {installed!r})")
+    return generators[major]
+
+
 def build(destination, firmware=False):
     cmake = shutil.which("cmake")
     need(cmake is not None, "Install the pinned Python requirements and activate the environment")
@@ -56,7 +70,7 @@ def build(destination, firmware=False):
         if not (destination / "CMakeCache.txt").exists():
             flags.append("-DCMAKE_TOOLCHAIN_FILE=firmware/arm-none-eabi.cmake")
     elif platform.system() == "Windows":
-        flags.extend(("-G", "Visual Studio 17 2022", "-A", "x64"))
+        flags.extend(("-G", windows_generator(), "-A", "x64"))
     else:
         flags.extend(("-G", "Ninja"))
     command(cmake, "-S", ROOT, "-B", destination, *flags)
@@ -118,6 +132,19 @@ def electrical(library, full):
                 except RuntimeError as error:
                     cases[label] = {"failure": str(error)}
     return cases
+
+
+def startups(library):
+    results = {}
+    for name, p in corners().items():
+        for vin in (20., 26.):
+            for load, amps in ((CR, 0.), (CR, 7.5), (CC, 7.5)):
+                stages = [(.042, vin, amps, load, 0)]
+                if amps == 0:
+                    stages.append((.016, vin, 7.5, CP, 0))
+                name_load = f"{name}/{vin:g}/{load}/{amps:g}"
+                results[name_load] = list(stage_results(run(library, model(METHOD, p), stages), stages))
+    return results
 
 
 def additional(library, full, stress=False):
@@ -200,6 +227,22 @@ def protections(library):
         data[f"stuck_s1_{isolation:g}"] = {
             "max_v": float(max(fault["high_v"])), "peak_i": float(max(fault["high_i"])),
             "ovp_delay_us": float(max(fault["ovp_latency"]) * 1e6)}
+
+    backup_cases = {}
+    for name, corner in corners().items():
+        for amps in (0., 2., 7.5):
+            cfg = model(METHOD, corner, backup_limit_i=11.5, backup_delay=.65e-6,
+                        limit_v=11.95, isolate_delay=.6e-6)
+            settled = (.042, 26., amps, CR, 0)
+            fault = run(library, cfg, [settled, (.002, 26., amps, CR, SHORTED_S1)])[skip:]
+            need(mask(fault, ISOLATED).any() and mask(fault, OVP | BACKUP_OCP).any(),
+                 f"Independent cutoff missed stuck S1: {name}/{amps:g}")
+            need(max(fault["high_v"]) < 12 and max(fault["high_i"]) < 12.5,
+                 f"Stuck S1 backup design budget was exceeded: {name}/{amps:g}")
+            backup_cases[f"{name}/{amps:g}"] = {"max_v": float(max(fault["high_v"])),
+                                                "peak_i": float(max(fault["high_i"])),
+                                                "trigger": "OCP" if mask(fault, BACKUP_OCP).any() else "OVP"}
+    data["stuck_s1_backup_trip"] = backup_cases
 
     cold_cpl = run(library, model(METHOD), [(.055, 20., 7.5, CP, 0)])
     data["cpl_cold_start"] = metrics(cold_cpl)
@@ -290,7 +333,7 @@ def cross_platform(paths):
     need({first["system"], second["system"]} == {"Linux", "Windows"}, "A Windows and a Linux run are required")
     for key in ("baseline", "host", "replay"):
         compare(first["reference"][key], second["reference"][key], SPICE_LIMITS)
-    for group in ("matrix", "additional"):
+    for group in ("matrix", "startups", "additional"):
         need(first[group].keys() == second[group].keys(), f"Mismatched scenario set in {group}")
         for label in first[group]:
             one, two = first[group][label], second[group][label]
@@ -298,6 +341,10 @@ def cross_platform(paths):
             for a, b in zip(one, two, strict=True):
                 ripple = "ripple_v" if "ripple_v" in a else "max_cycle_excursion_v"
                 compare(a, b, {"mean_v": .012, "min_v": .04, "max_v": .04, ripple: .010, "peak_i": .16})
+    for key, a in first["protections"]["stuck_s1_backup_trip"].items():
+        b = second["protections"]["stuck_s1_backup_trip"][key]
+        need(a["trigger"] == b["trigger"], f"Protection trigger changed in {key}")
+        compare(a, b, {"max_v": .020, "peak_i": .08})
     need("firmware" in first and "firmware" in second, "Both hosts need a valid STM32 image")
     print(f"Equivalent matched results from {first['system']} and {second['system']}")
 
@@ -338,6 +385,7 @@ def main():
     result["comparison"] = comparison(library)
     result["protections"] = protections(library)
     result["matrix"] = electrical(library, not args.quick)
+    result["startups"] = startups(library)
     result["additional"] = additional(library, not args.quick)
     result["extended_stress"] = additional(library, not args.quick, stress=True)
     if args.firmware:

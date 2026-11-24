@@ -2,7 +2,7 @@
 #include "control.h"
 #include "gains.h"
 
-// Instrumented bench image. PA8 stays GPIO-low and HRTIM TA1 stays disabled.
+// The default image keeps PA8 low. Scope mode is for a disconnected power stage.
 enum {
     CORE_HZ = 170000000u,
     ADC_TRIGGER_TICKS = 38624u,
@@ -57,12 +57,30 @@ static void configure_clock(void)
     SystemCoreClock = CORE_HZ;
 }
 
-static void configure_adc(void)
+static void configure_pins(void)
 {
-    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN | RCC_AHB2ENR_ADC12EN;
+    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN | RCC_AHB2ENR_GPIOCEN;
     (void)RCC->AHB2ENR;
+    // Active-high fault lines default to asserted if the external board is absent.
+    GPIOA->AFR[1] = (GPIOA->AFR[1] & ~(0xfu << 16)) | (13u << 16); // PA12 FLT1
+    GPIOC->AFR[1] = (GPIOC->AFR[1] & ~(0xfu << 16)) | (3u << 16);  // PC12 EEV1
+    GPIOA->PUPDR = (GPIOA->PUPDR & ~GPIO_PUPDR_PUPD12) | GPIO_PUPDR_PUPD12_0;
+    GPIOC->PUPDR = (GPIOC->PUPDR & ~GPIO_PUPDR_PUPD12) | GPIO_PUPDR_PUPD12_0;
+    GPIOA->MODER = (GPIOA->MODER & ~GPIO_MODER_MODE12) | GPIO_MODER_MODE12_1;
+    GPIOC->MODER = (GPIOC->MODER & ~GPIO_MODER_MODE12) | GPIO_MODER_MODE12_1;
     GPIOA->BSRR = GPIO_BSRR_BR8;
     GPIOA->MODER = (GPIOA->MODER & ~GPIO_MODER_MODE8) | GPIO_MODER_MODE8_0;
+#if PDU_SCOPE_PWM
+    GPIOA->PUPDR = (GPIOA->PUPDR & ~(GPIO_PUPDR_PUPD3 | GPIO_PUPDR_PUPD8))
+        | GPIO_PUPDR_PUPD3_1 | GPIO_PUPDR_PUPD8_1;
+    GPIOA->MODER &= ~GPIO_MODER_MODE3; // Active-high bench enable, default low.
+#endif
+}
+
+static void configure_adc(void)
+{
+    RCC->AHB2ENR |= RCC_AHB2ENR_ADC12EN;
+    (void)RCC->AHB2ENR;
     // PA0/PA1/PA2: ADC1_IN1/2/3. The analog board binds current, Vout, Vin.
     GPIOA->MODER |= GPIO_MODER_MODE0 | GPIO_MODER_MODE1 | GPIO_MODER_MODE2;
     GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPD0 | GPIO_PUPDR_PUPD1 | GPIO_PUPDR_PUPD2);
@@ -128,10 +146,15 @@ void ADC1_2_IRQHandler(void)
     if (!(status & ADC_ISR_JEOS)) {
         return;
     }
+    uint8_t enabled = !pdu_diagnostics.stopped;
+    uint8_t fault = (status & ADC_ISR_JQOVF) != 0;
+#if PDU_SCOPE_PWM
+    enabled = enabled && (GPIOA->IDR & GPIO_IDR_ID3);
+    fault = fault || (HRTIM1_COMMON->ISR & HRTIM_ISR_FLT1);
+#endif
     const ControlSample sample = {
         .vin = (uint16_t)ADC1->JDR3, .vout = (uint16_t)ADC1->JDR2, .current = (uint16_t)ADC1->JDR1,
-        .enabled = !pdu_diagnostics.stopped,
-        .fault = (status & ADC_ISR_JQOVF) || (HRTIM1_COMMON->ISR & HRTIM_ISR_FLT1)
+        .enabled = enabled, .fault = fault
     };
     ADC1->ISR = ADC_ISR_JEOS | ADC_ISR_JEOC | ADC_ISR_JQOVF;
     uint16_t ticks = pdu_step(&control, &pdu_configs[PDU_TYPE_III], sample);
@@ -150,6 +173,13 @@ void ADC1_2_IRQHandler(void)
     }
     pdu_diagnostics.pwm_request = ticks;
     HRTIM1_TIMA->CMP1xR = ticks ? ticks : PDU_PWM_MIN;
+#if PDU_SCOPE_PWM
+    if (ticks && !(GPIOC->IDR & GPIO_IDR_ID12)) {
+        HRTIM1_COMMON->OENR = HRTIM_OENR_TA1OEN;
+    } else {
+        HRTIM1_COMMON->ODISR = HRTIM_ODISR_TA1ODIS;
+    }
+#endif
     ++pdu_diagnostics.good_frames;
     IWDG->KR = 0xaaaau;
 }
@@ -181,8 +211,13 @@ int main(void)
     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
     DWT->CYCCNT = 0;
     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+    configure_pins();
     configure_adc();
     configure_timer();
+#if PDU_SCOPE_PWM
+    GPIOA->AFR[1] = (GPIOA->AFR[1] & ~0xfu) | 13u; // PA8 HRTIM TA1
+    GPIOA->MODER = (GPIOA->MODER & ~GPIO_MODER_MODE8) | GPIO_MODER_MODE8_1;
+#endif
 
     IWDG->KR = 0xccccu;
     IWDG->KR = 0x5555u;

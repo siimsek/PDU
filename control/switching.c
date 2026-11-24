@@ -6,7 +6,7 @@
 #include <stdint.h>
 
 enum { DISABLED = 1, STALE_ADC = 2, ADC_RAIL = 4, SHORTED_S1 = 8, UVLO = 16, ADC_STUCK_LOW = 32 };
-enum { CBC = 1, OVP = 2, WATCHDOG = 4, ISOLATED = 8, SOFT_UVLO = 16, BAD_SAMPLE = 32, DCM = 64, OVERLOAD_LATCH = 128, LOAD_UV_LATCH = 256 };
+enum { CBC = 1, OVP = 2, WATCHDOG = 4, ISOLATED = 8, SOFT_UVLO = 16, BAD_SAMPLE = 32, DCM = 64, OVERLOAD_LATCH = 128, LOAD_UV_LATCH = 256, BACKUP_OCP = 512 };
 enum { LOAD_CR, LOAD_CC, LOAD_CP };
 
 typedef struct {
@@ -15,7 +15,7 @@ typedef struct {
     double noise_v, noise_i, turn_on, turn_off;
     double limit_i, blank_time, ocp_delay, limit_v, ovp_delay, isolate_delay;
     double leak_g, lin_switch, fixed_duty;
-    double initial_v, initial_i, sense_delay;
+    double initial_v, initial_i, sense_delay, backup_limit_i, backup_delay;
     unsigned watchdog_cycles, cbc_latch_cycles;
     uint32_t seed;
     int method;
@@ -108,7 +108,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
     uint32_t rng = m->seed;
     unsigned stale = 0, cbc_score = 0;
     int latched = 0, previous_disable = 0;
-    double ovp_trip = never, ovp_fall = never;
+    double ovp_trip = never, ovp_fall = never, backup_cut = never;
     for (size_t k = 0; k < count; ++k) {
         const Cycle c = cycles[k];
         const double start = (double)k * period;
@@ -118,6 +118,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
             cbc_score = 0;
             ovp_trip = never;
             ovp_fall = never;
+            backup_cut = never;
         }
         if (disabled || (c.flags & UVLO) || c.vin <= 18.0) {
             pwm = 0;
@@ -146,9 +147,13 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
 
         for (double t = 0.; t < period - 1e-15;) {
             const double event_time = start + t;
-            const int isolated = event_time >= ovp_fall + m->isolate_delay;
+            const double cut_at = min(ovp_fall + m->isolate_delay, backup_cut);
+            const int isolated = event_time + 1e-15 >= cut_at;
             if (isolated) {
                 r.flags |= ISOLATED;
+                if (cut_at == backup_cut) {
+                    latched |= BACKUP_OCP;
+                }
             }
             int driven = t >= rise && t < fall && event_time < ovp_fall && !isolated;
             const int on = driven || ((c.flags & SHORTED_S1) && !isolated);
@@ -182,6 +187,9 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
                 fall = min(fall, t + m->ocp_delay);
                 r.flags |= CBC;
             }
+            if (backup_cut == never && s.sense >= m->backup_limit_i) {
+                backup_cut = event_time + m->backup_delay;
+            }
             if (ovp_trip == never && a.voltage >= m->limit_v) {
                 ovp_trip = event_time;
                 ovp_fall = event_time + m->ovp_delay;
@@ -195,7 +203,8 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
             }
             double end = min(period, t + m->max_step);
             const double events[] = {sample_at, rise, fall, rise + m->blank_time,
-                                     ovp_fall - start, ovp_fall + m->isolate_delay - start};
+                                     ovp_fall - start, ovp_fall + m->isolate_delay - start,
+                                     backup_cut - start};
             for (size_t j = 0; j < sizeof events / sizeof events[0]; ++j) {
                 if (events[j] > t + 1e-15) {
                     end = min(end, events[j]);

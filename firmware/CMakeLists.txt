@@ -1,4 +1,5 @@
 enable_language(ASM)
+option(PDU_SCOPE_PWM "Expose TA1 on an unpowered oscilloscope bench" OFF)
 include(FetchContent)
 FetchContent_Declare(stm32g4_device
     URL https://codeload.github.com/STMicroelectronics/cmsis_device_g4/tar.gz/25664ddc3a7624ae9627ae8c4c672073dc5b2539
@@ -17,7 +18,7 @@ add_executable(pdu_g474
     "${device_templates}/gcc/startup_stm32g474xx.s")
 set_target_properties(pdu_g474 PROPERTIES SUFFIX ".elf")
 set_target_properties(pdu_control PROPERTIES POSITION_INDEPENDENT_CODE OFF)
-target_compile_definitions(pdu_g474 PRIVATE STM32G474xx)
+target_compile_definitions(pdu_g474 PRIVATE STM32G474xx PDU_SCOPE_PWM=$<BOOL:${PDU_SCOPE_PWM}>)
 target_include_directories(pdu_g474 SYSTEM PRIVATE
     "${stm32g4_device_SOURCE_DIR}/Include"
     "${arm_cmsis_SOURCE_DIR}/CMSIS/Core/Include")

@@ -1,5 +1,5 @@
 numpy==2.2.6
 scipy==1.15.3
 matplotlib==3.10.3
-cmake==3.31.6
+cmake==4.2.3
 ninja==1.11.1.4
