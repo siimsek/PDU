@@ -40,6 +40,7 @@ uint16_t pdu_step(ControlState *state, const ControlConfig *cfg, ControlSample s
     }
     if (!state->running) {
         state->reference = clamp(vout, 0.0f, PDU_REFERENCE);
+        state->previous_vout = vout;
         state->running = 1;
     }
     state->reference = clamp(state->reference + 0.0044f, 0.0f, PDU_REFERENCE);
@@ -85,7 +86,17 @@ uint16_t pdu_step(ControlState *state, const ControlConfig *cfg, ControlSample s
     error = filter(&state->lead, cfg->lead, error);
     const float scale = cfg->method == PDU_PI ? 1.0f : drive;
     float command = (feedforward + pi(&state->inner, error, cfg->kp, cfg->ki_step)) / scale;
-    const int idle = vout > state->reference + (final_reference ? 0.055f : 0.035f);
+    const float above_reference = vout - state->reference;
+    // Cut incoming energy immediately after a large load release. The
+    // asynchronous cell cannot pull charge back out of the capacitors.
+    if (above_reference > 0.055f && vout - state->previous_vout > 0.025f) {
+        state->release_hold = 1;
+    } else if (above_reference < 0.025f) {
+        state->release_hold = 0;
+    }
+    state->previous_vout = vout;
+    const int idle = state->release_hold || above_reference > 0.14f ||
+        (current < 2.3f && above_reference > (final_reference ? 0.055f : 0.035f));
     float limited = clamp(command, 0.0f, idle ? 0.0f : dmax);
     if (!idle && final_reference && vout < state->reference - 0.16f) {
         // Large load steps need immediate coil current. Bound the requested

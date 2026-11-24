@@ -5,7 +5,7 @@
 // Instrumented bench image. PA8 stays GPIO-low and HRTIM TA1 stays disabled.
 enum {
     CORE_HZ = 170000000u,
-    ADC_TRIGGER_TICKS = 40800u,
+    ADC_TRIGGER_TICKS = 38624u,
     UPDATE_DEADLINE_TICKS = 52224u,
     MISSED_FRAME_LIMIT = 3u
 };

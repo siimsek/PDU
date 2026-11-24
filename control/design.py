@@ -11,7 +11,7 @@ from scipy.signal import ss2tf
 
 from .plant import IRATED, VIN_POINTS, VREF, schematic
 
-SAMPLE = 7.5e-6
+SAMPLE = 7.1e-6
 METHODS = ("pi", "ff_pi", "type_ii", "type_iii", "cascade")
 FREQUENCY = np.geomspace(10, 49_980, 1100)
 MIN_PM, MIN_GM = 40, 6
