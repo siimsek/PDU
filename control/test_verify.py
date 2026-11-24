@@ -25,3 +25,14 @@ class VerificationLogic(unittest.TestCase):
         trace["low_v"][:2100] = 10.7
         with self.assertRaisesRegex(RuntimeError, "steady PWM ripple"):
             list(stage_results(trace, [startup, pulse]))
+
+    def test_window_catches_ripple_between_switching_periods(self):
+        trace = np.ctypeslib.as_array((Result * 2100)())
+        trace["mean_v"], trace["low_v"], trace["high_v"] = 11.0, 10.96, 11.04
+        trace["low_v"][-1], trace["high_v"][-1] = 11.05, 11.13
+        summary = next(stage_results(trace, [(.021, 26., 2., CR, 0)]))
+        self.assertAlmostEqual(summary["ripple_v"], .08)
+        self.assertAlmostEqual(summary["window_pp_v"], .17)
+        trace["mean_v"][-1] = float("nan")
+        with self.assertRaisesRegex(RuntimeError, "Non-finite"):
+            list(stage_results(trace, [(.021, 26., 2., CR, 0)]))

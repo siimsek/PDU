@@ -13,10 +13,11 @@ enum { LOAD_CR, LOAD_CC, LOAD_CP };
 typedef struct {
     double l, dcr, c, esr, cd, rd, ron, vf, diode_r;
     double max_step, sample_time, adc_latency, execute_time, jitter;
-    double noise_v, noise_i, turn_on, turn_off;
+    double noise_v, noise_i, vin_gain, vout_gain, current_gain, vout_offset, current_offset;
+    double turn_on, turn_off;
     double limit_i, blank_time, ocp_delay, limit_v, ovp_delay, isolate_delay;
     double leak_g, lin_switch, fixed_duty;
-    double initial_v, initial_i, sense_delay, backup_limit_i, backup_delay;
+    double initial_v, initial_i, sense_delay, backup_limit_i, backup_delay, short_phase;
     unsigned watchdog_cycles, cbc_latch_cycles;
     uint32_t seed;
     int method;
@@ -29,7 +30,7 @@ typedef struct {
 
 typedef struct {
     double low_v, high_v, mean_v, low_i, high_i, rms_i, pout, loss, duty;
-    double ocp_latency, ovp_latency;
+    double ocp_latency, ovp_latency, cutoff_s;
     unsigned flags;
 } Result;
 
@@ -98,6 +99,8 @@ static uint16_t adc(double voltage, double scale)
 int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *result)
 {
     if (!m || !cycles || !result || m->max_step <= 0. ||
+        m->vin_gain <= 0. || m->vout_gain <= 0. || m->current_gain <= 0. ||
+        m->short_phase < 0. || m->short_phase >= PDU_SAMPLE_PERIOD ||
         m->sense_delay < m->max_step || m->sample_time - m->jitter < 0. ||
         m->sample_time + m->jitter + PDU_VOUT_APERTURE_S >= PDU_SAMPLE_PERIOD ||
         m->adc_latency < PDU_VOUT_APERTURE_S || m->method < 0 || m->method > PDU_CASCADE) {
@@ -109,16 +112,19 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
     ControlState control = {0};
     uint16_t pwm = 0;
     uint32_t rng = m->seed;
-    unsigned stale = 0, cbc_score = 0;
-    int latched = 0, previous_disable = 0;
+    unsigned stale = 0;
+    CurrentLimitHistory current_limits = {0};
+    int latched = 0, previous_disable = 0, previous_short = 0;
     double ovp_trip = never, ovp_fall = never, backup_cut = never;
     for (size_t k = 0; k < count; ++k) {
         const Cycle c = cycles[k];
         const double start = (double)k * period;
         const int disabled = c.flags & DISABLED;
+        const double short_at = c.flags & SHORTED_S1 ? (previous_short ? 0. : m->short_phase) : never;
+        previous_short = c.flags & SHORTED_S1;
         if (previous_disable && !disabled && s.vc < m->limit_v - .35) {
             latched = 0;
-            cbc_score = 0;
+            current_limits = (CurrentLimitHistory){0};
             ovp_trip = never;
             ovp_fall = never;
             backup_cut = never;
@@ -146,7 +152,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
         uint16_t next = pwm;
         int current_sampled = 0, voltage_sampled = 0, processed = 0;
         uint16_t current_sample = 0, voltage_sample = 0;
-        Result r = {.low_v = never, .low_i = never, .ocp_latency = -1., .ovp_latency = -1.};
+        Result r = {.low_v = never, .low_i = never, .ocp_latency = -1., .ovp_latency = -1., .cutoff_s = -1.};
         r.duty = rise < never ? command : 0.;
         if (c.flags & UVLO || c.vin <= 18.0) {
             r.flags |= SOFT_UVLO;
@@ -158,22 +164,30 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
             const int isolated = event_time + 1e-15 >= cut_at;
             if (isolated) {
                 r.flags |= ISOLATED;
+                r.cutoff_s = cut_at;
                 if (cut_at == backup_cut) {
                     latched |= BACKUP_OCP;
                 }
             }
             int driven = t >= rise && t < fall && event_time < ovp_fall && !isolated;
-            const int on = driven || ((c.flags & SHORTED_S1) && !isolated);
+            const int on = driven || (t >= short_at && !isolated);
             const Slope a = slope(m, c, s, on);
             if (!(c.flags & STALE_ADC)) {
                 if (!current_sampled && t + 1e-15 >= current_at) {
                     current_sampled = 1;
-                    current_sample = adc(s.sense + m->noise_i * noise(&rng), PDU_CURRENT_SCALE);
+                    current_sample = adc(s.sense * m->current_gain + m->current_offset +
+                                         m->noise_i * noise(&rng), PDU_CURRENT_SCALE);
                 }
                 if (!voltage_sampled && t + 1e-15 >= voltage_at) {
                     voltage_sampled = 1;
-                    voltage_sample = c.flags & ADC_STUCK_LOW ? 0 :
-                        adc(a.voltage + m->noise_v * noise(&rng), PDU_VOUT_SCALE);
+                    voltage_sample = adc(a.voltage * m->vout_gain + m->vout_offset +
+                                         m->noise_v * noise(&rng), PDU_VOUT_SCALE);
+                    if (c.flags & ADC_STUCK_LOW) {
+                        voltage_sample = 0;
+                    }
+                    if (c.flags & ADC_RAIL) {
+                        voltage_sample = PDU_ADC_MAX;
+                    }
                 }
                 if (!processed && t + 1e-15 >= min(complete_at, PDU_UPDATE_DEADLINE_S)) {
                     processed = 1;
@@ -182,8 +196,8 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
                         next = 0;
                     } else if (k > 0) { // Discard the first DMA sequence after power-up.
                         ControlSample reading = {
-                            adc(c.vin, PDU_VIN_SCALE), voltage_sample, current_sample,
-                            !disabled, (latched || (c.flags & (ADC_RAIL | UVLO))) != 0
+                            adc(c.vin * m->vin_gain, PDU_VIN_SCALE), voltage_sample, current_sample,
+                            !disabled, (latched || (c.flags & UVLO)) != 0
                         };
                         next = pdu_step(&control, &pdu_configs[m->method], reading);
                         if (control.undervoltage_latched) {
@@ -198,7 +212,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
             if (driven && s.i >= m->limit_i && current_cross == never) {
                 current_cross = t;
             }
-            if (driven && cbc_trip == never && t >= rise + m->blank_time && s.sense >= m->limit_i) {
+            if (driven && cbc_trip == never && t >= m->blank_time && s.sense >= m->limit_i) {
                 cbc_trip = t;
                 fall = min(fall, t + m->ocp_delay);
                 r.flags |= CBC;
@@ -219,7 +233,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
             }
             double end = min(period, t + m->max_step);
             const double events[] = {current_at, voltage_at, min(complete_at, PDU_UPDATE_DEADLINE_S),
-                                     rise, fall, rise + m->blank_time,
+                                     rise, fall, m->blank_time, short_at,
                                      ovp_fall - start, ovp_fall + m->isolate_delay - start,
                                      backup_cut - start};
             for (size_t j = 0; j < sizeof events / sizeof events[0]; ++j) {
@@ -256,12 +270,11 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
             r.loss += loss * fraction;
             t += dt;
         }
-        if (r.flags & CBC) {
-            if (++cbc_score >= m->cbc_latch_cycles && m->cbc_latch_cycles != 0) {
-                latched |= OVERLOAD_LATCH;
-            }
-        } else if (k % 4 == 0 && cbc_score > 0) {
-            --cbc_score;
+        const double final_v = slope(m, c, s, 0).voltage;
+        r.low_v = min(r.low_v, final_v);
+        r.high_v = max(r.high_v, final_v);
+        if (pdu_record_cbc(&current_limits, (r.flags & CBC) != 0, m->cbc_latch_cycles)) {
+            latched |= OVERLOAD_LATCH;
         }
         r.flags |= (unsigned)latched;
         r.rms_i = sqrt(r.rms_i);

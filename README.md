@@ -30,11 +30,11 @@ python -m control.verify --firmware
 ```
 
 - `python -m unittest discover -s control` katsayıları, güç katı kaynağını ve donanım eşik bütçelerini sınar.
-- `python -m control.verify --quick --no-spice` hızlı yerel iterasyon içindir. Tam koşu ngspice açık çevrim ve PWM replay, çalışma zarfı, tolerans, arıza, grafik ve isteğe bağlı MCU derlemesini çalıştırır.
+- `python -m control.verify --quick --no-spice` hızlı yerel iterasyon içindir. Tam koşu ngspice açık çevrim, PWM replay, sıcak takma ve S1 ayırma referanslarını, birleşik tolerans köşelerini, arıza testlerini, grafikleri ve isteğe bağlı MCU derlemelerini çalıştırır.
 - `python -m control.design --optimize` CCM katsayı aramasını yeniden üretir. Sonrasında `control.verify` çalıştırılır.
 - `python -m control.interface` ilk donanım eşiklerini ve tolerans bütçelerini hesaplar.
 - `python -m control.verify --strict-stress --firmware` aynı ölçütleri birleşik yüksek ESR stres koşullarına da uygular. Bu koşullar sonuç dosyasında olağan doğrulamada da raporlanır.
 
-Senaryo bazında sonuçlar `build/verify/results.json` dosyasındadır. Aynı klasörde Bode ve geçici rejim SVG’leri, ngspice logları ve `--firmware` ile `target/firmware/pdu_g474.{elf,bin,map}` oluşur. İki platformdan alınan JSON için `python -m control.verify --compare linux.json windows.json`. Workflow aynı komutları Ubuntu ve Windows Server 2025 x64 üzerinde çalıştırır. Windows 11 masaüstü ve fiziksel hedef kart ayrı doğrulama aşamalarıdır.
+Senaryo bazında sonuçlar `build/verify/results.json` dosyasındadır. Aynı klasörde Bode ve geçici rejim SVG’leri, ngspice logları ve `--firmware` ile `target/firmware/pdu_g474.{elf,bin,map}` oluşur. Bu imajda kapı çıkışı kapalıdır. Güç katı bağlantısız tezgâh için ayrı osiloskop imajı `target_scope/firmware/` altındadır. İki platformdan alınan JSON için `python -m control.verify --compare linux.json windows.json`. Workflow aynı komutları Ubuntu ve Windows Server 2025 x64 üzerinde çalıştırır. Windows 11 masaüstü ve fiziksel hedef kart ayrı doğrulama aşamalarıdır.
 
 [Kontrol yöntemleri, model ve donanım arayüzü](control/TASARIM.md)

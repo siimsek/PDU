@@ -22,6 +22,18 @@ static float filter(FilterState *state, Filter cfg, float input)
     return value;
 }
 
+uint8_t pdu_record_cbc(CurrentLimitHistory *history, uint8_t tripped, uint16_t limit)
+{
+    // Accumulate recurrent current limits; allow one point of decay every four PWM periods.
+    if (tripped && history->score < UINT16_MAX) {
+        ++history->score;
+    } else if (!tripped && history->phase == 0 && history->score != 0) {
+        --history->score;
+    }
+    history->phase = (history->phase + 1u) & 3u;
+    return limit != 0 && history->score >= limit;
+}
+
 void pdu_reset(ControlState *state)
 {
     *state = (ControlState){0};

@@ -6,6 +6,7 @@
 #define PDU_PWM_TICKS 54400u
 #define PDU_PWM_MAX 40800u
 #define PDU_PWM_MIN 816u
+#define PDU_CBC_LATCH_CYCLES 96u
 #define PDU_REFERENCE 11.0f
 #define PDU_SAMPLE_PERIOD 0.00001f
 #define PDU_ADC_MAX 4095u
@@ -51,6 +52,12 @@ typedef struct {
     uint8_t enabled, fault;
 } ControlSample;
 
+typedef struct {
+    uint16_t score;
+    uint8_t phase;
+} CurrentLimitHistory;
+
+uint8_t pdu_record_cbc(CurrentLimitHistory *history, uint8_t tripped, uint16_t limit);
 void pdu_reset(ControlState *state);
 uint16_t pdu_step(ControlState *state, const ControlConfig *cfg, ControlSample sample);
 

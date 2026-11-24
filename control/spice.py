@@ -109,5 +109,48 @@ Cin ci 0 {p.cin}
     return results
 
 
+def cutoff_reference(work, p, vin, load_a, initial_i, *, current_limit=11.5,
+                     voltage_limit=11.95, current_delay=.65e-6, voltage_delay=.95e-6):
+    """Solve a precharged S1 short with a hardware cut described as a SPICE circuit."""
+    # Independent current sensor pole, comparators, transport lines and set-only latch.
+    # This is a behavioral trip circuit, with enough source energy to hold Vin stiff.
+    circuit = f"""PDU hard-shorted S1 and independent input isolator
+Vsource vin 0 {vin}
+Sisolate vin fed permit 0 ISOLATOR
+.model ISOLATOR SW(Ron=1u Roff=1G Vt=.5 Vh=0)
+Rs1 fed sw {p.ron}
+Bd 0 sw I=max((v(0,sw)-{p.vf})/{p.diode_r},0)
+Rl sw left {p.dcr}
+L1 left out {p.inductance} IC={initial_i}
+Rco out co {p.esr}
+Co co 0 {p.cout} IC=11
+Rcd out cd {p.rd}
+Cd cd 0 {p.cd} IC=11
+Rload out 0 {1 / (1 / 10000 + load_a / 11)}
+Bcurrent raw_i 0 V=i(L1)
+Ri raw_i current 150
+Ci current 0 1n IC={initial_i}
+Bi cmp_i 0 V=1+tanh((v(current)-{current_limit})/0.002)
+Bv cmp_v 0 V=1+tanh((v(out)-{voltage_limit})/0.0005)
+Rti cmp_i itx 1
+Rtv cmp_v vtx 1
+Ti itx 0 itrip 0 Z0=1 TD={current_delay}
+Tv vtx 0 vtrip 0 Z0=1 TD={voltage_delay}
+Rri itrip 0 1
+Rrv vtrip 0 1
+Blatch 0 stored I=max(0,v(itrip)+v(vtrip)-0.5)*max(0,1-v(stored))
+Clatch stored 0 1n IC=0
+Rclear stored 0 1G
+Bpermit permit 0 V=1-v(stored)
+.options method=gear reltol=1e-5
+.tran 20n 300u 0 20n UIC
+.meas tran peak_v MAX v(out) FROM=0 TO=300u
+.meas tran peak_i MAX i(L1) FROM=0 TO=300u
+.meas tran cutoff_s WHEN v(permit)=0.5 FALL=1
+.end
+"""
+    return execute(work, circuit, ("peak_v", "peak_i", "cutoff_s"))
+
+
 if __name__ == "__main__":
     print(run(Path("build/spice")))

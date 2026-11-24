@@ -16,8 +16,8 @@ add_executable(pdu_g474
     stm32g474.c
     "${device_templates}/system_stm32g4xx.c"
     "${device_templates}/gcc/startup_stm32g474xx.s")
-set_target_properties(pdu_g474 PROPERTIES SUFFIX ".elf")
-set_target_properties(pdu_control PROPERTIES POSITION_INDEPENDENT_CODE OFF)
+set_target_properties(pdu_g474 PROPERTIES SUFFIX ".elf" INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
+set_target_properties(pdu_control PROPERTIES POSITION_INDEPENDENT_CODE OFF INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
 target_compile_definitions(pdu_g474 PRIVATE STM32G474xx PDU_SCOPE_PWM=$<BOOL:${PDU_SCOPE_PWM}>)
 target_include_directories(pdu_g474 SYSTEM PRIVATE
     "${stm32g4_device_SOURCE_DIR}/Include"

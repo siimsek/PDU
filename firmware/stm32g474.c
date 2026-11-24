@@ -19,6 +19,7 @@ typedef struct {
     uint32_t late_frames;
     uint32_t worst_control_cycles;
     uint32_t acquisition_faults;
+    uint32_t cbc_events;
     uint16_t pwm_request;
     uint8_t stopped;
 } Diagnostics;
@@ -27,6 +28,11 @@ volatile Diagnostics pdu_diagnostics;
 static ControlState control;
 static uint32_t previous_frame;
 static unsigned stale_periods;
+#if PDU_SCOPE_PWM
+static volatile uint8_t pending_pulse;
+static uint8_t active_pulse, arm_seen_low;
+static CurrentLimitHistory current_limits;
+#endif
 
 static void wait_for(volatile uint32_t *reg, uint32_t mask, uint32_t expected)
 {
@@ -140,22 +146,28 @@ static void configure_timer(void)
     HRTIM1_TIMA->PERxR = PDU_PWM_TICKS;
     HRTIM1_TIMA->REPxR = 0;
     HRTIM1_TIMA->CMP1xR = PDU_PWM_MIN;
+    HRTIM1_TIMA->CMP2xR = PDU_CBC_BLANK_TICKS;
     HRTIM1_TIMA->CMP4xR = PDU_ADC_TRIGGER_TICKS;
     HRTIM1_TIMA->SETx1R = HRTIM_SET1R_PER;
     HRTIM1_TIMA->RSTx1R = HRTIM_RST1R_CMP1 | HRTIM_RST1R_EXTVNT1;
     HRTIM1_TIMA->OUTxR = HRTIM_OUTR_FAULT1_1;
     HRTIM1_TIMA->FLTxR = HRTIM_FLTR_FLT1EN;
-    HRTIM1_COMMON->EECR1 = HRTIM_EECR1_EE1FAST; // EEV1 pad, active high level
+    HRTIM1_COMMON->EECR1 = 0; // EEV1 pad, active-high level, synchronized for per-timer blanking.
+    HRTIM1_TIMA->EEFxR1 = HRTIM_EEFR1_EE1FLTR_1; // Blank EEV1 from rollover to CMP2.
+    HRTIM1_TIMA->CPT1xCR = HRTIM_CPT1CR_EXEV1CPT;
     HRTIM1_COMMON->FLTINR1 = HRTIM_FLTINR1_FLT1E | HRTIM_FLTINR1_FLT1P;
     HRTIM1_COMMON->ADC1R = HRTIM_ADC1R_AD1TAC4;
     HRTIM1_COMMON->CR2 = HRTIM_CR2_TASWU;
-    HRTIM1_TIMA->TIMxICR = HRTIM_TIMICR_REPC;
+    HRTIM1_TIMA->TIMxICR = HRTIM_TIMICR_REPC | HRTIM_TIMICR_CPT1C;
     HRTIM1_TIMA->TIMxDIER = HRTIM_TIMDIER_REPIE;
 }
 
 static void inhibit(void)
 {
     HRTIM1_COMMON->ODISR = HRTIM_ODISR_TA1ODIS;
+#if PDU_SCOPE_PWM
+    pending_pulse = 0;
+#endif
     pdu_diagnostics.pwm_request = 0;
 }
 
@@ -197,7 +209,12 @@ void DMA1_Channel1_IRQHandler(void)
     uint8_t enabled = !pdu_diagnostics.stopped;
     uint8_t fault = 0;
 #if PDU_SCOPE_PWM
-    enabled = enabled && (GPIOA->IDR & GPIO_IDR_ID3);
+    const uint8_t arm = (GPIOA->IDR & GPIO_IDR_ID3) != 0;
+    // A PA3 line left high must not re-arm the output after an IWDG reset.
+    if (!arm) {
+        arm_seen_low = 1;
+    }
+    enabled = enabled && arm && arm_seen_low;
     fault = fault || (HRTIM1_COMMON->ISR & HRTIM_ISR_FLT1);
 #endif
     const ControlSample sample = {
@@ -222,7 +239,8 @@ void DMA1_Channel1_IRQHandler(void)
     pdu_diagnostics.pwm_request = ticks;
     HRTIM1_TIMA->CMP1xR = ticks ? ticks : PDU_PWM_MIN;
 #if PDU_SCOPE_PWM
-    if (ticks && !(GPIOC->IDR & GPIO_IDR_ID12)) {
+    pending_pulse = ticks && !(GPIOC->IDR & GPIO_IDR_ID12);
+    if (pending_pulse) {
         HRTIM1_COMMON->OENR = HRTIM_OENR_TA1OEN;
     } else {
         HRTIM1_COMMON->ODISR = HRTIM_ODISR_TA1ODIS;
@@ -234,7 +252,16 @@ void DMA1_Channel1_IRQHandler(void)
 
 void HRTIM1_TIMA_IRQHandler(void)
 {
-    HRTIM1_TIMA->TIMxICR = HRTIM_TIMICR_REPC;
+#if PDU_SCOPE_PWM
+    const uint8_t limited = active_pulse && (HRTIM1_TIMA->TIMxISR & HRTIM_TIMISR_CPT1);
+    active_pulse = pending_pulse;
+    pdu_diagnostics.cbc_events += limited;
+    if (pdu_record_cbc(&current_limits, limited, PDU_CBC_LATCH_CYCLES)) {
+        pdu_diagnostics.stopped = 1;
+        inhibit();
+    }
+#endif
+    HRTIM1_TIMA->TIMxICR = HRTIM_TIMICR_REPC | HRTIM_TIMICR_CPT1C;
     const uint32_t frame = pdu_diagnostics.good_frames;
     if (frame == previous_frame) {
         ++pdu_diagnostics.missed_frames;

@@ -45,9 +45,11 @@ jobs:
             build/verify/baseline/power.log
             build/verify/replay/power.log
             build/verify/hotplug/*/power.log
+            build/verify/cutoff/*/power.log
             build/verify/target/firmware/pdu_g474.elf
             build/verify/target/firmware/pdu_g474.bin
             build/verify/target/firmware/pdu_g474.map
+            build/verify/target_scope/firmware/pdu_g474.*
 
   numerical-equivalence:
     needs: native

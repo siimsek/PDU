@@ -1,5 +1,7 @@
 """Build and validate the PDU on a native host. Results are written as JSON."""
 import argparse
+import hashlib
+from itertools import product
 from dataclasses import replace
 import json
 import math
@@ -14,7 +16,8 @@ import sys
 import numpy as np
 
 from . import spice
-from .configure import METHODS
+from .configure import (ADC_CLOCK_HZ, ADC_FRAME_S, ADC_TRIGGER_S, CURRENT_APERTURE_S,
+                        EXECUTION_BUDGET_S, METHODS, UPDATE_DEADLINE_S, VOUT_APERTURE_S)
 from .design import corners, evaluate, FREQUENCY, responses, sampled, loops
 from .interface import Interface
 from .plant import ROOT, VIN_POINTS
@@ -61,12 +64,13 @@ def windows_generator():
     return generators[major]
 
 
-def build(destination, firmware=False):
+def build(destination, firmware=False, scope=False):
     cmake = shutil.which("cmake")
     need(cmake is not None, "Install the pinned Python requirements and activate the environment")
     flags = ["-DCMAKE_BUILD_TYPE=Release", f"-DPython3_EXECUTABLE={sys.executable}"]
     if firmware:
-        flags.extend(("-G", "Ninja"))
+        flags.extend(("-G", "Ninja", f"-DPDU_SCOPE_PWM={'ON' if scope else 'OFF'}",
+                      f"-DFETCHCONTENT_BASE_DIR={destination.parent / 'target_deps'}"))
         if not (destination / "CMakeCache.txt").exists():
             flags.append("-DCMAKE_TOOLCHAIN_FILE=firmware/arm-none-eabi.cmake")
     elif platform.system() == "Windows":
@@ -88,7 +92,8 @@ def firmware_metrics(directory):
     for handler in (reset, dma, adc, timer):
         need(handler & 1 and 0x08000000 < handler < 0x08000000 + len(image),
              f"Invalid Thumb vector {handler:#x}")
-    return {"bytes": len(image), "arm_gcc": version("arm-none-eabi-gcc")}
+    return {"bytes": len(image), "arm_gcc": version("arm-none-eabi-gcc"),
+            "sha256": hashlib.sha256(image).hexdigest()}
 
 
 def version(executable):
@@ -98,9 +103,13 @@ def version(executable):
 
 
 def stage_results(data, stages):
+    counts = [round(stage[0] / 1e-5) for stage in stages]
+    need(all(count > 0 for count in counts) and len(data) == sum(counts),
+         "Trace length does not match its PWM stages")
+    for field in ("low_v", "high_v", "mean_v", "high_i", "rms_i", "pout", "loss"):
+        need(np.isfinite(data[field]).all(), f"Non-finite waveform field {field}")
     offset = 0
-    for number, stage in enumerate(stages):
-        count = round(stage[0] / 1e-5)
+    for number, (stage, count) in enumerate(zip(stages, counts)):
         chunk = data[offset:offset + count]
         offset += count
         summary = metrics(chunk, min(200, len(chunk)))
@@ -155,9 +164,13 @@ def additional(library, full, stress=False):
     if not stress:
         configurations.extend([
             ("sense_shunt", model(METHOD, replace(nominal, dcr=nominal.dcr + interface.current_shunt_ohm))),
-            ("noise", model(METHOD, jitter=120e-9, noise_v=.008, noise_i=.05,
-                            execute_time=.50e-6)),
+            ("noise", model(METHOD, jitter=120e-9, noise_v=.008, noise_i=.05)),
         ])
+        for v_sign, i_sign in product((-1, 1), repeat=2):
+            configurations.append((f"measurement-{v_sign:+d}-{i_sign:+d}", model(
+                METHOD, vin_gain=1 + v_sign * .01, vout_gain=1 + v_sign * .004,
+                vout_offset=v_sign * .008, current_gain=1 + i_sign * .015,
+                current_offset=i_sign * .03, jitter=120e-9, noise_v=.008, noise_i=.05)))
     rng = np.random.default_rng(474)
     for index in range(48 if full else 8):
         base = corners()["nominal"]
@@ -181,6 +194,31 @@ def additional(library, full, stress=False):
             results[label] = {"failure": str(error)}
     return results
 
+
+
+def component_endpoints(library, full):
+    """Check coupled tolerance limits, not only independently named and random corners."""
+    nominal = corners()["nominal"]
+    combinations = (product((.7, 1.2), (.8, 1.2), (.8, 1.2), (.15, .60), (.010, .055))
+                    if full else ((.7, .8, .8, .60, .055), (1.2, .8, .8, .60, .010)))
+    cases = {}
+    for lf, co, cd, rd, esr in combinations:
+        corner = replace(nominal, inductance=nominal.inductance * lf, cout=nominal.cout * co,
+                         cd=nominal.cd * cd, rd=rd, esr=esr)
+        config = model(METHOD, corner, noise_v=.008, noise_i=.04, jitter=70e-9,
+                       limit_i=9.55, limit_v=11.75)
+        for vin in (20, 26):
+            label = f"{lf:g}/{co:g}/{cd:g}/{rd:g}/{esr:g}/{vin:g}"
+            stages = [(.042, vin, .2, CP, 0), (.021, vin, 7.5, CP, 0),
+                      (.035, vin, 0., CP, 0), (.025, vin, 2., CP, 0)]
+            try:
+                result = list(stage_results(run(library, config, stages), stages))
+                worst = max(row["window_pp_v"] for row in result)
+                need(worst <= .165, f"2 ms window ripple {worst:.6f} V")
+                cases[label] = result
+            except RuntimeError as error:
+                cases[label] = {"failure": str(error)}
+    return cases
 
 def protections(library):
     data = {}
@@ -215,7 +253,7 @@ def protections(library):
         need(not waveform["duty"][k:k + 1800].any(), "UVLO or shutdown retained PWM")
     need(abs(waveform["mean_v"][-200:].mean() - 11.) < .11, "Failed to restart from a prebiased state")
 
-    late = run(library, model(METHOD, execute_time=1.22e-6), [start])
+    late = run(library, model(METHOD, execute_time=1.60e-6), [start])
     need(mask(late, WATCHDOG).any() and not late["duty"].any(), "Late ADC frame escaped timing protection")
 
     for isolation in (1e9, 2e-6, 10e-6):
@@ -230,18 +268,21 @@ def protections(library):
 
     backup_cases = {}
     for name, corner in corners().items():
-        for amps in (0., 2., 7.5):
-            cfg = model(METHOD, corner, backup_limit_i=11.5, backup_delay=.65e-6,
-                        limit_v=11.95, isolate_delay=.6e-6)
-            settled = (.042, 26., amps, CR, 0)
-            fault = run(library, cfg, [settled, (.002, 26., amps, CR, SHORTED_S1)])[skip:]
-            need(mask(fault, ISOLATED).any() and mask(fault, OVP | BACKUP_OCP).any(),
-                 f"Independent cutoff missed stuck S1: {name}/{amps:g}")
-            need(max(fault["high_v"]) < 12 and max(fault["high_i"]) < 12.5,
-                 f"Stuck S1 backup design budget was exceeded: {name}/{amps:g}")
-            backup_cases[f"{name}/{amps:g}"] = {"max_v": float(max(fault["high_v"])),
-                                                "peak_i": float(max(fault["high_i"])),
-                                                "trigger": "OCP" if mask(fault, BACKUP_OCP).any() else "OVP"}
+        for amps, after in ((0., 0.), (2., 2.), (7.5, 7.5), (7.5, 0.)):
+            for phase_us in (0., 2.5, 5., 7.5):
+                label = f"{name}/{amps:g}-{after:g}/{phase_us:g}"
+                cfg = model(METHOD, corner, backup_limit_i=11.5, backup_delay=.65e-6,
+                            limit_v=11.95, isolate_delay=.6e-6, short_phase=phase_us * 1e-6)
+                settled = (.042, 26., amps, CR, 0)
+                fault = run(library, cfg, [settled, (.002, 26., after, CR, SHORTED_S1)])[skip:]
+                need(mask(fault, ISOLATED).any() and mask(fault, OVP | BACKUP_OCP).any(),
+                     f"Independent cutoff missed stuck S1: {label}")
+                max_v = float(max(fault["high_v"]))
+                peak_i = float(max(fault["high_i"]))
+                need(max_v < 12 and peak_i < 12.5,
+                     f"Stuck S1 backup exceeded its budget in {label}: {max_v:.5f} V, {peak_i:.4f} A")
+                backup_cases[label] = {"max_v": max_v, "peak_i": peak_i,
+                                       "trigger": "OCP" if mask(fault, BACKUP_OCP).any() else "OVP"}
     data["stuck_s1_backup_trip"] = backup_cases
 
     cold_cpl = run(library, model(METHOD), [(.055, 20., 7.5, CP, 0)])
@@ -275,6 +316,7 @@ def switch_reference(library, directory, skip_spice):
     output["replay"] = spice.replay(directory / "replay", data["duty"], config.turn_on,
                                    config.turn_off, .2, 7.5, .034)
     compare(output["replay"], host, {**SPICE_LIMITS, "ripple_v": .004})
+    output["cutoff"] = cutoff_reference(library, directory / "cutoff")
     output["hotplug"] = spice.hotplug(directory / "hotplug")
     peak = {k: item["peak_v"] for k, item in output["hotplug"].items()}
     # The overdamped trace approaches the source voltage from below.
@@ -283,6 +325,24 @@ def switch_reference(library, directory, skip_spice):
     need(peak["inductive"] > 39., f"Expected cable ringing in the high-Q case, got {peak['inductive']} V")
     return output
 
+
+
+def cutoff_reference(library, directory):
+    result = {}
+    for name, amps, initial_i in (("nominal", 2., 2.), ("low_lc", 7.5, 8.9), ("cold_esr", 0., 0.)):
+        corner = corners()[name]
+        config = model(METHOD, corner, initial_v=11., initial_i=initial_i, backup_limit_i=11.5,
+                       backup_delay=.65e-6, limit_v=11.95, isolate_delay=.60e-6, max_step=25e-9)
+        fault = run(library, config, [(.0003, 26., amps, CR, DISABLED | SHORTED_S1)])
+        times = fault["cutoff_s"][fault["cutoff_s"] >= 0]
+        need(len(times) > 0, f"C model did not cut input in {name}")
+        expected = {"peak_v": float(max(fault["high_v"])), "peak_i": float(max(fault["high_i"])),
+                    "cutoff_s": float(min(times))}
+        actual = spice.cutoff_reference(directory / name, corner, 26., amps, initial_i)
+        compare(actual, expected, {"peak_v": .005, "peak_i": .035, "cutoff_s": .10e-6})
+        need(actual["peak_v"] < 12., f"ngspice reached 12 V before independent cutoff in {name}")
+        result[name] = {"spice": actual, "host": expected}
+    return result
 
 def comparison(library):
     gains = json.loads((ROOT / "control/gains.json").read_text(encoding="ascii"))
@@ -339,21 +399,31 @@ def cross_platform(paths):
     need({first["system"], second["system"]} == {"Linux", "Windows"}, "A Windows and a Linux run are required")
     for key in ("baseline", "host", "replay"):
         compare(first["reference"][key], second["reference"][key], SPICE_LIMITS)
+    for key, value in first["reference"]["cutoff"].items():
+        for solver in ("spice", "host"):
+            compare(value[solver], second["reference"]["cutoff"][key][solver],
+                    {"peak_v": .003, "peak_i": .025, "cutoff_s": .10e-6})
     for key, value in first["reference"]["hotplug"].items():
         compare(value, second["reference"]["hotplug"][key], {"peak_v": .05, "peak_i": 1.})
-    for group in ("matrix", "startups", "additional"):
+    for group in ("matrix", "startups", "additional", "component_endpoints", "extended_stress"):
         need(first[group].keys() == second[group].keys(), f"Mismatched scenario set in {group}")
         for label in first[group]:
             one, two = first[group][label], second[group][label]
-            need(isinstance(one, list) and isinstance(two, list), f"Missing successful platform results for {label}")
+            if group == "extended_stress" and isinstance(one, dict) and isinstance(two, dict):
+                need("failure" in one and "failure" in two, f"Invalid stress result for {label}")
+                continue
+            need(isinstance(one, list) and isinstance(two, list), f"Different platform outcomes for {group}/{label}")
             for a, b in zip(one, two, strict=True):
                 ripple = "ripple_v" if "ripple_v" in a else "max_cycle_excursion_v"
-                compare(a, b, {"mean_v": .012, "min_v": .04, "max_v": .04, ripple: .010, "peak_i": .16})
+                compare(a, b, {"mean_v": .012, "min_v": .04, "max_v": .04, ripple: .010,
+                               "window_pp_v": .015, "peak_i": .16})
     for key, a in first["protections"]["stuck_s1_backup_trip"].items():
         b = second["protections"]["stuck_s1_backup_trip"][key]
         need(a["trigger"] == b["trigger"], f"Protection trigger changed in {key}")
         compare(a, b, {"max_v": .020, "peak_i": .08})
-    need("firmware" in first and "firmware" in second, "Both hosts need a valid STM32 image")
+    for key in ("firmware", "scope_firmware"):
+        need(key in first and key in second, f"Both hosts need a valid {key} image")
+        need(first[key]["sha256"] == second[key]["sha256"], f"Mismatched {key} ARM binary hashes")
     print(f"Equivalent matched results from {first['system']} and {second['system']}")
 
 
@@ -389,6 +459,13 @@ def main():
     if result["system"] == "Linux":
         result["distribution"] = platform.freedesktop_os_release().get("PRETTY_NAME", "Linux")
     result["interface_budgets"] = Interface().calculate()
+    result["adc_timing"] = {
+        "clock_hz": ADC_CLOCK_HZ, "trigger_s": ADC_TRIGGER_S,
+        "current_sample_s": ADC_TRIGGER_S + CURRENT_APERTURE_S,
+        "voltage_sample_s": ADC_TRIGGER_S + VOUT_APERTURE_S,
+        "conversion_s": ADC_FRAME_S, "execution_budget_s": EXECUTION_BUDGET_S,
+        "update_deadline_s": UPDATE_DEADLINE_S,
+    }
     result["reference"] = switch_reference(library, directory, args.no_spice)
     result["comparison"] = comparison(library)
     result["protections"] = protections(library)
@@ -396,20 +473,26 @@ def main():
     result["startups"] = startups(library)
     result["additional"] = additional(library, not args.quick)
     result["extended_stress"] = additional(library, not args.quick, stress=True)
+    result["component_endpoints"] = component_endpoints(library, not args.quick)
     if args.firmware:
         build(directory / "target", firmware=True)
         result["firmware"] = firmware_metrics(directory / "target")
+        build(directory / "target_scope", firmware=True, scope=True)
+        result["scope_firmware"] = firmware_metrics(directory / "target_scope")
+        need(result["firmware"]["sha256"] != result["scope_firmware"]["sha256"],
+             "Safe and scope images must have different content")
     plots(directory, library)
     (directory / "results.json").write_text(json.dumps(result, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     def failures(group):
         return [key for key, outcome in result[group].items() if isinstance(outcome, dict) and "failure" in outcome]
 
-    rejected = [*failures("matrix"), *failures("additional")]
+    rejected = [*failures("matrix"), *failures("additional"), *failures("component_endpoints")]
     stress_failures = failures("extended_stress")
     if args.strict_stress:
         rejected.extend(stress_failures)
     print(f"Results: {directory / 'results.json'} ({len(result['matrix'])} matrix, "
-          f"{len(result['additional'])} timing/tolerance cases)")
+          f"{len(result['startups'])} startups, {len(result['additional'])} timing/tolerance cases, "
+          f"{len(result['component_endpoints'])} coupled endpoints)")
     print(f"Extended high-ESR stress failures: {len(stress_failures)} of {len(result['extended_stress'])}")
     need(not rejected, "Electrical test failures: " + ", ".join(rejected))
 

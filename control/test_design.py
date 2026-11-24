@@ -35,11 +35,11 @@ class ControllerDesign(unittest.TestCase):
 class TimingBudget(unittest.TestCase):
     def test_scan_pair_apertures_and_deadline(self):
         from control.configure import (
-            ADC_CLOCK_HZ, ADC_FRAME_S, ADC_RANK_CYCLES, ADC_TRIGGER_S,
+            ADC_CLOCK_HZ, ADC_FRAME_S, ADC_RANK_CYCLES, ADC_TRIGGER_S, EXECUTION_BUDGET_S,
             CURRENT_APERTURE_S, UPDATE_DEADLINE_S, VOUT_APERTURE_S,
         )
         self.assertAlmostEqual(VOUT_APERTURE_S - CURRENT_APERTURE_S,
                                2 * ADC_RANK_CYCLES / ADC_CLOCK_HZ, places=12)
         ready = ADC_TRIGGER_S + ADC_FRAME_S
-        self.assertLess(ready + .65e-6 + 120e-9, UPDATE_DEADLINE_S)
-        self.assertGreaterEqual(ready + 1.22e-6, UPDATE_DEADLINE_S)
+        self.assertLess(ready + EXECUTION_BUDGET_S + 120e-9, UPDATE_DEADLINE_S)
+        self.assertGreaterEqual(ready + 1.60e-6, UPDATE_DEADLINE_S)
