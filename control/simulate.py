@@ -9,9 +9,9 @@ from .configure import ADC_FRAME_S, ADC_TRIGGER_S, CBC_BLANK_S, EXECUTION_BUDGET
 from .design import REFERENCE
 
 CR, CC, CP = range(3)
-DISABLED, STALE_ADC, ADC_RAIL, SHORTED_S1, UVLO, ADC_STUCK_LOW = (1, 2, 4, 8, 16, 32)
+DISABLED, STALE_ADC, ADC_RAIL, SHORTED_S1, UVLO, ADC_STUCK_LOW, ADC_OVERRUN = (1, 2, 4, 8, 16, 32, 64)
 CBC, OVP, WATCHDOG, ISOLATED, SOFT_UVLO, BAD_SAMPLE, DCM, OVERLOAD_LATCH, LOAD_UV_LATCH = (1, 2, 4, 8, 16, 32, 64, 128, 256)
-BACKUP_OCP = 512
+BACKUP_OCP, ACQUISITION_FAULT = (512, 1024)
 PERIOD = REFERENCE.period
 
 
@@ -104,7 +104,7 @@ def metrics(data, settle_cycles=300):
         "settle_ms": None if settled == len(data) else settled * PERIOD * 1000,
         "estimated_efficiency": float(tail["pout"].mean() / max(1e-20, (tail["pout"] + tail["loss"]).mean())),
         "loss_w": float(tail["loss"].mean()),
-        "fault_cycles": int(np.count_nonzero(data["flags"] & (OVP | WATCHDOG | OVERLOAD_LATCH | LOAD_UV_LATCH | BACKUP_OCP))),
+        "fault_cycles": int(np.count_nonzero(data["flags"] & (OVP | WATCHDOG | OVERLOAD_LATCH | LOAD_UV_LATCH | BACKUP_OCP | ACQUISITION_FAULT))),
         "cbc_cycles": int(np.count_nonzero(mask(data, CBC))),
         "dcm_cycles": int(np.count_nonzero(mask(data, DCM))),
     }

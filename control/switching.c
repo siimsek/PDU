@@ -6,8 +6,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-enum { DISABLED = 1, STALE_ADC = 2, ADC_RAIL = 4, SHORTED_S1 = 8, UVLO = 16, ADC_STUCK_LOW = 32 };
-enum { CBC = 1, OVP = 2, WATCHDOG = 4, ISOLATED = 8, SOFT_UVLO = 16, BAD_SAMPLE = 32, DCM = 64, OVERLOAD_LATCH = 128, LOAD_UV_LATCH = 256, BACKUP_OCP = 512 };
+enum { DISABLED = 1, STALE_ADC = 2, ADC_RAIL = 4, SHORTED_S1 = 8, UVLO = 16, ADC_STUCK_LOW = 32, ADC_OVERRUN = 64 };
+enum { CBC = 1, OVP = 2, WATCHDOG = 4, ISOLATED = 8, SOFT_UVLO = 16, BAD_SAMPLE = 32, DCM = 64, OVERLOAD_LATCH = 128, LOAD_UV_LATCH = 256, BACKUP_OCP = 512, ACQUISITION_FAULT = 1024 };
 enum { LOAD_CR, LOAD_CC, LOAD_CP };
 
 typedef struct {
@@ -134,7 +134,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
             stale = 0;
             pdu_reset(&control);
         }
-        stale = c.flags & STALE_ADC ? stale + 1 : 0;
+        // The timer observes missing frames only after the corresponding period ends.
         if (m->watchdog_cycles && stale >= m->watchdog_cycles) {
             latched |= WATCHDOG;
         }
@@ -193,6 +193,9 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
                     processed = 1;
                     if (complete_at >= PDU_UPDATE_DEADLINE_S) {
                         latched |= WATCHDOG;
+                        next = 0;
+                    } else if (c.flags & ADC_OVERRUN) {
+                        latched |= ACQUISITION_FAULT;
                         next = 0;
                     } else if (k > 0) { // Discard the first DMA sequence after power-up.
                         ControlSample reading = {
@@ -280,6 +283,8 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
         r.rms_i = sqrt(r.rms_i);
         r.loss += r.duty > 0. ? m->lin_switch * c.vin * r.high_i / (2 * period) : 0.;
         result[k] = r;
+        const int missing_frame = k == 0 || (c.flags & (STALE_ADC | ADC_OVERRUN));
+        stale = missing_frame ? stale + 1 : 0;
         pwm = latched ? 0 : next;
     }
     return 0;

@@ -23,13 +23,14 @@ from .interface import Interface
 from .plant import ROOT, VIN_POINTS
 from .tools import ARM_LINUX
 from .simulate import (
-    ADC_RAIL, ADC_STUCK_LOW, BACKUP_OCP, BAD_SAMPLE, CBC, CC, CP, CR, DCM, DISABLED,
+    ACQUISITION_FAULT, ADC_OVERRUN, ADC_RAIL, ADC_STUCK_LOW, BACKUP_OCP, BAD_SAMPLE,
+    CBC, CC, CP, CR, DCM, DISABLED,
     ISOLATED, LOAD_UV_LATCH, OVP, OVERLOAD_LATCH, SHORTED_S1, STALE_ADC,
     WATCHDOG, host_library, mask, metrics, model, run,
 )
 
 METHOD = "type_iii"
-LATCHES = OVP | WATCHDOG | LOAD_UV_LATCH | OVERLOAD_LATCH | BACKUP_OCP
+LATCHES = OVP | WATCHDOG | LOAD_UV_LATCH | OVERLOAD_LATCH | BACKUP_OCP | ACQUISITION_FAULT
 SPICE_LIMITS = {"mean_v": .02, "ripple_v": .002, "peak_i": .05, "min_i": .05}
 LTSPICE_BASELINE = {"mean_v": 11.000, "ripple_v": .0557, "peak_i": 8.44, "min_i": 6.56}
 
@@ -238,13 +239,19 @@ def protections(library):
                                     "latency_us": float(max(fault["ocp_latency"]) * 1e6),
                                     "latch_ms": int(latched[0]) * .01}
 
-    for flag in (STALE_ADC, ADC_RAIL, ADC_STUCK_LOW):
+    for flag, expected in ((STALE_ADC, WATCHDOG), (ADC_RAIL, BAD_SAMPLE),
+                           (ADC_STUCK_LOW, OVP), (ADC_OVERRUN, ACQUISITION_FAULT)):
         fault = run(library, model(METHOD), [start, (.01, 26., 2., CR, flag)])[skip:]
-        expected = {STALE_ADC: WATCHDOG, ADC_RAIL: BAD_SAMPLE, ADC_STUCK_LOW: OVP}[flag]
         indices = np.flatnonzero(mask(fault, expected))
         need(len(indices) and not fault["duty"][-20:].any(), f"ADC fault {flag} failed to stop PWM")
         need(max(fault["high_v"]) < 12, f"ADC fault {flag} exceeded 12 V")
+        if flag == STALE_ADC:
+            need(indices[0] == 3, "Missing-frame latch must follow three completed periods")
         data[f"adc_{flag}"] = {"stop_ms": int(indices[0]) * .01, "max_v": float(max(fault["high_v"]))}
+    recover = run(library, model(METHOD), [start, (.00003, 26., 2., CR, STALE_ADC),
+        (.005, 26., 2., CR, 0), (.018, 26., 2., CR, DISABLED), (.04, 26., 2., CR, 0)])
+    need(not recover["duty"][skip + 3:skip + 503].any(), "A restored ADC stream cleared a latched fault")
+    need(abs(recover["mean_v"][-200:].mean() - 11) < .11, "Explicit rearm failed after missing frames")
 
     restart = [start, (.018, 17., 2., CR, 0), (.04, 20, 2., CR, 0),
                (.018, 20., 2., CR, DISABLED), (.04, 20., 2., CR, 0)]
@@ -417,8 +424,15 @@ def cross_platform(paths):
                 ripple = "ripple_v" if "ripple_v" in a else "max_cycle_excursion_v"
                 compare(a, b, {"mean_v": .012, "min_v": .04, "max_v": .04, ripple: .010,
                                "window_pp_v": .015, "peak_i": .16})
-    for key, a in first["protections"]["stuck_s1_backup_trip"].items():
-        b = second["protections"]["stuck_s1_backup_trip"][key]
+    one, two = first["protections"], second["protections"]
+    need(one.keys() == two.keys(), "Mismatched protection scenario set")
+    for key in one:
+        if key.startswith("adc_"):
+            compare(one[key], two[key], {"stop_ms": .02, "max_v": .030})
+        elif key.startswith("short_"):
+            compare(one[key], two[key], {"latency_us": .10, "latch_ms": .03, "peak_i": .080})
+    for key, a in one["stuck_s1_backup_trip"].items():
+        b = two["stuck_s1_backup_trip"][key]
         need(a["trigger"] == b["trigger"], f"Protection trigger changed in {key}")
         compare(a, b, {"max_v": .020, "peak_i": .08})
     for key in ("firmware", "scope_firmware"):
