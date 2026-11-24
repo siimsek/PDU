@@ -6,4 +6,4 @@
 - Araştır, hesapla, modelle, uygula, test et, doğrula ve gerekirse optimize et. Aşama geçişinde kritik testleri çalıştır. Açık hataları, model sınırlarını ve sonraki kapıyı yol haritasında güncelle.
 - Windows 11 ve CachyOS için aynı kaynaklar ve Python/CMake giriş noktaları kullanılır. Göreli yollar ve UTF-8 kullan. Yerel ortam ve derleme çıktıları Git dışında kalır.
 - Üretici açıklamasını, hesabı, simülasyonu, varsayımı ve fiziksel ölçümü ayrı ayrı belirt. Ölçütü başarısız bir koşuyu geçirmek için gevşetme. Çalıştırılan platformu ve araç sürümünü kaydet.
-- Firmware kapı sürüşü, tanımlı donanım kilitleri ve fiziksel doğrulama tamamlanana kadar güvenli durumda tutulur. Prototipte bağımsız akım sınırı ve aşırı gerilim kapatma yolu sınanır.
+- Firmware kapı sürüşü, tanımlı donanım kilitleri ve fiziksel doğrulama tamamlanana kadar güvenli durumda tutulur. Yük bağlantı noktasının kesin tavanı 12,000 V. En kötü arıza, tolerans ve ölçüm belirsizliği dahil pozitif gerilim payı gösterilene kadar prototip kapısı açık kalır. Bağımsız akım sınırı ve aşırı gerilim kapatma yolu simülasyon ve tezgâhta sınanır.

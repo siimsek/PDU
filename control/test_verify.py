@@ -3,10 +3,19 @@ import unittest
 import numpy as np
 
 from control.simulate import CR, Result
-from control.verify import compare, stage_results
+from control.verify import compare, is_windows_11_x64, stage_results
 
 
 class VerificationLogic(unittest.TestCase):
+    def test_windows_11_guard_requires_x64_workstation(self):
+        desktop = {"system": "Windows", "system_release": "11", "windows_product_type": 1,
+                   "machine": "AMD64", "python_bits": 64}
+        self.assertTrue(is_windows_11_x64(desktop))
+        for key, value in (("system", "Linux"), ("system_release", "10"),
+                           ("windows_product_type", 3), ("machine", "ARM64"), ("python_bits", 32)):
+            with self.subTest(key=key):
+                self.assertFalse(is_windows_11_x64({**desktop, key: value}))
+
     def test_numeric_comparison_rejects_outside_tolerance_and_nan(self):
         compare({"sample": 11.004}, {"sample": 11.}, {"sample": .005})
         for value in (11.006, float("nan")):

@@ -103,6 +103,32 @@ def version(executable):
     return next((line for line in result.stdout.splitlines() if line.strip("* ")), "unknown")
 
 
+def host_metadata():
+    result = {"system": platform.system(), "system_release": platform.release(),
+              "system_version": platform.version(), "machine": platform.machine(),
+              "python": platform.python_version(), "python_bits": struct.calcsize("P") * 8}
+    if result["system"] == "Windows":
+        result["windows_product_type"] = sys.getwindowsversion().product_type
+    elif result["system"] == "Linux":
+        result["distribution"] = platform.freedesktop_os_release().get("PRETTY_NAME", "Linux")
+    return result
+
+
+def is_windows_11_x64(host):
+    return (host["system"] == "Windows" and host["system_release"] == "11"
+            and host["windows_product_type"] == 1
+            and host["machine"].lower() in ("amd64", "x86_64") and host["python_bits"] == 64)
+
+
+def source_commit():
+    git = shutil.which("git")
+    if git is None:
+        return None
+    result = subprocess.run([git, "rev-parse", "--verify", "HEAD"], cwd=ROOT,
+                            capture_output=True, text=True, timeout=20)
+    return result.stdout.strip() if result.returncode == 0 else None
+
+
 def stage_results(data, stages):
     counts = [round(stage[0] / 1e-5) for stage in stages]
     need(all(count > 0 for count in counts) and len(data) == sum(counts),
@@ -221,6 +247,25 @@ def component_endpoints(library, full):
                 cases[label] = {"failure": str(error)}
     return cases
 
+def cutoff_sensitivity(library):
+    """Resolve timestep sensitivity near the 12 V ceiling in the cold ESR corner."""
+    corner = corners()["cold_esr"]
+    cold_load_release = [(.042, 26., 7.5, CR, 0), (.002, 26., 0., CR, SHORTED_S1)]
+    result = {}
+    for threshold, delay_us in ((11.950, .8), (11.926, .8), (11.926, 2.)):
+        for step_ns in (100, 50, 25, 12.5, 6.25):
+            config = model(METHOD, corner, max_step=step_ns * 1e-9, backup_limit_i=11.5,
+                           backup_delay=.65e-6, limit_v=threshold, isolate_delay=delay_us * 1e-6,
+                           short_phase=5e-6)
+            trace = run(library, config, cold_load_release)[4200:]
+            label = f"{threshold:.3f} V/{delay_us:g} us/{step_ns:g} ns"
+            peak_v = float(max(trace["high_v"]))
+            need(mask(trace, ISOLATED).any() and np.isfinite(trace["high_v"]).all(),
+                 f"Invalid independent cutoff sensitivity trace in {label}")
+            result[label] = {"max_v": peak_v, "margin_v": 12. - peak_v}
+    return result
+
+
 def protections(library):
     data = {}
     plant = corners()["low_lc"]
@@ -291,6 +336,7 @@ def protections(library):
                 backup_cases[label] = {"max_v": max_v, "peak_i": peak_i,
                                        "trigger": "OCP" if mask(fault, BACKUP_OCP).any() else "OVP"}
     data["stuck_s1_backup_trip"] = backup_cases
+    data["stuck_s1_cutoff_sensitivity"] = cutoff_sensitivity(library)
 
     cold_cpl = run(library, model(METHOD), [(.055, 20., 7.5, CP, 0)])
     data["cpl_cold_start"] = metrics(cold_cpl)
@@ -404,6 +450,8 @@ def plots(directory, library):
 def cross_platform(paths):
     first, second = (json.loads(Path(name).read_text(encoding="utf-8")) for name in paths)
     need({first["system"], second["system"]} == {"Linux", "Windows"}, "A Windows and a Linux run are required")
+    if first.get("source_commit") and second.get("source_commit"):
+        need(first["source_commit"] == second["source_commit"], "Runs must use the same Git commit")
     for key in ("baseline", "host", "replay"):
         compare(first["reference"][key], second["reference"][key], SPICE_LIMITS)
     for key, value in first["reference"]["cutoff"].items():
@@ -435,6 +483,12 @@ def cross_platform(paths):
         b = two["stuck_s1_backup_trip"][key]
         need(a["trigger"] == b["trigger"], f"Protection trigger changed in {key}")
         compare(a, b, {"max_v": .020, "peak_i": .08})
+    if "stuck_s1_cutoff_sensitivity" in one:
+        scenarios = one["stuck_s1_cutoff_sensitivity"]
+        need(scenarios.keys() == two["stuck_s1_cutoff_sensitivity"].keys(),
+             "Mismatched cutoff sensitivity scenarios")
+        for label, actual in scenarios.items():
+            compare(actual, two["stuck_s1_cutoff_sensitivity"][label], {"max_v": .003})
     for key in ("firmware", "scope_firmware"):
         need(key in first and key in second, f"Both hosts need a valid {key} image")
         need(first[key]["sha256"] == second[key]["sha256"], f"Mismatched {key} ARM binary hashes")
@@ -457,21 +511,23 @@ def main():
     parser.add_argument("--firmware", action="store_true")
     parser.add_argument("--quick", action="store_true")
     parser.add_argument("--no-spice", action="store_true")
+    parser.add_argument("--require-windows-11", action="store_true",
+                        help="Require a Windows 11 x64 workstation and 64-bit Python")
     parser.add_argument("--strict-stress", action="store_true",
                         help="Apply the same limits to combined high-ESR stress scenarios")
     parser.add_argument("--compare", nargs=2, metavar=("RESULT1", "RESULT2"))
     args = parser.parse_args()
+    result = host_metadata()
+    if args.require_windows_11 and not is_windows_11_x64(result):
+        parser.error(f"Windows 11 x64 and 64-bit Python are required (detected {result})")
     if args.compare:
         cross_platform(args.compare)
         return
+    result["source_commit"] = source_commit()
     directory = Path(args.directory).resolve()
     build(directory / "host")
     command(sys.executable, "-m", "unittest", "discover", "-s", "control")
     library = host_library(directory / "host")
-    result = {"system": platform.system(), "system_release": platform.release(),
-              "python": platform.python_version()}
-    if result["system"] == "Linux":
-        result["distribution"] = platform.freedesktop_os_release().get("PRETTY_NAME", "Linux")
     result["interface_budgets"] = Interface().calculate()
     result["adc_timing"] = {
         "clock_hz": ADC_CLOCK_HZ, "trigger_s": ADC_TRIGGER_S,

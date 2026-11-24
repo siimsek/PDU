@@ -81,9 +81,9 @@ static void configure_pins(void)
     GPIOA->BSRR = GPIO_BSRR_BR8;
     GPIOA->MODER = (GPIOA->MODER & ~GPIO_MODER_MODE8) | GPIO_MODER_MODE8_0;
 #if PDU_SCOPE_PWM
-    GPIOA->PUPDR = (GPIOA->PUPDR & ~(GPIO_PUPDR_PUPD3 | GPIO_PUPDR_PUPD8))
-        | GPIO_PUPDR_PUPD3_1 | GPIO_PUPDR_PUPD8_1;
-    GPIOA->MODER &= ~GPIO_MODER_MODE3; // Active-high bench enable, default low.
+    GPIOA->PUPDR = (GPIOA->PUPDR & ~GPIO_PUPDR_PUPD8) | GPIO_PUPDR_PUPD8_1;
+    GPIOC->PUPDR = (GPIOC->PUPDR & ~GPIO_PUPDR_PUPD1) | GPIO_PUPDR_PUPD1_1;
+    GPIOC->MODER &= ~GPIO_MODER_MODE1; // PC1 active-high bench enable, default low.
 #endif
 }
 
@@ -104,9 +104,11 @@ static void configure_adc(void)
 {
     RCC->AHB2ENR |= RCC_AHB2ENR_ADC12EN;
     (void)RCC->AHB2ENR;
-    // PA0/PA1/PA2: ADC1_IN1/2/3. The analog board binds current, Vout, Vin.
-    GPIOA->MODER |= GPIO_MODER_MODE0 | GPIO_MODER_MODE1 | GPIO_MODER_MODE2;
-    GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPD0 | GPIO_PUPDR_PUPD1 | GPIO_PUPDR_PUPD2);
+    // PA0/PA1/PC0: ADC1_IN1/2/6 for current, Vout and Vin.
+    GPIOA->MODER |= GPIO_MODER_MODE0 | GPIO_MODER_MODE1;
+    GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPD0 | GPIO_PUPDR_PUPD1);
+    GPIOC->MODER |= GPIO_MODER_MODE0;
+    GPIOC->PUPDR &= ~GPIO_PUPDR_PUPD0;
     ADC12_COMMON->CCR = ADC_CCR_CKMODE; // HCLK / 4 = 42.5 MHz
     ADC1->CR &= ~ADC_CR_DEEPPWD;
     ADC1->CR |= ADC_CR_ADVREGEN;
@@ -118,12 +120,12 @@ static void configure_adc(void)
     for (volatile unsigned delay = 0; delay < 16; ++delay) {
         __NOP();
     }
-    ADC1->SMPR1 = ADC_SMPR1_SMP1_0 | ADC_SMPR1_SMP2_0 | ADC_SMPR1_SMP3_0;
+    ADC1->SMPR1 = ADC_SMPR1_SMP1_0 | ADC_SMPR1_SMP2_0 | ADC_SMPR1_SMP6_0;
     // ES0430: repeat each channel and use the first rank of each pair.
     // The regular group is triggered by HRTIM ADC TRG1 (EXTSEL = 21).
     ADC1->SQR1 = (PDU_ADC_RANKS - 1u) | (1u << ADC_SQR1_SQ1_Pos) |
         (1u << ADC_SQR1_SQ2_Pos) | (2u << ADC_SQR1_SQ3_Pos) | (2u << ADC_SQR1_SQ4_Pos);
-    ADC1->SQR2 = (3u << ADC_SQR2_SQ5_Pos) | (3u << ADC_SQR2_SQ6_Pos);
+    ADC1->SQR2 = (6u << ADC_SQR2_SQ5_Pos) | (6u << ADC_SQR2_SQ6_Pos);
     ADC1->CFGR = ADC_CFGR_DMAEN | ADC_CFGR_DMACFG | ADC_CFGR_JQDIS |
         ADC_CFGR_EXTSEL_4 | ADC_CFGR_EXTSEL_2 | ADC_CFGR_EXTSEL_0 | ADC_CFGR_EXTEN_0;
     ADC1->ISR = ADC_ISR_ADRDY;
@@ -209,8 +211,8 @@ void DMA1_Channel1_IRQHandler(void)
     uint8_t enabled = !pdu_diagnostics.stopped;
     uint8_t fault = 0;
 #if PDU_SCOPE_PWM
-    const uint8_t arm = (GPIOA->IDR & GPIO_IDR_ID3) != 0;
-    // A PA3 line left high must not re-arm the output after an IWDG reset.
+    const uint8_t arm = (GPIOC->IDR & GPIO_IDR_ID1) != 0;
+    // A PC1 line left high must not re-arm the output after an IWDG reset.
     if (!arm) {
         arm_seen_low = 1;
     }

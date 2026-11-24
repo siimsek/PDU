@@ -2,6 +2,8 @@
 
 PDU, 20–26 V girişten 11 V / 7,5 A (82,5 W) sağlayacak, tek fazlı 100 kHz asenkron buck modülüdür. Nominal giriş 24,6 V. Hedef yükler direnç, sabit akım ve gerilim/akım çalışma sınırları tanımlanmış sabit güç yükleridir.
 
+Yük bağlantı noktasında 12,000 V kesin tavandır. En kötü geçici rejim ve arızada model, bileşen ve ölçüm belirsizliği dahil pozitif pay gösterilmelidir. Ortam sıcaklığı aralığı henüz tanımlanmadı. Mevcut bileşen köşeleri simülasyon girdileridir. Şu an geliştirme kartı veya güç prototipi gerektirmeyen simülasyon ve native doğrulama önceliklidir. Fiziksel aşamada referans kart **ST NUCLEO-G474RE**.
+
 | Aşama | Durum ve geçiş ölçütü |
 |---|---|
 | Güç katı ve temiz başlangıç | `6879e87` güç dalı ve etiketiyle eşleşiyor. Yerel ve uzak `main`, kullanıcı onayıyla bu sürüme getirildi. Önceki `main` (`e22f92b`) yerel yedek dalda ve doğrulanmış Git bundle dosyasında saklanıyor. Şematik ve açık çevrim LTspice dosyaları korundu. ngspice nominal gerilim farkı 0,5 mV, ripple farkı yaklaşık 0,02 mV. |
@@ -11,5 +13,7 @@ PDU, 20–26 V girişten 11 V / 7,5 A (82,5 W) sağlayacak, tek fazlı 100 kHz a
 | Koruma | Simülasyonda kısa devre CBC ölçütü ≤0,65 µs ve <11 A, kalıcı arıza PWM kilidi ≤2,2 ms. Kayıp ADC, rayda ADC, takılı gerilim okuması, UVLO, kapanma ve ön gerilimli yeniden başlama koşuları var. S1 kısa devresinde 96 yük/faz koşusu ve üç bağımsız ngspice referansı var. En yüksek 11,994 V ve 12,064 A simülasyon sonucu, fiziksel ayırıcı gecikmesi ve bobin doyum payı ölçülene kadar prototip kapısını açık tutar. |
 | Firmware ve platform | STM32G474 ELF/BIN ve vektör tablosu CachyOS’ta Arm GNU 14.3.Rel1 ile doğrulandı. İki STM32 imajı da otomatik derlenir ve platformlar arası BIN SHA-256 değerleri karşılaştırılır. Varsayılan imajda kapı kapalıdır. ADC/DMA çerçeve gecikmesi ve CBC capture, tezgâhta ölçülecek. Ubuntu 24.04 ve Windows Server 2025 x64 işleri ve sayısal eşdeğerlik geçti. Test edilen kod commit’i `caf4bf7`. CachyOS ve Windows çıktılarında iki imajın SHA-256 değerleri eşleşti. Windows 11 masaüstü ve tezgâh ayrı aşamalar. [CI koşusu](https://github.com/siimsek/PDU/actions/runs/45378092729) |
 | Prototip kapısı | Bekliyor. Harici kilit, iki analog eşik, ayırıcı/klemp, driver, kaynak koruması, doğrulanmış ESR ve fiziksel ısı/EMI. ADC yerleşme süresi, ADC→PWM WCET, gate kesme zamanı ve hata durumunda yük düğümü osiloskopla ölçülecek. Ön gerilim, boşta bootstrap ve 82,5 W CPL power-good sırası ölçülecek. |
+
+Sıradaki model adımı S1 kısa devresi ve eşzamanlı yük bırakma için bağımsız ayırıcı/klemp davranışını geliştirmek. Gerilim eşiğini, kesme gecikmesini, indüktörün akıma bağlı L değerini, anahtar parazitiklerini ve sıcaklık/tolerans etkilerini birlikte taramak gerekiyor. Mevcut modelin 11,994 V tepesi yalnızca 6 mV pay veriyor. Gecikme duyarlılığında zaman adımına bağlı olarak 11,999–12,003 V görüldü. Daha uzun gecikmede en ince zaman adımı 12,008 V verdi. Bunlar ve geniş ESR stresi açık test bulgularıdır.
 
 Tarihî açık çevrim ölçütleri [OPTIMIZASYON.md](buck/OPTIMIZASYON.md) ve güç elemanı adayları [PARCA-HEDEFLERI.md](buck/PARCA-HEDEFLERI.md) içinde. Yeni yöntem, sınırlar, pinler ve üretici kaynakları [TASARIM.md](control/TASARIM.md) içinde. Testler ve üretilebilen dosyalar için [README](README.md).

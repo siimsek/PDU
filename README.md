@@ -18,7 +18,7 @@ Repo kökünde sanal ortam oluştur:
 
 | Sistem | Ortamı oluştur | Ortamı etkinleştirmeden Python |
 |---|---|---|
-| Windows | `py -3.12 -m venv .venv` | `.venv\Scripts\python.exe` |
+| Windows | `py -3.12 -m venv build/venv-win` | `build\venv-win\Scripts\python.exe` |
 | CachyOS | `python3.12 -m venv .venv` | `.venv/bin/python` |
 
 Aşağıdaki komutlarda `python` sanal ortamın Python’ıdır. `control.tools` Arm GNU Toolchain 14.3.Rel1, Windows’ta ayrıca ngspice 47’yi SHA256 karşılaştırmasından sonra `build/tools` altına açar. Kurulmuş yerel araçlar otomatik bulunur. Dış kurulum için `arm-none-eabi-gcc` PATH üzerinde ve gerekirse `NGSPICE` ortam değişkeni konsol çalıştırılabilir dosyasını göstermelidir.
@@ -35,6 +35,19 @@ python -m control.verify --firmware
 - `python -m control.interface` ilk donanım eşiklerini ve tolerans bütçelerini hesaplar.
 - `python -m control.verify --strict-stress --firmware` aynı ölçütleri birleşik yüksek ESR stres koşullarına da uygular. Bu koşullar sonuç dosyasında olağan doğrulamada da raporlanır.
 
-Senaryo bazında sonuçlar `build/verify/results.json` dosyasındadır. Aynı klasörde Bode ve geçici rejim SVG’leri, ngspice logları ve `--firmware` ile `target/firmware/pdu_g474.{elf,bin,map}` oluşur. Bu imajda kapı çıkışı kapalıdır. Güç katı bağlantısız tezgâh için ayrı osiloskop imajı `target_scope/firmware/` altındadır. İki platformdan alınan JSON için `python -m control.verify --compare linux.json windows.json`. Workflow aynı komutları Ubuntu ve Windows Server 2025 x64 üzerinde çalıştırır. Windows 11 masaüstü ve fiziksel hedef kart ayrı doğrulama aşamalarıdır.
+Senaryo bazında sonuçlar `build/verify/results.json` dosyasındadır. Aynı klasörde Bode ve geçici rejim SVG’leri, ngspice logları ve `--firmware` ile `target/firmware/pdu_g474.{elf,bin,map}` oluşur. Bu imajda kapı çıkışı kapalıdır. Güç katı bağlantısız tezgâh için ayrı osiloskop imajı `target_scope/firmware/` altındadır. İki platformda aynı commit’ten alınan JSON için `python -m control.verify --compare linux.json windows.json`. Workflow aynı komutları Ubuntu ve Windows Server 2025 x64 üzerinde çalıştırır. Windows 11 masaüstü ve fiziksel hedef kart ayrı doğrulama aşamalarıdır.
+
+### Windows 11 masaüstü koşusu
+
+`stm32-digital-buck` dalının güncel temiz kopyasında, repo kökünden PowerShell ile çalıştır. Windows sanal ortamı `build/venv-win` altında tutulur. Tam koşu için STM32 kartı veya fiziksel güç katı gerekmez. Referans geliştirme kartı **ST NUCLEO-G474RE**.
+
+```powershell
+py -3.12 -m venv build/venv-win
+.\build\venv-win\Scripts\python.exe -m pip install -r requirements.txt
+.\build\venv-win\Scripts\python.exe -m control.tools
+.\build\venv-win\Scripts\python.exe -m control.verify --require-windows-11 --firmware --directory build/windows11
+```
+
+Masaüstü koşusunun `build/windows11/results.json` dosyasında OS sürümü, mimari, Windows ürün türü, Python sürümü ve Git commit’i yer alır. Aynı commit’in [GitHub Actions koşusundan](https://github.com/siimsek/PDU/actions/workflows/digital-buck.yml) `pdu-Linux` artefaktını indirip `--compare` ile karşılaştır. Çıkışın 12,000 V kesin tavanı için açık fiziksel ve modelleme kapıları yol haritasında kayıtlıdır.
 
 [Kontrol yöntemleri, model ve donanım arayüzü](control/TASARIM.md)
