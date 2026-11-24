@@ -5,8 +5,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-enum { DISABLED = 1, STALE_ADC = 2, ADC_RAIL = 4, SHORTED_S1 = 8, UVLO = 16 };
-enum { CBC = 1, OVP = 2, WATCHDOG = 4, ISOLATED = 8, SOFT_UVLO = 16, BAD_SAMPLE = 32, DCM = 64 };
+enum { DISABLED = 1, STALE_ADC = 2, ADC_RAIL = 4, SHORTED_S1 = 8, UVLO = 16, ADC_STUCK_LOW = 32 };
+enum { CBC = 1, OVP = 2, WATCHDOG = 4, ISOLATED = 8, SOFT_UVLO = 16, BAD_SAMPLE = 32, DCM = 64, OVERLOAD_LATCH = 128, LOAD_UV_LATCH = 256 };
 enum { LOAD_CR, LOAD_CC, LOAD_CP };
 
 typedef struct {
@@ -106,7 +106,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
     ControlState control = {0};
     uint16_t pwm = 0;
     uint32_t rng = m->seed;
-    unsigned stale = 0, consecutive_cbc = 0;
+    unsigned stale = 0, cbc_score = 0;
     int latched = 0, previous_disable = 0;
     double ovp_trip = never, ovp_fall = never;
     for (size_t k = 0; k < count; ++k) {
@@ -115,6 +115,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
         const int disabled = c.flags & DISABLED;
         if (previous_disable && !disabled && s.vc < m->limit_v - .35) {
             latched = 0;
+            cbc_score = 0;
             ovp_trip = never;
             ovp_fall = never;
         }
@@ -134,6 +135,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
                             m->turn_on : never;
         double fall = command * period + m->turn_off;
         double cbc_trip = never;
+        double current_cross = never;
         uint16_t next = pwm;
         int sampled = 0;
         Result r = {.low_v = never, .low_i = never, .ocp_latency = -1., .ovp_latency = -1.};
@@ -154,16 +156,26 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
             if (!sampled && t + 1e-15 >= sample_at) {
                 sampled = 1;
                 if (!(c.flags & STALE_ADC) &&
-                    sample_at + m->adc_latency + m->execute_time < period) {
+                    sample_at + m->adc_latency + m->execute_time >= 9.6e-6) {
+                    latched |= WATCHDOG;
+                    next = 0;
+                } else if (!(c.flags & STALE_ADC)) {
                     ControlSample reading = {adc(c.vin, PDU_VIN_SCALE),
+                        c.flags & ADC_STUCK_LOW ? 0 :
                         adc(a.voltage + m->noise_v * noise(&rng), PDU_VOUT_SCALE),
                         adc(s.sense + m->noise_i * noise(&rng), PDU_CURRENT_SCALE),
                         !disabled, (latched || (c.flags & (ADC_RAIL | UVLO))) != 0};
                     next = pdu_step(&control, &pdu_configs[m->method], reading);
+                    if (control.undervoltage_latched) {
+                        latched |= LOAD_UV_LATCH;
+                    }
                     if (c.flags & ADC_RAIL) {
                         r.flags |= BAD_SAMPLE;
                     }
                 }
+            }
+            if (driven && s.i >= m->limit_i && current_cross == never) {
+                current_cross = t;
             }
             if (driven && cbc_trip == never && t >= rise + m->blank_time && s.sense >= m->limit_i) {
                 cbc_trip = t;
@@ -179,7 +191,7 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
                 r.ovp_latency = ovp_fall - ovp_trip;
             }
             if (cbc_trip < never && t + 1e-15 >= fall) {
-                r.ocp_latency = fall - cbc_trip;
+                r.ocp_latency = fall - min(cbc_trip, current_cross);
             }
             double end = min(period, t + m->max_step);
             const double events[] = {sample_at, rise, fall, rise + m->blank_time,
@@ -219,11 +231,11 @@ int pdu_simulate(const Model *m, const Cycle *cycles, size_t count, Result *resu
             t += dt;
         }
         if (r.flags & CBC) {
-            if (++consecutive_cbc >= m->cbc_latch_cycles && m->cbc_latch_cycles != 0) {
-                latched |= CBC;
+            if (++cbc_score >= m->cbc_latch_cycles && m->cbc_latch_cycles != 0) {
+                latched |= OVERLOAD_LATCH;
             }
-        } else {
-            consecutive_cbc = 0;
+        } else if (k % 4 == 0 && cbc_score > 0) {
+            --cbc_score;
         }
         r.flags |= (unsigned)latched;
         r.rms_i = sqrt(r.rms_i);

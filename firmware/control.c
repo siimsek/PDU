@@ -43,6 +43,17 @@ uint16_t pdu_step(ControlState *state, const ControlConfig *cfg, ControlSample s
         state->running = 1;
     }
     state->reference = clamp(state->reference + 0.0044f, 0.0f, PDU_REFERENCE);
+    const int final_reference = state->reference >= PDU_REFERENCE;
+    if (final_reference && vout < 8.5f) {
+        if (state->uv_periods < 150u && ++state->uv_periods == 150u) {
+            state->undervoltage_latched = 1;
+        }
+    } else {
+        state->uv_periods = 0;
+    }
+    if (state->undervoltage_latched) {
+        return 0;
+    }
     float error = state->reference - vout;
     const float drive = vin + 0.38f;
     const float dmax = (float)PDU_PWM_MAX / PDU_PWM_TICKS;
@@ -74,7 +85,6 @@ uint16_t pdu_step(ControlState *state, const ControlConfig *cfg, ControlSample s
     error = filter(&state->lead, cfg->lead, error);
     const float scale = cfg->method == PDU_PI ? 1.0f : drive;
     float command = (feedforward + pi(&state->inner, error, cfg->kp, cfg->ki_step)) / scale;
-    const int final_reference = state->reference >= PDU_REFERENCE;
     const int idle = vout > state->reference + (final_reference ? 0.055f : 0.035f);
     float limited = clamp(command, 0.0f, idle ? 0.0f : dmax);
     if (!idle && final_reference && vout < state->reference - 0.16f) {

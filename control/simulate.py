@@ -9,8 +9,8 @@ from .configure import METHODS
 from .design import REFERENCE, SAMPLE
 
 CR, CC, CP = range(3)
-DISABLED, STALE_ADC, ADC_RAIL, SHORTED_S1, UVLO = (1, 2, 4, 8, 16)
-CBC, OVP, WATCHDOG, ISOLATED, SOFT_UVLO, BAD_SAMPLE, DCM = (1, 2, 4, 8, 16, 32, 64)
+DISABLED, STALE_ADC, ADC_RAIL, SHORTED_S1, UVLO, ADC_STUCK_LOW = (1, 2, 4, 8, 16, 32)
+CBC, OVP, WATCHDOG, ISOLATED, SOFT_UVLO, BAD_SAMPLE, DCM, OVERLOAD_LATCH, LOAD_UV_LATCH = (1, 2, 4, 8, 16, 32, 64, 128, 256)
 PERIOD = REFERENCE.period
 
 
@@ -96,9 +96,9 @@ def metrics(data, settle_cycles=300):
         "peak_i": float(max(data["high_i"])),
         "rms_i": float(np.sqrt(np.mean(tail["rms_i"] ** 2))),
         "settle_ms": None if settled == len(data) else settled * PERIOD * 1000,
-        "gain_efficiency": float(tail["pout"].mean() / max(1e-20, (tail["pout"] + tail["loss"]).mean())),
+        "estimated_efficiency": float(tail["pout"].mean() / max(1e-20, (tail["pout"] + tail["loss"]).mean())),
         "loss_w": float(tail["loss"].mean()),
-        "fault_cycles": int(np.count_nonzero(data["flags"] & (OVP | WATCHDOG))),
+        "fault_cycles": int(np.count_nonzero(data["flags"] & (OVP | WATCHDOG | OVERLOAD_LATCH | LOAD_UV_LATCH))),
         "cbc_cycles": int(np.count_nonzero(mask(data, CBC))),
         "dcm_cycles": int(np.count_nonzero(mask(data, DCM))),
     }

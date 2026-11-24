@@ -41,7 +41,8 @@ typedef struct {
     float reference;
     float pulse_density;
     float applied_duty;
-    uint8_t running;
+    uint16_t uv_periods;
+    uint8_t running, undervoltage_latched;
 } ControlState;
 
 typedef struct {
