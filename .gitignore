@@ -6,3 +6,7 @@
 # Python cache
 __pycache__/
 *.py[cod]
+
+# Local dependencies and generated validation/build outputs
+.venv/
+build/
