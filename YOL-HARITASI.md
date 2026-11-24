@@ -4,7 +4,7 @@ PDU, 20–26 V girişten 11 V / 7,5 A (82,5 W) sağlayacak, tek fazlı 100 kHz a
 
 | Aşama | Durum ve geçiş ölçütü |
 |---|---|
-| Güç katı ve temiz başlangıç | `6879e87` güç dalı ve etiketiyle eşleşiyor. Yerel `main` bu sürüme getirildi, `e22f92b` eski `main` yedeklendi. Uzak `main` işlemi kullanıcı onayını bekliyor. Şematik ve açık çevrim LTspice dosyaları korundu. ngspice nominal gerilim farkı 0,5 mV, ripple farkı yaklaşık 0,02 mV. |
+| Güç katı ve temiz başlangıç | `6879e87` güç dalı ve etiketiyle eşleşiyor. Yerel ve uzak `main`, kullanıcı onayıyla bu sürüme getirildi. Önceki `main` (`e22f92b`) yerel yedek dalda ve doğrulanmış Git bundle dosyasında saklanıyor. Şematik ve açık çevrim LTspice dosyaları korundu. ngspice nominal gerilim farkı 0,5 mV, ripple farkı yaklaşık 0,02 mV. |
 | Kontrol seçimi | 180 doğrusal CCM noktası, beş anahtarlamalı aday ve aynı C kontrol çekirdeği. Type III + Vin feedforward ve büyük sinyal akım desteği ilk aday. En düşük gerilim çevrimi faz/kazanç marjı 49,2° / 7,29 dB, kesim frekansı 3,36 kHz. Hesap kapısı 40° / 6 dB. |
 | Anahtarlamalı elektriksel kapı | CachyOS’ta 90 zarf koşusu, ilave kalkış matrisi, 48 örnekli 10–55 mΩ Cout ESR tasarım zarfı ve iki ayrı zamanlama/şönt koşusu. Zarf test sınırları geçici 9–11,75 V, kararlı ortalama 11 V ±%1, PWM ripple ≤165 mV t-t, tepe akım ≤10,65 A ve arıza kilidi yok. Bu değerler prototip doğrulama hedefidir. |
 | Geniş sıcaklık/ESR stresi | ESR 120 mΩ’a kadar birleşik örneklerde 48 koşudan 14'ü sınırı aştı. `--strict-stress` bu koşulları başarısızlık olarak döndürür. 55 mΩ işletim üst hedefi, düşük L ile yüksek ESR birleşiminin ripple etkisini sınırlar. Cout adayının soğuk ve yaşlanmış ESR, akım ve gerilim anması laboratuvarda kapatılmalı. |
