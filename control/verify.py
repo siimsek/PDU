@@ -277,7 +277,10 @@ def switch_reference(library, directory, skip_spice):
     compare(output["replay"], host, {**SPICE_LIMITS, "ripple_v": .004})
     output["hotplug"] = spice.hotplug(directory / "hotplug")
     peak = {k: item["peak_v"] for k, item in output["hotplug"].items()}
-    need(peak["inductive"] > peak["damped"] >= 26., "Hot-plug sensitivity failed")
+    # The overdamped trace approaches the source voltage from below.
+    # A finite observation window and SPICE rounding must not require it to cross 26 V.
+    compare({"damped_peak_v": peak["damped"]}, {"damped_peak_v": 26.}, {"damped_peak_v": .002})
+    need(peak["inductive"] > 39., f"Expected cable ringing in the high-Q case, got {peak['inductive']} V")
     return output
 
 

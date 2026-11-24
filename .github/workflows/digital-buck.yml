@@ -44,6 +44,7 @@ jobs:
             build/verify/*.svg
             build/verify/baseline/power.log
             build/verify/replay/power.log
+            build/verify/hotplug/*/power.log
             build/verify/target/firmware/pdu_g474.elf
             build/verify/target/firmware/pdu_g474.bin
             build/verify/target/firmware/pdu_g474.map
